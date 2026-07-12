@@ -181,7 +181,7 @@
       </indexterm>
       (A status note: this whole-bridi rule &ndash; that
       <valsi>na</valsi>
-      before the selbri denies the entire claim, no matter how much of the sentence precedes it &ndash; is the first edition's rule, and current semantic software keeps it. A later proposal to give
+      before the selbri denies the entire claim, no matter how much of the sentence precedes it &ndash; is the first edition's rule, and the semantic software checked for this edition keeps it. A later proposal to give
       <valsi>na</valsi>
       scope only over what follows it in the sentence was never adopted. How
       <valsi>na</valsi>
@@ -331,7 +331,7 @@
       When a selbri is tagged with a tense or a modal, negation with
       <valsi>na</valsi>
       is permitted in two positions: before or after the tag. The first edition defined no semantic difference between the two positions, and left the question to
-      <quote>future, Lojban-speaking, logicians</quote>. Those logicians have since spoken, at least through the software that now interprets Lojban semantics: the two positions differ in what the negation takes in. Placed before the tag,
+      <quote>future, Lojban-speaking, logicians</quote>. Those logicians have since spoken, at least through the semantic software checked for this edition: the two positions differ in what the negation takes in. Placed before the tag,
       <valsi>na</valsi>
       denies the tensed claim as a whole; placed after the tag, it lies within the scope of the tense, so the sentence makes a (tensed) claim about something <emphasis>not</emphasis> happening. The difference is easiest to see with one of the less familiar tenses. Starting from:
     </para>
@@ -377,7 +377,7 @@
     <para role="status-note">
       <indexterm type="general"><primary>na</primary><secondary>with tenses, status</secondary>
       </indexterm>
-      (A status note: this resolution of the two positions is de facto: it is how current semantic software interprets them, but it was never put to a vote, and the first edition explicitly left the question open.)
+      (A status note: this resolution of the two positions is de facto: it is how the semantic software checked for this edition interprets them, but it was never put to a vote, and the first edition explicitly left the question open.)
     </para>
 
     <para>A final caution on translating English negations into Lojban: if you translate the English literally, you'll get the wrong one. With English causal statements, and other statements with auxiliary clauses, this problem is more likely.</para>
@@ -1040,7 +1040,15 @@
       has nothing to refer to:
       <valsi>lo</valsi>
       is veridical, so whatever it picks out must really be a current King of France, and nothing is (see
-      <xref linkend="section-basic-descriptors" />). An affirmative claim about what is not there to be claimed about cannot be true &ndash; so it is false to say that the King is bald, or non-bald, or anything else affirmative. Any sentence about the current King of France containing only a selbri negation is as false as the sentence without the negation, because selbri negations still make affirmative claims. No amount of selbri negations have any effect on the truth value of the sentence, which is invariably
+      <xref linkend="section-basic-descriptors" />). The claim therefore cannot come off: there is nothing for it to be about.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>descriptions</primary><secondary>reference failure under negation</secondary>
+      </indexterm>
+      (A status note: what truth value such a failed claim receives is not settled by the official definitions, which simply take a description's referents to exist. This book keeps the first edition's convention: an affirmative claim about a failed description counts as false, and its contradictory negation as true.)
+    </para>
+    <para>
+      Under that convention, it is false to say that the King is bald, or non-bald, or anything else affirmative. Any sentence about the current King of France containing only a selbri negation is as false as the sentence without the negation, because selbri negations still make affirmative claims. No amount of selbri negations have any effect on the truth value of the sentence, which is invariably
       <quote>false</quote>. On the other hand, bridi negation does produce a truth:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-Bwdy">
@@ -1323,10 +1331,11 @@
     <para role="indent">
       Is
       <xref linkend="example-random-id-PL1E" />
-      true? When France has kings, certainly:
+      true? <indexterm type="general"><primary>outer quantifier</primary><secondary>zero, over description referents</secondary>
+      </indexterm>When France has kings, the sentence is at least straightforward:
       <valsi>no</valsi>
       counts the referents of the description (see
-      <xref linkend="section-quantified-descriptions" />), so the sentence then denies baldness of every one of them. But when there are no current Kings of France at all, the description has nothing to refer to, and the sentence inherits the reference problem discussed in
+      <xref linkend="section-quantified-descriptions" />), so the sentence then denies baldness of every one of them, and it is true just in case none of those kings is in fact bald. But when there are no current Kings of France at all, the description has nothing to refer to, and the sentence inherits the reference problem discussed in
       <xref linkend="section-nahe" />. To make the plainly true claim directly &ndash; without first asking a description to refer to nonexistent kings &ndash; quantify over a variable instead:
       <jbophrase>no da poi ca nolraitru be le fasygu'e cu krecau</jbophrase>
       , that is, nothing-that-is a current King of France lacks hair. This is true precisely because nothing satisfies the restriction. (In the first edition, descriptions themselves were quantifiers, and
@@ -1613,7 +1622,7 @@
       <interlinear-gloss>
         <jbo>… klama la .paris. .e la .rom.</jbo>
         <gloss>… go-to that-named Paris and that-named Rome.</gloss>
-        <natlang>There will be a time when John is not going to Paris and Rome.</natlang>
+        <natlang>There will be a future occasion on which John is not going to both Paris and Rome.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
@@ -1627,11 +1636,11 @@
       <xref linkend="example-random-id-Fn2c" />
       , with
       <valsi>na</valsi>
-      before the tense, the whole future claim is denied: John will not be going. In
+      before the tense, the whole future claim is denied: it is not the case that John will go to both Paris and Rome. In
       <xref linkend="example-random-id-2SK0" />
       , with
       <valsi>na</valsi>
-      after the tense, the negation lies within the tense's scope: the sentence locates an occasion of non-going in the future &ndash; a far weaker statement, and probably not what a negative answer to the question intends. The straightforward negative answer about the future is therefore
+      after the tense, the negation lies within the tense's scope: the sentence locates in the future an occasion on which John is not going to both cities &ndash; a far weaker statement, and probably not what a negative answer to the question intends. The straightforward negative answer about the future is therefore
       <xref linkend="example-random-id-rii2" />.
     </para>
     <para>

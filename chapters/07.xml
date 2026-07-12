@@ -165,7 +165,8 @@
       </indexterm>
       The mi-series of pro-sumti refer to the speaker, the listener, and others in various combinations.
       <valsi>mi</valsi>
-      refers to the speaker and perhaps others for whom the speaker speaks; it may be a Lojbanic mass.
+      refers to the speaker and perhaps others for whom the speaker speaks; it may be a Lojbanic group (see
+      <xref linkend="section-masses" />).
       <valsi>do</valsi>
       refers to the listener or listeners. Neither
       <valsi>mi</valsi>
@@ -252,11 +253,11 @@
       </indexterm>
       <indexterm type="general"><primary>pro-sumti for speaker/listener/others</primary><secondary>relation to &quot;joi&quot;</secondary>
       </indexterm>
-      All of these pro-sumti represent masses. For example,
+      All of these pro-sumti represent groups (what the first edition called masses). For example,
       <valsi>mi'o</valsi>
       is the same as
       <jbophrase>mi joi do</jbophrase>,
-      the mass of me and you considered jointly.
+      the group of me and you considered jointly.
     </para>
     <para>
       <indexterm type="general"><primary>pro-sumti for &quot;we&quot;</primary><secondary>contrasted with English &quot;we&quot;</secondary>
@@ -641,7 +642,7 @@
 
       <interlinear-gloss>
         <jbo>do na nelci loi mlatu</jbo>
-        <gloss>You (Not!) like the-mass-of cats</gloss>
+        <gloss>You (Not!) like the-group-of cats</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>.i di'u jitfa jufra</jbo>
@@ -1966,6 +1967,20 @@
       <quote>whatever I want it to mean but haven't bothered to figure out, or figure out how to express</quote>.
     </para>
     <para>
+      <indexterm type="lojban-word"><primary>zo'e</primary><secondary>as constant in gadri expansion</secondary>
+      </indexterm>
+      Though it looks like a mere convenience,
+      <valsi>zo'e</valsi>
+      turns out to be foundational: it refers, as a constant, to whatever things the context supplies &ndash; one or many &ndash; and the current definitions of the descriptors are built on it:
+      <jbophrase>lo broda</jbophrase>
+      is defined as
+      <jbophrase>zo'e noi ke'a broda</jbophrase>
+      ,
+      <quote>the contextually-supplied things, which broda</quote>
+      (see
+      <xref linkend="section-quantified-descriptions" />).
+    </para>
+    <para>
       <indexterm type="general"><primary>typical sumti</primary></indexterm>
       <indexterm type="general"><primary>pro-sumti</primary><secondary>typical</secondary>
       </indexterm>
@@ -2037,7 +2052,7 @@
 
       <interlinear-gloss>
         <jbo>loi jmive cu se--zbasu [zo'e] fi loi selci</jbo>
-        <gloss>The-mass-of living-things -- is-made [by-something] from the-mass-of cells</gloss>
+        <gloss>The-group-of living-things -- is-made [by-something] from the-group-of cells</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent">
@@ -2060,11 +2075,11 @@
 
       <interlinear-gloss>
         <jbo>loi jmive cu</jbo>
-        <gloss>The-mass-of living-things --</gloss>
+        <gloss>The-group-of living-things --</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>se--zbasu zi'o - loi selci</jbo>
-        <gloss>is-made [without-maker] from the-mass-of cells.</gloss>
+        <gloss>is-made [without-maker] from the-group-of cells.</gloss>
       </interlinear-gloss>
     </example>
     <para role="indent">
@@ -2079,7 +2094,7 @@
 
       <interlinear-gloss>
         <jbo>mi zbasu le dinju - loi mudri</jbo>
-        <gloss>I make the building from some-of-the-mass-of wood.</gloss>
+        <gloss>I make the building from the-group-of wood.</gloss>
         <natlang>I make the building out of wood.</natlang>
       </interlinear-gloss>
     </example>
@@ -2088,7 +2103,7 @@
 
       <interlinear-gloss>
         <jbo>zi'o zbasu le dinju - loi mudri</jbo>
-        <gloss>[without-maker] makes the building from some-of-the-mass-of wood.</gloss>
+        <gloss>[without-maker] makes the building from the-group-of wood.</gloss>
         <natlang>The building is made out of wood.</natlang>
       </interlinear-gloss>
     </example>
@@ -2097,7 +2112,7 @@
 
       <interlinear-gloss>
         <jbo>mi zbasu zi'o - loi mudri</jbo>
-        <gloss>I make [without-thing-made] from some-of-the-mass-of wood.</gloss>
+        <gloss>I make [without-thing-made] from the-group-of wood.</gloss>
         <natlang>I build using wood.</natlang>
       </interlinear-gloss>
     </example>
@@ -2539,7 +2554,7 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… zbasu ke'a - lei slasi</jbo>
-        <gloss>… makes the-thing-being-relativized-[the-cat] from some-mass-of plastic.</gloss>
+        <gloss>… makes the-thing-being-relativized-[the-cat] from a-group-of plastic.</gloss>
         <natlang>I see a cat made of plastic.</natlang>
       </interlinear-gloss>
     </example>
@@ -2561,7 +2576,7 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… [ke'a] zbasu lei slasi</jbo>
-        <gloss>… the-thing-being-relativized-[the-cat] makes a-mass-of plastic</gloss>
+        <gloss>… the-thing-being-relativized-[the-cat] makes a-group-of plastic</gloss>
         <natlang>I see a cat that makes plastic.</natlang>
       </interlinear-gloss>
     </example>

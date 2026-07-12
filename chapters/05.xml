@@ -398,7 +398,7 @@
       <quote>little</quote>
       specifying the type of girls' school? Or is
       <quote>little girl</quote>
-      to be taken as a unit, specifying the type of school? In English speech, different tones of voice, or
+      to be taken as a unit, specifying the type of school? In English speech, different tones of voice, or 
     exaggerated speech rhythm showing the grouping, are used to make the distinction; English writing usually leaves it unrepresented.
     </para>
 
@@ -459,7 +459,7 @@
       on the other hand, the seltau is
       <jbophrase>cmalu bo nixli</jbophrase>
       (itself a tanru), whereas the tertau is
-      <valsi>ckule</valsi>.
+      <valsi>ckule</valsi>. 
     This structure of tanru nested within tanru forms the basis for all the more complex types of selbri that will be explained below.
     </para>
     <para>
@@ -1482,13 +1482,16 @@
         <natlang>This is a school, small in volume compared to the typical school, pertaining to five-year-old girls (by American standards), in Brooklyn, teaching poetry to the New York community and operated by the state.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
+    <para role="status-note">
       (The
       <jbophrase>lo'e ckule</jbophrase>
       here &ndash;
       <quote>the typical school</quote>
       &ndash; uses a descriptor whose meaning was never settled; see the status discussion in
-      <xref linkend="section-typicals" />.) Here the three places of
+      <xref linkend="section-typicals" />.)
+    </para>
+    <para role="indent">
+      Here the three places of
       <valsi>cmalu</valsi>,
       the three of
       <valsi>nixli</valsi>,
@@ -2188,7 +2191,7 @@
 
       <interlinear-gloss>
         <jbo>la .an,iis. joi la .asun.</jbo>
-        <gloss>That-named Anyi massed-with that-named Asun</gloss>
+        <gloss>That-named Anyi grouped-with that-named Asun</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>bruna remei</jbo>
@@ -2266,14 +2269,24 @@
         <quote>[the sumti]</quote>
       </content>
     </definition>
-    <para>which is true of the thing, or things, that are the referents of the sumti &ndash; one of them, several of them, or all of them together &ndash; and not of anything else. (The first edition said
+    <para>which is true of the thing, or things, that are the referents of the sumti &ndash; one of them, several of them, or all of them together &ndash; and not of anything else. For example, consider the sumti</para>
+    <para role="status-note">
+      <indexterm type="lojban-word"><primary>me</primary><secondary>sharpened definition, status</secondary>
+      </indexterm>
+      (A status note: the first edition said
       <quote>is one of</quote>
       ; the sharpened
       <quote>among</quote>
-      formulation matters because the current definitions of the descriptors themselves are stated in terms of
-      <valsi>me</valsi>
-      &ndash; see
-      <xref linkend="section-quantified-descriptions" />.) For example, consider the sumti</para>
+      wording is a working-document clarification, never separately voted &ndash; but the ratified gadri definitions lean on it: they expand
+      <jbophrase>lo PA sumti</jbophrase>
+      as
+      <jbophrase>lo PA me sumti</jbophrase>
+      , and a quantified term
+      <jbophrase>PA sumti</jbophrase>
+      as
+      <jbophrase>PA da poi ke'a me sumti</jbophrase>
+      ; see
+      <xref linkend="section-quantified-descriptions" />.)</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-v6QW">
       <title>
 
@@ -2699,7 +2712,7 @@
       </indexterm>
       <indexterm type="general"><primary>complex negation</primary><secondary>examples</secondary>
       </indexterm>
-      Here is an assortment of more complex examples showing the interaction of scalar negation with
+      Here is an assortment of more complex examples showing the interaction of scalar negation with 
       <valsi>bo</valsi> grouping,
       <valsi>ke</valsi>
       and

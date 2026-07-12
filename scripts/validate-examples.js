@@ -21,8 +21,15 @@ let ok = 0, bad = 0;
 for (const row of rows) {
   const [file, id, text] = row.split('\t');
   if (!text) continue;
-  const res = spawnSync('node', [runner, text], { encoding: 'utf8', timeout: 30000 });
+  // --stack-size: the chrestomathy rows are whole continuous texts; the
+  // camxes PEG recursion exhausts the default V8 stack on the longest ones.
+  const res = spawnSync('node', ['--stack-size=16384', runner, text],
+                        { encoding: 'utf8', timeout: 30000 });
   if (res.error) die(`failed to invoke ${runner}: ${res.error.message}`);
+  // A crashed or killed parser is an infrastructure error, never a parse
+  // outcome (camxes reports genuine rejections on stdout with exit 0).
+  if (res.signal) die(`${runner} killed by ${res.signal} for: ${text.slice(0, 90)}`);
+  if (res.status !== 0) die(`${runner} exited ${res.status} for: ${text.slice(0, 90)}\n${(res.stderr || '').slice(0, 300)}`);
   const out = (res.stdout || '') + (res.stderr || '');
   if (!out.trim()) die(`empty output from ${runner} for: ${text}`);
   if (CAMXES_ERROR.test(out)) { bad++; console.log(`FAIL ${file} ${id}: ${text.slice(0, 90)}`); }

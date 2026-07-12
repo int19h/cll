@@ -875,3 +875,24 @@ screen display
 p.monospace {
   font-family: monospace;
 }
+/* Status notes (docs/status-markup.md): authority marks for changed rules.
+   The DocBook role="status-note" propagates to p.status-note. */
+p.status-note {
+  position: relative;
+  margin-left: 1.5em;
+  padding-left: 0.75em;
+  border-left: 2px solid #8a7a4a;
+  font-size: 0.92em;
+  color: #3d3320;
+  text-indent: 0;
+}
+p.status-note::before {
+  content: "\25C6"; /* black diamond margin mark */
+  position: absolute;
+  left: -1.5em;
+  color: #8a7a4a;
+}
+@media print {
+  p.status-note { border-left-color: #666; color: inherit; }
+  p.status-note::before { color: #666; }
+}

@@ -667,8 +667,19 @@
       </indexterm>
       <indexterm type="general"><primary>comma</primary><secondary>definition of</secondary>
       </indexterm>
-      The comma is used to indicate a syllable break within a word, generally one that is not obvious to the reader. Such a comma is written to separate syllables, but indicates that there must be no pause between them, in contrast to the period. Between two vowels, a comma indicates that some type of glide may be necessary to avoid a pause that would split the two syllables into separate words. It is always legal to use the apostrophe (IPA
-      <phrase role="IPA">[h]</phrase>) sound in pronouncing a comma. However, a comma cannot be pronounced as a pause or glottal stop between the two letters separated by the comma, because that pronunciation would split the word into two words.
+      The comma is purely a reading aid: it marks a syllable break within a word, generally one that is not obvious to the reader, and has no sound of its own. In contrast to the period, it must never be pronounced as a pause or glottal stop, since that would split the word into two words. Between two vowels a comma simply shows that the vowels belong to separate syllables, pronounced in one smooth flow; whatever slight transition occurs between them is a fact of pronunciation, not an extra phoneme. Because the comma contributes no sound, no two Lojban words can differ solely by the presence or placement of a comma.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>comma</primary><secondary>change from first edition</secondary>
+      </indexterm>
+      (The first edition also permitted pronouncing a comma as an apostrophe, IPA
+      <phrase role="IPA">[h]</phrase>
+      &ndash; which contradicted the rule, stated then as now, that commas never distinguish words:
+      <quote>.a,i</quote>
+      pronounced that way is indistinguishable from the different word
+      <jbophrase>.a'i</jbophrase>. The current formal definition of Lojban word-forms resolves the conflict by ignoring commas entirely, and the apostrophe pronunciation is accordingly withdrawn: if you want the
+      <phrase role="IPA">[h]</phrase>
+      sound, write the apostrophe.)
     </para>
 
     <para>
@@ -684,7 +695,7 @@
       <letteral>n</letteral>
       , or
       <letteral>r</letteral>
-      (discussed later). Commas are never required: no two Lojban words differ solely because of the presence or placement of a comma.
+      (discussed later). Commas are never required.
     </para>
     <para>
       <indexterm type="general"><primary>period</primary><secondary>example of</secondary>
@@ -739,7 +750,7 @@
         <jbo>.i,iai,ii,iai,ion.</jbo>
       </pronunciation>
     </example>
-    <para role="noindent">which is technically a different Lojban name. Since the intent with Lojbanized names is to allow them to be pronounced more like their native counterparts, the comma is allowed to represent vowel glides or some non-Lojbanic sound. Such an exception affects only spelling accuracy and the ability of a reader to replicate the desired pronunciation exactly; it will not affect the recognition of word boundaries.</para>
+    <para role="noindent">which is technically a different Lojban name. In names one may therefore prefer to write the glides explicitly, as above, or accept that the comma-separated spelling leaves the finer pronunciation to the speaker; either way the comma itself contributes no sound, and word boundaries are unaffected.</para>
     <para>
       <indexterm type="general"><primary>apostrophe</primary><secondary>as preferable over comma in Lojbanized names</secondary>
       </indexterm>
@@ -765,9 +776,42 @@
     </para>
   </section>
   <section xml:id="section-diphthongs">
-    <title><anchor xml:id="c3s4" />Diphthongs and syllabic consonants</title>
-    <para>      <indexterm type="general"><primary>diphthongs</primary><secondary>definition of</secondary>      </indexterm>      There exist 16 diphthongs in the Lojban language. A diphthong is a vowel sound that consists of two elements, a short vowel sound and a glide, either a labial (IPA      <phrase role="IPA">[w]</phrase>) or palatal (IPA
-      <phrase role="IPA">[j]</phrase>) glide, that either precedes (an on-glide) or follows (an off-glide) the main vowel. Diphthongs always constitute a single syllable.
+    <title><anchor xml:id="c3s4" />Diphthongs, glides, and syllabic consonants</title>
+    <para>      <indexterm type="general"><primary>diphthongs</primary><secondary>definition of</secondary>      </indexterm>      There exist exactly four diphthongs in the Lojban language:
+      <diphthong>ai</diphthong>
+      ,
+      <diphthong>ei</diphthong>
+      ,
+      <diphthong>oi</diphthong>
+      , and
+      <diphthong>au</diphthong>. A diphthong is a vowel sound that consists of two elements: a main vowel followed by an off-glide, either palatal (IPA
+      <phrase role="IPA">[j]</phrase>, spelled
+      <letteral>i</letteral>) or labial (IPA
+      <phrase role="IPA">[w]</phrase>, spelled
+      <letteral>u</letteral>). A diphthong always constitutes a single syllable. In addition, the letters
+      <letteral>i</letteral>
+      and
+      <letteral>u</letteral>
+      can appear <emphasis>before</emphasis> another vowel, where they represent not vowels but glide consonants
+      <phrase role="IPA">[j]</phrase>
+      and
+      <phrase role="IPA">[w]</phrase>
+      beginning the syllable:
+      <diphthong>ia</diphthong>
+      is pronounced
+      <phrase role="IPA">[ja]</phrase>
+      like English
+      <quote>ya</quote>
+      , and
+      <diphthong>ua</diphthong>
+      <phrase role="IPA">[wa]</phrase>
+      like English
+      <quote>wa</quote>. (The first edition of this book classified these combinations as ten further
+      <quote>diphthongs</quote>; treating the initial
+      <letteral>i</letteral>
+      or
+      <letteral>u</letteral>
+      as a glide consonant beginning the syllable reflects the current formal definition of the language's word-forms, and matters for the rule given below.)
     </para>
     <para>
       <indexterm type="general"><primary>vowels</primary><secondary>contrasted with consonants</secondary>
@@ -801,7 +845,7 @@
       </indexterm>
       <indexterm type="general"><primary>diphthongs</primary><secondary>IPA for</secondary>
       </indexterm>
-      The Lojban diphthongs are shown in the table below. (Variant pronunciations have been omitted, but are much as one would expect based on the variant pronunciations of the separate vowel letters:
+      The four Lojban diphthongs, and the glide-initial syllables, are shown in the table below. (Variant pronunciations have been omitted, but are much as one would expect based on the variant pronunciations of the separate vowel letters:
       <diphthong>ai</diphthong>
       may be pronounced
       <phrase role="IPA">[ɑj]</phrase>
@@ -858,7 +902,7 @@
         <td>
           <phrase role="IPA">[ja]</phrase>
         </td>
-        <td>an open vowel with palatal on-glide</td>
+        <td>the glide [j] followed by an open vowel (glide-initial syllable, not a diphthong)</td>
       </tr>
       <tr>
         <td>
@@ -867,7 +911,7 @@
         <td>
           <phrase role="IPA">[jɛ]</phrase>
         </td>
-        <td>a front mid vowel with palatal on-glide</td>
+        <td>the glide [j] followed by a front mid vowel (glide-initial syllable, not a diphthong)</td>
       </tr>
       <tr>
         <td>
@@ -876,7 +920,7 @@
         <td>
           <phrase role="IPA">[ji]</phrase>
         </td>
-        <td>a front close vowel with palatal on-glide</td>
+        <td>the glide [j] followed by a front close vowel (glide-initial syllable, not a diphthong)</td>
       </tr>
       <tr>
         <td>
@@ -885,7 +929,7 @@
         <td>
           <phrase role="IPA">[jo]</phrase>
         </td>
-        <td>a back mid vowel with palatal on-glide</td>
+        <td>the glide [j] followed by a back mid vowel (glide-initial syllable, not a diphthong)</td>
       </tr>
       <tr>
         <td>
@@ -894,7 +938,7 @@
         <td>
           <phrase role="IPA">[ju]</phrase>
         </td>
-        <td>a back close vowel with palatal on-glide</td>
+        <td>the glide [j] followed by a back close vowel (glide-initial syllable, not a diphthong)</td>
       </tr>
       <tr>
         <td>
@@ -903,7 +947,7 @@
         <td>
           <phrase role="IPA">[wa]</phrase>
         </td>
-        <td>an open vowel with labial on-glide</td>
+        <td>the glide [w] followed by an open vowel (glide-initial syllable, not a diphthong)</td>
       </tr>
       <tr>
         <td>
@@ -912,7 +956,7 @@
         <td>
           <phrase role="IPA">[wɛ]</phrase>
         </td>
-        <td>a front mid vowel with labial on-glide</td>
+        <td>the glide [w] followed by a front mid vowel (glide-initial syllable, not a diphthong)</td>
       </tr>
       <tr>
         <td>
@@ -921,7 +965,7 @@
         <td>
           <phrase role="IPA">[wi]</phrase>
         </td>
-        <td>a front close vowel with labial on-glide</td>
+        <td>the glide [w] followed by a front close vowel (glide-initial syllable, not a diphthong)</td>
       </tr>
       <tr>
         <td>
@@ -930,7 +974,7 @@
         <td>
           <phrase role="IPA">[wo]</phrase>
         </td>
-        <td>a back mid vowel with labial on-glide</td>
+        <td>the glide [w] followed by a back mid vowel (glide-initial syllable, not a diphthong)</td>
       </tr>
       <tr>
         <td>
@@ -939,7 +983,7 @@
         <td>
           <phrase role="IPA">[wu]</phrase>
         </td>
-        <td>a back close vowel with labial on-glide</td>
+        <td>the glide [w] followed by a back close vowel (glide-initial syllable, not a diphthong)</td>
       </tr>
       <tr>
         <td>
@@ -948,7 +992,7 @@
         <td>
           <phrase role="IPA">[jə]</phrase>
         </td>
-        <td>a central mid vowel with palatal on-glide</td>
+        <td>the glide [j] followed by a central mid vowel (glide-initial syllable, not a diphthong)</td>
       </tr>
       <tr>
         <td>
@@ -957,29 +1001,52 @@
         <td>
           <phrase role="IPA">[wə]</phrase>
         </td>
-        <td>a central mid vowel with labial on-glide</td>
+        <td>the glide [w] followed by a central mid vowel (glide-initial syllable, not a diphthong)</td>
       </tr>
     </informaltable>
     <para>
-      (Approximate English equivalents of most of these diphthongs exist: see
+      (Approximate English equivalents of most of these sounds exist: see
       <xref linkend="section-anglophone-diphthongs" />
       for examples.)
     </para>
     <para>
       <indexterm type="general"><primary>diphthongs</primary><secondary>classification of</secondary>
       </indexterm>
-      The first four diphthongs above (
+      <indexterm type="general"><primary>glides</primary><secondary>distribution of</secondary>
+      </indexterm>
+      The four true diphthongs (
       <diphthong>ai</diphthong>
       ,
       <diphthong>ei</diphthong>
       ,
       <diphthong>oi</diphthong>
       , and
-      <diphthong>au</diphthong>
-      , the ones with off-glides) are freely used in most types of Lojban words; the ten following ones are used only as stand-alone words and in Lojbanized names and borrowings; and the last two (
+      <diphthong>au</diphthong>) are freely used in most types of Lojban words. The glide-initial syllables are more restricted: because the glide begins its syllable, it behaves like a consonant, and <emphasis>no consonant may come immediately before it</emphasis>. A glide-initial syllable may therefore occur only at the beginning of a word, after a vowel or diphthong, after an apostrophe, or after a pause &ndash; never directly after a consonant. Thus the cmavo
+      <valsi>ia</valsi>
+      and names like
+      <cmevla>.iolandas.</cmevla>
+      are fine, but a form like
+      <quote>kuarka</quote>
+      is not a possible Lojban word: to borrow such a word, the glide must be separated from the consonant, as in
+      <jbophrase>ku'arka</jbophrase>
+      (see
+      <xref linkend="chapter-morphology" />
+      for how borrowings are formed). The combinations
       <diphthong>iy</diphthong>
       and
-      <diphthong>uy</diphthong>) are used only in Lojbanized names.
+      <diphthong>uy</diphthong>
+      (a glide before the vowel
+      <letteral>y</letteral>) are used only in Lojbanized names.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>consonant-glide-vowel ban</primary></indexterm>
+      Historical note: the first edition permitted the glide combinations after consonants
+      <quote>in Lojbanized names and borrowings</quote>
+      , so words like
+      <quote>kuarka</quote>
+      or names like
+      <quote>.niuport.</quote>
+      were valid. The ban on consonant-glide-vowel sequences was adopted by vote of the language-definition committee in 2014, and all current word-form definitions and tools enforce it. Older names and borrowings containing such sequences must be respelled &ndash; usually by inserting an apostrophe (<jbophrase>.ni'uport.</jbophrase>) or doubling the glide letter.
     </para>
     <para>
       <indexterm type="general"><primary>syllabic consonants</primary></indexterm>
@@ -1067,7 +1134,7 @@
       </indexterm>
       <indexterm type="general"><primary>vowel pairs</primary><secondary>contrasted with diphthongs</secondary>
       </indexterm>
-      All vowel combinations are permitted in two-syllable pairs with the apostrophe separating them; this includes those which constitute diphthongs when the apostrophe is not included.
+      All vowel combinations are permitted in two-syllable pairs with the apostrophe separating them; this includes those which, without the apostrophe, would form a diphthong or a glide-initial syllable.
     </para>
     <para>
       <indexterm type="general"><primary>vowel pairs</primary><secondary>list of</secondary>
@@ -3315,12 +3382,12 @@
     </itemizedlist>
   </section>
   <section xml:id="section-anglophone-diphthongs">
-    <title><anchor xml:id="c3s11" />English analogues for Lojban diphthongs</title>
+    <title><anchor xml:id="c3s11" />English analogues for Lojban diphthongs and glides</title>
 
     <para>
       <indexterm type="general"><primary>diphthongs</primary><secondary>English analogues of</secondary>
       </indexterm>
-      Here is a list of English words that contain diphthongs that are similar to the Lojban diphthongs. This list does not constitute an official pronunciation guide; it is intended as a help to English-speakers.
+      Here is a list of English words that contain sounds similar to the Lojban diphthongs and glide-initial syllables (the first four entries are the true diphthongs; the rest illustrate glide-plus-vowel syllables &ndash; see <xref linkend="section-diphthongs" />). This list does not constitute an official pronunciation guide; it is intended as a help to English-speakers.
     </para>
     <informaltable class="vertsep">
       <thead>

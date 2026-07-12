@@ -17,9 +17,9 @@ jobs:
         run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils
       - name: Assemble book (build header + chapters) and check well-formedness
         run: |
-          { cat scripts/header.xml chapters/*.xml; echo '</book>'; } > /tmp/book-assembled.xml
+          { cat scripts/header.xml chapters/*.xml; echo '</book>'; } > book-assembled.xml
           set +e
-          err=$(xmllint --loaddtd --noent --noout /tmp/book-assembled.xml 2>&1)
+          err=$(xmllint --loaddtd --noent --noout book-assembled.xml 2>&1)
           rc=$?
           set -e
           if [ $rc -ne 0 ]; then echo "$err"; exit $rc; fi

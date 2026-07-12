@@ -16,6 +16,21 @@ if (!ILM) die('set ILMENTUFA_DIR');
 const runner = path.join(ILM, 'run_camxes.js');
 if (!fs.existsSync(runner)) die(`${runner} not found`);
 
+// The runner catches engine-load failures (e.g. missing camxes.js), prints
+// the exception to STDOUT, and exits 0 — indistinguishable from a parse by
+// exit status alone. Smoke-test the engine positively before trusting it.
+const smoke = spawnSync('node', ['--stack-size=16384', runner, 'mi klama'],
+                        { encoding: 'utf8', timeout: 30000 });
+if (smoke.error || smoke.signal || smoke.status !== 0
+    || !(smoke.stdout || '').includes('(mi klama)')) {
+  die(`engine smoke test failed: status=${smoke.status} signal=${smoke.signal} `
+      + `output=${((smoke.stdout || '') + (smoke.stderr || '')).slice(0, 200)}`);
+}
+
+// Exception-shaped output (an Error line or stack frames) is never a parse
+// outcome, whatever the exit status.
+const EXCEPTION_SHAPE = /^\s*\w*Error\b|^\s+at /m;
+
 const rows = fs.readFileSync(process.argv[2], 'utf8').trim().split('\n');
 let ok = 0, bad = 0;
 for (const row of rows) {
@@ -32,6 +47,7 @@ for (const row of rows) {
   if (res.status !== 0) die(`${runner} exited ${res.status} for: ${text.slice(0, 90)}\n${(res.stderr || '').slice(0, 300)}`);
   const out = (res.stdout || '') + (res.stderr || '');
   if (!out.trim()) die(`empty output from ${runner} for: ${text}`);
+  if (EXCEPTION_SHAPE.test(out)) die(`exception-shaped output from ${runner} for: ${text.slice(0, 90)}\n${out.slice(0, 300)}`);
   if (CAMXES_ERROR.test(out)) { bad++; console.log(`FAIL ${file} ${id}: ${text.slice(0, 90)}`); }
   else ok++;
 }

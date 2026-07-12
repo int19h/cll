@@ -1246,9 +1246,8 @@
       , semantically it belongs in the x<subscript>1</subscript> place of
       <valsi>kanla</valsi>. The selbri may be terminated with
       <valsi>fe'u</valsi>
-      (of selma'o FEhU), an elidable terminator which is rarely required unless a non-logical connective follows the tag (omitting
-      <valsi>fe'u</valsi>
-      in that case would make the connective affect the selbri).
+      (of selma'o FEhU), an elidable terminator. It can be left out when a sumti follows, as here; it is required whenever a selbri or a non-logical connective follows the tag &ndash; without it, the following word would simply be absorbed into the modal's selbri as a tanru (see
+      <xref linkend="section-modal-selbri" />).
     </para>
     <para>
       <indexterm type="general"><primary>modal sumti</primary><secondary>and FA marking</secondary>
@@ -1546,7 +1545,7 @@
       <interlinear-gloss>
         <jbo>lo nanmu be--do'e le berti cu klama le tcadu</jbo>
 
-        <gloss>Some man [related-to] the north - came to-the city.</gloss>
+        <gloss>A man [related-to] the north - came to-the city.</gloss>
         <natlang>A man of the north came to the city.</natlang>
       </interlinear-gloss>
     </example>
@@ -2284,12 +2283,15 @@
       </indexterm>
       <indexterm type="lojban-word"><primary>fi'o</primary><secondary>restriction on use</secondary>
       </indexterm>
-      Note: Due to restrictions on the Lojban parsing algorithm, it is not possible to form modal connectives using the
+      Note: the first edition stated that, due to restrictions on its parsing algorithm, modal connectives could not be formed with the
       <jbophrase>fi'o-</jbophrase>
-      plus-selbri form of modal. Only the predefined modals of selma'o BAI can be compounded as shown in
+      plus-selbri form of modal, only with the predefined modals of selma'o BAI. The current de-facto grammar has no such restriction: a form like
+      <jbophrase>.i fi'o bapli fe'u bo</jbophrase>
+      is accepted. Such connectives remain rare in practice, and the BAI forms shown in
       <xref linkend="section-causals" />
       and
-      <xref linkend="section-modal-connectives" />.
+      <xref linkend="section-modal-connectives" />
+      are the usual choice.
     </para>
   </section>
   <section xml:id="section-modal-selbri">
@@ -3295,6 +3297,19 @@
       <xref linkend="example-random-id-ej84" />
       denies that the relationship between my liking you (which is asserted) and your liking me (which is not asserted) is one of motivation. Nothing is said about whether you like me or not, merely that that hypothetical liking is not the motivation for my liking you.
     </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>BAI selma'o</primary><secondary>negation, status of</secondary>
+      </indexterm>
+      (A status note: this reading of BAI-plus-
+      <jbophrase>-nai</jbophrase>
+      &ndash; the main claim stands, the relation is denied, and nothing is said about the tagged event itself &ndash; is checkpointed: the committee's 2005 causals decision adopted it explicitly, settling an old conflict with the word lists in this book's favor. For the other,
+      <quote>despite</quote>
+      -like sense &ndash; not prevented by &ndash; use
+      <jbophrase>to'e ri'a nai</jbophrase>
+      and its kin, with scalar
+      <valsi>to'e</valsi>
+      on the underlying gismu.)
+    </para>
     <para>
       <indexterm type="general"><primary>modals</primary><secondary>scalar negation of</secondary>
       </indexterm>
@@ -3337,7 +3352,7 @@
       </indexterm>
       Note: Modals made with
       <valsi>fi'o</valsi>
-      plus a selbri cannot be negated directly. The selbri can itself be negated either with contradictory or with scalar negation, however.
+      plus a selbri cannot be negated directly (this restriction, unlike some others of the first edition's parser, is still enforced by the current grammar). The selbri can itself be negated either with contradictory or with scalar negation, however.
     </para>
   </section>
   <section xml:id="section-sticky-modals">
@@ -3433,9 +3448,11 @@
       </indexterm>
       <indexterm type="general"><primary>sticky modals</primary><secondary>&apos;fi'o&apos; proscribed from</secondary>
       </indexterm>
-      Note: Modals made with
+      Note: the first edition stated that modals made with
       <valsi>fi'o</valsi>
-      -plus-selbri cannot be made sticky. This is an unfortunate, but unavoidable, restriction.
+      -plus-selbri could not be made sticky, calling this an unfortunate but unavoidable restriction. The current de-facto grammar has removed it:
+      <jbophrase>fi'o bapli fe'u ki</jbophrase>
+      is accepted, with the expected meaning.
     </para>
   </section>
   <section xml:id="section-connected-modals">
@@ -3732,6 +3749,12 @@
       </indexterm>
       It should be emphasized that the place structures of the gismu control the meanings of the BAI cmavo. The English phrases shown here are only suggestive, and are often too broad or too narrow to correctly specify what the acceptable range of uses for the modal tag are.
     </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>BAI selma'o</primary><secondary>status of definitions</secondary>
+      </indexterm>
+      (A status note: the whole BAI apparatus is checkpointed. In 2005 the language-definition committee restated every BAI, place by place, in six frozen sections completed on 16 June 2005; that restatement follows exactly the
+      <valsi>fi'o</valsi>-plus-gismu model this chapter teaches, and reverses nothing. A handful of glosses below have been tightened to the checkpointed wording, as noted where they occur.)
+    </para>
     <para role="allowbreaks" />
     <cmavo-list>
       <cmavo-entry>
@@ -3792,9 +3815,9 @@
         <cmavo>ci'e</cmavo>
         <gismu>ciste</gismu>
         <modal-place>in system</modal-place>
-        <modal-place se="se">with system function</modal-place>
+        <modal-place se="se">with system structure</modal-place>
         <modal-place se="te">of system components</modal-place>
-        <modal-place se="ve"></modal-place>
+        <modal-place se="ve">with synergy in</modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
       <cmavo-entry>
@@ -4267,7 +4290,7 @@
         <modal-place>as a form of</modal-place>
         <modal-place se="se">in form</modal-place>
         <modal-place se="te">in form similar to</modal-place>
-        <modal-place se="ve"></modal-place>
+        <modal-place se="ve">similar in property</modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
       <cmavo-entry>
@@ -4282,10 +4305,10 @@
       <cmavo-entry>
         <cmavo>ti'u</cmavo>
         <gismu>tcika</gismu>
-        <modal-place>with time</modal-place>
-        <modal-place se="se">at the time of</modal-place>
-        <modal-place se="te"></modal-place>
-        <modal-place se="ve"></modal-place>
+        <modal-place>at the time-of-day</modal-place>
+        <modal-place se="se">at the same time as</modal-place>
+        <modal-place se="te">on the day of</modal-place>
+        <modal-place se="ve">at the local time of</modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
       <cmavo-entry>

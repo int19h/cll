@@ -11,12 +11,12 @@ Review PRs (and occasionally documents) produced by Claude. Two PR classes:
 
 ## Review standards
 
-1. **Factual accuracy against the research corpus.** Primary sources are local: `research/sources/` (wiki exports; the mirror itself is `~/git/lojban-wiki`, query via `research/wikipage <title>`), `research/CHANGES.md` (the consensus change catalog), `research/impact/chNN.md` (per-chapter passage maps). Every rule the text states must match the catalog; every status label must match the authority model. Checkpointed claims trace to the frozen "as of" snapshots, not live wiki pages.
+1. **Factual accuracy against the research corpus — with this precedence order:** (i) the resolved editorial decisions (CLAUDE.md; issue #1 record) and the final consensus catalog `research/CHANGES.md` govern the project's *treatment* of every point; (ii) **primary sources** — `research/sources/` wiki exports and the pinned local mirror (`~/git/lojban-wiki`, query via `research/wikipage <title>`) — govern *historical* claims, with checkpointed claims tracing to the frozen "as of" snapshots, never live pages; (iii) `research/impact/chNN.md` and the GitHub issue bodies govern *scope*; (iv) `research/notes/`, `REPORT.md`, and older review rounds are intermediate documents that may contain superseded language — when they conflict with CHANGES.md, CHANGES.md wins; (v) parser output is implementation evidence only and never overrides status or semantics.
 2. **Status discipline.** Flag any passage that teaches an UNSETTLED point as settled, presents DE-FACTO material without its label, folds in unadopted proposals (zasni gerna, NAI→CAI, morphology-shape proposals…), or violates a resolved editorial decision.
 3. **Pedagogy.** The reader knows nothing. Flag jargon used before introduction, forward references to unexplained concepts, and prose that requires knowing CLL 1.x to parse. The book must read well — flag clunky or ambiguous wording, not just errors.
 4. **Examples.** Every Lojban example must be verifiable: run suspicious ones through a parser (`node ~/git/ilmentufa/run_camxes.js '<text>'`; jbotci binaries if built). Glosses must match the current semantics (esp. gadri, ZAhO, VA/ZI, e-series). Intentionally-ill-formed examples must be annotated.
 5. **DocBook mechanics.** Valid XML, correct example/anchor ID conventions (`cNsM`, `cNeXdY`), stable IDs for surviving content, no presentation baked into semantic markup (status marks are abstract — see issue #47), indexterms preserved/updated.
-6. **Scope.** A chapter PR implements its GitHub issue (which embeds the impact table). Flag unaddressed REWRITE/ADJUST items, and any drive-by changes beyond the issue's scope.
+6. **Scope.** A chapter PR implements its GitHub issue (which embeds the impact table). Check EVERY row: REWRITE and ADJUST items must be addressed; VERIFY items must show evidence of having been checked; ADD items must exist in the new text; NOTE items need an explicit disposition (done / deferred-with-reason). Flag drive-by changes beyond the issue's scope.
 
 ## Output conventions
 
@@ -24,7 +24,7 @@ Write findings as a numbered list, each tagged `[ERROR]` / `[STATUS]` / `[PEDAGO
 
 ## Facts you will be tempted to get wrong (pre-verified; don't "correct" them)
 
-- Magic Words WERE checkpointed (2005) incl. the left-to-right rule; SI/SA/SU were not.
+- Magic Words WERE checkpointed (2005) incl. the left-to-right conflict rule in the frozen quotation definitions; SI/SA/SU were not. BUT the unified "magic words in Lojban" meta-rules are a *later community synthesis* that conflicts with the checkpointed BU definition in places («ba'e bu»: frozen text forbids, synthesis+camxes allow) — magic-word rewrites need rule-level provenance, and the synthesis must not be treated as checkpointed.
 - Distance (VA/ZI/VEhA/ZEhA) was NOT part of the 2005 BAI checkpoint.
 - «PA broda» = «PA da poi broda» in the ratified gadri text (not «PA lo broda»).
 - The 2020 gadri ratification = wiki revid 123823 PLUS two corrections (moklu typo; unicorn example) — the live wiki page is not the ratified text.

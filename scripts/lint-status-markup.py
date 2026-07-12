@@ -8,10 +8,13 @@ Usage:
 Diagnostics always go to stderr. In --list mode stdout carries ONLY the
 versioned TSV described in docs/status-markup.md (header line first).
 
-XML-aware: parses each chapter with expat (comments and CDATA are handled
-correctly; start-tags may span lines; single- or double-quoted attributes).
-Undefined DTD entities are blanked (length-preserving) before parsing, since
-only element structure and attributes matter here.
+XML-aware: parses each chapter with expat, namespace-aware (comments and
+CDATA are handled correctly; start-tags may span lines; single- or
+double-quoted attributes; prefixed DocBook-namespace carriers such as
+db:para are recognized; foreign-namespace elements are never carriers).
+Undefined DTD entities (any XML-Name entity reference) are blanked
+length-preservingly before parsing, since only element structure and
+attributes matter here.
 """
 import re, sys, datetime
 import xml.parsers.expat
@@ -23,7 +26,6 @@ KEYS = {'status','also','date','body','src'}
 BODIES = {'llg','bpfk','community'}
 DATE_RE = re.compile(r'^(\d{4})(?:-(\d{2})(?:-(\d{2}))?)?$')
 SLUG_RE = re.compile(r'^[a-z0-9][a-z0-9-]*$')
-STATUS_ELEMENTS = {'para', 'phrase'}
 TSV_HEADER = 'file\telement\tanchor\tstatus\talso\tdate\tbody\tsrc'
 
 def check_date(v):
@@ -62,43 +64,81 @@ def parse_condition(val):
     if 'status' not in seen: errs.append('missing status: pair')
     return seen, errs
 
-ENTITY_RE = re.compile(r'&(?!amp;|lt;|gt;|quot;|apos;|#)(\w+);')
+# XML Name grammar (ASCII plus \w's unicode letters): enough to blank any
+# entity reference the DTD might define, e.g. &foo-bar; -- but never
+# character references (&#...;) or the five predefined entities.
+ENTITY_RE = re.compile(r'&(?!amp;|lt;|gt;|quot;|apos;|#)([A-Za-z_:][-.:\w]*);')
+
+CARRIER_OF = {'status-note': 'para', 'status-mark': 'phrase'}
+DOCBOOK_NS = 'http://docbook.org/ns/docbook'
+XML_NS = 'http://www.w3.org/XML/1998/namespace'
+
+def localname(name):
+    """Local name for DocBook or un-namespaced elements; None if foreign."""
+    if ' ' in name:
+        uri, local = name.rsplit(' ', 1)
+        return local if uri == DOCBOOK_NS else None
+    return name
+
+def condition_keys(val):
+    keys = set()
+    for part in val.split(';'):
+        if ':' in part:
+            keys.add(part.split(':', 1)[0].strip())
+    return keys
 
 class Scanner:
     def __init__(self, path, listing, rows, diag):
         self.path, self.listing, self.rows, self.diag = path, listing, rows, diag
         self.errors = self.warnings = 0
-        self.id_stack = []   # nearest ancestor xml:id per depth
-        self.p = xml.parsers.expat.ParserCreate()
+        self.id_stack = []   # nearest xml:id per depth (self-or-ancestor)
+        self.p = xml.parsers.expat.ParserCreate(namespace_separator=' ')
         self.p.StartElementHandler = self.start
         self.p.EndElementHandler = self.end
 
     def start(self, name, attrs):
-        xid = attrs.get('xml:id')
-        self.id_stack.append(xid or (self.id_stack[-1] if self.id_stack else ''))
+        # anchor contract: nearest ANCESTOR xml:id, captured before this
+        # element's own id joins the stack
+        ancestor_id = self.id_stack[-1] if self.id_stack else ''
+        xid = attrs.get('xml:id') or attrs.get(XML_NS + ' id')
+        self.id_stack.append(xid or ancestor_id)
         roles = set(attrs.get('role', '').split())
         cond = attrs.get('condition', '')
         line = self.p.CurrentLineNumber
-        is_status = bool(roles & {'status-note', 'status-mark'})
-        local = name.split('}')[-1]
-        if is_status and local not in STATUS_ELEMENTS:
-            self.diag(f'{self.path}:{line}: error: status role on unsupported element <{local}>')
+        status_roles = roles & set(CARRIER_OF)
+        local = localname(name)
+        if len(status_roles) > 1:
+            self.diag(f'{self.path}:{line}: error: conflicting status roles {sorted(status_roles)}')
             self.errors += 1
             return
-        if is_status and cond:
-            seen, errs = parse_condition(cond)
-            for e in errs:
-                self.diag(f'{self.path}:{line}: error: {e} in condition={cond!r}'); self.errors += 1
-            if self.listing and not errs:
-                self.rows.append('\t'.join([self.path, local, self.id_stack[-1],
-                                            seen.get('status',''), seen.get('also',''),
-                                            seen.get('date',''), seen.get('body',''), seen.get('src','')]))
-        elif is_status:
-            self.diag(f'{self.path}:{line}: warning: status element without condition attribute')
-            self.warnings += 1
-        elif 'status:' in cond:
+        if status_roles:
+            role = status_roles.pop()
+            want = CARRIER_OF[role]
+            if local != want:
+                shown = local if local is not None else name
+                self.diag(f'{self.path}:{line}: error: role {role!r} belongs on '
+                          f'<{want}>, found on unsupported element <{shown}>')
+                self.errors += 1
+                return
+            if cond:
+                seen, errs = parse_condition(cond)
+                for e in errs:
+                    self.diag(f'{self.path}:{line}: error: {e} in condition={cond!r}'); self.errors += 1
+                if self.listing and not errs:
+                    self.rows.append('\t'.join([self.path, local, ancestor_id,
+                                                seen.get('status',''), seen.get('also',''),
+                                                seen.get('date',''), seen.get('body',''), seen.get('src','')]))
+            elif role == 'status-note':
+                self.diag(f'{self.path}:{line}: warning: status-note without condition attribute')
+                self.warnings += 1
+            else:
+                self.diag(f'{self.path}:{line}: error: status-mark without condition attribute '
+                          '(only status-note has the transitional bare form)')
+                self.errors += 1
+        elif 'status' in condition_keys(cond):
+            shown = local if local is not None else name
             self.diag(f'{self.path}:{line}: error: status condition on non-status element '
-                      f'(<{local}> role={attrs.get("role","")!r})')
+                      f'(<{shown}> role={attrs.get("role","")!r})')
             self.errors += 1
 
     def end(self, name):

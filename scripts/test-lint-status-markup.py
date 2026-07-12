@@ -5,7 +5,7 @@ import subprocess, tempfile, os, sys
 CASES = [  # (name, xml, want_exit, want_in_stderr)
  ('ok-full', '<para role="status-note" condition="status:checkpointed;date:2005-02-11;src:bpfk-quotations">x</para>', 0, None),
  ('ok-also', '<para role="status-note" condition="status:editorial;also:de-facto,historical">x</para>', 0, None),
- ('warn-bare', '<para role="status-note">x</para>', 0, 'warning: status element without condition'),
+ ('warn-bare', '<para role="status-note">x</para>', 0, 'warning: status-note without condition'),
  ('bad-status', '<para role="status-note" condition="status:invented">x</para>', 1, 'unknown status'),
  ('bad-month', '<para role="status-note" condition="status:de-facto;date:2005-13-01">x</para>', 1, 'not a real calendar date'),
  ('bad-day', '<para role="status-note" condition="status:de-facto;date:2005-02-30">x</para>', 1, 'not a real calendar date'),
@@ -25,6 +25,15 @@ CASES = [  # (name, xml, want_exit, want_in_stderr)
  ('multi-token-role', '<para role="status-note foo" condition="status:de-facto">x</para>', 0, None),
  ('entity-immune', '<para role="status-note" condition="status:de-facto">a&ndash;b</para>', 0, None),
  ('phrase-ok', '<phrase role="status-mark" condition="status:de-facto">x</phrase>', 0, None),
+ ('entity-xml-name', '<para role="status-note" condition="status:de-facto">a&foo-bar;b</para>', 0, None),
+ ('ns-carrier-ok', '<db:para xmlns:db="http://docbook.org/ns/docbook" role="status-note" condition="status:de-facto">x</db:para>', 0, None),
+ ('ns-foreign-not-carrier', '<f:para xmlns:f="http://example.org/foreign" role="status-note" condition="status:de-facto">x</f:para>', 1, 'unsupported element'),
+ ('cond-key-spaced', '<para role="indent" condition="status : checkpointed">x</para>', 1, 'non-status element'),
+ ('cond-key-other', '<para role="indent" condition="xstatus:checkpointed">x</para>', 0, None),
+ ('crossed-para-mark', '<para role="status-mark" condition="status:de-facto">x</para>', 1, 'belongs on <phrase>'),
+ ('crossed-phrase-note', '<phrase role="status-note" condition="status:de-facto">x</phrase>', 1, 'belongs on <para>'),
+ ('bare-mark', '<phrase role="status-mark">x</phrase>', 1, 'status-mark without condition'),
+ ('both-roles', '<para role="status-note status-mark" condition="status:de-facto">x</para>', 1, 'conflicting status roles'),
 ]
 
 def main():
@@ -39,15 +48,23 @@ def main():
         if not ok:
             failures += 1
             print(f'FAIL {name}: exit={r.returncode} (want {want_exit}) stderr={r.stderr.strip()[:120]!r} stdout={r.stdout[:60]!r}')
-    # --list contract: TSV only on stdout, header first, ancestry anchor present
+    # --list contract: TSV only on stdout, exact schema-v1 header, complete
+    # exact rows, nearest-ANCESTOR anchor even when the element has its own id
     p = os.path.join(d, 'list.xml')
-    open(p, 'w').write('<chapter xml:id="chapter-x"><section xml:id="section-y">'
-                       '<para role="status-note" condition="status:checkpointed;date:2005-02-11">x</para>'
-                       '<para role="status-note">bare</para></section></chapter>')
+    open(p, 'w').write(
+        '<chapter xml:id="chapter-x"><section xml:id="section-y">'
+        '<para xml:id="para-z" role="status-note" '
+        'condition="status:checkpointed;also:de-facto;date:2005-02-11;body:bpfk;src:bpfk-quotations">x</para>'
+        '<para role="status-note" condition="status:editorial">y</para>'
+        '<para role="status-note">bare</para></section></chapter>')
     r = subprocess.run([sys.executable, lint, '--list', p], capture_output=True, text=True)
-    lines = r.stdout.strip().splitlines()
-    if not (r.returncode == 0 and lines[0].startswith('file\telement\tanchor')
-            and len(lines) == 2 and '\tsection-y\t' in lines[1] and 'checkpointed' in lines[1]
+    lines = r.stdout.splitlines()
+    want_header = 'file\telement\tanchor\tstatus\talso\tdate\tbody\tsrc'
+    want_rows = [
+        f'{p}\tpara\tsection-y\tcheckpointed\tde-facto\t2005-02-11\tbpfk\tbpfk-quotations',
+        f'{p}\tpara\tsection-y\teditorial\t\t\t\t',
+    ]
+    if not (r.returncode == 0 and lines == [want_header] + want_rows
             and 'warning' in r.stderr):
         failures += 1
         print(f'FAIL list-contract: {r.stdout!r} / {r.stderr[:120]!r}')

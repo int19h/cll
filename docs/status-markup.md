@@ -100,14 +100,24 @@ produce warnings, not rows.
 - **error**: malformed `condition` on a status element (bad microsyntax,
   unknown status/also token, non-calendar date, bad or empty slug, empty
   components, duplicate keys);
-- **error**: `condition` containing `status:` on ANY element whose role is not
-  `status-note`/`status-mark` (all elements are checked — `condition` is a
-  DocBook common attribute);
-- **error**: a status role on an element other than `para` or `phrase`;
+- **error**: a `condition` with a `status` key (whitespace around the key is
+  normalized, exactly as the microsyntax parser would accept it) on ANY
+  element whose role is not `status-note`/`status-mark` (all elements are
+  checked — `condition` is a DocBook common attribute; other keys such as
+  `xstatus:` are not ours and pass through);
+- **error**: a status role on the wrong or an unsupported carrier — the
+  semantic pairs are exactly `para`/`status-note` and `phrase`/`status-mark`
+  (the renderers style only these two class combinations), and an element
+  cannot carry both roles;
+- **error**: a `status-mark` without `condition` (only `status-note` has the
+  transitional bare form);
 - **warning** (report-only): a `status-note` without `condition`.
 
-The lint is XML-aware (expat): comments and CDATA cannot fool it, start-tags
-may span lines, and both quote styles are recognized.
+The lint is XML-aware and namespace-aware (expat): comments and CDATA cannot
+fool it, start-tags may span lines, both quote styles are recognized,
+prefixed DocBook-namespace carriers (e.g. `db:para`) are recognized,
+foreign-namespace elements are never carriers, and any XML-Name entity
+reference is tolerated in fragments.
 `scripts/test-lint-status-markup.py` carries the regression suite and runs in
 CI beside the lint.
 

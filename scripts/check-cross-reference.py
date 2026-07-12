@@ -48,7 +48,7 @@ def main(path):
     rules = []           # (name, number-or-None, body-token-list)
     anchor_rule = {}     # anchor number N -> rule name it marks
     pending = []         # anchors seen in a body: they mark the NEXT rule
-    for e in re.findall(r'<varlistentry>(.*?)</varlistentry>', ebnf, re.S):
+    for e in re.findall(r'<varlistentry\b[^>]*>(.*?)</varlistentry>', ebnf, re.S):
         raw_term = re.search(r'<term>(.*?)</term>', e, re.S).group(1)
         term_anchors = [int(x) for x in re.findall(r'xml:id="cll_bnf-(\d+)"', raw_term)]
         term = strip_markup(raw_term)
@@ -87,7 +87,7 @@ def main(path):
 
     # ---- parse the printed table ----
     printed, order = {}, []
-    for m in re.finditer(r'<varlistentry>\s*<term>(.*?)</term>\s*<listitem>\s*'
+    for m in re.finditer(r'<varlistentry\b[^>]*>\s*<term>(.*?)</term>\s*<listitem>\s*'
                          r'<para>(.*?)</para>\s*</listitem>\s*</varlistentry>', xr, re.S):
         term = m.group(1).strip()
         pairs = re.findall(r'<xref linkend="cll_bnf-(\d+)"/>\s*<subscript>(\d+)</subscript>',
@@ -105,7 +105,8 @@ def main(path):
         order.append(term)
 
     # every <varlistentry> in the table must have parsed as exactly one row
-    n_entries = len(re.findall(r'<varlistentry>', xr))
+    n_entries = len(re.findall(r'<varlistentry\b',
+                               re.sub(r'<!--.*?-->', ' ', xr, flags=re.S)))
     if n_entries != len(order):
         print(f'FAIL {n_entries} <varlistentry> elements in the table but '
               f'{len(order)} parsed entries')

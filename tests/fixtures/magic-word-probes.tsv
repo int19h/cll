@@ -12,7 +12,7 @@ si-bu	broda brode si bu	A	-	si erases brode; bu binds broda
 sa-selmaho	mi viska le blanu zdani sa le xekri zdani	A	-	sa back to same-selma'o word (le)
 sa-by	.abu sa by	A	-	sa+BY grabs back over the abu letteral
 sa-bu-contro	.abu sa bu	R	R	wiki marks "sa bu pulls apart pseudo-word" controversial; both parsers reject
-sa-le-si	le broda sa le si	R	A	DIVERGENT: wiki spec says erases to nothing; ilmentufa rejects, jbotci accepts
+sa-le-si	le broda sa le si	R	A	DIVERGENT: wiki spec says erases to nothing; ilmentufa rejects, jbotci accepts (jbotci CLI currently panics pretty-printing the empty parse, int19h/jbotci#338; the MCP path accepts)
 sa-zo	zo sa	A	-	zo quotes sa; not magic
 su-plain	mi su	A	-	su erases back to start
 su-mid	mi na nelci le ca selsnu su do klama	A	-	su erases own discourse, text continues
@@ -33,5 +33,7 @@ bu-start	bu mi	R	-	bu with nothing to bind
 faho-si	fa'o si	A	-	nothing read after fa'o
 faho-zoi	zoi fy fa'o fy	A	-	fa'o inert inside zoi
 faho-lu	lu fa'o li'u	A	-	DIVERGENCE NOTE: wiki spec says unclosed lu (fa'o terminates); camxes accepts
-tagbind-nu	lo nu broda ba brode	A	-	2016 rule: ba starts main selbri (parse-shape case)
-tag-gek	mi pu ge klama le zarci gi tervecnu lo cidja	A	-	camxes reads pu-ku over gek (YACC attached tag inside gek)
+tagbind-nu	lo nu broda ba brode	A	-	2016 rule context; ACCEPTANCE-ONLY smoke test (parse shape not asserted here)
+tag-gek	mi pu ge klama le zarci gi tervecnu lo cidja	A	-	tag-before-gek context; ACCEPTANCE-ONLY smoke test (parse shape not asserted here)
+zoi-word-expected	zoi gy Expected gy	A	-	regression: ZOI content containing "Expected" must not be misclassified as a parse error
+zoi-word-error	zoi gy error gy	A	-	regression: ZOI content containing "error" must not be misclassified as a parse error

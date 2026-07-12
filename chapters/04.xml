@@ -2631,13 +2631,9 @@
       </lojbanization>
     </example>
     <para role="noindent">
-      <indexterm type="general"><primary>allowable diphthongs</primary><secondary>in gismu and lujvo contrasted with in fu'ivla</secondary>
+      <indexterm type="general"><primary>consonant-glide-vowel ban</primary><secondary>repair by full vowel and apostrophe</secondary>
       </indexterm>
-      <indexterm type="general"><primary>allowable diphthongs</primary><secondary>in fu'ivla contrasted with in gismu and lujvo</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>diphthongs</primary><secondary>in fu'ivla</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>fu'ivla</primary><secondary>diphthongs in</secondary>
+      <indexterm type="general"><primary>fu'ivla</primary><secondary>glide repair in</secondary>
       </indexterm>
       where
       <rafsi>sask-</rafsi>
@@ -2881,9 +2877,9 @@
 
       <indexterm type="general"><primary>fu'ivla</primary><secondary>considerations for choosing basis word</secondary>
       </indexterm>
-      <indexterm type="general"><primary>fu'ivla</primary><secondary>with invalid diphthongs</secondary>
+      <indexterm type="general"><primary>vowel hiatus</primary><secondary>in fu'ivla</secondary>
       </indexterm>
-      <indexterm type="general"><primary>invalid diphthongs</primary><secondary>in fu'ivla</secondary>
+      <indexterm type="general"><primary>fu'ivla</primary><secondary>vowel hiatus in</secondary>
       </indexterm>
       Note the apostrophes in
       <xref linkend="example-random-id-qJGv" />
@@ -3142,7 +3138,7 @@
           </indexterm>
           <indexterm type="general"><primary>cmevla</primary><secondary>dot side</secondary>
           </indexterm>
-          They must end in one or more consonants. There are no rules about how many consonants may appear in a cluster in cmevla, provided that each consonant pair (whether standing by itself, or as part of a larger cluster) is a permissible pair. (The formal word-form grammar &ndash; a de facto capability, like the grammar itself never formally voted &ndash; also allows decimal digits inside a cmevla, standing for their spoken digit-words:
+          They must end in one or more consonants. There are no rules about how many consonants may appear in a cluster in cmevla, provided that each consonant pair (whether standing by itself, or as part of a larger cluster) is a permissible pair. (The working word-form grammar &ndash; never formally voted &ndash; also has the capability of allowing decimal digits inside a cmevla, standing for their spoken digit-words:
           <cmevla>.mig15s.</cmevla>
           is read as if written
           <cmevla>.migypamus.</cmevla>
@@ -3151,9 +3147,9 @@
       </listitem>
       <listitem>
         <para>
-          <indexterm type="general"><primary>diphthongs</primary><secondary>specific to cmevla</secondary>
+          <indexterm type="general"><primary>glide-initial syllables</primary><secondary>with y, in cmevla</secondary>
           </indexterm>
-          <indexterm type="general"><primary>diphthongs</primary><secondary>specific to names</secondary>
+          <indexterm type="general"><primary>names</primary><secondary>iy and uy syllables in</secondary>
           </indexterm>
           <indexterm type="general"><primary>uy syllable</primary><secondary>in cmevla</secondary>
           </indexterm>
@@ -3431,9 +3427,9 @@
       <listitem>
         <para>
           Change final
-          <diphthong>ie</diphthong>
+          <morphology>ie</morphology>
           and
-          <diphthong>ii</diphthong>
+          <morphology>ii</morphology>
           to
           <letteral>i</letteral>.
         </para>

@@ -1306,9 +1306,9 @@
     <para role="indent">
       What to do? Well, the x<subscript>2</subscript> place of
       <valsi>nitcu</valsi>
-      can be filled with an event as well as an object, and in fact
-      <xref linkend="example-random-id-KHya" />
-      can also be paraphrased as:
+      can be filled with an event as well as an object, and that gives us another way to express
+      <xref linkend="example-random-id-7Eu9" />
+      :
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-e7ta">
       <title><anchor xml:id="c16e8d7" /></title>
@@ -1405,7 +1405,7 @@
       &ndash; and its looser everyday counterpart
       <xref linkend="example-random-id-e7ta" />
       &ndash; turns out to be an effective translation of our original
-      <xref linkend="example-random-id-R4mX" />. So uses of
+      <xref linkend="example-random-id-7Eu9" />. So uses of
       <quote>any</quote>
       that aren't universal end up being reflected by variables bound in the prenex of a subordinate bridi.
     </para>

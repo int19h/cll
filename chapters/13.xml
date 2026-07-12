@@ -121,8 +121,8 @@
       , and
       <valsi>.uu</valsi>). The first edition called these last ten
       <quote>diphthongs</quote>
-      as well, and said they were permitted only in attitudinal indicators and in Lojbanized names and borrowings; under the current word-form rules they are analyzed instead as glide-initial syllables, which may begin a word (as in these cmavo) or follow a vowel, but may never follow a consonant (see
-      <xref linkend="chapter-phonology" />). Note that each of these cmavo has a period before it, marking the pause that is mandatory before every word beginning with a vowel. Attitudinals, like most of the other kinds of indicators described in this chapter, belong to selma'o UI.
+      as well, and said they were permitted only in attitudinal indicators and in Lojbanized names and borrowings; under the current word-form rules they are analyzed instead as glide-initial syllables, which may begin a word (as in these cmavo) or follow a vowel, but may never follow a consonant. (The glide analysis is part of the de facto word-form grammar, never formally ratified; the after-a-consonant ban was separately adopted by committee vote in 2014; see the status discussion in
+      <xref linkend="chapter-phonology" />.) Note that each of these cmavo has a period before it, marking the pause that is mandatory before every word beginning with a vowel. Attitudinals, like most of the other kinds of indicators described in this chapter, belong to selma'o UI.
     </para>
     <para>
       <indexterm type="general"><primary>attitudinals</primary><secondary>compound</secondary>
@@ -632,7 +632,10 @@
       <letteral>a</letteral>
       -series express the speaker's own stance toward realizing the potential world &ndash; intending it, working at it, hoping for it, wanting it &ndash; while the members of the
       <letteral>e</letteral>
-      -series are <emphasis>directive</emphasis>: each one expresses an attitude toward the listener's bringing the situation about &ndash; allowing it, urging it, demanding it, requesting it, suggesting it, or holding it obligatory. A few propositional attitude indicators overflowed into the
+      -series form a <emphasis>directive</emphasis> family: permitting, exhorting, obliging, commanding, requesting, and suggesting. These are distinct relations, not points on a single scale, but they share a shape: in their most typical uses the speaker is concerned with someone else &ndash; usually the listener &ndash; bringing the situation about (though
+      <valsi>.ei</valsi>
+      , for instance, is just as much at home in
+      <quote>I ought to&hellip;</quote>). A few propositional attitude indicators overflowed into the
       <letteral>i</letteral>
       -series as well.
     </para>
@@ -649,11 +652,31 @@
       <valsi>.e'i</valsi>
       is
       <quote>constraint</quote>
-      (feeling bound). This book teaches the reworked senses &ndash; exhortation and command &ndash; because modern usage, community dictionaries, and words coined from these cmavo follow them; but a reader of older text should expect the first edition's senses there; a writer who needs to be unambiguous can always say it with a full bridi (
+      (feeling bound). This book teaches the reworked senses &ndash; exhortation and command &ndash; because modern use attests them and the community's own contributions follow them: dictionary entries in several languages, and words coined from these cmavo, such as
+      <jbophrase>e'ende</jbophrase>
+      (<quote>exhorts</quote>) and
+      <jbophrase>e'inde</jbophrase>
+      (<quote>instructs</quote>). A reader of older text should expect the first edition's senses there; a writer who needs to be unambiguous can always say it with a full bridi (
       <valsi>kakne</valsi>
       for being able,
       <valsi>minde</valsi>
-      for commanding). The rest of the series means what it always meant, with small clarifications noted below.)
+      for commanding). The four remaining positive roots &ndash;
+      <valsi>.e'a</valsi>
+      ,
+      <valsi>.ei</valsi>
+      ,
+      <valsi>.e'o</valsi>
+      , and
+      <valsi>.e'u</valsi>
+      &ndash; keep their broad senses, but note that two negative poles were also reassigned in the rework: the
+      <valsi>.e'o</valsi>
+      scale's opposite is now
+      <quote>offer</quote>
+      rather than the first edition's
+      <quote>negative request</quote>
+      , and
+      <jbophrase>.ai nai</jbophrase>
+      is now unintentionality rather than refusal.)
     </para>
     <para>
       <indexterm type="general"><primary>attitudinals</primary><secondary>logical language and</secondary>
@@ -810,7 +833,7 @@
     <para>
       Here are the propositional attitude indicators beginning with
       <letteral>e</letteral>
-      &ndash; the directive series, running from the mildest grant of permission through exhortation, request, and suggestion up to outright command and obligation:
+      &ndash; the directive series: permission, exhortation, obligation, command, request, and suggestion:
     </para>
     <cmavo-list>
       <cmavo-entry>

@@ -1,0 +1,320 @@
+<article xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="appendix-peg-morphology">
+  <title><anchor xml:id="a02" />The formal word-form grammar (PEG morphology)</title>
+  <para>
+    <indexterm type="general"><primary>PEG morphology</primary><secondary>full text of</secondary>
+    </indexterm>
+    This appendix reproduces the formal definition of Lojban's word-forms: the morphology section of the parsing expression grammar (PEG) that current Lojban parsing software implements. It is the precise statement of the rules presented informally in
+    <xref linkend="chapter-morphology" />
+    and
+    <xref linkend="chapter-phonology" />: which strings of letters constitute cmevla, cmavo, and brivla, where words begin and end, and which letter sequences are permitted at all.
+  </para>
+  <para role="status-note">
+    <indexterm type="general"><primary>PEG morphology</primary><secondary>status of</secondary>
+    </indexterm>
+    A word on authority: this grammar descends from the language-definition committee's formal morphology effort. It is a de facto standard &ndash; a working document that was never put to a ratifying vote, but is implemented by the current Lojban software tools surveyed for this edition. One rule within it, the ban on consonant-glide-vowel sequences, was separately adopted by a recorded committee vote in December 2014 (see
+    <xref linkend="chapter-phonology" />). The text below is taken verbatim from the grammar used by the camxes parser family, at the revision pinned for this edition's verification work.
+  </para>
+  <para>
+    A parsing expression grammar differs from more familiar grammar notations in one crucial way: the choice operator
+    <quote>/</quote>
+    is <emphasis>ordered</emphasis>. When several alternatives are given, the first one that succeeds is taken, and the rest are never tried. Together with the lookahead operators
+    <quote>&amp;</quote>
+    (the following material must be present) and
+    <quote>!</quote>
+    (the following material must be absent), this makes the grammar deterministic: any stream of Lojban sounds is divided into words in exactly one way. The other notational conventions are explained in the grammar's opening comment.
+  </para>
+  <programlisting># This is a Parsing Expression Grammar for the morphology of Lojban.
+# See http://www.pdos.lcs.mit.edu/~baford/packrat/
+#
+# All rules have the form
+#
+# name = peg_expression
+#
+# which means that the grammatical construct &quot;name&quot; is parsed using
+# &quot;peg_expression&quot;.
+#
+# 1) Concatenation is expressed by juxtaposition with no operator symbol.
+# 2) / represents *ORDERED* alternation (choice). If the first
+# option succeeds, the others will never be checked.
+# 3) ? indicates that the element to the left is optional.
+# 4) * represents optional repetition of the construct to the left.
+# 5) + represents one_or_more repetition of the construct to the left.
+# 6) () serves to indicate the grouping of the other operators.
+# 7) &amp; indicates that the element to the right must follow (but the
+# marked element itself does not absorb anything).
+# 8) ! indicates that the element to the right must not follow (the
+# marked element itself does not absorb anything).
+# 9) . represents any character.
+# 10) &#x27; &#x27; or &quot; &quot; represents a literal string.
+# 11) [] represents a character class.
+#
+# Repetitions grab as much as they can.
+#
+#
+# ___ GRAMMAR ___
+# This grammar classifies words by their morphological class (cmevla,
+# gismu, lujvo, fuhivla, cmavo, and non_lojban_word).
+#
+#The final section sorts cmavo into grammatical classes (A, BAI, BAhE, ..., ZOhU).
+#
+# mi&#x27;e ((xorxes))
+
+#___________________________________________________________________
+
+# words = expr:(pause? (word pause?)*) { return _join(expr); }
+
+# word = expr:lojban_word / non_lojban_word { return expr; }
+
+# lojban_word = expr:(cmevla / cmavo / brivla) { return expr; }
+lojban_word &lt;- CMEVLA / CMAVO / BRIVLA
+
+any_word &lt;- lojban_word spaces?
+
+# === ZOI quote handling ===
+
+# Pure PEG cannot handle ZOI quotes, because it cannot check whether the closing
+# delimiter is the same as the opening one.
+# ZOI quote handling is the only part of Lojban&#x27;s grammar that needs mechanisms
+# external to the pure PEG grammar to be implemented properly; those mechanisms
+# are implementation-specific.
+
+zoi_open &lt;- lojban_word  #: PUSH
+# Non-PEG: Remember the value matched by this zoi_open.
+
+zoi_word_2 &lt;- non_space+  #: LEAF
+
+zoi_word &lt;- zoi_word_2 #: PEEK-DIFF
+# Non-PEG: Match successfully only if different from the most recent zoi_open.
+
+zoi_close &lt;- any_word  #: POP-EQ
+# Non-PEG: Match successfully only if identical to the most recent zoi_open.
+
+#___________________________________________________________________
+
+cmevla &lt;- jbocme / zifcme
+
+zifcme &lt;- !h (nucleus / glide / h / consonant !pause / digit)* consonant &amp;pause
+
+jbocme &lt;- &amp;zifcme (any_syllable / digit)+ &amp;pause
+
+#cmevla = !h cmevla_syllable* &amp;consonant coda? consonantal_syllable* onset &amp;pause
+
+#cmevla_syllable = !doi_la_lai_lahi coda? consonantal_syllable* onset nucleus / digit
+
+#doi_la_lai_lahi = (d o i / l a (h? i)?) !h !nucleus
+
+#___________________________________________________________________
+
+cmavo &lt;- !cmevla !CVCy_lujvo cmavo_form &amp;post_word
+
+CVCy_lujvo &lt;- CVC_rafsi y h? initial_rafsi* brivla_core / stressed_CVC_rafsi y short_final_rafsi
+
+cmavo_form &lt;- !h !cluster onset (nucleus h)* (!stressed nucleus / nucleus !cluster) / y+ / digit
+
+#___________________________________________________________________
+
+brivla &lt;- !cmavo initial_rafsi* brivla_core
+
+brivla_core &lt;- fuhivla / gismu / CVV_final_rafsi / stressed_initial_rafsi short_final_rafsi
+
+stressed_initial_rafsi &lt;- stressed_extended_rafsi / stressed_y_rafsi / stressed_y_less_rafsi
+
+initial_rafsi &lt;- extended_rafsi / y_rafsi / !any_extended_rafsi y_less_rafsi !any_extended_rafsi
+
+#___________________________________________________________________
+
+any_extended_rafsi &lt;- fuhivla / extended_rafsi / stressed_extended_rafsi
+
+fuhivla &lt;- fuhivla_head stressed_syllable consonantal_syllable* final_syllable
+
+stressed_extended_rafsi &lt;- stressed_brivla_rafsi / stressed_fuhivla_rafsi
+
+extended_rafsi &lt;- brivla_rafsi / fuhivla_rafsi
+
+stressed_brivla_rafsi &lt;- &amp;unstressed_syllable brivla_head stressed_syllable h y
+
+brivla_rafsi &lt;- &amp;(syllable consonantal_syllable* syllable) brivla_head h y h?
+
+stressed_fuhivla_rafsi &lt;- fuhivla_head stressed_syllable consonantal_syllable* !h onset y
+
+fuhivla_rafsi &lt;- &amp;unstressed_syllable fuhivla_head !h onset y h?
+
+fuhivla_head &lt;- !rafsi_string brivla_head
+
+brivla_head &lt;- !cmavo !slinkuhi !h &amp;onset unstressed_syllable*
+
+slinkuhi &lt;- !rafsi_string consonant rafsi_string
+
+rafsi_string &lt;- y_less_rafsi* (gismu / CVV_final_rafsi / stressed_y_less_rafsi short_final_rafsi / y_rafsi / stressed_y_rafsi / stressed_y_less_rafsi? initial_pair y / hy_rafsi / stressed_hy_rafsi)
+
+#___________________________________________________________________
+
+gismu &lt;- (initial_pair stressed_vowel / consonant stressed_vowel consonant) &amp;final_syllable consonant vowel &amp;post_word
+
+CVV_final_rafsi &lt;- consonant stressed_vowel h &amp;final_syllable vowel &amp;post_word
+
+short_final_rafsi &lt;- &amp;final_syllable (consonant diphthong / initial_pair vowel) &amp;post_word
+
+stressed_y_rafsi &lt;- (stressed_long_rafsi / stressed_CVC_rafsi) y
+
+stressed_y_less_rafsi &lt;- stressed_CVC_rafsi !y / stressed_CCV_rafsi / stressed_CVV_rafsi
+
+stressed_long_rafsi &lt;- initial_pair stressed_vowel consonant / consonant stressed_vowel consonant consonant
+
+stressed_CVC_rafsi &lt;- consonant stressed_vowel consonant
+
+stressed_CCV_rafsi &lt;- initial_pair stressed_vowel
+
+stressed_CVV_rafsi &lt;- consonant (unstressed_vowel h stressed_vowel / stressed_diphthong) r_hyphen?
+
+y_rafsi &lt;- (long_rafsi / CVC_rafsi) y h?
+
+y_less_rafsi &lt;- !y_rafsi !stressed_y_rafsi !hy_rafsi !stressed_hy_rafsi (CVC_rafsi / CCV_rafsi / CVV_rafsi) !h
+
+hy_rafsi &lt;- (long_rafsi vowel / CCV_rafsi / CVV_rafsi) h y h?
+
+stressed_hy_rafsi &lt;- (long_rafsi stressed_vowel / stressed_CCV_rafsi / stressed_CVV_rafsi) h y
+
+long_rafsi &lt;- initial_pair unstressed_vowel consonant / consonant unstressed_vowel consonant consonant
+
+CVC_rafsi &lt;- consonant unstressed_vowel consonant
+
+CCV_rafsi &lt;- initial_pair unstressed_vowel
+
+CVV_rafsi &lt;- consonant (unstressed_vowel h unstressed_vowel / unstressed_diphthong) r_hyphen?
+
+r_hyphen &lt;- r &amp;consonant / n &amp;r
+
+#___________________________________________________________________
+
+final_syllable &lt;- onset !y !stressed nucleus !cmevla &amp;post_word
+
+stressed_syllable &lt;- &amp;stressed syllable / syllable &amp;stress
+
+stressed_diphthong &lt;- &amp;stressed diphthong / diphthong &amp;stress
+
+stressed_vowel &lt;- &amp;stressed vowel / vowel &amp;stress
+
+unstressed_syllable &lt;- !stressed syllable !stress / consonantal_syllable
+
+unstressed_diphthong &lt;- !stressed diphthong !stress
+
+unstressed_vowel &lt;- !stressed vowel !stress
+
+#// FIX: Xorxes&#x27; fix for fu&#x27;ivla rafsi stress
+stress &lt;- (consonant / glide)* h? y? syllable pause
+
+stressed &lt;- onset comma* [AEIOU]
+
+any_syllable &lt;- onset nucleus coda? / consonantal_syllable
+
+syllable &lt;- onset !y nucleus coda?
+
+#// FIX: preventing {bla&#x27;ypre} from being a valid lujvo
+consonantal_syllable &lt;- consonant &amp;syllabic coda
+
+coda &lt;- !any_syllable consonant &amp;any_syllable / syllabic? consonant? &amp;pause
+
+onset &lt;- h / glide / initial
+
+nucleus &lt;- vowel / diphthong / y !nucleus
+
+#_________________________________________________________________
+
+glide &lt;- (i / u) &amp;nucleus
+
+diphthong &lt;- (a i !i / a u !u / e i !i / o i !i) !nucleus
+
+vowel &lt;- (a / e / i / o / u) !nucleus
+
+a &lt;- comma* [aA]
+
+e &lt;- comma* [eE]
+
+i &lt;- comma* [iI]
+
+o &lt;- comma* [oO]
+
+u &lt;- comma* [uU]
+
+y &lt;- comma* [yY] !(!y nucleus)
+
+
+
+#___________________________________________________________________
+
+cluster &lt;- consonant consonant+
+
+initial_pair &lt;- &amp;initial consonant consonant !consonant
+
+initial &lt;- (affricate / sibilant? other? liquid?) !consonant !glide
+
+affricate &lt;- t c / t s / d j / d z
+
+liquid &lt;- l / r
+
+other &lt;- p / t !l / k / f / x / b / d !l / g / v / m / n !liquid
+
+sibilant &lt;- c / s !x / (j / z) !n !liquid
+
+consonant &lt;- voiced / unvoiced / syllabic
+
+syllabic &lt;- l / m / n / r
+
+voiced &lt;- b / d / g / j / v / z
+
+unvoiced &lt;- c / f / k / p / s / t / x
+
+l &lt;- comma* [lL] !h !glide !l
+
+m &lt;- comma* [mM] !h !glide !m !z
+
+n &lt;- comma* [nN] !h !glide !n !affricate
+
+r &lt;- comma* [rR] !h !glide !r
+
+b &lt;- comma* [bB] !h !glide !b !unvoiced
+
+d &lt;- comma* [dD] !h !glide !d !unvoiced
+
+g &lt;- comma* [gG] !h !glide !g !unvoiced
+
+v &lt;- comma* [vV] !h !glide !v !unvoiced
+
+j &lt;- comma* [jJ] !h !glide !j !z !unvoiced
+
+z &lt;- comma* [zZ] !h !glide !z !j !unvoiced
+
+s &lt;- comma* [sS] !h !glide !s !c !voiced
+
+c &lt;- comma* [cC] !h !glide !c !s !x !voiced
+
+x &lt;- comma* [xX] !h !glide !x !c !k !voiced
+
+k &lt;- comma* [kK] !h !glide !k !x !voiced
+
+f &lt;- comma* [fF] !h !glide !f !voiced
+
+p &lt;- comma* [pP] !h !glide !p !voiced
+
+t &lt;- comma* [tT] !h !glide !t !voiced
+
+h &lt;- comma* [&#x27;h] &amp;nucleus
+
+#___________________________________________________________________
+
+digit &lt;- comma* [0123456789] !h !nucleus
+
+post_word &lt;- pause / !nucleus lojban_word
+
+pause &lt;- comma* space_char+ / EOF
+
+EOF &lt;- comma* !.
+
+comma &lt;- [,]  #: JOIN
+
+# This is an orphan rule.
+non_lojban_word &lt;- !lojban_word non_space+
+
+non_space &lt;- !space_char .  #: JOIN</programlisting>
+</article>

@@ -36,7 +36,8 @@
       </indexterm>
       A stream of Lojban sounds can be uniquely broken up into its component words according to specific rules. These so-called
       <quote>morphology rules</quote>
-      are summarized in this chapter. (A complete, formal statement of these rules now exists: the PEG morphology, a computer-testable grammar of Lojban's word-forms that all modern Lojban software implements; see <xref linkend="chapter-grammars" />. This chapter presents the same system informally.) First, here are some conventions used to talk about groups of Lojban letters, including vowels and consonants.
+      are summarized in this chapter. (A complete, formal statement of these rules now exists: the PEG morphology, a computer-testable grammar of Lojban's word-forms, printed in full in
+      <xref linkend="appendix-peg-morphology" />. Its status is de facto: a working document of the language-definition effort, never put to a ratifying vote, but implemented by the current Lojban software tools surveyed for this edition. This chapter presents the same system informally.) First, here are some conventions used to talk about groups of Lojban letters, including vowels and consonants.
     </para>
 
     <orderedlist>
@@ -670,7 +671,7 @@
       </indexterm>
       <indexterm type="general"><primary>cmavo</primary><secondary>simple</secondary>
       </indexterm>
-      A simple cmavo thus has the property of having only one or two vowels, or of having a single consonant followed by one or two vowels. Words consisting of three or more vowels in a row, or a single consonant followed by three or more vowels, are also of cmavo form, but are reserved for experimental use: a few examples are
+      A simple cmavo thus has the property of having only one or two vowels, or of having a single consonant followed by one or two vowels. Longer vowel sequences &ndash; subject to the same syllable rules as everywhere else, so that each additional vowel or diphthong follows an apostrophe or a glide &ndash; are also of cmavo form, but are reserved for experimental use: a few examples are
       <jbophrase>ku'a'e</jbophrase>
       ,
       <jbophrase>sau'e</jbophrase>
@@ -685,14 +686,25 @@
       <indexterm type="general"><primary>cmavo</primary><secondary>experimental</secondary>
       </indexterm>
       <quote>Experimental use</quote>
-      means that these words have no officially assigned meanings: they provide an escape hatch for adding grammatical mechanisms the need for which was not foreseen. In practice a number of experimental cmavo have gained real currency in the community and are recorded, clearly marked as unofficial, in the community's dictionaries; none of them is part of standard Lojban as this book describes it. Note also that the formal word-form rules admit an even wider range of cmavo shapes than the simple forms described above (for example, forms mixing apostrophes and diphthongs at any length); all such forms likewise belong to experimental space.
+      means that these words have no officially assigned meanings: they provide an escape hatch for adding grammatical mechanisms the need for which was not foreseen. In practice a number of experimental cmavo have gained real currency in the community and are recorded, clearly marked as unofficial, in the community's dictionaries; none of them is part of standard Lojban as this book describes it. Note also that the formal word-form grammar (
+      <xref linkend="appendix-peg-morphology" />) admits two further cmavo <emphasis>shapes</emphasis> beyond the vowel-and-apostrophe forms described above: a word consisting of one or more
+      <letteral>y</letteral>
+      s, and a word consisting of a single digit character. These are capabilities of the working word-form grammar &ndash; shapes it will tokenize as cmavo &ndash; not standard word assignments; apart from
+      <valsi>y</valsi>
+      itself, everything in this space is experimental.
     </para>
     <para>
       <indexterm type="general"><primary>cmavo</primary><secondary>diphthongs in</secondary>
       </indexterm>
       The cmavo of VV-form include not only the diphthongs and vowel pairs listed in
       <xref linkend="section-morphology-introduction" />
-      , but also the following ten additional diphthongs:
+      , but also the following ten forms, in which a glide &ndash; a consonantal
+      <letteral>i</letteral>
+      or
+      <letteral>u</letteral>
+      &ndash; begins the syllable (the first edition classified these as additional diphthongs; see
+      <xref linkend="chapter-phonology" />
+      for the current analysis):
     </para>
     <simplelist type="horiz" columns="5">
       <member>
@@ -1915,7 +1927,7 @@
     <para>
       <indexterm type="general"><primary>lujvo form</primary><secondary>requirements for y-hyphen insertion in</secondary>
       </indexterm>
-      The
+      The 
     y-hyphen is used after a CVC-form rafsi when joining it with the following rafsi could result in an impermissible consonant pair, or when the resulting lujvo could fall apart into two or more words (either cmavo or gismu).
     </para>
     <para>
@@ -1944,7 +1956,7 @@
       <indexterm type="general"><primary>rafsi</primary><secondary>four-letter</secondary>
         <tertiary>requirement for y-hyphen</tertiary>
       </indexterm>
-      The
+      The 
     y-hyphen is also used to attach a 4-letter rafsi, formed by dropping the final vowel of a gismu, to the following rafsi. (This procedure was shown, but not explained, in
       <xref linkend="example-random-id-qj84" />
       to
@@ -1973,12 +1985,12 @@
       </indexterm>
       <indexterm type="general"><primary>r-hyphen</primary><secondary>use of</secondary>
       </indexterm>
-      The
-    r-hyphen and its close relative, the
+      The 
+    r-hyphen and its close relative, the 
     n-hyphen, are used in lujvo only after CVV-form rafsi. A hyphen is always required in a two-part lujvo of the form CVV-CVV, since otherwise there would be no consonant cluster.
     </para>
-    <para>An
-    r-hyphen or
+    <para>An 
+    r-hyphen or 
     n-hyphen is also required after the CVV-form rafsi of any lujvo of the form CVV-CVC/CV or CVV-CCVCV since it would otherwise fall apart into a CVV-form cmavo and a gismu. In any lujvo with more than two parts, a CVV-form rafsi in the initial position must always be followed by a hyphen. If the hyphen were to be omitted, the supposed lujvo could be broken into smaller words without the hyphen: because the CVV-form rafsi would be interpreted as a cmavo, and the remainder of the word as a valid lujvo that is one rafsi shorter.</para>
     <para>
       <indexterm type="general"><primary>r-hyphen</primary><secondary>contrasted with n-hyphen in requirements for use</secondary>
@@ -1987,8 +1999,8 @@
       </indexterm>
       <indexterm type="general"><primary>n-hyphen</primary><secondary>use of</secondary>
       </indexterm>
-      An
-    n-hyphen is only used in place of an
+      An 
+    n-hyphen is only used in place of an 
     r-hyphen when the following rafsi begins with
       <letteral>r</letteral>. For example, the tanru
       <jbophrase>rokci renro</jbophrase>
@@ -1997,7 +2009,7 @@
       <jbophrase valid="false">ro'ire'o</jbophrase>
       (which breaks up into two cmavo), nor can it be
       <jbophrase valid="false">ro'irre'o</jbophrase>
-      (which has an impermissible double consonant); the
+      (which has an impermissible double consonant); the 
     n-hyphen is required, and the correct form of the hyphenated lujvo is
       <valsi valid="maybe">ro'inre'o</valsi>. The same lujvo could also be expressed without hyphenation as
       <valsi valid="maybe">rokre'o</valsi>.
@@ -2007,7 +2019,7 @@
       </indexterm>
       This book teaches the classical rule: a hyphen appears exactly where it is needed and nowhere else. Be aware, however, that the formal word-form definition used by modern Lojban software is more liberal, accepting a y-hyphen after any CVC-form rafsi and an r- or n-hyphen after any CVV-form rafsi even where nothing would otherwise go wrong (so a parser will accept, say,
       <jbophrase>naltosymabru</jbophrase>
-      with an unneeded hyphen). A proposal to make the liberal rule official was rejected during the preparation of this edition's predecessor, so the classical rule remains the standard for writing; treat the liberal acceptance as error-tolerance.
+      with an unneeded hyphen). These are two separate facts with two separate standings: the liberal acceptance is de facto &ndash; it is what the working word-form grammar deliberately does &ndash; while as a matter of policy, wording that would have made it official was vetoed in the 2019 errata process for the previous revision of this book. This edition accordingly keeps the classical placement as the norm for writing, while readers should expect software to accept the liberal forms.
     </para>
     <para>
       <indexterm type="general"><primary>lujvo</primary><secondary>with zei</secondary>
@@ -2251,6 +2263,9 @@
       </indexterm>
       <indexterm type="general"><primary>borrowings</primary><secondary>fu'ivla form without categorizing rafsi</secondary>
       </indexterm>
+      <indexterm type="lojban-word"><primary>zi'evla</primary></indexterm>
+      <indexterm type="general"><primary>zi'evla</primary><secondary>as term for Stage 4 fu'ivla</secondary>
+      </indexterm>
       Finally, Stage 4 fu'ivla do not have any rafsi classifier, and are used where a fu'ivla has become so common or so important that it must be made as short as possible. In the community these free-form borrowings are widely called
       <jbophrase>zi'evla</jbophrase>
       (<quote>free words</quote>), and this book will occasionally use that term too. (See
@@ -2297,8 +2312,15 @@
           or
           <letteral>u</letteral>
           before another vowel) &ndash; see
-          <xref linkend="section-diphthongs" />; borrowings that would contain such a sequence take an apostrophe between the consonant and the glide, as in
-          <valsi>ku'arka</valsi>;
+          <xref linkend="section-diphthongs" />. (This ban was adopted by a recorded vote of the language-definition committee in December 2014, and is enforced by the standard word-form grammar; see the status discussion in
+          <xref linkend="chapter-phonology" />.) Borrowings that would contain such a sequence can be rescued in several ways: convert the glide to a full vowel, with the apostrophe then beginning the next syllable, as in
+          <valsi>ku'arka</valsi>
+          ; double the glide letter; or recast the borrowing altogether (as a type-3 fu'ivla, a lujvo, or a
+          <valsi>zei</valsi>
+          compound &ndash; see
+          <xref linkend="section-fuhivla" />
+          and
+          <xref linkend="section-rafsi" />);
         </para>
       </listitem>
       <listitem>
@@ -2307,7 +2329,7 @@
           </indexterm>
           must not be gismu or lujvo, or any combination of cmavo, gismu, and lujvo; furthermore, a fu'ivla with a CV cmavo joined to the front of it must not have the form of a lujvo (the so-called
           <quote>slinku'i test</quote>
-          ; its precise statement is part of the formal word-form definition, see <xref linkend="chapter-grammars" />);
+          ; its precise statement is part of the formal word-form grammar, see <xref linkend="appendix-peg-morphology" />);
         </para>
 
       </listitem>
@@ -2373,16 +2395,16 @@
           <indexterm type="general"><primary>l-hyphen</primary><secondary>use of</secondary>
           </indexterm>
           Prefix the result of steps 1-4 with a 4-letter rafsi that categorizes the fu'ivla into a
-          <quote>topic area</quote>. It is only safe to use a 4-letter rafsi; short rafsi sometimes produce invalid fu'ivla. Hyphenate the rafsi to the rest of the fu'ivla with an
+          <quote>topic area</quote>. It is only safe to use a 4-letter rafsi; short rafsi sometimes produce invalid fu'ivla. Hyphenate the rafsi to the rest of the fu'ivla with an 
         r-hyphen; if that would produce a double
           <letteral>r</letteral>
-          , use an
+          , use an 
         n-hyphen instead; if the rafsi ends in
           <letteral>r</letteral>
           and the rest of the fu'ivla begins with
           <letteral>n</letteral>
-          (or vice versa), or if the rafsi ends in "r" and the rest of the fu'ivla begins with "tc", "ts", "dj", or "dz" (using "n" would result in a phonotactically impermissible cluster), use an
-        l-hyphen. (This is the only use of
+          (or vice versa), or if the rafsi ends in "r" and the rest of the fu'ivla begins with "tc", "ts", "dj", or "dz" (using "n" would result in a phonotactically impermissible cluster), use an 
+        l-hyphen. (This is the only use of 
         l-hyphen in Lojban.)
         </para>
         <para>Alternatively, if a CVC-form short rafsi is available it can be used instead of the long rafsi.</para>
@@ -2596,7 +2618,7 @@
 
         <jbo>
           ku'ark
-          <comment>(Lojbanize; the apostrophe separates the glide from the consonant)</comment>
+          <comment>(Lojbanize; the glide becomes the full vowel u, and the apostrophe begins the next syllable)</comment>
         </jbo>
         <jbo>
           ku'arka
@@ -2628,8 +2650,18 @@
       <letteral>k</letteral>: English
       <quote>qua</quote>
       is a consonant followed by a glide, a combination banned everywhere in Lojban (see
-      <xref linkend="section-diphthongs" />), so the glide must be set off with an apostrophe. (The first edition permitted such combinations in fu'ivla and names, and spelled this word
-      <quote>kuarka</quote>; words coined under the old rule need respelling.)
+      <xref linkend="section-diphthongs" />), so the glide is converted into the full vowel
+      <letteral>u</letteral>
+      , and the apostrophe then begins the syllable that follows:
+      <valsi>ku'arka</valsi>
+      has the three syllables
+      <quote>ku</quote>
+      ,
+      <quote>'ar</quote>
+      , and
+      <quote>ka</quote>. (The first edition permitted consonant-glide combinations in fu'ivla and names, and spelled this word
+      <quote>kuarka</quote>
+      as two syllables; words coined under the old rule need respelling.)
     </para>
     <example role="lojbanization-example" xml:id="example-random-id-FTfQ">
       <title>
@@ -2751,7 +2783,7 @@
       </title>
 
       <lojbanization>
-        <jbo role="pronunciation">bang,r,blgaria</jbo>
+        <jbo role="pronunciation">bang,r,blgari'a</jbo>
         <natlang>
           Bulgarian
           <comment>(in language)</comment>
@@ -2770,7 +2802,7 @@
       </title>
 
       <lojbanization>
-        <jbo role="pronunciation">kuln,r,blgaria</jbo>
+        <jbo role="pronunciation">kuln,r,blgari'a</jbo>
         <natlang>
           Bulgarian
           <comment>(in culture)</comment>
@@ -2793,7 +2825,7 @@
       </title>
 
       <lojbanization>
-        <jbo role="pronunciation">gugd,r,blgaria</jbo>
+        <jbo role="pronunciation">gugd,r,blgari'a</jbo>
         <natlang>
           Bulgaria
           <comment>(the country)</comment>
@@ -2811,7 +2843,7 @@
       </title>
 
       <lojbanization>
-        <jbo role="pronunciation">bang,r,kore,a</jbo>
+        <jbo role="pronunciation">bangrkore'a</jbo>
         <natlang>
           Korean
           <comment>(the language)</comment>
@@ -2834,7 +2866,7 @@
       </title>
 
       <lojbanization>
-        <jbo role="pronunciation">kuln,r,kore,a</jbo>
+        <jbo role="pronunciation">kulnrkore'a</jbo>
         <natlang>
           Korean
           <comment>(the culture)</comment>
@@ -2853,13 +2885,16 @@
       </indexterm>
       <indexterm type="general"><primary>invalid diphthongs</primary><secondary>in fu'ivla</secondary>
       </indexterm>
-      Note the commas in
+      Note the apostrophes in
       <xref linkend="example-random-id-qJGv" />
       and
       <xref linkend="example-random-id-qjh0" />
       , used because
-      <diphthong>ea</diphthong>
-      is not a valid diphthong in Lojban. Arguably, some form of the native name
+      <quote>ea</quote>
+      is not a valid diphthong in Lojban, and a brivla may not simply run the two vowels together. (The first edition wrote these words as
+      <quote>bang,r,kore,a</quote>
+      , treating the comma as a syllable separator that licensed the vowel sequence; the comma is now a pure pronunciation aid, and cannot make an otherwise invalid word valid &ndash; see
+      <xref linkend="chapter-phonology" />.) Arguably, some form of the native name
       <quote>Chosen</quote>
       should have been used instead of the internationally known
       <quote>Korea</quote>
@@ -3107,7 +3142,7 @@
           </indexterm>
           <indexterm type="general"><primary>cmevla</primary><secondary>dot side</secondary>
           </indexterm>
-          They must end in one or more consonants. There are no rules about how many consonants may appear in a cluster in cmevla, provided that each consonant pair (whether standing by itself, or as part of a larger cluster) is a permissible pair. (The formal word-form definition also allows decimal digits inside a cmevla, standing for their spoken digit-words:
+          They must end in one or more consonants. There are no rules about how many consonants may appear in a cluster in cmevla, provided that each consonant pair (whether standing by itself, or as part of a larger cluster) is a permissible pair. (The formal word-form grammar &ndash; a de facto capability, like the grammar itself never formally voted &ndash; also allows decimal digits inside a cmevla, standing for their spoken digit-words:
           <cmevla>.mig15s.</cmevla>
           is read as if written
           <cmevla>.migypamus.</cmevla>
@@ -3120,14 +3155,32 @@
           </indexterm>
           <indexterm type="general"><primary>diphthongs</primary><secondary>specific to names</secondary>
           </indexterm>
-          <indexterm type="general"><primary>uy diphthong</primary><secondary>in cmevla</secondary>
+          <indexterm type="general"><primary>uy syllable</primary><secondary>in cmevla</secondary>
           </indexterm>
-          <indexterm type="general"><primary>iy diphthong</primary><secondary>in cmevla</secondary>
+          <indexterm type="general"><primary>iy syllable</primary><secondary>in cmevla</secondary>
           </indexterm>
-          They may contain the letter y as a normal, non-hyphenating vowel. They are the only kind of Lojban word that may contain the two diphthongs
-          <diphthong>iy</diphthong>
+          They may contain the letter y as a normal, non-hyphenating vowel. In particular they may contain the syllables
+          <morphology>iy</morphology>
           and
-          <diphthong>uy</diphthong>.
+          <morphology>uy</morphology>
+          &ndash; a glide followed by
+          <letteral>y</letteral>
+          &ndash; which the first edition classified as diphthongs restricted to names; no standard word of any other kind contains them, though as pure word-shapes the formal grammar also admits them among the unassigned experimental cmavo forms.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <indexterm type="general"><primary>consonant-glide-vowel ban</primary><secondary>in cmevla</secondary>
+          </indexterm>
+          Like all Lojban words, they are subject to the ban on consonant-glide-vowel sequences (see
+          <xref linkend="section-fuhivla" />
+          and
+          <xref linkend="chapter-phonology" />): a glide may begin a cmevla or follow a vowel or
+          <letteral>y</letteral>
+          within it, but may not follow a consonant. Older names like
+          <cmevla valid="false">.niuport.</cmevla>
+          must be respelled, for example as
+          <cmevla>.ni'uport.</cmevla>.
         </para>
       </listitem>
       <listitem>
@@ -3552,9 +3605,7 @@
           <quote>William</quote>
         </td>
         <td>
-          <cmevla>.uiliam.</cmevla>
-          or
-          <cmevla>.uil,iam.</cmevla>
+          <cmevla>.uili'am.</cmevla>
         </td>
       </tr>
       <tr>
@@ -3608,7 +3659,7 @@
           <quote>Joaquin</quote>
         </td>
         <td>
-          <cmevla>.xuaKIN.</cmevla>
+          <cmevla>.xu'aKIN.</cmevla>
         </td>
       </tr>
       <tr>
@@ -3617,7 +3668,7 @@
           <quote>Svetlana</quote>
         </td>
         <td>
-          <cmevla>.sfietlanys.</cmevla>
+          <cmevla>.sfi'etlanys.</cmevla>
         </td>
       </tr>
       <tr>
@@ -3865,28 +3916,28 @@
         <orderedlist>
           <listitem>
             <para>
-              If there are more than two words in the tanru, put an
-        r-hyphen (or an
-        n-hyphen) after the first rafsi if it is CVV-form. If there are exactly two words, then put an
-        r-hyphen (or an
+              If there are more than two words in the tanru, put an 
+        r-hyphen (or an 
+        n-hyphen) after the first rafsi if it is CVV-form. If there are exactly two words, then put an 
+        r-hyphen (or an 
         n-hyphen) between the two rafsi if the first rafsi is CVV-form, unless the second rafsi is CCV-form (for example,
               <jbophrase>saicli</jbophrase>
-              requires no hyphen). Use an
+              requires no hyphen). Use an 
         r-hyphen unless the letter after the hyphen is
               <letteral>r</letteral>
-              , in which case use an
-        n-hyphen. Never use an
+              , in which case use an 
+        n-hyphen. Never use an 
         n-hyphen unless it is required.
             </para>
           </listitem>
           <listitem>
-            <para>Put a
+            <para>Put a 
         y-hyphen between the consonants of any impermissible consonant pair. This will always appear between rafsi.</para>
           </listitem>
           <listitem>
             <para>
               <indexterm type="general"><primary>tosmabru test</primary></indexterm>
-              Put a
+              Put a 
         y-hyphen after any 4-letter rafsi form.
             </para>
           </listitem>
@@ -3898,7 +3949,10 @@
           <quote>CVC ... CVC + X</quote>
           &ndash; for
           <quote>tosmabru failure</quote>. In order to fail, X must either be a CVCCV long rafsi that happens to have a permissible initial pair as the consonant cluster, or is something which has caused a
-    y-hyphen to be inserted between the preceding CVC and X in step 4.b.
+    y-hyphen to be inserted between the preceding CVC and X in step 4.b. (The formal word-form grammar states this test precisely, as the rule called
+          <quote>CVCy_lujvo</quote>
+          ; see
+          <xref linkend="appendix-peg-morphology" />.)
         </para>
         <para>The test is as follows:</para>
         <orderedlist>
@@ -3921,7 +3975,7 @@
       <indexterm type="general"><primary>lujvo</primary><secondary>scoring of</secondary>
       </indexterm>
       Note that the
-      <quote>tosmabru test</quote>,
+      <quote>tosmabru test</quote>, 
       which affects hyphenation after the first rafsi, cannot be performed until after hyphenation to the right under step 4 has already been determined.
     </para>
 
@@ -3950,7 +4004,7 @@
           <letteral>y-</letteral>
           ,
           <letteral>r-</letteral>
-          , and
+          , and 
           n-hyphens; call it
           <dbinlinemath>H</dbinlinemath>.
         </para>
@@ -4212,14 +4266,14 @@
     <para>
       The fourth form,
       <valsi valid="false">ge'u-zdani</valsi>
-      , however, requires an
+      , however, requires an 
     r-hyphen; otherwise, the
       <rafsi>ge'u-</rafsi>
       part would fall off as a cmavo. So this form of the lujvo is
       <valsi valid="maybe">ge'urzdani</valsi>.
     </para>
     <para>
-      The last two forms require
+      The last two forms require 
     y-hyphens, as all 4-letter rafsi do, and so are
       <valsi valid="maybe">gerkyzda</valsi>
       and
@@ -5956,7 +6010,8 @@
       <indexterm type="general"><primary>fu'ivla</primary><secondary>in lujvo</secondary>
       </indexterm>
       <indexterm type="general"><primary>extended rafsi</primary></indexterm>
-      The mechanism described in this section is part of the formal word-form definition implemented by all modern Lojban software, and fu'ivla-containing lujvo built with it are in common use; it was developed after the first edition and, like the word-form definition as a whole, has never been put to a formal vote. (The first edition instead printed, in this spot, a tentative proposal to give rafsi to a special class of CCVVCV cultural fu'ivla. That proposal was never adopted, and words of that shape are today ordinary fu'ivla.)
+      The mechanism described in this section is de facto standard: it is part of the formal word-form grammar (
+      <xref linkend="appendix-peg-morphology" />), implemented by the current Lojban software tools surveyed for this edition; it was developed after the first edition and, like the word-form grammar as a whole, has never been put to a formal vote. (The first edition instead printed, in this spot, a tentative proposal to give rafsi to a special class of CCVVCV cultural fu'ivla. That proposal was never adopted, and words of that shape are today ordinary fu'ivla.)
     </para>
     <para>
       The first edition allowed fu'ivla into lujvo only through
@@ -5973,24 +6028,36 @@
           (spaghetti) we can form
           <jbophrase>cmalyspageti</jbophrase>
           (<jbophrase>cmalu spageti</jbophrase>: little spaghetti &ndash; spaghettini) and
-          <jbophrase>djarspageti</jbophrase>
+          <jbophrase>cidjyspageti</jbophrase>
           (<jbophrase>cidja spageti</jbophrase>: spaghetti as food), just as if
           <valsi>spageti</valsi>
-          were a gismu being used in final position.
+          were a gismu being used in final position. (Not every rafsi will serve: the whole must still divide back into its parts and nothing else. The three-letter rafsi
+          <rafsi>dja-</rafsi>
+          , for instance, cannot be used here, because
+          <jbophrase valid="false">djarspageti</jbophrase>
+          reads as one long undivided fu'ivla rather than as rafsi-plus-
+          <valsi>spageti</valsi>.)
         </para>
       </listitem>
       <listitem>
         <para>
           <indexterm type="general"><primary>fu'ivla</primary><secondary>as non-final element of lujvo</secondary>
           </indexterm>
-          For a <emphasis>non-final</emphasis> position, the fu'ivla takes a hyphen. Either attach
+          For a <emphasis>non-final</emphasis> position, the fu'ivla takes a hyphen. The always-safe way is to attach
           <jbophrase>'y</jbophrase>
           to the complete fu'ivla:
           <jbophrase>spageti'ykukte</jbophrase>
-          (<jbophrase>spageti kukte</jbophrase>: spaghetti-delicious); or, when the fu'ivla ends in a single vowel, replace that final vowel with
-          <letteral>y</letteral>:
+          (<jbophrase>spageti kukte</jbophrase>: spaghetti-delicious). When the fu'ivla ends in a single vowel, that final vowel can often be replaced with
+          <letteral>y</letteral>
+          instead, giving a shorter word &ndash; but only when the result cannot be read as a string of ordinary rafsi. With
+          <valsi>spageti</valsi>
+          the substitution is unavailable:
           <jbophrase>spagetykukte</jbophrase>
-          , with the same meaning. Both forms are valid words; the shorter is usually preferred.
+          is a well-formed word, but the word-form rules divide it as
+          <jbophrase>spa-get-y-kukte</jbophrase>
+          &ndash; a classical lujvo built from three-letter rafsi pieces &ndash; not as a compound of
+          <valsi>spageti</valsi>
+          at all. (For a fu'ivla where the substitution does work, see the end of this section.)
         </para>
       </listitem>
       <listitem>
@@ -6006,6 +6073,30 @@
         </para>
       </listitem>
     </orderedlist>
+    <para>
+      The vowel-substitution rule does work when no such collision arises. The fu'ivla
+      <valsi valid="maybe">.enri</valsi>
+      from rule 3 combines with
+      <valsi>kukte</valsi>
+      either in full form, as
+      <jbophrase>enri'ykukte</jbophrase>
+      , or with the final vowel replaced, as
+      <jbophrase>enrykukte</jbophrase>
+      (a delicious henry? &ndash; the semantics is the coiner's problem);
+      <jbophrase>enr-</jbophrase>
+      cannot be misread as any string of ordinary rafsi, so the shorter form is safe, and is usually preferred.
+    </para>
+    <para>
+      One more consequence of treating the whole result as a single brivla: the finished lujvo is stressed like any other brivla, on its penultimate syllable, no matter where the standalone fu'ivla carried its stress. Thus
+      <jbophrase>spageti'ykukte</jbophrase>
+      is stressed on
+      <quote>kuk</quote>
+      ; trying to keep the original stress of
+      <valsi>spageti</valsi>
+      , as in
+      <jbophrase valid="false">spagEti'ykukte</jbophrase>
+      , produces a non-word.
+    </para>
     <para>
       The results must, as always, satisfy the general word-form rules &ndash; in particular, the whole must not fall apart into smaller words, which is exactly what the hyphens are there to prevent. There are no short (three-letter) rafsi for fu'ivla; only the forms above exist.
     </para>

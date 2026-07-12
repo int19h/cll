@@ -60,9 +60,9 @@ if opts[:testing]
 end
 
 glossfile="#{builddir}/glossary.xml-#{md5_1}-#{md5_2}#{suffix}"
-$stderr.puts "glossfile: #{glossfile}; exists: #{File.exists?(glossfile)} size: #{File.size?(glossfile)}"
+$stderr.puts "glossfile: #{glossfile}; exists: #{File.exist?(glossfile)} size: #{File.size?(glossfile)}"
 
-if File.exists?(glossfile) and File.size?(glossfile) and File.size?(glossfile) > 100
+if File.exist?(glossfile) and File.size?(glossfile) and File.size?(glossfile) > 100
   $stderr.puts "Glossary file already exists; using."
 else
   $stderr.puts "Generating new glossary file."

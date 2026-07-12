@@ -303,8 +303,7 @@
       <indexterm type="general"><primary>stress</primary><secondary>quick-tour version</secondary>
       </indexterm>
       Stress normally falls on the next-to-the-last syllable; syllables whose vowel is
-      <letteral>y</letteral>
-      , and syllables with no vowel at all, are skipped in the count and never stressed. Strictly, this is the required rule for the content words (brivla); names may mark stress elsewhere, and the little structure words may be stressed anywhere or not at all &ndash; see
+      <letteral>y</letteral>, and syllables with no vowel at all, are skipped in the count and never stressed. Strictly, this is the required rule for the content words (brivla); names may mark stress elsewhere, and the little structure words may be stressed anywhere or not at all &ndash; see
       <xref linkend="chapter-phonology" />. A one-syllable structure word is usually left unstressed.
     </para>
     <para>All Lojban words are pronounced as they are spelled: there are no silent letters.</para>

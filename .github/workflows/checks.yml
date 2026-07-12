@@ -35,6 +35,10 @@ jobs:
         run: python3 scripts/lint-undotted-cmevla.py chapters/*.xml
       - name: EBNF cross-reference check
         run: python3 scripts/check-cross-reference.py chapters/21.xml
+      - name: Status-markup lint
+        run: python3 scripts/lint-status-markup.py chapters/*.xml
+      - name: Status-markup lint self-test
+        run: python3 scripts/test-lint-status-markup.py
 
   parser-probes:
     runs-on: ubuntu-latest

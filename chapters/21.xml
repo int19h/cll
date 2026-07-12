@@ -10,7 +10,7 @@
     <para>
       <indexterm type="general"><primary>formal grammar</primary><secondary>role of</secondary>
       </indexterm>
-      Lojban was designed so that its grammar could be stated formally &ndash; as a precise, machine-testable definition of which strings of words constitute grammatical text, and of how each such text is structured &ndash; and, to a degree no natural language's published grammar approaches, that aim was achieved. This chapter presents the formal definition of the <emphasis>syntax</emphasis> of the language: how words combine into sentences and texts. Two companion pieces complete the picture, and two seams remain open. The definition of the <emphasis>word-forms</emphasis> &ndash; which strings of letters constitute words in the first place &ndash; is a separate document, printed in
+      Lojban was designed so that its grammar could be stated formally &ndash; as a precise, machine-testable definition of which strings of words constitute grammatical text, and of how each such text is structured &ndash; and that aim was achieved to a remarkable degree. This chapter presents the formal definition of the <emphasis>syntax</emphasis> of the language: how words combine into sentences and texts. Two companion pieces complete the picture, and three seams remain open. The definition of the <emphasis>word-forms</emphasis> &ndash; which strings of letters constitute words in the first place &ndash; is a separate document, printed in
       <xref linkend="appendix-peg-morphology" />; and the word-level
       <quote>magic words</quote>
       and the unsettled corners noted below lie outside what the printed grammar decides.
@@ -25,21 +25,21 @@
       <indexterm type="general"><primary>camxes</primary><secondary>as de facto compatibility target</secondary>
       </indexterm>
       <indexterm type="general"><primary>third baseline</primary></indexterm>
-      A word on authority. The grammar printed here, in EBNF notation, is the <emphasis>official</emphasis> grammar: it corresponds to the third baselined machine grammar adopted by the Logical Language Group, and it is the standard against which this book's own examples were originally checked. The first edition printed, alongside it, the equivalent YACC grammar from which it was derived, and declared the YACC version authoritative in case of discrepancy; following an informal majority at the Group's 2014 annual meeting, the YACC listing is no longer printed &ndash; it remains available in the electronic supplements to this book, and the YACC-derived parser is what the first edition's examples were machine-checked against. Meanwhile, the software the community actually uses to parse Lojban today implements a different formal system: parsing expression grammars (PEG), which cover morphology and syntax together and incorporate the committee-adopted amendments described throughout this book. The standard camxes PEG is the principal de facto compatibility target across the tooling surveyed for this edition &ndash; never ratified, everywhere depended on. Where this book's text and the EBNF printed below disagree with the amendments, the amendments prevail, and each is flagged where it is taught; the EBNF itself is printed as baselined.
+      A word on authority. The grammar printed here, in EBNF notation, is the <emphasis>official</emphasis> grammar: it corresponds to the third baselined machine grammar adopted by the Logical Language Group. The first edition printed, alongside it, the equivalent YACC grammar from which it was derived, and declared the YACC version authoritative in case of discrepancy; following an informal majority at the Group's 2014 annual meeting, the YACC listing is no longer printed &ndash; it remains available in the electronic supplements to this book. (The first edition's own text records at least one of its knottier examples being run through the YACC-derived parser until it passed.) Meanwhile, the community's working grammars are stated in a different formal system: parsing expression grammars (PEG), which cover morphology and syntax together and incorporate the committee-adopted amendments described throughout this book. The standard camxes PEG is the principal de facto compatibility target across the tooling surveyed for this edition: some of those tools implement it directly, others reimplement its behavior &ndash; and none of it was ever ratified. Where this book's text and the EBNF printed below disagree with the amendments, the amendments prevail, and each is flagged where it is taught; the EBNF itself is printed as baselined.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>tags</primary><secondary>binding to selbri, in the formal grammar</secondary>
       </indexterm>
       <indexterm type="general"><primary>tenses</primary><secondary>before forethought connectives, in the formal grammar</secondary>
       </indexterm>
-      (Three known seams between this EBNF and current practice deserve mention here. First, the
+      Three known seams between this EBNF and current practice deserve mention here. First, the
       <quote>magic words</quote>
       (quotation, erasure, and their kin) are represented below only by placeholder rules; their real behavior is word-level, carries its own rule-by-rule provenance &ndash; including the genuinely unsettled
       <valsi>sa</valsi>
       &ndash; and is specified in
-      <xref linkend="chapter-structure" />. Second, where a tag stands directly before a selbri, the EBNF permits more than one grouping; the committee's 2016 tag-binding decision picks one (see
+      <xref linkend="chapter-structure" />. Second, where a tag stands directly before a selbri, the EBNF permits more than one grouping; the committee-approved 2016 tag-binding decision picks one (see
       <xref linkend="section-tenses-introduction" />), and the parsers surveyed for this edition implement that choice. Third, a tense standing bare before a forethought connective construction was not accepted by the baseline parser at all, despite the first edition's prose using it; the de facto grammars accept it, reading the tense as a term scoping over the whole construction &ndash; an implemented, never-voted resolution (see
-      <xref linkend="chapter-connectives" />).)
+      <xref linkend="chapter-connectives" />).
     </para>
   </section>
   <section xml:id="section-EBNF">

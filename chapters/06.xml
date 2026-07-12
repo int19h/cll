@@ -14,7 +14,7 @@
       <title><anchor xml:id="c6e1d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci</jbo>
+        <jbo>mi klama lo zarci</jbo>
         <gloss>I go-to the market</gloss>
       </interlinear-gloss>
     </example>
@@ -26,12 +26,12 @@
       ,
       <valsi>mi</valsi>
       and
-      <jbophrase>le zarci</jbophrase>
+      <jbophrase>lo zarci</jbophrase>
       are the sumti. It is easy to see that these two sumti are not of the same kind:
       <valsi>mi</valsi>
       is a pro-sumti (the Lojban analogue of a pronoun) referring to the speaker, whereas
-      <jbophrase>le zarci</jbophrase>
-      is a description which refers to something described as being a market.
+      <jbophrase>lo zarci</jbophrase>
+      is a description which refers to a market.
     </para>
     <para>
       <indexterm type="general"><primary>sumti</primary><secondary>kinds of</secondary>
@@ -47,11 +47,11 @@
           <indexterm type="general"><primary>sumti</primary><secondary>descriptions as</secondary>
           </indexterm>
           descriptions like
-          <jbophrase>le zarci</jbophrase>
+          <jbophrase>lo zarci</jbophrase>
           , which usually begin with a descriptor (called a
           <valsi>gadri</valsi>
           in Lojban) such as
-          <valsi>le</valsi>
+          <valsi>lo</valsi>
           ;
         </para>
       </listitem>
@@ -126,7 +126,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi cusku lu e'osai li'u le tcidu</jbo>
+        <jbo>mi cusku lu e'osai li'u lo tcidu</jbo>
         <gloss>I express [quote] [request]--[!] [unquote] to-the reader.</gloss>
         <natlang>
           I express
@@ -142,7 +142,7 @@
       , a pro-sumti;
       <jbophrase>lu e'osai li'u</jbophrase>
       , a quotation; and
-      <jbophrase>le tcidu</jbophrase>
+      <jbophrase>lo tcidu</jbophrase>
       , a description.
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-0YaH">
@@ -214,7 +214,7 @@
       <xref linkend="section-names" />.) Furthermore, the selbri is often just a single brivla. Here is an elementary example:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-t11z">
-      <title><anchor xml:id="c6e2d1" /></title>
+      <title><anchor xml:id="c6e2d4" /></title>
 
       <interlinear-gloss>
         <jbo>lo zarci</jbo>
@@ -258,7 +258,7 @@
       <valsi>zarci</valsi>. Thus
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-fSxN">
-      <title><anchor xml:id="c6e2d2" /></title>
+      <title><anchor xml:id="c6e2d5" /></title>
 
       <interlinear-gloss>
         <jbo>lo mlatu cu gerku</jbo>
@@ -298,7 +298,7 @@
       is specific:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-rBuQ">
-      <title><anchor xml:id="c6e2d3" /></title>
+      <title><anchor xml:id="c6e2d1" /></title>
 
       <interlinear-gloss>
         <jbo>le zarci</jbo>
@@ -334,7 +334,7 @@
         <indexterm type="general"><primary>The cats are dogs</primary></indexterm>
 
 
-        <anchor xml:id="c6e2d4" />
+        <anchor xml:id="c6e2d3" />
       </title>
 
       <interlinear-gloss>
@@ -420,7 +420,7 @@
         <indexterm type="general"><primary>bear wrote story</primary></indexterm>
 
 
-        <anchor xml:id="c6e2d5" />
+        <anchor xml:id="c6e2d6" />
       </title>
 
       <interlinear-gloss>
@@ -451,8 +451,8 @@
       <quote>Frank ate some cheese</quote>
       into Lojban would be:
     </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-x6Aa">
-      <title><anchor xml:id="c6e2d6" /></title>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-yyBX">
+      <title><anchor xml:id="c6e2d7" /></title>
 
       <interlinear-gloss>
         <jbo>la stace pu citka lo cirla</jbo>
@@ -476,7 +476,7 @@
       and the following:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-nXyo">
-      <title><anchor xml:id="c6e2d7" /></title>
+      <title><anchor xml:id="c6e2d8" /></title>
 
       <interlinear-gloss>
         <jbo>le cribe pu finti le lisri</jbo>
@@ -485,7 +485,7 @@
       </interlinear-gloss>
     </example>
     <example role="interlinear-gloss-example" xml:id="example-random-id-93Yv">
-      <title><anchor xml:id="c6e2d8" /></title>
+      <title><anchor xml:id="c6e2d9" /></title>
 
       <interlinear-gloss>
         <jbo>lo cribe pu finti le lisri</jbo>
@@ -528,7 +528,7 @@
       respectively:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-qKw7">
-      <title><anchor xml:id="c6e2d9" /></title>
+      <title><anchor xml:id="c6e2d10" /></title>
 
       <interlinear-gloss>
         <jbo>le remna pu finti le lisri</jbo>
@@ -537,7 +537,7 @@
       </interlinear-gloss>
     </example>
     <example role="interlinear-gloss-example" xml:id="example-random-id-qKYf">
-      <title><anchor xml:id="c6e2d10" /></title>
+      <title><anchor xml:id="c6e2d11" /></title>
 
       <interlinear-gloss>
         <jbo>lo remna pu finti le lisri</jbo>
@@ -561,14 +561,14 @@
       <indexterm type="general"><primary>gadri reform</primary></indexterm>
       Historical note: the meaning of
       <valsi>lo</valsi>
-      given here reflects a reform of the Lojban articles &ndash; known in the community as <quote>xorlo</quote>, after the nickname of its principal author &ndash; which was adopted after the first edition of this book and ratified by vote of the Logical Language Group, the language's standards body. In the first edition,
+      given here reflects a reform of the Lojban articles &ndash; known in the community as <quote>xorlo</quote>, after the nickname of its principal author &ndash; which reached its final form in three steps: approved by the language-definition committee in 2004, adopted by the Logical Language Group (the language's standards body) as the preferred usage in 2007, and ratified in its exact present wording by LLG vote in 2020. In the first edition,
       <valsi>lo</valsi>
       meant
       <quote>at least one of all the things which really fit the description</quote>
-      , and every description carried default number claims. Under the current definition,
+      , and every description carried default number claims. Under the current definition, a
       <valsi>lo</valsi>
-      makes no claim about number at all, and no description carries any hidden quantifier. The differences are laid out where they matter, especially in
-      <xref linkend="section-quantified-descriptions" />; older texts and the first edition should be read with the change in mind, though usage following the old definitions was never declared incorrect.
+      description simply refers to one or more things fitting it, stating nothing about how many beyond that &ndash; there is no hidden quantifier. The differences are laid out where they matter, especially in
+      <xref linkend="section-quantified-descriptions" />; older texts and the first edition should be read with the change in mind. The 2007 adoption explicitly provided that usage following the first edition's definitions is not incorrect &ndash; this book simply teaches the preferred current ones.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>ku</primary></indexterm>
@@ -655,7 +655,7 @@
       , has since become standard, and the underlying idea has been considerably cleaned up, as explained below.)
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Ba">
-      <title><anchor xml:id="c6e3d2" /></title>
+      <title><anchor xml:id="c6e3d7" /></title>
 
       <interlinear-gloss>
         <jbo>lei ci prenu cu bevri le pipno</jbo>
@@ -730,7 +730,7 @@
       <valsi>lo</valsi>:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Bb">
-      <title><anchor xml:id="c6e3d4" /></title>
+      <title><anchor xml:id="c6e3d8" /></title>
 
       <interlinear-gloss>
         <jbo>lo cinfo cu xabju lo fi'ortu'a</jbo>
@@ -749,7 +749,7 @@
       is. Similarly, English words for substances translate smoothly:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Bc">
-      <title><anchor xml:id="c6e3d5" /></title>
+      <title><anchor xml:id="c6e3d9" /></title>
 
       <interlinear-gloss>
         <jbo>lo matne cu ranti</jbo>
@@ -776,7 +776,7 @@
       <title><anchor xml:id="c6e3d6" /></title>
 
       <interlinear-gloss>
-        <jbo>lai cribe pu finti le vi cukta</jbo>
+        <jbo>lai cribe pu finti lo vi cukta</jbo>
         <gloss>
           The-group-of-those-named
           <quote>bear</quote>
@@ -818,7 +818,7 @@
       <cmavo-entry>
         <cmavo>lo'i</cmavo>
         <selmaho>LE</selmaho>
-        <description>the set of those which really are</description>
+        <description>a set of those which really are</description>
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>le'i</cmavo>
@@ -854,7 +854,7 @@
       <valsi>lo'i</valsi>:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Ca">
-      <title><anchor xml:id="c6e4d1" /></title>
+      <title><anchor xml:id="c6e4d5" /></title>
 
       <interlinear-gloss>
         <jbo>lo ratcu cu bunre</jbo>
@@ -863,16 +863,16 @@
       </interlinear-gloss>
     </example>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Cb">
-      <title><anchor xml:id="c6e4d2" /></title>
+      <title><anchor xml:id="c6e4d6" /></title>
 
       <interlinear-gloss>
-        <jbo>loi ratcu cu terlu'i le panka</jbo>
+        <jbo>loi ratcu cu terlu'i lo panka</jbo>
         <gloss>A-group-of rats cleans the park.</gloss>
         <natlang>Rats (as a team) clean the park.</natlang>
       </interlinear-gloss>
     </example>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Cc">
-      <title><anchor xml:id="c6e4d3" /></title>
+      <title><anchor xml:id="c6e4d7" /></title>
 
       <interlinear-gloss>
         <jbo>lo'i ratcu cu barda</jbo>
@@ -924,9 +924,11 @@
       <valsi>lo</valsi>
       in
       <xref linkend="example-random-id-xIXo" />
-      , the meaning would be something like
-      <quote>I am typical of some Lojban user</quote>
-      , which is nonsense.
+      , the whole point would be lost:
+      <jbophrase>lo lobypli</jbophrase>
+      supplies a person or persons, and one cannot be typical <emphasis>of a person</emphasis> &ndash; the x<subscript>3</subscript> of
+      <valsi>fadni</valsi>
+      wants the population as a set, not its members.
     </para>
     <para>
       The underlying selbri for sets is
@@ -950,14 +952,25 @@
 
       </cmavo-entry>
     </cmavo-list>
+    <para role="status-note">
+      A caution before anything else in this section:
+      <valsi>lo'e</valsi>
+      and
+      <valsi>le'e</valsi>
+      are the least settled words in this chapter. The language's definition process never finalized their semantics; what follows is the traditional account, essentially that of the first edition, and it is not universally accepted &ndash; some speakers prefer to express typicality with ordinary generic
+      <valsi>lo</valsi>
+      (see
+      <xref linkend="section-masses" />) or with the selbri
+      <valsi>fadni</valsi>. They are also, in practice, rarely used. Read this section as a description of a convention, not a settled rule.
+    </para>
     <para role="indent">
-      Lojban has a method for discriminating between
+      On the traditional account, then, Lojban has a method for discriminating between
       <quote>the lion</quote>
       who lives in Africa and
       <quote>the Englishman</quote>
       who, generally speaking, doesn't live in Africa even though some Englishmen do. The descriptor
       <valsi>lo'e</valsi>
-      means
+      is glossed
       <quote>the typical</quote>
       , as in
     </para>
@@ -971,7 +984,7 @@
         <anchor xml:id="c6e5d1" /></title>
 
       <interlinear-gloss>
-        <jbo>lo'e cinfo cu xabju le fi'ortu'a</jbo>
+        <jbo>lo'e cinfo cu xabju lo fi'ortu'a</jbo>
         <gloss>The-typical lion - dwells-in the African-land.</gloss>
         <natlang>The lion dwells in Africa.</natlang>
       </interlinear-gloss>
@@ -1002,7 +1015,7 @@
         <gloss>The-typical English-person - dwells-in</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le fi'ortu'a na.e le gligugde</jbo>
+        <jbo>… lo fi'ortu'a na.e lo gligugde</jbo>
         <gloss>… the African-land (Not!)--and the English-country.</gloss>
         <natlang>The typical English person dwells not in Africa but in England.</natlang>
       </interlinear-gloss>
@@ -1098,19 +1111,7 @@
       <quote>typical Smith</quote>. People or things who share a common name do not, in general, have any other common attributes worth mentioning.
     </para>
 
-    <para role="status-note">
-      <indexterm type="general"><primary>lo'e</primary><secondary>unsettled status of</secondary></indexterm>
-      A caution: of all the descriptors in this chapter,
-      <valsi>lo'e</valsi>
-      and
-      <valsi>le'e</valsi>
-      are the least settled. The language's definition process never finalized their semantics, and the account given here &ndash; essentially that of the first edition &ndash; is not universally accepted; some speakers prefer to express typicality with ordinary generic
-      <valsi>lo</valsi>
-      (see
-      <xref linkend="section-masses" />) or with the selbri
-      <valsi>fadni</valsi>. They are also, in practice, rarely used. This book presents them for completeness, with that caveat attached.
-    </para>
-  </section>
+    </section>
   <section xml:id="section-quantified-sumti">
     <title><anchor xml:id="c6s6" />Quantified sumti</title>
     <para>      The following cmavo are discussed in this section:    </para>    <cmavo-list>
@@ -1158,7 +1159,7 @@
       <title><anchor xml:id="c6e6d1" /></title>
 
       <interlinear-gloss>
-        <jbo>do cadzu le bisli</jbo>
+        <jbo>do cadzu lo bisli</jbo>
         <gloss>You walk-on the ice.</gloss>
       </interlinear-gloss>
     </example>
@@ -1166,7 +1167,7 @@
       <title><anchor xml:id="c6e6d2" /></title>
 
       <interlinear-gloss>
-        <jbo>re do cadzu le bisli</jbo>
+        <jbo>re do cadzu lo bisli</jbo>
         <gloss>Two-of you walk-on the ice.</gloss>
       </interlinear-gloss>
     </example>
@@ -1182,7 +1183,7 @@
       by itself means
       <quote>two</quote>
       , when used as a quantifier it means
-      <quote>two-of</quote>. Out of the group of listeners (the number of which isn't stated), two (we are not told which ones) are asserted to be
+      <quote>two-of</quote>. Out of the listeners (however many there are), two (we are not told which ones) are asserted to be
       <quote>walkers on the ice</quote>. Implicitly, the others (if any) are not walkers on the ice. In Lojban, you cannot say
       <quote>I own three shoes</quote>
       if in fact you own four shoes. Numbers need never be specified, but if they are specified they must be correct.
@@ -1224,7 +1225,7 @@
       <title><anchor xml:id="c6e6d4" /></title>
 
       <interlinear-gloss>
-        <jbo>ro do cadzu le bisli</jbo>
+        <jbo>ro do cadzu lo bisli</jbo>
         <gloss>All-of you walk-on the ice.</gloss>
         <natlang>Each of you walks on the ice.</natlang>
       </interlinear-gloss>
@@ -1243,7 +1244,11 @@
     <para role="status-note">
       <indexterm type="general"><primary>implicit quantifiers</primary><secondary>abolition of</secondary>
       </indexterm>
-      Here we reach one of the most important rules of current Lojban, and one of the largest changes from the first edition of this book: <emphasis>a sumti without an explicit quantifier has no quantifier at all</emphasis>. It is a referring expression, pure and simple.
+      Here we reach one of the most important rules of current Lojban, and one of the largest changes from the first edition of this book: <emphasis>a sumti without an explicit quantifier has no quantifier at all</emphasis>. It is a referring expression, pure and simple &ndash; in the language of logic, a <quote>constant</quote>: a term that names its referents outright, as opposed to a quantified term like
+      <jbophrase>re do</jbophrase>
+      , which selects from them. The distinction does real work in
+      <xref linkend="chapter-quantifiers" />
+      , where quantified terms interact with negation and with each other in ways constants never do.
       The first edition instead assigned every kind of sumti an <quote>implicit quantifier</quote> which an explicit one was said to replace &ndash;
       <valsi>ro</valsi>
       for personal pro-sumti,
@@ -1320,7 +1325,7 @@
     </para>
     <para>You may also specify an explicit inner quantifier and leave the outer position empty:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-f643">
-      <title><anchor xml:id="c6e7d3" /></title>
+      <title><anchor xml:id="c6e7d4" /></title>
 
       <interlinear-gloss>
         <jbo>le ci gerku cu blabi</jbo>
@@ -1338,7 +1343,7 @@
       <valsi>lo</valsi>. The inner quantifier states how many things the description refers to; the outer quantifier picks out how many of them the bridi concerns:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Da">
-      <title><anchor xml:id="c6e7d4" /></title>
+      <title><anchor xml:id="c6e7d7" /></title>
 
       <interlinear-gloss>
         <jbo>lo mu bakni cu se jirna</jbo>
@@ -1347,7 +1352,7 @@
       </interlinear-gloss>
     </example>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Db">
-      <title><anchor xml:id="c6e7d5" /></title>
+      <title><anchor xml:id="c6e7d8" /></title>
 
       <interlinear-gloss>
         <jbo>mu lo pano bakni cu blabi</jbo>
@@ -1394,25 +1399,21 @@
       <quote>the three dogs (that we're concerned with)</quote>
       , whereas the first edition warned against it as claiming that only three dogs exist in the universe &ndash; that warning is obsolete. Second, since
       <valsi>lo</valsi>
-      no longer conceals a
-      <quote>there is at least one&hellip;</quote>
-      claim, the subtle interactions between descriptions, negation, and quantifier order described in
+      no longer contains a scope-bearing
+      <quote>at least one&hellip;</quote>
+      quantifier (it still refers to one or more things &ndash; that much is inherent in referring), the subtle interactions between descriptions, negation, and quantifier order described in
       <xref linkend="chapter-quantifiers" />
-      work differently than in the first edition; the details are given there. This change was ratified along with the rest of xorlo; usage following the first edition's defaults was never declared incorrect, but current Lojban neither writes nor reads descriptions that way.
+      work differently than in the first edition; the details are given there. This change was ratified along with the rest of xorlo, and current usage follows it; per the 2007 adoption, the first edition's conventions remain readable as not-incorrect older Lojban.
     </para>
     <para>
-      <indexterm type="lojban-word"><primary>le</primary><secondary>inner quantifier need not be truthful</secondary>
+      <indexterm type="lojban-word"><primary>le</primary><secondary>inner quantifier with</secondary>
       </indexterm>
-      Note that the inner quantifier of
-      <valsi>le</valsi>
-      , even when exact, need not be truthful:
+      Note how non-veridicality interacts with an inner quantifier on
+      <valsi>le</valsi>:
       <jbophrase>le ci nanmu</jbophrase>
-      means
-      <quote>what I describe as three men</quote>
-      , not
-      <quote>three of what I describe as men</quote>. This follows from the rule that what is described by a
+      refers to exactly three things &ndash; the count is genuine &ndash; which the speaker <emphasis>describes</emphasis> as men, rightly or wrongly. The looseness of a
       <valsi>le</valsi>
-      description represents the speaker's viewpoint rather than the objective way things are.
+      description lies entirely in the selbri; the number of things referred to is stated as fact.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>la</primary><secondary>number after, as part of name</secondary>
@@ -1438,7 +1439,7 @@
       Quantifiers combine with the group descriptors in a way that follows naturally from what inner and outer quantifiers mean. The inner quantifier gives the size of the group; the outer quantifier counts <emphasis>groups</emphasis>:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Dc">
-      <title><anchor xml:id="c6e7d6" /></title>
+      <title><anchor xml:id="c6e7d9" /></title>
 
       <interlinear-gloss>
         <jbo>re loi mu bakni cu bevri lo pipno</jbo>
@@ -1499,7 +1500,7 @@
       <valsi>ku</valsi>
       may still be used.)
     </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-8vk2">
+    <example role="interlinear-gloss-example" xml:id="example-random-id-EsVd">
       <title><anchor xml:id="c6e8d1" /></title>
 
       <interlinear-gloss>
@@ -1512,7 +1513,7 @@
       <indexterm type="general"><primary>indefinite sumti</primary><secondary>meaning of</secondary>
       </indexterm>
       What does
-      <xref linkend="example-random-id-8vk2" />
+      <xref linkend="example-random-id-EsVd" />
       mean? It is a pure statement of quantity: <emphasis>three things which are dogs are white</emphasis> &ndash; three dogs anywhere in the world under discussion, not three of some particular dogs already on the conversational table. In the notation of
       <xref linkend="chapter-quantifiers" />
       , it is exactly equivalent to
@@ -1526,7 +1527,7 @@
       description:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-gr7Y">
-      <title><anchor xml:id="c6e8d2" /></title>
+      <title><anchor xml:id="c6e7d5" /></title>
 
       <interlinear-gloss>
         <jbo>ci lo gerku cu blabi</jbo>
@@ -1541,7 +1542,7 @@
       &ndash; the dogs we are talking about, whichever those are in context. If the neighborhood's dogs are under discussion,
       <xref linkend="example-random-id-gr7Y" />
       says three of <emphasis>them</emphasis> are white, while
-      <xref linkend="example-random-id-8vk2" />
+      <xref linkend="example-random-id-EsVd" />
       says only that the world contains exactly three white dogs in all &ndash; a much stronger and usually stranger claim, unless context has already narrowed
       <quote>the world</quote>
       down to something small. When the referents of
@@ -1588,7 +1589,7 @@
       A sumti-based description has a sumti where the selbri would normally be, and the inner quantifier is required &ndash; it cannot be implicit. An outer quantifier is permitted but not required.
     </para>
 
-    <para>A sumti-based description built with <valsi>le</valsi> refers to some of the things the inner sumti refers to, re-described by the speaker; formally, <jbophrase>le re do</jbophrase> amounts to <jbophrase>le re me do</jbophrase>, using the <valsi>me</valsi> conversion of <xref linkend="chapter-selbri" />. The most common case is this: Compare the following:</para>
+    <para>A sumti-based description built with <valsi>le</valsi> refers to things the speaker describes as being <emphasis>among</emphasis> the referents of the inner sumti; formally, <jbophrase>le re do</jbophrase> amounts to <jbophrase>le re me do</jbophrase>, using the <valsi>me</valsi> conversion of <xref linkend="chapter-selbri" />. Compare the following:</para>
     <example xml:id="example-random-id-qLaQ" role="interlinear-gloss-example">
       <title>
 
@@ -1613,15 +1614,13 @@
     </example>
     <para role="indent">
       <xref linkend="example-random-id-qLaQ" />
-      simply specifies that of the group of listeners, size unknown, two are men.
+      simply specifies that of the listeners, however many they are, two are men.
       <xref linkend="example-random-id-qLAr" />
       , which has the sumti-based description
       <jbophrase>le re do</jbophrase>
-      , says of the two listeners that they are men. So in effect the inner quantifier
+      , refers to two people, described as being among the listeners, and says of them that they are men. The inner quantifier
       <valsi>re</valsi>
-      gives the number of individuals which the inner sumti
-      <valsi>do</valsi>
-      refers to.
+      counts the referents of the whole description &ndash; it does not say how many listeners there are altogether.
     </para>
     <para>Here is another group of examples:</para>
     <example xml:id="example-random-id-qLbf" role="interlinear-gloss-example">
@@ -1663,7 +1662,7 @@
       </indexterm>
       In each case,
       <jbophrase>le ci cribe</jbophrase>
-      restricts the bears (or alleged bears) being talked of to some group of three which the speaker has in mind.
+      restricts the bears (or alleged bears) being talked of to three that the speaker has in mind.
       <xref linkend="example-random-id-qLbf" />
       says that two of them (which two is not stated) are brown.
       <xref linkend="example-random-id-qLbh" />
@@ -1782,7 +1781,7 @@
         <anchor xml:id="c6e10d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska lu le xunre cmaxirma li'u</jbo>
+        <jbo>mi viska lu lo xunre cmaxirma li'u</jbo>
         <gloss>I see [quote] the red small-horse [unquote].</gloss>
       </interlinear-gloss>
     </example>
@@ -1793,7 +1792,7 @@
       <quote>The Red Pony</quote>. That might be all right if you were looking at the cover of the book, where the words
       <quote>The Red Pony</quote>
       are presumably written. (More precisely, where the words
-      <jbophrase>le xunre cmaxirma</jbophrase>
+      <jbophrase>lo xunre cmaxirma</jbophrase>
       are written &ndash; but we may suppose the book has been translated into Lojban.)
     </para>
     <para>What you really want to say is:</para>
@@ -1801,11 +1800,11 @@
       <title><anchor xml:id="c6e10d2" /><indexterm type="general"><primary>Red Pony</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi viska le selsinxa</jbo>
+        <jbo>mi viska lo selsinxa</jbo>
         <gloss>I see the thing-represented-by</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… be lu le xunre cmaxirma li'u</jbo>
+        <jbo>… be lu lo xunre cmaxirma li'u</jbo>
         <gloss>… - [quote] the red small-horse [unquote].</gloss>
       </interlinear-gloss>
     </example>
@@ -1825,7 +1824,7 @@
       <title><anchor xml:id="c6e10d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska la'e lu le xunre cmaxirma li'u [lu'u]</jbo>
+        <jbo>mi viska la'e lu lo xunre cmaxirma li'u [lu'u]</jbo>
 
 
         <gloss>I see the-referent-of [quote] the red small-horse [unquote] -.</gloss>
@@ -1876,7 +1875,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi pu cusku lu'e le vi cukta</jbo>
+        <jbo>mi pu cusku lu'e lo vi cukta</jbo>
         <gloss>I [past] express a-symbol-for the nearby book.</gloss>
         <natlang>I said the title of this book.</natlang>
       </interlinear-gloss>
@@ -1886,7 +1885,7 @@
       <title><anchor xml:id="c6e10d5" /><indexterm type="general"><primary>title of book</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi pu cusku le sinxa be le vi cukta</jbo>
+        <jbo>mi pu cusku lo sinxa be lo vi cukta</jbo>
         <gloss>I [past] express the symbol-for - the nearby book.</gloss>
       </interlinear-gloss>
     </example>
@@ -1930,7 +1929,7 @@
       <title><anchor xml:id="c6e10d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi troci tu'a le vorme</jbo>
+        <jbo>mi troci tu'a lo vorme</jbo>
         <gloss>I try some-abstraction-about the door.</gloss>
         <natlang>I try (to open) the door.</natlang>
       </interlinear-gloss>
@@ -2010,7 +2009,7 @@
         <title><anchor xml:id="c6e10d10" /></title>
 
         <interlinear-gloss>
-          <jbo>mi viska na'ebo le gerku</jbo>
+          <jbo>mi viska na'ebo lo gerku</jbo>
 
           <gloss>I see something-other-than the dog.</gloss>
         </interlinear-gloss>
@@ -2278,7 +2277,7 @@
       <title><anchor xml:id="c6e12d2" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djonz. klama le zarci</jbo>
+        <jbo>la .djonz. klama lo zarci</jbo>
         <gloss>Those-named Jones go-to the store.</gloss>
         <natlang>The Joneses go to-the store.</natlang>
       </interlinear-gloss>
@@ -2287,7 +2286,7 @@
       <title><anchor xml:id="c6e12d3" /></title>
 
       <interlinear-gloss>
-        <jbo>lai .djonz. klama le zarci</jbo>
+        <jbo>lai .djonz. klama lo zarci</jbo>
         <gloss>The-group-of-those-named Jones goes-to the store.</gloss>
         <natlang>The Joneses go to the store.</natlang>
       </interlinear-gloss>
@@ -2347,7 +2346,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>doi .djan.--.pol.--.djonz. le bloti cu klama fi--la .niuport.--.niuz.</jbo>
+        <jbo>doi .djan.--.pol.--.djonz. lo bloti cu klama fi--la .ni'uport.--.ni'uz.</jbo>
         <gloss>O John--Paul--Jones the boat - goes from-that-named Newport--News.</gloss>
         <natlang>John Paul Jones, the boat comes (to somewhere) from Newport News.</natlang>
 
@@ -2367,7 +2366,7 @@
       (because
       <morphology>mz</morphology>
       is invalid):
-      <cmevla>djeimyz</cmevla>
+      <cmevla>.djeimyz.</cmevla>
       will suffice.
     </para>
     <para>
@@ -2489,7 +2488,7 @@
       <title><anchor xml:id="c6e13d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le cribe goi ko'a cu xekri .i ko'a citka le smacu</jbo>
+        <jbo>lo cribe goi ko'a cu xekri .i ko'a citka lo smacu</jbo>
         <gloss>The bear defined-as it-1 - is-black. - It-1 eats the mouse.</gloss>
       </interlinear-gloss>
     </example>
@@ -2521,7 +2520,7 @@
       (This is not the same as
       <quote>All persons love a certain fish</quote>
       ; the difference between the two is one of quantifier order.) The quantification conventions for the da-series are particular to it (roughly: a bare da means su'o da on first use, and keeps referring to the same things thereafter), and are discussed in detail in
-      <xref linkend="chapter-quantifiers" />. 
+      <xref linkend="chapter-quantifiers" />.
     </para>
     <para>
       <indexterm type="general"><primary>reflexive pro-sumti</primary></indexterm>
@@ -2540,7 +2539,7 @@
       <title><anchor xml:id="c6e13d4" /></title>
 
       <interlinear-gloss>
-        <jbo>le cribe cu batci vo'a</jbo>
+        <jbo>lo cribe cu batci vo'a</jbo>
         <gloss>The bear - bites what-is-in-the-x<subscript>1</subscript>-place.</gloss>
         <natlang>The bear bites itself.</natlang>
       </interlinear-gloss>
@@ -2590,7 +2589,7 @@
       <valsi>zo'e</valsi>
       simply refers to whatever unspecified thing or things make the bridi sensible in context &ndash; the value the speaker couldn't be bothered to spell out. It is a referring expression like any other, and indeed every description can be thought of as a
       <valsi>zo'e</valsi>
-      with an explanation attached: 
+      with an explanation attached:
       <jbophrase>lo zarci</jbophrase>
       is, in effect,
       <quote><valsi>zo'e</valsi> which is a market</quote>.
@@ -2659,7 +2658,7 @@
       <title><anchor xml:id="c6e13d9" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska le mlatu ku poi zo'e</jbo>
+        <jbo>mi viska lo mlatu ku poi zo'e</jbo>
         <gloss>I see the cat(s) - such-that something-unspecified</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -2774,7 +2773,7 @@
       <title><anchor xml:id="c6e14d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi cusku zoi .kuot. I'm--John .kuot.</jbo>
+        <jbo>mi cusku zoi .ku'ot. I'm--John .ku'ot.</jbo>
         <gloss>I express [non-Lojban] &lt; I'm--John &gt;.</gloss>
         <natlang>
           I say

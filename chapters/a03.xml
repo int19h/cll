@@ -175,7 +175,7 @@
           <valsi>si</valsi>
           as taught is de facto (implemented alike in the surveyed parsers);
           <valsi>su</valsi>
-          is de facto but unevenly implemented (the surveyed parsers disagree on whether it erases past a paragraph boundary);
+          is de facto but unevenly implemented (the surveyed parsers disagree on whether the paragraph boundary itself is preserved);
           <valsi>sa</valsi>
           remains unsettled. See
           <xref linkend="chapter-structure" />.
@@ -184,7 +184,7 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>fi'o</primary><secondary>restriction changes summary</secondary></indexterm>
-          <emphasis>De facto</emphasis>. Two of the first edition's parser restrictions on
+          <emphasis>De facto</emphasis> (implemented in the surveyed parsers). Two of the first edition's parser restrictions on
           <valsi>fi'o</valsi>
           modals have lapsed (modal connectives and sticky modals now parse); direct negation still does not. See
           <xref linkend="chapter-sumti-tcita" />.
@@ -281,7 +281,7 @@
         <valsi>na</valsi>
         before the selbri still negates the whole bridi; the narrower in-place-scope proposal was never adopted (though the positions of
         <valsi>na</valsi>
-        relative to a tense now do differ &ndash; a de facto resolution taught in
+        relative to a tense now do differ &ndash; a de facto resolution, implemented in the semantic software surveyed for this edition and taught in
         <xref linkend="chapter-negation" />).
       </para></listitem>
       <listitem><para>

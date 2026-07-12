@@ -1198,7 +1198,7 @@
       <valsi>ti</valsi>
       , whereas
       <xref linkend="example-random-id-qMCc" />
-      doesn't), and neither one is self-contradictory: it is perfectly all right to describe something as a man (although perhaps confusing to the listener) even if it actually is a woman.
+      doesn't), and neither one is self-contradictory: it is perfectly all right to describe something as a cat (although perhaps confusing to the listener) even if it actually is a dog.
     </para>
   </section>
   <section xml:id="section-descriptors">
@@ -1360,6 +1360,10 @@
       instead. Note that the relative clause comes before the inner quantifier.
     </para>
     <para>
+      <indexterm type="general"><primary>relative clauses</primary><secondary>on unquantified descriptions</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>constants</primary><secondary>relative-clause attachment to</secondary>
+      </indexterm>
       When a description has no explicit outer quantifier at all, there is nothing for the two positions to disagree about. An unquantified description like
       <jbophrase>le gerku</jbophrase>
       or
@@ -1422,7 +1426,7 @@
       <interlinear-gloss>
         <jbo>su'o lo prenu ku noi blabi cu klama le zarci</jbo>
         <gloss>At-least-one of-( the persons ) incidentally-which-( are-white ) go-to the market.</gloss>
-        <natlang>At least one of the people &ndash; namely, the goers, who are white &ndash; goes to the market.</natlang>
+        <natlang>At least one of the people goes to the market and is, incidentally, white.</natlang>
       </interlinear-gloss>
     </example>
     <example xml:id="example-random-id-sQn2" role="interlinear-gloss-example">

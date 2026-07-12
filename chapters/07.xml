@@ -166,7 +166,7 @@
       The mi-series of pro-sumti refer to the speaker, the listener, and others in various combinations.
       <valsi>mi</valsi>
       refers to the speaker and perhaps others for whom the speaker speaks &ndash; like any unquantified sumti, it may have one referent or several (see
-      <xref linkend="section-simple-sumti-kinds" />).
+      <xref linkend="section-quantified-sumti" />).
       <valsi>do</valsi>
       refers to the listener or listeners. Neither
       <valsi>mi</valsi>
@@ -254,7 +254,7 @@
       <indexterm type="general"><primary>pro-sumti for speaker/listener/others</primary><secondary>relation to &quot;joi&quot;</secondary>
       </indexterm>
       All of these pro-sumti refer to the relevant combinations of people &ndash; several referents at once, with context deciding whether they act one by one or together, as with any plural reference (see
-      <xref linkend="section-simple-sumti-kinds" />). Thus
+      <xref linkend="section-masses" />). Thus
       <valsi>mi'o</valsi>
       is me and you taken together, like
       <jbophrase>mi jo'u do</jbophrase>

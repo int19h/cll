@@ -5,10 +5,34 @@
       <imagedata fileref="assets/media/chapter-grammars.svg.png" />
     </imageobject>
   </mediaobject>
+  <section xml:id="section-grammars-introduction">
+    <title><anchor xml:id="c21-intro" />About the formal grammars</title>
+    <para>
+      <indexterm type="general"><primary>formal grammar</primary><secondary>role of</secondary>
+      </indexterm>
+      Unlike the grammars of natural languages, the grammar of Lojban is fully formal: there is a precise, machine-testable definition of which strings of words constitute grammatical Lojban text, and of how each such text is structured. This chapter presents that definition for the <emphasis>syntax</emphasis> of the language &ndash; how words combine into sentences and texts. The equally formal definition of the <emphasis>word-forms</emphasis> &ndash; which strings of letters constitute words in the first place &ndash; is a separate document, printed in
+      <xref linkend="appendix-peg-morphology" />.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>formal grammar</primary><secondary>status of versions</secondary>
+      </indexterm>
+      A word on authority. The grammar printed here, in EBNF notation, is the <emphasis>official</emphasis> grammar: it corresponds to the third baselined machine grammar adopted by the Logical Language Group, and it is the standard against which this book's own examples were originally checked. The first edition printed, alongside it, the equivalent YACC grammar from which it was derived, and declared the YACC version authoritative in case of discrepancy; by a 2014 decision of the Group, the YACC listing is no longer printed &ndash; it remains available in the electronic supplements to this book. Meanwhile, the software the community actually uses to parse Lojban today implements a different formal system: parsing expression grammars (PEG) of the camxes family, which cover morphology and syntax together and incorporate the committee-adopted amendments described throughout this book. The PEG grammars are de facto standards &ndash; never ratified, universally used. Where this book's text and the EBNF printed below disagree with the amendments, the amendments prevail, and each is flagged where it is taught; the EBNF itself is printed as baselined.
+    </para>
+    <para>
+      Two known seams between this EBNF and current practice deserve mention here. First, the
+      <quote>magic words</quote>
+      (quotation, erasure, and their kin) are represented below only by placeholder rules; their real behavior is word-level and is specified in
+      <xref linkend="chapter-structure" />. Second, where a tag stands directly before a selbri, the EBNF permits more than one grouping; the 2016 tag-binding decision picks one (see
+      <xref linkend="section-tenses-introduction" />), and current parsers implement that choice.
+    </para>
+  </section>
   <section xml:id="section-EBNF">
     <title><anchor xml:id="c21s2" />EBNF grammar of Lojban</title>
 
-    <para>Lojban Machine Grammar, EBNF Version, Final Baseline</para>
+    <para>Lojban Machine Grammar, EBNF Version, third baseline (the first edition styled this
+      <quote>Final Baseline</quote>
+      ; see the note on the language's governance in
+      <xref linkend="chapter-about" />)</para>
     <para>This EBNF document is explicitly dedicated to the public domain by its author, The Logical Language Group, Inc. Contact that organization at: 2904 Beau Lane, Fairfax VA 22031 USA 703-385-0273 (intl: +1 703 385 0273)</para>
     <para>Explanation of notation: All rules have the form:</para>
     <para>
@@ -1441,7 +1465,7 @@
     </variablelist>
     <para>FAhO is a universal terminator and signals the end of parsable input.</para>
   </section>
-  <!--section xml:id="section-cross-reference">
+  <section xml:id="section-cross-reference">
     <title><anchor xml:id="c21s3"/>EBNF Cross-Reference</title>
 
     <variablelist>
@@ -3775,5 +3799,5 @@
         </listitem>
       </varlistentry>
     </variablelist>
-  </section-->
+  </section>
 </chapter>

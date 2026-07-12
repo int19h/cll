@@ -304,8 +304,8 @@
       </indexterm>
       Stress normally falls on the next-to-the-last syllable; syllables whose vowel is
       <letteral>y</letteral>
-      are skipped in the count and never stressed. Strictly, this is the required rule for the content words (brivla); names may mark stress elsewhere, and the little structure words may be stressed anywhere or not at all &ndash; see
-      <xref linkend="chapter-phonology" />. If a word only has one syllable, then that syllable is not stressed.
+      , and syllables with no vowel at all, are skipped in the count and never stressed. Strictly, this is the required rule for the content words (brivla); names may mark stress elsewhere, and the little structure words may be stressed anywhere or not at all &ndash; see
+      <xref linkend="chapter-phonology" />. A one-syllable structure word is usually left unstressed.
     </para>
     <para>All Lojban words are pronounced as they are spelled: there are no silent letters.</para>
   </section>
@@ -1249,8 +1249,7 @@
     <title><anchor xml:id="c2s10" />Description sumti</title>
     <para>      <indexterm type="general"><primary>descriptions</primary><secondary>quick-tour version</secondary>      </indexterm>      Often we wish to talk about things other than the speaker, the listener and things we can point to. Let's say I want to talk about a talker other than      <valsi>mi</valsi>. What I want to talk about would naturally fit into the first place of
       <valsi>tavla</valsi>. Lojban, it turns out, has an operator that pulls this first place out of a selbri and converts it to a sumti called a
-      <quote>description sumti</quote>
-      , and the operator itself is called a
+      <quote>description sumti</quote>, and the operator itself is called a
       <quote>descriptor</quote>.
       <indexterm type="lojban-word"><primary>lo</primary><secondary>quick-tour version</secondary>
       </indexterm>

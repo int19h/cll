@@ -4845,7 +4845,7 @@
     <para role="status-note">
       <indexterm type="general"><primary>tenses</primary><secondary>before forethought connectives, status</secondary>
       </indexterm>
-      (A status note: the first edition's machine grammar &ndash; still the official baseline grammar &ndash; attached such a leading tense <emphasis>inside</emphasis> the forethought construction; the de facto grammars surveyed for this edition instead read it as a tense term scoping over the whole of it. For an example like this one, the two analyses come to the same meaning.)
+      (A status note: the official baseline parser did not accept a bare leading tense on a forethought construction at all &ndash; the first edition's prose used the form its own parser rejected; the de facto grammars surveyed for this edition accept it, reading the tense as a term scoping over the whole construction &ndash; an implemented, never-voted resolution. For an example like this one, the intended both-in-the-past meaning is what those grammars deliver.)
     </para>
   </section>
   <section xml:id="section-abstractors">

@@ -607,7 +607,7 @@
   </section>
   <section xml:id="section-lojban-characters">
     <title><anchor xml:id="c3s3" />The special Lojban characters</title>
-    <para>      <indexterm type="general"><primary>characters</primary><secondary>special</secondary>      </indexterm>      The apostrophe, period, and comma need special attention. They are all used as indicators of a division between syllables, but each has a different pronunciation, and each is used for different reasons:    </para>    <para>
+    <para>      <indexterm type="general"><primary>characters</primary><secondary>special</secondary>      </indexterm>      The apostrophe, period, and comma need special attention. They are all used as indicators of a division between syllables, but they differ in what (if anything) is pronounced, and each is used for different reasons:    </para>    <para>
       <indexterm type="general"><primary>apostrophe</primary><secondary>type of letter in word-formation</secondary>
       </indexterm>
       <indexterm type="general"><primary>'</primary><secondary>definition of symbol &quot;'&quot; (see also apostrophe)</secondary>
@@ -745,7 +745,7 @@
       </indexterm>
       (The first edition offered a third version here, a name spelled with commas &ndash;
       <quote>.i,ai,i,ai,on.</quote>
-      &ndash; to be pronounced with glides between the vowels, relying on the comma's since-withdrawn power to stand for a sound. Under the current rule such a spelling is merely an unusual way of writing a name whose pronunciation follows from its letters alone, so this device is no longer available; spell out what you want said, with apostrophes or with explicit glide letters.)
+      &ndash; to be pronounced with glides between the vowels, relying on the comma's since-withdrawn power to stand for a sound. Under the current rule the commas contribute nothing, and the remaining letter sequence does not even form the intended single name; the device is simply gone. Spell out what you want said, with apostrophes or with explicit glide letters.)
     </para>
   </section>
   <section xml:id="section-diphthongs">
@@ -789,7 +789,7 @@
     <para role="status-note">
       <indexterm type="general"><primary>PEG morphology</primary><secondary>status of</secondary>
       </indexterm>
-      A word on authority: the four-diphthong analysis, like the rest of the precise word-form rules in this book, comes from the formal PEG definition of Lojban's word-forms &ndash; a working standard that was never put to a ratifying vote but is implemented by all modern Lojban software and assumed by all current usage (see
+      A word on authority: the four-diphthong analysis, like the rest of the precise word-form rules in this book, comes from the formal PEG definition of Lojban's word-forms &ndash; a working document of the language-definition effort that was never put to a ratifying vote, but is what current Lojban software implements (see
       <xref linkend="chapter-grammars" />). The ban on consonant-plus-glide sequences within it <emphasis>was</emphasis> separately voted (see the note at the end of this section).
     </para>
     <para>
@@ -1044,7 +1044,7 @@
       <quote>kuarka</quote>
       or names like
       <quote>.niuport.</quote>
-      were valid. The ban on consonant-glide-vowel sequences was adopted by a recorded vote of the BPFK, the language-definition committee, in December 2014 (during the committee's reconstitution), and the standard word-form definition rejects such sequences; some tools can additionally be asked to tolerate them, clearly flagged as nonstandard, when reading old text. Older names and borrowings containing such sequences must be respelled &ndash; usually by converting the glide to a full vowel with an apostrophe (<jbophrase>.ni'uport.</jbophrase>) or doubling the glide letter.
+      were valid. The ban on consonant-glide-vowel sequences was adopted by a recorded vote of the BPFK, the language-definition committee, in December 2014 &ndash; during the committee's reconstitution, so its formal pedigree is a committee vote rather than a ratified standard &ndash; and it is enforced by the standard word-form definition; some tools tolerate the old forms when reading, flagging them explicitly as nonstandard. Older names and borrowings containing such sequences must be respelled &ndash; usually by converting the glide to a full vowel with an apostrophe (<jbophrase>.ni'uport.</jbophrase>) or doubling the glide letter.
     </para>
     <para>
       <indexterm type="general"><primary>syllabic consonants</primary></indexterm>
@@ -3431,7 +3431,10 @@
           <quote>cow</quote>        </td>
       </tr>
     </informaltable>
-    <para>And for the glide-initial syllables:</para>
+    <para>
+      <indexterm type="general"><primary>glide-initial syllables</primary><secondary>English analogues for</secondary>
+      </indexterm>
+      And for the glide-initial syllables:</para>
     <informaltable class="vertsep">
       <thead>
         <tr>
@@ -4708,7 +4711,9 @@ There are two reasons for using full vowel elements.
       Firstly, to give a distinct visual style and flavour to cmevla and fu'ivla.
     </para>
     <para>
-      Secondly, to implement some functionality of the comma. In standard orthography the comma can be written to mark the division between vowels that belong to different syllables. In the zbalermorna orthography, full vowel elements can be used to represent a comma and a following vowel. An example would be
+      Secondly, to represent the first edition's comma convention, under which a written comma could force a syllable division between vowels. (Under the current rule the comma adds no sound and forces nothing &ndash; see
+      <xref linkend="section-lojban-characters" />
+      &ndash; so this zbalermorna device now reflects an obsolete contrast.) In that older convention, full vowel elements could represent a comma and a following vowel. An example would be
       <simplelist type="horiz">
         <member>
           <quote xml:lang="jbo"><foreignphrase xml:lang="zlm"></foreignphrase></quote> (<quote xml:lang="jbo">.uein.</quote>)

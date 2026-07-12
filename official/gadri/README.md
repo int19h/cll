@@ -2,9 +2,10 @@
 
 This directory holds the **exact text of the official description of the Lojban
 gadri system** ("xorlo") as ratified by the Logical Language Group membership,
-reconstructed here because no single copy of it exists anywhere else: the vote
-adopted a specific wiki revision *plus corrections*, one of which was never
-applied to the live wiki page.
+reconstructed here because no single copy of it exists in the cited wiki, its
+mirror, or the project's research corpus: the vote adopted a specific wiki
+revision *plus corrections*, one of which was never applied to the live wiki
+page.
 
 ## Files
 
@@ -45,9 +46,10 @@ The two files differ in exactly one line (the unicorn example, see below).
      nonsense there) — **never applied to the live page**; applied in
      `gadri-ratified-2020.wiki`.
 
-Source for the revision text: local mirror of mw.lojban.org (snapshot 2025-12),
-whose archived revision of the page is 123823, byte-identical to the wiki
-(the page has not changed since 2020-04-03).
+Source for the revision text: a mirror of mw.lojban.org fetched 2026-06-08
+(per its snapshot manifest), whose archived revision of the page is 123823 —
+i.e. the page had not changed between 2020-04-03 and the mirror fetch. The
+sha256 above identifies the exact bytes independently of any mirror.
 
 ## Notes
 

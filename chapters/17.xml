@@ -537,7 +537,7 @@
       </indexterm>
       (A status note: this bounded-string scope rule is checkpointed &ndash; it is stated by the language-definition committee's frozen 2005 letteral decision, which also gives
       <valsi>ce'a</valsi>
-      its per-category replacement behavior. The first edition instead suggested that a shift might theoretically persist until contradicted or until the end of the text, with the bounded reading only a practical presumption; the checkpointed rule settles it the bounded way.)
+      its per-category replacement behavior. The first edition &ndash; and an earlier, superseded 2004 committee page &ndash; instead suggested that a shift might persist until contradicted or until the end of the text, with the bounded reading only a practical presumption; the governing 2005 decision settles it the bounded way.)
     </para>
     <para>
       <indexterm type="general"><primary>shift</primary><secondary>single-letter</secondary>
@@ -721,7 +721,11 @@
       is merely
       <jbophrase>lo'u</jbophrase>'s delimiter and
       <jbophrase>le'u bu</jbophrase>
-      comes out a letteral. Avoid all of these corners in careful writing. The erasure words' own behavior is a separate, unvoted matter; see
+      comes out a letteral. A parser without erasure support may accept still more of the frozen list's exempt words &ndash; the standard camxes grammar, having no
+      <valsi>si</valsi>
+      machinery, reads even
+      <jbophrase>su bu</jbophrase>
+      as a letteral &ndash; but that is an artifact, not a rule. Avoid all of these corners in careful writing. The erasure words' own behavior is a separate, unvoted matter; see
       <xref linkend="section-cmavo-interactions" />.)
     </para>
     <para>

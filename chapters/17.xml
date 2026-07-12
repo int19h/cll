@@ -622,10 +622,6 @@
       Formally,
       <valsi>bu</valsi>
       may be attached to any single Lojban word. Compound cmavo do not count as words for this purpose. The special cmavo
-      <valsi>ba'e</valsi>
-      ,
-      <valsi>za'e</valsi>
-      ,
       <valsi>zei</valsi>
       ,
       <valsi>zo</valsi>
@@ -643,11 +639,18 @@
       <valsi>su</valsi>
       , and
       <valsi>fa'o</valsi>
-      may not have
+      cannot end up with
       <valsi>bu</valsi>
-      attached, because they are interpreted before
+      attached &ndash; not because of a special exemption, but because these words act on the words around them, and they act first: everything of this kind applies strictly left to right (the full story is told in
+      <xref linkend="section-cmavo-interactions" />). By the time a following
       <valsi>bu</valsi>
-      detection is done; in particular,
+      could bind,
+      <valsi>zo</valsi>
+      has already quoted it,
+      <valsi>zoi</valsi>
+      has taken it as a delimiter,
+      <valsi>si</valsi>
+      has erased something, and so on. In particular,
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-WvFu">
       <title><anchor xml:id="c17e4d1" /><indexterm type="lojban-word"><primary>bu</primary></indexterm></title>
@@ -672,7 +675,16 @@
       </indexterm>
       is needed when discussing
       <valsi>bu</valsi>
-      in Lojban. It is also illegal to attach
+      in Lojban. The first edition also listed
+      <valsi>ba'e</valsi>
+      and
+      <valsi>za'e</valsi>
+      here; whether
+      <valsi>bu</valsi>
+      may bind an emphasis marker (making a
+      <quote>ba'e</quote>
+      letteral) is a genuinely contested corner &ndash; current parsers allow it &ndash; and is best simply avoided (see the status note in
+      <xref linkend="section-cmavo-interactions" />). It is also illegal to attach
       <valsi>bu</valsi>
       to itself, but more than one
       <valsi>bu</valsi>
@@ -1919,7 +1931,12 @@
       <valsi>.ybu</valsi>
       , wherein the
       <valsi>bu</valsi>
-      cannot be omitted without ambiguity). Compression is moderately important because it's hard to say long cmevla without introducing an involuntary (and illegal) pause:
+      cannot be omitted without ambiguity &ndash;
+      <valsi>y</valsi>
+      by itself is the hesitation noise, not a letteral, which is why
+      <valsi>.ybu</valsi>
+      is recognized as a single fused word before any other word-level processing happens; see
+      <xref linkend="section-cmavo-interactions" />). Compression is moderately important because it's hard to say long cmevla without introducing an involuntary (and illegal) pause:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-0sin">
       <title>
@@ -1992,7 +2009,7 @@
       <interlinear-gloss>
         <jbo>la me dy ny. .abu</jbo>
         <gloss>
-          that-named what-pertains-to
+          that-named what-is-among-the-referents-of
           <quote>d</quote>
           <quote>n</quote>
           <quote>a</quote>
@@ -2057,7 +2074,7 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>loi rupnu be fi le merko</jbo>
-        <gloss>for-the-mass-of currency-units - in the American-system.</gloss>
+        <gloss>for-a-quantity-of currency-units - in the American-system.</gloss>
         <natlang>The character code 36 in ASCII represents American dollars.</natlang>
         <natlang>
           <quote>$</quote>

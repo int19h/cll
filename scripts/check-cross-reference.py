@@ -97,8 +97,19 @@ def main(path):
             print(f'FAIL {term}: {nxrefs} xrefs but only {len(pairs)} '
                   f'well-formed xref/subscript pairs')
             bad += 1
-        printed[term] = pairs
+        if term in printed:
+            print(f'FAIL duplicate entry: {term}')
+            bad += 1
+        else:
+            printed[term] = pairs
         order.append(term)
+
+    # every <varlistentry> in the table must have parsed as exactly one row
+    n_entries = len(re.findall(r'<varlistentry>', xr))
+    if n_entries != len(order):
+        print(f'FAIL {n_entries} <varlistentry> elements in the table but '
+              f'{len(order)} parsed entries')
+        bad += 1
 
     # ---- compare ----
     for term in sorted(set(expected) - set(printed)):

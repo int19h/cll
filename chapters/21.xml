@@ -37,7 +37,9 @@
       (quotation, erasure, and their kin) are represented below only by placeholder rules; their real behavior is word-level, carries its own rule-by-rule provenance &ndash; including the genuinely unsettled
       <valsi>sa</valsi>
       &ndash; and is specified in
-      <xref linkend="chapter-structure" />. Second, where a tag stands directly before a selbri, the EBNF permits more than one grouping; the committee-approved 2016 tag-binding decision picks one (see
+      <xref linkend="chapter-structure" />. Second, where a tag stands directly before a selbri, the EBNF permits more than one grouping; the BPFK-approved 2016 tag-binding decision &ndash; a vote of the language-definition committee whose story is told in
+      <xref linkend="chapter-about" />
+      &ndash; picks one (see
       <xref linkend="section-tenses-introduction" />), and the parsers surveyed for this edition implement that choice. Third, a tense standing bare before a forethought connective construction was not accepted by the baseline parser at all, despite the first edition's prose using it; the de facto grammars accept it, reading the tense as a term scoping over the whole construction &ndash; an implemented, never-voted resolution (see
       <xref linkend="chapter-connectives" />).
     </para>

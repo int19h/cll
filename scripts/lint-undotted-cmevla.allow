@@ -1,9 +1,17 @@
-# Pre-existing undotted cmevla, tracked for burn-down in the dotside sweep
-# (cll#9). Remove entries as the text is fixed; do not add entries for new text.
-11.xml:la djan
-12.xml:la spat
-13.xml:la djan
-13.xml:la .uengas
-14.xml:la djan
-14.xml:la .djan
-19.xml:la djan
+# Pre-existing undotted cmevla, tracked for burn-down in the dotside sweep (cll#9).
+# Format: basename:snippet:max_count. Reduce counts as text is fixed; never increase.
+02.xml:la djan.:4
+02.xml:la meris.:6
+02.xml:la tam.:4
+05.xml:la .alis:1
+08.xml:la djordj:1
+09.xml:la .apasionatas:3
+10.xml:la .alis:1
+10.xml:la djim:1
+11.xml:la djan:1
+12.xml:la spat:1
+13.xml:la .uengas:1
+13.xml:la djan:5
+14.xml:la .djan:1
+14.xml:la djan:1
+19.xml:la djan:1

@@ -533,7 +533,7 @@
         <description>
           imaginary
           <dbinlinemath>i</dbinlinemath>
-          , 
+          ,
           <dbinlinemath>√-1</dbinlinemath>
         </description>
       </cmavo-entry>
@@ -1796,7 +1796,7 @@
 
       <interlinear-gloss>
         <jbo>mi citka piro lei nanba</jbo>
-        <gloss>I eat the-whole-of the-mass-of bread</gloss>
+        <gloss>I eat the-whole-of the-group-of bread</gloss>
       </interlinear-gloss>
     </example>
     <para role="indent">
@@ -1807,7 +1807,8 @@
       ; and so on down to
       <valsi>piso'u</valsi>
       ,
-      <quote>a tiny part of</quote>. These numbers are particularly appropriate with masses, which are usually measured rather than counted, as
+      <quote>a tiny part of</quote>. These numbers are particularly appropriate with groups and substances (see
+      <xref linkend="section-masses" />), which are usually measured rather than counted, as
       <xref linkend="example-random-id-dwJI" />
       shows.
     </para>
@@ -1840,7 +1841,7 @@
 
       <interlinear-gloss>
         <jbo>mi citka pino'o lei nanba</jbo>
-        <gloss>I eat a-typical-amount-of the-mass-of bread.</gloss>
+        <gloss>I eat a-typical-amount-of the-group-of bread.</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent">
@@ -2313,8 +2314,8 @@
       <valsi>piro</valsi>
       , and
       <valsi>pisu'o</valsi>
-      are particularly important in Lojban, as they are implicitly used in the descriptions introduced by the cmavo of selma'o LA and LE, as explained in
-      <xref linkend="section-quantified-descriptions" />. Descriptions in general are outside the scope of this chapter.
+      are particularly important in Lojban: they serve as explicit outer quantifiers on descriptions introduced by the cmavo of selma'o LA and LE, as explained in
+      <xref linkend="section-quantified-descriptions" />. (The first edition said these quantifiers were <emphasis>implicitly</emphasis> present on every description; that default-quantifier machinery was abolished by the gadri reform &ndash; an unquantified description is now a constant, and a quantifier applies only when actually said.) Descriptions in general are outside the scope of this chapter.
     </para>
   </section>
   <section xml:id="section-radixen">
@@ -2665,7 +2666,7 @@
     </para>
 
     <definition>
-      <content>x<subscript>1</subscript> is a mass formed from the set x<subscript>2</subscript> of n members, one or more of which is/are x<subscript>3</subscript></content>
+      <content>x<subscript>1</subscript> is a group (traditionally called mass) formed from the set x<subscript>2</subscript> of n members, one or more of which is/are x<subscript>3</subscript></content>
     </definition>
     <para>
       <indexterm type="general"><primary>mass</primary><secondary>expressing relation with individuals forming</secondary>
@@ -2680,7 +2681,7 @@
       </indexterm>
       <indexterm type="general"><primary>set</primary><secondary>expressing relation with mass formed from set</secondary>
       </indexterm>
-      A cardinal selbri interrelates a set with a given number of members, the mass formed from that set, and the individuals which make the set up. The mass argument is placed first as a matter of convenience, not logical necessity.
+      A cardinal selbri interrelates a set with a given number of members, the group formed from that set, and the individuals which make the set up. The group argument is placed first as a matter of convenience, not logical necessity.
     </para>
 
     <para>Some examples:</para>
@@ -2690,13 +2691,13 @@
 
       <interlinear-gloss>
         <jbo>lei mi ratcu cu cimei</jbo>
-        <gloss>Those-I-describe-as-the-mass-of my rats - are-a-threesome.</gloss>
+        <gloss>Those-I-describe-as-the-group-of my rats - are-a-threesome.</gloss>
         <natlang>My rats are three.</natlang>
         <natlang>I have three rats.</natlang>
 
       </interlinear-gloss>
     </example>
-    <para role="indent">Here, the mass of my rats is said to have three components; that is, I have three rats.</para>
+    <para role="indent">Here, the group of my rats is said to have three members; that is, I have three rats.</para>
 
     <para>Another example, with one element this time:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-1Pen">
@@ -2716,8 +2717,8 @@
       <xref linkend="example-random-id-1Pen" />
       ,
       <valsi>mi</valsi>
-      refers to a mass,
-      <quote>the mass consisting of me</quote>. Personal pronouns are vague between masses, sets, and individuals.
+      refers to a group,
+      <quote>the group consisting of me</quote>. Personal pronouns are vague between groups, sets, and individuals.
     </para>
     <para>
       However, when the number expressed before
@@ -2735,7 +2736,7 @@
       </indexterm>
     </para>
     <definition>
-      <content>x<subscript>1</subscript> is a mass formed from a set x<subscript>2</subscript> of n members, one or more of which is/are x<subscript>3</subscript>, measured relative to the set x<subscript>4</subscript>.</content>
+      <content>x<subscript>1</subscript> is a group formed from a set x<subscript>2</subscript> of n members, one or more of which is/are x<subscript>3</subscript>, measured relative to the set x<subscript>4</subscript>.</content>
     </definition>
     <para>An example:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-GJsg">
@@ -2749,7 +2750,7 @@
 
       <interlinear-gloss>
         <jbo>lei ratcu poi zvati le panka</jbo>
-        <gloss>The-mass-of rats that are-in the park</gloss>
+        <gloss>The-group-of rats that are-in the park</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… cu so'umei fo lo'i ratcu</jbo>
@@ -2793,7 +2794,7 @@
     </para>
 
     <para>
-      More explanations about the interrelationship of sets, masses, and individuals can be found in
+      More explanations about the interrelationship of sets, groups, and individuals can be found in
       <xref linkend="section-masses" />.
     </para>
     <para>
@@ -2856,7 +2857,7 @@
 
 
     <definition>
-      <content>x<subscript>1</subscript> is an (n)th portion of mass x<subscript>2</subscript></content>
+      <content>x<subscript>1</subscript> is an (n)th portion of group/substance x<subscript>2</subscript></content>
     </definition>
     <para>Some examples:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-i8r4">
@@ -2978,7 +2979,7 @@
 
       <interlinear-gloss>
         <jbo>lei ratcu poi zvati le</jbo>
-        <gloss>The-mass-of rats which-are in the</gloss>
+        <gloss>The-group-of rats which-are in the</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… panka cu du'emei fo mi</jbo>
@@ -3364,6 +3365,18 @@
       fulfills the grammatical requirement for a left operand for the infix use of
       <valsi>va'a</valsi>
       , even though semantically none is needed or wanted.
+    </para>
+    <para role="status-note">
+      <indexterm type="lojban-word"><primary>tu'o</primary><secondary>contrasted with mo'e zo'e</secondary>
+      </indexterm>
+      (A usage note, post-first-edition and unratified: when an operand is not a mere grammatical filler but a genuinely <emphasis>unspecified</emphasis> quantity &ndash;
+      <quote>some number or other</quote>
+      &ndash; modern practice prefers
+      <jbophrase>mo'e zo'e</jbophrase>
+      , the elliptical sumti converted to an operand (see
+      <xref linkend="section-lojban-within-mekso" />), reserving
+      <valsi>tu'o</valsi>
+      for the truly vacuous slot as here.)
     </para>
     <para>
       <indexterm type="general"><primary>exponential notation</primary><secondary>with &quot;gei&quot;</secondary>
@@ -5587,7 +5600,7 @@
           ,
           <rafsi>mei</rafsi>
         </rafsi-group>
-        <description role="place-structure">x<subscript>1</subscript> is a mass formed from a set x<subscript>2</subscript> of n members, one or more of which is/are x<subscript>3</subscript>, [measured relative to the set x<subscript>4</subscript>/by standard x<subscript>4</subscript>]</description>
+        <description role="place-structure">x<subscript>1</subscript> is a group formed from a set x<subscript>2</subscript> of n members, one or more of which is/are x<subscript>3</subscript>, [measured relative to the set x<subscript>4</subscript>/by standard x<subscript>4</subscript>]</description>
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>moi</cmavo>
@@ -5601,7 +5614,7 @@
       <cmavo-entry>
         <cmavo>si'e</cmavo>
         <rafsi></rafsi>
-        <description role="place-structure">x<subscript>1</subscript> is an (n)th portion of mass x<subscript>2</subscript> [by standard x<subscript>3</subscript>]</description>
+        <description role="place-structure">x<subscript>1</subscript> is an (n)th portion of group/substance x<subscript>2</subscript> [by standard x<subscript>3</subscript>]</description>
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>cu'o</cmavo>

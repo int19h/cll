@@ -281,8 +281,11 @@
       (for example,
       <morphology>ua</morphology>
       is pronounced
-      <quote>wa</quote>); such glide-initial syllables begin a word or follow a vowel, never a consonant (the full story is in
-      <xref linkend="chapter-phonology" />).
+      <quote>wa</quote>); such glide-initial syllables begin a word or follow a vowel, never a consonant.
+    </para>
+    <para role="status-note">
+      (A status note: the four-diphthong analysis comes from the de facto word-form grammar, never formally ratified; the never-after-a-consonant ban was separately adopted by committee vote in 2014. The full story, with the first edition's older account, is in
+      <xref linkend="chapter-phonology" />.)
     </para>
     <para>
       <indexterm type="general"><primary>period</primary><secondary>quick-tour version</secondary>
@@ -299,9 +302,10 @@
     <para>
       <indexterm type="general"><primary>stress</primary><secondary>quick-tour version</secondary>
       </indexterm>
-      Stress falls on the next to the last syllable of all words, unless that vowel is
-      <letteral>y</letteral>,
-      which is never stressed; in such words the third-to-last syllable is stressed. If a word only has one syllable, then that syllable is not stressed.
+      Stress normally falls on the next-to-the-last syllable; syllables whose vowel is
+      <letteral>y</letteral>
+      are skipped in the count and never stressed. Strictly, this is the required rule for the content words (brivla); names may mark stress elsewhere, and the little structure words may be stressed anywhere or not at all &ndash; see
+      <xref linkend="chapter-phonology" />. If a word only has one syllable, then that syllable is not stressed.
     </para>
     <para>All Lojban words are pronounced as they are spelled: there are no silent letters.</para>
   </section>
@@ -1245,11 +1249,22 @@
     <title><anchor xml:id="c2s10" />Description sumti</title>
     <para>      <indexterm type="general"><primary>descriptions</primary><secondary>quick-tour version</secondary>      </indexterm>      Often we wish to talk about things other than the speaker, the listener and things we can point to. Let's say I want to talk about a talker other than      <valsi>mi</valsi>. What I want to talk about would naturally fit into the first place of
       <valsi>tavla</valsi>. Lojban, it turns out, has an operator that pulls this first place out of a selbri and converts it to a sumti called a
-      <quote>description sumti</quote>. The description sumti
+      <quote>description sumti</quote>
+      , and the operator itself is called a
+      <quote>descriptor</quote>.
+      <indexterm type="lojban-word"><primary>lo</primary><secondary>quick-tour version</secondary>
+      </indexterm>
+      The description sumti
       <jbophrase>lo tavla ku</jbophrase>
       means
       <quote>the talker</quote>
       &ndash; someone or something that really does talk, with context settling which one(s) &ndash; and may be used wherever any sumti may be used.
+    </para>
+    <para role="status-note">
+      (A status note: the article system taught in this chapter &ndash;
+      <valsi>lo</valsi>
+      as the everyday default, with the meanings given here &ndash; is the reformed system ratified by the language's governing bodies after the first edition, which taught the articles differently; older usage remains valid. The history is in
+      <xref linkend="section-basic-descriptors" />.)
     </para>
     <para>For example,</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k0Pj">

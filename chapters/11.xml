@@ -48,9 +48,13 @@
       had been elided.
     </para>
     <para>
-      One case has actually changed since the first edition. Under the tag-binding rule described in
+      <indexterm type="general"><primary>kei</primary><secondary>elision before a tagged selbri</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>tags</primary><secondary>binding across an elided kei</secondary>
+      </indexterm>
+      One case has actually changed since the first edition. By the tag-binding rule &ndash; adopted by a committee vote in 2016 and never separately ratified; the full status note accompanies its treatment in
       <xref linkend="section-tenses-introduction" />
-      , a tense or modal tag standing directly in front of a selbri binds to that selbri exactly as
+      &ndash; a tense or modal tag standing directly in front of a selbri binds to that selbri exactly as
       <valsi>cu</valsi>
       would. So in
       <jbophrase>lo nu klama ba brode</jbophrase>
@@ -62,9 +66,16 @@
       <valsi>brode</valsi>
       ; the first edition's grammar instead absorbed the
       <valsi>ba</valsi>
-      into the abstraction as a tagged sumti. If you <emphasis>want</emphasis> the tag inside the abstraction, follow it with a sumti (
-      <jbophrase>lo nu klama ba le nu tavla [kei]</jbophrase>) or close the tag with
+      into the abstraction as a tagged sumti. If you <emphasis>want</emphasis> the tag inside the abstraction, follow it with a sumti &ndash;
+      <jbophrase>lo nu klama ba le nu tavla cu xamgu</jbophrase>
+      keeps the
+      <valsi>ba</valsi>
+      phrase inside, with
+      <valsi>cu</valsi>
+      showing where the description ends &ndash; or close the tag with
       <valsi>ku</valsi>
+      , as in
+      <jbophrase>lo nu klama ba ku cu xamgu</jbophrase>
       ; a bare tag left standing in front of a selbri will always seize that selbri instead.
     </para>
     <para>
@@ -126,11 +137,13 @@
       <valsi>cu</valsi>
       ; in either of these circumstances,
       <valsi>kei</valsi>
-      can normally be elided. (The same holds when a tense or tag stands where the
+      can normally be elided. (The same holds when a <emphasis>bare</emphasis> tense or tag stands directly before the main selbri, where the
       <valsi>cu</valsi>
       would: by the binding rule just discussed, it closes the abstraction exactly as
       <valsi>cu</valsi>
-      does.)
+      does. A tag heading a larger construction &ndash; say the
+      <jbophrase>ba bo</jbophrase>
+      of a bridi-tail connective &ndash; does not.)
     </para>
     <para>
       <indexterm type="general"><primary>abstractions</primary><secondary>place structure</secondary>
@@ -1041,28 +1054,24 @@
       <indexterm type="general"><primary>fuzzy logic and truth-value abstraction</primary></indexterm>
       <indexterm type="general"><primary>abstractions</primary><secondary>truth-value and fuzzy logic</secondary>
       </indexterm>
-      Abstractions using
+      The first edition proposed
       <valsi>jei</valsi>
-      are the mechanism for fuzzy logic in Lojban; the
-      <valsi>jei</valsi>
-      abstraction refers to a number between 0 and 1 inclusive (as distinct from
+      abstractions as the mechanism for fuzzy logic in Lojban, referring to a number between 0 and 1 inclusive (as distinct from
       <valsi>ni</valsi>
-      abstractions, which are often on open-ended scales). The detailed conventions for using
+      abstractions, which are often on open-ended scales) &ndash; while conceding that the detailed conventions for using
       <valsi>jei</valsi>
-      in fuzzy-logic contexts have not yet been established.
+      that way had not yet been established.
     </para>
     <para role="status-note">
       <indexterm type="lojban-word"><primary>jei</primary><secondary>status of fuzzy interpretation</secondary>
       </indexterm>
-      (A status note: they still have not been. The fuzzy, number-valued reading of
+      (A status note: they still have not been, and the question was never officially settled either way. The number-valued reading has not become established in ordinary use: prevailing practice treats a
       <valsi>jei</valsi>
-      never took hold; in practice writers use
-      <valsi>jei</valsi>
-      , when they use it at all, as a plain whether-or-not truth value, and express degrees with
+      abstraction, where it is used at all, as a plain whether-or-not truth value, and expresses degrees with
       <valsi>ni</valsi>
       or with a
       <valsi>ka</valsi>
-      property and an explicit scale. The question was never officially settled either way.)
+      property and an explicit scale. Expect either reading in the wild, and prefer the unambiguous alternatives when degree matters.)
     </para>
   </section>
   <section xml:id="section-predications">

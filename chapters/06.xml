@@ -561,7 +561,7 @@
       <indexterm type="general"><primary>gadri reform</primary></indexterm>
       Historical note: the meaning of
       <valsi>lo</valsi>
-      given here reflects a reform of the Lojban articles &ndash; known in the community as <quote>xorlo</quote>, after the nickname of its principal author &ndash; which reached its final form in three steps: approved by the language-definition committee in 2004, adopted by the Logical Language Group (the language's standards body) as the preferred usage in 2007, and ratified in its exact present wording by LLG vote in 2020. In the first edition,
+      given here reflects a reform of the Lojban articles &ndash; known in the community as <quote>xorlo</quote>, after the nickname of its principal author &ndash; which reached its final form in three steps: approved by the language-definition committee in 2004, adopted by the Logical Language Group (the language's standards body) as the preferred usage in 2007, and fixed by a 2020 LLG vote, which ratified a specific archived text of the definition together with two corrections adopted at the same meeting. In the first edition,
       <valsi>lo</valsi>
       meant
       <quote>at least one of all the things which really fit the description</quote>
@@ -700,7 +700,7 @@
       <title><anchor xml:id="c6e3d3" /></title>
 
       <interlinear-gloss>
-        <jbo>loi so'i tadni cu sruri le dinju</jbo>
+        <jbo>loi so'i tadni cu sruri lo dinju</jbo>
         <gloss>A-group-of many students surrounds the building.</gloss>
         <natlang>Many students are surrounding the building.</natlang>
       </interlinear-gloss>
@@ -942,17 +942,8 @@
   </section>
   <section xml:id="section-typicals">
     <title><anchor xml:id="c6s5" />Descriptors for typical objects</title>
-    <para>The following cmavo are discussed in this section:</para>    <cmavo-list>      <cmavo-entry>        <cmavo>lo'e</cmavo>        <selmaho>LE</selmaho>
-        <description>the typical</description>
-      </cmavo-entry>
-      <cmavo-entry>
-        <cmavo>le'e</cmavo>
-        <selmaho>LE</selmaho>
-        <description>the stereotypical</description>
-
-      </cmavo-entry>
-    </cmavo-list>
     <para role="status-note">
+      <indexterm type="general"><primary>lo'e</primary><secondary>unsettled status of</secondary></indexterm><indexterm type="general"><primary>le'e</primary><secondary>unsettled status of</secondary></indexterm>
       A caution before anything else in this section:
       <valsi>lo'e</valsi>
       and
@@ -963,6 +954,16 @@
       <xref linkend="section-masses" />) or with the selbri
       <valsi>fadni</valsi>. They are also, in practice, rarely used. Read this section as a description of a convention, not a settled rule.
     </para>
+    <para>The following cmavo are discussed in this section:</para>    <cmavo-list>      <cmavo-entry>        <cmavo>lo'e</cmavo>        <selmaho>LE</selmaho>
+        <description>the typical</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>le'e</cmavo>
+        <selmaho>LE</selmaho>
+        <description>the stereotypical</description>
+
+      </cmavo-entry>
+    </cmavo-list>
     <para role="indent">
       On the traditional account, then, Lojban has a method for discriminating between
       <quote>the lion</quote>
@@ -1964,8 +1965,8 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>.iku'i lu'a ri cmalu</jbo>
-        <gloss>But some-members-of it-last-mentioned are-small.</gloss>
-        <natlang>The set of rats is large, but some of its members are small.</natlang>
+        <gloss>But members-of it-last-mentioned are-small.</gloss>
+        <natlang>The set of rats is large, but its members are small (individually).</natlang>
       </interlinear-gloss>
     </example>
     <example xml:id="example-random-id-qLCP" role="interlinear-gloss-example">
@@ -1973,8 +1974,8 @@
 
       <interlinear-gloss>
         <jbo>lo ratcu cu cmalu .iku'i lu'i ri barda</jbo>
-        <gloss>Some rats - are-small. But the-set-of them-last-mentioned is-large.</gloss>
-        <natlang>Some rats are small, but the set of rats is large.</natlang>
+        <gloss>Rats - are-small. But the-set-formed-from them-last-mentioned is-large.</gloss>
+        <natlang>Rats are small, but the set of them is large.</natlang>
       </interlinear-gloss>
     </example>
     <example xml:id="example-random-id-qLcy" role="interlinear-gloss-example">

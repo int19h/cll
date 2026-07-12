@@ -114,7 +114,15 @@
       <valsi>ba</valsi>
       opens the main selbri &ndash; where the first edition's grammar instead absorbed the
       <valsi>ba</valsi>
-      into the abstraction. In the following examples,
+      into the abstraction.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>tags</primary><secondary>binding to selbri, status</secondary>
+      </indexterm>
+      (A status note: this tag-binding rule was adopted by a recorded vote of the BPFK, the language-definition committee, on 15 March 2016, with seven of eight members in favor. Like the committee's other post-reauthorization acts, it was never separately ratified by the LLG; current parsers implement it.)
+    </para>
+    <para>
+      In the following examples,
       <valsi>pu</valsi>
       is the tense marker for
       <quote>past time</quote>
@@ -2404,7 +2412,9 @@
       <indexterm type="general"><primary>event contours</primary><secondary>as sumtcita</secondary>
       </indexterm>
       The event contours of selma'o ZAhO (and their space equivalents, prefixed with
-      <valsi>fe'e</valsi>) are also useful as sumtcita. The interpretation of ZAhO tcita differs from that of FAhA, VA, PU, and ZI tcita, however. Here it is the <emphasis>main bridi</emphasis> that is viewed as a process, and the tagged sumti supplies a reference event: the ZAhO says which phase the main bridi's process is in at the time of that event. In other words,
+      <valsi>fe'e</valsi>) are also useful as sumtcita. The interpretation of ZAhO tcita differs from that of FAhA, VA, PU, and ZI tcita, however. Here it is the <emphasis>main bridi</emphasis> that is viewed as a process, and the tagged sumti supplies a reference &ndash; a reference event for the temporal contours, or a reference location for the
+      <valsi>fe'e</valsi>
+      forms: the ZAhO says which phase the main bridi's process is in at the time of that event, or at the place of that location. For the temporal case,
       <jbophrase>broda ba'o lo nu brode</jbophrase>
       means the same as
       <jbophrase>ba'o broda ca lo nu brode</jbophrase>
@@ -2415,7 +2425,7 @@
       <title>
         <anchor xml:id="c10e12d14" />
         <indexterm type="general"><primary>in the aftermath</primary></indexterm>
-        <indexterm type="general"><primary>die after living</primary></indexterm>
+        <indexterm type="general"><primary>leave before speaking</primary></indexterm>
       </title>
 
       <interlinear-gloss>
@@ -2458,7 +2468,7 @@
         <gloss>I go-to the store [prospective] the event-of I eat</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">which indicates that at the time I eat, my going to the store is still ahead of me &ndash; first the meal, then the store &ndash; whereas</para>
+    <para role="noindent">which indicates that at the time I eat, my going to the store has not yet begun &ndash; it is still in prospect &ndash; whereas</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-0VJp">
       <title><anchor xml:id="c10e12d9" /></title>
 
@@ -2474,7 +2484,7 @@
       Historical note: the first edition interpreted a ZAhO sumtcita the other way around &ndash; the <emphasis>tagged event</emphasis> was the process, and the main bridi sat at the named phase of it, so that
       <jbophrase>mi klama le zarci pu'o le nu mi citka</jbophrase>
       meant
-      <quote>before my eating begins, I go to the store</quote>. The language-definition committee reversed this in 2004, as part of its approved treatment of the event contours: the main bridi carries the contour, and the tagged sumti locates it, exactly parallel to
+      <quote>before my eating begins, I go to the store</quote>. The language-definition committee reversed this in its treatment of the event contours, checkpointed on 24 May 2004 &ndash; the frozen snapshot of that date is the authoritative statement: the main bridi carries the contour, and the tagged sumti locates it, exactly parallel to
       <jbophrase>ba'o broda ca lo nu brode</jbophrase>. Text written to the first edition's rule &ndash; including some well-known examples, like this book's old
       <quote>mi morsi ba'o le nu mi jmive</quote>
       &ndash; must be reread accordingly. ZAhO used directly as a tense on the selbri (<xref linkend="section-event-contours" />) is unaffected by this change.
@@ -2496,13 +2506,15 @@
       <interlinear-gloss>
         <jbo>… fe'e ba'o le lalxu</jbo>
         <gloss>… [space] [retrospective] the lake.</gloss>
-        <natlang>The boat sailed on too long; by the lake, its voyage was already spent.</natlang>
+        <natlang>The boat sailed on too long; at the lake's location, its voyage was already over.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
-      Spatially, the voyage is in its aftermath where the lake is: the boat's proper course ended before the lake, and the
+      The two contours here make two separate claims. The temporal
       <valsi>za'o</valsi>
-      tells us it kept going anyway &ndash; probably up onto the dock. One point of clarification: although
+      says the voyage continued beyond its natural stopping point &ndash; it went on too long. The spatial
+      <jbophrase>fe'e ba'o</jbophrase>
+      takes the lake as a reference <emphasis>location</emphasis> (not an arrival time) and says that there, the actual voyage is in its spatial aftermath: whatever sailing took place is over at that spot. Neither contour says where the natural stopping point lay, or what the boat did instead. One point of clarification: although
       <valsi valid="maybe">xelklama</valsi>
       appears to mean simply
       <quote>is-a-mode-of-transport</quote>
@@ -3465,7 +3477,7 @@
       </indexterm>
       <indexterm type="general"><primary>tense connection</primary><secondary>equivalent meanings</secondary>
       </indexterm>
-      Both the forethought and the afterthought forms are appropriate with PU, ZI, FAhA, VA, and ZAhO tenses. In all cases, the equivalent forms are (where X and Y stand for sentences, and TENSE for a tense cmavo):
+      Both the forethought and the afterthought forms are appropriate with PU, ZI, FAhA, VA, and ZAhO tenses. For all of them except ZAhO, the equivalent forms are (where X and Y stand for sentences, and TENSE for a tense cmavo):
     </para>
     <informaltable>
       <colgroup />
@@ -3488,6 +3500,40 @@
         </td>
       </tr>
     </informaltable>
+    <para>
+      <indexterm type="general"><primary>ZAhO</primary><secondary>in tense connectives</secondary>
+      </indexterm>
+      ZAhO is the exception, because of its reversed sumtcita interpretation (
+      <xref linkend="section-tcita" />): in the subordinate form it is the <emphasis>main</emphasis> sentence X that carries the contour, located at the tagged event Y, while the connective forms keep their first-edition meaning, placing the second sentence at the named contour of the first. The sentences therefore appear in the <emphasis>same</emphasis> order rather than exchanging places:
+    </para>
+    <informaltable>
+      <colgroup />
+      <tr>
+        <td>subordinate</td>
+        <td>
+          <grammar-template>X ZAhO le nu Y</grammar-template>
+        </td>
+      </tr>
+      <tr>
+        <td>afterthought coordinate</td>
+        <td>
+          <grammar-template>X .i+ZAhO+bo Y</grammar-template>
+        </td>
+      </tr>
+      <tr>
+        <td>forethought coordinate</td>
+        <td>
+          <grammar-template>ZAhO+gi X gi Y</grammar-template>
+        </td>
+      </tr>
+    </informaltable>
+    <para>
+      For example,
+      <jbophrase>mi klama le zarci ba'o le nu mi citka</jbophrase>
+      (my store trip is over by the time of the eating) matches
+      <jbophrase>mi klama le zarci .i ba'o bo mi citka</jbophrase>
+      &ndash; the going, and then, in its aftermath, the eating &ndash; not the sentence-swapped form that the other tenses would use.
+    </para>
   </section>
   <section xml:id="section-tense-logical-connection">
     <title><anchor xml:id="c10s17" />Tensed logical connectives</title>
@@ -4695,7 +4741,10 @@
       </grammar-template>
       </member>
     </simplelist>
-    <para>neglecting the question of what is claimed. In the modal sentence schemata, the modal tag is always followed by Y, the sentence representing the event in the x<subscript>1</subscript> place of the gismu that underlies the BAI. In the tensed sentences, no such simple rule exists.</para>
+    <para>neglecting the question of what is claimed. (ZAhO tenses are again the exception: because of their reversed sumtcita interpretation, the subordinate mate of the two connective schemata is
+      <grammar-template>X ZAhO le nu Y</grammar-template>
+      , with the sentences in the same order &ndash; see
+      <xref linkend="section-tense-connection" />.) In the modal sentence schemata, the modal tag is always followed by Y, the sentence representing the event in the x<subscript>1</subscript> place of the gismu that underlies the BAI. In the tensed sentences, no such simple rule exists.</para>
   </section>
   <section xml:id="section-tense-questions">
     <title><anchor xml:id="c10s24" />Tense questions: <valsi>cu'e</valsi></title>

@@ -530,7 +530,14 @@
     <para>
       <indexterm type="general"><primary>shift word</primary><secondary>scope</secondary>
       </indexterm>
-      How long does a shift word last? Theoretically, until the next shift word that contradicts it or until the end of text. In practice, it is common to presume that a shift word is only in effect until the next word other than a lerfu word is found.
+      How long does a shift word last? A shift affects every later letteral in the same letteral string &ndash; the unbroken sequence of lerfu words it occurs in &ndash; and only those letterals: the shift expires when the string ends (that is, when a word other than a lerfu word arrives), or earlier if a later shift word of the same category supersedes it within the string. A fresh letteral string starts with no shifts in effect.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>shift word</primary><secondary>scope, status of</secondary>
+      </indexterm>
+      (A status note: this bounded-string scope rule is checkpointed &ndash; it is stated by the language-definition committee's frozen 2005 letteral decision, which also gives
+      <valsi>ce'a</valsi>
+      its per-category replacement behavior. The first edition instead suggested that a shift might theoretically persist until contradicted or until the end of the text, with the bounded reading only a practical presumption; the checkpointed rule settles it the bounded way.)
     </para>
     <para>
       <indexterm type="general"><primary>shift</primary><secondary>single-letter</secondary>
@@ -641,7 +648,7 @@
       <valsi>fa'o</valsi>
       cannot end up with
       <valsi>bu</valsi>
-      attached &ndash; not because of a special exemption, but because these words act on the words around them, and they act first: everything of this kind applies strictly left to right (the full story is told in
+      attached &ndash; not because of a special exemption, but because these words act on the words around them, and they act first: everything of this kind applies strictly left to right (the word-level machinery is presented in full in
       <xref linkend="section-cmavo-interactions" />). By the time a following
       <valsi>bu</valsi>
       could bind,
@@ -675,16 +682,17 @@
       </indexterm>
       is needed when discussing
       <valsi>bu</valsi>
-      in Lojban. The first edition also listed
+      in Lojban. The first edition also listed here the two members of selma'o BAhE &ndash;
       <valsi>ba'e</valsi>
-      and
+      , the emphasis marker, and
       <valsi>za'e</valsi>
-      here; whether
+      , the nonce-word marker; whether
       <valsi>bu</valsi>
-      may bind an emphasis marker (making a
+      may bind either of them (making a
       <quote>ba'e</quote>
-      letteral) is a genuinely contested corner &ndash; current parsers allow it &ndash; and is best simply avoided (see the status note in
-      <xref linkend="section-cmavo-interactions" />). It is also illegal to attach
+      or
+      <quote>za'e</quote>
+      letteral) is a genuinely contested corner &ndash; the two principal parsers used to verify this edition allow both &ndash; and is best simply avoided. It is also illegal to attach
       <valsi>bu</valsi>
       to itself, but more than one
       <valsi>bu</valsi>
@@ -694,6 +702,27 @@
       <valsi>.abu</valsi>.) It does not matter if the word is a cmavo, a cmevla, or a brivla. All such words suffixed by
       <valsi>bu</valsi>
       are treated grammatically as if they were cmavo belonging to selma'o BY.
+    </para>
+    <para role="status-note">
+      <indexterm type="lojban-word"><primary>bu</primary><secondary>rules, status of</secondary>
+      </indexterm>
+      (A status note: the
+      <valsi>bu</valsi>
+      rules are checkpointed &ndash; fixed by the language-definition committee's frozen 2005 letteral decision &ndash; but that decision stated them as a list of words exempt from
+      <valsi>bu</valsi>
+      , while the strictly-left-to-right account given here is the community's later synthesis, which this edition adopts. The two disagree in exactly two corners. The frozen list also exempted the BAhE words, so it forbade the
+      <jbophrase>ba'e bu</jbophrase>
+      and
+      <jbophrase>za'e bu</jbophrase>
+      letterals that the left-to-right account &ndash; and the two principal parsers used to verify this edition &ndash; permit; and it likewise exempted
+      <valsi>le'u</valsi>
+      , whereas on the later account
+      <valsi>le'u</valsi>
+      is merely
+      <jbophrase>lo'u</jbophrase>'s delimiter and
+      <jbophrase>le'u bu</jbophrase>
+      comes out a letteral. Avoid all of these corners in careful writing. The erasure words' own behavior is a separate, unvoted matter; see
+      <xref linkend="section-cmavo-interactions" />.)
     </para>
     <para>
       <indexterm type="lojban-word"><primary>me'o</primary><secondary>as a prefix for logograms</secondary>
@@ -1925,6 +1954,8 @@
       </indexterm>
       <indexterm type="general"><primary>acronyms names based on lerfu words</primary><secondary>omitting &quot;bu&quot;</secondary>
       </indexterm>
+      <indexterm type="lojban-word"><primary>.ybu</primary><secondary>recognized before word-level processing</secondary>
+      </indexterm>
       Some compression can be done by leaving out
       <valsi>bu</valsi>
       after vowel lerfu words (except for
@@ -2073,8 +2104,8 @@
         <gloss>The-expression [code] 36 -- is-a-letteral-in-set -- ASCII</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>loi rupnu be fi le merko</jbo>
-        <gloss>for-a-quantity-of currency-units - in the American-system.</gloss>
+        <jbo>loi rupnu be fi lo merko</jbo>
+        <gloss>for-a-group-of currency-units - in the American-system.</gloss>
         <natlang>The character code 36 in ASCII represents American dollars.</natlang>
         <natlang>
           <quote>$</quote>
@@ -2218,9 +2249,17 @@
       </indexterm>
       Note that LAU cmavo must be followed by a BY cmavo or the equivalent, where
       <quote>equivalent</quote>
-      means: either any Lojban word followed by
+      means: either a word-plus-
       <valsi>bu</valsi>
-      , another LAU cmavo (and its required sequel), or a
+      combination that actually forms a lerfu word under the rules of
+      <xref linkend="section-bu" />
+      (not, say,
+      <jbophrase>zo bu</jbophrase>
+      , where the
+      <valsi>zo</valsi>
+      quotes the
+      <valsi>bu</valsi>
+      first), another LAU cmavo (and its required sequel), or a
       <valsi>tei</valsi>
       &hellip;
       <valsi>foi</valsi>

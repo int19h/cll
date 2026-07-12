@@ -1,0 +1,37 @@
+# Magic-word / tag-binding parser probes. Columns: id, input, ilmentufa(A=accept R=reject), jbotci(A/R/-=untested), note
+# Provenance: "magic words in Lojban" wiki page examples table + BPFK Erasures/Quotations pages + CLL-update research (2026-07).
+# Pinned reference: ilmentufa 778ea138f7d150121ca722db7536ce3b123943ac (camxes-std).
+si-zo	zo da si	A	-	zo+word is one pseudo-word; single si erases it
+si-zo-nested	co zo da si si	A	-	two si: quoted unit then co
+si-zo-excess	co co zo da si si	R	-	one bare co left; ungrammatical
+si-zei	broda zei brode si brodi	A	-	zei-lujvo erased as one unit
+si-zoi	zoi zoi stuff zoi si	A	-	zoi quote erased as one unit
+si-zoi-delim	zoi si stuff si	A	-	si as zoi delimiter loses magic
+si-lohu	lo'u co co co le'u si	A	-	lo'u...le'u erased as one unit
+si-bu	broda brode si bu	A	-	si erases brode; bu binds broda
+sa-selmaho	mi viska le blanu zdani sa le xekri zdani	A	-	sa back to same-selma'o word (le)
+sa-by	.abu sa by	A	-	sa+BY grabs back over the abu letteral
+sa-bu-contro	.abu sa bu	R	R	wiki marks "sa bu pulls apart pseudo-word" controversial; both parsers reject
+sa-le-si	le broda sa le si	R	A	DIVERGENT: wiki spec says erases to nothing; ilmentufa rejects, jbotci accepts
+sa-zo	zo sa	A	-	zo quotes sa; not magic
+su-plain	mi su	A	-	su erases back to start
+su-mid	mi na nelci le ca selsnu su do klama	A	-	su erases own discourse, text continues
+su-lu	lu mi klama li'u su do klama	A	-	su erases back to LU boundary
+zei-faho	da zei fa'o	A	-	zei binds fa'o; no termination
+zei-zei	da zei zei	A	-	right zei is bound material
+zei-zei-zei	zei zei zei	R	-	leftmost zei has nothing to bind
+zei-bu-left	bu zei de	R	-	nothing for bu
+zei-bu	da zei de bu	A	-	bu binds the zei-lujvo
+zo-bu	zo da bu	A	-	bu binds the zo-quote
+zo-bu-zei	zo bu zei de	A	-	zo quotes bu; zei compounds
+zo-zo	zo zo	A	-	zo quotes zo
+zo-si	zo si mi klama	A	-	zo quotes si
+ybu	mi .y. bu cusku	A	-	Y+BU pre-pass forms BY
+bahe-bu	ba'e bu	A	-	bu wins over ba'e (later-synthesis rule; frozen 2005 text forbade this!)
+bahe-end	mi ba'e	R	-	ba'e with nothing to mark
+bu-start	bu mi	R	-	bu with nothing to bind
+faho-si	fa'o si	A	-	nothing read after fa'o
+faho-zoi	zoi fy fa'o fy	A	-	fa'o inert inside zoi
+faho-lu	lu fa'o li'u	A	-	DIVERGENCE NOTE: wiki spec says unclosed lu (fa'o terminates); camxes accepts
+tagbind-nu	lo nu broda ba brode	A	-	2016 rule: ba starts main selbri (parse-shape case)
+tag-gek	mi pu ge klama le zarci gi tervecnu lo cidja	A	-	camxes reads pu-ku over gek (YACC attached tag inside gek)

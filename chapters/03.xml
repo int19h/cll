@@ -789,7 +789,7 @@
     <para role="status-note">
       <indexterm type="general"><primary>PEG morphology</primary><secondary>status of</secondary>
       </indexterm>
-      A word on authority: the four-diphthong analysis, like the rest of the precise word-form rules in this book, comes from the formal PEG definition of Lojban's word-forms &ndash; a working document of the language-definition effort that was never put to a ratifying vote, but is what current Lojban software implements (see
+      A word on authority: the four-diphthong analysis, like the rest of the precise word-form rules in this book, comes from the formal PEG definition of Lojban's word-forms. Its status is <emphasis>de facto</emphasis>: a working document of the language-definition effort that was never put to a ratifying vote, but is implemented by the current Lojban software tools surveyed for this edition (see
       <xref linkend="chapter-grammars" />). The ban on consonant-plus-glide sequences within it <emphasis>was</emphasis> separately voted (see the note at the end of this section).
     </para>
     <para>
@@ -1044,7 +1044,7 @@
       <quote>kuarka</quote>
       or names like
       <quote>.niuport.</quote>
-      were valid. The ban on consonant-glide-vowel sequences was adopted by a recorded vote of the BPFK, the language-definition committee, in December 2014 &ndash; during the committee's reconstitution, so its formal pedigree is a committee vote rather than a ratified standard &ndash; and it is enforced by the standard word-form definition; some tools tolerate the old forms when reading, flagging them explicitly as nonstandard. Older names and borrowings containing such sequences must be respelled &ndash; usually by converting the glide to a full vowel with an apostrophe (<jbophrase>.ni'uport.</jbophrase>) or doubling the glide letter.
+      were valid. The ban on consonant-glide-vowel sequences was adopted by a recorded vote of the BPFK, the language-definition committee, in December 2014. Its status is thus twofold: committee-approved &ndash; the vote took place during the committee's reconstitution, so its formal pedigree is a committee vote rather than a ratified standard &ndash; and, independently, de facto, being enforced by the standard word-form definition that current tools implement; some tools tolerate the old forms when reading, flagging them explicitly as nonstandard. Older names and borrowings containing such sequences must be respelled &ndash; usually by converting the glide to a full vowel with an apostrophe (<jbophrase>.ni'uport.</jbophrase>) or doubling the glide letter.
     </para>
     <para>
       <indexterm type="general"><primary>syllabic consonants</primary></indexterm>

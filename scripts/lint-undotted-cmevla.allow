@@ -1,0 +1,9 @@
+# Pre-existing undotted cmevla, tracked for burn-down in the dotside sweep
+# (cll#9). Remove entries as the text is fixed; do not add entries for new text.
+11.xml:la djan
+12.xml:la spat
+13.xml:la djan
+13.xml:la .uengas
+14.xml:la djan
+14.xml:la .djan
+19.xml:la djan

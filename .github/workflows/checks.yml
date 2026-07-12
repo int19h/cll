@@ -1,0 +1,57 @@
+name: checks
+on:
+  pull_request:
+    branches: [geklojban-development]
+  push:
+    branches: [geklojban-development]
+
+jobs:
+  xml-wellformed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install libxml2-utils
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils
+      - name: Well-formedness check on chapters
+        run: |
+          rc=0
+          for f in chapters/*.xml; do xmllint --noout "$f" || rc=1; done
+          exit $rc
+
+  cmevla-dot-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Flag undotted cmevla after la/lai/la'i/doi in Lojban text
+        run: python3 scripts/lint-undotted-cmevla.py chapters/*.xml
+
+  parser-probes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Clone ilmentufa (pinned)
+        run: |
+          git clone --depth 50 https://github.com/lojban/ilmentufa ../ilmentufa
+          git -C ../ilmentufa checkout 778ea138f7d150121ca722db7536ce3b123943ac
+      - name: Run magic-word probes
+        run: ILMENTUFA_DIR=../ilmentufa node tests/run-probes.js
+
+  example-validation:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Clone ilmentufa (pinned)
+        run: |
+          git clone --depth 50 https://github.com/lojban/ilmentufa ../ilmentufa
+          git -C ../ilmentufa checkout 778ea138f7d150121ca722db7536ce3b123943ac
+      - name: Extract and parse all Lojban examples (report-only)
+        run: python3 scripts/extract-examples.py chapters/*.xml > /tmp/examples.tsv && ILMENTUFA_DIR=../ilmentufa node scripts/validate-examples.js /tmp/examples.tsv | tee example-report.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: example-report
+          path: example-report.txt

@@ -533,7 +533,7 @@
         <description>
           imaginary
           <dbinlinemath>i</dbinlinemath>
-          ,
+          , 
           <dbinlinemath>√-1</dbinlinemath>
         </description>
       </cmavo-entry>
@@ -1807,8 +1807,8 @@
       ; and so on down to
       <valsi>piso'u</valsi>
       ,
-      <quote>a tiny part of</quote>. These numbers are particularly appropriate with groups and substances (see
-      <xref linkend="section-masses" />), which are usually measured rather than counted, as
+      <quote>a tiny part of</quote>. These numbers are particularly useful with groups and with substance-like references (see
+      <xref linkend="section-masses" />): on a group, a fraction selects a subgroup with that fraction of the members; on a substance, it selects an amount, as
       <xref linkend="example-random-id-dwJI" />
       shows.
     </para>
@@ -2315,7 +2315,14 @@
       , and
       <valsi>pisu'o</valsi>
       are particularly important in Lojban: they serve as explicit outer quantifiers on descriptions introduced by the cmavo of selma'o LA and LE, as explained in
-      <xref linkend="section-quantified-descriptions" />. (The first edition said these quantifiers were <emphasis>implicitly</emphasis> present on every description; that default-quantifier machinery was abolished by the gadri reform &ndash; an unquantified description is now a constant, and a quantifier applies only when actually said.) Descriptions in general are outside the scope of this chapter.
+      <xref linkend="section-quantified-descriptions" />. Descriptions in general are outside the scope of this chapter.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>implicit quantifiers</primary><secondary>abolition of, in mekso contexts</secondary>
+      </indexterm>
+      (A status note: the first edition said that one or two of these quantifiers were <emphasis>implicitly</emphasis> present on every description. That default-quantifier machinery was abolished by the ratified gadri reform: an unquantified description is now a constant, and a quantifier applies only when actually said. See
+      <xref linkend="section-quantified-descriptions" />
+      for the full status history.)
     </para>
   </section>
   <section xml:id="section-radixen">
@@ -2666,20 +2673,20 @@
     </para>
 
     <definition>
-      <content>x<subscript>1</subscript> is a group (traditionally called mass) formed from the set x<subscript>2</subscript> of n members, one or more of which is/are x<subscript>3</subscript></content>
+      <content><indexterm type="general"><primary>masses</primary><secondary>now called groups</secondary></indexterm>x<subscript>1</subscript> is a group (traditionally called mass) formed from the set x<subscript>2</subscript> of n members, one or more of which is/are x<subscript>3</subscript></content>
     </definition>
     <para>
-      <indexterm type="general"><primary>mass</primary><secondary>expressing relation with individuals forming</secondary>
+      <indexterm type="general"><primary>groups</primary><secondary>expressing relation with individuals forming</secondary>
       </indexterm>
-      <indexterm type="general"><primary>mass</primary><secondary>expressing relation with set forming</secondary>
+      <indexterm type="general"><primary>groups</primary><secondary>expressing relation with set forming</secondary>
       </indexterm>
-      <indexterm type="general"><primary>individuals</primary><secondary>expressing relation with mass formed</secondary>
+      <indexterm type="general"><primary>individuals</primary><secondary>expressing relation with group formed</secondary>
       </indexterm>
       <indexterm type="general"><primary>individuals</primary><secondary>expressing relation with set formed</secondary>
       </indexterm>
       <indexterm type="general"><primary>set</primary><secondary>expressing relation with individuals forming set</secondary>
       </indexterm>
-      <indexterm type="general"><primary>set</primary><secondary>expressing relation with mass formed from set</secondary>
+      <indexterm type="general"><primary>set</primary><secondary>expressing relation with group formed from set</secondary>
       </indexterm>
       A cardinal selbri interrelates a set with a given number of members, the group formed from that set, and the individuals which make the set up. The group argument is placed first as a matter of convenience, not logical necessity.
     </para>
@@ -2730,7 +2737,7 @@
       </indexterm>
       <indexterm type="general"><primary>set</primary><secondary>expressing measurement standard for indefinites</secondary>
       </indexterm>
-      <indexterm type="general"><primary>mass</primary><secondary>expressing measurement standard for indefinites</secondary>
+      <indexterm type="general"><primary>groups</primary><secondary>expressing measurement standard for indefinites</secondary>
       </indexterm>
       <indexterm type="general"><primary>mei</primary><secondary>place structure formed for objective indefinites</secondary>
       </indexterm>
@@ -2761,16 +2768,15 @@
     <para role="noindent">
 
 
-      <indexterm type="lojban-word"><primary>lo'i</primary><secondary>with elided quantifiers</secondary>
+      <indexterm type="lojban-word"><primary>lo'i</primary><secondary>unquantified, as contextual set</secondary>
       </indexterm>
       In
       <xref linkend="example-random-id-GJsg" />
       , the x<subscript>2</subscript> and x<subscript>3</subscript> places are vacant, and the x<subscript>4</subscript> place is filled by
       <jbophrase>lo'i ratcu</jbophrase>
-      , which (because no quantifiers are explicitly given) means
-      <quote>the whole of the set of all those things which are rats</quote>
-      , or simply
-      <quote>the set of all rats.</quote>
+      &ndash; a set of rats. Like any unquantified description it refers to whatever the context supplies; in a comparison like this one, the natural comparison set is
+      <quote>the set of all rats</quote>
+      , and that is a contextual choice, not something the missing quantifiers contribute.
     </para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-n52D">
@@ -2857,7 +2863,7 @@
 
 
     <definition>
-      <content>x<subscript>1</subscript> is an (n)th portion of group/substance x<subscript>2</subscript></content>
+      <content>x<subscript>1</subscript> is an (n)th portion of x<subscript>2</subscript></content>
     </definition>
     <para>Some examples:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-i8r4">
@@ -5614,7 +5620,7 @@
       <cmavo-entry>
         <cmavo>si'e</cmavo>
         <rafsi></rafsi>
-        <description role="place-structure">x<subscript>1</subscript> is an (n)th portion of group/substance x<subscript>2</subscript> [by standard x<subscript>3</subscript>]</description>
+        <description role="place-structure">x<subscript>1</subscript> is an (n)th portion of x<subscript>2</subscript> [by standard x<subscript>3</subscript>]</description>
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>cu'o</cmavo>

@@ -338,7 +338,7 @@
         <natlang>There is something such that Ralph is a dog.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent"> 
+    <para role="noindent">
 
 
  has a variable bound in a prenex whose relevance to the claim of the following bridi is completely unspecified.</para>
@@ -1135,22 +1135,22 @@
       </indexterm>
       <indexterm type="general"><primary>quantified sumti</primary><secondary>different types contrasted for scope for distribution</secondary>
       </indexterm>
-      What about descriptors, like
-      <jbophrase>ci lo gerku</jbophrase>
-      ,
+      What about descriptions, like
       <jbophrase>le nanmu</jbophrase>
       or
-      <jbophrase>re le ci mlatu</jbophrase>
-      ? They too can be grouped in termsets, but usually need not be, except for the
-      <valsi>lo</valsi>
-      case which functions like the case without a descriptor. Unless an actual quantifier precedes it,
-      <jbophrase>le nanmu</jbophrase>
-      means
-      <jbophrase>ro le nanmu</jbophrase>
-      , as is explained in
-      <xref linkend="section-quantified-descriptions" />. Two sumti with
+      <jbophrase>ci lo gerku</jbophrase>
+      ? An <emphasis>unquantified</emphasis> description is a constant (see
+      <xref linkend="section-quantified-descriptions" />): it refers to particular things, and constants take no part in scope distinctions at all &ndash;
+      <jbophrase>le nanmu cu batci le gerku</jbophrase>
+      raises no how-many-per-which questions, any more than
+      <jbophrase>la .djan. cu batci la .spat.</jbophrase>
+      does. Scope questions arise only for genuinely quantified terms: bare
+      <jbophrase>PA broda</jbophrase>
+      (which is
+      <jbophrase>PA da poi broda</jbophrase>) and descriptions with an <emphasis>explicit outer</emphasis> quantifier, like
+      <jbophrase>re le ci mlatu</jbophrase>. Those can be grouped in termsets exactly like the variables above. And when both quantifiers are
       <valsi>ro</valsi>
-      quantifiers are independent of order, so:
+      , grouping does not matter, since universal claims are independent of order:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-MADY">
       <title><anchor xml:id="c16e7d6" /></title>
@@ -1161,11 +1161,16 @@
       </interlinear-gloss>
     </example>
     <para role="noindent">
-      means that each of the dogs specified bites each of the men specified, for six acts of biting altogether. However, if there is an explicit quantifier before
-      <valsi>le</valsi>
-      other than
+      means that each of the dogs specified bites each of the men specified, for six acts of biting altogether. (Here the explicit
       <valsi>ro</valsi>
-      , the problems of this section reappear.
+      quantifiers are shown bracketed because biting happens between individuals anyway, so the unquantified constants would come to the same thing; the first edition instead treated
+      <valsi>ro</valsi>
+      as an implicit default on every
+      <valsi>le</valsi>
+      sumti &ndash; a rule abolished by the gadri reform, see
+      <xref linkend="section-quantified-descriptions" />.) With explicit quantifiers other than
+      <valsi>ro</valsi>
+      , the scope problems of this section reappear.
     </para>
   </section>
   <section xml:id="section-any">
@@ -1206,11 +1211,25 @@
       <jbophrase>ro da poi klama</jbophrase>
       requires that there are things which
       <valsi>klama</valsi>
-      : Lojban universal claims always imply the corresponding existential claims as well.
+      : Lojban universal claims always imply the corresponding existential claims as well. This implication is of a special, robust kind: it clings to the restriction rather than to the claim, so it survives even when the claim is negated &ndash;
+      <jbophrase>naku ro da poi klama le zarci cu cadzu le foldi</jbophrase>
+      still concerns actual store-goers (and is exactly equivalent to
+      <jbophrase>su'o da poi klama le zarci naku cadzu le foldi</jbophrase>
+      , as the negation rules of
+      <xref linkend="section-negation-boundaries" />
+      require). Logicians call such survivors <quote>presuppositions</quote>; without this reading, the universal-existential implication and the negation rules could not both hold.
       <xref linkend="example-random-id-R4mX" />
       , on the other hand, does not require that there are any people who go to the store: it simply states, conditionally, that if there is anyone who goes to the store, he or she walks across the field as well. This conditional form mirrors the true Lojban translation of
       <xref linkend="example-random-id-R4mX" />
       :
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>ro</primary><secondary>existential import of, status</secondary>
+      </indexterm>
+      (A status note: whether restricted universal claims should carry this existential import at all has been debated since the first edition, and some post-first-edition writing and software treats
+      <jbophrase>ro da poi broda</jbophrase>
+      as vacuously true when nothing brodas. The question was never officially settled. This book keeps the first edition's importing reading, with the presuppositional behavior just described, which is the only way to keep it consistent with the negation rules of
+      <xref linkend="section-negation-boundaries" />.)
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-BwU7">
       <title><anchor xml:id="c16e8d3" /></title>
@@ -1379,6 +1398,17 @@
       <quote>there is a Y</quote>
       and the like must be understood as
       <quote>there is at least one Y, possibly more</quote>.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>na</primary><secondary>scope of, status</secondary>
+      </indexterm>
+      (The rule that
+      <valsi>na</valsi>
+      before the selbri negates the whole bridi &ndash; equivalent to
+      <valsi>naku</valsi>
+      at the left end of the prenex, outscoping even quantifiers that precede it in the sentence &ndash; is the first edition's rule, and this book, like current semantic software, keeps it. A later, never-adopted proposal would instead give
+      <valsi>na</valsi>
+      scope only over what follows it; you may meet that reading in some post-first-edition discussion, but it is not the rule taught or implemented today.)
     </para>
     <para>
       <indexterm type="general"><primary>bridi negation</primary><secondary>two forms of</secondary>

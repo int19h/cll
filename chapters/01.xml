@@ -87,9 +87,18 @@
       <indexterm type="general"><primary>linguistic drift</primary></indexterm>
       <indexterm type="general"><primary>Lojban</primary><secondary>stability of</secondary>
       </indexterm>
-      Nevertheless, the publication of this book is, in one sense, the completion of a long period of language evolution. With the exception of a possible revision of the language that will not even be considered until five years from publication date, and any revisions of this book needed to correct outright errors, the language described in this book will not be changing by deliberate act of its creators any more. Instead, language change will take place in the form of new vocabulary &ndash; Lojban does not yet have nearly the vocabulary it needs to be a fully usable language of the modern world, as
+      Nevertheless, the publication of the first edition of this book, in 1997, was in one sense the completion of a long period of language evolution: the language was declared baselined, and even the possibility of revision was deferred for five years. History kept roughly to that script, though not to its spirit of finality. In 2002 the Logical Language Group &ndash; the organization then responsible for the language &ndash; chartered a language-definition committee, the
+      <jbophrase>baupla fuzykamni</jbophrase>
+      or BPFK, to produce a definitive specification; along the way, that committee and the Group adopted a small number of deliberate changes to the language this book describes. The most consequential are the reformed article system (adopted in stages between 2004 and 2020), a stricter word-form rule (2014), and a rule binding tags to a following selbri (2016). This edition teaches the language as so amended, and every changed rule is identified where it is taught, with a note on who adopted it, and when, and how firmly &ndash; so that you can always tell settled ground from live community practice.
+    </para>
+    <para>
+      <indexterm type="general"><primary>Logical Language Group</primary><secondary>status of</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>Lojban</primary><secondary>governance of</secondary>
+      </indexterm>
+      Deliberate change has since ceased &ndash; though not by proclamation this time. The Logical Language Group has been inactive since 2022; the committee's remaining open questions were left deferred, and they now remain so indefinitely. The official language &ndash; the baseline as amended by the decisions just mentioned &ndash; is in practice frozen. The language itself is not: Lojban continues to grow the way living languages do, through use, through new vocabulary &ndash; the community has coined thousands of words since the first edition, by the processes
       <xref linkend="chapter-lujvo" />
-      explains &ndash; and through the irregular natural processes of drift and (who knows?) native-speaker evolution. (Teach your children Lojban!) You can learn the language described here with assurance that (unlike previous versions of Lojban and Loglan, as well as most other artificial languages) it will not be subject to further fiddling by language-meisters.
+      describes &ndash; and through consensus recorded, in a fully decentralized fashion, in the community's dictionaries. (Teach your children Lojban!) You can learn the language described here with reasonable assurance that its core will not shift beneath you: not because further fiddling is forbidden, but because there is no longer anyone whose job is to fiddle.
     </para>
     <para>
       <indexterm type="general"><primary>this book</primary><secondary>structure of</secondary>
@@ -274,7 +283,7 @@
 
     <para>
       <indexterm type="general"><primary>books about Lojban</primary></indexterm>
-      Depending on just when you are reading this book, there may be three other books about Lojban available: a textbook, a Lojban/English dictionary, and a book containing general information about Lojban. You can probably get these books, if they have been published, from the same place where you got this book. In addition, other books not yet foreseen may also exist.
+      The first edition here promised three future books &ndash; a textbook, a Lojban/English dictionary, and a general-information book. What actually arrived was better suited to the internet age: community-maintained dictionaries (the jbovlaste project, whose collected work now lives on in its successors), free online courses and textbooks, and a steady stream of translated and original Lojban text. Any web search for Lojban will find the current versions of these; being online, they stay more current than any printed list could.
     </para>
 
   </section>

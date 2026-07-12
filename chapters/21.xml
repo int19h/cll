@@ -23,7 +23,8 @@
       <quote>magic words</quote>
       (quotation, erasure, and their kin) are represented below only by placeholder rules; their real behavior is word-level and is specified in
       <xref linkend="chapter-structure" />. Second, where a tag stands directly before a selbri, the EBNF permits more than one grouping; the 2016 tag-binding decision picks one (see
-      <xref linkend="section-tenses-introduction" />), and current parsers implement that choice.
+      <xref linkend="section-tenses-introduction" />), and current parsers implement that choice. Third, a tense standing before a forethought connective construction is read by current parsers as a tense term scoping over the whole construction, where the first edition's machine grammar attached it inside; the two come to the same meaning in ordinary cases (see
+      <xref linkend="chapter-connectives" />).
     </para>
   </section>
   <section xml:id="section-EBNF">

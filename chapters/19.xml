@@ -434,17 +434,17 @@
 
       <interlinear-gloss>
         <jbo>do ponse loi--jdini .inaja do djica ri</jbo>
-        <gloss>You possess money only-if you desire its-mere-existence.</gloss>
+        <gloss>You possess money only-if you desire it.</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent">
       where
       <valsi>ri</valsi>
-      means
+      repeats
       <jbophrase>loi jdini</jbophrase>
-      and is interpreted as
-      <quote>the mere existence of money</quote>
-      , but rather:
+      &ndash; a group of money &ndash; although
+      <valsi>djica</valsi>
+      wants an event in that place, not a thing, but rather:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-fx2b">
       <title><anchor xml:id="c19e4d11" /></title>
@@ -1559,6 +1559,17 @@
       <valsi>le'u</valsi>
       is not an elidable terminator; it is required.
     </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>lo'u</primary><secondary>rules, status of</secondary>
+      </indexterm>
+      (A status note: the
+      <jbophrase>lo'u&hellip;le'u</jbophrase>
+      rules of this section &ndash; the unconditional first
+      <valsi>le'u</valsi>
+      , no nesting, no reopening &ndash; are checkpointed: they follow the committee's frozen 2005 quotations decision, which replaced the first edition's
+      <jbophrase>zo le'u</jbophrase>
+      loophole.)
+    </para>
   </section>
   <section xml:id="section-more-quotations">
     <title><anchor xml:id="c19s10" />More on quotations: ZO, ZOI</title>
@@ -1579,7 +1590,12 @@
     <para role="indent">
       The cmavo
       <valsi>zo</valsi>
-      (of selma'o ZO) is a strong quotation mark for the single following word, which can be any Lojban word whatsoever. Among other uses,
+      (of selma'o ZO) is a strong quotation mark for the single following word, which can be any Lojban word whatsoever &ndash; with one curious exception: the hesitation noise
+      <valsi>.y.</valsi>
+      is invisible to the word-level machinery, so
+      <valsi>zo</valsi>
+      skips right over it and quotes the word after it instead (see
+      <xref linkend="section-hesitation" />). Among other uses,
       <valsi>zo</valsi>
       allows a metalinguistic word to be referenced without having it act on the surrounding text. The word must be a morphologically legal (but not necessarily meaningful) single Lojban word; compound cmavo are not permitted. For example:
     </para>
@@ -1713,9 +1729,7 @@
       <valsi>le'u</valsi>
       safely, since
       <valsi>zoi</valsi>
-      captures everything up to its delimiting word. Only one caution is real: never choose
-      <valsi>le'u</valsi>
-      itself as a delimiting word.)
+      captures everything up to its delimiting word.)
     </para>
     <para>Lojban strictly avoids any confusion between things and the names of things:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-56m5">
@@ -1823,7 +1837,30 @@
       for all names rather than Lojbanizing, however, makes for very cumbersome text. A rough equivalent of
       <valsi>la'o</valsi>
       might be
-      <jbophrase>la me zoi</jbophrase>.
+      <jbophrase>la me zoi</jbophrase>
+      : here
+      <valsi>me</valsi>
+      turns the
+      <valsi>zoi</valsi>
+      quotation into a selbri meaning
+      <quote>is among the referents of the quoted thing</quote>
+      , and
+      <valsi>la</valsi>
+      builds a name from that selbri (see
+      <xref linkend="chapter-selbri" />
+      for
+      <valsi>me</valsi>).
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>zoi</primary><secondary>delimiter rules, status of</secondary>
+      </indexterm>
+      (A status note: the
+      <valsi>zoi</valsi>
+      and
+      <valsi>la'o</valsi>
+      delimiter rules of this section &ndash; any single Lojban word as delimiter, the payload running to the delimiter's next occurrence, the functionless bracket words, the required closing delimiter &ndash; are checkpointed: they follow the committee's frozen 2005 quotations decision, as does the
+      <valsi>zo</valsi>
+      rule of the previous section.)
     </para>
   </section>
   <section xml:id="section-bahe">
@@ -2361,7 +2398,7 @@
         <gloss>
           I express [foreign] [quote]
           <valsi>gy.</valsi>
-          [unquote], er, er, er, er,
+          [unquote], er,
           <quote>John</quote>.
         </gloss>
       </interlinear-gloss>
@@ -2371,11 +2408,11 @@
       <xref linkend="example-random-id-zoWF" />
       , the first
       <valsi>fy.</valsi>
-      is taken to be the delimiting word. The next word must be different from the delimiting word, and
+      is taken to be the delimiting word. The quoted material runs until the next occurrence of that same word, so the delimiting word itself cannot appear inside the payload;
       <valsi>gy.</valsi>
       , the Lojban name for the letter
       <letteral>g</letteral>
-      , was chosen arbitrarily. Then the delimiting word must be repeated, closing the quotation &ndash; and the whole quotation, delimiters and all, is now a single word as far as
+      , was chosen arbitrarily as the (one-word) payload here &ndash; even an empty payload would do. Then the delimiting word is repeated, closing the quotation &ndash; and the whole quotation, delimiters and all, is now a single word as far as
       <valsi>si</valsi>
       is concerned, so one
       <valsi>si</valsi>
@@ -2406,10 +2443,12 @@
     </example>
     <para role="indent">
       A parser will reject
-      <jbophrase valid="false">zo .djan. si si .djordj.</jbophrase>
-      -style attempts to peel the quotation apart: after the first
+      <jbophrase valid="false">mi se cmene zo .djan. si si .djordj.</jbophrase>
+      -style attempts to peel the quotation apart: the first
       <valsi>si</valsi>
-      the quotation is simply gone, and what follows must stand on its own.
+      removes the quotation whole, the second then eats
+      <jbophrase>cmene</jbophrase>
+      &ndash; there is no leftover half-quotation for it to trim &ndash; and the sentence collapses.
     </para>
     <para role="status-note">
       Modern Lojban parsers implement
@@ -2514,9 +2553,16 @@
       <valsi>su</valsi>
       abandons only the speaker's own remarks;
       <jbophrase>susu</jbophrase>
-      abandons the whole discussion. Modern parsers implement
+      abandons the whole discussion.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>su</primary><secondary>status of</secondary>
+      </indexterm>
+      (A status note: like
+      <valsi>si</valsi>
+      ,
       <valsi>su</valsi>
-      erasure.
+      was deliberately left out of the committee's 2005 decisions, so the boundary rule above is de facto &ndash; it comes from the community's erasure proposal and is unvoted. Implementation is also uneven at present: the standard camxes grammar erases back to the boundary and preserves it, as described, while at least one other current parser mishandles the boundary itself; erasing from the start of a text works everywhere.)
     </para>
 
   </section>
@@ -2550,6 +2596,18 @@
       (the name of the letter
       <letteral>y</letteral>), which is recognized as a unit before anything else happens; see
       <xref linkend="chapter-letterals" />.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>y</primary><secondary>word-level invisibility, status</secondary>
+      </indexterm>
+      (A status note: the invisibility of
+      <valsi>.y.</valsi>
+      to the word-level machinery, and the
+      <valsi>.ybu</valsi>
+      exception, are checkpointed rules: the committee's frozen 2005 definition of the hesitation sound states both, down to the consequence that
+      <valsi>zo</valsi>
+      cannot quote
+      <valsi>.y.</valsi>.)
     </para>
   </section>
   <section xml:id="section-faho">
@@ -2589,6 +2647,13 @@
       or parenthesized with
       <jbophrase>to ... toi</jbophrase>.
     </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>fa'o</primary><secondary>status of</secondary>
+      </indexterm>
+      (A status note: the
+      <valsi>fa'o</valsi>
+      rule and its capture exceptions are checkpointed: they follow the committee's frozen 2005 text-structure definition, which carries its own exception list for these cases.)
+    </para>
   </section>
   <section xml:id="section-cmavo-interactions">
     <title><anchor xml:id="c19s16" />How the magic words interact</title>
@@ -2616,10 +2681,10 @@
       <valsi>su</valsi>
       , and
       <valsi>fa'o</valsi>
-      &ndash; are informally called the <quote>magic words</quote>. They act before the ordinary grammar sees the text, and the first edition specified their interactions with a list of pairwise exceptions that was neither complete nor entirely consistent. The current definition replaces that list with one uniform principle:
+      &ndash; are informally called the <quote>magic words</quote>. They act before the ordinary grammar sees the text, and the first edition specified their interactions with a list of pairwise exceptions that was neither complete nor entirely consistent. This edition replaces that list with one uniform principle:
     </para>
     <para>
-      <emphasis>Magic words take effect strictly left to right. Whatever an earlier magic word has captured is no longer available to a later one; the product of a quotation or compound is a single word for everything that follows.</emphasis>
+      <emphasis>Magic words take effect strictly left to right. Whatever an earlier magic word has captured is no longer available to a later one; the product of a quotation or compound acts as a single word for the machinery that follows.</emphasis>
     </para>
     <para>
       Two small preliminaries complete the picture: the letteral
@@ -2646,7 +2711,9 @@
           <jbophrase>zo fa'o</jbophrase>
           , and indeed
           <valsi>zo</valsi>
-          before any word at all.
+          before any word at all (
+          <valsi>.y.</valsi>
+          excepted, as always).
         </para>
       </listitem>
       <listitem>
@@ -2707,17 +2774,43 @@
     <para role="status-note">
       <indexterm type="general"><primary>magic words</primary><secondary>status of interaction rules</secondary>
       </indexterm>
-      Status: the quoting and binding words and the left-to-right principle were fixed by the language-definition committee in 2005; the erasure words were deliberately left out of that decision, and
+      Status: the single uniform principle stated above is this edition's synthesis, following the community's later unification of these rules and the behavior of current parsers &ndash; it was never voted as such. What the language-definition committee actually fixed, word by word, in its 2005 checkpoints is the left-to-right conflict rule for each of the quoting and binding words individually: for
+      <valsi>lo'u</valsi>
+      ,
+      <valsi>zo</valsi>
+      ,
+      <valsi>zoi</valsi>
+      , and
+      <valsi>la'o</valsi>
+      in its quotations decision, for
+      <valsi>zei</valsi>
+      in its connectives decision, and for
+      <valsi>bu</valsi>
+      by a definition that used an exception list rather than the uniform principle. The
+      <valsi>y</valsi>
+      and
+      <valsi>fa'o</valsi>
+      rules have their own checkpointed definitions. The erasure words were deliberately left out of those decisions:
+      <valsi>si</valsi>
+      and
+      <valsi>su</valsi>
+      as taught here are de facto (implemented but unvoted), and
       <valsi>sa</valsi>
-      in particular remains unsettled (<xref linkend="section-erasure" />). One corner is genuinely contested between sources: whether
+      remains unsettled (<xref linkend="section-erasure" />). Wherever the checkpointed per-word rules and the uniform principle agree &ndash; which is almost everywhere &ndash; the principle simply restates settled material; one corner is genuinely contested: whether
       <valsi>bu</valsi>
       may bind a preceding
       <valsi>ba'e</valsi>
       (making a
       <quote>ba'e</quote>
-      letteral) &ndash; the 2005 text forbade it, while the left-to-right principle and current parsers allow it. Treat
+      letteral) &ndash; the checkpointed
+      <valsi>bu</valsi>
+      text forbade it, while the uniform principle and current parsers allow it. Treat
       <jbophrase>ba'e bu</jbophrase>
-      and similar exotica as curiosities, not tools.
+      and similar exotica as curiosities, not tools. One more limit of the
+      <quote>single word</quote>
+      metaphor: for
+      <valsi>sa</valsi>
+      erasure, which matches on selma'o, a quotation still remembers the selma'o of the word that formed it.
     </para>
   </section>
   <section xml:id="section-elidable-terminators">

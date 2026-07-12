@@ -398,7 +398,7 @@
       <quote>little</quote>
       specifying the type of girls' school? Or is
       <quote>little girl</quote>
-      to be taken as a unit, specifying the type of school? In English speech, different tones of voice, or 
+      to be taken as a unit, specifying the type of school? In English speech, different tones of voice, or
     exaggerated speech rhythm showing the grouping, are used to make the distinction; English writing usually leaves it unrepresented.
     </para>
 
@@ -459,7 +459,7 @@
       on the other hand, the seltau is
       <jbophrase>cmalu bo nixli</jbophrase>
       (itself a tanru), whereas the tertau is
-      <valsi>ckule</valsi>. 
+      <valsi>ckule</valsi>.
     This structure of tanru nested within tanru forms the basis for all the more complex types of selbri that will be explained below.
     </para>
     <para>
@@ -849,7 +849,7 @@
         <cmavo>joi</cmavo>
         <selmaho>JOI</selmaho>
         <description>
-          mixed mass
+          group (mixed)
           <quote>and</quote>
         </description>
       </cmavo-entry>
@@ -1483,7 +1483,12 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      Here the three places of
+      (The
+      <jbophrase>lo'e ckule</jbophrase>
+      here &ndash;
+      <quote>the typical school</quote>
+      &ndash; uses a descriptor whose meaning was never settled; see the status discussion in
+      <xref linkend="section-typicals" />.) Here the three places of
       <valsi>cmalu</valsi>,
       the three of
       <valsi>nixli</valsi>,
@@ -2142,7 +2147,7 @@
 
       <interlinear-gloss>
         <jbo>mi jimpe tu'a loi nu'a--su'i nabmi</jbo>
-        <gloss>I understand something-about the-mass-of is-the-sum-of problems.</gloss>
+        <gloss>I understand something-about the-group-of is-the-sum-of problems.</gloss>
         <natlang>I understand addition problems.</natlang>
 
       </interlinear-gloss>
@@ -2257,11 +2262,18 @@
     </para>
     <definition>
       <content>
-        x<subscript>1</subscript> is one of the referents of
+        x<subscript>1</subscript> is/are among the referents of
         <quote>[the sumti]</quote>
       </content>
     </definition>
-    <para>which is true of the thing, or things, that are the referents of the sumti, and not of anything else. For example, consider the sumti</para>
+    <para>which is true of the thing, or things, that are the referents of the sumti &ndash; one of them, several of them, or all of them together &ndash; and not of anything else. (The first edition said
+      <quote>is one of</quote>
+      ; the sharpened
+      <quote>among</quote>
+      formulation matters because the current definitions of the descriptors themselves are stated in terms of
+      <valsi>me</valsi>
+      &ndash; see
+      <xref linkend="section-quantified-descriptions" />.) For example, consider the sumti</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-v6QW">
       <title>
 
@@ -2285,7 +2297,7 @@
       <interlinear-gloss>
         <jbo>la .BALtazar. cu me le--ci--nolraitru</jbo>
         <gloss>
-          That-named Balthazar - is-one-of-the-referents-of
+          That-named Balthazar - is-among-the-referents-of
           <quote>the three kings.</quote>
         </gloss>
         <natlang>Balthazar is one of the three kings.</natlang>
@@ -2371,7 +2383,7 @@
         <gloss>
           That (is-a-referent-of
           <quote>
-            the-mass-named
+            the-group-named
             <quote>Chrysler</quote>
           </quote>) car.
         </gloss>
@@ -2687,7 +2699,7 @@
       </indexterm>
       <indexterm type="general"><primary>complex negation</primary><secondary>examples</secondary>
       </indexterm>
-      Here is an assortment of more complex examples showing the interaction of scalar negation with 
+      Here is an assortment of more complex examples showing the interaction of scalar negation with
       <valsi>bo</valsi> grouping,
       <valsi>ke</valsi>
       and

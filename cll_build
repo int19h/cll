@@ -215,8 +215,14 @@ then
 fi
 
 make -f scripts/Makefile builddir="$builddir" test="$optlist" chapters="$chapters" covcopydir="$covarchivedir" copydir="$archivedir" $target
+make_rc=$?
 
-if [ $diff = 'yes' ]
+if [ $make_rc -ne 0 ]
+then
+  echo -e "\n\nBUILD FAILED: make exited with status $make_rc\n" >&2
+fi
+
+if [ $make_rc -eq 0 -a $diff = 'yes' ]
 then
   ./scripts/diff_official
 fi
@@ -225,4 +231,6 @@ if [ "$shell" = 'yes' ]
 then
   /bin/bash
 fi
+
+exit $make_rc
 

@@ -104,8 +104,17 @@
       The placement of a tense construct within a Lojban bridi is easy: right before the selbri. It goes immediately after the
       <valsi>cu</valsi>
       , and can in fact always replace the
+      <valsi>cu</valsi>. Indeed, by a rule adopted by the language-definition committee in 2016, a tense (or any tag) directly in front of a selbri binds to that selbri exactly as
       <valsi>cu</valsi>
-      (although in very complex sentences the rules for eliding terminators may be changed as a result). In the following examples,
+      would, unless an explicit
+      <valsi>ku</valsi>
+      intervenes; so
+      <jbophrase>lo nu broda ba brode</jbophrase>
+      is a complete bridi &ndash; the abstraction closes, and
+      <valsi>ba</valsi>
+      opens the main selbri &ndash; where the first edition's grammar instead absorbed the
+      <valsi>ba</valsi>
+      into the abstraction. In the following examples,
       <valsi>pu</valsi>
       is the tense marker for
       <quote>past time</quote>
@@ -391,6 +400,26 @@
         <natlang>Slightly to my left, the man bites the dog.</natlang>
       </interlinear-gloss>
     </example>
+
+    <para role="status-note">
+      <indexterm type="general"><primary>VA</primary><secondary>proposed regularization of</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>ZI</primary><secondary>proposed regularization of</secondary>
+      </indexterm>
+      A status note that applies to
+      <valsi>vi</valsi>/<valsi>va</valsi>/<valsi>vu</valsi>
+      here and equally to
+      <valsi>zi</valsi>/<valsi>za</valsi>/<valsi>zu</valsi>
+      ,
+      <valsi>ve'i</valsi>/<valsi>ve'a</valsi>/<valsi>ve'u</valsi>
+      , and
+      <valsi>ze'i</valsi>/<valsi>ze'a</valsi>/<valsi>ze'u</valsi>
+      below: a proposal from the language-definition effort would regularize each middle term to mean simply
+      <quote>unspecified magnitude</quote>
+      rather than
+      <quote>medium</quote>
+      , and would re-read a distance word's tagged sumti as naming the distance itself rather than the reference point. That proposal was never voted on and the dictionaries have not adopted it; this book teaches the established meanings. You may nevertheless meet the other readings in some post-first-edition material.
+    </para>
   </section>
   <section xml:id="section-compound-spatial-tenses">
     <title><anchor xml:id="c10s3" />Compound spatial tenses</title>
@@ -1258,7 +1287,7 @@
         <natlang>While moving a long way forward, I eat my meal.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent"> 
+    <para role="noindent">
         (Perhaps I am eating in an airplane.)</para>
     <para>
       <indexterm type="general"><primary>time travel</primary></indexterm>
@@ -1368,7 +1397,7 @@
         <natlang>Long ago I attended school for a long time.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent"> 
+    <para role="noindent">
         probably does not mean that I attended school continuously throughout the whole of that long-ago interval. Actually, I attended school every day, except for school holidays. More explicitly,</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-JM1W">
       <title><anchor xml:id="c10e9d2" /><indexterm type="general"><primary>regularly</primary></indexterm></title>
@@ -2375,42 +2404,50 @@
       <indexterm type="general"><primary>event contours</primary><secondary>as sumtcita</secondary>
       </indexterm>
       The event contours of selma'o ZAhO (and their space equivalents, prefixed with
-      <valsi>fe'e</valsi>) are also useful as sumtcita. The interpretation of ZAhO tcita differs from that of FAhA, VA, PU, and ZI tcita, however. The event described in the sumti is viewed as a process, and the action of the main bridi occurs at the phase of the process which the ZAhO specifies, or at least some part of that phase. The action of the main bridi itself is seen as a point event, so that there is no issue about which phase of the main bridi is intended. For example:
+      <valsi>fe'e</valsi>) are also useful as sumtcita. The interpretation of ZAhO tcita differs from that of FAhA, VA, PU, and ZI tcita, however. Here it is the <emphasis>main bridi</emphasis> that is viewed as a process, and the tagged sumti supplies a reference event: the ZAhO says which phase the main bridi's process is in at the time of that event. In other words,
+      <jbophrase>broda ba'o lo nu brode</jbophrase>
+      means the same as
+      <jbophrase>ba'o broda ca lo nu brode</jbophrase>
+      &ndash; at the time of the brode, the broda is already over. For example:
     </para>
 
-    <example role="interlinear-gloss-example" xml:id="example-random-id-Y2Kb">
+    <example role="interlinear-gloss-example" xml:id="example-random-id-xAb1">
       <title>
-        <anchor xml:id="c10e12d6" />
+        <anchor xml:id="c10e12d14" />
         <indexterm type="general"><primary>in the aftermath</primary></indexterm>
         <indexterm type="general"><primary>die after living</primary></indexterm>
       </title>
 
       <interlinear-gloss>
-        <jbo>mi morsi ba'o le nu mi jmive</jbo>
-        <gloss>I am-dead [retrospective] the event-of I live.</gloss>
-        <natlang>I am dead in the aftermath of my living.</natlang>
+        <jbo>la .berger. cu cliva le kumfa ba'o lo nu la .klark. cu tavla</jbo>
+        <gloss>Berger leaves the room [retrospective] the event-of Clark speaks.</gloss>
+        <natlang>Berger had already left the room by the time Clark spoke.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
-      Here the (point-)event of my being dead is the portion of my living-process which occurs after the process is complete. Contrast
-      <xref linkend="example-random-id-Y2Kb" />
+      Here the leaving is complete &ndash; in its aftermath &ndash; at the reference event, Clark's speaking. Contrast
+      <xref linkend="example-random-id-xAb1" />
       with:
     </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-18dT">
-      <title><anchor xml:id="c10e12d7" /></title>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-xAb2">
+      <title><anchor xml:id="c10e12d15" /></title>
 
       <interlinear-gloss>
-        <jbo>mi morsi ba le nu mi jmive</jbo>
-        <gloss>I am-dead [future] the event-of I live.</gloss>
-        <natlang>I am dead after my living.</natlang>
+        <jbo>la .berger. cu cliva le kumfa ba le nu la .klark. cu tavla</jbo>
+        <gloss>Berger leaves the room [future] the event-of Clark speaks.</gloss>
+        <natlang>Berger left the room after Clark spoke.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
-      As explained in
+      With plain
+      <valsi>ba</valsi>
+      the leaving simply follows the speaking; with
+      <valsi>ba'o</valsi>
+      the leaving is already finished business when the speaking happens. (And as explained in
       <xref linkend="section-vagueness" />
-      ,
-      <xref linkend="example-random-id-18dT" />
-      does not exclude the possibility that I died before I ceased to live!
+      , the vague interval of
+      <valsi>ba</valsi>
+      does not even strictly exclude some overlap!)
     </para>
     <para>Likewise, we might say:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-jJzr">
@@ -2421,7 +2458,7 @@
         <gloss>I go-to the store [prospective] the event-of I eat</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">which indicates that before my eating begins, I go to the store, whereas</para>
+    <para role="noindent">which indicates that at the time I eat, my going to the store is still ahead of me &ndash; first the meal, then the store &ndash; whereas</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-0VJp">
       <title><anchor xml:id="c10e12d9" /></title>
 
@@ -2430,7 +2467,18 @@
         <gloss>I go-to the store [retrospective] the event-of I eat</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">would indicate that I go to the store after I am finished eating.</para>
+    <para role="noindent">indicates that by the time I eat, the store trip is already behind me. (Readers of the first edition: these two translations are deliberately the reverse of the ones printed there &ndash; see the note below.)</para>
+    <para role="status-note">
+      <indexterm type="general"><primary>ZAhO</primary><secondary>sumtcita interpretation, change of</secondary>
+      </indexterm>
+      Historical note: the first edition interpreted a ZAhO sumtcita the other way around &ndash; the <emphasis>tagged event</emphasis> was the process, and the main bridi sat at the named phase of it, so that
+      <jbophrase>mi klama le zarci pu'o le nu mi citka</jbophrase>
+      meant
+      <quote>before my eating begins, I go to the store</quote>. The language-definition committee reversed this in 2004, as part of its approved treatment of the event contours: the main bridi carries the contour, and the tagged sumti locates it, exactly parallel to
+      <jbophrase>ba'o broda ca lo nu brode</jbophrase>. Text written to the first edition's rule &ndash; including some well-known examples, like this book's old
+      <quote>mi morsi ba'o le nu mi jmive</quote>
+      &ndash; must be reread accordingly. ZAhO used directly as a tense on the selbri (<xref linkend="section-event-contours" />) is unaffected by this change.
+    </para>
 
     <para>Here is an example which mixes temporal ZAhO (as a tense) and spatial ZAhO (as a sumtcita):</para>
 
@@ -2448,11 +2496,13 @@
       <interlinear-gloss>
         <jbo>… fe'e ba'o le lalxu</jbo>
         <gloss>… [space] [retrospective] the lake.</gloss>
-        <natlang>The boat sailed for too long and beyond the lake.</natlang>
+        <natlang>The boat sailed on too long; by the lake, its voyage was already spent.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
-      Probably it sailed up onto the dock. One point of clarification: although
+      Spatially, the voyage is in its aftermath where the lake is: the boat's proper course ended before the lake, and the
+      <valsi>za'o</valsi>
+      tells us it kept going anyway &ndash; probably up onto the dock. One point of clarification: although
       <valsi valid="maybe">xelklama</valsi>
       appears to mean simply
       <quote>is-a-mode-of-transport</quote>

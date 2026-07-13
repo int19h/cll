@@ -15,8 +15,10 @@
 # difference_prefixed.html (and cll_difference*.pdf with -P). The upstream
 # checkout is kept in build/upstream-tree/ and reused across runs.
 #
-# Run from the repository root on the host (podman or docker required);
-# the actual builds happen in the lojban/cll_build container.
+# Run from the repository root. Requires podman (preferred) or docker;
+# the book builds and the htmldiff both run inside the lojban/cll_build
+# container image (build it once with ./run_container.sh or
+# `<podman|docker> build -t lojban/cll_build -f Dockerfile .`).
 
 set -u
 
@@ -32,14 +34,14 @@ do
     u) upstream_url="$OPTARG";;
     r) upstream_ref="$OPTARG";;
     P) pdf="yes";;
-    [?h]) sed -n '3,20p' "$0"; exit 1;;
+    [?h]) sed -n '3,23p' "$0"; exit 1;;
   esac
 done
 
 die() { echo -e "\nDIFF FAILED: $*\n" >&2; exit 1; }
 
-CONTAINER_BIN=${CONTAINER_BIN:-$(which podman 2>/dev/null)}
-CONTAINER_BIN=${CONTAINER_BIN:-$(which docker 2>/dev/null)}
+CONTAINER_BIN=${CONTAINER_BIN:-$(command -v podman 2>/dev/null)}
+CONTAINER_BIN=${CONTAINER_BIN:-$(command -v docker 2>/dev/null)}
 [ -n "$CONTAINER_BIN" ] && "$CONTAINER_BIN" info >/dev/null 2>&1 \
   || die "need a working podman or docker"
 
@@ -47,10 +49,30 @@ CONTAINER_BIN=${CONTAINER_BIN:-$(which docker 2>/dev/null)}
   || "$CONTAINER_BIN" inspect lojban/cll_build >/dev/null 2>&1 \
   || die "container image lojban/cll_build not found; build it first (e.g. run ./run_container.sh once, or: $CONTAINER_BIN build -t lojban/cll_build -f Dockerfile .)"
 
+# Ownership mapping differs by runtime: podman's --userns=keep-id maps
+# container-root writes back to the invoking host user; docker has no
+# such mode (its --userns only accepts "host"), so run as the host uid.
+case "$(basename "$CONTAINER_BIN")" in
+  podman) run_opts=(--userns=keep-id) ;;
+  *)      run_opts=(--user "$(id -u):$(id -g)") ;;
+esac
+
 in_container() { # <host-tree> <command...>
   local tree; tree="$(readlink -f "$1")"; shift
-  "$CONTAINER_BIN" run --rm --userns=keep-id -v "$tree":/srv/cll \
+  "$CONTAINER_BIN" run --rm "${run_opts[@]}" -v "$tree":/srv/cll \
     lojban/cll_build /bin/bash -c "cd /srv/cll ; $*"
+}
+
+# Build xhtml-no-chunks for a tree, from scratch, and confirm THIS run
+# produced the output (the historical cll_build can exit 0 on failure).
+build_nochunks() { # <host-tree> <label>
+  local tree="$1" label="$2"
+  rm -rf "$tree/build/xhtml_no_chunks" "$tree/build/xhtml_no_chunks.done" \
+         "$tree/build/cll.xml" "$tree/build/cll_processed_xhtml.xml"
+  in_container "$tree" "./cll_build -n -T xhtml_nochunks" \
+    || die "$label build failed"
+  [ -s "$tree/build/xhtml_no_chunks/index.html" ] \
+    || die "$label build produced no build/xhtml_no_chunks/index.html"
 }
 
 # ---- get / update the upstream tree ----
@@ -58,8 +80,12 @@ uptree=build/upstream-tree
 if [ -d "$uptree/.git" ]
 then
   echo "Updating upstream checkout ($upstream_url $upstream_ref) ..."
+  git -C "$uptree" remote set-url origin "$upstream_url" || die "could not set upstream remote"
   git -C "$uptree" fetch -q --depth 1 origin "$upstream_ref" || die "fetch of $upstream_ref from $upstream_url failed"
-  git -C "$uptree" checkout -q FETCH_HEAD || die "checkout of upstream $upstream_ref failed"
+  git -C "$uptree" checkout -q -f FETCH_HEAD || die "checkout of upstream $upstream_ref failed"
+  # drop stray untracked files from a prior ref, but keep ignored caches
+  # (build/, the unpacked docbook-xsl) so we don't re-download every run
+  git -C "$uptree" clean -qfd || die "could not clean upstream tree"
 else
   echo "Cloning upstream ($upstream_url $upstream_ref) ..."
   mkdir -p build
@@ -68,24 +94,25 @@ fi
 upstream_sha=$(git -C "$uptree" rev-parse --short HEAD)
 echo "Upstream is at $upstream_sha."
 
-# ---- build both sides ----
-# Upstream's cll_build predates the exit-code fix and can exit 0 on an
-# internal failure, so verify its output exists rather than trusting it.
-echo "Building upstream xhtml-no-chunks in the container (this takes a while) ..."
-in_container "$uptree" "./cll_build -n -T xhtml_nochunks" || die "upstream container run failed"
-[ -s "$uptree/build/xhtml_no_chunks/index.html" ] || die "upstream build produced no build/xhtml_no_chunks/index.html"
+# Ruby-3 compatibility patch for the historical upstream tree
+# (output-neutral, build tooling only): File.exists?/Dir.exists? were
+# removed in Ruby 3.2. The current tree already uses File.exist?.
+sed -r -i 's/\bFile\.exists\?/File.exist?/g; s/\bDir\.exists\?/Dir.exist?/g' \
+  "$uptree"/scripts/*.rb 2>/dev/null || true
 
+# ---- build both sides (fresh) ----
+echo "Building upstream xhtml-no-chunks in the container (this takes a while) ..."
+build_nochunks "$uptree" "upstream"
 echo "Building this tree's xhtml-no-chunks in the container ..."
-in_container . "./cll_build -n -T xhtml_nochunks" || die "local build failed"
-[ -s "build/xhtml_no_chunks/index.html" ] || die "local build produced no build/xhtml_no_chunks/index.html"
+build_nochunks "." "local"
 
 # ---- normalize and diff (same pipeline as scripts/diff_official) ----
 tempdir=./build/diff_from_upstream
 type=xhtml_no_chunks
+rm -rf "$tempdir"                       # clear ALL stale output, incl. difference*.html
+mkdir -p "$tempdir"
 target_dir_old=$tempdir/diff_old_$type
 target_dir_new=$tempdir/diff_new_$type
-rm -rf "$target_dir_old" "$target_dir_new"
-mkdir -p "$tempdir"
 
 cp -pr "$uptree/build/$type" "$target_dir_old"
 cp -pr "./build/$type" "$target_dir_new"
@@ -93,16 +120,21 @@ find "$target_dir_old" "$target_dir_new" -name "*.html" -type f | xargs sed -r -
 find "$target_dir_old" "$target_dir_new" -name "*.html" -type f | xargs sed -r -i -e '/^\s*$/d'
 
 echo "Preparing a visual HTML diff (upstream $upstream_sha -> local $(git rev-parse --short HEAD)) ..."
-node "$PWD/scripts/diff" "$tempdir" || die "htmldiff failed"
-[ -s "$tempdir/difference.html" ] || die "no difference.html produced"
+# Run the htmldiff inside the container (node lives in the image, not
+# necessarily on the host).
+in_container . "node scripts/diff $tempdir" || die "htmldiff failed"
+[ -s "$tempdir/difference.html" ] && [ -s "$tempdir/difference_prefixed.html" ] \
+  || die "htmldiff did not produce both difference.html and difference_prefixed.html"
 
 if [ "$pdf" = "yes" ]
 then
-  in_container . "prince -vvv --script=scripts/prince_check_margins.js --script=scripts/prince_shave_index.js $tempdir/difference.html -o $tempdir/cll_difference.pdf ; prince -vvv --script=scripts/prince_check_margins.js --script=scripts/prince_shave_index.js $tempdir/difference_prefixed.html -o $tempdir/cll_difference_prefixed.pdf" \
-    || echo "warning: Prince PDF rendering failed; the HTML diffs are still valid" >&2
+  rm -f "$tempdir/cll_difference.pdf" "$tempdir/cll_difference_prefixed.pdf"
+  in_container . "set -e; for f in difference difference_prefixed; do prince -vvv --script=scripts/prince_check_margins.js --script=scripts/prince_shave_index.js $tempdir/\$f.html -o $tempdir/cll_\$f.pdf; done" \
+    && { [ -s "$tempdir/cll_difference.pdf" ] && [ -s "$tempdir/cll_difference_prefixed.pdf" ]; } \
+    || echo "warning: Prince PDF rendering failed or incomplete; the HTML diffs are still valid" >&2
 fi
 
 echo
 echo "Upstream diff done: $tempdir/difference.html $tempdir/difference_prefixed.html"
-[ "$pdf" = "yes" ] && echo "PDFs (if Prince succeeded): $tempdir/cll_difference.pdf $tempdir/cll_difference_prefixed.pdf"
+[ "$pdf" = "yes" ] && [ -s "$tempdir/cll_difference.pdf" ] && echo "PDFs: $tempdir/cll_difference.pdf $tempdir/cll_difference_prefixed.pdf"
 echo

@@ -172,3 +172,8 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# pages build scratch (workflow / local dry-run)
+_site/
+_baseline/
+_v_*/

@@ -1,0 +1,86 @@
+name: pages
+
+# Builds the published book site and deploys it to GitHub Pages.
+#
+# The site is multi-version: pages/versions.tsv maps each published
+# version to the git ref that holds its content, and every version is
+# rebuilt from its ref on each run (nothing generated is kept in git).
+# UnCLL 1.2.16 (= geklojban-development) is built once as the baseline
+# for the per-version "diff vs UnCLL".
+#
+# Trigger manually (workflow_dispatch) after updating a version's content
+# branch, or automatically when the pages branch (workflow/scripts) changes.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [pages]
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout pages branch (workflow + build scripts)
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0            # need all branches for per-version worktrees
+
+      - name: Make all content refs available
+        run: git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*'
+
+      - name: Install build toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            xmlto xsltproc libxml2-utils tidy zip unzip locales \
+            build-essential pkg-config libxml2-dev libxslt1-dev zlib1g-dev
+          sudo locale-gen en_US.UTF-8
+          sudo ln -sf /bin/bash /bin/sh          # build scripts assume sh == bash
+          sudo gem install --no-document nokogiri optimist htmlentities
+          sudo npm install -g regenerator
+
+      - name: Build UnCLL 1.2.16 baseline (geklojban-development)
+        run: |
+          git worktree add --detach _baseline origin/geklojban-development
+          ( cd _baseline && ./cll_build -n -T xhtml_nochunks )
+          test -s _baseline/build/xhtml_no_chunks/index.html
+
+      - name: Build each published version
+        run: |
+          mkdir -p _site
+          while IFS=$'\t' read -r ver ref; do
+            case "$ver" in ''|'#'*) continue ;; esac
+            echo "::group::build $ver from $ref"
+            git worktree add --detach "_v_$ver" "origin/$ref"
+            bash scripts/build-site.sh "_v_$ver" "$ver" \
+              "$PWD/_baseline/build/xhtml_no_chunks" "$PWD/_site"
+            echo "::endgroup::"
+          done < pages/versions.tsv
+
+      - name: Generate landing pages
+        run: bash scripts/gen-site-index.sh _site
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

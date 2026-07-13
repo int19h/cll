@@ -71,8 +71,15 @@ build_nochunks() { # <host-tree> <label>
          "$tree/build/cll.xml" "$tree/build/cll_processed_xhtml.xml"
   in_container "$tree" "./cll_build -n -T xhtml_nochunks" \
     || die "$label build failed"
+  # The Makefile writes index.html BEFORE the media copies, postprocessors,
+  # and the final `touch ...done`, and the historical cll_build does not
+  # propagate a make failure. Require BOTH the fresh nonempty index.html
+  # and the .done marker (zero-length, so test existence, not size), both
+  # removed above, so their presence proves this run reached the end.
   [ -s "$tree/build/xhtml_no_chunks/index.html" ] \
     || die "$label build produced no build/xhtml_no_chunks/index.html"
+  [ -e "$tree/build/xhtml_no_chunks.done" ] \
+    || die "$label build did not complete (no xhtml_no_chunks.done marker)"
 }
 
 # ---- get / update the upstream tree ----
@@ -136,5 +143,6 @@ fi
 
 echo
 echo "Upstream diff done: $tempdir/difference.html $tempdir/difference_prefixed.html"
-[ "$pdf" = "yes" ] && [ -s "$tempdir/cll_difference.pdf" ] && echo "PDFs: $tempdir/cll_difference.pdf $tempdir/cll_difference_prefixed.pdf"
+[ "$pdf" = "yes" ] && [ -s "$tempdir/cll_difference.pdf" ] && [ -s "$tempdir/cll_difference_prefixed.pdf" ] \
+  && echo "PDFs: $tempdir/cll_difference.pdf $tempdir/cll_difference_prefixed.pdf"
 echo

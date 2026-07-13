@@ -45,8 +45,12 @@ jobs:
             build-essential pkg-config libxml2-dev libxslt1-dev zlib1g-dev
           sudo locale-gen en_US.UTF-8
           sudo ln -sf /bin/bash /bin/sh          # build scripts assume sh == bash
-          sudo gem install --no-document nokogiri optimist htmlentities
-          sudo npm install -g regenerator
+          # pinned to the same versions as the reviewed build container
+          # (Dockerfile) so CI output does not drift as new releases land
+          sudo gem install --no-document nokogiri:1.18.8 optimist:3.2.0 htmlentities:4.3.4
+          npm config set fetch-retries 5
+          npm config set fetch-retry-maxtimeout 120000
+          sudo npm install -g regenerator@0.14.12
 
       - name: Build UnCLL 1.2.16 baseline (geklojban-development)
         run: |

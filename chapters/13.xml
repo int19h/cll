@@ -119,10 +119,12 @@
       ,
       <valsi>.uo</valsi>
       , and
-      <valsi>.uu</valsi>). The first edition called these last ten
-      <quote>diphthongs</quote>
-      as well, and said they were permitted only in attitudinal indicators and in Lojbanized names and borrowings; under the current word-form rules they are analyzed instead as glide-initial syllables, which may begin a word (as in these cmavo) or follow a vowel, but may never follow a consonant. (The glide analysis is part of the de facto word-form grammar, never formally ratified; the after-a-consonant ban was separately adopted by committee vote in 2014; see the status discussion in
-      <xref linkend="chapter-phonology" />.) Note that each of these cmavo has a period before it, marking the pause that is mandatory before every word beginning with a vowel. Attitudinals, like most of the other kinds of indicators described in this chapter, belong to selma'o UI.
+      <valsi>.uu</valsi>). These begin with a glide &ndash; a consonantal
+      <letteral>i</letteral>
+      or
+      <letteral>u</letteral>
+      &ndash; which may begin a word, as in these cmavo, or follow a vowel, but may never follow a consonant (see
+      <xref linkend="chapter-phonology" />). Note that each of these cmavo has a period before it, marking the pause that is mandatory before every word beginning with a vowel. Attitudinals, like most of the other kinds of indicators described in this chapter, belong to selma'o UI.
     </para>
     <para>
       <indexterm type="general"><primary>attitudinals</primary><secondary>compound</secondary>
@@ -639,46 +641,35 @@
       <letteral>i</letteral>
       -series as well.
     </para>
-    <para role="status-note">
-      <indexterm type="general"><primary>e-series attitudinals</primary><secondary>status of</secondary>
-      </indexterm>
-      (A status note: this directive account of the
-      <letteral>e</letteral>
-      -series comes from the language-definition committee's reworking of these cmavo, which was drafted and discussed but never completed or put to a ratifying vote. It changes the meaning of two words outright: in the first edition and in the frozen official word lists,
+    <para>
+      Older text is another matter: the frozen official word lists, and writing that follows them, use different senses for several of these words &ndash;
       <valsi>.e'e</valsi>
-      is
+      as
       <quote>competence</quote>
-      (feeling able) and
+      and
       <valsi>.e'i</valsi>
-      is
+      as
       <quote>constraint</quote>
-      (feeling bound). This book teaches the reworked senses &ndash; exhortation and command &ndash; because modern use attests them and the community's own contributions follow them: dictionary entries in several languages, and words coined from these cmavo, such as
-      <jbophrase>e'ende</jbophrase>
-      (<quote>exhorts</quote>) and
-      <jbophrase>e'inde</jbophrase>
-      (<quote>instructs</quote>). A reader of older text should expect the first edition's senses there; a writer who needs to be unambiguous can always say it with a full bridi (
+      among them. When the difference matters, say it with a full bridi:
       <valsi>kakne</valsi>
       for being able,
       <valsi>minde</valsi>
-      for commanding). The four remaining positive roots &ndash;
-      <valsi>.e'a</valsi>
+      for commanding.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>e-series attitudinals</primary><secondary>status of</secondary>
+      </indexterm>
+      (The directive account of the
+      <letteral>e</letteral>
+      -series comes from the language-definition committee's reworking of these cmavo, drafted but never put to a vote; this book teaches it because modern use and the community's dictionaries follow it &ndash; witness coinages like
+      <jbophrase>e'ende</jbophrase>
       ,
-      <valsi>.ei</valsi>
+      <quote>exhorts</quote>
+      , and
+      <jbophrase>e'inde</jbophrase>
       ,
-      <valsi>.e'o</valsi>
-      , and
-      <valsi>.e'u</valsi>
-      &ndash; keep their broad senses, but note that two negative poles were also reassigned in the rework: the
-      <valsi>.e'o</valsi>
-      scale's opposite is now
-      <quote>offer</quote>
-      rather than the first edition's
-      <quote>negative request</quote>
-      , and
-      <jbophrase>.ai nai</jbophrase>
-      is now unintentionality rather than refusal &ndash; refusal proper belongs to the
-      <valsi>.i'a</valsi>
-      scale's negative pole.)
+      <quote>instructs</quote>. For the full list of reassigned senses, see
+      <xref linkend="appendix-changes" />.)
     </para>
     <para>
       <indexterm type="general"><primary>attitudinals</primary><secondary>logical language and</secondary>

@@ -702,9 +702,8 @@
       <letteral>i</letteral>
       or
       <letteral>u</letteral>
-      &ndash; begins the syllable (the first edition classified these as additional diphthongs; see
-      <xref linkend="chapter-phonology" />
-      for the current analysis):
+      &ndash; begins the syllable (see
+      <xref linkend="chapter-phonology" />):
     </para>
     <simplelist type="horiz" columns="5">
       <member>
@@ -2017,9 +2016,10 @@
     <para role="status-note">
       <indexterm type="general"><primary>hyphens</primary><secondary>optional, status of</secondary>
       </indexterm>
-      This book teaches the classical rule: a hyphen appears exactly where it is needed and nowhere else. Be aware, however, that the formal word-form definition used by modern Lojban software is more liberal, accepting a y-hyphen after any CVC-form rafsi and an r- or n-hyphen after any CVV-form rafsi even where nothing would otherwise go wrong (so a parser will accept, say,
+      This book teaches the classical rule: a hyphen appears exactly where it is needed and nowhere else. The formal word-form grammar is more liberal &ndash; it also accepts unneeded hyphens (
       <jbophrase>naltosymabru</jbophrase>
-      with an unneeded hyphen). These are two separate facts with two separate standings: the liberal acceptance is de facto &ndash; it is what the working word-form grammar deliberately does &ndash; while as a matter of policy, wording that would have made it official was vetoed in the 2019 errata process for the previous revision of this book. This edition accordingly keeps the classical placement as the norm for writing, while readers should expect software to accept the liberal forms.
+      , say), so expect software to swallow them. Write classically; for the standing of the liberal acceptance, see
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="general"><primary>lujvo</primary><secondary>with zei</secondary>
@@ -2052,7 +2052,7 @@
       <jbophrase>bridi valsi</jbophrase>
       , which could have other meanings). Using
       <valsi>zei</valsi>
-      is the only way to get a cmavo lacking a rafsi, or a cmevla, into a lujvo (fu'ivla, which the first edition also confined to zei phrases, can now form lujvo directly: see <xref linkend="section-rafsi-fuhivla" />):
+      is the only way to get a cmavo lacking a rafsi, or a cmevla, into a lujvo (fu'ivla can form lujvo directly: see <xref linkend="section-rafsi-fuhivla" />):
     </para>
     <example xml:id="example-random-id-qJe1" role="lujvo-example">
       <title>
@@ -2655,9 +2655,10 @@
       ,
       <quote>'ar</quote>
       , and
-      <quote>ka</quote>. (The first edition permitted consonant-glide combinations in fu'ivla and names, and spelled this word
+      <quote>ka</quote>. (Older texts spell it
       <quote>kuarka</quote>
-      as two syllables; words coined under the old rule need respelling.)
+      , under a rule since repealed; such words need respelling &ndash; see
+      <xref linkend="appendix-changes" />.)
     </para>
     <example role="lojbanization-example" xml:id="example-random-id-FTfQ">
       <title>
@@ -2887,9 +2888,7 @@
       <xref linkend="example-random-id-qjh0" />
       , used because
       <quote>ea</quote>
-      is not a valid diphthong in Lojban, and a brivla may not simply run the two vowels together. (The first edition wrote these words as
-      <quote>bang,r,kore,a</quote>
-      , treating the comma as a syllable separator that licensed the vowel sequence; the comma is now a pure pronunciation aid, and cannot make an otherwise invalid word valid &ndash; see
+      is not a valid diphthong in Lojban, and a brivla may not simply run the two vowels together. (The comma cannot help here: it is a pure pronunciation aid, and cannot make an otherwise invalid word valid &ndash; see
       <xref linkend="chapter-phonology" />.) Arguably, some form of the native name
       <quote>Chosen</quote>
       should have been used instead of the internationally known
@@ -3161,7 +3160,7 @@
           <morphology>uy</morphology>
           &ndash; a glide followed by
           <letteral>y</letteral>
-          &ndash; which the first edition classified as diphthongs restricted to names; no standard word of any other kind contains them, though as pure word-shapes the formal grammar also admits them among the unassigned experimental cmavo forms.
+          &ndash; which occur in no standard word of any other kind, though as pure word-shapes the formal grammar also admits them among the unassigned experimental cmavo forms.
         </para>
       </listitem>
       <listitem>
@@ -6006,13 +6005,12 @@
       <indexterm type="general"><primary>fu'ivla</primary><secondary>in lujvo</secondary>
       </indexterm>
       <indexterm type="general"><primary>extended rafsi</primary></indexterm>
-      The mechanism described in this section is de facto standard: it is part of the formal word-form grammar (
-      <xref linkend="appendix-peg-morphology" />), implemented by the current Lojban software tools surveyed for this edition; it was developed after the first edition and, like the word-form grammar as a whole, has never been put to a formal vote. (The first edition instead printed, in this spot, a tentative proposal to give rafsi to a special class of CCVVCV cultural fu'ivla. That proposal was never adopted, and words of that shape are today ordinary fu'ivla.)
+      The mechanism in this section is de facto standard Lojban: it is part of the formal word-form grammar (
+      <xref linkend="appendix-peg-morphology" />), and current software implements it. For its history &ndash; and for the never-adopted proposal the first edition printed in this spot &ndash; see
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
-      The first edition allowed fu'ivla into lujvo only through
-      <valsi>zei</valsi>
-      (<xref linkend="section-rafsi" />). Current Lojban gives every fu'ivla a full set of combining forms, so that borrowings participate in lujvo-making as freely as gismu do. The rules are:
+      Every fu'ivla has a full set of combining forms, so borrowings join lujvo-making as freely as gismu do. The rules are:
     </para>
     <orderedlist>
       <listitem>

@@ -2779,46 +2779,20 @@
         </para>
       </listitem>
     </itemizedlist>
-    <para role="status-note">
-      <indexterm type="general"><primary>magic words</primary><secondary>status of interaction rules</secondary>
-      </indexterm>
-      Status: the single uniform principle stated above is this edition's synthesis, following the community's later unification of these rules and the behavior of current parsers &ndash; it was never voted as such. What the language-definition committee actually fixed, word by word, in its 2005 checkpoints is the left-to-right conflict rule for each of the quoting and binding words individually: for
-      <valsi>lo'u</valsi>
-      ,
-      <valsi>zo</valsi>
-      ,
-      <valsi>zoi</valsi>
-      , and
-      <valsi>la'o</valsi>
-      in its quotations decision, for
-      <valsi>zei</valsi>
-      in its connectives decision, and for
-      <valsi>bu</valsi>
-      by a definition that used an exception list rather than the uniform principle. The
-      <valsi>y</valsi>
-      and
-      <valsi>fa'o</valsi>
-      rules have their own checkpointed definitions. The erasure words were deliberately left out of those decisions:
-      <valsi>si</valsi>
-      and
-      <valsi>su</valsi>
-      as taught here are de facto (implemented but unvoted), and
-      <valsi>sa</valsi>
-      remains unsettled (<xref linkend="section-erasure" />). Wherever the checkpointed per-word rules and the uniform principle agree &ndash; which is almost everywhere &ndash; the principle simply restates settled material; one corner is genuinely contested: whether
+    <para>
+      Wherever the committee's frozen per-word rules and the uniform principle agree &ndash; which is almost everywhere &ndash; the principle simply restates settled material. One corner is genuinely contested: whether
       <valsi>bu</valsi>
       may bind a preceding
       <valsi>ba'e</valsi>
       (making a
       <quote>ba'e</quote>
-      letteral) &ndash; the checkpointed
+      letteral) &ndash; the frozen
       <valsi>bu</valsi>
       text forbade it, while the uniform principle and current parsers allow it. Treat
       <jbophrase>ba'e bu</jbophrase>
       and similar exotica as curiosities, not tools. One more limit of the
       <quote>single word</quote>
-      metaphor: under the later (unvoted) selma'o-matching proposal for
-      <valsi>sa</valsi>
-      , a quotation still remembers the selma'o of the word that formed it &ndash; the frozen quotation definitions preserve ZO for a
+      metaphor: a quotation still remembers the selma'o of the word that formed it &ndash; ZO for a
       <valsi>zo</valsi>
       quote, ZOI for
       <valsi>zoi</valsi>
@@ -2826,7 +2800,15 @@
       <valsi>la'o</valsi>
       , and LOhU and LEhU for the two ends of a
       <jbophrase>lo'u&hellip;le'u</jbophrase>
-      quote, precisely so that such matching can work.
+      quote &ndash; so that rules which match on selma'o can still work.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>magic words</primary><secondary>status of interaction rules</secondary>
+      </indexterm>
+      (The uniform principle is this edition's synthesis: the committee fixed these rules word by word, the erasure words were deliberately left out, and
+      <valsi>sa</valsi>
+      remains unsettled (<xref linkend="section-erasure" />). The word-by-word provenance is catalogued in
+      <xref linkend="appendix-changes" />.)
     </para>
   </section>
   <section xml:id="section-elidable-terminators">

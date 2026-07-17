@@ -36,8 +36,9 @@
       </indexterm>
       A stream of Lojban sounds can be uniquely broken up into its component words according to specific rules. These so-called
       <quote>morphology rules</quote>
-      are summarized in this chapter. (A complete, formal statement of these rules now exists: the PEG morphology, a computer-testable grammar of Lojban's word-forms, printed in full in
-      <xref linkend="appendix-peg-morphology" />. Its status is de facto: a working document of the language-definition effort, never put to a ratifying vote, but implemented by the current Lojban software tools surveyed for this edition. This chapter presents the same system informally.) First, here are some conventions used to talk about groups of Lojban letters, including vowels and consonants.
+      are summarized in this chapter. A complete, formal statement of these rules exists &ndash; the PEG morphology, a computer-testable grammar of Lojban's word-forms, printed in full in
+      <xref linkend="appendix-peg-morphology" />
+      &ndash; and this chapter presents the same system informally. First, here are some conventions used to talk about groups of Lojban letters, including vowels and consonants.
     </para>
 
     <orderedlist>
@@ -686,8 +687,9 @@
       <indexterm type="general"><primary>cmavo</primary><secondary>experimental</secondary>
       </indexterm>
       <quote>Experimental use</quote>
-      means that these words have no officially assigned meanings: they provide an escape hatch for adding grammatical mechanisms the need for which was not foreseen. In practice a number of experimental cmavo have gained real currency in the community and are recorded, clearly marked as unofficial, in the community's dictionaries; none of them is part of standard Lojban as this book describes it. Note also that the formal word-form grammar (
-      <xref linkend="appendix-peg-morphology" />) admits two further cmavo <emphasis>shapes</emphasis> beyond the vowel-and-apostrophe forms described above: a word consisting of one or more
+      means that these words have no officially assigned meanings: they provide an escape hatch for adding grammatical mechanisms the need for which was not foreseen. In practice a number of experimental cmavo have gained real currency in the community and are recorded, clearly marked as unofficial, in the community's dictionaries; none of them is part of standard Lojban as this book describes it. Note also that the formal word-form grammar of
+      <xref linkend="appendix-peg-morphology" />
+      admits two further cmavo <emphasis>shapes</emphasis> beyond the vowel-and-apostrophe forms described above: a word consisting of one or more
       <letteral>y</letteral>
       s, and a word consisting of a single digit character. These are capabilities of the working word-form grammar &ndash; shapes it will tokenize as cmavo &ndash; not standard word assignments; apart from
       <valsi>y</valsi>
@@ -2315,8 +2317,7 @@
           or
           <letteral>u</letteral>
           before another vowel) &ndash; see
-          <xref linkend="section-diphthongs" />. (This ban was adopted by a recorded vote of the language-definition committee in December 2014, and is enforced by the standard word-form grammar; see the status discussion in
-          <xref linkend="chapter-phonology" />.) Borrowings that would contain such a sequence can be rescued in several ways: convert the glide to a full vowel, with the apostrophe then beginning the next syllable, as in
+          <xref linkend="section-diphthongs" />. Borrowings that would contain such a sequence can be rescued in several ways: convert the glide to a full vowel, with the apostrophe then beginning the next syllable, as in
           <valsi>ku'arka</valsi>
           ; double the glide letter; or recast the borrowing altogether (as a type-3 fu'ivla, a lujvo, or a
           <valsi>zei</valsi>
@@ -2330,9 +2331,10 @@
         <para>
           <indexterm type="general"><primary>slinku'i test</primary><secondary>definition</secondary>
           </indexterm>
-          must not be gismu or lujvo, or any combination of cmavo, gismu, and lujvo; furthermore, a fu'ivla with a CV cmavo joined to the front of it must not have the form of a lujvo (the so-called
+          must not be gismu or lujvo, or any combination of cmavo, gismu, and lujvo; furthermore, a fu'ivla with a CV cmavo joined to the front of it must not have the form of a lujvo &ndash; the so-called
           <quote>slinku'i test</quote>
-          ; its precise statement is part of the formal word-form grammar, see <xref linkend="appendix-peg-morphology" />);
+          , stated precisely in
+          <xref linkend="appendix-peg-morphology" />;
         </para>
 
       </listitem>
@@ -3947,10 +3949,10 @@
           <quote>CVC ... CVC + X</quote>
           &ndash; for
           <quote>tosmabru failure</quote>. In order to fail, X must either be a CVCCV long rafsi that happens to have a permissible initial pair as the consonant cluster, or is something which has caused a
-    y-hyphen to be inserted between the preceding CVC and X in step 4.b. (The formal word-form grammar states this test precisely, as the rule called
+    y-hyphen to be inserted between the preceding CVC and X in step 4.b. The formal word-form grammar states this test precisely, as the rule called
           <quote>CVCy_lujvo</quote>
           ; see
-          <xref linkend="appendix-peg-morphology" />.)
+          <xref linkend="appendix-peg-morphology" />.
         </para>
         <para>The test is as follows:</para>
         <orderedlist>

@@ -72,7 +72,9 @@
       ; the old mass doctrine (a mass has the properties of its components) is replaced by <emphasis>groups</emphasis> (
       <valsi>gunma</valsi>) with collective satisfaction and their own properties;
       <valsi>me</valsi>
-      is sharpened to
+      is sharpened from
+      <quote>is one of</quote>
+      to
       <quote>is/are among the referents of</quote>
       ; and a number directly after
       <valsi>la</valsi>
@@ -107,7 +109,11 @@
       <valsi>ro</valsi>
       (or
       <valsi>pisu'o</valsi>
-      when read as masses), quotations an implicit
+      when read as masses &ndash; the composite pro-sumti like
+      <valsi>mi'o</valsi>
+      were themselves said to represent masses, equal to the
+      <valsi>joi</valsi>
+      forms), quotations an implicit
       <valsi>su'o</valsi>
       , and so on. The consequences ran deep. Because
       <jbophrase>lo broda</jbophrase>
@@ -118,7 +124,9 @@
       <valsi>lo</valsi>
       counted everything in existence fitting the description &ndash; the first edition warned readers away from
       <jbophrase>lo ci gerku</jbophrase>
-      as claiming a three-dog universe. And the first edition's definite/indefinite lessons were largely lessons about which defaults you were getting. None of this survives. An unquantified description is a constant, and the only quantifiers in a bridi are the ones somebody said.
+      as claiming a three-dog universe, and read an incidental clause on a bare
+      <jbophrase>lo prenu</jbophrase>
+      as a claim about all persons whatsoever. And the first edition's definite/indefinite lessons were largely lessons about which defaults you were getting. None of this survives. An unquantified description is a constant, and the only quantifiers in a bridi are the ones somebody said.
     </para>
     <para>
       <indexterm type="general"><primary>masses</primary><secondary>first-edition doctrine</secondary>
@@ -319,7 +327,8 @@
           <valsi>tai</valsi>
           , tightened several glosses to the checkpointed wording (notably
           <valsi>ti'u</valsi>
-          , a time-of-day stamp), and settled the old reading dispute over BAI-plus-
+          , a time-of-day stamp, and
+          <valsi>ci'e</valsi>), and settled the old reading dispute over BAI-plus-
           <jbophrase>-nai</jbophrase>
           in this book's favor. See
           <xref linkend="chapter-sumti-tcita" />.
@@ -328,7 +337,7 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>letterals</primary><secondary>change summary</secondary></indexterm>
-          <emphasis>Checkpointed</emphasis> (2005). Shift words are bounded to their letteral string;
+          <emphasis>Checkpointed</emphasis> (2005). Shift words are bounded to their letteral string (the first edition read a shift as possibly persisting until contradicted);
           <valsi>.ybu</valsi>
           is recognized as a unit before any word-level processing; the
           <valsi>bu</valsi>

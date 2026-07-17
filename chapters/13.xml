@@ -119,12 +119,8 @@
       ,
       <valsi>.uo</valsi>
       , and
-      <valsi>.uu</valsi>). These begin with a glide &ndash; a consonantal
-      <letteral>i</letteral>
-      or
-      <letteral>u</letteral>
-      &ndash; which may begin a word, as in these cmavo, or follow a vowel, but may never follow a consonant (see the status discussion in
-      <xref linkend="chapter-phonology" />). Note that each of these cmavo has a period before it, marking the pause that is mandatory before every word beginning with a vowel. Attitudinals, like most of the other kinds of indicators described in this chapter, belong to selma'o UI.
+      <valsi>.uu</valsi>). A glide may begin a word, as in these cmavo, or follow a vowel, but may never follow a consonant; see the status discussion in
+      <xref linkend="chapter-phonology" />. Note that each of these cmavo has a period before it, marking the pause that is mandatory before every word beginning with a vowel. Attitudinals, like most of the other kinds of indicators described in this chapter, belong to selma'o UI.
     </para>
     <para>
       <indexterm type="general"><primary>attitudinals</primary><secondary>compound</secondary>
@@ -659,17 +655,10 @@
     <para role="status-note">
       <indexterm type="general"><primary>e-series attitudinals</primary><secondary>status of</secondary>
       </indexterm>
-      (The directive account of the
+      The directive account of the
       <letteral>e</letteral>
-      -series comes from the language-definition committee's unfinished reworking of these cmavo; this book teaches it because modern use attests it and the community's own contributions follow it &ndash; witness coinages like
-      <jbophrase>e'ende</jbophrase>
-      ,
-      <quote>exhorts</quote>
-      , and
-      <jbophrase>e'inde</jbophrase>
-      ,
-      <quote>instructs</quote>. For the full list of reassigned senses, see
-      <xref linkend="appendix-changes" />.)
+      -series is this edition's choice, following attested modern use rather than the frozen official lists. For the full list of reassigned senses, and where this account came from, see
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="general"><primary>attitudinals</primary><secondary>logical language and</secondary>

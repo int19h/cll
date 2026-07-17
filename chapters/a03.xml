@@ -253,8 +253,23 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>magic words</primary><secondary>change summary</secondary></indexterm>
-          <emphasis>Checkpointed per word</emphasis> (2005), <emphasis>synthesis editorial</emphasis>. The quoting and binding words (
-          <valsi>zo</valsi>, <valsi>zoi</valsi>, <valsi>la'o</valsi>, <valsi>lo'u</valsi>, <valsi>zei</valsi>, <valsi>bu</valsi>) each received a fixed left-to-right conflict rule, replacing the first edition's inconsistent pairwise list; this edition presents them under one uniform principle and flags its two contested corners. The first edition's
+          <emphasis>Checkpointed per word</emphasis> (2005), <emphasis>synthesis editorial</emphasis>. The quoting and binding words each received a fixed left-to-right conflict rule, replacing the first edition's inconsistent pairwise list:
+          <valsi>zo</valsi>
+          ,
+          <valsi>zoi</valsi>
+          ,
+          <valsi>la'o</valsi>
+          , and
+          <valsi>lo'u</valsi>
+          in the committee's quotations decision,
+          <valsi>zei</valsi>
+          in its connectives decision, and
+          <valsi>bu</valsi>
+          by a definition using an exception list; the
+          <valsi>y</valsi>
+          and
+          <valsi>fa'o</valsi>
+          rules have their own checkpointed definitions, and the erasure words were deliberately left out. This edition presents all of it under one uniform principle and flags its two contested corners. The first edition's
           <jbophrase>zo le'u</jbophrase>
           loophole is gone. A quotation now erases as a single unit &ndash;
           <jbophrase>zo si si</jbophrase>

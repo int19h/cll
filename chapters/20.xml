@@ -668,14 +668,14 @@
     </bridgehead>
 
     <para>
-      Specifies a non-logical connection (e.g. together-with-as-mass, -set, or -sequence) between two sumti, tanru units, or various other things. When immediately followed by
+      Specifies a non-logical connection (e.g. together-in-a-group, -set, or -sequence) between two sumti, tanru units, or various other things. When immediately followed by
       <xref linkend="GI" />
       , provides forethought non-logical connection analogous to
       <xref linkend="GA" />.
     </para>
     <interlinear-gloss>
       <jbo>la--.djan. joi la--.alis. cu bevri le pipno</jbo>
-      <gloss>John massed-with Alice -- carry the piano.</gloss>
+      <gloss>John in-a-group-with Alice -- carry the piano.</gloss>
     </interlinear-gloss>
     <bridgehead>
       <anchor xml:id="JOhI" xreflabel="JOhI" />
@@ -1048,7 +1048,7 @@
     </bridgehead>
 
     <para>
-      Produces a tanru unit from a sumti, which is applicable to the things referenced by the sumti. Terminated by
+      Produces a tanru unit from a sumti; the result is true of whatever is among the referents of the sumti. Terminated by
       <xref linkend="MEhU" />.
     </para>
     <interlinear-gloss>
@@ -1081,7 +1081,7 @@
     <para>Suffixes added to numbers or other quantifiers to make various numerically-based selbri.</para>
     <interlinear-gloss>
       <jbo>la--.djan. joi la--.frank. cu bruna - remei</jbo>
-      <gloss>John in-a-mass-with Frank -- are-a-brother type-of twosome.</gloss>
+      <gloss>John in-a-group-with Frank -- are-a-brother type-of twosome.</gloss>
       <natlang>John and Frank are two brothers.</natlang>
     </interlinear-gloss>
     <bridgehead>
@@ -1385,7 +1385,10 @@
       <xref linkend="section-erasure" />)
     </bridgehead>
 
-    <para>Erases the previous phrase or sentence.</para>
+    <para>Erases the previous phrase or sentence. (The precise rule for
+      <valsi>sa</valsi>
+      was never settled, and machine parsers implement it only approximately; see
+      <xref linkend="section-erasure" />.)</para>
     <interlinear-gloss>
       <jbo>mi klama sa do klama le zarci</jbo>
       <gloss>I go, er, you go-to the market.</gloss>

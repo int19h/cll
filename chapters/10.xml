@@ -117,8 +117,8 @@
     <para role="status-note">
       <indexterm type="general"><primary>tags</primary><secondary>binding to selbri, status</secondary>
       </indexterm>
-      (This tag-binding rule is committee-approved and current parsers implement it; older grammars group such tags differently &ndash; see
-      <xref linkend="appendix-changes" />.)
+      This tag-binding rule is committee-approved and current parsers implement it; older grammars group such tags differently &ndash; see
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       In the following examples,
@@ -413,19 +413,12 @@
       </indexterm>
       <indexterm type="general"><primary>ZI</primary><secondary>proposed regularization of</secondary>
       </indexterm>
-      A status note that applies to
-      <valsi>vi</valsi>/<valsi>va</valsi>/<valsi>vu</valsi>
-      here and equally to
-      <valsi>zi</valsi>/<valsi>za</valsi>/<valsi>zu</valsi>
-      ,
-      <valsi>ve'i</valsi>/<valsi>ve'a</valsi>/<valsi>ve'u</valsi>
-      , and
-      <valsi>ze'i</valsi>/<valsi>ze'a</valsi>/<valsi>ze'u</valsi>
-      below: a proposal from the language-definition effort would regularize each middle term to mean simply
+      Some newer material reads the middle terms as
       <quote>unspecified magnitude</quote>
       rather than
       <quote>medium</quote>
-      , and would re-read a distance word's tagged sumti as naming the distance itself rather than the reference point. That proposal was never adopted &ndash; the dictionaries do not follow it &ndash; and this book teaches the established meanings. You may nevertheless meet the other readings in some post-first-edition material.
+      , and a distance word's tagged sumti as naming the distance itself. Those readings were never adopted; this book teaches the established meanings &ndash; see
+      <xref linkend="appendix-changes" />.
     </para>
   </section>
   <section xml:id="section-compound-spatial-tenses">
@@ -2480,10 +2473,10 @@
     <para role="status-note">
       <indexterm type="general"><primary>ZAhO</primary><secondary>sumtcita interpretation, change of</secondary>
       </indexterm>
-      (The reading taught here follows the committee's checkpointed 2004 decision on the event contours. Older text reads a ZAhO sumtcita the other way around &ndash; this book's own old
+      The reading taught here follows the committee's checkpointed 2004 decision on the event contours. Older text reads a ZAhO sumtcita the other way around &ndash; this book's own old
       <quote>mi morsi ba'o le nu mi jmive</quote>
       is a famous example &ndash; so reread it accordingly; see
-      <xref linkend="appendix-changes" />.)
+      <xref linkend="appendix-changes" />.
     </para>
 
     <para>Here is an example which mixes temporal ZAhO (as a tense) and spatial ZAhO (as a sumtcita):</para>

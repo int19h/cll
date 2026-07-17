@@ -179,12 +179,12 @@
     <para role="status-note">
       <indexterm type="general"><primary>na</primary><secondary>scope of, status</secondary>
       </indexterm>
-      (This whole-bridi rule is also how current semantic software reads
-      <valsi>na</valsi>; a narrower-scope proposal was never adopted &ndash; see
+      This whole-bridi rule is also how current semantic software reads
+      <valsi>na</valsi>; older discussion entertains a narrower scope &ndash; see
       <xref linkend="appendix-changes" />. How
       <valsi>na</valsi>
       interacts with quantified variables is taken up in
-      <xref linkend="chapter-quantifiers" />.)
+      <xref linkend="chapter-quantifiers" />.
     </para>
 
     <para>
@@ -375,8 +375,8 @@
     <para role="status-note">
       <indexterm type="general"><primary>na</primary><secondary>with tenses, status</secondary>
       </indexterm>
-      (This resolution is de facto &ndash; current semantic software implements it; see
-      <xref linkend="appendix-changes" />.)
+      This resolution is de facto &ndash; current semantic software implements it; see
+      <xref linkend="appendix-changes" />.
     </para>
 
     <para>A final caution on translating English negations into Lojban: if you translate the English literally, you'll get the wrong one. With English causal statements, and other statements with auxiliary clauses, this problem is more likely.</para>
@@ -1044,7 +1044,7 @@
     <para role="status-note">
       <indexterm type="general"><primary>descriptions</primary><secondary>reference failure under negation</secondary>
       </indexterm>
-      (What truth value such a failed claim receives is not settled by the official definitions. This book keeps the first edition's convention: an affirmative claim about a failed description counts as false, and its contradictory negation as true.)
+      What truth value such a failed claim receives is not settled by the official definitions. This book's convention: an affirmative claim about a failed description counts as false, and its contradictory negation as true.
     </para>
     <para>
       Under that convention, it is false to say that the King is bald, or non-bald, or anything else affirmative. Any sentence about the current King of France containing only a selbri negation is as false as the sentence without the negation, because selbri negations still make affirmative claims. No amount of selbri negations have any effect on the truth value of the sentence, which is invariably

@@ -244,7 +244,7 @@
       <jbophrase>lo zarci</jbophrase>
       refers to something which could be found in the x<subscript>1</subscript> place of
       <valsi>zarci</valsi>
-      , namely a market (or several markets).
+      &ndash; a market, or several.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>lo</primary><secondary>and truth of selbri</secondary>
@@ -561,7 +561,7 @@
       <indexterm type="general"><primary>gadri reform</primary></indexterm>
       The meaning of
       <valsi>lo</valsi>
-      given here is the fruit of a reform the community calls <quote>xorlo</quote> (after the nickname of its principal author), ratified in its final form by the Logical Language Group in 2020. If you learned your Lojban from the first edition of this book, the articles are the biggest thing that has changed &ndash; the old definitions, and how to read older text, are laid out in
+      given here is the fruit of a reform the community calls <quote>xorlo</quote>, after the nickname of its principal author; it is now the ratified standard. If you learned your Lojban from the first edition of this book, the articles are the biggest thing that has changed &ndash; the old definitions, and how to read older text, are laid out in
       <xref linkend="appendix-changes" />.
     </para>
     <para>
@@ -616,10 +616,10 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      (The number
+      The number
       <valsi>ci</valsi>
       placed inside the description simply tells us that we are talking about three people; this mechanism is explained fully in
-      <xref linkend="section-quantified-descriptions" />. I will assume that there is only one piano under discussion.)
+      <xref linkend="section-quantified-descriptions" />. I will assume that there is only one piano under discussion.
     </para>
     <para>
       <indexterm type="general"><primary>distributivity</primary><secondary>contrasted with collective action</secondary>
@@ -1239,8 +1239,8 @@
     <para role="status-note">
       <indexterm type="general"><primary>implicit quantifiers</primary><secondary>abolition of</secondary>
       </indexterm>
-      (This rule is part of the ratified article reform; older texts follow a different convention here &ndash; see
-      <xref linkend="appendix-changes" />.)
+      This rule is part of the ratified article reform; older texts follow a different convention here &ndash; see
+      <xref linkend="appendix-changes" />.
     </para>
   </section>
   <section xml:id="section-quantified-descriptions">
@@ -1373,8 +1373,8 @@
       </indexterm>
       <indexterm type="general"><primary>xorlo</primary><secondary>and quantified descriptions</secondary>
       </indexterm>
-      (Older texts follow a very different convention here; if you need to read pre-reform Lojban closely, see
-      <xref linkend="appendix-changes" />.)
+      Pre-reform Lojban reads these quite differently; if you need to read older text closely, see
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>le</primary><secondary>inner quantifier with</secondary>
@@ -1523,8 +1523,8 @@
     <para role="status-note">
       <indexterm type="general"><primary>indefinite descriptions</primary><secondary>change from first edition</secondary>
       </indexterm>
-      (Older texts follow a different convention here; see
-      <xref linkend="appendix-changes" />.)
+      Older texts follow a different convention here; see
+      <xref linkend="appendix-changes" />.
     </para>
     <para>Note:
       <xref linkend="example-random-id-gLpy" />

@@ -1423,11 +1423,13 @@
     <para role="status-note">
       <indexterm type="general"><primary>na</primary><secondary>scope of, status</secondary>
       </indexterm>
-      This whole-bridi rule &ndash;
+      The scope of
+      <valsi>na</valsi>
+      is officially unsettled; this whole-bridi rule &ndash;
       <valsi>na</valsi>
       before the selbri equals
       <valsi>naku</valsi>
-      at the left end of the prenex, outscoping even quantifiers that precede it &ndash; is also what current semantic software implements. A narrower-scope reading circulates but was never adopted; see
+      at the left end of the prenex, outscoping even quantifiers that precede it &ndash; is the working account, implemented by current semantic software. The alternatives are catalogued in
       <xref linkend="appendix-changes" />.
     </para>
     <para>

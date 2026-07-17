@@ -714,10 +714,7 @@
       </indexterm>
       One thing you do <emphasis>not</emphasis> need a group descriptor for is general statements about kinds. Plain
       <valsi>lo</valsi>
-      does that job by itself (older texts use
-      <valsi>loi</valsi>
-      here; see
-      <xref linkend="appendix-changes" />):
+      does that job by itself:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Bb">
       <title><anchor xml:id="c6e3d8" /></title>
@@ -1232,14 +1229,17 @@
       <xref linkend="example-random-id-qL61" />
       leaves the manner of walking &ndash; single file, arm in arm, in a heap &ndash; entirely open.
     </para>
-    <para role="status-note">
-      <indexterm type="general"><primary>implicit quantifiers</primary><secondary>abolition of</secondary>
-      </indexterm>
+    <para>
       Here we reach one of the most important rules in this book: <emphasis>a sumti without an explicit quantifier has no quantifier at all</emphasis>. It is a referring expression, pure and simple &ndash; in the language of logic, a <quote>constant</quote>: a term that names its referents outright, as opposed to a quantified term like
       <jbophrase>re do</jbophrase>
       , which selects from them. The distinction does real work in
       <xref linkend="chapter-quantifiers" />
-      , where quantified terms interact with negation and with each other in ways constants never do. Commit the rule to memory now: no quantifier is present unless you say one. (The first edition supplied hidden default quantifiers instead; see
+      , where quantified terms interact with negation and with each other in ways constants never do. Commit the rule to memory now: no quantifier is present unless you say one.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>implicit quantifiers</primary><secondary>abolition of</secondary>
+      </indexterm>
+      (This rule is part of the ratified article reform; older texts follow a different convention here &ndash; see
       <xref linkend="appendix-changes" />.)
     </para>
   </section>
@@ -1355,11 +1355,7 @@
       <xref linkend="example-random-id-x6Db" />
       the description refers to ten cows, and the bridi selects five of them.
     </para>
-    <para role="status-note">
-      <indexterm type="general"><primary>implicit quantifiers</primary><secondary>on descriptions, abolition of</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>xorlo</primary><secondary>and quantified descriptions</secondary>
-      </indexterm>
+    <para>
       To restate the essentials: an unquantified description merely refers (see
       <xref linkend="section-basic-descriptors" />), and an inner quantifier on
       <valsi>lo</valsi>
@@ -1370,8 +1366,15 @@
       &ndash; it says nothing about how many dogs exist. And because
       <valsi>lo</valsi>
       carries no quantifier of its own, descriptions get along with negation and quantifier order in the straightforward way described in
-      <xref linkend="chapter-quantifiers" />. The first edition supplied every descriptor with default quantifiers, and that machinery colored everything from inner quantifiers to negation; if you need to read older text closely, see
-      <xref linkend="appendix-changes" />.
+      <xref linkend="chapter-quantifiers" />.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>implicit quantifiers</primary><secondary>on descriptions, abolition of</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>xorlo</primary><secondary>and quantified descriptions</secondary>
+      </indexterm>
+      (Older texts follow a very different convention here; if you need to read pre-reform Lojban closely, see
+      <xref linkend="appendix-changes" />.)
     </para>
     <para>
       <indexterm type="lojban-word"><primary>le</primary><secondary>inner quantifier with</secondary>
@@ -1520,8 +1523,8 @@
     <para role="status-note">
       <indexterm type="general"><primary>indefinite descriptions</primary><secondary>change from first edition</secondary>
       </indexterm>
-      The two forms were interchangeable in the first edition; the ratified definition separates them as described above. See
-      <xref linkend="appendix-changes" />.
+      (Older texts follow a different convention here; see
+      <xref linkend="appendix-changes" />.)
     </para>
     <para>Note:
       <xref linkend="example-random-id-gLpy" />

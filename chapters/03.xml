@@ -672,14 +672,11 @@
     <para role="status-note">
       <indexterm type="general"><primary>comma</primary><secondary>change from first edition</secondary>
       </indexterm>
-      (The first edition also permitted pronouncing a comma as an apostrophe, IPA
+      (The first edition also permitted pronouncing a comma as
+      <phrase role="IPA">[h]</phrase>; that permission is withdrawn &ndash; if you want the
       <phrase role="IPA">[h]</phrase>
-      &ndash; which contradicted the rule, stated then as now, that commas never distinguish words:
-      <quote>.a,i</quote>
-      pronounced that way is indistinguishable from the different word
-      <jbophrase>.a'i</jbophrase>. The conflict was never formally adjudicated, but the de-facto formal definition of Lojban word-forms simply ignores commas, and this edition follows it: the comma is not a sound, and the apostrophe pronunciation is withdrawn. If you want the
-      <phrase role="IPA">[h]</phrase>
-      sound, write the apostrophe.)
+      sound, write the apostrophe. See
+      <xref linkend="appendix-changes" />.)
     </para>
 
     <para>
@@ -743,9 +740,10 @@
     <para role="status-note">
       <indexterm type="general"><primary>comma</primary><secondary>first-edition name spellings with</secondary>
       </indexterm>
-      (The first edition offered a third version here, a name spelled with commas &ndash;
+      (The first edition offered a third version here, spelled with commas &ndash;
       <quote>.i,ai,i,ai,on.</quote>
-      &ndash; to be pronounced with glides between the vowels, relying on the comma's since-withdrawn power to stand for a sound. Under the current rule the commas contribute nothing, and the remaining letter sequence does not even form the intended single name; the device is simply gone. Spell out what you want said, with apostrophes or with explicit glide letters.)
+      &ndash; relying on the comma's since-withdrawn power to stand for a sound. That device is gone: spell out what you want said, with apostrophes or with explicit glide letters. See
+      <xref linkend="appendix-changes" />.)
     </para>
   </section>
   <section xml:id="section-diphthongs">
@@ -779,18 +777,20 @@
       <morphology>ua</morphology>
       <phrase role="IPA">[wa]</phrase>
       like English
-      <quote>wa</quote>. (The first edition of this book classified these combinations as ten further
-      <quote>diphthongs</quote>; treating the initial
+      <quote>wa</quote>. (Treating the initial
       <letteral>i</letteral>
       or
       <letteral>u</letteral>
-      as a glide consonant beginning the syllable reflects the current formal definition of the language's word-forms, and matters for the rule given below.)
+      as a glide consonant beginning the syllable &ndash; rather than as part of a diphthong &ndash; matters for the rule given below.)
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>PEG morphology</primary><secondary>status of</secondary>
       </indexterm>
-      A word on authority: the four-diphthong analysis, like the rest of the precise word-form rules in this book, comes from the formal PEG definition of Lojban's word-forms. Its status is <emphasis>de facto</emphasis>: a working document of the language-definition effort that was never put to a ratifying vote, but is implemented by the current Lojban software tools surveyed for this edition (see
-      <xref linkend="chapter-grammars" />). The ban on consonant-plus-glide sequences within it <emphasis>was</emphasis> separately voted (see the note at the end of this section).
+      The four-diphthong analysis, like the rest of the precise word-form rules in this book, comes from the formal definition of Lojban's word-forms &ndash; the de facto standard, implemented by current Lojban software (see
+      <xref linkend="chapter-grammars" />
+      , and
+      <xref linkend="appendix-changes" />
+      for what <quote>de facto</quote> means here). The ban on consonant-plus-glide sequences within it was separately voted (see the note at the end of this section).
     </para>
     <para>
       <indexterm type="general"><primary>vowels</primary><secondary>contrasted with consonants</secondary>
@@ -1038,13 +1038,12 @@
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>consonant-glide-vowel ban</primary></indexterm>
-      Historical note: the first edition permitted the glide combinations after consonants
-      <quote>in Lojbanized names and borrowings</quote>
-      , so words like
+      The ban on consonant-glide-vowel sequences was adopted by committee vote in 2014; older texts contain words coined before it, like
       <quote>kuarka</quote>
-      or names like
+      or
       <quote>.niuport.</quote>
-      were valid. The ban on consonant-glide-vowel sequences was adopted by a recorded vote of the BPFK, the language-definition committee, in December 2014. Its status is thus twofold: committee-approved &ndash; the vote took place during the committee's reconstitution, so its formal pedigree is a committee vote rather than a ratified standard &ndash; and, independently, de facto, being enforced by the standard word-form definition that current tools implement; some tools tolerate the old forms when reading, flagging them explicitly as nonstandard. Older names and borrowings containing such sequences must be respelled &ndash; usually by converting the glide to a full vowel with an apostrophe (<jbophrase>.ni'uport.</jbophrase>) or doubling the glide letter.
+      , which must be respelled &ndash; usually by converting the glide to a full vowel with an apostrophe (<jbophrase>.ni'uport.</jbophrase>) or doubling the glide letter. See
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="general"><primary>syllabic consonants</primary></indexterm>
@@ -1309,7 +1308,7 @@
       which contains the diphthong
       <diphthong>ei</diphthong>
       , the apostrophe, and the syllable
-      <morphology>in</morphology>. (The first edition taught that the comma could force the alternative grouping; since the comma is not a sound, it cannot &ndash; spelling determines pronunciation.)
+      <morphology>in</morphology>. (A comma cannot force the alternative grouping: it is not a sound, and spelling determines pronunciation.)
     </para>
   </section>
   <section xml:id="section-clusters">

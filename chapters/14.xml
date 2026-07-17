@@ -2968,8 +2968,8 @@
       <quote>group</quote>
       (in Lojban,
       <valsi>gunma</valsi>
-      ; the first edition used the word
-      <quote>mass</quote>). John and Alice are joined together into a group, John-and-Alice, and it is this group which carried the piano, not either of them separately. The cmavo
+      ; older texts say <quote>mass</quote> &ndash; see
+      <xref linkend="section-masses" />). John and Alice are joined together into a group, John-and-Alice, and it is this group which carried the piano, not either of them separately. The cmavo
       <valsi>joi</valsi>
       (of selma'o JOI) is used to join two or more members into a group:
     </para>
@@ -2990,19 +2990,16 @@
       <indexterm type="general"><primary>supervising</primary><secondary>as a contribution to collective action</secondary>
       </indexterm>
       <xref linkend="example-random-id-pC5x" />
-      covers the case mentioned, where John and Alice divide the labor; it also could mean that John did all the hauling and Alice did the supervising. This flexibility arises because the carrying is claimed of the group as a whole: the members satisfy the claim <emphasis>collectively</emphasis>, in whatever division of labor fits, and no member need satisfy it alone. A group has properties of its own, which are not automatically the properties of its members, nor the members' properties those of the group: John-and-Alice may weigh two hundred kilograms together though neither John nor Alice does. (The first edition instead taught that
-      <quote>the properties of a mass are the properties of its components</quote>
-      , so that with John small and Alice large, John-and-Alice came out both small and large; that doctrine was abolished along with the rest of the old mass semantics.) Groups are also discussed in
+      covers the case mentioned, where John and Alice divide the labor; it also could mean that John did all the hauling and Alice did the supervising. This flexibility arises because the carrying is claimed of the group as a whole: the members satisfy the claim <emphasis>collectively</emphasis>, in whatever division of labor fits, and no member need satisfy it alone. A group has properties of its own, which are not automatically the properties of its members, nor the members' properties those of the group: John-and-Alice may weigh two hundred kilograms together though neither John nor Alice does. Groups are also discussed in
       <xref linkend="section-masses" />.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>groups</primary><secondary>status of collective satisfaction</secondary>
       </indexterm>
-      (A status note: the group account of
+      (The group account of
       <valsi>joi</valsi>
-      &ndash; collective satisfaction, group-own properties &ndash; is part of the ratified gadri reform (see
-      <xref linkend="section-masses" />
-      for the full status history); the component-inheritance doctrine it replaces was the first edition's.)
+      is part of the ratified gadri reform; older texts follow a different doctrine &ndash; see
+      <xref linkend="appendix-changes" />.)
     </para>
     <para>
       <indexterm type="lojban-word"><primary>JA selma'o</primary><secondary>opposed to JOI</secondary>
@@ -4845,7 +4842,8 @@
     <para role="status-note">
       <indexterm type="general"><primary>tenses</primary><secondary>before forethought connectives, status</secondary>
       </indexterm>
-      (A status note: the official baseline parser did not accept a bare leading tense on a forethought construction at all &ndash; the first edition's prose used the form its own parser rejected; the de facto grammars surveyed for this edition accept it, reading the tense as a term scoping over the whole construction &ndash; an implemented, never-voted resolution. For an example like this one, the intended both-in-the-past meaning is what those grammars deliver.)
+      (A bare leading tense on a forethought construction is de facto standard &ndash; current grammars read it as a term scoping over the whole construction, which is exactly the both-in-the-past meaning intended here. For its history, see
+      <xref linkend="appendix-changes" />.)
     </para>
   </section>
   <section xml:id="section-abstractors">

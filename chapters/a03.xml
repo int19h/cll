@@ -36,7 +36,7 @@
     </para>
     <para>
       One further change is to the book, not the language: the first edition printed the machine-oriented (YACC) grammar in full. This edition prints only the human-oriented EBNF grammar (
-      <xref linkend="chapter-grammars" />); the machine grammars remain available as electronic supplements.
+      <xref linkend="chapter-grammars" />); the machine grammars remain available as electronic supplements. Dropping the YACC listing follows an informal majority at the LLG's 2014 annual meeting &ndash; a decision about what to print, not about the grammar itself. The official definition of Lojban's syntax remains the third-baseline EBNF/YACC grammar; the camxes PEG grammars that current software uses are the de facto standard and were never ratified.
     </para>
   </section>
   <section xml:id="section-changes-gadri">
@@ -158,7 +158,7 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>dotside</primary><secondary>change summary</secondary></indexterm>
-          <emphasis>Committee-approved</emphasis> (2015). Every cmevla is written with a leading and trailing dot, and the first edition's ban on
+          <emphasis>Committee-approved</emphasis> (a recorded BPFK vote of 8 August 2015, seven in favor with one abstention; never separately ratified by the LLG). Every cmevla is written with a leading and trailing dot, and the first edition's ban on
           <valsi>la</valsi>
           ,
           <valsi>lai</valsi>
@@ -464,6 +464,18 @@
       <listitem><para>
         <indexterm type="general"><primary>termsets</primary><secondary>unchanged</secondary></indexterm>
         Termsets remain official; a proposal to eliminate them was not adopted.
+      </para></listitem>
+      <listitem><para>
+        <indexterm type="general"><primary>su'oi</primary><secondary>never adopted</secondary></indexterm>
+        <indexterm type="general"><primary>ro'oi</primary><secondary>never adopted</secondary></indexterm>
+        Construing the ratified number-neutral
+        <valsi>lo</valsi>
+        as half of a formal plural-logic system is an unofficial analysis, and the system's proposed plural quantifiers,
+        <valsi>su'oi</valsi>
+        and
+        <valsi>ro'oi</valsi>
+        , were never adopted; the standard grammar does not accept them. See
+        <xref linkend="chapter-dialects" />.
       </para></listitem>
       <listitem><para>
         <indexterm type="general"><primary>lo'e</primary><secondary>unsettled status</secondary></indexterm>

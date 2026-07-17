@@ -2317,11 +2317,14 @@
       are particularly important in Lojban: they serve as explicit outer quantifiers on descriptions introduced by the cmavo of selma'o LA and LE, as explained in
       <xref linkend="section-quantified-descriptions" />. Descriptions in general are outside the scope of this chapter.
     </para>
+    <para>
+      An unquantified description is a constant, and a quantifier applies only when actually said (see
+      <xref linkend="section-quantified-descriptions" />).
+    </para>
     <para role="status-note">
       <indexterm type="general"><primary>implicit quantifiers</primary><secondary>abolition of, in mekso contexts</secondary>
       </indexterm>
-      (An unquantified description is a constant, and a quantifier applies only when actually said &ndash; the ratified gadri rule (see
-      <xref linkend="section-quantified-descriptions" />). Older texts follow a different convention here; see
+      (This is the ratified gadri rule; older texts follow a different convention here &ndash; see
       <xref linkend="appendix-changes" />.)
     </para>
   </section>

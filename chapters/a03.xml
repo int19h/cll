@@ -223,7 +223,7 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>tags</primary><secondary>binding change summary</secondary></indexterm>
-          <emphasis>Committee-approved</emphasis> (2016). A tense or modal tag directly before a selbri binds to that selbri exactly as
+          <emphasis>Committee-approved</emphasis> (15 March 2016, seven of eight members in favor; never separately LLG-ratified). A tense or modal tag directly before a selbri binds to that selbri exactly as
           <valsi>cu</valsi>
           would &ndash; unless an explicit
           <valsi>ku</valsi>
@@ -241,7 +241,9 @@
           <emphasis>Checkpointed per word</emphasis> (2005), <emphasis>synthesis editorial</emphasis>. The quoting and binding words (
           <valsi>zo</valsi>, <valsi>zoi</valsi>, <valsi>la'o</valsi>, <valsi>lo'u</valsi>, <valsi>zei</valsi>, <valsi>bu</valsi>) each received a fixed left-to-right conflict rule, replacing the first edition's inconsistent pairwise list; this edition presents them under one uniform principle and flags its two contested corners. The first edition's
           <jbophrase>zo le'u</jbophrase>
-          loophole is gone. Erasure was never voted:
+          loophole is gone. A quotation now erases as a single unit &ndash;
+          <jbophrase>zo si si</jbophrase>
+          leaves nothing &ndash; where the first edition counted its pieces separately. Erasure was never voted:
           <valsi>si</valsi>
           as taught is de facto (implemented alike in the surveyed parsers);
           <valsi>su</valsi>
@@ -267,7 +269,7 @@
           <jbophrase>pu ge broda gi brode</jbophrase>
           ), read as a tag on the whole connected bridi; the first edition's grammar rejected this outright unless
           <valsi>ke</valsi>
-          followed the tag. See
+          followed the tag &ndash; even though the first edition's own prose used the bare form. See
           <xref linkend="chapter-connectives" />.
         </para>
       </listitem>
@@ -280,7 +282,13 @@
       <emphasis>Checkpointed</emphasis> (24 May 2004). An event contour used as a sumtcita is reversed from the first edition: in
       <jbophrase>broda ba'o lo nu brode</jbophrase>
       , it is the <emphasis>main</emphasis> bridi that carries the contour, located at the tagged event &ndash; the same as
-      <jbophrase>ba'o broda ca lo nu brode</jbophrase>. First-edition text (including this book's own old examples) must be reread accordingly; contours used directly as tenses are unaffected, and the sentence-connective forms keep their first-edition meaning, so ZAhO is the one tense whose subordinate and coordinate forms use the <emphasis>same</emphasis> sentence order. See
+      <jbophrase>ba'o broda ca lo nu brode</jbophrase>. The first edition read it the other way around: the tagged event was the process, and the main bridi sat at the named phase of it, so
+      <jbophrase>mi klama le zarci pu'o le nu mi citka</jbophrase>
+      meant
+      <quote>before my eating begins, I go to the store</quote>. First-edition text must be reread accordingly &ndash; including this book's own famous old example
+      <quote>mi morsi ba'o le nu mi jmive</quote>
+      ,
+      <quote>I am dead after living</quote>. Contours used directly as tenses are unaffected, and the sentence-connective forms keep their first-edition meaning, so ZAhO is the one tense whose subordinate and coordinate forms use the <emphasis>same</emphasis> sentence order. See
       <xref linkend="chapter-tenses" />.
     </para>
   </section>

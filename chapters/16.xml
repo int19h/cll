@@ -1171,12 +1171,8 @@
       <valsi>ro</valsi>
       that asserts the one-by-one, every-with-every distribution. The unquantified
       <jbophrase>le ci gerku cu batci le re nanmu</jbophrase>
-      merely says of the dogs and the men that biting goes on between them, without formally spelling out the six pairs &ndash; often the same in practice, but not a synonym. (The first edition instead treated
-      <valsi>ro</valsi>
-      as an implicit default on every
-      <valsi>le</valsi>
-      sumti, so it printed such quantifiers in brackets as omissible; that rule was abolished by the gadri reform, see
-      <xref linkend="section-quantified-descriptions" />.) With explicit quantifiers other than
+      merely says of the dogs and the men that biting goes on between them, without formally spelling out the six pairs &ndash; often the same in practice, but not a synonym. (Older texts follow a different convention here; see
+      <xref linkend="appendix-changes" />.) With explicit quantifiers other than
       <valsi>ro</valsi>
       , the scope problems of this section reappear.
     </para>
@@ -1240,10 +1236,12 @@
       </indexterm>
       <indexterm type="general"><primary>presupposition</primary><secondary>existential import as</secondary>
       </indexterm>
-      (A status note: whether restricted universal claims should carry this existential import at all has been debated since the first edition, and some post-first-edition writing and software treat
+      (Whether restricted universal claims carry existential import was never officially settled; some writing and software treat
       <jbophrase>ro da poi broda</jbophrase>
-      as vacuously true when nothing brodas. The question was never officially settled. This book keeps the first edition's importing reading, with the presuppositional behavior just described, which is the only way to keep it consistent with the negation rules of
-      <xref linkend="section-negation-boundaries" />.)
+      as vacuously true when nothing brodas. This book teaches the importing, presuppositional reading &ndash; the only one consistent with the negation rules of
+      <xref linkend="section-negation-boundaries" />
+      &ndash; but recognize the alternative in the wild; see
+      <xref linkend="appendix-changes" />.)
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-BwU7">
       <title><anchor xml:id="c16e8d3" /></title>
@@ -1425,13 +1423,12 @@
     <para role="status-note">
       <indexterm type="general"><primary>na</primary><secondary>scope of, status</secondary>
       </indexterm>
-      (The rule that
+      (This whole-bridi rule &ndash;
       <valsi>na</valsi>
-      before the selbri negates the whole bridi &ndash; equivalent to
+      before the selbri equals
       <valsi>naku</valsi>
-      at the left end of the prenex, outscoping even quantifiers that precede it in the sentence &ndash; is the first edition's rule, and this book keeps it; so does the semantic software checked for this edition. A later, never-adopted proposal would instead give
-      <valsi>na</valsi>
-      scope only over what follows it; you may meet that reading in some post-first-edition discussion, but it is not the rule this book teaches.)
+      at the left end of the prenex, outscoping even quantifiers that precede it &ndash; is also what current semantic software implements. A narrower-scope reading circulates but was never adopted; see
+      <xref linkend="appendix-changes" />.)
     </para>
     <para>
       <indexterm type="general"><primary>bridi negation</primary><secondary>two forms of</secondary>

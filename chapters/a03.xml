@@ -77,6 +77,62 @@
       and
       <xref linkend="chapter-quantifiers" />.
     </para>
+    <para>
+      <indexterm type="general"><primary>implicit quantifiers</primary><secondary>first-edition table of</secondary>
+      </indexterm>
+      For reading older text, here is the abolished machinery in full. The first edition held that <emphasis>every</emphasis> sumti carried one or two quantifiers implicitly, filled in automatically whenever no explicit ones appeared. For the descriptors:
+    </para>
+    <informaltable>
+      <thead>
+        <tr><td>you wrote</td><td>the first edition read</td><td>meaning</td></tr>
+      </thead>
+      <tbody>
+        <tr><td><jbophrase>le broda</jbophrase></td><td><jbophrase>ro le su'o broda</jbophrase></td><td>all of the at-least-one I have in mind</td></tr>
+        <tr><td><jbophrase>lo broda</jbophrase></td><td><jbophrase>su'o lo ro broda</jbophrase></td><td>at least one of all that really are</td></tr>
+        <tr><td><jbophrase>la .brodas.</jbophrase></td><td><jbophrase>ro la su'o .brodas.</jbophrase></td><td>all of the at-least-one so named</td></tr>
+        <tr><td><jbophrase>lei broda</jbophrase></td><td><jbophrase>pisu'o lei su'o broda</jbophrase></td><td>some part of the mass</td></tr>
+        <tr><td><jbophrase>loi broda</jbophrase></td><td><jbophrase>pisu'o loi ro broda</jbophrase></td><td>some part of the mass of all</td></tr>
+        <tr><td><jbophrase>lai .brodas.</jbophrase></td><td><jbophrase>pisu'o lai su'o .brodas.</jbophrase></td><td>some part of the mass so named</td></tr>
+        <tr><td><jbophrase>le'i broda</jbophrase></td><td><jbophrase>piro le'i su'o broda</jbophrase></td><td>the whole of the set</td></tr>
+        <tr><td><jbophrase>lo'i broda</jbophrase></td><td><jbophrase>piro lo'i ro broda</jbophrase></td><td>the whole of the set of all</td></tr>
+        <tr><td><jbophrase>la'i .brodas.</jbophrase></td><td><jbophrase>piro la'i su'o .brodas.</jbophrase></td><td>the whole of the set so named</td></tr>
+      </tbody>
+    </informaltable>
+    <para>
+      Beyond the descriptors, personal pro-sumti carried an implicit
+      <valsi>ro</valsi>
+      (or
+      <valsi>pisu'o</valsi>
+      when read as masses), quotations an implicit
+      <valsi>su'o</valsi>
+      , and so on. Because
+      <jbophrase>lo broda</jbophrase>
+      contained a real
+      <quote>at least one</quote>
+      , every bare description was a quantified claim: it interacted with negation and with other quantifiers by the scope rules of
+      <xref linkend="chapter-quantifiers" />
+      , an inner quantifier on
+      <valsi>lo</valsi>
+      counted everything in existence fitting the description (so the first edition warned readers away from
+      <jbophrase>lo ci gerku</jbophrase>
+      as claiming a three-dog universe), and the definite/indefinite lessons of the first edition's chapter 6 were largely lessons about which defaults you were getting. None of this survives: an unquantified description is a constant, and the only quantifiers in a bridi are the ones somebody said.
+    </para>
+    <para>
+      <indexterm type="general"><primary>masses</primary><secondary>first-edition doctrine</secondary>
+      </indexterm>
+      The first edition's <emphasis>mass</emphasis> was also a stranger beast than today's group. A mass was said to inherit the properties of each of its components &ndash; a mass of people with both fair-skinned and dark-skinned members had fair skin <emphasis>and</emphasis> dark skin &ndash; and ordinary logical reasoning was accordingly suspended for mass statements. A group (
+      <valsi>gunma</valsi>) just has whatever properties it has, collectively satisfied or otherwise, and logic applies as usual. The first edition also used
+      <valsi>loi</valsi>
+      for generic statements about kinds &ndash;
+      <jbophrase>loi cinfo cu xabju le fi'ortu'a</jbophrase>
+      ,
+      <quote>Lions dwell in Africa</quote>
+      , via the mass of all lions; in current Lojban plain
+      <jbophrase>lo cinfo cu xabju lo fi'ortu'a</jbophrase>
+      says that, because
+      <valsi>lo</valsi>
+      is fully generic.
+    </para>
   </section>
   <section xml:id="section-changes-wordforms">
     <title><anchor xml:id="a03-wordforms" />Word forms and orthography</title>

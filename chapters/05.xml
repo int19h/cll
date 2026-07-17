@@ -849,7 +849,7 @@
         <cmavo>joi</cmavo>
         <selmaho>JOI</selmaho>
         <description>
-          mixed mass
+          group (mixed)
           <quote>and</quote>
         </description>
       </cmavo-entry>
@@ -1482,6 +1482,14 @@
         <natlang>This is a school, small in volume compared to the typical school, pertaining to five-year-old girls (by American standards), in Brooklyn, teaching poetry to the New York community and operated by the state.</natlang>
       </interlinear-gloss>
     </example>
+    <para role="status-note">
+      The
+      <jbophrase>lo'e ckule</jbophrase>
+      here &ndash;
+      <quote>the typical school</quote>
+      &ndash; uses a descriptor whose meaning was never settled; see the status discussion in
+      <xref linkend="section-typicals" />.
+    </para>
     <para role="indent">
       Here the three places of
       <valsi>cmalu</valsi>,
@@ -2142,7 +2150,7 @@
 
       <interlinear-gloss>
         <jbo>mi jimpe tu'a loi nu'a--su'i nabmi</jbo>
-        <gloss>I understand something-about the-mass-of is-the-sum-of problems.</gloss>
+        <gloss>I understand something-about the-group-of is-the-sum-of problems.</gloss>
         <natlang>I understand addition problems.</natlang>
 
       </interlinear-gloss>
@@ -2183,7 +2191,7 @@
 
       <interlinear-gloss>
         <jbo>la .an,iis. joi la .asun.</jbo>
-        <gloss>That-named Anyi massed-with that-named Asun</gloss>
+        <gloss>That-named Anyi grouped-with that-named Asun</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>bruna remei</jbo>
@@ -2257,11 +2265,34 @@
     </para>
     <definition>
       <content>
-        x<subscript>1</subscript> is one of the referents of
+        x<subscript>1</subscript> is/are among the referents of
         <quote>[the sumti]</quote>
       </content>
     </definition>
-    <para>which is true of the thing, or things, that are the referents of the sumti, and not of anything else. For example, consider the sumti</para>
+    <para>which is true of the thing, or things, that are the referents of the sumti &ndash; one of them, several of them, or all of them together &ndash; and not of anything else. For example, consider the sumti</para>
+    <para>
+      The ratified gadri definitions lean on this
+      <quote>among</quote>
+      reading: they expand
+      <jbophrase>lo PA sumti</jbophrase>
+      as
+      <jbophrase>lo PA me sumti</jbophrase>
+      , and a quantified term
+      <jbophrase>PA sumti</jbophrase>
+      as
+      <jbophrase>PA da poi ke'a me sumti</jbophrase>
+      (see
+      <xref linkend="section-quantified-descriptions" />).
+    </para>
+    <para role="status-note">
+      <indexterm type="lojban-word"><primary>me</primary><secondary>sharpened definition, status</secondary>
+      </indexterm>
+      The sharpened
+      <quote>among</quote>
+      wording is a working-document clarification; older texts gloss
+      <valsi>me</valsi>
+      a little differently &ndash; see
+      <xref linkend="appendix-changes" />.</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-v6QW">
       <title>
 
@@ -2285,7 +2316,7 @@
       <interlinear-gloss>
         <jbo>la .BALtazar. cu me le--ci--nolraitru</jbo>
         <gloss>
-          That-named Balthazar - is-one-of-the-referents-of
+          That-named Balthazar - is-among-the-referents-of
           <quote>the three kings.</quote>
         </gloss>
         <natlang>Balthazar is one of the three kings.</natlang>
@@ -2371,7 +2402,7 @@
         <gloss>
           That (is-a-referent-of
           <quote>
-            the-mass-named
+            the-group-named
             <quote>Chrysler</quote>
           </quote>) car.
         </gloss>

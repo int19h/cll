@@ -1215,17 +1215,17 @@
       <jbophrase>ro da poi klama</jbophrase>
       requires that there are things which
       <valsi>klama</valsi>
-      : Lojban universal claims always imply the corresponding existential claims as well. This implication is of a special, robust kind: it clings to the restriction rather than to the claim, so it survives even when the claim is negated &ndash;
+      : Lojban universal claims always imply the corresponding existential claims as well. This implication is of a special, robust kind: it clings to the restriction rather than to the claim, so it survives even when the claim is negated.
       <jbophrase>naku ro da poi klama le zarci cu cadzu le foldi</jbophrase>
-      still concerns actual store-goers (and is exactly equivalent to
+      still concerns actual store-goers, and is exactly equivalent to
       <jbophrase>su'o da poi klama le zarci ku'o naku cadzu le foldi</jbophrase>
-      , as the negation rules of
+      under the negation rules of
       <xref linkend="section-negation-boundaries" />
-      require; the
+      (the
       <valsi>ku'o</valsi>
-      is needed here to close the relative clause, or the
+      keeps the
       <valsi>naku</valsi>
-      would be swallowed into it). Logicians call such survivors <quote>presuppositions</quote>; without this reading, the universal-existential implication and the negation rules could not both hold.
+      from being swallowed into the relative clause). Logicians call such survivors <quote>presuppositions</quote>; without this reading, the universal-existential implication and the negation rules could not both hold.
       <xref linkend="example-random-id-R4mX" />
       , on the other hand, does not require that there are any people who go to the store: it simply states, conditionally, that if there is anyone who goes to the store, he or she walks across the field as well. This conditional form mirrors the true Lojban translation of
       <xref linkend="example-random-id-R4mX" />
@@ -1236,12 +1236,12 @@
       </indexterm>
       <indexterm type="general"><primary>presupposition</primary><secondary>existential import as</secondary>
       </indexterm>
-      (Whether restricted universal claims carry existential import was never officially settled; some writing and software treat
+      Whether restricted universal claims carry existential import is unsettled; some writing and software treat
       <jbophrase>ro da poi broda</jbophrase>
       as vacuously true when nothing brodas. This book teaches the importing, presuppositional reading &ndash; the only one consistent with the negation rules of
       <xref linkend="section-negation-boundaries" />
       &ndash; but recognize the alternative in the wild; see
-      <xref linkend="appendix-changes" />.)
+      <xref linkend="appendix-changes" />.
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-BwU7">
       <title><anchor xml:id="c16e8d3" /></title>
@@ -1423,12 +1423,12 @@
     <para role="status-note">
       <indexterm type="general"><primary>na</primary><secondary>scope of, status</secondary>
       </indexterm>
-      (This whole-bridi rule &ndash;
+      This whole-bridi rule &ndash;
       <valsi>na</valsi>
       before the selbri equals
       <valsi>naku</valsi>
       at the left end of the prenex, outscoping even quantifiers that precede it &ndash; is also what current semantic software implements. A narrower-scope reading circulates but was never adopted; see
-      <xref linkend="appendix-changes" />.)
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="general"><primary>bridi negation</primary><secondary>two forms of</secondary>

@@ -2270,14 +2270,10 @@
       </content>
     </definition>
     <para>which is true of the thing, or things, that are the referents of the sumti &ndash; one of them, several of them, or all of them together &ndash; and not of anything else. For example, consider the sumti</para>
-    <para role="status-note">
-      <indexterm type="lojban-word"><primary>me</primary><secondary>sharpened definition, status</secondary>
-      </indexterm>
-      (A status note: the first edition said
-      <quote>is one of</quote>
-      ; the sharpened
+    <para>
+      The ratified gadri definitions lean on this
       <quote>among</quote>
-      wording is a working-document clarification, never separately voted &ndash; but the ratified gadri definitions lean on it: they expand
+      reading: they expand
       <jbophrase>lo PA sumti</jbophrase>
       as
       <jbophrase>lo PA me sumti</jbophrase>
@@ -2285,8 +2281,18 @@
       <jbophrase>PA sumti</jbophrase>
       as
       <jbophrase>PA da poi ke'a me sumti</jbophrase>
-      ; see
-      <xref linkend="section-quantified-descriptions" />.)</para>
+      (see
+      <xref linkend="section-quantified-descriptions" />).
+    </para>
+    <para role="status-note">
+      <indexterm type="lojban-word"><primary>me</primary><secondary>sharpened definition, status</secondary>
+      </indexterm>
+      (The sharpened
+      <quote>among</quote>
+      wording is a working-document clarification, never separately voted; older texts gloss
+      <valsi>me</valsi>
+      a little differently &ndash; see
+      <xref linkend="appendix-changes" />.)</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-v6QW">
       <title>
 

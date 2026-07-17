@@ -44,7 +44,11 @@
     <para>
       <indexterm type="general"><primary>xorlo</primary><secondary>summary of changes</secondary>
       </indexterm>
-      <emphasis>Ratified</emphasis> (2004 checkpoint; adopted as the working baseline 2007; a fixed text ratified by LLG vote in 2020). The largest change in the book, taught in
+      <emphasis>Ratified</emphasis> (2004 checkpoint; adopted as the working baseline 2007; ratified by LLG vote in 2020 &ndash; the vote fixed a specific archived revision of the committee's gadri page as the official description, together with two expressly stated corrections: a typo,
+      <jbophrase>mokla</jbophrase>
+      for
+      <valsi>moklu</valsi>
+      , and a repaired final clause in its unicorn example). The largest change in the book, taught in
       <xref linkend="chapter-sumti" />
       and fundamental to
       <xref linkend="chapter-quantifiers" />. The first edition gave every description hidden default quantifiers (
@@ -87,15 +91,15 @@
         <tr><td>you wrote</td><td>the first edition read</td><td>meaning</td></tr>
       </thead>
       <tbody>
-        <tr><td><jbophrase>le broda</jbophrase></td><td><jbophrase>ro le su'o broda</jbophrase></td><td>all of the at-least-one I have in mind</td></tr>
-        <tr><td><jbophrase>lo broda</jbophrase></td><td><jbophrase>su'o lo ro broda</jbophrase></td><td>at least one of all that really are</td></tr>
-        <tr><td><jbophrase>la .brodas.</jbophrase></td><td><jbophrase>ro la su'o .brodas.</jbophrase></td><td>all of the at-least-one so named</td></tr>
-        <tr><td><jbophrase>lei broda</jbophrase></td><td><jbophrase>pisu'o lei su'o broda</jbophrase></td><td>some part of the mass</td></tr>
-        <tr><td><jbophrase>loi broda</jbophrase></td><td><jbophrase>pisu'o loi ro broda</jbophrase></td><td>some part of the mass of all</td></tr>
-        <tr><td><jbophrase>lai .brodas.</jbophrase></td><td><jbophrase>pisu'o lai su'o .brodas.</jbophrase></td><td>some part of the mass so named</td></tr>
-        <tr><td><jbophrase>le'i broda</jbophrase></td><td><jbophrase>piro le'i su'o broda</jbophrase></td><td>the whole of the set</td></tr>
-        <tr><td><jbophrase>lo'i broda</jbophrase></td><td><jbophrase>piro lo'i ro broda</jbophrase></td><td>the whole of the set of all</td></tr>
-        <tr><td><jbophrase>la'i .brodas.</jbophrase></td><td><jbophrase>piro la'i su'o .brodas.</jbophrase></td><td>the whole of the set so named</td></tr>
+        <tr><td><jbophrase>le broda</jbophrase></td><td><jbophrase>ro le su'o broda</jbophrase></td><td>all of the at-least-one described as</td></tr>
+        <tr><td><jbophrase>lo broda</jbophrase></td><td><jbophrase>su'o lo ro broda</jbophrase></td><td>at least one of all of those which really are</td></tr>
+        <tr><td><jbophrase>la .brodas.</jbophrase></td><td><jbophrase>ro la su'o .brodas.</jbophrase></td><td>all of the at-least-one named</td></tr>
+        <tr><td><jbophrase>lei broda</jbophrase></td><td><jbophrase>pisu'o lei su'o broda</jbophrase></td><td>some part of the mass of the at-least-one described as</td></tr>
+        <tr><td><jbophrase>loi broda</jbophrase></td><td><jbophrase>pisu'o loi ro broda</jbophrase></td><td>some part of the mass of all those that really are</td></tr>
+        <tr><td><jbophrase>lai .brodas.</jbophrase></td><td><jbophrase>pisu'o lai su'o .brodas.</jbophrase></td><td>some part of the mass of the at-least-one named</td></tr>
+        <tr><td><jbophrase>le'i broda</jbophrase></td><td><jbophrase>piro le'i su'o broda</jbophrase></td><td>the whole of the set of the at-least-one described as</td></tr>
+        <tr><td><jbophrase>lo'i broda</jbophrase></td><td><jbophrase>piro lo'i ro broda</jbophrase></td><td>the whole of the set of all those that really are</td></tr>
+        <tr><td><jbophrase>la'i .brodas.</jbophrase></td><td><jbophrase>piro la'i su'o .brodas.</jbophrase></td><td>the whole of the set of the at-least-one named</td></tr>
       </tbody>
     </informaltable>
     <para>
@@ -105,31 +109,30 @@
       <valsi>pisu'o</valsi>
       when read as masses), quotations an implicit
       <valsi>su'o</valsi>
-      , and so on. Because
+      , and so on. The consequences ran deep. Because
       <jbophrase>lo broda</jbophrase>
       contained a real
       <quote>at least one</quote>
-      , every bare description was a quantified claim: it interacted with negation and with other quantifiers by the scope rules of
-      <xref linkend="chapter-quantifiers" />
-      , an inner quantifier on
+      , every bare description was a quantified claim, subject to the scope rules of
+      <xref linkend="chapter-quantifiers" />. An inner quantifier on
       <valsi>lo</valsi>
-      counted everything in existence fitting the description (so the first edition warned readers away from
+      counted everything in existence fitting the description &ndash; the first edition warned readers away from
       <jbophrase>lo ci gerku</jbophrase>
-      as claiming a three-dog universe), and the definite/indefinite lessons of the first edition's chapter 6 were largely lessons about which defaults you were getting. None of this survives: an unquantified description is a constant, and the only quantifiers in a bridi are the ones somebody said.
+      as claiming a three-dog universe. And the first edition's definite/indefinite lessons were largely lessons about which defaults you were getting. None of this survives. An unquantified description is a constant, and the only quantifiers in a bridi are the ones somebody said.
     </para>
     <para>
       <indexterm type="general"><primary>masses</primary><secondary>first-edition doctrine</secondary>
       </indexterm>
-      The first edition's <emphasis>mass</emphasis> was also a stranger beast than today's group. A mass was said to inherit the properties of each of its components &ndash; a mass of people with both fair-skinned and dark-skinned members had fair skin <emphasis>and</emphasis> dark skin &ndash; and ordinary logical reasoning was accordingly suspended for mass statements. A group (
+      The first edition's <emphasis>mass</emphasis> was also a stranger beast than today's group. A mass was said to inherit the properties of each of its components, insofar as they were relevant to it, and could have properties of its own besides: a mass of people with both fair-skinned and dark-skinned members had fair skin <emphasis>and</emphasis> dark skin (though it was not of molecular dimensions merely because its people's molecules are). Ordinary logical reasoning was accordingly suspended for mass statements. A group (
       <valsi>gunma</valsi>) just has whatever properties it has, collectively satisfied or otherwise, and logic applies as usual. The first edition also used
       <valsi>loi</valsi>
-      for generic statements about kinds &ndash;
+      for generic statements about kinds:
       <jbophrase>loi cinfo cu xabju le fi'ortu'a</jbophrase>
       ,
       <quote>Lions dwell in Africa</quote>
-      , via the mass of all lions; in current Lojban plain
+      , read as <quote>some part of the mass of all lions dwells in Africa</quote> &ndash; true because some lions do, and by the same token too weak to say that lions generally do. In current Lojban plain
       <jbophrase>lo cinfo cu xabju lo fi'ortu'a</jbophrase>
-      says that, because
+      says it, because
       <valsi>lo</valsi>
       is fully generic.
     </para>

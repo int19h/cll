@@ -30,3 +30,18 @@ Write findings as a numbered list, each tagged `[ERROR]` / `[STATUS]` / `[PEDAGO
 - The 2020 gadri ratification = wiki revid 123823 PLUS two corrections (moklu typo; unicorn example) — the live wiki page is not the ratified text.
 - ro is importing per CLL 16.8, and the import must be presented as projective (int19h/jbotci#279) — jbotci's bare-forall output is an implementation gap, not evidence of non-importing ro.
 - jbovlaste is read-only; lensisku is its de facto successor; neither's *content* was ever made official.
+
+## Coordination (IRC) — for dispatched Codex runs
+
+*(Tuned for CLL's workflow by the supervising session, 2026-07-17.)*
+
+**CLL's standing codex engagements are one-shot reviews**, invoked as `codex exec` against a checkout of the branch under review; they report by writing `research/<item>-review-<round>.md` and do NOT use IRC. Everything below applies only if you were dispatched as a long-running worker on a workitem with an explicit IRC identity in your prompt.
+
+**Review-scratch discipline (applies to one-shot reviews too):** if your review assembles combined trees, per-chapter checkouts, or builds, put that scratch under `~/build/cll-review-scratch/` and delete it before finishing. Do not create checkouts or build trees under `/tmp` (RAM-backed, shared, has been filled before) or inside `~/git/cll-review` beyond the checkout you were given.
+
+Agent sessions on this machine coordinate over a local Ergo IRC server (`127.0.0.1:6667`); the full protocol is `~/git/agent-ops/docs/protocol.md`. This applies when you are dispatched as a **worker on a workitem** (not to one-shot `codex exec` reviews, which report their findings directly).
+
+- Your IRC identity is `codex-cll-<item>`, pre-provisioned by the supervisor; the `[mcp_servers.irc]` MCP server in `~/.codex/config.toml` provides the tools (per-role identity via the `IRCV3_MCP_CONFIG_DIR` env override given in your dispatch prompt).
+- Post `STATUS:` / `DONE:` to your workitem channel (`#cll-<epic>-<item>`); `DONE:` must include PR/commit refs and the actual verification state.
+- When blocked or the spec is ambiguous, use the ASK protocol: post `pm-cll: ASK: <one question>` in the workitem channel, wait for `ANSWER:` via `irc_wait_for_events` (mention filter, always thread the cursor from the previous call), budget ~12 minutes total. On timeout, post `ASSUMPTION: <what you will assume and why>` and proceed — the supervisor audits ASSUMPTIONs at review time.
+- **Disk discipline:** `/tmp` is a 32G RAM-backed tmpfs shared by every session on this machine (it has been filled before, killing unrelated sessions). Multi-GB scratch — checkouts, build trees — goes under `~/build/<name>`, never `/tmp`; delete your scratch when the workitem completes.

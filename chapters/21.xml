@@ -23,12 +23,13 @@
       <indexterm type="general"><primary>YACC grammar</primary><secondary>removed from print, 2014</secondary>
       </indexterm>
       <indexterm type="general"><primary>third baseline</primary></indexterm>
-      A word on authority. The grammar printed here, in EBNF notation, is the <emphasis>official</emphasis> grammar: it corresponds to the third baselined machine grammar adopted by the Logical Language Group. The first edition printed, alongside it, the equivalent YACC grammar from which it was derived, and declared the YACC version authoritative in case of discrepancy. Following an informal majority at the Group's 2014 annual meeting, the YACC listing is no longer printed; it remains available in the electronic supplements to this book.
+      A word on authority. The grammar printed here, in EBNF notation, is the <emphasis>official</emphasis> grammar: it corresponds to the third baselined machine grammar adopted by the Logical Language Group. The first edition printed, alongside it, the equivalent YACC grammar from which it was derived, and declared the YACC version authoritative in case of discrepancy. This edition no longer prints the YACC listing; it remains available in the electronic supplements to this book, and the decision's history is in
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="general"><primary>camxes</primary><secondary>as de facto compatibility target</secondary>
       </indexterm>
-      Meanwhile, the community's working grammars are stated in a different formal system: parsing expression grammars (PEG), which cover morphology and syntax together and incorporate the committee-adopted amendments described throughout this book. The standard camxes PEG is the principal de facto compatibility target across the tooling surveyed for this edition. Some of those tools implement it directly; others reimplement its behavior. None of it was ever ratified.
+      Meanwhile, the community's working grammars are stated in a different formal system: parsing expression grammars (PEG), which cover morphology and syntax together and incorporate the committee-adopted amendments described throughout this book. The standard camxes PEG is the principal de facto compatibility target across the tooling surveyed for this edition. Some of those tools implement it directly; others reimplement its behavior. All of this is de facto, not official.
     </para>
     <para role="status-note">
       Where this book's text and the EBNF printed below disagree with the amendments, the amendments prevail, and each is flagged where it is taught; the EBNF itself is printed as baselined.
@@ -50,7 +51,7 @@
       <xref linkend="chapter-connectives" />).
     </para>
     <para role="status-note">
-      The three seams carry three different standings &ndash; genuinely unsettled, committee-approved, and implemented-but-never-voted, respectively; the full catalog is in
+      The three seams carry three different standings &ndash; genuinely unsettled, committee-approved, and de facto, respectively; the full catalog is in
       <xref linkend="appendix-changes" />.
     </para>
   </section>

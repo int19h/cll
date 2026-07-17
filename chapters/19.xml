@@ -2521,12 +2521,15 @@
       <indexterm type="general"><primary>sa</primary><secondary>unsettled status of</secondary>
       </indexterm>
       <valsi>sa</valsi>
-      is the least settled word in this section: the description above conveys the intent, and simple uses like the examples are understood by everyone, but the precise rule was never settled and today's parsers implement differing approximations &ndash; of the two examples above, one current parser accepts both, another only the second. Use
+      is the least settled word in this section: the description above conveys the intent, and simple uses like the examples are understood by everyone, but the precise rule was never settled and today's parsers implement differing approximations &ndash; of the two examples above, one current parser accepts both, another only the second. The history is in
+      <xref linkend="appendix-changes" />.
+    </para>
+    <para>
+      In practice: use
       <valsi>sa</valsi>
       freely in speech, where a human listener does the repair work; in text meant for machines, prefer
       <valsi>si</valsi>
-      or rephrasing. The history is in
-      <xref linkend="appendix-changes" />.
+      or rephrasing.
     </para>
     <para>
       <indexterm type="general"><primary>erasure</primary><secondary>total</secondary>

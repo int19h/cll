@@ -124,9 +124,15 @@
       <valsi>lo</valsi>
       counted everything in existence fitting the description &ndash; the first edition warned readers away from
       <jbophrase>lo ci gerku</jbophrase>
-      as claiming a three-dog universe, and read an incidental clause on a bare
-      <jbophrase>lo prenu</jbophrase>
-      as a claim about all persons whatsoever. And the first edition's definite/indefinite lessons were largely lessons about which defaults you were getting. None of this survives. An unquantified description is a constant, and the only quantifiers in a bridi are the ones somebody said.
+      as claiming a three-dog universe. It also drew a sharp placement contrast for incidental clauses:
+      <jbophrase>lo prenu ku noi blabi</jbophrase>
+      applied the clause after the outer
+      <valsi>su'o</valsi>
+      selected, while
+      <jbophrase>lo prenu noi blabi</jbophrase>
+      put it inside the description, where the hidden inner
+      <valsi>ro</valsi>
+      made it a claim that all persons whatsoever are white. And the first edition's definite/indefinite lessons were largely lessons about which defaults you were getting. None of this survives. An unquantified description is a constant, and the only quantifiers in a bridi are the ones somebody said.
     </para>
     <para>
       <indexterm type="general"><primary>masses</primary><secondary>first-edition doctrine</secondary>
@@ -251,7 +257,13 @@
           <jbophrase>zo le'u</jbophrase>
           loophole is gone. A quotation now erases as a single unit &ndash;
           <jbophrase>zo si si</jbophrase>
-          leaves nothing &ndash; where the first edition counted its pieces separately. Erasure was never voted:
+          leaves nothing &ndash; where the first edition counted its pieces separately, so that repairing a stray
+          <valsi>zo</valsi>
+          took three
+          <valsi>si</valsi>
+          words. (The first edition also noted that its own machine parser did not implement
+          <valsi>si</valsi>
+          erasure at all; every current parser does.) Erasure was never voted:
           <valsi>si</valsi>
           as taught is de facto (implemented alike in the surveyed parsers);
           <valsi>su</valsi>
@@ -328,7 +340,17 @@
           , tightened several glosses to the checkpointed wording (notably
           <valsi>ti'u</valsi>
           , a time-of-day stamp, and
-          <valsi>ci'e</valsi>), and settled the old reading dispute over BAI-plus-
+          <valsi>ci'e</valsi>
+          , whose
+          <jbophrase>se ci'e</jbophrase>
+          became
+          <quote>with system structure</quote>
+          rather than
+          <quote>with system function</quote>
+          , gaining a
+          <jbophrase>ve ci'e</jbophrase>
+          ,
+          <quote>with synergy in</quote>), and settled the old reading dispute over BAI-plus-
           <jbophrase>-nai</jbophrase>
           in this book's favor. See
           <xref linkend="chapter-sumti-tcita" />.
@@ -337,7 +359,7 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>letterals</primary><secondary>change summary</secondary></indexterm>
-          <emphasis>Checkpointed</emphasis> (2005). Shift words are bounded to their letteral string (the first edition read a shift as possibly persisting until contradicted);
+          <emphasis>Checkpointed</emphasis> (17 March 2004; the shift-scope rule follows a later frozen decision of 11 February 2005). Shift words are bounded to their letteral string. The first edition instead had a shift last, in theory, until a contradicting shift or the end of the text, while conceding that in practice readers presumed it expired at the first non-letteral word;
           <valsi>.ybu</valsi>
           is recognized as a unit before any word-level processing; the
           <valsi>bu</valsi>

@@ -52,21 +52,19 @@
       </indexterm>
       <indexterm type="general"><primary>tags</primary><secondary>binding across an elided kei</secondary>
       </indexterm>
-      One case has actually changed since the first edition. By the tag-binding rule &ndash; adopted by a committee vote in 2016 and never separately ratified; the full status note accompanies its treatment in
-      <xref linkend="section-tenses-introduction" />
-      &ndash; a tense or modal tag standing directly in front of a selbri binds to that selbri exactly as
+      A tense or modal tag standing directly in front of a selbri binds to that selbri exactly as
       <valsi>cu</valsi>
-      would. So in
+      would (the tag-binding rule; see
+      <xref linkend="section-tenses-introduction" />
+      for its status). So in
       <jbophrase>lo nu klama ba brode</jbophrase>
       , the
       <valsi>ba</valsi>
       itself ends the abstraction &ndash; no
       <valsi>kei</valsi>
       is needed &ndash; and opens the main selbri
-      <valsi>brode</valsi>
-      ; the first edition's grammar instead absorbed the
-      <valsi>ba</valsi>
-      into the abstraction as a tagged sumti. If you <emphasis>want</emphasis> the tag inside the abstraction, follow it with a sumti &ndash;
+      <valsi>brode</valsi>. (Older texts and grammars group this differently; see
+      <xref linkend="appendix-changes" />.) If you <emphasis>want</emphasis> the tag inside the abstraction, follow it with a sumti &ndash;
       <jbophrase>lo nu klama ba le nu tavla cu xamgu</jbophrase>
       keeps the
       <valsi>ba</valsi>
@@ -128,7 +126,7 @@
       <jbophrase>le nu</jbophrase>
       points to a particular, in-mind event, while
       <jbophrase>lo nu</jbophrase>
-      refers to whatever event genuinely fits the description, and is the usual modern choice when no particular occasion is meant. The examples in this chapter mostly keep the first edition's
+      refers to whatever event genuinely fits the description, and is the usual choice when no particular occasion is meant. The examples in this chapter mostly use
       <jbophrase>le nu</jbophrase>
       , which is fine wherever a specific occasion is in view; read them with that distinction in mind.
     </para>
@@ -1065,7 +1063,7 @@
     <para role="status-note">
       <indexterm type="lojban-word"><primary>jei</primary><secondary>status of fuzzy interpretation</secondary>
       </indexterm>
-      (A status note: they still have not been, and the question was never officially settled either way. The number-valued reading has not become established in ordinary use: prevailing practice treats a
+      (They still have not been, and the question was never officially settled either way. The number-valued reading has not become established in ordinary use: prevailing practice treats a
       <valsi>jei</valsi>
       abstraction, where it is used at all, as a plain whether-or-not truth value, and expresses degrees with
       <valsi>ni</valsi>

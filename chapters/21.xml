@@ -25,7 +25,7 @@
       <indexterm type="general"><primary>camxes</primary><secondary>as de facto compatibility target</secondary>
       </indexterm>
       <indexterm type="general"><primary>third baseline</primary></indexterm>
-      A word on authority. The grammar printed here, in EBNF notation, is the <emphasis>official</emphasis> grammar: it corresponds to the third baselined machine grammar adopted by the Logical Language Group. The first edition printed, alongside it, the equivalent YACC grammar from which it was derived, and declared the YACC version authoritative in case of discrepancy; following an informal majority at the Group's 2014 annual meeting, the YACC listing is no longer printed &ndash; it remains available in the electronic supplements to this book. (The first edition's own text records at least one of its knottier examples being run through the YACC-derived parser until it passed.) Meanwhile, the community's working grammars are stated in a different formal system: parsing expression grammars (PEG), which cover morphology and syntax together and incorporate the committee-adopted amendments described throughout this book. The standard camxes PEG is the principal de facto compatibility target across the tooling surveyed for this edition: some of those tools implement it directly, others reimplement its behavior &ndash; and none of it was ever ratified. Where this book's text and the EBNF printed below disagree with the amendments, the amendments prevail, and each is flagged where it is taught; the EBNF itself is printed as baselined.
+      A word on authority. The grammar printed here, in EBNF notation, is the <emphasis>official</emphasis> grammar: it corresponds to the third baselined machine grammar adopted by the Logical Language Group. The first edition printed, alongside it, the equivalent YACC grammar from which it was derived, and declared the YACC version authoritative in case of discrepancy; following an informal majority at the Group's 2014 annual meeting, the YACC listing is no longer printed &ndash; it remains available in the electronic supplements to this book. Meanwhile, the community's working grammars are stated in a different formal system: parsing expression grammars (PEG), which cover morphology and syntax together and incorporate the committee-adopted amendments described throughout this book. The standard camxes PEG is the principal de facto compatibility target across the tooling surveyed for this edition: some of those tools implement it directly, others reimplement its behavior &ndash; and none of it was ever ratified. Where this book's text and the EBNF printed below disagree with the amendments, the amendments prevail, and each is flagged where it is taught; the EBNF itself is printed as baselined.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>tags</primary><secondary>binding to selbri, in the formal grammar</secondary>
@@ -40,8 +40,10 @@
       <xref linkend="chapter-structure" />. Second, where a tag stands directly before a selbri, the EBNF permits more than one grouping; the BPFK-approved 2016 tag-binding decision &ndash; a vote of the language-definition committee whose story is told in
       <xref linkend="chapter-about" />
       &ndash; picks one (see
-      <xref linkend="section-tenses-introduction" />), and the parsers surveyed for this edition implement that choice. Third, a tense standing bare before a forethought connective construction was not accepted by the baseline parser at all, despite the first edition's prose using it; the de facto grammars accept it, reading the tense as a term scoping over the whole construction &ndash; an implemented, never-voted resolution (see
-      <xref linkend="chapter-connectives" />).
+      <xref linkend="section-tenses-introduction" />), and the parsers surveyed for this edition implement that choice. Third, a tense standing bare before a forethought connective construction was not accepted by the baseline parser at all; the de facto grammars accept it, reading the tense as a term scoping over the whole construction &ndash; an implemented, never-voted resolution (see
+      <xref linkend="chapter-connectives" />
+      and
+      <xref linkend="appendix-changes" />).
     </para>
   </section>
   <section xml:id="section-EBNF">

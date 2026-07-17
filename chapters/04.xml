@@ -687,7 +687,7 @@
       <indexterm type="general"><primary>cmavo</primary><secondary>experimental</secondary>
       </indexterm>
       <quote>Experimental use</quote>
-      means that these words have no officially assigned meanings: they provide an escape hatch for adding grammatical mechanisms the need for which was not foreseen. In practice a number of experimental cmavo have gained real currency in the community and are recorded, clearly marked as unofficial, in the community's dictionaries; none of them is part of standard Lojban as this book describes it. Note also that the formal word-form grammar of
+      means that these words have no officially assigned meanings: they provide an escape hatch for adding grammatical mechanisms the need for which was not foreseen. In practice a number of experimental cmavo have gained real currency in the community and are recorded, clearly marked as unofficial, in the community's dictionaries; none of them is part of standard Lojban as this book describes it. Note also that the formal word-form grammar printed in
       <xref linkend="appendix-peg-morphology" />
       admits two further cmavo <emphasis>shapes</emphasis> beyond the vowel-and-apostrophe forms described above: a word consisting of one or more
       <letteral>y</letteral>
@@ -6010,7 +6010,7 @@
       <indexterm type="general"><primary>fu'ivla</primary><secondary>in lujvo</secondary>
       </indexterm>
       <indexterm type="general"><primary>extended rafsi</primary></indexterm>
-      The mechanism in this section is de facto standard Lojban: it is part of the formal word-form grammar of
+      The mechanism in this section is de facto standard Lojban: it is part of the formal word-form grammar printed in
       <xref linkend="appendix-peg-morphology" />
       , and current software implements it. For its history, see
       <xref linkend="appendix-changes" />.

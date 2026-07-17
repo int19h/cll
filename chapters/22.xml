@@ -29,7 +29,8 @@
       </indexterm>
       The boundary between experimental and adopted has moved before. The rule, used throughout this book, that every cmevla is written with a leading and trailing dot began life as a deliberately partisan dialect &ndash; its very name,
       <quote>the dot side</quote>
-      , was a joke &ndash; and was adopted by a recorded vote of the BPFK, the language-definition committee, on 8 August 2015 (seven in favor, one abstention; never separately ratified by the LLG). The established corpus is itself an accretion of once-experimental proposals adopted at various levels; the difference now is that the bodies which could promote them no longer meet. The features in this chapter are, in that sense, proposals with no one left to propose them to: their standing rises and falls with usage alone.
+      , was a joke &ndash; and is now committee-approved (the details are in
+      <xref linkend="appendix-changes" />). The established corpus is itself an accretion of once-experimental proposals adopted at various levels; the difference now is that the bodies which could promote them no longer meet. The features in this chapter are, in that sense, proposals with no one left to propose them to: their standing rises and falls with usage alone.
     </para>
     <para>
       <indexterm type="general"><primary>parsers</primary><secondary>dialect support in</secondary>
@@ -206,10 +207,14 @@
       , exactly parallel to the singular rules of
       <xref linkend="chapter-quantifiers" />.
     </para>
+    <para>
+      The standard camxes grammar rejects these quantifiers; the camxes beta family and jbotci accept them. The rigorous writing that uses them is the work of a small circle of theorists rather than everyday text, and this book's logic chapters are written entirely with the official singular quantifiers.
+    </para>
     <para role="status-note">
-      Status and support: what was ratified is the number-neutral constant semantics of the modern
+      What was ratified is the number-neutral constant semantics of the modern
       <valsi>lo</valsi>
-      ; construing that semantics as the constant half of a formal plural-logic system is itself an unofficial analysis, and these quantifiers &ndash; the system's other half &ndash; were never adopted. The rigorous writing that uses them is the work of a small circle of theorists rather than everyday text. The standard camxes grammar rejects them; the camxes beta family and jbotci accept them. This book's logic chapters are written entirely with the official singular quantifiers.
+      ; construing that semantics as the constant half of a formal plural-logic system is an unofficial analysis, and these quantifiers &ndash; the system's other half &ndash; remain unadopted proposals (see
+      <xref linkend="appendix-changes" />).
     </para>
   </section>
   <section xml:id="section-dialects-grabbag">

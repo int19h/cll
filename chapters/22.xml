@@ -41,7 +41,7 @@
     <para role="status-note">
       <indexterm type="general"><primary>experimental cmavo</primary><secondary>status of</secondary>
       </indexterm>
-      (A status note covering the features taught in the remaining sections of this chapter: all of them are unofficial &ndash; neither ratified, committee-approved, nor checkpointed. Where a section cites usage frequency, the underlying evidence is a 2015 six-corpus community survey whose counts overweight chat logs and individual authors; treat it as rough rank order, not endorsement.)
+      All of them are unofficial &ndash; neither ratified, committee-approved, nor checkpointed. Where a section cites usage frequency, the underlying evidence is a 2015 six-corpus community survey whose counts overweight chat logs and individual authors; treat it as rough rank order, not endorsement.
     </para>
   </section>
   <section xml:id="section-dialects-quotation">
@@ -139,7 +139,7 @@
       </interlinear-gloss>
     </example>
     <para role="status-note">
-      (Status and support: all four are attested in genuine text &ndash;
+      Status and support: all four are attested in genuine text &ndash;
       <valsi>la'oi</valsi>
       and
       <valsi>zo'oi</valsi>
@@ -147,7 +147,7 @@
       <valsi>me'oi</valsi>
       and
       <valsi>ra'oi</valsi>
-      more thinly. The standard camxes grammar rejects all four; the camxes beta family and jbotci accept them, jbotci without any dialect switch.)
+      more thinly. The standard camxes grammar rejects all four; the camxes beta family and jbotci accept them, jbotci without any dialect switch.
     </para>
   </section>
   <section xml:id="section-dialects-plural">
@@ -207,9 +207,9 @@
       <xref linkend="chapter-quantifiers" />.
     </para>
     <para role="status-note">
-      (Status and support: what was ratified is the number-neutral constant semantics of the modern
+      Status and support: what was ratified is the number-neutral constant semantics of the modern
       <valsi>lo</valsi>
-      ; construing that semantics as the constant half of a formal plural-logic system is itself an unofficial analysis, and these quantifiers &ndash; the system's other half &ndash; were never adopted. The rigorous writing that uses them is the work of a small circle of theorists rather than everyday text. The standard camxes grammar rejects them; the camxes beta family and jbotci accept them. This book's logic chapters are written entirely with the official singular quantifiers.)
+      ; construing that semantics as the constant half of a formal plural-logic system is itself an unofficial analysis, and these quantifiers &ndash; the system's other half &ndash; were never adopted. The rigorous writing that uses them is the work of a small circle of theorists rather than everyday text. The standard camxes grammar rejects them; the camxes beta family and jbotci accept them. This book's logic chapters are written entirely with the official singular quantifiers.
     </para>
   </section>
   <section xml:id="section-dialects-grabbag">
@@ -273,13 +273,16 @@
       <jbophrase valid="iffy">mi viska zo'ei la .paris.</jbophrase>
       ,
       <quote>I see something Paris-related</quote>
-      &ndash; a photograph, perhaps, or the skyline. (A support caveat: no camxes grammar recognizes
+      &ndash; a photograph, perhaps, or the skyline.
+    </para>
+    <para>
+      A support caveat: no camxes grammar recognizes
       <valsi>zo'ei</valsi>
       as a word &ndash; the string collides with a
       <valsi>zo</valsi>
       quotation there &ndash; and the danger is silent: a full sentence like the one above still parses in camxes, as a quotation of
       <quote>'ei</quote>
-      with a different structure entirely. jbotci recognizes it properly.)
+      with a different structure entirely. jbotci recognizes it properly.
     </para>
     <para>
       Several more circulate with thinner but real use, and this book records them only by name: the well-wishing vocative
@@ -297,11 +300,11 @@
       <xref linkend="section-dialects-plural" />.
     </para>
     <para role="status-note">
-      (Status and support: the error-correction set and
+      Status and support: the error-correction set and
       <valsi>xo'e</valsi>
       are accepted by the camxes beta family and by jbotci;
       <valsi>zo'ei</valsi>
-      by jbotci only; of the named mentions, the camxes beta family accepts them, while jbotci's support varies word by word &ndash; verify before relying on any. None is official.)
+      by jbotci only; of the named mentions, the camxes beta family accepts them, while jbotci's support varies word by word &ndash; verify before relying on any. None is official.
     </para>
   </section>
   <section xml:id="section-dialects-cbm">
@@ -334,7 +337,7 @@
       phrases. What they agree on is the new permission itself: a cmevla may predicate.
     </para>
     <para role="status-note">
-      (Status and support: a real, parser-implemented dialect with an established design literature; more discussed than written &ndash; running text composed wholly in CBM is scarce. In the tested tools it requires an explicit dialect grammar or switch.)
+      Status and support: a real, parser-implemented dialect with an established design literature; more discussed than written &ndash; running text composed wholly in CBM is scarce. In the tested tools it requires an explicit dialect grammar or switch.
     </para>
   </section>
   <section xml:id="section-dialects-ckt">
@@ -373,8 +376,8 @@
       to a ce-ki-tau one. Text in this dialect is therefore unintelligible to a standard reader in a peculiarly silent way &ndash; nothing fails; it just means something else. Well-behaved dialect text announces itself first (the community convention is a header like
       <jbophrase valid="iffy">jo'au tcekitaujau</jbophrase>).
     </para>
-    <para role="status-note">
-      (Status and support: precisely specified and implemented, but note that neither tested implementation matches the primary five-pair proposal exactly: the camxes
+    <para>
+      Neither tested implementation matches the primary five-pair proposal exactly. The camxes
       <quote>ckt</quote>
       grammar implements the
       <valsi>ce</valsi>
@@ -384,9 +387,8 @@
       <valsi>tau</valsi>
       /
       <valsi>du</valsi>
-      swaps plus several others but not
-      <valsi>jau</valsi>
-      , while jbotci's
+      swaps plus several others, but not
+      <valsi>jau</valsi>. jbotci's
       <quote>ce-ki-tau-jau</quote>
       dialect implements
       <valsi>ce</valsi>
@@ -401,7 +403,10 @@
       <valsi>su</valsi>
       swap, and omits
       <valsi>du</valsi>
-      &ndash; and it helpfully prints the standard equivalents back. By the community's own assessment the dialect is very little used; it is included here as the clearest worked example of what a dialect <emphasis>is</emphasis>. This book's own text, of course, uses none of the swaps.)
+      &ndash; and it helpfully prints the standard equivalents back.
+    </para>
+    <para role="status-note">
+      By the community's own assessment the dialect is very little used; it is included here as the clearest worked example of what a dialect <emphasis>is</emphasis>. This book's own text, of course, uses none of the swaps.
     </para>
   </section>
 </chapter>

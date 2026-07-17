@@ -172,7 +172,11 @@
           <indexterm type="general"><primary>diphthongs</primary><secondary>change summary</secondary></indexterm>
           <emphasis>De facto</emphasis> (a working document of the definition effort, implemented in the surveyed parsers). Only
           <diphthong>ai</diphthong>, <diphthong>ei</diphthong>, <diphthong>oi</diphthong>, <diphthong>au</diphthong>
-          are diphthongs; the first edition's other ten are glide-initial syllables, permitted word-initially or after a vowel. The same grammar makes word resolution deterministic (at each point the first matching rule wins, so a string of Lojban text breaks into words in exactly one way), extends the space of permitted experimental cmavo shapes, admits digits inside cmevla, and states per-class rules for consonantal syllables and stress. The full grammar is printed in this edition's appendices.
+          are diphthongs; the first edition's other ten are glide-initial syllables, permitted word-initially or after a vowel, and its two name-only diphthongs
+          <morphology>iy</morphology>
+          and
+          <morphology>uy</morphology>
+          are likewise glide-plus-<letteral>y</letteral> syllables. The same grammar makes word resolution deterministic (at each point the first matching rule wins, so a string of Lojban text breaks into words in exactly one way), extends the space of permitted experimental cmavo shapes, admits digits inside cmevla, and states per-class rules for consonantal syllables and stress. The full grammar is printed in this edition's appendices.
         </para>
       </listitem>
       <listitem>
@@ -197,7 +201,14 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>comma</primary><secondary>change summary</secondary></indexterm>
-          <emphasis>Editorial, following the working grammar</emphasis>. The comma is purely a pronunciation aid: it cannot license otherwise-invalid letter sequences, reversing several first-edition lessons that leaned on it. See
+          <emphasis>Editorial, following the working grammar</emphasis>. The comma is purely a pronunciation aid: it cannot license otherwise-invalid letter sequences, reversing several first-edition lessons that leaned on it. In the first edition a comma could be pronounced
+          <phrase role="IPA">[h]</phrase>
+          like an apostrophe (though commas were also said never to distinguish words &ndash; a conflict never adjudicated; the working word-form grammar resolves it by ignoring commas entirely); it could force a syllable division or an alternative syllable grouping; names could be spelled with sound-bearing commas (
+          <quote>.i,ai,i,ai,on.</quote>); and borrowings could use it as a syllable separator licensing a vowel sequence (
+          <quote>bang,r,kore,a</quote>
+          , now
+          <jbophrase>bangrkore'a</jbophrase>
+          with an apostrophe). All of these devices are gone: spell what you want said. See
           <xref linkend="chapter-phonology" />.
         </para>
       </listitem>

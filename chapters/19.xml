@@ -1561,10 +1561,10 @@
     <para role="status-note">
       <indexterm type="general"><primary>lo'u</primary><secondary>rules, status of</secondary>
       </indexterm>
-      (The
+      The
       <jbophrase>lo'u&hellip;le'u</jbophrase>
-      rules of this section follow the committee's frozen 2005 quotations decision; see
-      <xref linkend="appendix-changes" />.)
+      rules of this section are checkpointed; see
+      <xref linkend="appendix-changes" />.
     </para>
   </section>
   <section xml:id="section-more-quotations">
@@ -1850,13 +1850,14 @@
     <para role="status-note">
       <indexterm type="general"><primary>zoi</primary><secondary>delimiter rules, status of</secondary>
       </indexterm>
-      (A status note: the
+      The
       <valsi>zoi</valsi>
       and
       <valsi>la'o</valsi>
-      delimiter rules of this section &ndash; any single Lojban word as delimiter, the payload running to the delimiter's next occurrence, the functionless bracket words, the required closing delimiter &ndash; are checkpointed: they follow the committee's frozen 2005 quotations decision, as does the
+      delimiter rules of this section &ndash; any single Lojban word as delimiter, the payload running to the delimiter's next occurrence, the functionless bracket words, the required closing delimiter &ndash; are checkpointed, as is the
       <valsi>zo</valsi>
-      rule of the previous section.)
+      rule of the previous section; see
+      <xref linkend="appendix-changes" />.
     </para>
   </section>
   <section xml:id="section-bahe">
@@ -2519,14 +2520,13 @@
     <para role="status-note">
       <indexterm type="general"><primary>sa</primary><secondary>unsettled status of</secondary>
       </indexterm>
-      A frank status note:
       <valsi>sa</valsi>
-      is the least settled word in this section. The description above &ndash; erase back to the last construct of the same kind as what follows &ndash; conveys the intent, and simple uses like the examples are understood by everyone. But the precise rule was deliberately left undecided when the rest of the word-level machinery was standardized, a later community proposal (erase back to the last word of the same <emphasis>selma'o</emphasis>) never gained official standing, and today's parsers implement differing approximations: of the two examples above, one current parser accepts both, another accepts only the second. Use
+      is the least settled word in this section: the description above conveys the intent, and simple uses like the examples are understood by everyone, but the precise rule was never settled and today's parsers implement differing approximations &ndash; of the two examples above, one current parser accepts both, another only the second. Use
       <valsi>sa</valsi>
       freely in speech, where a human listener does the repair work; in text meant for machines, prefer
       <valsi>si</valsi>
-      or rephrasing, and do not build clever constructions on
-      <valsi>sa</valsi>'s exotic corners.
+      or rephrasing. The history is in
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="general"><primary>erasure</primary><secondary>total</secondary>
@@ -2553,11 +2553,8 @@
     <para role="status-note">
       <indexterm type="general"><primary>su</primary><secondary>status of</secondary>
       </indexterm>
-      (A status note: like
-      <valsi>si</valsi>
-      ,
-      <valsi>su</valsi>
-      was deliberately left out of the committee's 2005 decisions, so the boundary rule above is de facto &ndash; it comes from the community's erasure proposal and is unvoted. Implementation is also uneven at present: the standard camxes grammar erases back to the boundary and preserves it, as described, while at least one other current parser mishandles the boundary itself; erasing from the start of a text works everywhere.)
+      The boundary rule above is de facto, and unevenly implemented: the standard camxes grammar erases back to the boundary and preserves it, as described, while at least one other current parser mishandles the boundary itself. Erasing from the start of a text works everywhere; see
+      <xref linkend="appendix-changes" />.
     </para>
 
   </section>
@@ -2595,14 +2592,14 @@
     <para role="status-note">
       <indexterm type="general"><primary>y</primary><secondary>word-level invisibility, status</secondary>
       </indexterm>
-      (A status note: the invisibility of
+      The invisibility of
       <valsi>.y.</valsi>
       to the word-level machinery, and the
       <valsi>.ybu</valsi>
-      exception, are checkpointed rules: the committee's frozen 2005 definition of the hesitation sound states both, down to the consequence that
+      exception, are checkpointed &ndash; down to the consequence that
       <valsi>zo</valsi>
       cannot quote
-      <valsi>.y.</valsi>.)
+      <valsi>.y.</valsi>.
     </para>
   </section>
   <section xml:id="section-faho">
@@ -2645,21 +2642,10 @@
     <para role="status-note">
       <indexterm type="general"><primary>fa'o</primary><secondary>status of</secondary>
       </indexterm>
-      (A status note: the
+      The
       <valsi>fa'o</valsi>
-      rule and its capture exceptions are checkpointed. The committee's frozen 2005 text-structure definition names capture by
-      <valsi>zo</valsi>
-      , by
-      <jbophrase>lo'u&hellip;le'u</jbophrase>
-      , by use as a
-      <valsi>zoi</valsi>
-      delimiter, and by a preceding
-      <valsi>zei</valsi>
-      ; capture inside a
-      <valsi>zoi</valsi>
-      payload follows from the separately checkpointed
-      <valsi>zoi</valsi>
-      rule of the quotations decision.)
+      rule and its capture exceptions are checkpointed; see
+      <xref linkend="appendix-changes" />.
     </para>
   </section>
   <section xml:id="section-cmavo-interactions">
@@ -2780,15 +2766,12 @@
       </listitem>
     </itemizedlist>
     <para>
-      Wherever the committee's frozen per-word rules and the uniform principle agree &ndash; which is almost everywhere &ndash; the principle simply restates settled material. One corner is genuinely contested: whether
+      Wherever the frozen per-word rules and the uniform principle agree &ndash; which is almost everywhere &ndash; the principle simply restates settled material. One corner is genuinely contested: whether
       <valsi>bu</valsi>
       may bind a preceding
       <valsi>ba'e</valsi>
-      (making a
-      <quote>ba'e</quote>
-      letteral) &ndash; the frozen
-      <valsi>bu</valsi>
-      text forbade it, while the uniform principle and current parsers allow it. Treat
+      (see
+      <xref linkend="chapter-letterals" />). Treat
       <jbophrase>ba'e bu</jbophrase>
       and similar exotica as curiosities, not tools. One more limit of the
       <quote>single word</quote>
@@ -2805,10 +2788,11 @@
     <para role="status-note">
       <indexterm type="general"><primary>magic words</primary><secondary>status of interaction rules</secondary>
       </indexterm>
-      (The uniform principle is this edition's synthesis: the committee fixed these rules word by word, the erasure words were deliberately left out, and
+      The uniform principle is this edition's synthesis; the frozen rules were stated word by word, and
       <valsi>sa</valsi>
-      remains unsettled (<xref linkend="section-erasure" />). The word-by-word provenance is catalogued in
-      <xref linkend="appendix-changes" />.)
+      remains unsettled &ndash; see
+      <xref linkend="section-erasure" />. The word-by-word provenance is catalogued in
+      <xref linkend="appendix-changes" />.
     </para>
   </section>
   <section xml:id="section-elidable-terminators">

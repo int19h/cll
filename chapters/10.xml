@@ -104,7 +104,7 @@
       The placement of a tense construct within a Lojban bridi is easy: right before the selbri. It goes immediately after the
       <valsi>cu</valsi>
       , and can in fact always replace the
-      <valsi>cu</valsi>. Indeed, by a rule adopted by the language-definition committee in 2016, a tense (or any tag) directly in front of a selbri binds to that selbri exactly as
+      <valsi>cu</valsi>. Indeed, a tense (or any tag) directly in front of a selbri binds to that selbri exactly as
       <valsi>cu</valsi>
       would, unless an explicit
       <valsi>ku</valsi>
@@ -112,14 +112,13 @@
       <jbophrase>lo nu broda ba brode</jbophrase>
       is a complete bridi &ndash; the abstraction closes, and
       <valsi>ba</valsi>
-      opens the main selbri &ndash; where the first edition's grammar instead absorbed the
-      <valsi>ba</valsi>
-      into the abstraction.
+      opens the main selbri.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>tags</primary><secondary>binding to selbri, status</secondary>
       </indexterm>
-      (A status note: this tag-binding rule was adopted by a recorded vote of the BPFK, the language-definition committee, on 15 March 2016, with seven of eight members in favor. Like the committee's other post-reauthorization acts, it was never separately ratified by the LLG; current parsers implement it.)
+      (This tag-binding rule was adopted by committee vote in 2016 and current parsers implement it; older grammars group such tags differently &ndash; see
+      <xref linkend="appendix-changes" />.)
     </para>
     <para>
       In the following examples,
@@ -2477,17 +2476,14 @@
         <gloss>I go-to the store [retrospective] the event-of I eat</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">indicates that by the time I eat, the store trip is already behind me. (Readers of the first edition: these two translations are deliberately the reverse of the ones printed there &ndash; see the note below.)</para>
+    <para role="noindent">indicates that by the time I eat, the store trip is already behind me.</para>
     <para role="status-note">
       <indexterm type="general"><primary>ZAhO</primary><secondary>sumtcita interpretation, change of</secondary>
       </indexterm>
-      Historical note: the first edition interpreted a ZAhO sumtcita the other way around &ndash; the <emphasis>tagged event</emphasis> was the process, and the main bridi sat at the named phase of it, so that
-      <jbophrase>mi klama le zarci pu'o le nu mi citka</jbophrase>
-      meant
-      <quote>before my eating begins, I go to the store</quote>. The language-definition committee reversed this in its treatment of the event contours, checkpointed on 24 May 2004 &ndash; the frozen snapshot of that date is the authoritative statement: the main bridi carries the contour, and the tagged sumti locates it, exactly parallel to
-      <jbophrase>ba'o broda ca lo nu brode</jbophrase>. Text written to the first edition's rule &ndash; including some well-known examples, like this book's old
+      (The reading taught here follows the committee's checkpointed 2004 decision on the event contours. Older text reads a ZAhO sumtcita the other way around &ndash; this book's own old
       <quote>mi morsi ba'o le nu mi jmive</quote>
-      &ndash; must be reread accordingly. ZAhO used directly as a tense on the selbri (<xref linkend="section-event-contours" />) is unaffected by this change.
+      is a famous example &ndash; so reread it accordingly; see
+      <xref linkend="appendix-changes" />.)
     </para>
 
     <para>Here is an example which mixes temporal ZAhO (as a tense) and spatial ZAhO (as a sumtcita):</para>

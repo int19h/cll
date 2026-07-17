@@ -76,6 +76,7 @@
       <quote>is one of</quote>
       to
       <quote>is/are among the referents of</quote>
+      (a working-document clarification, never separately voted, on which the ratified expansions rely)
       ; and a number directly after
       <valsi>la</valsi>
       is part of the name, not an inner quantifier. The first edition's descriptor-attachment lessons that were derived from the abolished defaults are re-derived in
@@ -263,7 +264,7 @@
           <valsi>si</valsi>
           words. (The first edition also noted that its own machine parser did not implement
           <valsi>si</valsi>
-          erasure at all; every current parser does.) Erasure was never voted:
+          erasure at all; the parsers surveyed for this edition do.) Erasure was never voted:
           <valsi>si</valsi>
           as taught is de facto (implemented alike in the surveyed parsers);
           <valsi>su</valsi>

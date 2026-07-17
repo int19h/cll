@@ -2291,7 +2291,7 @@
       justice.
     </para>
     <para>
-      <indexterm type="general"><primary>modal connectives</primary><secondary>fi'o prohibited in</secondary>
+      <indexterm type="general"><primary>modal connectives</primary><secondary>with fi'o</secondary>
       </indexterm>
       <indexterm type="lojban-word"><primary>fi'o</primary><secondary>restriction on use</secondary>
       </indexterm>
@@ -2299,7 +2299,7 @@
       <jbophrase>fi'o-</jbophrase>
       plus-selbri form of modal &ndash; a form like
       <jbophrase>.i fi'o bapli fe'u bo</jbophrase>
-      is accepted (older grammars rejected it; see
+      is accepted (older grammars differ here; see
       <xref linkend="appendix-changes" />). Such connectives remain rare in practice, and the BAI forms shown in
       <xref linkend="section-causals" />
       and
@@ -3468,15 +3468,15 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="lojban-word"><primary>fi'o</primary><secondary>proscribed for sticky modals</secondary>
+      <indexterm type="lojban-word"><primary>fi'o</primary><secondary>as sticky modal</secondary>
       </indexterm>
-      <indexterm type="general"><primary>sticky modals</primary><secondary>&apos;fi'o&apos; proscribed from</secondary>
+      <indexterm type="general"><primary>sticky modals</primary><secondary>with &apos;fi'o&apos;</secondary>
       </indexterm>
       Note: modals made with
       <valsi>fi'o</valsi>
       -plus-selbri can be made sticky like any other:
       <jbophrase>fi'o bapli fe'u ki</jbophrase>
-      is accepted, with the expected meaning (older grammars rejected it; see
+      is accepted, with the expected meaning (older grammars differ here; see
       <xref linkend="appendix-changes" />).
     </para>
   </section>

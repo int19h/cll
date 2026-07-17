@@ -2320,9 +2320,9 @@
     <para role="status-note">
       <indexterm type="general"><primary>implicit quantifiers</primary><secondary>abolition of, in mekso contexts</secondary>
       </indexterm>
-      (A status note: the first edition said that one or two of these quantifiers were <emphasis>implicitly</emphasis> present on every description. That default-quantifier machinery was abolished by the ratified gadri reform: an unquantified description is now a constant, and a quantifier applies only when actually said. See
-      <xref linkend="section-quantified-descriptions" />
-      for the full status history.)
+      (An unquantified description is a constant, and a quantifier applies only when actually said &ndash; the ratified gadri rule (see
+      <xref linkend="section-quantified-descriptions" />). Older texts follow a different convention here; see
+      <xref linkend="appendix-changes" />.)
     </para>
   </section>
   <section xml:id="section-radixen">

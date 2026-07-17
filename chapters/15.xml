@@ -179,11 +179,9 @@
     <para role="status-note">
       <indexterm type="general"><primary>na</primary><secondary>scope of, status</secondary>
       </indexterm>
-      (A status note: this whole-bridi rule &ndash; that
-      <valsi>na</valsi>
-      before the selbri denies the entire claim, no matter how much of the sentence precedes it &ndash; is the first edition's rule, and the semantic software checked for this edition keeps it. A later proposal to give
-      <valsi>na</valsi>
-      scope only over what follows it in the sentence was never adopted. How
+      (This whole-bridi rule is also how current semantic software reads
+      <valsi>na</valsi>; a narrower-scope proposal was never adopted &ndash; see
+      <xref linkend="appendix-changes" />. How
       <valsi>na</valsi>
       interacts with quantified variables is taken up in
       <xref linkend="chapter-quantifiers" />.)
@@ -330,8 +328,8 @@
     <para role="indent">
       When a selbri is tagged with a tense or a modal, negation with
       <valsi>na</valsi>
-      is permitted in two positions: before or after the tag. The first edition defined no semantic difference between the two positions, and left the question to
-      <quote>future, Lojban-speaking, logicians</quote>. Those logicians have since spoken, at least through the semantic software checked for this edition: the two positions differ in what the negation takes in. Placed before the tag,
+      is permitted in two positions: before or after the tag. The first edition left the difference between them to
+      <quote>future, Lojban-speaking, logicians</quote>; the logicians have spoken, and the two positions differ. Placed before the tag,
       <valsi>na</valsi>
       denies the tensed claim as a whole; placed after the tag, it lies within the scope of the tense, so the sentence makes a (tensed) claim about something <emphasis>not</emphasis> happening. The difference is easiest to see with one of the less familiar tenses. Starting from:
     </para>
@@ -377,7 +375,8 @@
     <para role="status-note">
       <indexterm type="general"><primary>na</primary><secondary>with tenses, status</secondary>
       </indexterm>
-      (A status note: this resolution of the two positions is de facto: it is how the semantic software checked for this edition interprets them, but it was never put to a vote, and the first edition explicitly left the question open.)
+      (This resolution is de facto &ndash; current semantic software implements it; see
+      <xref linkend="appendix-changes" />.)
     </para>
 
     <para>A final caution on translating English negations into Lojban: if you translate the English literally, you'll get the wrong one. With English causal statements, and other statements with auxiliary clauses, this problem is more likely.</para>
@@ -1045,7 +1044,7 @@
     <para role="status-note">
       <indexterm type="general"><primary>descriptions</primary><secondary>reference failure under negation</secondary>
       </indexterm>
-      (A status note: what truth value such a failed claim receives is not settled by the official definitions, which simply take a description's referents to exist. This book keeps the first edition's convention: an affirmative claim about a failed description counts as false, and its contradictory negation as true.)
+      (What truth value such a failed claim receives is not settled by the official definitions. This book keeps the first edition's convention: an affirmative claim about a failed description counts as false, and its contradictory negation as true.)
     </para>
     <para>
       Under that convention, it is false to say that the King is bald, or non-bald, or anything else affirmative. Any sentence about the current King of France containing only a selbri negation is as false as the sentence without the negation, because selbri negations still make affirmative claims. No amount of selbri negations have any effect on the truth value of the sentence, which is invariably
@@ -1338,10 +1337,10 @@
       <xref linkend="section-quantified-descriptions" />), so the sentence then denies baldness of every one of them, and it is true just in case none of those kings is in fact bald. But when there are no current Kings of France at all, the description has nothing to refer to, and the sentence inherits the reference problem discussed in
       <xref linkend="section-nahe" />. To make the plainly true claim directly &ndash; without first asking a description to refer to nonexistent kings &ndash; quantify over a variable instead:
       <jbophrase>no da poi ca nolraitru be le fasygu'e cu krecau</jbophrase>
-      , that is, nothing-that-is a current King of France lacks hair. This is true precisely because nothing satisfies the restriction. (In the first edition, descriptions themselves were quantifiers, and
+      , that is, nothing-that-is a current King of France lacks hair. This is true precisely because nothing satisfies the restriction. (Older texts read descriptions like the one in
       <xref linkend="example-random-id-PL1E" />
-      itself carried this quantificational reading; see the history notes in
-      <xref linkend="section-basic-descriptors" />.)
+      quite differently; see
+      <xref linkend="appendix-changes" />.)
     </para>
     <para>
       Now let us look at the same sentence using

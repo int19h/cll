@@ -8,11 +8,14 @@
     and
     <xref linkend="chapter-phonology" />: which strings of letters constitute cmevla, cmavo, and brivla, where words begin and end, and which letter sequences are permitted at all.
   </para>
+  <para>
+    The text below is taken verbatim from the grammar used by the camxes parser family, at the revision pinned for this edition's verification work.
+  </para>
   <para role="status-note">
     <indexterm type="general"><primary>PEG morphology</primary><secondary>status of</secondary>
     </indexterm>
-    A word on authority: this grammar descends from the language-definition committee's formal morphology effort. It is a de facto standard &ndash; a working document that was never put to a ratifying vote, but is implemented by the current Lojban software tools surveyed for this edition. One rule within it, the ban on consonant-glide-vowel sequences, was separately adopted by a recorded committee vote in December 2014 (see
-    <xref linkend="chapter-phonology" />). The text below is taken verbatim from the grammar used by the camxes parser family, at the revision pinned for this edition's verification work.
+    This grammar is the de facto standard definition of Lojban's word-forms, implemented by current software; the consonant-glide-vowel ban within it is separately committee-approved. For the full authority history, see
+    <xref linkend="appendix-changes" />.
   </para>
   <para>
     A parsing expression grammar differs from more familiar grammar notations in one crucial way: the choice operator

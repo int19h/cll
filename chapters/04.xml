@@ -2023,8 +2023,8 @@
     <para role="status-note">
       <indexterm type="general"><primary>hyphens</primary><secondary>optional, status of</secondary>
       </indexterm>
-      (For the standing of the liberal acceptance, see
-      <xref linkend="appendix-changes" />.)
+      For the standing of the liberal acceptance, see
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="general"><primary>lujvo</primary><secondary>with zei</secondary>
@@ -3142,11 +3142,11 @@
           </indexterm>
           <indexterm type="general"><primary>cmevla</primary><secondary>dot side</secondary>
           </indexterm>
-          They must end in one or more consonants. There are no rules about how many consonants may appear in a cluster in cmevla, provided that each consonant pair (whether standing by itself, or as part of a larger cluster) is a permissible pair. (The working word-form grammar &ndash; never formally voted &ndash; also has the capability of allowing decimal digits inside a cmevla, standing for their spoken digit-words:
+          They must end in one or more consonants. There are no rules about how many consonants may appear in a cluster in cmevla, provided that each consonant pair (whether standing by itself, or as part of a larger cluster) is a permissible pair. The working word-form grammar also lets a cmevla contain decimal digits, standing for their spoken digit-words:
           <cmevla>.mig15s.</cmevla>
           is read as if written
           <cmevla>.migypamus.</cmevla>
-          &ndash; a convenience for designations and codes, provided the expanded word still obeys the cmevla rules. It sees little use in running text.)
+          &ndash; a convenience for designations and codes, provided the expanded word still obeys the cmevla rules. It sees little use in running text.
         </para>
       </listitem>
       <listitem>
@@ -6010,8 +6010,9 @@
       <indexterm type="general"><primary>fu'ivla</primary><secondary>in lujvo</secondary>
       </indexterm>
       <indexterm type="general"><primary>extended rafsi</primary></indexterm>
-      The mechanism in this section is de facto standard Lojban: it is part of the formal word-form grammar (
-      <xref linkend="appendix-peg-morphology" />), and current software implements it. For its history &ndash; and for the never-adopted proposal the first edition printed in this spot &ndash; see
+      The mechanism in this section is de facto standard Lojban: it is part of the formal word-form grammar of
+      <xref linkend="appendix-peg-morphology" />
+      , and current software implements it. For its history, see
       <xref linkend="appendix-changes" />.
     </para>
     <para>

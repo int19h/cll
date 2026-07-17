@@ -672,10 +672,10 @@
     <para role="status-note">
       <indexterm type="general"><primary>comma</primary><secondary>change from first edition</secondary>
       </indexterm>
-      (If you want the
+      If you want the
       <phrase role="IPA">[h]</phrase>
-      sound, write the apostrophe &ndash; a comma never carries it. Older conventions differed; see
-      <xref linkend="appendix-changes" />.)
+      sound, write the apostrophe. Older conventions differed; see
+      <xref linkend="appendix-changes" />.
     </para>
 
     <para>
@@ -781,7 +781,7 @@
       <xref linkend="chapter-grammars" />
       , and
       <xref linkend="appendix-changes" />
-      for what <quote>de facto</quote> means here). The ban on consonant-plus-glide sequences within it was separately voted (see the note at the end of this section).
+      for what <quote>de facto</quote> means here). The ban on consonant-plus-glide sequences within it is separately committee-approved; the note at the end of this section has the practical consequences.
     </para>
     <para>
       <indexterm type="general"><primary>vowels</primary><secondary>contrasted with consonants</secondary>
@@ -1029,7 +1029,7 @@
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>consonant-glide-vowel ban</primary></indexterm>
-      The ban on consonant-glide-vowel sequences is committee-approved and relatively recent; older texts contain words coined before it, like
+      The ban on consonant-glide-vowel sequences is committee-approved; older texts contain words coined before it, like
       <quote>kuarka</quote>
       or
       <quote>.niuport.</quote>

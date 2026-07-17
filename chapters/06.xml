@@ -559,16 +559,10 @@
     <para role="status-note">
       <indexterm type="general"><primary>xorlo</primary></indexterm>
       <indexterm type="general"><primary>gadri reform</primary></indexterm>
-      Historical note: the meaning of
+      The meaning of
       <valsi>lo</valsi>
-      given here reflects a reform of the Lojban articles &ndash; known in the community as <quote>xorlo</quote>, after the nickname of its principal author &ndash; which reached its final form in three steps: approved by the language-definition committee in 2004, adopted by the Logical Language Group (the language's standards body) as the preferred usage in 2007, and fixed by a 2020 LLG vote, which ratified a specific archived text of the definition together with two corrections adopted at the same meeting. In the first edition,
-      <valsi>lo</valsi>
-      meant
-      <quote>at least one of all the things which really fit the description</quote>
-      , and every description carried default number claims. Under the current definition, a
-      <valsi>lo</valsi>
-      description simply refers to one or more things fitting it, stating nothing about how many beyond that &ndash; there is no hidden quantifier. The differences are laid out where they matter, especially in
-      <xref linkend="section-quantified-descriptions" />; older texts and the first edition should be read with the change in mind. The 2007 adoption explicitly provided that usage following the first edition's definitions is not incorrect &ndash; this book simply teaches the preferred current ones.
+      given here is the fruit of a reform the community calls <quote>xorlo</quote> (after the nickname of its principal author), ratified in its final form by the Logical Language Group in 2020. If you learned your Lojban from the first edition of this book, the articles are the biggest thing that has changed &ndash; the old definitions, and how to read older text, are laid out in
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>ku</primary></indexterm>
@@ -650,9 +644,9 @@
       <valsi>lei</valsi>
       , and
       <valsi>lai</valsi>
-      , which refer to <quote>groups</quote>. (The first edition of this book called them <quote>masses</quote>; the term <quote>group</quote>, matching the Lojban word
-      <valsi>gunma</valsi>
-      , has since become standard, and the underlying idea has been considerably cleaned up, as explained below.)
+      , which refer to <quote>groups</quote> &ndash; in Lojban,
+      <valsi>gunma</valsi>. (Older texts say <quote>masses</quote>, and mean something rather different by it; see
+      <xref linkend="appendix-changes" />.)
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Ba">
       <title><anchor xml:id="c6e3d7" /></title>
@@ -673,7 +667,7 @@
     <para>
       <indexterm type="general"><primary>groups</primary><secondary>properties of</secondary>
       </indexterm>
-      A group is a thing in its own right, with its own properties. Some of its properties arise from joint action of its members, like carrying the piano; others belong to the group as such &ndash; the group of three people weighs 200 kilograms, has three members, and perhaps has existed as a piano-moving team for years, none of which is true of any single member. And many properties of the members do not carry over to the group at all: each of the three may be strong, while the group as a team is clumsy. (The first edition took a different view, on which a mass inherits the properties of each of its components, so that a mass of people with both fair-skinned and dark-skinned members was said to have both fair and dark skin, and ordinary logical reasoning was suspended. That doctrine is gone: a group simply has whatever properties it has, and logic applies to statements about groups exactly as to statements about anything else.)
+      A group is a thing in its own right, with its own properties. Some of its properties arise from joint action of its members, like carrying the piano; others belong to the group as such &ndash; the group of three people weighs 200 kilograms, has three members, and perhaps has existed as a piano-moving team for years, none of which is true of any single member. And many properties of the members do not carry over to the group at all: each of the three may be strong, while the group as a team is clumsy. A group simply has whatever properties it has, and logic applies to statements about groups exactly as to statements about anything else.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>loi</primary><secondary>contrasted with &quot;lei&quot;</secondary>
@@ -716,18 +710,14 @@
     </para>
     <para>
       <indexterm type="general"><primary>generic statements</primary></indexterm>
-      <indexterm type="lojban-word"><primary>loi</primary><secondary>first-edition use for generic statements</secondary>
+      <indexterm type="lojban-word"><primary>loi</primary><secondary>not needed for generic statements</secondary>
       </indexterm>
-      A note for readers of older Lojban text: the first edition used
+      One thing you do <emphasis>not</emphasis> need a group descriptor for is general statements about kinds. Plain
+      <valsi>lo</valsi>
+      does that job by itself (older texts use
       <valsi>loi</valsi>
-      for general statements about kinds, as in
-      <jbophrase>loi cinfo cu xabju le fi'ortu'a</jbophrase>
-      for
-      <quote>Lions dwell in Africa</quote>
-      , and explained it via a special
-      <quote>part of the mass of all lions</quote>
-      reading. In current Lojban that job belongs to plain
-      <valsi>lo</valsi>:
+      here; see
+      <xref linkend="appendix-changes" />):
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Bb">
       <title><anchor xml:id="c6e3d8" /></title>
@@ -1245,19 +1235,12 @@
     <para role="status-note">
       <indexterm type="general"><primary>implicit quantifiers</primary><secondary>abolition of</secondary>
       </indexterm>
-      Here we reach one of the most important rules of current Lojban, and one of the largest changes from the first edition of this book: <emphasis>a sumti without an explicit quantifier has no quantifier at all</emphasis>. It is a referring expression, pure and simple &ndash; in the language of logic, a <quote>constant</quote>: a term that names its referents outright, as opposed to a quantified term like
+      Here we reach one of the most important rules in this book: <emphasis>a sumti without an explicit quantifier has no quantifier at all</emphasis>. It is a referring expression, pure and simple &ndash; in the language of logic, a <quote>constant</quote>: a term that names its referents outright, as opposed to a quantified term like
       <jbophrase>re do</jbophrase>
       , which selects from them. The distinction does real work in
       <xref linkend="chapter-quantifiers" />
-      , where quantified terms interact with negation and with each other in ways constants never do.
-      The first edition instead assigned every kind of sumti an <quote>implicit quantifier</quote> which an explicit one was said to replace &ndash;
-      <valsi>ro</valsi>
-      for personal pro-sumti,
-      <valsi>su'o</valsi>
-      for quotations, elaborate defaults for each descriptor, and so on. That entire mechanism was abolished by the xorlo reform (see
-      <xref linkend="section-basic-descriptors" />). The practical difference is felt mainly in subtler areas &ndash; how sumti interact with negation and with other quantifiers &ndash; and is discussed where it arises, particularly in
-      <xref linkend="chapter-quantifiers" />; but the rule itself is worth committing to memory now:
-      no quantifier is present unless you say one.
+      , where quantified terms interact with negation and with each other in ways constants never do. Commit the rule to memory now: no quantifier is present unless you say one. (The first edition supplied hidden default quantifiers instead; see
+      <xref linkend="appendix-changes" />.)
     </para>
   </section>
   <section xml:id="section-quantified-descriptions">
@@ -1377,34 +1360,18 @@
       </indexterm>
       <indexterm type="general"><primary>xorlo</primary><secondary>and quantified descriptions</secondary>
       </indexterm>
-      Readers of the first edition, and of older Lojban material generally, should attend closely here, because this is where the xorlo reform (see
-      <xref linkend="section-basic-descriptors" />) bites hardest. The first edition gave every descriptor a pair of default quantifiers, supplied automatically when no explicit ones appeared: an unadorned
-      <jbophrase>le gerku</jbophrase>
-      was defined as
-      <jbophrase>ro le su'o gerku</jbophrase>
-      (<quote>all of the at-least-one dog I have in mind</quote>), an unadorned
-      <jbophrase>lo gerku</jbophrase>
-      as
-      <jbophrase>su'o lo ro gerku</jbophrase>
-      (<quote>at least one of all the dogs that exist</quote>), with
-      <valsi>pisu'o</valsi>
-      defaults for the group descriptors and
-      <valsi>piro</valsi>
-      for the sets. All such defaults are gone from the language: an unquantified description merely refers, as explained in
-      <xref linkend="section-basic-descriptors" />
-      , and an inner quantifier on
+      To restate the essentials: an unquantified description merely refers (see
+      <xref linkend="section-basic-descriptors" />), and an inner quantifier on
       <valsi>lo</valsi>
-      counts the things referred to &ndash; <emphasis>not</emphasis>, as the first edition had it, all the things in existence that fit the description. Two practical consequences deserve notice. First,
+      counts the things referred to. So
       <jbophrase>lo ci gerku</jbophrase>
-      is unremarkable current Lojban for
+      is unremarkable, everyday Lojban for
       <quote>the three dogs (that we're concerned with)</quote>
-      , whereas the first edition warned against it as claiming that only three dogs exist in the universe &ndash; that warning is obsolete. Second, since
+      &ndash; it says nothing about how many dogs exist. And because
       <valsi>lo</valsi>
-      no longer contains a scope-bearing
-      <quote>at least one&hellip;</quote>
-      quantifier (it still refers to one or more things &ndash; that much is inherent in referring), the subtle interactions between descriptions, negation, and quantifier order described in
-      <xref linkend="chapter-quantifiers" />
-      work differently than in the first edition; the details are given there. This change was ratified along with the rest of xorlo, and current usage follows it; per the 2007 adoption, the first edition's conventions remain readable as not-incorrect older Lojban.
+      carries no quantifier of its own, descriptions get along with negation and quantifier order in the straightforward way described in
+      <xref linkend="chapter-quantifiers" />. The first edition supplied every descriptor with default quantifiers, and that machinery colored everything from inner quantifiers to negation; if you need to read older text closely, see
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>le</primary><secondary>inner quantifier with</secondary>
@@ -1483,7 +1450,7 @@
       <quote>some part of</quote>
       , and see their main use with groups and substance-like references:
       <jbophrase>piro loi jdini</jbophrase>
-      , all the money; <jbophrase>pisu'o loi djacu</jbophrase>, some of the water. In the first edition these two also served as automatic defaults for group and set descriptions; that use is gone, but as explicit quantifiers they remain perfectly current.
+      , all the money; <jbophrase>pisu'o loi djacu</jbophrase>, some of the water.
     </para>
   </section>
   <section xml:id="section-indefinite-descriptions">
@@ -1553,17 +1520,8 @@
     <para role="status-note">
       <indexterm type="general"><primary>indefinite descriptions</primary><secondary>change from first edition</secondary>
       </indexterm>
-      Historical note: the first edition defined
-      <jbophrase>ci gerku</jbophrase>
-      as simply an abbreviation of
-      <jbophrase>ci lo gerku</jbophrase>
-      , introduced to imitate the syntax of English; the two were
-      <quote>equivalent in meaning</quote>. The ratified definition separates them as described above:
-      the bare form quantifies over everything that fits the selbri, the
-      <valsi>lo</valsi>
-      form over the referents of the description. (Under the first edition's defaults for
-      <valsi>lo</valsi>
-      the distinction could not even be stated; it is meaningful only once descriptions are referring expressions.)
+      The two forms were interchangeable in the first edition; the ratified definition separates them as described above. See
+      <xref linkend="appendix-changes" />.
     </para>
     <para>Note:
       <xref linkend="example-random-id-gLpy" />

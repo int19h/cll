@@ -1547,8 +1547,7 @@
       encountered ends it, unconditionally &ndash; there is no way to smuggle a
       <valsi>le'u</valsi>
       inside, not even with
-      <valsi>zo</valsi>
-      (the first edition said otherwise; the rule was settled the simple way). It follows that
+      <valsi>zo</valsi>. It follows that
       <jbophrase>lo'u&hellip;le'u</jbophrase>
       quotations cannot nest; nor can a closed quotation be reopened &ndash; to add more quoted words, join a second quotation to it with
       <valsi>joi</valsi>. To quote text that itself contains
@@ -1562,13 +1561,10 @@
     <para role="status-note">
       <indexterm type="general"><primary>lo'u</primary><secondary>rules, status of</secondary>
       </indexterm>
-      (A status note: the
+      (The
       <jbophrase>lo'u&hellip;le'u</jbophrase>
-      rules of this section &ndash; the unconditional first
-      <valsi>le'u</valsi>
-      , no nesting, no reopening &ndash; are checkpointed: they follow the committee's frozen 2005 quotations decision, which replaced the first edition's
-      <jbophrase>zo le'u</jbophrase>
-      loophole.)
+      rules of this section follow the committee's frozen 2005 quotations decision; see
+      <xref linkend="appendix-changes" />.)
     </para>
   </section>
   <section xml:id="section-more-quotations">
@@ -2343,7 +2339,8 @@
       <jbophrase>zo si</jbophrase>
       (<quote>the word si</quote>). The second
       <valsi>si</valsi>
-      then erases that quotation as a single unit. (The first edition, which counted the pieces of a quotation as separate words for erasure, required three; texts and tools from that era may reflect the old accounting.)
+      then erases that quotation as a single unit. (Older texts may count the pieces of a quotation separately for erasure; see
+      <xref linkend="appendix-changes" />.)
     </para>
     <para>
       Incorrect names can likewise cause trouble with
@@ -2453,9 +2450,7 @@
     <para role="status-note">
       Modern Lojban parsers implement
       <valsi>si</valsi>
-      erasure exactly as described here. (The first edition's note that
-      <quote>the current machine parser does not implement si erasure</quote>
-      described the software of its day and is long obsolete.)
+      erasure exactly as described here.
     </para>
 
     <para>
@@ -2693,7 +2688,8 @@
       <valsi>su</valsi>
       , and
       <valsi>fa'o</valsi>
-      &ndash; are informally called the <quote>magic words</quote>. They act before the ordinary grammar sees the text, and the first edition specified their interactions with a list of pairwise exceptions that was neither complete nor entirely consistent. This edition replaces that list with one uniform principle:
+      &ndash; are informally called the <quote>magic words</quote>. They act before the ordinary grammar sees the text, and their interactions all follow one uniform principle (the first edition instead gave a list of pairwise exceptions; see
+      <xref linkend="appendix-changes" />):
     </para>
     <para>
       <emphasis>Magic words take effect strictly left to right. Whatever an earlier magic word has captured is no longer available to a later one; the product of a quotation or compound acts as a single word for the machinery that follows.</emphasis>
@@ -2706,7 +2702,7 @@
       is invisible to this machinery altogether (<xref linkend="section-hesitation" />).
     </para>
     <para>
-      Everything the first edition's list said, insofar as it was right, follows from the principle. A few worked consequences:
+      A few worked consequences:
     </para>
     <itemizedlist role="bullets">
       <listitem>

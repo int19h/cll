@@ -2995,10 +2995,10 @@
     <para role="status-note">
       <indexterm type="general"><primary>groups</primary><secondary>status of collective satisfaction</secondary>
       </indexterm>
-      (The group account of
+      The group account of
       <valsi>joi</valsi>
       is part of the ratified gadri reform; older texts follow a different doctrine &ndash; see
-      <xref linkend="appendix-changes" />.)
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>JA selma'o</primary><secondary>opposed to JOI</secondary>
@@ -3211,7 +3211,7 @@
       </indexterm>
       The x<subscript>3</subscript> place of
       <valsi>cuxna</valsi>
-      is a set from which the choice is being made. A set is an abstract object, determined entirely by specifying its members; where a group is a thing in the world that can act, weigh, or gather &ndash; its members satisfying claims collectively &ndash; a set merely <emphasis>has</emphasis> its members, and its own properties are set-like ones such as size, membership, and inclusion. So the set of all rats is large (it has many members), while the rats themselves are small, and neither smallness nor furriness passes to the set. This chapter does not attempt to explain set theory (the mathematical study of sets) in detail: explaining propositional logic is quite enough for one chapter!
+      is a set from which the choice is being made. A set is an abstract object, determined entirely by specifying its members. A group, by contrast, is a thing in the world that can act, weigh, or gather, its members satisfying claims collectively; a set merely <emphasis>has</emphasis> its members, and its own properties are set-like ones such as size, membership, and inclusion. So the set of all rats is large (it has many members), while the rats themselves are small, and neither smallness nor furriness passes to the set. This chapter does not attempt to explain set theory (the mathematical study of sets) in detail: explaining propositional logic is quite enough for one chapter!
     </para>
 
     <para>
@@ -4841,8 +4841,8 @@
     <para role="status-note">
       <indexterm type="general"><primary>tenses</primary><secondary>before forethought connectives, status</secondary>
       </indexterm>
-      (A bare leading tense on a forethought construction is de facto standard &ndash; current grammars read it as a term scoping over the whole construction, which is exactly the both-in-the-past meaning intended here. For its history, see
-      <xref linkend="appendix-changes" />.)
+      A bare leading tense on a forethought construction is de facto standard &ndash; current grammars read it as a term scoping over the whole construction, which is exactly the both-in-the-past meaning intended here. For its history, see
+      <xref linkend="appendix-changes" />.
     </para>
   </section>
   <section xml:id="section-abstractors">

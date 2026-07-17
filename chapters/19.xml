@@ -2339,7 +2339,7 @@
       <jbophrase>zo si</jbophrase>
       (<quote>the word si</quote>). The second
       <valsi>si</valsi>
-      then erases that quotation as a single unit. (Older texts may count the pieces of a quotation separately for erasure; see
+      then erases that quotation as a single unit. (Older texts follow a different accounting here; see
       <xref linkend="appendix-changes" />.)
     </para>
     <para>
@@ -2688,7 +2688,7 @@
       <valsi>su</valsi>
       , and
       <valsi>fa'o</valsi>
-      &ndash; are informally called the <quote>magic words</quote>. They act before the ordinary grammar sees the text, and their interactions all follow one uniform principle (the first edition instead gave a list of pairwise exceptions; see
+      &ndash; are informally called the <quote>magic words</quote>. They act before the ordinary grammar sees the text, and their interactions all follow one uniform principle (the first edition handled them differently; see
       <xref linkend="appendix-changes" />):
     </para>
     <para>

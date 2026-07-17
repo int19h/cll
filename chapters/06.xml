@@ -14,7 +14,7 @@
       <title><anchor xml:id="c6e1d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci</jbo>
+        <jbo>mi klama lo zarci</jbo>
         <gloss>I go-to the market</gloss>
       </interlinear-gloss>
     </example>
@@ -26,12 +26,12 @@
       ,
       <valsi>mi</valsi>
       and
-      <jbophrase>le zarci</jbophrase>
+      <jbophrase>lo zarci</jbophrase>
       are the sumti. It is easy to see that these two sumti are not of the same kind:
       <valsi>mi</valsi>
       is a pro-sumti (the Lojban analogue of a pronoun) referring to the speaker, whereas
-      <jbophrase>le zarci</jbophrase>
-      is a description which refers to something described as being a market.
+      <jbophrase>lo zarci</jbophrase>
+      is a description which refers to a market.
     </para>
     <para>
       <indexterm type="general"><primary>sumti</primary><secondary>kinds of</secondary>
@@ -47,11 +47,11 @@
           <indexterm type="general"><primary>sumti</primary><secondary>descriptions as</secondary>
           </indexterm>
           descriptions like
-          <jbophrase>le zarci</jbophrase>
+          <jbophrase>lo zarci</jbophrase>
           , which usually begin with a descriptor (called a
           <valsi>gadri</valsi>
           in Lojban) such as
-          <valsi>le</valsi>
+          <valsi>lo</valsi>
           ;
         </para>
       </listitem>
@@ -126,7 +126,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi cusku lu e'osai li'u le tcidu</jbo>
+        <jbo>mi cusku lu e'osai li'u lo tcidu</jbo>
         <gloss>I express [quote] [request]--[!] [unquote] to-the reader.</gloss>
         <natlang>
           I express
@@ -142,7 +142,7 @@
       , a pro-sumti;
       <jbophrase>lu e'osai li'u</jbophrase>
       , a quotation; and
-      <jbophrase>le tcidu</jbophrase>
+      <jbophrase>lo tcidu</jbophrase>
       , a description.
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-0YaH">
@@ -180,19 +180,19 @@
     <title><anchor xml:id="c6s2" />The three basic description types</title>
     <para>      <indexterm type="general"><primary>descriptions</primary><secondary>types of</secondary>      </indexterm>      The following cmavo are discussed in this section:    </para>    <cmavo-list>
       <cmavo-entry>
-        <cmavo>le</cmavo>
-        <selmaho>LE</selmaho>
-        <description>the, the one(s) described as</description>
-      </cmavo-entry>
-      <cmavo-entry>
         <cmavo>lo</cmavo>
         <selmaho>LE</selmaho>
-        <description>some, some of those which really are</description>
+        <description>the generic article: one or more things which really are</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>le</cmavo>
+        <selmaho>LE</selmaho>
+        <description>the specific article: the one(s) described as</description>
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>la</cmavo>
         <selmaho>LA</selmaho>
-        <description>the one(s) named</description>
+        <description>the name article: the one(s) named</description>
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>ku</cmavo>
@@ -212,6 +212,90 @@
       The syntax of descriptions is fairly complex, and not all of it can be explained within the confines of this chapter: relative clauses, in particular, are discussed in
       <xref linkend="chapter-relative-clauses" />. However, most descriptions have just two components: a descriptor belonging to selma'o LE or LA, and a selbri. (The difference between selma'o LE and selma'o LA is not important until
       <xref linkend="section-names" />.) Furthermore, the selbri is often just a single brivla. Here is an elementary example:
+    </para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-t11z">
+      <title><anchor xml:id="c6e2d4" /></title>
+
+      <interlinear-gloss>
+        <jbo>lo zarci</jbo>
+        <gloss>one-or-more-things-which-really are-markets</gloss>
+        <natlang>a market</natlang>
+        <natlang>the market</natlang>
+        <natlang>markets</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent">
+      <indexterm type="lojban-word"><primary>lo</primary><secondary>as the generic article</secondary>
+      </indexterm>
+      The word
+      <valsi>lo</valsi>
+      is Lojban's generic article, and the workhorse of everyday Lojban: when in doubt about which descriptor to use, use
+      <valsi>lo</valsi>. A description built with it refers to something &ndash; one thing or several, the word itself does not say &ndash; which genuinely fits the description. The several English translations shown above are all correct: unlike English, Lojban does not force a choice between
+      <quote>a market</quote>, <quote>the market</quote>, and
+      <quote>markets</quote>. Only context tells us which is meant. (This does not mean Lojban has no way of specifying the number of markets: that mechanism is explained in
+      <xref linkend="section-quantified-descriptions" />.)
+    </para>
+    <para>
+      <indexterm type="general"><primary>descriptions</primary><secondary>importance of selbri first place in</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>descriptors</primary><secondary>purpose of</secondary>
+      </indexterm>
+      The general purpose of all descriptors is to create a sumti which refers to something that might occur in the x<subscript>1</subscript> place of the selbri belonging to the description. Thus
+      <jbophrase>lo zarci</jbophrase>
+      refers to something which could be found in the x<subscript>1</subscript> place of
+      <valsi>zarci</valsi>
+      &ndash; a market, or several.
+    </para>
+    <para>
+      <indexterm type="lojban-word"><primary>lo</primary><secondary>and truth of selbri</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>veridicality</primary></indexterm>
+      The central property of
+      <valsi>lo</valsi>
+      is that it is <quote>veridical</quote>: whatever
+      <jbophrase>lo zarci</jbophrase>
+      refers to must really be a market &ndash; that is, it must be something which can appear in the x<subscript>1</subscript> place of a truthful bridi whose selbri is
+      <valsi>zarci</valsi>. Thus
+    </para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-fSxN">
+      <title><anchor xml:id="c6e2d5" /></title>
+
+      <interlinear-gloss>
+        <jbo>lo mlatu cu gerku</jbo>
+        <gloss>One-or-more-things-which-really-are cats - is/are-dogs.</gloss>
+        <natlang>The cat is a dog.</natlang>
+        <natlang>Some cats are dogs.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="noindent">
+      must be false in Lojban: whatever things
+      <jbophrase>lo mlatu</jbophrase>
+      picks out are really cats, and no cat is a dog. Pointing at some specific cats or dogs would not make
+      <xref linkend="example-random-id-fSxN" />
+      true, because those specific individuals are no more both-cat-and-dog than any others. In general,
+      <valsi>lo</valsi>
+      refers to whatever actually fits its description.
+    </para>
+    <para>
+      <indexterm type="general"><primary>descriptions</primary><secondary>as referring terms</secondary>
+      </indexterm>
+      It is worth pausing on what a description like
+      <jbophrase>lo zarci</jbophrase>
+      does and does not say. It <emphasis>refers</emphasis>: it picks out some market or markets, and the rest of the sentence then talks about them. It does not say how many they are, or which ones they are, or whether they do things together or separately. All of those questions have answers only if the speaker chooses to supply them &ndash; by adding a number (<xref linkend="section-quantified-descriptions" />), or by using one of the more specialized descriptors explained later in this chapter. This reticence is not vagueness for its own sake: most of the time, context answers such questions effortlessly, just as it does for the missing number distinction in English
+      <quote>the sheep</quote>.
+    </para>
+    <para>
+      <indexterm type="lojban-word"><primary>le</primary><secondary>and specificity</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>descriptions</primary><secondary>specific</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>specific descriptions</primary></indexterm>
+      The second descriptor of this section is
+      <valsi>le</valsi>. Unlike
+      <valsi>lo</valsi>
+      ,
+      <valsi>le</valsi>
+      is specific:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-rBuQ">
       <title><anchor xml:id="c6e2d1" /></title>
@@ -235,20 +319,7 @@
       does not have.
     </para>
     <para>
-      <indexterm type="general"><primary>descriptions</primary><secondary>importance of selbri first place in</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>descriptors</primary><secondary>purpose of</secondary>
-      </indexterm>
-      The general purpose of all descriptors is to create a sumti which might occur in the x<subscript>1</subscript> place of the selbri belonging to the description. Thus
-      <jbophrase>le zarci</jbophrase>
-      conveys something which might be found in the x<subscript>1</subscript> place of
-      <valsi>zarci</valsi>
-      , namely a market.
-    </para>
-    <para>
       <indexterm type="lojban-word"><primary>le</primary><secondary>and truth of selbri</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>le</primary><secondary>and specificity</secondary>
       </indexterm>
       <indexterm type="lojban-word"><primary>le</primary><secondary>implications of</secondary>
       </indexterm>
@@ -256,31 +327,6 @@
       <valsi>le</valsi>
       is twofold. First, it indicates that the speaker has one or more specific markets in mind (whether or not the listener knows which ones they are). Second, it also indicates that the speaker is merely describing the things he or she has in mind as markets, without being committed to the truth of that description.
     </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-ULGC">
-      <title><anchor xml:id="c6e2d2" /></title>
-
-      <interlinear-gloss>
-        <jbo>le zarci cu barda</jbo>
-        <gloss>
-          One-or-more-specific-things-which-I-describe-as
-          <quote>markets</quote>
-          - is/are-big.
-        </gloss>
-        <natlang>The market is big.</natlang>
-        <natlang>The markets are big.</natlang>
-      </interlinear-gloss>
-    </example>
-    <para role="indent">
-      <indexterm type="general"><primary>plurals</primary><secondary>Lojban contrasted with English in necessity of marking</secondary>
-      </indexterm>
-      Note that English-speakers must state whether a reference to markets is to just one (
-      <quote>the market</quote>) or to more than one (
-      <quote>the markets</quote>). Lojban requires no such forced choice, so both colloquial translations of
-      <xref linkend="example-random-id-ULGC" />
-      are valid. Only the context can specify which is meant. (This rule does not mean that Lojban has no way of specifying the number of markets in such a case: that mechanism is explained in
-      <xref linkend="section-quantified-descriptions" />.)
-    </para>
-    <para>Now consider the following strange-looking example:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-PutX">
       <title>
 
@@ -306,18 +352,22 @@
     <para role="indent">
       <indexterm type="lojban-word"><primary>le</primary><secondary>in false-to-fact descriptions</secondary>
       </indexterm>
+      Unlike
+      <xref linkend="example-random-id-fSxN" />
+      ,
       <xref linkend="example-random-id-PutX" />
       is not self-contradictory in Lojban, because
       <jbophrase>le mlatu</jbophrase>
       merely means something or other which, for my present purposes, I choose to describe as a cat, whether or not it really is a cat. A plausible instance would be: some animal we had assumed to be a cat at a distance turned out to be actually a dog on closer observation.
       <xref linkend="example-random-id-PutX" />
-      is what I would say to point out my observation to you.
+      is what I would say to point out my observation to you. This property of
+      <valsi>le</valsi>
+      is called <quote>non-veridicality</quote>: a
+      <valsi>le</valsi>
+      description reflects the speaker's way of identifying things, not a claim about what they really are.
     </para>
 
     <para>
-      <indexterm type="general"><primary>descriptions</primary><secondary>specific</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>specific descriptions</primary></indexterm>
       In all descriptions with
       <valsi>le</valsi>
       , the listener is presumed to either know what I have in mind or else not to be concerned at present (perhaps I will give more identifying details later). In particular, I might be pointing at the supposed cat or cats:
@@ -327,71 +377,26 @@
       merely clarifies that I am pointing at the supposed cat, not at a landscape, or a nose, which happens to lie in the same direction.
     </para>
     <para>
-      <indexterm type="lojban-word"><primary>lo</primary><secondary>implications of</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>descriptions</primary><secondary>non-specific</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>non-specific descriptions</primary></indexterm>
-      The second descriptor dealt with in this section is
-      <valsi>lo</valsi>. Unlike
-      <valsi>le</valsi>
-      ,
-      <valsi>lo</valsi>
-      is nonspecific:
-    </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-t11z">
-      <title><anchor xml:id="c6e2d4" /></title>
-
-      <interlinear-gloss>
-        <jbo>lo zarci</jbo>
-        <gloss>one-or-more-of-all-the-things-which-really are-markets</gloss>
-        <natlang>a market</natlang>
-        <natlang>some markets</natlang>
-      </interlinear-gloss>
-    </example>
-    <para role="indent">
-      <indexterm type="lojban-word"><primary>lo</primary><secondary>and truth of selbri</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>lo</primary><secondary>contrasted with &quot;le&quot; in truth requirement</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>le</primary><secondary>contrasted with &quot;lo&quot; in truth requirement</secondary>
+      <indexterm type="lojban-word"><primary>lo</primary><secondary>contrasted with &quot;le&quot; in specificity</secondary>
       </indexterm>
       <indexterm type="lojban-word"><primary>le</primary><secondary>contrasted with &quot;lo&quot; in specificity</secondary>
       </indexterm>
-      <indexterm type="lojban-word"><primary>lo</primary><secondary>contrasted with &quot;le&quot; in specificity</secondary>
-      </indexterm>
-      Again, there are two colloquial English translations. The effect of using
+      So the choice between
       <valsi>lo</valsi>
-      in
-      <xref linkend="example-random-id-t11z" />
-      is to refer generally to one or more markets, without being specific about which. Unlike
-      <jbophrase>le zarci</jbophrase>
-      ,
-      <jbophrase>lo zarci</jbophrase>
-      must refer to something which actually is a market (that is, which can appear in the x<subscript>1</subscript> place of a truthful bridi whose selbri is
-      <valsi>zarci</valsi>). Thus
-    </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-fSxN">
-      <title><anchor xml:id="c6e2d5" /></title>
-
-      <interlinear-gloss>
-        <jbo>lo mlatu cu gerku</jbo>
-        <gloss>That-which-really-is a-cat - is-a-dog.</gloss>
-        <natlang>Some cat is a dog.</natlang>
-        <natlang>Some cats are dogs.</natlang>
-      </interlinear-gloss>
-    </example>
-    <para role="noindent">
-      must be false in Lojban, given that there are no objects in the real world which are both cats and dogs. Pointing at some specific cats or dogs would not make
-      <xref linkend="example-random-id-fSxN" />
-      true, because those specific individuals are no more both-cat-and-dog than any others. In general,
+      and
+      <valsi>le</valsi>
+      turns on two independent questions: is the description offered as really true of the things referred to (veridical
       <valsi>lo</valsi>
-      refers to whatever individuals meet its description.
+      versus descriptive
+      <valsi>le</valsi>)? And is the speaker singling out particular things he or she has in mind (specific
+      <valsi>le</valsi>
+      versus generic
+      <valsi>lo</valsi>)? When neither specificity nor a possibly-loose description is wanted &ndash; which is most of the time &ndash;
+      <valsi>lo</valsi>
+      is the right choice.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>la</primary><secondary>use with descriptions contrasted with use before Lojbanized names</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>le</primary><secondary>compared with &quot;la&quot; in specificity</secondary>
       </indexterm>
       <indexterm type="lojban-word"><primary>la</primary><secondary>compared with &quot;le&quot; in specificity</secondary>
       </indexterm>
@@ -429,7 +434,6 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="general"><primary>naming predicate</primary></indexterm>
       In
       <xref linkend="example-random-id-PrGp" />
       ,
@@ -467,10 +471,7 @@
       rather than
       <quote>the honest one</quote>.)
     </para>
-    <para>
-      <indexterm type="lojban-word"><primary>la</primary><secondary>contrasted with &quot;le&quot; in implications</secondary>
-      </indexterm>
-      It is important to note the differences between
+    <para>It is important to note the differences between
       <xref linkend="example-random-id-PrGp" />
       and the following:
     </para>
@@ -488,74 +489,64 @@
 
       <interlinear-gloss>
         <jbo>lo cribe pu finti le lisri</jbo>
-        <gloss>One-or-more-of-the-things-which-really are-bears [past] creates the story.</gloss>
+        <gloss>One-or-more-real-bears [past] creates the story.</gloss>
         <natlang>A bear wrote the story.</natlang>
-        <natlang>Some bears wrote the story.</natlang>
+        <natlang>Bears wrote the story.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="lojban-word"><primary>la</primary><secondary>contrasted with &quot;lo&quot; in implications</secondary>
-      </indexterm>
       <xref linkend="example-random-id-nXyo" />
       is about a specific bear or bearlike thing(s), or thing(s) which the speaker (perhaps whimsically or metaphorically) describes as a bear (or more than one);
       <xref linkend="example-random-id-93Yv" />
-      is about one or more of the really existing, objectively defined bears. In either case, though, each of them must have contributed to the writing of the story, if more than one bear (or
-      <quote>bear</quote>) is meant.
+      is about one or more genuine bears, and says nothing about which bears they are. If several bears are meant, neither example settles whether each of them wrote separately or they collaborated on the story; Lojban has ways of making that explicit (see
+      <xref linkend="section-masses" />), but plain descriptions leave it to context.
     </para>
     <para>
-      <indexterm type="general"><primary>descriptions with lo</primary><secondary>teddy bear contrasted with real bear</secondary>
+      <indexterm type="general"><primary>bears</primary><secondary>and fuzzy borderlines</secondary>
       </indexterm>
       (The notion of a
-      <quote>really existing, objectively defined bear</quote>
-      raises certain difficulties. Is a panda bear a
       <quote>real bear</quote>
-      ? How about a teddy bear? In general, the answer is
-      <quote>yes</quote>. Lojban gismu are defined as broadly as possible, allowing tanru and lujvo to narrow down the definition. There probably are no necessary and sufficient conditions for defining what is and what is not a bear that can be pinned down with complete precision: the real world is fuzzy. In borderline cases,
+      raises certain difficulties. Is a panda bear a real bear? How about a teddy bear? In general, the answer is
+      <quote>yes</quote>. Lojban gismu are defined as broadly as possible, allowing tanru and lujvo to narrow down the definition. There probably are no necessary and sufficient conditions for defining what is and what is not a bear that can be pinned down with complete precision: the real world is fuzzy. What counts is what the speaker and listener are prepared to treat as a bear in the current conversation. In borderline cases,
       <valsi>le</valsi>
       may communicate better than
       <valsi>lo</valsi>.)
     </para>
-    <para>
-      So while
+    <para>So while
       <xref linkend="example-random-id-PrGp" />
       could easily be true (there is a real writer named
       <quote>Greg Bear</quote>), and
       <xref linkend="example-random-id-nXyo" />
       could be true if the speaker is sufficiently peculiar in what he or she describes as a bear,
       <xref linkend="example-random-id-93Yv" />
-      is certainly false.
+      is false unless some genuine bear has taken up authorship.
     </para>
-    <para>
-      Similarly, compare the following two examples, which are analogous to
+    <para>Similarly, compare the following two examples, which are analogous to
       <xref linkend="example-random-id-nXyo" />
       and
       <xref linkend="example-random-id-93Yv" />
       respectively:
     </para>
-    <example xml:id="example-random-id-qKw7" role="interlinear-gloss-example">
+    <example role="interlinear-gloss-example" xml:id="example-random-id-qKw7">
       <title><anchor xml:id="c6e2d10" /></title>
 
       <interlinear-gloss>
         <jbo>le remna pu finti le lisri</jbo>
-        <gloss>Those-described-as a-human [past] writes that-described-as a-story.</gloss>
+        <gloss>Those-described-as humans [past] write the story.</gloss>
         <natlang>The human being(s) wrote the story.</natlang>
       </interlinear-gloss>
     </example>
-    <example xml:id="example-random-id-qKYf" role="interlinear-gloss-example">
+    <example role="interlinear-gloss-example" xml:id="example-random-id-qKYf">
       <title><anchor xml:id="c6e2d11" /></title>
 
       <interlinear-gloss>
         <jbo>lo remna pu finti le lisri</jbo>
-        <gloss>That-which-really-is a-human [past] writes that-described-as a-story.</gloss>
+        <gloss>One-or-more-real-humans [past] write the story.</gloss>
         <natlang>A human being wrote the story.</natlang>
-        <natlang>Some human beings wrote the story.</natlang>
+        <natlang>Human beings wrote the story.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="lojban-word"><primary>lo</primary><secondary>contrasted with &quot;le&quot; in implications</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>le</primary><secondary>contrasted with &quot;lo&quot; in implications</secondary>
-      </indexterm>
       <xref linkend="example-random-id-qKw7" />
       says who the author of the story is: one or more particular human beings that the speaker has in mind. If the topic of conversation is the story, then
       <xref linkend="example-random-id-qKw7" />
@@ -563,17 +554,18 @@
       <jbophrase>le remna</jbophrase>
       is in effect a shorthand reference to that person.
       <xref linkend="example-random-id-qKYf" />
-      merely says that the author is human.
+      merely says that the author is human &ndash; a natural thing to say when nothing more is known about the author, or when nothing more is relevant.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>xorlo</primary></indexterm>
+      <indexterm type="general"><primary>gadri reform</primary></indexterm>
+      The meaning of
+      <valsi>lo</valsi>
+      given here is the fruit of a reform the community calls <quote>xorlo</quote>, after the nickname of its principal author; it is now the ratified standard. If you learned your Lojban from the first edition of this book, the articles are the biggest thing that has changed &ndash; the old definitions, and how to read older text, are laid out in
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
-      <indexterm type="lojban-word"><primary>ku</primary><secondary>uses of</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>cu</primary><secondary>effect on elidability of &quot;ku&quot;</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>ku</primary><secondary>effect of following selbri on elidability of</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>ku</primary><secondary>as elidable terminator for descriptions</secondary>
-      </indexterm>
+      <indexterm type="lojban-word"><primary>ku</primary></indexterm>
       The elidable terminator for all descriptions is
       <valsi>ku</valsi>. It can almost always be omitted with no danger of ambiguity. The main exceptions are in certain uses of relative clauses, which are discussed in
       <xref linkend="section-descriptors" />
@@ -582,9 +574,8 @@
       before the selbri makes the
       <valsi>ku</valsi>
       unnecessary. There are also a few other uses of
-      <valsi>ku</valsi>
-      : in the compound negator
-      <jbophrase>naku</jbophrase>
+      <valsi>ku</valsi>: in the compound negator
+      <valsi>naku</valsi>
       (discussed in
       <xref linkend="chapter-quantifiers" />) and to terminate place-structure, tense, and modal tags that do not have associated sumti (discussed in
       <xref linkend="chapter-sumti-tcita" />
@@ -593,289 +584,233 @@
     </para>
   </section>
   <section xml:id="section-masses">
-    <title><anchor xml:id="c6s3" />Individuals and masses</title>
-    <para>The following cmavo are discussed in this section:</para>    <cmavo-list>      <cmavo-entry>        <cmavo>lei</cmavo>        <selmaho>LE</selmaho>        <description>the mass I describe as</description>
-      </cmavo-entry>
+    <title><anchor xml:id="c6s3" />Individuals and groups</title>
+    <para>      The following cmavo are discussed in this section:    </para>    <cmavo-list>
       <cmavo-entry>
         <cmavo>loi</cmavo>
         <selmaho>LE</selmaho>
-        <description>part of the mass of those which really are</description>
+        <description>a group of those which really are</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>lei</cmavo>
+        <selmaho>LE</selmaho>
+        <description>the group I describe as</description>
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>lai</cmavo>
         <selmaho>LA</selmaho>
-        <description>the mass of those named</description>
+        <description>the group of those named</description>
       </cmavo-entry>
     </cmavo-list>
     <para role="indent">
-      <indexterm type="general"><primary>sumti</primary><secondary>for set objects</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>sumti</primary><secondary>for mass objects</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>sumti</primary><secondary>for individual objects</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>sumti</primary><secondary>classified by types of objects referred to</secondary>
-      </indexterm>
-      All Lojban sumti are classified by whether they refer to one of three types of objects, known as
-      <quote>individuals</quote>
-      ,
-      <quote>masses</quote>
-      , and
-      <quote>sets</quote>. The term
-      <quote>individual</quote>
-      is misleading when used to refer to more than one object, but no less-confusing term has as yet been found. All the descriptions in
-      <xref linkend="section-simple-sumti-kinds" />
-      and
-      <xref linkend="section-basic-descriptors" />
-      refer to individuals, whether one or more than one. Consider the following example:
+      <indexterm type="general"><primary>distributivity</primary></indexterm>
+      Suppose we say:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-mwhq">
       <title><anchor xml:id="c6e3d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le prenu cu bevri le pipno</jbo>
-        <gloss>One-or-more-of-those-I-describe-as persons - carry the piano.</gloss>
-
-        <natlang>The person(s) carry the piano.</natlang>
-
-      </interlinear-gloss>
-    </example>
-    <para role="noindent">
-      (Of course the second
-      <valsi>le</valsi>
-      should really get the same translation as the first, but I am putting the focus of this discussion on the first
-      <valsi>le</valsi>
-      , the one preceding
-      <valsi>prenu</valsi>. I will assume that there is only one piano under discussion.)
-    </para>
-    <para>
-      <indexterm type="general"><primary>individual objects</primary><secondary>multiple</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>multiple individual objects</primary><secondary>meaning of</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>le</primary><secondary>meaning of in the plural</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>plurals with le</primary><secondary>meaning of</secondary>
-      </indexterm>
-      Suppose the context of
-      <xref linkend="example-random-id-mwhq" />
-      is such that you can determine that I am talking about three persons. What am I claiming? I am claiming that each of the three persons carried the piano. This claim can be true if the persons carried the piano one at a time, or in turns, or in a variety of other ways. But in order for
-      <xref linkend="example-random-id-mwhq" />
-      to be true, I must be willing to assert that person 1 carried the piano, and that person 2 carried the piano, and that person 3 carried the piano.
-    </para>
-    <para>But suppose I am not willing to claim that. For in fact pianos are heavy, and very few persons can carry a piano all by themselves. The most likely factual situation is that person 1 carried one end of the piano, and person 2 the other end, while person 3 either held up the middle or else supervised the whole operation without actually lifting anything. The correct way of expressing such a situation in Lojban is:</para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-eCsh">
-      <title>
-
-
-        <indexterm type="general"><primary>piano-moving</primary></indexterm>
-
-
-        <anchor xml:id="c6e3d2" />
-      </title>
-
-      <interlinear-gloss>
-        <jbo>lei prenu cu bevri le pipno</jbo>
-        <gloss>The-mass-of-one-or-more-of-those-I-describe-as persons - carry the piano.</gloss>
-        <natlang>The person(s) carry the piano.</natlang>
-
+        <jbo>lo ci prenu cu bevri le pipno</jbo>
+        <gloss>The three persons carry the piano.</gloss>
+        <natlang>Three people carry the piano.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="general"><primary>mass object</primary><secondary>and logical reasoning</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>mass object</primary><secondary>properties of</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>multiple individual objects</primary><secondary>contrasted with mass object</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>mass object</primary><secondary>contrasted with multiple individual objects</secondary>
-      </indexterm>
-      Here the same three persons are treated not as individuals, but as a so-called
-      <quote>mass entity</quote>
-      , or just
-      <quote>mass</quote>. A mass has the properties of each individual which composes it, and may have other properties of its own as well. This can lead to apparent contradictions. Thus suppose in the piano-moving example above that person 1 has fair skin, whereas person 2 has dark skin. Then it is correct to say that the person-mass has both fair skin and dark skin. Using the mass descriptor
-      <valsi>lei</valsi>
-      signals that ordinary logical reasoning is not applicable: contradictions can be maintained, and all sorts of other peculiarities may exist. However, we can safely say that a mass inherits only the component properties that are relevant to it; it would be ludicrous to say that a mass of two persons is of molecular dimensions, simply because some of the parts (namely, the molecules) of the persons are that small.
+      The number
+      <valsi>ci</valsi>
+      placed inside the description simply tells us that we are talking about three people; this mechanism is explained fully in
+      <xref linkend="section-quantified-descriptions" />. I will assume that there is only one piano under discussion.
     </para>
     <para>
-      <indexterm type="lojban-word"><primary>lai</primary><secondary>as mass counterpart of &quot;lai&quot;</secondary>
+      <indexterm type="general"><primary>distributivity</primary><secondary>contrasted with collective action</secondary>
       </indexterm>
-      <indexterm type="lojban-word"><primary>loi</primary><secondary>as mass counterpart of &quot;lo&quot;</secondary>
+      What exactly is being claimed? There are two rather different situations that
+      <xref linkend="example-random-id-mwhq" />
+      might describe. Perhaps each of the three carried the piano, alone, one after another &ndash; three separate feats of strength. Philosophers call this the
+      <quote>distributive</quote>
+      reading: the carrying is distributed over the individuals, each satisfying the selbri by himself or herself. Or perhaps &ndash; pianos being heavy &ndash; person 1 lifted one end, person 2 the other, and person 3 held up the middle, so that no one of them can be said to have carried the piano alone: only all three together did. This is the
+      <quote>collective</quote>
+      reading.
+      <xref linkend="example-random-id-mwhq" />
+      is neutral between the two: like number, this is something a plain description simply does not specify, and context usually settles it. (For a piano, the collective reading is the likely guess; if the x<subscript>2</subscript> were a suitcase, we would probably understand the distributive one.)
+    </para>
+    <para>
+      <indexterm type="general"><primary>groups</primary></indexterm>
+      <indexterm type="general"><primary>masses</primary><secondary>now called groups</secondary>
+      </indexterm>
+      Lojban can, however, make collectivity explicit. That is the job of the descriptors
+      <valsi>loi</valsi>
+      ,
+      <valsi>lei</valsi>
+      , and
+      <valsi>lai</valsi>
+      , which refer to <quote>groups</quote> &ndash; in Lojban,
+      <valsi>gunma</valsi>. (Older texts say <quote>masses</quote>, and mean something rather different by it; see
+      <xref linkend="appendix-changes" />.)
+    </para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x6Ba">
+      <title><anchor xml:id="c6e3d7" /></title>
+
+      <interlinear-gloss>
+        <jbo>lei ci prenu cu bevri le pipno</jbo>
+        <gloss>The-group-of three persons carries the piano.</gloss>
+        <natlang>The three people carry the piano together.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent">
+      <indexterm type="general"><primary>groups</primary><secondary>collective satisfaction by</secondary>
+      </indexterm>
+      Here the three persons are treated as a single unit, a group, and it is the group that does the carrying. A group satisfies a selbri collectively: the claim is true of the group as a whole, and there is no implication that any member satisfies it alone. Indeed, in our piano-moving scene none of the three individually carries the piano &ndash; person 3 may not even be lifting anything, merely steadying it &ndash; yet
+      <xref linkend="example-random-id-x6Ba" />
+      is straightforwardly true.
+    </para>
+    <para>
+      <indexterm type="general"><primary>groups</primary><secondary>properties of</secondary>
+      </indexterm>
+      A group is a thing in its own right, with its own properties. Some of its properties arise from joint action of its members, like carrying the piano; others belong to the group as such &ndash; the group of three people weighs 200 kilograms, has three members, and perhaps has existed as a piano-moving team for years, none of which is true of any single member. And many properties of the members do not carry over to the group at all: each of the three may be strong, while the group as a team is clumsy. A group simply has whatever properties it has, and logic applies to statements about groups exactly as to statements about anything else.
+    </para>
+    <para>
+      <indexterm type="lojban-word"><primary>loi</primary><secondary>contrasted with &quot;lei&quot;</secondary>
       </indexterm>
       The descriptors
       <valsi>loi</valsi>
       and
       <valsi>lai</valsi>
-      are analogous to
+      are related to
       <valsi>lo</valsi>
       and
       <valsi>la</valsi>
-      respectively, but refer to masses either by property (
-      <valsi>loi</valsi>) or by name (
-      <valsi>lai</valsi>). A classic example of
-      <valsi>loi</valsi>
-      use is:
+      just as
+      <valsi>lei</valsi>
+      is related to
+      <valsi>le</valsi>
+      :
+      <jbophrase>lei ci prenu</jbophrase>
+      is a group of specific individuals whom the speaker describes as persons, while
+      <jbophrase>loi ci prenu</jbophrase>
+      is a group of three genuine persons, without any indication of which ones:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-T1pF">
-      <title>
-
-
-        <indexterm type="general"><primary>lions in Africa</primary></indexterm>
-
-
-        <anchor xml:id="c6e3d3" />
-      </title>
+      <title><anchor xml:id="c6e3d3" /></title>
 
       <interlinear-gloss>
-        <jbo>loi cinfo cu xabju le fi'ortu'a</jbo>
-        <gloss>Part-of-the-mass-of-those-which-really are-lions - dwell-in the African-land.</gloss>
+        <jbo>loi so'i tadni cu sruri lo dinju</jbo>
+        <gloss>A-group-of many students surrounds the building.</gloss>
+        <natlang>Many students are surrounding the building.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent">
+      <indexterm type="general"><primary>collective predicates</primary></indexterm>
+      Some selbri practically demand a collective subject:
+      <valsi>sruri</valsi>
+      is a good example, since no single student can surround a building. With such predicates the group descriptors are the natural choice. (The number
+      <valsi>so'i</valsi>
+      means
+      <quote>many</quote>; placed inside the description, it gives the size of the group.)
+    </para>
+    <para>
+      <indexterm type="general"><primary>generic statements</primary></indexterm>
+      <indexterm type="lojban-word"><primary>loi</primary><secondary>not needed for generic statements</secondary>
+      </indexterm>
+      One thing you do <emphasis>not</emphasis> need a group descriptor for is general statements about kinds. Plain
+      <valsi>lo</valsi>
+      does that job by itself:
+    </para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x6Bb">
+      <title><anchor xml:id="c6e3d8" /></title>
+
+      <interlinear-gloss>
+        <jbo>lo cinfo cu xabju lo fi'ortu'a</jbo>
+        <gloss>Lions dwell-in Africa.</gloss>
         <natlang>The lion dwells in Africa.</natlang>
         <natlang>Lions dwell in Africa.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="lojban-word"><primary>loi</primary><secondary>contrasted with &quot;lei&quot; in specificity</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>lei</primary><secondary>contrasted with &quot;loi&quot; in specificity</secondary>
-      </indexterm>
-      The difference between
-      <valsi>lei</valsi>
-      and
-      <valsi>loi</valsi>
-      is that
-      <jbophrase>lei cinfo</jbophrase>
-      refers to a mass of specific individuals which the speaker calls lions, whereas
-      <jbophrase>loi cinfo</jbophrase>
-      refers to some part of the mass of all those individuals which actually are lions. The restriction to
-      <quote>some part of the mass</quote>
-      allows statements like
-      <xref linkend="example-random-id-T1pF" />
-      to be true even though some lions do not dwell in Africa &ndash; they live in various zoos around the world. On the other hand,
-      <xref linkend="example-random-id-T1pF" />
-      doesn't actually say that most lions live in Africa: equally true is
+      This is a natural consequence of
+      <valsi>lo</valsi>
+      being fully generic: a statement about
+      <jbophrase>lo cinfo</jbophrase>
+      can be a statement about lions in general, or lions as a kind, and it is not falsified by the existence of zoo lions elsewhere, any more than the English
+      <quote>Lions dwell in Africa</quote>
+      is. Similarly, English words for substances translate smoothly:
     </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-JzXc">
-      <title>
-
-
-        <indexterm type="general"><primary>Englishman in Africa</primary></indexterm>
-
-
-        <anchor xml:id="c6e3d4" />
-      </title>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x6Bc">
+      <title><anchor xml:id="c6e3d9" /></title>
 
       <interlinear-gloss>
-        <jbo>loi glipre</jbo>
-        <gloss>Part-of-the-mass-of-those-which-really are-English-persons</gloss>
-      </interlinear-gloss>
-      <interlinear-gloss>
-        <jbo>… cu xabju le fi'ortu'a</jbo>
-        <gloss>… - dwell-in the African-land.</gloss>
-        <natlang>The English dwell in Africa.</natlang>
-      </interlinear-gloss>
-    </example>
-    <para role="noindent">
-      since there is at least one English person living there.
-      <xref linkend="section-sets" />
-      explains another method of saying what is usually meant by
-      <quote>The lion lives in Africa</quote>
-      which does imply that living in Africa is normal, not exceptional, for lions.
-    </para>
-    <para>
-      <indexterm type="general"><primary>mass objects</primary><secondary>peculiarities of English translation of</secondary>
-      </indexterm>
-      Note that the Lojban mass articles are sometimes translated by English plurals (the most usual case), sometimes by English singulars (when the singular is used to express typicalness or abstraction), and sometimes by singulars with no article:
-    </para>
-
-
-    <example role="interlinear-gloss-example" xml:id="example-random-id-yDCF">
-      <title>
-
-
-        <indexterm type="general"><primary>butter is soft</primary></indexterm>
-
-
-        <anchor xml:id="c6e3d5" />
-      </title>
-
-      <interlinear-gloss>
-        <jbo>loi matne cu ranti</jbo>
-
-        <gloss>Part-of-the-mass-of-that-which-really-is a-quantity-of-butter - is-soft.</gloss>
+        <jbo>lo matne cu ranti</jbo>
+        <gloss>Butter is-soft.</gloss>
         <natlang>Butter is soft.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="general"><primary>mass object</primary><secondary>as dependent on intention</secondary>
-      </indexterm>
-      Of course, some butter is hard (for example, if it is frozen butter), so the
-      <quote>part-of</quote>
-      implication of
-      <valsi>loi</valsi>
-      becomes once again useful. The reason this mechanism works is that the English words like
-      <quote>butter</quote>
-      , which are seen as already describing masses, are translated in Lojban by non-mass forms. The place structure of
-      <valsi>matne</valsi>
-      is
-      <quote>x<subscript>1</subscript> is a quantity of butter from source x<subscript>2</subscript></quote>
-      , so the single English word
-      <quote>butter</quote>
-      is translated as something like
-      <quote>a part of the mass formed from all the quantities of butter that exist</quote>. (Note that the operation of forming a mass entity does not imply, in Lojban, that the components of the mass are necessarily close to one another or even related in any way other than conceptually. Masses are formed by the speaker's intention to form a mass, and can in principle contain anything.)
+      <indexterm type="general"><primary>substances</primary></indexterm>
+      Here
+      <jbophrase>lo matne</jbophrase>
+      refers to butter as such &ndash; not to any particular pat of it, and not to a count of butter-objects. That some particular butter is frozen hard does not make
+      <xref linkend="example-random-id-x6Bc" />
+      false, any more than a soft banana falsifies
+      <quote>bananas are yellow</quote>. How far such generic reference stretches &ndash; kinds, substances, abstractions &ndash; is deliberately left open by the language definition; speakers differ, and context does most of the work.
     </para>
     <para>
-      <indexterm type="general"><primary>mass name</primary><secondary>use of</secondary>
-      </indexterm>
-      The mass name descriptor
+      <indexterm type="lojban-word"><primary>lai</primary></indexterm>
+      The group name descriptor
       <valsi>lai</valsi>
-      is used in circumstances where we wish to talk about a mass of things identified by a name which is common to all of them. It is not used to identify a mass by a single name peculiar to it. Thus the mass version of
-      <xref linkend="example-random-id-fSxN" />
-      ,
+      is used in circumstances where we wish to talk about a group of things identified by a name which is common to all of them. It is not used to identify a group by a single name peculiar to it. Thus:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-H8z5">
-      <title>
-
-
-        <indexterm type="general"><primary>Bears wrote book</primary></indexterm>
-
-
-        <anchor xml:id="c6e3d6" />
-      </title>
+      <title><anchor xml:id="c6e3d6" /></title>
 
       <interlinear-gloss>
-        <jbo>lai cribe pu finti le vi cukta</jbo>
+        <jbo>lai cribe pu finti lo vi cukta</jbo>
         <gloss>
-          The-mass-of-those-named
+          The-group-of-those-named
           <quote>bear</quote>
           [past] creates the nearby book.
         </gloss>
         <natlang>The Bears wrote this book.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      <indexterm type="lojban-word"><primary>lai</primary><secondary>contrasted with &quot;la&quot; in implications</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>la</primary><secondary>contrasted with &quot;lai&quot; in implications</secondary>
-      </indexterm>
+    <para role="indent">
       in a context where
       <jbophrase>la cribe</jbophrase>
-      would be understood as plural, would mean that either Tom Bear or Fred Bear (to make up some names) might have written the book, or that Tom and Fred might have written it as collaborators. Using
+      would be understood as referring to several people &ndash; say, Tom Bear and Fred Bear &ndash; means that the Bears wrote the book as collaborators: the group did the writing. Using
       <valsi>la</valsi>
       instead of
       <valsi>lai</valsi>
       in
       <xref linkend="example-random-id-H8z5" />
-      would give the implication that each of Tom and Fred, considered individually, had written it.
+      would leave the question open, exactly as with
+      <jbophrase>lo ci prenu</jbophrase>
+      and the piano.
+    </para>
+    <para>
+      Groups may also be built out of specific named or listed individuals with the connective
+      <valsi>joi</valsi>
+      (see
+      <xref linkend="chapter-connectives" />) and converted to and from other kinds of reference with the qualifiers of
+      <xref linkend="section-sumti-qualifiers" />. The underlying selbri for groups is
+      <valsi>gunma</valsi>
+      : x<subscript>1</subscript> is a group with members x<subscript>2</subscript>; a sumti like
+      <jbophrase>loi ci prenu</jbophrase>
+      means neither more nor less than
+      <jbophrase>lo gunma be lo ci prenu</jbophrase>
+      , a group whose members are three people.
     </para>
   </section>
   <section xml:id="section-sets">
-    <title><anchor xml:id="c6s4" />Masses and sets</title>
-    <para>The following cmavo are discussed in this section:</para>    <cmavo-list>      <cmavo-entry>        <cmavo>le'i</cmavo>        <selmaho>LE</selmaho>        <description>the set described as</description>
-      </cmavo-entry>
+    <title><anchor xml:id="c6s4" />Groups and sets</title>
+    <para>      The following cmavo are discussed in this section:    </para>    <cmavo-list>
       <cmavo-entry>
         <cmavo>lo'i</cmavo>
         <selmaho>LE</selmaho>
-        <description>the set of those which really are</description>
+        <description>a set of those which really are</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>le'i</cmavo>
+        <selmaho>LE</selmaho>
+        <description>the set described as</description>
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>la'i</cmavo>
@@ -884,131 +819,89 @@
       </cmavo-entry>
     </cmavo-list>
     <para role="indent">
-      <indexterm type="general"><primary>mass</primary><secondary>compared with set as abstract of multiple individuals</secondary>
+      <indexterm type="general"><primary>sets</primary><secondary>contrasted with groups</secondary>
       </indexterm>
-      <indexterm type="general"><primary>set</primary><secondary>compared with mass as abstract of multiple individuals</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>mass</primary><secondary>contrasted with set in attribution of component properties</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>set</primary><secondary>contrasted with mass in attribution of component properties</secondary>
-      </indexterm>
-      Having said so much about masses, let us turn to sets. Sets are easier to understand than masses, but are more rarely used. Like a mass, a set is an abstract object formed from a number of individuals; however, the properties of a set are not derived from any of the properties of the individuals that compose it.
-    </para>
-    <para>
-      <indexterm type="lojban-word"><primary>la'i</primary><secondary>as set counterpart of &quot;lai&quot;</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>lo'i</primary><secondary>as set counterpart of &quot;loi&quot;</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>le'i</primary><secondary>as set counterpart of &quot;lei&quot;</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>sets</primary><secondary>properties of</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>cardinality</primary><secondary>definition</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>cardinality</primary><secondary>property of sets</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>membership</primary><secondary>property of sets</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>inclusion</primary><secondary>property of sets</secondary>
-      </indexterm>
-      Sets have properties like cardinality (how many elements in the set), membership (the relationship between a set and its elements), and set inclusion (the relationship between two sets, one of which &ndash; the superset &ndash; contains all the elements of the other &ndash; the subset). The set descriptors
+      Having said so much about groups, let us turn to sets. A set, in the mathematical sense, is an abstract object determined entirely by its membership: it has properties like cardinality (how many elements it has), membership (the relationship between a set and its elements), and inclusion (the relationship between a set and its subsets), and essentially no others. This makes sets quite different from groups. A group of three people can carry a piano and weigh 200 kilograms; the <emphasis>set</emphasis> of those three people carries nothing and weighs nothing, for a set is not the sort of thing that acts or weighs. The set descriptors
       <valsi>le'i</valsi>
       ,
       <valsi>lo'i</valsi>
       and
       <valsi>la'i</valsi>
-      correspond exactly to the mass descriptors
+      correspond to the group descriptors
       <valsi>lei</valsi>
       ,
       <valsi>loi</valsi>
       , and
       <valsi>lai</valsi>
-      except that normally we talk of the whole of a set, not just part of it. Here are some examples contrasting
+      respectively. Here are some examples contrasting
       <valsi>lo</valsi>
       ,
       <valsi>loi</valsi>
       , and
-      <valsi>lo'i</valsi>
-      :
+      <valsi>lo'i</valsi>:
     </para>
-    <example xml:id="example-random-id-qL1E" role="interlinear-gloss-example">
-      <title>
-
-
-        <indexterm type="general"><primary>rats are brown</primary></indexterm>
-
-
-        <anchor xml:id="c6e4d1" /></title>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x6Ca">
+      <title><anchor xml:id="c6e4d5" /></title>
 
       <interlinear-gloss>
         <jbo>lo ratcu cu bunre</jbo>
-        <gloss>One-or-more-of-those-which-really-are rats - are-brown.</gloss>
-        <natlang>Some rats are brown.</natlang>
-
+        <gloss>Rats are-brown.</gloss>
+        <natlang>Rats are brown.</natlang>
       </interlinear-gloss>
     </example>
-    <example xml:id="example-random-id-qL2Y" role="interlinear-gloss-example">
-      <title><anchor xml:id="c6e4d2" /></title>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x6Cb">
+      <title><anchor xml:id="c6e4d6" /></title>
 
       <interlinear-gloss>
-        <jbo>loi ratcu cu cmalu</jbo>
-        <gloss>Part-of-the-mass-of-those-which-really-are rats - are-small.</gloss>
-        <natlang>Rats are small.</natlang>
+        <jbo>loi ratcu cu terlu'i lo panka</jbo>
+        <gloss>A-group-of rats cleans the park.</gloss>
+        <natlang>Rats (as a team) clean the park.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      <example xml:id="example-random-id-qL3V" role="interlinear-gloss-example">
-        <title>
-          <anchor xml:id="c6e4d3" />
-          <indexterm type="lojban-word"><primary>lo'i</primary><secondary>contrasted with &quot;lo&quot; and &quot;loi&quot;</secondary>
-          </indexterm>
-          <indexterm type="lojban-word"><primary>loi</primary><secondary>contrasted with &quot;lo&quot; and &quot;lo'i&quot;</secondary>
-          </indexterm>
-          <indexterm type="lojban-word"><primary>lo</primary><secondary>contrasted with &quot;loi&quot; and &quot;lo'i&quot;</secondary>
-          </indexterm>
-        </title>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x6Cc">
+      <title><anchor xml:id="c6e4d7" /></title>
 
-        <interlinear-gloss>
-          <jbo>lo'i ratcu cu barda</jbo>
-          <gloss>The-set-of rats - is-large.</gloss>
-          <natlang>There are a lot of rats.</natlang>
-        </interlinear-gloss>
-      </example>
+      <interlinear-gloss>
+        <jbo>lo'i ratcu cu barda</jbo>
+        <gloss>The-set-of rats is-large.</gloss>
+        <natlang>There are a lot of rats.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent">
+      <xref linkend="example-random-id-x6Ca" />
+      says something about rats in general, each or any of them &ndash; brownness is a property of individual rats.
+      <xref linkend="example-random-id-x6Cb" />
+      (an unlikely municipal arrangement, but a grammatical one) attributes the cleaning to a group of rats collectively: no single rat cleans the park.
+      <xref linkend="example-random-id-x6Cc" />
+      is about the set of rats, and largeness here is cardinality: the set has billions of members. It would be incorrect to call the set of rats brown &ndash; brown-ness is not the sort of property that sets possess. Note that a bare
+      <jbophrase>lo'i ratcu</jbophrase>
+      refers to a set of rats supplied by context; taken in the broadest context it is naturally read as the set of all rats there are, but that reading comes from context, not from a built-in
+      <quote>all</quote>.
     </para>
-    <para role="indent">The mass of rats is small because at least one rat is small; the mass of rats is also large; the set of rats, though, is unquestionably large &ndash; it has billions of members. The mass of rats is also brown, since some of its components are; but it would be incorrect to call the set of rats brown &ndash; brown-ness is not the sort of property that sets possess.</para>
-
     <para>
-      <indexterm type="general"><primary>sets</primary><secondary>use in Lojban place structure</secondary>
+      <indexterm type="lojban-word"><primary>fadni</primary><secondary>example of set place</secondary>
       </indexterm>
-      Lojban speakers should generally think twice before employing the set descriptors. However, certain predicates have places that require set sumti to fill them. For example, the place structure of
+      Lojban speakers should generally think twice before employing the set descriptors: if the idea is that some things do something together, the group descriptors are wanted instead. However, certain predicates have places that require set sumti to fill them. For example, the place structure of
       <valsi>fadni</valsi>
       is:
     </para>
     <definition>
       <content>x<subscript>1</subscript> is ordinary/common/typical/usual in property x<subscript>2</subscript> among the members of set x<subscript>3</subscript></content>
     </definition>
-    <para>
+    <para role="indent">
       Why is it necessary for the x<subscript>3</subscript> place of
       <valsi>fadni</valsi>
-      to be a set? Because it makes no sense for an individual to be typical of another individual: an individual is typical of a group. In order to make sure that the bridi containing
+      to be a set? Because it makes no sense for an individual to be typical of another individual: an individual is typical relative to a whole population. In order to make sure that the bridi containing
       <valsi>fadni</valsi>
-      is about an entire group, its x<subscript>3</subscript> place must be filled with a set:
+      is about an entire population, its x<subscript>3</subscript> place must be filled with a set:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-xIXo">
-      <title>
-
-
-        <indexterm type="general"><primary>typical Lojban user</primary></indexterm>
-
-
-        <anchor xml:id="c6e4d4" />
-      </title>
+      <title><anchor xml:id="c6e4d4" /></title>
 
       <interlinear-gloss>
         <jbo>mi fadni zo'e lo'i lobypli</jbo>
-        <gloss>I am-ordinary in-property--[unspecified] among-the-set-of Lojban-users.</gloss>
+        <gloss>I am-ordinary in-property-[unspecified] among-the-set-of Lojban-users.</gloss>
         <natlang>I am a typical Lojban user.</natlang>
-
       </interlinear-gloss>
     </example>
     <para role="indent">
@@ -1018,13 +911,36 @@
       <valsi>lo</valsi>
       in
       <xref linkend="example-random-id-xIXo" />
-      , the meaning would be something like
-      <quote>I am typical of some Lojban user</quote>
-      , which is nonsense.
+      , the whole point would be lost:
+      <jbophrase>lo lobypli</jbophrase>
+      supplies a person or persons, and one cannot be typical <emphasis>of a person</emphasis> &ndash; the x<subscript>3</subscript> of
+      <valsi>fadni</valsi>
+      wants the population as a set, not its members.
+    </para>
+    <para>
+      The underlying selbri for sets is
+      <valsi>selcmi</valsi>
+      : a sumti like
+      <jbophrase>lo'i ratcu</jbophrase>
+      means the same as
+      <jbophrase>lo selcmi be lo ratcu</jbophrase>
+      , a set whose members are rats. Since a set is determined by its members, a set of things can only be formed when it is determinate what its members are; sets of vaguely generic or substance-like referents do not arise in practice.
     </para>
   </section>
   <section xml:id="section-typicals">
     <title><anchor xml:id="c6s5" />Descriptors for typical objects</title>
+    <para role="status-note">
+      <indexterm type="general"><primary>lo'e</primary><secondary>unsettled status of</secondary></indexterm><indexterm type="general"><primary>le'e</primary><secondary>unsettled status of</secondary></indexterm>
+      A caution before anything else in this section:
+      <valsi>lo'e</valsi>
+      and
+      <valsi>le'e</valsi>
+      are the least settled words in this chapter. The language's definition process never finalized their semantics; what follows is the traditional account, essentially that of the first edition, and it is not universally accepted &ndash; some speakers prefer to express typicality with ordinary generic
+      <valsi>lo</valsi>
+      (see
+      <xref linkend="section-masses" />) or with the selbri
+      <valsi>fadni</valsi>. They are also, in practice, rarely used. Read this section as a description of a convention, not a settled rule.
+    </para>
     <para>The following cmavo are discussed in this section:</para>    <cmavo-list>      <cmavo-entry>        <cmavo>lo'e</cmavo>        <selmaho>LE</selmaho>
         <description>the typical</description>
       </cmavo-entry>
@@ -1036,15 +952,13 @@
       </cmavo-entry>
     </cmavo-list>
     <para role="indent">
-      As promised in
-      <xref linkend="section-masses" />
-      , Lojban has a method for discriminating between
+      On the traditional account, then, Lojban has a method for discriminating between
       <quote>the lion</quote>
       who lives in Africa and
       <quote>the Englishman</quote>
       who, generally speaking, doesn't live in Africa even though some Englishmen do. The descriptor
       <valsi>lo'e</valsi>
-      means
+      is glossed
       <quote>the typical</quote>
       , as in
     </para>
@@ -1058,7 +972,7 @@
         <anchor xml:id="c6e5d1" /></title>
 
       <interlinear-gloss>
-        <jbo>lo'e cinfo cu xabju le fi'ortu'a</jbo>
+        <jbo>lo'e cinfo cu xabju lo fi'ortu'a</jbo>
         <gloss>The-typical lion - dwells-in the African-land.</gloss>
         <natlang>The lion dwells in Africa.</natlang>
       </interlinear-gloss>
@@ -1089,7 +1003,7 @@
         <gloss>The-typical English-person - dwells-in</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le fi'ortu'a na.e le gligugde</jbo>
+        <jbo>… lo fi'ortu'a na.e lo gligugde</jbo>
         <gloss>… the African-land (Not!)--and the English-country.</gloss>
         <natlang>The typical English person dwells not in Africa but in England.</natlang>
       </interlinear-gloss>
@@ -1185,10 +1099,14 @@
       <quote>typical Smith</quote>. People or things who share a common name do not, in general, have any other common attributes worth mentioning.
     </para>
 
-  </section>
+    </section>
   <section xml:id="section-quantified-sumti">
     <title><anchor xml:id="c6s6" />Quantified sumti</title>
-    <para>The following cmavo are discussed in this section:</para>    <cmavo-list>      <cmavo-entry>        <cmavo>ro</cmavo>        <selmaho>PA</selmaho>        <description>all of/each of</description>
+    <para>      The following cmavo are discussed in this section:    </para>    <cmavo-list>
+      <cmavo-entry>
+        <cmavo>ro</cmavo>
+        <selmaho>PA</selmaho>
+        <description>all of/each of</description>
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>su'o</cmavo>
@@ -1197,6 +1115,7 @@
       </cmavo-entry>
     </cmavo-list>
     <para role="indent">
+      <indexterm type="general"><primary>quantifiers</primary></indexterm>
       Quantifiers tell us how many: in the case of quantifiers with sumti, how many things we are talking about. In Lojban, quantifiers are expressed by numbers and mathematical expressions: a large topic discussed in some detail in
       <xref linkend="chapter-mekso" />. For the purposes of this chapter, a simplified treatment will suffice. Our examples will employ either the simple Lojban numbers
       <valsi>pa</valsi>
@@ -1209,36 +1128,34 @@
       , and
       <valsi>mu</valsi>
       , meaning
-      <quote>one</quote>
-      ,
-      <quote>two</quote>
-      ,
-      <quote>three</quote>
-      ,
-      <quote>four</quote>
-      ,
+      <quote>one</quote>,
+      <quote>two</quote>,
+      <quote>three</quote>,
+      <quote>four</quote>,
       <quote>five</quote>
-      respectively, or else one of four special quantifiers, two of which are discussed in this section and listed above. These four quantifiers are important because every Lojban sumti has either one or two of them implicitly present in it &ndash; which one or two depends on the particular kind of sumti. There is more explanation of implicit quantifiers later in this section. (The other two quantifiers,
-      <valsi>piro</valsi>
+      respectively, or else the two special quantifiers listed above,
+      <valsi>ro</valsi>
       and
-      <valsi>pisu'o</valsi>
-      , are explained in
-      <xref linkend="section-quantified-descriptions" />.)
+      <valsi>su'o</valsi>.
     </para>
-    <para>Every Lojban sumti may optionally be preceded by an explicit quantifier. The purpose of this quantifier is to specify how many of the things referred to by the sumti are being talked about. Here are some simple examples contrasting sumti with and without explicit quantifiers:</para>
-    <example xml:id="example-random-id-qL61" role="interlinear-gloss-example">
+    <para>
+      <indexterm type="general"><primary>quantifiers</primary><secondary>explicit on sumti</secondary>
+      </indexterm>
+      Any sumti may be preceded by an explicit quantifier, which says how many of the things referred to by the sumti the bridi is talking about. Here are some simple examples contrasting sumti with and without explicit quantifiers:
+    </para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-qL61">
       <title><anchor xml:id="c6e6d1" /></title>
 
       <interlinear-gloss>
-        <jbo>do cadzu le bisli</jbo>
+        <jbo>do cadzu lo bisli</jbo>
         <gloss>You walk-on the ice.</gloss>
       </interlinear-gloss>
     </example>
-    <example xml:id="example-random-id-qLAH" role="interlinear-gloss-example">
+    <example role="interlinear-gloss-example" xml:id="example-random-id-qLAH">
       <title><anchor xml:id="c6e6d2" /></title>
 
       <interlinear-gloss>
-        <jbo>re do cadzu le bisli</jbo>
+        <jbo>re do cadzu lo bisli</jbo>
         <gloss>Two-of you walk-on the ice.</gloss>
       </interlinear-gloss>
     </example>
@@ -1254,7 +1171,7 @@
       by itself means
       <quote>two</quote>
       , when used as a quantifier it means
-      <quote>two-of</quote>. Out of the group of listeners (the number of which isn't stated), two (we are not told which ones) are asserted to be
+      <quote>two-of</quote>. Out of the listeners (however many there are), two (we are not told which ones) are asserted to be
       <quote>walkers on the ice</quote>. Implicitly, the others (if any) are not walkers on the ice. In Lojban, you cannot say
       <quote>I own three shoes</quote>
       if in fact you own four shoes. Numbers need never be specified, but if they are specified they must be correct.
@@ -1273,138 +1190,66 @@
       <xref linkend="chapter-mekso" />.)
     </para>
     <para>
-      Now consider
-      <xref linkend="example-random-id-qL61" />
-      again. How many of the listeners are claimed to walk on the ice? The answer turns out to be: all of them, however many that is. So
-      <xref linkend="example-random-id-qL61" />
-      and
-      <xref linkend="example-random-id-0qr0" />
-      :
+      <indexterm type="general"><primary>quantifiers</primary><secondary>distributive nature of</secondary>
+      </indexterm>
+      A quantified sumti talks about its things one at a time. When I say
+      <xref linkend="example-random-id-qLAH" />
+      , I claim of each of the two that he or she walks on the ice: quantification is inherently distributive, in the sense of
+      <xref linkend="section-masses" />. If what I want to say is something two people do jointly, a quantifier is the wrong tool, and the group descriptors of
+      <xref linkend="section-masses" />
+      are the right one. This point matters more than it may seem: it is the reason quantifiers and groups are different mechanisms rather than variations on one theme.
+    </para>
+    <para>
+      <indexterm type="general"><primary>quantifiers</primary><secondary>contrast between quantified and unquantified sumti</secondary>
+      </indexterm>
+      What, then, of the unquantified
+      <xref linkend="example-random-id-qL61" />? It simply refers to the listeners &ndash; however many there are &ndash; and says they walk on the ice, without spelling out
+      <quote>each separately</quote>
+      the way
+      <valsi>ro</valsi>
+      would:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-0qr0">
       <title><anchor xml:id="c6e6d4" /></title>
 
       <interlinear-gloss>
-        <jbo>ro do cadzu le bisli</jbo>
+        <jbo>ro do cadzu lo bisli</jbo>
         <gloss>All-of you walk-on the ice.</gloss>
-      </interlinear-gloss>
-    </example>
-    <para role="noindent">
-      <indexterm type="general"><primary>sumti</primary><secondary>as having implicit quantifiers</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>quantifiers</primary><secondary>with sumti</secondary>
-      </indexterm>
-      turn out to mean exactly the same thing. This is a safe strategy, because if one of my listeners doesn't turn out to be walking on the ice, I can safely claim that I didn't intend that person to be a listener! And in fact, all of the personal pro-sumti such as
-      <valsi>mi</valsi>
-      and
-      <valsi>mi'o</valsi>
-      and
-      <valsi>ko</valsi>
-      obey the same rule. We say that personal pro-sumti have a so-called
-      <quote>implicit quantifier</quote>
-      of
-      <valsi>ro</valsi>
-      (all). This just means that if no quantifier is given explicitly, the meaning is the same as if the implicit quantifier had been used.
-    </para>
-
-    <para>
-      <indexterm type="general"><primary>implicit quantifier</primary><secondary>on quotations</secondary>
-        <tertiary>discussion of</tertiary>
-      </indexterm>
-      Not all sumti have
-      <valsi>ro</valsi>
-      as the implicit quantifier, however. Consider the quotation in:
-    </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-3eMo">
-      <title><anchor xml:id="c6e6d5" /></title>
-
-      <interlinear-gloss>
-        <jbo>mi cusku lu do cadzu le bisli li'u</jbo>
-        <gloss>I express [quote] you walk-on the ice [unquote].</gloss>
-        <natlang>
-          I say,
-          <quote>You walk on the ice.</quote>
-        </natlang>
+        <natlang>Each of you walks on the ice.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
-      What is the implicit quantifier of the quotation
-      <jbophrase>lu do cadzu le bisli li'u</jbophrase>
-      ? Surely not
-      <valsi>ro</valsi>. If
-      <valsi>ro</valsi>
-      were supplied explicitly, thus:
-    </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-h4SJ">
-      <title><anchor xml:id="c6e6d6" /></title>
-
-      <interlinear-gloss>
-        <jbo>mi cusku ro lu do cadzu le bisli li'u</jbo>
-        <gloss>I express all-of [quote] you walk-on the ice [unquote].</gloss>
-      </interlinear-gloss>
-    </example>
-    <para role="noindent">
-      the meaning would be something like
-      <quote>I say every occurrence of the sentence 'You walk on the ice'</quote>. Of course I don't say every occurrence of it, only some occurrences. One might suppose that
-      <xref linkend="example-random-id-3eMo" />
-      means that I express exactly one occurrence, but it is more Lojbanic to leave the number unspecified, as with other sumti. We can say definitely, however, that I say it at least once.
+      In most contexts
+      <xref linkend="example-random-id-qL61" />
+      and
+      <xref linkend="example-random-id-0qr0" />
+      come to the same thing, since walking is something people mostly do one by one. But they are not synonyms:
+      <xref linkend="example-random-id-0qr0" />
+      insists on the one-at-a-time reading, while
+      <xref linkend="example-random-id-qL61" />
+      leaves the manner of walking &ndash; single file, arm in arm, in a heap &ndash; entirely open.
     </para>
     <para>
-      The Lojban cmavo meaning
-      <quote>at least</quote>
-      is
-      <valsi>su'o</valsi>
-      , and if no ordinary number follows,
-      <valsi>su'o</valsi>
-      means
-      <quote>at least once</quote>. (See
-      <xref linkend="example-random-id-gLpy" />
-      for the use of
-      <valsi>su'o</valsi>
-      with an ordinary number). Therefore, the explicitly quantified version of
-      <xref linkend="example-random-id-3eMo" />
-      is
-      <indexterm type="general"><primary>implicit quantifier</primary><secondary>for quotations</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>quotations</primary><secondary>implicit quantifier for</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>su'o</primary><secondary>as implicit quantifier for quotations</secondary>
-      </indexterm>
+      Here we reach one of the most important rules in this book: <emphasis>a sumti without an explicit quantifier has no quantifier at all</emphasis>. It is a referring expression, pure and simple &ndash; in the language of logic, a <quote>constant</quote>: a term that names its referents outright, as opposed to a quantified term like
+      <jbophrase>re do</jbophrase>
+      , which selects from them. The distinction does real work in
+      <xref linkend="chapter-quantifiers" />
+      , where quantified terms interact with negation and with each other in ways constants never do. Commit the rule to memory now: no quantifier is present unless you say one.
     </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-P558">
-      <title><anchor xml:id="c6e6d7" /></title>
-
-      <interlinear-gloss>
-        <jbo>mi cusku su'o lu do cadzu le bisli li'u</jbo>
-        <gloss>I express at-least-one-of [quote] you walk-on the ice [unquote].</gloss>
-        <natlang>
-          I say one or more instances of
-          <quote>You walk on the ice</quote>.
-        </natlang>
-        <natlang>
-          I say
-          <quote>You walk on the ice</quote>.
-        </natlang>
-      </interlinear-gloss>
-    </example>
-    <para role="indent">
-      If an explicit ordinary number such as
-      <valsi>re</valsi>
-      were to appear, it would have to convey an exact expression, so
+    <para role="status-note">
+      <indexterm type="general"><primary>implicit quantifiers</primary><secondary>abolition of</secondary>
+      </indexterm>
+      This rule is part of the ratified article reform; older texts follow a different convention here &ndash; see
+      <xref linkend="appendix-changes" />.
     </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-59dF">
-      <title><anchor xml:id="c6e6d8" /></title>
-
-      <interlinear-gloss>
-        <jbo>mi cusku re lu do cadzu le bisli li'u</jbo>
-        <gloss>I express two-of [quote] you walk-on the ice [unquote].</gloss>
-      </interlinear-gloss>
-    </example>
-    <para role="noindent">means that I say the sentence exactly twice, neither more nor less.</para>
   </section>
   <section xml:id="section-quantified-descriptions">
     <title><anchor xml:id="c6s7" />Quantified descriptions</title>
-    <para>The following cmavo are discussed in this section:</para>    <cmavo-list>      <cmavo-entry>        <cmavo>piro</cmavo>        <selmaho>PA</selmaho>        <description>the whole of</description>
+    <para>      The following cmavo are discussed in this section:    </para>    <cmavo-list>
+      <cmavo-entry>
+        <cmavo>piro</cmavo>
+        <selmaho>PA</selmaho>
+        <description>the whole of</description>
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>pisu'o</cmavo>
@@ -1413,20 +1258,15 @@
       </cmavo-entry>
     </cmavo-list>
     <para role="indent">
-      <indexterm type="general"><primary>quantification</primary><secondary>before description sumti compared with before non-description sumti</secondary>
+      <indexterm type="general"><primary>outer quantifiers</primary></indexterm>
+      <indexterm type="general"><primary>quantifiers</primary><secondary>outer</secondary>
       </indexterm>
       Like other sumti, descriptions can be quantified. When a quantifier appears before a description, it has the same meaning as one appearing before a non-description sumti: it specifies how many things, of all those referred to by the description, are being talked about in this particular bridi. Suppose that context tells us that
       <jbophrase>le gerku</jbophrase>
       refers to three dogs. Then we can say that exactly two of them are white as follows:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-WtUh">
-      <title>
-
-
-        <indexterm type="general"><primary>two dogs are white</primary></indexterm>
-
-
-        <anchor xml:id="c6e7d1" /></title>
+      <title><anchor xml:id="c6e7d1" /></title>
 
       <interlinear-gloss>
         <jbo>re le gerku cu blabi</jbo>
@@ -1435,23 +1275,14 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="general"><primary>inner quantifier</primary><secondary>effect of on meaning</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>outer quantifier</primary><secondary>effect of on meaning</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>inner quantifier</primary><secondary>contrasted with outer quantifier</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>outer quantifier</primary><secondary>contrasted with inner quantifier</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>inner quantifier</primary><secondary>definition</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>outer quantifier</primary><secondary>definition</secondary>
+      <indexterm type="general"><primary>inner quantifiers</primary></indexterm>
+      <indexterm type="general"><primary>quantifiers</primary><secondary>inner</secondary>
       </indexterm>
       When discussing descriptions, this ordinary quantifier is called an
       <quote>outer quantifier</quote>
       , since it appears outside the description. But there is another possible location for a quantifier: between the descriptor and the selbri. This quantifier is called an
       <quote>inner quantifier</quote>
-      , and its meaning is quite different: it tells the listener how many objects the description selbri characterizes.
+      , and its meaning is quite different: it tells the listener how many things the description refers to altogether.
     </para>
     <para>
       For example, the context of
@@ -1469,20 +1300,16 @@
         <natlang>Two of the three dogs are white.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
+    <para role="indent">
       (As explained in the discussion of
       <xref linkend="example-random-id-gLpy" />
       , simple numbers like those in
       <xref linkend="example-random-id-X3iY" />
       must be exact: it therefore follows that the third dog cannot be white.)
     </para>
-    <para>
-      <indexterm type="general"><primary>inner quantifier</primary><secondary>explicit</secondary>
-      </indexterm>
-      You may also specify an explicit inner quantifier and leave the outer quantifier implicit:
-    </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-JxzV">
-      <title><anchor xml:id="c6e7d3" /></title>
+    <para>You may also specify an explicit inner quantifier and leave the outer position empty:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-f643">
+      <title><anchor xml:id="c6e7d4" /></title>
 
       <interlinear-gloss>
         <jbo>le ci gerku cu blabi</jbo>
@@ -1491,425 +1318,223 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="general"><primary>outer quantifier</primary><secondary>implicit on descriptors</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>inner quantifier</primary><secondary>implicit on descriptors</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>descriptors</primary><secondary>implicit quantifiers for</secondary>
-      </indexterm>
-      There are rules for each of the 11 descriptors specifying what the implicit values for the inner and outer quantifiers are. They are meant to provide sensible default values when context is absent, not necessarily to prescribe hard and fast rules. The following table lists the implicit values:
-    </para>
-
-    <informaltable>
-      <tr>
-        <td>
-          <valsi>le</valsi>
-          :
-        </td>
-        <td>
-          <jbophrase>ro le su'o</jbophrase>
-        </td>
-        <td>all of the at-least-one described as</td>
-      </tr>
-      <tr>
-        <td>
-          <valsi>lo</valsi>
-          :
-        </td>
-        <td>
-          <jbophrase>su'o lo ro</jbophrase>
-        </td>
-        <td>at least one of all of those which really are</td>
-      </tr>
-      <tr>
-        <td>
-          <valsi>la</valsi>
-          :
-        </td>
-        <td>
-          <jbophrase>ro la su'o</jbophrase>
-        </td>
-        <td>all of the at least one named</td>
-      </tr>
-      <tr>
-        <td>
-          <valsi>lei</valsi>
-          :
-        </td>
-        <td>
-          <jbophrase>pisu'o lei su'o</jbophrase>
-        </td>
-        <td>some part of the mass of the at-least-one described as</td>
-      </tr>
-      <tr>
-        <td>
-          <valsi>loi</valsi>
-          :
-        </td>
-        <td>
-          <jbophrase>pisu'o loi ro</jbophrase>
-        </td>
-        <td>some part of the mass of all those that really are</td>
-      </tr>
-      <tr>
-        <td>
-          <valsi>lai</valsi>
-          :
-        </td>
-        <td>
-          <jbophrase>pisu'o lai su'o</jbophrase>
-        </td>
-        <td>some part of the mass of the at-least-one named</td>
-      </tr>
-      <tr>
-        <td>
-          <valsi>le'i</valsi>
-          :
-        </td>
-        <td>
-          <jbophrase>piro le'i su'o</jbophrase>
-        </td>
-        <td>the whole of the set of the at-least-one described as</td>
-      </tr>
-      <tr>
-        <td>
-          <valsi>lo'i</valsi>
-          :
-        </td>
-        <td>
-          <jbophrase>piro lo'i ro</jbophrase>
-        </td>
-        <td>the whole of the set of all those that really are</td>
-      </tr>
-      <tr>
-        <td>
-          <valsi>la'i</valsi>
-          :
-        </td>
-        <td>
-          <jbophrase>piro la'i su'o</jbophrase>
-        </td>
-        <td>the whole of the set of the at-least-one named</td>
-      </tr>
-      <tr>
-        <td>
-          <valsi>le'e</valsi>
-          :
-        </td>
-        <td>
-          <jbophrase>ro le'e su'o</jbophrase>
-        </td>
-        <td>all the stereotypes of the at-least-one described as</td>
-      </tr>
-      <tr>
-        <td>
-          <valsi>lo'e</valsi>
-          :
-        </td>
-        <td>
-          <jbophrase>su'o lo'e ro</jbophrase>
-        </td>
-        <td>at least one of the types of all those that really are</td>
-      </tr>
-    </informaltable>
-    <para>
-      <indexterm type="lojban-word"><primary>le-series</primary><secondary>as encompassing le-series and la-series descriptors for quantification discussion</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>le-series</primary><secondary>definition</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>la-series</primary><secondary>descriptors compared with le-series in implicit quantification</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>le-series</primary><secondary>descriptors compared with la-series in implicit quantification</secondary>
-      </indexterm>
-      When examined for the first time, this table looks dreadfully arbitrary. In fact, there are quite a few regularities in it. First of all, the la-series (that is, the descriptors
-      <valsi>la</valsi>
-      ,
-      <valsi>lai</valsi>
-      , and
-      <valsi>la'i</valsi>) and the le-series (that is, the descriptors
-      <valsi>le</valsi>
-      ,
-      <valsi>lei</valsi>
-      ,
-      <valsi>le'i</valsi>
-      , and
-      <valsi>le'e</valsi>) always have corresponding implicit quantifiers, so we may subsume the la-series under the le-series for the rest of this discussion:
-      <quote>le-series cmavo</quote>
-      will refer to both the le-series proper and to the la-series.
-    </para>
-
-    <para>
-      <indexterm type="lojban-word"><primary>le-series</primary><secondary>rule for implicit inner quantifier</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>lo-series</primary><secondary>rule for implicit inner quantifier</secondary>
-      </indexterm>
-      The rule for the inner quantifier is very simple: the lo-series cmavo (namely,
-      <valsi>lo</valsi>
-      ,
-      <valsi>loi</valsi>
-      ,
-      <valsi>lo'i</valsi>
-      , and
-      <valsi>lo'e</valsi>) all have an implicit inner quantifier of
-      <valsi>ro</valsi>
-      , whereas the le-series cmavo all have an implicit inner quantifier of
-      <valsi>su'o</valsi>.
-    </para>
-    <para>
-      <indexterm type="lojban-word"><primary>le-series</primary><secondary>rationale for implicit inner quantifier</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>lo-series</primary><secondary>rationale for implicit inner quantifier</secondary>
-      </indexterm>
-      Why? Because lo-series descriptors always refer to all of the things which really fit into the x<subscript>1</subscript> place of the selbri. They are not restricted by the speaker's intention. Descriptors of the le-series, however, are so restricted, and therefore talk about some number, definite or indefinite, of objects the speaker has in mind &ndash; but never less than one.
-    </para>
-    <para>
-      <indexterm type="general"><primary>masses</primary><secondary>rule for implicit outer quantifier</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>sets</primary><secondary>rule for implicit outer quantifier</secondary>
-      </indexterm>
-      Understanding the implicit outer quantifier requires rules of greater subtlety. In the case of mass and set descriptors, a single rule suffices for each: reference to a mass is implicitly a reference to some part of the mass; reference to a set is implicitly a reference to the whole set. Masses and sets are inherently singular objects: it makes no sense to talk about two distinct masses with the same components, or two distinct sets with the same members. Therefore, the largest possible outer quantifier for either a set description or a mass description is
-      <valsi>piro</valsi>
-      , the whole of it.
-    </para>
-    <para>
-      <indexterm type="general"><primary>plural masses</primary><secondary>possible use for</secondary>
-      </indexterm>
-      (Pedantically, it is possible that the mass of water molecules composing an ice cube might be thought of as different from the same mass of water molecules in liquid form, in which case we might talk about
-      <jbophrase>re lei djacu</jbophrase>
-      , two masses of the water-bits I have in mind.)
-    </para>
-    <para>
-      <indexterm type="general"><primary>pisu'o</primary><secondary>explanation of meaning</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>piro</primary><secondary>explanation of meaning</secondary>
-      </indexterm>
-      Why
-      <quote>
-        <valsi>pi</valsi>
-        -
-      </quote>
-      ? It is the Lojban cmavo for the decimal point. Just as
-      <jbophrase>pimu</jbophrase>
-      means
-      <quote>
-        <dbinlinemath>.5</dbinlinemath>
-      </quote>
-      , and when used as a quantifier specifies a portion consisting of five tenths of a thing,
-      <valsi>piro</valsi>
-      means a portion consisting of the all-ness &ndash; the entirety &ndash; of a thing. Similarly,
-      <valsi>pisu'o</valsi>
-      specifies a portion consisting of at least one part of a thing, i.e. some of it.
-    </para>
-
-    <para>
-      <indexterm type="general"><primary>portion</primary><secondary>on set contrasted with on individual</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>outer quantifiers</primary><secondary>for expressing subsets</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>subsets</primary><secondary>expressing with outer quantifiers</secondary>
-      </indexterm>
-      Smaller quantifiers are possible for sets, and refer to subsets. Thus
-      <jbophrase>pimu le'i nanmu</jbophrase>
-      is a subset of the set of men I have in mind; we don't know precisely which elements make up this subset, but it must have half the size of the full set. This is the best way to say
-      <quote>half of the men</quote>
-      ; saying
-      <jbophrase>pimu le nanmu</jbophrase>
-      would give us a half-portion of one of them instead! Of course, the result of
-      <jbophrase>pimu le'i nanmu</jbophrase>
-      is still a set; if you need to refer to the individuals of the subset, you must say so (see
-      <valsi>lu'a</valsi>
-      in
-      <xref linkend="section-sumti-qualifiers" />).
-    </para>
-    <para>
-      <indexterm type="lojban-word"><primary>lo</primary><secondary>implicit outer quantifier for</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>le</primary><secondary>implicit outer quantifier for</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>individual descriptors</primary><secondary>different implicit outer quantifiers among</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>outer quantifiers</primary><secondary>rationale for differences in implicit quantifier on descriptors</secondary>
-      </indexterm>
-      The case of outer quantifiers for individual descriptors (including
-      <valsi>le</valsi>
-      ,
-      <valsi>lo</valsi>
-      ,
-      <valsi>la</valsi>
-      , and the typical descriptors
-      <valsi>le'e</valsi>
-      and
-      <valsi>lo'e</valsi>) is special. When we refer to specific individuals with
-      <valsi>le</valsi>
-      , we mean to refer to all of those we have in mind, so
-      <valsi>ro</valsi>
-      is appropriate as the implicit quantifier, just as it is appropriate for
-      <valsi>do</valsi>. Reference to non-specific individuals with
-      <valsi>lo</valsi>
-      , however, is typically to only some of the objects which can be correctly described, and so
-      <valsi>su'o</valsi>
-      is the appropriate implicit quantifier, just as for quotations.
-    </para>
-    <para>
-      <indexterm type="lojban-word"><primary>lo</primary><secondary>contrasted with &quot;le&quot; in implicit quantification</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>le</primary><secondary>contrasted with &quot;lo&quot; in implicit quantification</secondary>
-      </indexterm>
-      From the English-speaking point of view, the difference in structure between the following example using
-      <valsi>le</valsi>
-      :
-    </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-f643">
-      <title><anchor xml:id="c6e7d4" /></title>
-
-      <interlinear-gloss>
-        <jbo>[ro] le ci gerku cu blabi</jbo>
-        <gloss>[All-of] those-described-as three dogs - are-white.</gloss>
-        <natlang>The three dogs are white.</natlang>
-      </interlinear-gloss>
-    </example>
-    <para role="noindent">
-      and the corresponding form with
-      <valsi>lo</valsi>
-      :
-    </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-gr7Y">
-      <title><anchor xml:id="c6e7d5" /></title>
-
-      <interlinear-gloss>
-        <jbo>ci lo [ro] gerku cu blabi</jbo>
-        <gloss>Three-of those-which-are [all] dogs - are-white.</gloss>
-        <natlang>Three dogs are white.</natlang>
-      </interlinear-gloss>
-    </example>
-    <para role="noindent">
-      looks very peculiar. Why is the number
-      <valsi>ci</valsi>
-      found as an inner quantifier in
+      With no outer quantifier,
       <xref linkend="example-random-id-f643" />
-      and as an outer quantifier in
-      <xref linkend="example-random-id-gr7Y" />
-      ? The number of dogs is the same in either case. The answer is that the
-      <valsi>ci</valsi>
-      in
-      <xref linkend="example-random-id-f643" />
-      is part of the specification: it tells us the actual number of dogs in the group that the speaker has in mind. In
-      <xref linkend="example-random-id-gr7Y" />
-      , however, the dogs referred to by
-      <jbophrase>... lo gerku</jbophrase>
-      are all the dogs that exist: the outer quantifier then restricts the number to three; which three, we cannot tell. The implicit quantifiers are chosen to avoid claiming too much or too little: in the case of
-      <valsi>le</valsi>
-      , the implicit outer quantifier
-      <valsi>ro</valsi>
-      says that each of the dogs in the restricted group is white; in the case of
-      <valsi>lo</valsi>
-      , the implicit inner quantifier simply says that three dogs, chosen from the group of all the dogs there are, are white.
+      simply says of the three dogs that they are white &ndash; all of them, as it happens, since whiteness is the sort of thing that holds of each if it holds of them at all.
     </para>
     <para>
-      <indexterm type="lojban-word"><primary>lo-series</primary><secondary>caution on exact numbers as inner quantifiers</secondary>
-      </indexterm>
-      Using exact numbers as inner quantifiers in lo-series descriptions is dangerous, because you are stating that exactly that many things exist which really fit the description. So examples like
+      All of this works identically with
+      <valsi>lo</valsi>. The inner quantifier states how many things the description refers to; the outer quantifier picks out how many of them the bridi concerns:
     </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-uYH4">
-      <title><anchor xml:id="c6e7d6" /></title>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x6Da">
+      <title><anchor xml:id="c6e7d7" /></title>
 
       <interlinear-gloss>
-        <jbo>[so'o] lo ci gerku cu blabi</jbo>
-
-        <gloss>[some-of] those-which-really-are three dogs - are-white.</gloss>
+        <jbo>lo mu bakni cu se jirna</jbo>
+        <gloss>The five cows - are-horned.</gloss>
+        <natlang>The five cows have horns.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      are semantically anomalous;
-      <xref linkend="example-random-id-uYH4" />
-      claims that some dog (or dogs) is white, but also that there are just three dogs in the universe!
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x6Db">
+      <title><anchor xml:id="c6e7d8" /></title>
+
+      <interlinear-gloss>
+        <jbo>mu lo pano bakni cu blabi</jbo>
+        <gloss>Five-of the ten cows - are-white.</gloss>
+        <natlang>Five of the ten cows are white.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent">
+      In
+      <xref linkend="example-random-id-x6Da" />
+      we are talking about five cows &ndash; which five is left to context, exactly as with an unquantified
+      <jbophrase>lo bakni</jbophrase>
+      ; the inner
+      <valsi>mu</valsi>
+      merely reports their number. In
+      <xref linkend="example-random-id-x6Db" />
+      the description refers to ten cows, and the bridi selects five of them.
     </para>
     <para>
-      Nevertheless, inner quantifiers are permitted on
+      To restate the essentials: an unquantified description merely refers (see
+      <xref linkend="section-basic-descriptors" />), and an inner quantifier on
       <valsi>lo</valsi>
-      descriptors for consistency's sake, and may occasionally be useful.
+      counts the things referred to. So
+      <jbophrase>lo ci gerku</jbophrase>
+      is unremarkable, everyday Lojban for
+      <quote>the three dogs (that we're concerned with)</quote>
+      &ndash; it says nothing about how many dogs exist. And because
+      <valsi>lo</valsi>
+      carries no quantifier of its own, descriptions get along with negation and quantifier order in the straightforward way described in
+      <xref linkend="chapter-quantifiers" />.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>implicit quantifiers</primary><secondary>on descriptions, abolition of</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>xorlo</primary><secondary>and quantified descriptions</secondary>
+      </indexterm>
+      Pre-reform Lojban reads these quite differently; if you need to read older text closely, see
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
-      Note that the inner quantifier of
-      <valsi>le</valsi>
-      , even when exact, need not be truthful:
+      <indexterm type="lojban-word"><primary>le</primary><secondary>inner quantifier with</secondary>
+      </indexterm>
+      Note how non-veridicality interacts with an inner quantifier on
+      <valsi>le</valsi>:
       <jbophrase>le ci nanmu</jbophrase>
-      means
-      <quote>what I describe as three men</quote>
-      , not
-      <quote>three of what I describe as men</quote>. This follows from the rule that what is described by a
+      refers to exactly three things &ndash; the count is genuine &ndash; which the speaker <emphasis>describes</emphasis> as men, rightly or wrongly. The looseness of a
       <valsi>le</valsi>
-      description represents the speaker's viewpoint rather than the objective way things are.
+      description lies entirely in the selbri; the number of things referred to is stated as fact.
+    </para>
+    <para>
+      <indexterm type="lojban-word"><primary>la</primary><secondary>number after, as part of name</secondary>
+      </indexterm>
+      With
+      <valsi>la</valsi>
+      , there is no inner quantifier at all: a number string appearing after
+      <valsi>la</valsi>
+      is part of the name. Thus
+      <jbophrase>la ci bakni</jbophrase>
+      is not three of anything; it is somebody or something named
+      <quote>ci bakni</quote>
+      (<quote>Three Cows</quote>
+      &ndash; a perfectly good name for a restaurant). An outer quantifier works normally:
+      <jbophrase>ci la .magdonaldz.</jbophrase>
+      is three of the referents of
+      <jbophrase>la .magdonaldz.</jbophrase>
+      , say three McDonald's restaurants near my office.
+    </para>
+    <para>
+      <indexterm type="general"><primary>groups</primary><secondary>quantifiers with</secondary>
+      </indexterm>
+      Quantifiers combine with the group descriptors in a way that follows naturally from what inner and outer quantifiers mean. The inner quantifier gives the size of the group; the outer quantifier counts <emphasis>groups</emphasis>:
+    </para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x6Dc">
+      <title><anchor xml:id="c6e7d9" /></title>
+
+      <interlinear-gloss>
+        <jbo>re loi mu bakni cu bevri lo pipno</jbo>
+        <gloss>Two groups-of five cows - carry a piano.</gloss>
+        <natlang>Two teams of five cows each carried a piano.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent">
+      <xref linkend="example-random-id-x6Dc" />
+      describes two five-cow teams, each team carrying a piano collectively &ndash; a compact expression for a rather elaborate scene, and a good illustration of how much the two quantifier positions can do. (It does not, strictly, promise that the two teams share no cows; decent style avoids exploiting that loophole without warning.)
+    </para>
+    <para>
+      <indexterm type="lojban-word"><primary>piro</primary></indexterm>
+      <indexterm type="lojban-word"><primary>pisu'o</primary></indexterm>
+      <indexterm type="general"><primary>fractional quantifiers</primary></indexterm>
+      Finally, the fractional quantifiers. Why
+      <quote>pi-</quote>?
+      <valsi>pi</valsi>
+      is the Lojban decimal point. Just as
+      <valsi>pimu</valsi>
+      means
+      <quote>.5</quote>
+      , a fractional outer quantifier specifies a portion. Applied to a group, it selects a subgroup of that fraction of the size:
+      <jbophrase>pimu loi xa bakni</jbophrase>
+      is half of a group of six cows &ndash; three cows, acting as part of the team. Applied to a set, it selects a subset:
+      <jbophrase>pimu le'i nanmu</jbophrase>
+      is a subset containing half of the men I have in mind, and is a good way to say
+      <quote>half of the men</quote>. (Note that the result is still a set; to refer to the individuals in it, use
+      <valsi>lu'a</valsi>
+      , explained in
+      <xref linkend="section-sumti-qualifiers" />.) Applied to an individual, a fraction gives a part of one thing:
+      <jbophrase>pimu le nanmu</jbophrase>
+      is half a man, not half of the men &ndash; a distinction worth double-checking before speaking. The forms
+      <valsi>piro</valsi>
+      and
+      <valsi>pisu'o</valsi>
+      accordingly mean
+      <quote>the whole of</quote>
+      and
+      <quote>some part of</quote>
+      , and see their main use with groups and substance-like references:
+      <jbophrase>piro loi jdini</jbophrase>
+      , all the money; <jbophrase>pisu'o loi djacu</jbophrase>, some of the water.
     </para>
   </section>
   <section xml:id="section-indefinite-descriptions">
-    <title><anchor xml:id="c6s8" />Indefinite descriptions</title>
-    <para>      <indexterm type="general"><primary>descriptors</primary><secondary>omission of</secondary>      </indexterm>      <indexterm type="lojban-word"><primary>lo</primary><secondary>omission of</secondary>      </indexterm>      By a quirk of Lojban syntax, it is possible to omit the descriptor
-      <valsi>lo</valsi>
-      , but never any other descriptor, from a description like that of
-      <xref linkend="example-random-id-gr7Y" />
-      ; namely, one which has an explicit outer quantifier but no explicit inner quantifier. The following example:
+    <title><anchor xml:id="c6s8" />Indefinite sumti</title>
+    <para>
+      <indexterm type="general"><primary>indefinite descriptions</primary></indexterm>
+      By a quirk of Lojban syntax, a quantifier can be followed directly by a selbri, with no descriptor at all; the result is called an <quote>indefinite sumti</quote>. (The syntactic mold is exact: an explicit quantifier is required, an inner quantifier is impossible &ndash; thus
+      <jbophrase role="ungrammatical">gerku cu blabi</jbophrase>
+      is ungrammatical, and so is
+      <jbophrase role="ungrammatical">reboi ci gerku cu blabi</jbophrase>
+      , though
+      <jbophrase>re ci gerku cu blabi</jbophrase>
+      is fine but means
+      <quote>23 dogs are white</quote>. Even though no descriptor is present, the elidable terminator
+      <valsi>ku</valsi>
+      may still be used.)
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-EsVd">
       <title><anchor xml:id="c6e8d1" /></title>
 
       <interlinear-gloss>
         <jbo>ci gerku [ku] cu blabi</jbo>
-        <gloss>Three-of-those-which-are dogs - - are-white.</gloss>
+        <gloss>Three dogs - are-white.</gloss>
         <natlang>Three dogs are white.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      <indexterm type="general"><primary>indefinite description</primary><secondary>definition</secondary>
+    <para role="indent">
+      <indexterm type="general"><primary>indefinite sumti</primary><secondary>meaning of</secondary>
       </indexterm>
-      <indexterm type="general"><primary>omission of descriptor</primary><secondary>effect on ku</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>ku</primary><secondary>effect on of omitting descriptor</secondary>
-      </indexterm>
-      is equivalent in meaning to
-      <xref linkend="example-random-id-gr7Y" />. Even though the descriptor is not present, the elidable terminator
-      <valsi>ku</valsi>
-      may still be used. The name
-      <quote>indefinite description</quote>
-      for this syntactic form is historically based: of course, it is no more and no less indefinite than its counterpart with an explicit
-      <valsi>lo</valsi>. Indefinite descriptions were introduced into the language in order to imitate the syntax of English and other natural languages.
+      What does
+      <xref linkend="example-random-id-EsVd" />
+      mean? It is a pure statement of quantity: <emphasis>three things which are dogs are white</emphasis> &ndash; three dogs anywhere in the world under discussion, not three of some particular dogs already on the conversational table. In the notation of
+      <xref linkend="chapter-quantifiers" />
+      , it is exactly equivalent to
+      <jbophrase>ci da poi gerku cu blabi</jbophrase>
+      :
+      <quote>for exactly three X which are dogs, X is white</quote>.
     </para>
     <para>
-      <indexterm type="general"><primary>inner quantifier</primary><secondary>in indefinite description</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>outer quantifier</primary><secondary>in indefinite description</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>indefinite description</primary><secondary>as prohibiting explicit inner quantifier</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>indefinite description</primary><secondary>as needing explicit outer quantifier</secondary>
-      </indexterm>
-      Indefinite descriptions must fit this mold exactly: there is no way to make one which does not have an explicit outer quantifier (thus
-      <jbophrase valid="false">*gerku cu blabi</jbophrase>
-      is ungrammatical), or which has an explicit inner quantifier (thus
-      <jbophrase valid="false">*reboi ci gerku cu blabi</jbophrase>
-      is also ungrammatical &ndash;
-      <jbophrase>re ci gerku cu blabi</jbophrase>
-      is fine, but means
-      <quote>23 dogs are white</quote>).
-    </para>
-    <para>
-      Note:
-      <xref linkend="example-random-id-gLpy" />
-      also contains an indefinite description, namely
-      <jbophrase>su'o ci cutci</jbophrase>
-      ; another version of that example using an explicit
+      This makes an indefinite sumti subtly different from the corresponding quantified
       <valsi>lo</valsi>
-      would be:
+      description:
     </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-SMvA">
-      <title><anchor xml:id="c6e8d2" /></title>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-gr7Y">
+      <title><anchor xml:id="c6e7d5" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ponse su'o ci lo cutci</jbo>
-        <gloss>I possess at-least three things-which-really-are shoes</gloss>
-        <natlang>I own three (or more) shoes.</natlang>
+        <jbo>ci lo gerku cu blabi</jbo>
+        <gloss>Three-of the dogs - are-white.</gloss>
+        <natlang>Three of the dogs are white.</natlang>
       </interlinear-gloss>
     </example>
+    <para role="indent">
+      <xref linkend="example-random-id-gr7Y" />
+      quantifies over the referents of
+      <jbophrase>lo gerku</jbophrase>
+      &ndash; the dogs we are talking about, whichever those are in context. If the neighborhood's dogs are under discussion,
+      <xref linkend="example-random-id-gr7Y" />
+      says three of <emphasis>them</emphasis> are white, while
+      <xref linkend="example-random-id-EsVd" />
+      says only that the world contains exactly three white dogs in all &ndash; a much stronger and usually stranger claim, unless context has already narrowed
+      <quote>the world</quote>
+      down to something small. When the referents of
+      <jbophrase>lo gerku</jbophrase>
+      are understood maximally broadly, the two coincide; in everyday talk they generally do not.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>indefinite descriptions</primary><secondary>change from first edition</secondary>
+      </indexterm>
+      Older texts follow a different convention here; see
+      <xref linkend="appendix-changes" />.
+    </para>
+    <para>Note:
+      <xref linkend="example-random-id-gLpy" />
+      also contains an indefinite sumti, namely
+      <jbophrase>su'o ci cutci</jbophrase>:
+      <quote>I own at least three things which are shoes</quote>
+      &ndash; a case where quantifying over the whole world is exactly what is wanted, and where the same thing said with
+      <jbophrase>su'o ci lo cutci</jbophrase>
+      would presuppose some contextually given shoes to count among.
+    </para>
   </section>
   <section xml:id="section-sumti-based-descriptions">
     <title><anchor xml:id="c6s9" />sumti-based descriptions</title>
@@ -1926,7 +1551,7 @@
       A sumti-based description has a sumti where the selbri would normally be, and the inner quantifier is required &ndash; it cannot be implicit. An outer quantifier is permitted but not required.
     </para>
 
-    <para>A full theory of sumti-based descriptions has yet to be worked out. One common case, however, is well understood. Compare the following:</para>
+    <para>A sumti-based description built with <valsi>le</valsi> refers to things the speaker describes as being <emphasis>among</emphasis> the referents of the inner sumti; formally, <jbophrase>le re do</jbophrase> amounts to <jbophrase>le re me do</jbophrase>, using the <valsi>me</valsi> conversion of <xref linkend="chapter-selbri" />. Compare the following:</para>
     <example xml:id="example-random-id-qLaQ" role="interlinear-gloss-example">
       <title>
 
@@ -1951,16 +1576,13 @@
     </example>
     <para role="indent">
       <xref linkend="example-random-id-qLaQ" />
-      simply specifies that of the group of listeners, size unknown, two are men.
+      simply specifies that of the listeners, however many they are, two are men.
       <xref linkend="example-random-id-qLAr" />
       , which has the sumti-based description
       <jbophrase>le re do</jbophrase>
-      , says that of the two listeners, all (the implicit outer quantifier
-      <valsi>ro</valsi>) are men. So in effect the inner quantifier
+      , refers to two people, described as being among the listeners, and says of them that they are men. The inner quantifier
       <valsi>re</valsi>
-      gives the number of individuals which the inner sumti
-      <valsi>do</valsi>
-      refers to.
+      counts the referents of the whole description &ndash; it does not say how many listeners there are altogether.
     </para>
     <para>Here is another group of examples:</para>
     <example xml:id="example-random-id-qLbf" role="interlinear-gloss-example">
@@ -2002,7 +1624,7 @@
       </indexterm>
       In each case,
       <jbophrase>le ci cribe</jbophrase>
-      restricts the bears (or alleged bears) being talked of to some group of three which the speaker has in mind.
+      restricts the bears (or alleged bears) being talked of to three that the speaker has in mind.
       <xref linkend="example-random-id-qLbf" />
       says that two of them (which two is not stated) are brown.
       <xref linkend="example-random-id-qLbh" />
@@ -2044,7 +1666,7 @@
       <cmavo-entry>
         <cmavo>lu'o</cmavo>
         <selmaho>LAhE</selmaho>
-        <description>a mass formed from</description>
+        <description>a group formed from</description>
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>vu'i</cmavo>
@@ -2121,7 +1743,7 @@
         <anchor xml:id="c6e10d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska lu le xunre cmaxirma li'u</jbo>
+        <jbo>mi viska lu lo xunre cmaxirma li'u</jbo>
         <gloss>I see [quote] the red small-horse [unquote].</gloss>
       </interlinear-gloss>
     </example>
@@ -2132,7 +1754,7 @@
       <quote>The Red Pony</quote>. That might be all right if you were looking at the cover of the book, where the words
       <quote>The Red Pony</quote>
       are presumably written. (More precisely, where the words
-      <jbophrase>le xunre cmaxirma</jbophrase>
+      <jbophrase>lo xunre cmaxirma</jbophrase>
       are written &ndash; but we may suppose the book has been translated into Lojban.)
     </para>
     <para>What you really want to say is:</para>
@@ -2140,11 +1762,11 @@
       <title><anchor xml:id="c6e10d2" /><indexterm type="general"><primary>Red Pony</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi viska le selsinxa</jbo>
+        <jbo>mi viska lo selsinxa</jbo>
         <gloss>I see the thing-represented-by</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… be lu le xunre cmaxirma li'u</jbo>
+        <jbo>… be lu lo xunre cmaxirma li'u</jbo>
         <gloss>… - [quote] the red small-horse [unquote].</gloss>
       </interlinear-gloss>
     </example>
@@ -2164,7 +1786,7 @@
       <title><anchor xml:id="c6e10d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska la'e lu le xunre cmaxirma li'u [lu'u]</jbo>
+        <jbo>mi viska la'e lu lo xunre cmaxirma li'u [lu'u]</jbo>
 
 
         <gloss>I see the-referent-of [quote] the red small-horse [unquote] -.</gloss>
@@ -2215,7 +1837,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi pu cusku lu'e le vi cukta</jbo>
+        <jbo>mi pu cusku lu'e lo vi cukta</jbo>
         <gloss>I [past] express a-symbol-for the nearby book.</gloss>
         <natlang>I said the title of this book.</natlang>
       </interlinear-gloss>
@@ -2225,7 +1847,7 @@
       <title><anchor xml:id="c6e10d5" /><indexterm type="general"><primary>title of book</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi pu cusku le sinxa be le vi cukta</jbo>
+        <jbo>mi pu cusku lo sinxa be lo vi cukta</jbo>
         <gloss>I [past] express the symbol-for - the nearby book.</gloss>
       </interlinear-gloss>
     </example>
@@ -2260,7 +1882,7 @@
       <valsi>lu'i</valsi>
       , and
       <valsi>lu'o</valsi>
-      convert between individuals, sets, and masses;
+      convert between individuals, sets, and groups;
       <valsi>vu'i</valsi>
       belongs to this group as well, but creates a sequence, which is similar to a set but has a definite order. (The set of John and Charles is the same as the set of Charles and John, but the sequences are different.) Here are some examples:
     </para>
@@ -2269,7 +1891,7 @@
       <title><anchor xml:id="c6e10d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi troci tu'a le vorme</jbo>
+        <jbo>mi troci tu'a lo vorme</jbo>
         <gloss>I try some-abstraction-about the door.</gloss>
         <natlang>I try (to open) the door.</natlang>
       </interlinear-gloss>
@@ -2304,8 +1926,8 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>.iku'i lu'a ri cmalu</jbo>
-        <gloss>But some-members-of it-last-mentioned are-small.</gloss>
-        <natlang>The set of rats is large, but some of its members are small.</natlang>
+        <gloss>But members-of it-last-mentioned are-small.</gloss>
+        <natlang>The set of rats is large, but its members are small (individually).</natlang>
       </interlinear-gloss>
     </example>
     <example xml:id="example-random-id-qLCP" role="interlinear-gloss-example">
@@ -2313,8 +1935,8 @@
 
       <interlinear-gloss>
         <jbo>lo ratcu cu cmalu .iku'i lu'i ri barda</jbo>
-        <gloss>Some rats - are-small. But the-set-of them-last-mentioned is-large.</gloss>
-        <natlang>Some rats are small, but the set of rats is large.</natlang>
+        <gloss>Rats - are-small. But the-set-formed-from them-last-mentioned is-large.</gloss>
+        <natlang>Rats are small, but the set of them is large.</natlang>
       </interlinear-gloss>
     </example>
     <example xml:id="example-random-id-qLcy" role="interlinear-gloss-example">
@@ -2326,10 +1948,10 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… .i lu'o ri gunma</jbo>
-        <gloss>… - The-mass-of it-last-mentioned is-a-mass.</gloss>
+        <gloss>… - The-group-of it-last-mentioned is-a-group.</gloss>
         <jbo>… .i vu'i ri porsi</jbo>
         <gloss>… - The-sequence-of it-last-mentioned is-a-sequence</gloss>
-        <natlang>The set of you and me is a set. The mass of you and me is a mass. The sequence of you and me is a sequence.</natlang>
+        <natlang>The set of you and me is a set. The group of you and me is a group. The sequence of you and me is a sequence.</natlang>
       </interlinear-gloss>
     </example>
     <para role="noindent">(Yes, I know these examples are a bit silly. This set was introduced for completeness, and practical examples are as yet hard to come by.)</para>
@@ -2349,7 +1971,7 @@
         <title><anchor xml:id="c6e10d10" /></title>
 
         <interlinear-gloss>
-          <jbo>mi viska na'ebo le gerku</jbo>
+          <jbo>mi viska na'ebo lo gerku</jbo>
 
           <gloss>I see something-other-than the dog.</gloss>
         </interlinear-gloss>
@@ -2373,8 +1995,8 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi nelci loi glare cidja</jbo>
-        <gloss>I like part-of-the-mass-of hot-type-of food.</gloss>
+        <jbo>mi nelci lo glare cidja</jbo>
+        <gloss>I like hot-type-of food.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… .ije do nelci to'ebo ri</jbo>
@@ -2490,13 +2112,9 @@
     <para role="indent">
       <indexterm type="general"><primary>vocative phrase</primary><secondary>explicit quantifiers prohibited on</secondary>
       </indexterm>
-      <indexterm type="general"><primary>vocative phrase</primary><secondary>implicit quantifiers on</secondary>
-      </indexterm>
       The listener need not really be a
       <jbophrase>xunre pastu nixli</jbophrase>
-      , as long as she understands herself correctly from the description. (Actually, only a bare selbri can appear; explicit quantifiers are forbidden in this form of vocative, so the implicit quantifiers
-      <jbophrase>su'o le ro</jbophrase>
-      are in effect.)
+      , as long as she understands herself correctly from the description. (Actually, only a bare selbri can appear; explicit quantifiers are forbidden in this form of vocative.)
     </para>
     <para>Finally, a complete sumti may be used, the most general case.</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-tBTa">
@@ -2621,7 +2239,7 @@
       <title><anchor xml:id="c6e12d2" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djonz. klama le zarci</jbo>
+        <jbo>la .djonz. klama lo zarci</jbo>
         <gloss>Those-named Jones go-to the store.</gloss>
         <natlang>The Joneses go to-the store.</natlang>
       </interlinear-gloss>
@@ -2630,19 +2248,20 @@
       <title><anchor xml:id="c6e12d3" /></title>
 
       <interlinear-gloss>
-        <jbo>lai .djonz. klama le zarci</jbo>
-        <gloss>The-mass-of-those-named Jones goes-to the store.</gloss>
+        <jbo>lai .djonz. klama lo zarci</jbo>
+        <gloss>The-group-of-those-named Jones goes-to the store.</gloss>
         <natlang>The Joneses go to the store.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
       In
       <xref linkend="example-random-id-qLgw" />
-      , the significance is that all the persons (perhaps only one) I mean to refer to by the name
+      , the significance is that the persons (perhaps only one) I mean to refer to by the name
       <cmevla>.djonz.</cmevla>
-      are going to the store. In
+      are going to the store &ndash; each of them, or together, as context suggests. In
       <xref linkend="example-random-id-qLHn" />
-      , the Joneses are massified, and only some part of them needs to be going. Of course, by
+      , the Joneses go as a group: the family outing, not necessarily every family member (see
+      <xref linkend="section-masses" />). Of course, by
       <cmevla>.djonz.</cmevla>
       I can mean whomever I want: that person need not use the name
       <cmevla>.djonz.</cmevla>
@@ -2689,7 +2308,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>doi .djan.--.pol.--.djonz. le bloti cu klama fi--la .niuport.--.niuz.</jbo>
+        <jbo>doi .djan.--.pol.--.djonz. lo bloti cu klama fi--la .ni'uport.--.ni'uz.</jbo>
         <gloss>O John--Paul--Jones the boat - goes from-that-named Newport--News.</gloss>
         <natlang>John Paul Jones, the boat comes (to somewhere) from Newport News.</natlang>
 
@@ -2709,7 +2328,7 @@
       (because
       <morphology>mz</morphology>
       is invalid):
-      <cmevla>djeimyz</cmevla>
+      <cmevla>.djeimyz.</cmevla>
       will suffice.
     </para>
     <para>
@@ -2746,32 +2365,18 @@
       when borrowing vowel-final names from English; speakers of other languages may wish to use other consonant endings.
     </para>
 
-    <para>
-      <indexterm type="general"><primary>names with la</primary><secondary>implicit quantifier for</secondary>
-      </indexterm>
-      The implicit quantifier for name sumti of the form
-      <valsi>la</valsi>
-      followed by a cmevla (name-word) is
-      <valsi>su'o</valsi>
-      , just as for
-      <valsi>la</valsi>
-      followed by a selbri.
-    </para>
   </section>
   <section xml:id="section-pro-sumti">
     <title><anchor xml:id="c6s13" />Pro-sumti summary</title>
-    <para>      <indexterm type="general"><primary>pro-sumti</primary><secondary>classes of</secondary>      </indexterm>      The Lojban pro-sumti are the cmavo of selma'o KOhA. They fall into several classes: personal, definable, quantificational, reflexive, back-counting, indefinite, demonstrative, metalinguistic, relative, question. More details are given in      <xref linkend="chapter-anaphoric-cmavo" />      ; this section mostly duplicates information found there, but adds material on the implicit quantifier of each pro-sumti.
+    <para>      <indexterm type="general"><primary>pro-sumti</primary><secondary>classes of</secondary>      </indexterm>      The Lojban pro-sumti are the cmavo of selma'o KOhA. They fall into several classes: personal, definable, quantificational, reflexive, back-counting, indefinite, demonstrative, metalinguistic, relative, question. More details are given in      <xref linkend="chapter-anaphoric-cmavo" />      ; this section mostly duplicates information found there, summarizing each class from the sumti point of view.
     </para>
     <para>
-      <indexterm type="general"><primary>pro-sumti</primary><secondary>implicit quantifier for</secondary>
+      <indexterm type="general"><primary>pro-sumti</primary><secondary>as referring expressions</secondary>
       </indexterm>
-      The following examples illustrate each of the classes. Unless otherwise noted below, the implicit quantification for pro-sumti is
-      <valsi>ro</valsi>
-      (all). In the case of pro-sumti which refer to other sumti, the
-      <valsi>ro</valsi>
-      signifies
-      <quote>all of those referred to by the other sumti</quote>
-      : thus it is possible to restrict, but not to extend, the quantification of the other sumti.
+      The following examples illustrate each of the classes. Pro-sumti are referring expressions, exactly like descriptions: they carry no hidden quantifiers (see
+      <xref linkend="section-quantified-sumti" />). An explicit quantifier selects from a pro-sumti's referents in the usual way &ndash;
+      <jbophrase>re do</jbophrase>
+      is two of the listeners &ndash; so it is possible to restrict, but naturally not to extend, what a pro-sumti refers to.
     </para>
     <para>
       <indexterm type="general"><primary>personal pro-sumti</primary></indexterm>
@@ -2799,13 +2404,9 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="general"><primary>personal pro-sumti</primary><secondary>implicit quantifier for</secondary>
+      <indexterm type="general"><primary>personal pro-sumti</primary><secondary>plural reference of</secondary>
       </indexterm>
-      The personal pro-sumti may be interpreted in context as either representing individuals or masses, so the implicit quantifier may be
-      <valsi>pisu'o</valsi>
-      rather than
-      <valsi>ro</valsi>
-      : in particular,
+      The plural personal pro-sumti
       <valsi>mi'o</valsi>
       ,
       <valsi>mi'a</valsi>
@@ -2813,7 +2414,10 @@
       <valsi>ma'a</valsi>
       , and
       <valsi>do'o</valsi>
-      specifically represent mass combinations of the individuals (you and I, I and others, you and I and others, you and others) that make them up.
+      refer to the relevant combinations of people (you and I, I and others, you and I and others, you and others). As with any plural reference, whether they satisfy a selbri one by one or together is left to context (see
+      <xref linkend="section-masses" />);
+      <jbophrase>mi'o bevri le pipno</jbophrase>
+      is most naturally the two of us carrying it together.
     </para>
 
     <para>
@@ -2846,7 +2450,7 @@
       <title><anchor xml:id="c6e13d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le cribe goi ko'a cu xekri .i ko'a citka le smacu</jbo>
+        <jbo>lo cribe goi ko'a cu xekri .i ko'a citka lo smacu</jbo>
         <gloss>The bear defined-as it-1 - is-black. - It-1 eats the mouse.</gloss>
       </interlinear-gloss>
     </example>
@@ -2877,12 +2481,8 @@
       </indexterm>
       (This is not the same as
       <quote>All persons love a certain fish</quote>
-      ; the difference between the two is one of quantifier order.) The implicit quantification rules for quantificational pro-sumti are particular to them, and are discussed in detail in
-      <xref linkend="chapter-quantifiers" />. Roughly speaking, the quantifier is
-      <valsi>su'o</valsi>
-      (at least one) when the pro-sumti is first used, and
-      <valsi>ro</valsi>
-      (all) thereafter.
+      ; the difference between the two is one of quantifier order.) The quantification conventions for the da-series are particular to it (roughly: a bare da means su'o da on first use, and keeps referring to the same things thereafter), and are discussed in detail in
+      <xref linkend="chapter-quantifiers" />.
     </para>
     <para>
       <indexterm type="general"><primary>reflexive pro-sumti</primary></indexterm>
@@ -2901,7 +2501,7 @@
       <title><anchor xml:id="c6e13d4" /></title>
 
       <interlinear-gloss>
-        <jbo>le cribe cu batci vo'a</jbo>
+        <jbo>lo cribe cu batci vo'a</jbo>
         <gloss>The bear - bites what-is-in-the-x<subscript>1</subscript>-place.</gloss>
         <natlang>The bear bites itself.</natlang>
       </interlinear-gloss>
@@ -2946,17 +2546,15 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="general"><primary>indefinite pro-sumti</primary><secondary>implicit quantifier for</secondary>
+      <indexterm type="lojban-word"><primary>zo'e</primary><secondary>as referring expression</secondary>
       </indexterm>
-      The implicit quantifier for indefinite pro-sumti is, well, indefinite. It might be
-      <valsi>ro</valsi>
-      (all) or
-      <valsi>su'o</valsi>
-      (at least one) or conceivably even
-      <valsi>no</valsi>
-      (none), though
-      <valsi>no</valsi>
-      would require a very odd context indeed.
+      <valsi>zo'e</valsi>
+      simply refers to whatever unspecified thing or things make the bridi sensible in context &ndash; the value the speaker couldn't be bothered to spell out. It is a referring expression like any other, and indeed every description can be thought of as a
+      <valsi>zo'e</valsi>
+      with an explanation attached:
+      <jbophrase>lo zarci</jbophrase>
+      is, in effect,
+      <quote><valsi>zo'e</valsi> which is a market</quote>.
     </para>
     <para>
       <indexterm type="general"><primary>demonstrative pro-sumti</primary></indexterm>
@@ -3011,15 +2609,6 @@
         <gloss>… - The-referent-of the-previous-utterance is-true.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>metalinguistic pro-sumti</primary><secondary>implicit quantifier for</secondary>
-      </indexterm>
-      The implicit quantifier for metalinguistic pro-sumti is
-      <valsi>su'o</valsi>
-      (at least one), because they are considered analogous to
-      <valsi>lo</valsi>
-      descriptions: they refer to things which really are previous, current, or following utterances.
-    </para>
     <para>
       <indexterm type="general"><primary>relative pro-sumti</primary></indexterm>
       The relative pro-sumti (
@@ -3031,12 +2620,12 @@
       <title><anchor xml:id="c6e13d9" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska le mlatu ku poi zo'e</jbo>
+        <jbo>mi viska lo mlatu ku poi zo'e</jbo>
         <gloss>I see the cat(s) - such-that something-unspecified</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… zbasu ke'a loi slasi</jbo>
-        <gloss>… makes it/them-(the-cats) from-a-mass-of plastic.</gloss>
+        <jbo>… zbasu ke'a lo slasi</jbo>
+        <gloss>… makes it/them-(the-cats) from plastic.</gloss>
         <natlang>I see the cat(s) made of plastic.</natlang>
       </interlinear-gloss>
     </example>
@@ -3054,13 +2643,6 @@
         <natlang>Where are you going?</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>question pro-sumti</primary><secondary>implicit quantifier for</secondary>
-      </indexterm>
-      The implicit quantifier for the question pro-sumti is
-      <valsi>su'o</valsi>
-      (at least one), because the listener is only being asked to supply a single answer, not all correct answers.
-    </para>
     <para>
       <indexterm type="general"><primary>definable pro-sumti</primary><secondary>sequences of lerfu words as</secondary>
       </indexterm>
@@ -3153,7 +2735,7 @@
       <title><anchor xml:id="c6e14d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi cusku zoi .kuot. I'm--John .kuot.</jbo>
+        <jbo>mi cusku zoi .ku'ot. I'm--John .ku'ot.</jbo>
         <gloss>I express [non-Lojban] &lt; I'm--John &gt;.</gloss>
         <natlang>
           I say
@@ -3162,13 +2744,9 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="general"><primary>quotation</primary><secondary>implicit quantifier for</secondary>
+      <indexterm type="general"><primary>quotation</primary><secondary>as referring expression</secondary>
       </indexterm>
-      The implicit quantifier for all types of quotation is
-      <valsi>su'o</valsi>
-      (at least one), because quotations are analogous to
-      <valsi>lo</valsi>
-      descriptions: they refer to things which actually are words or sequences of words.
+      Like all other sumti, quotations are referring expressions with no hidden quantifiers: a quotation refers to the quoted words themselves.
     </para>
   </section>
   <section xml:id="section-number-summary">
@@ -3263,12 +2841,11 @@
       </indexterm>
       <indexterm type="general"><primary>numbers</primary><secondary>implicit quantifier for</secondary>
       </indexterm>
-      The implicit quantifier for numbers and mathematical expressions is
-      <valsi>su'o</valsi>
-      , because these sumti are analogous to
-      <valsi>lo</valsi>
-      descriptions: they refer to things which actually are numbers or pieces of text. In the case of numbers (with
-      <valsi>li</valsi>), this is a distinction without a difference, as there is only one number which is 4; but there are many texts
+      Like all other sumti, these are referring expressions with no hidden quantifiers: a
+      <valsi>li</valsi>
+      sumti refers to a number, a
+      <valsi>me'o</valsi>
+      sumti to a piece of text. The difference matters when counting: there is only one number which is 4, but there are many texts
       <quote>4</quote>
       , as many as there are documents in which that numeral appears.
     </para>

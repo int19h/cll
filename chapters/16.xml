@@ -338,7 +338,7 @@
         <natlang>There is something such that Ralph is a dog.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent"> 
+    <para role="noindent">
 
 
  has a variable bound in a prenex whose relevance to the claim of the following bridi is completely unspecified.</para>
@@ -1135,37 +1135,46 @@
       </indexterm>
       <indexterm type="general"><primary>quantified sumti</primary><secondary>different types contrasted for scope for distribution</secondary>
       </indexterm>
-      What about descriptors, like
-      <jbophrase>ci lo gerku</jbophrase>
-      ,
+      <indexterm type="general"><primary>constants</primary><secondary>contrasted with quantified terms</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>implicit quantifiers</primary><secondary>abolition of</secondary>
+      </indexterm>
+      What about descriptions, like
       <jbophrase>le nanmu</jbophrase>
       or
-      <jbophrase>re le ci mlatu</jbophrase>
-      ? They too can be grouped in termsets, but usually need not be, except for the
-      <valsi>lo</valsi>
-      case which functions like the case without a descriptor. Unless an actual quantifier precedes it,
-      <jbophrase>le nanmu</jbophrase>
-      means
-      <jbophrase>ro le nanmu</jbophrase>
-      , as is explained in
-      <xref linkend="section-quantified-descriptions" />. Two sumti with
+      <jbophrase>ci lo gerku</jbophrase>
+      ? An <emphasis>unquantified</emphasis> description is a constant (see
+      <xref linkend="section-quantified-descriptions" />): it refers to particular things, and constants take no part in scope distinctions at all &ndash;
+      <jbophrase>le nanmu cu batci le gerku</jbophrase>
+      raises no how-many-per-which questions, any more than
+      <jbophrase>la .djan. cu batci la .spat.</jbophrase>
+      does. Scope questions arise only for genuinely quantified terms: bare
+      <jbophrase>PA broda</jbophrase>
+      (which is
+      <jbophrase>PA da poi broda</jbophrase>) and descriptions with an <emphasis>explicit outer</emphasis> quantifier, like
+      <jbophrase>re le ci mlatu</jbophrase>. Those can be grouped in termsets exactly like the variables above. And when both quantifiers are
       <valsi>ro</valsi>
-      quantifiers are independent of order, so:
+      , grouping does not matter, since universal claims are independent of order:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-MADY">
       <title><anchor xml:id="c16e7d6" /></title>
 
       <interlinear-gloss>
-        <jbo>[ro] le ci gerku cu batci [ro] le re nanmu</jbo>
-        <gloss>[All-of] the three dogs - bite [all-of] the two men.</gloss>
+        <jbo>ro le ci gerku cu batci ro le re nanmu</jbo>
+        <gloss>All-of the three dogs - bite all-of the two men.</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent">
-      means that each of the dogs specified bites each of the men specified, for six acts of biting altogether. However, if there is an explicit quantifier before
-      <valsi>le</valsi>
-      other than
+      means that each of the dogs specified bites each of the men specified, for six acts of biting altogether. Both
       <valsi>ro</valsi>
-      , the problems of this section reappear.
+      quantifiers must actually be said: it is the explicit
+      <valsi>ro</valsi>
+      that asserts the one-by-one, every-with-every distribution. The unquantified
+      <jbophrase>le ci gerku cu batci le re nanmu</jbophrase>
+      merely says of the dogs and the men that biting goes on between them, without formally spelling out the six pairs &ndash; often the same in practice, but not a synonym. (Older texts follow a different convention here; see
+      <xref linkend="appendix-changes" />.) With explicit quantifiers other than
+      <valsi>ro</valsi>
+      , the scope problems of this section reappear.
     </para>
   </section>
   <section xml:id="section-any">
@@ -1206,11 +1215,33 @@
       <jbophrase>ro da poi klama</jbophrase>
       requires that there are things which
       <valsi>klama</valsi>
-      : Lojban universal claims always imply the corresponding existential claims as well.
+      : Lojban universal claims always imply the corresponding existential claims as well. This implication is of a special, robust kind: it clings to the restriction rather than to the claim, so it survives even when the claim is negated.
+      <jbophrase>naku ro da poi klama le zarci cu cadzu le foldi</jbophrase>
+      still concerns actual store-goers, and is exactly equivalent to
+      <jbophrase>su'o da poi klama le zarci ku'o naku cadzu le foldi</jbophrase>
+      under the negation rules of
+      <xref linkend="section-negation-boundaries" />
+      (the
+      <valsi>ku'o</valsi>
+      keeps the
+      <valsi>naku</valsi>
+      from being swallowed into the relative clause). Logicians call such survivors <quote>presuppositions</quote>; without this reading, the universal-existential implication and the negation rules could not both hold.
       <xref linkend="example-random-id-R4mX" />
       , on the other hand, does not require that there are any people who go to the store: it simply states, conditionally, that if there is anyone who goes to the store, he or she walks across the field as well. This conditional form mirrors the true Lojban translation of
       <xref linkend="example-random-id-R4mX" />
       :
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>ro</primary><secondary>existential import of, status</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>presupposition</primary><secondary>existential import as</secondary>
+      </indexterm>
+      Whether restricted universal claims carry existential import is unsettled; some writing and software treat
+      <jbophrase>ro da poi broda</jbophrase>
+      as vacuously true when nothing brodas. This book teaches the importing, presuppositional reading &ndash; the only one consistent with the negation rules of
+      <xref linkend="section-negation-boundaries" />
+      &ndash; but recognize the alternative in the wild; see
+      <xref linkend="appendix-changes" />.
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-BwU7">
       <title><anchor xml:id="c16e8d3" /></title>
@@ -1273,9 +1304,9 @@
     <para role="indent">
       What to do? Well, the x<subscript>2</subscript> place of
       <valsi>nitcu</valsi>
-      can be filled with an event as well as an object, and in fact
-      <xref linkend="example-random-id-KHya" />
-      can also be paraphrased as:
+      can be filled with an event as well as an object, and that gives us another way to express
+      <xref linkend="example-random-id-7Eu9" />
+      :
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-e7ta">
       <title><anchor xml:id="c16e8d7" /></title>
@@ -1290,9 +1321,16 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      Rewritten using variables,
+      In
       <xref linkend="example-random-id-e7ta" />
-      becomes
+      , the description
+      <jbophrase>lo tanxe poi bramau ti</jbophrase>
+      refers within the hypothesized event of possessing: since the event need not ever come to pass, no actual box is being pointed to. Note that this is as far as the description itself takes us &ndash; an unquantified description is a constant, not a disguised quantifier, so it cannot simply be
+      <quote>expanded</quote>
+      into a
+      <valsi>da</valsi>
+      (see
+      <xref linkend="section-quantified-descriptions" />). To make the logic fully explicit, we say it with a variable of our own, bound inside the abstraction:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-4Pz8">
       <title><anchor xml:id="c16e8d8" /></title>
@@ -1327,7 +1365,7 @@
         <gloss>There-is-an-X which is-a-box and is-bigger-than this-one such-that:</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… mi nitcu le nu mi ponse da</jbo>
+        <jbo>… mi nitcu lo nu mi ponse da</jbo>
         <gloss>… I need the event-of my possessing X.</gloss>
       </interlinear-gloss>
     </example>
@@ -1337,7 +1375,7 @@
       <indexterm type="general"><primary>existential variable</primary><secondary>in abstraction contrasted with in main bridi</secondary>
       </indexterm>
       But what are the implications of
-      <xref linkend="example-random-id-e7ta" />
+      <xref linkend="example-random-id-4Pz8" />
       and
       <xref linkend="example-random-id-7KKM" />
       ? The main difference is that in
@@ -1345,7 +1383,7 @@
       , the
       <valsi>da</valsi>
       is said to exist in the real world of the outer bridi; but in
-      <xref linkend="example-random-id-e7ta" />
+      <xref linkend="example-random-id-4Pz8" />
       , the existence is only within the inner bridi, which is a mere event that need not necessarily come to pass. So
       <xref linkend="example-random-id-7KKM" />
       means
@@ -1361,9 +1399,11 @@
       which is what
       <xref linkend="example-random-id-fAo5" />
       says, whereas
+      <xref linkend="example-random-id-4Pz8" />
+      &ndash; and its looser everyday counterpart
       <xref linkend="example-random-id-e7ta" />
-      turns out to be an effective translation of our original
-      <xref linkend="example-random-id-R4mX" />. So uses of
+      &ndash; turns out to be an effective translation of our original
+      <xref linkend="example-random-id-7Eu9" />. So uses of
       <quote>any</quote>
       that aren't universal end up being reflected by variables bound in the prenex of a subordinate bridi.
     </para>
@@ -1379,6 +1419,18 @@
       <quote>there is a Y</quote>
       and the like must be understood as
       <quote>there is at least one Y, possibly more</quote>.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>na</primary><secondary>scope of, status</secondary>
+      </indexterm>
+      The scope of
+      <valsi>na</valsi>
+      is officially unsettled; this whole-bridi rule &ndash;
+      <valsi>na</valsi>
+      before the selbri equals
+      <valsi>naku</valsi>
+      at the left end of the prenex, outscoping even quantifiers that precede it &ndash; is the working account, implemented by current semantic software. The alternatives are catalogued in
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="general"><primary>bridi negation</primary><secondary>two forms of</secondary>

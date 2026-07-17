@@ -2295,11 +2295,12 @@
       </indexterm>
       <indexterm type="lojban-word"><primary>fi'o</primary><secondary>restriction on use</secondary>
       </indexterm>
-      Note: the first edition stated that, due to restrictions on its parsing algorithm, modal connectives could not be formed with the
+      Note: modal connectives can also be formed with the
       <jbophrase>fi'o-</jbophrase>
-      plus-selbri form of modal, only with the predefined modals of selma'o BAI. The current de-facto grammar has no such restriction: a form like
+      plus-selbri form of modal &ndash; a form like
       <jbophrase>.i fi'o bapli fe'u bo</jbophrase>
-      is accepted. Such connectives remain rare in practice, and the BAI forms shown in
+      is accepted (older grammars rejected it; see
+      <xref linkend="appendix-changes" />). Such connectives remain rare in practice, and the BAI forms shown in
       <xref linkend="section-causals" />
       and
       <xref linkend="section-modal-connectives" />
@@ -3375,7 +3376,7 @@
       </indexterm>
       Note: Modals made with
       <valsi>fi'o</valsi>
-      plus a selbri cannot be negated directly (this restriction, unlike some others of the first edition's parser, is still enforced by the current grammar). The selbri can itself be negated either with contradictory or with scalar negation, however.
+      plus a selbri cannot be negated directly. The selbri can itself be negated either with contradictory or with scalar negation, however.
     </para>
   </section>
   <section xml:id="section-sticky-modals">
@@ -3471,11 +3472,12 @@
       </indexterm>
       <indexterm type="general"><primary>sticky modals</primary><secondary>&apos;fi'o&apos; proscribed from</secondary>
       </indexterm>
-      Note: the first edition stated that modals made with
+      Note: modals made with
       <valsi>fi'o</valsi>
-      -plus-selbri could not be made sticky, calling this an unfortunate but unavoidable restriction. The current de-facto grammar has removed it:
+      -plus-selbri can be made sticky like any other:
       <jbophrase>fi'o bapli fe'u ki</jbophrase>
-      is accepted, with the expected meaning.
+      is accepted, with the expected meaning (older grammars rejected it; see
+      <xref linkend="appendix-changes" />).
     </para>
   </section>
   <section xml:id="section-connected-modals">
@@ -3775,14 +3777,14 @@
     <para role="status-note">
       <indexterm type="general"><primary>BAI selma'o</primary><secondary>status of definitions</secondary>
       </indexterm>
-      (A status note: the whole BAI apparatus is checkpointed. In 2005 the language-definition committee restated every BAI, place by place, in six frozen sections completed on 16 June 2005; that restatement follows exactly the
-      <valsi>fi'o</valsi>-plus-gismu model this chapter teaches, and reverses no BAI's basic relation. The conversion glosses in the table below follow the checkpointed wording throughout; in a few rows where the underlying place structure was itself revised after the first edition &ndash;
+      (The BAI definitions in this chapter, including every gloss in the table below, follow the committee's checkpointed 2005 restatement. A few rows &ndash;
       <valsi>ti'u</valsi>
       ,
       <valsi>ci'e</valsi>
-      , and
+      ,
       <valsi>tai</valsi>
-      &ndash; the rows follow the revised, checkpointed order.)
+      &ndash; differ from older lists; see
+      <xref linkend="appendix-changes" />.)
     </para>
     <para role="allowbreaks" />
     <cmavo-list>

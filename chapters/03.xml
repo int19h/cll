@@ -4704,9 +4704,12 @@ There are two reasons for using full vowel elements.
       Firstly, to give a distinct visual style and flavour to cmevla and fu'ivla.
     </para>
     <para>
-      Secondly, to represent the first edition's comma convention, under which a written comma could force a syllable division between vowels. (Under the current rule the comma adds no sound and forces nothing &ndash; see
-      <xref linkend="section-lojban-characters" />
-      &ndash; so this zbalermorna device now reflects an obsolete contrast.) In that older convention, full vowel elements could represent a comma and a following vowel. An example would be
+      Secondly, to spell a vowel that follows a written comma: full vowel elements let the script preserve the spelling distinction between, say,
+      <quote xml:lang="jbo">.uein.</quote>
+      and
+      <quote xml:lang="jbo">.ue,in.</quote>
+      &ndash; a distinction of spelling only, since the comma adds no sound (see
+      <xref linkend="section-lojban-characters" />). An example would be
       <simplelist type="horiz">
         <member>
           <quote xml:lang="jbo"><foreignphrase xml:lang="zlm"></foreignphrase></quote> (<quote xml:lang="jbo">.uein.</quote>)

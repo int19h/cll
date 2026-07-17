@@ -1060,16 +1060,20 @@
       <valsi>jei</valsi>
       that way had not yet been established.
     </para>
-    <para role="status-note">
-      <indexterm type="lojban-word"><primary>jei</primary><secondary>status of fuzzy interpretation</secondary>
-      </indexterm>
-      (They still have not been, and the question was never officially settled either way. The number-valued reading has not become established in ordinary use: prevailing practice treats a
+    <para>
+      They still have not been, and the number-valued reading never became established: where
       <valsi>jei</valsi>
-      abstraction, where it is used at all, as a plain whether-or-not truth value, and expresses degrees with
+      is used at all, prevailing practice treats it as a plain whether-or-not truth value, and says degrees with
       <valsi>ni</valsi>
       or with a
       <valsi>ka</valsi>
-      property and an explicit scale. Expect either reading in the wild, and prefer the unambiguous alternatives when degree matters.)
+      property and an explicit scale. Expect either reading in the wild, and prefer the unambiguous alternatives when degree matters.
+    </para>
+    <para role="status-note">
+      <indexterm type="lojban-word"><primary>jei</primary><secondary>status of fuzzy interpretation</secondary>
+      </indexterm>
+      (The question was never officially settled either way; see
+      <xref linkend="appendix-changes" />.)
     </para>
   </section>
   <section xml:id="section-predications">

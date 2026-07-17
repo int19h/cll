@@ -672,10 +672,9 @@
     <para role="status-note">
       <indexterm type="general"><primary>comma</primary><secondary>change from first edition</secondary>
       </indexterm>
-      (The first edition also permitted pronouncing a comma as
-      <phrase role="IPA">[h]</phrase>; that permission is withdrawn &ndash; if you want the
+      (If you want the
       <phrase role="IPA">[h]</phrase>
-      sound, write the apostrophe. See
+      sound, write the apostrophe &ndash; a comma never carries it. Older conventions differed; see
       <xref linkend="appendix-changes" />.)
     </para>
 
@@ -740,9 +739,7 @@
     <para role="status-note">
       <indexterm type="general"><primary>comma</primary><secondary>first-edition name spellings with</secondary>
       </indexterm>
-      (The first edition offered a third version here, spelled with commas &ndash;
-      <quote>.i,ai,i,ai,on.</quote>
-      &ndash; relying on the comma's since-withdrawn power to stand for a sound. That device is gone: spell out what you want said, with apostrophes or with explicit glide letters. See
+      (Spell out what you want said, with apostrophes or with explicit glide letters. The first edition printed a third version here using a device that no longer exists; see
       <xref linkend="appendix-changes" />.)
     </para>
   </section>

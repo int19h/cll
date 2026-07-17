@@ -2013,13 +2013,16 @@
       <valsi valid="maybe">ro'inre'o</valsi>. The same lujvo could also be expressed without hyphenation as
       <valsi valid="maybe">rokre'o</valsi>.
     </para>
+    <para>
+      This book teaches the classical rule: a hyphen appears exactly where it is needed and nowhere else. The formal word-form grammar is more liberal &ndash; it also accepts unneeded hyphens (
+      <jbophrase>naltosymabru</jbophrase>
+      , say), so expect software to swallow them, but write classically.
+    </para>
     <para role="status-note">
       <indexterm type="general"><primary>hyphens</primary><secondary>optional, status of</secondary>
       </indexterm>
-      This book teaches the classical rule: a hyphen appears exactly where it is needed and nowhere else. The formal word-form grammar is more liberal &ndash; it also accepts unneeded hyphens (
-      <jbophrase>naltosymabru</jbophrase>
-      , say), so expect software to swallow them. Write classically; for the standing of the liberal acceptance, see
-      <xref linkend="appendix-changes" />.
+      (For the standing of the liberal acceptance, see
+      <xref linkend="appendix-changes" />.)
     </para>
     <para>
       <indexterm type="general"><primary>lujvo</primary><secondary>with zei</secondary>

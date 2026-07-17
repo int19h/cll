@@ -31,7 +31,7 @@
       Meanwhile, the community's working grammars are stated in a different formal system: parsing expression grammars (PEG), which cover morphology and syntax together and incorporate the committee-adopted amendments described throughout this book. The standard camxes PEG is the principal de facto compatibility target across the tooling surveyed for this edition. Some of those tools implement it directly; others reimplement its behavior. None of it was ever ratified.
     </para>
     <para role="status-note">
-      (Where this book's text and the EBNF printed below disagree with the amendments, the amendments prevail, and each is flagged where it is taught; the EBNF itself is printed as baselined.)
+      Where this book's text and the EBNF printed below disagree with the amendments, the amendments prevail, and each is flagged where it is taught; the EBNF itself is printed as baselined.
     </para>
     <para>
       <indexterm type="general"><primary>tags</primary><secondary>binding to selbri, in the formal grammar</secondary>
@@ -43,15 +43,15 @@
       (quotation, erasure, and their kin) are represented below only by placeholder rules. Their real behavior is word-level and is specified in
       <xref linkend="chapter-structure" />
       , rule by rule &ndash; including the genuinely unsettled
-      <valsi>sa</valsi>. Second, where a tag stands directly before a selbri, the EBNF permits more than one grouping. The BPFK-approved 2016 tag-binding decision &ndash; a vote of the language-definition committee whose story is told in
+      <valsi>sa</valsi>. Second, where a tag stands directly before a selbri, the EBNF permits more than one grouping. The BPFK-approved tag-binding decision picks one &ndash; the BPFK is the language-definition committee, whose story is told in
       <xref linkend="chapter-about" />
-      &ndash; picks one (see
-      <xref linkend="section-tenses-introduction" />), and the parsers surveyed for this edition implement that choice. Third, a tense standing bare before a forethought connective construction was not accepted by the baseline parser at all. The de facto grammars accept it, reading the tense as a term scoping over the whole construction (see
+      &ndash; and the parsers surveyed for this edition implement that choice; see
+      <xref linkend="section-tenses-introduction" />. Third, a tense standing bare before a forethought connective construction was not accepted by the baseline parser at all. The de facto grammars accept it, reading the tense as a term scoping over the whole construction (see
       <xref linkend="chapter-connectives" />).
     </para>
     <para role="status-note">
-      (The three seams carry three different standings &ndash; genuinely unsettled, committee-approved, and implemented-but-never-voted, respectively; the full catalog is in
-      <xref linkend="appendix-changes" />.)
+      The three seams carry three different standings &ndash; genuinely unsettled, committee-approved, and implemented-but-never-voted, respectively; the full catalog is in
+      <xref linkend="appendix-changes" />.
     </para>
   </section>
   <section xml:id="section-EBNF">

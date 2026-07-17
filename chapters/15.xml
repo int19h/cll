@@ -179,8 +179,9 @@
     <para role="status-note">
       <indexterm type="general"><primary>na</primary><secondary>scope of, status</secondary>
       </indexterm>
-      This whole-bridi rule is also how current semantic software reads
-      <valsi>na</valsi>; older discussion entertains a narrower scope &ndash; see
+      The scope of
+      <valsi>na</valsi>
+      is officially unsettled; this whole-bridi rule is the working account, and current semantic software implements it &ndash; see
       <xref linkend="appendix-changes" />. How
       <valsi>na</valsi>
       interacts with quantified variables is taken up in

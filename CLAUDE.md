@@ -56,3 +56,23 @@ The ZG (2007) promise stands: pre-xorlo CLL usage is "not incorrect" — describ
 ## Build
 
 Full book build is containerized (`Dockerfile`, `run_container.sh`; Prince for PDF) and slow (~1h). Single-chapter test: `./cll_build -t chapters/NN.xml`. Native-Ubuntu setup notes: `~/git/cll.v0/README-UBUNTU.md`. XML validity: `xmllint` against `dtd/`.
+
+## Coordination (IRC)
+
+All agent sessions on this machine (Claude PM sessions across projects, Codex workers, the owner) coordinate over a local Ergo IRC server at `127.0.0.1:6667`. **Read `~/git/agent-ops/docs/protocol.md` before first use** — it defines identity, channels, message prefixes, waiting, and durability rules. Tooling lives in `~/git/agent-ops/bin/`.
+
+- Your role account is **`pm-cll`** (provisioned; credentials under `~/.local/state/agent-irc/pm-cll/`). Global Claude hooks already inject unread messages at turn boundaries — the role is resolved from the repo name, so this works without per-session setup. To wait actively for a reply, run `~/git/agent-ops/bin/irc-checkmail pm-cll --wait` as a background task.
+- Send: `~/git/agent-ops/bin/irc-send pm-cll '#cll' 'STATUS: ...'`.
+- Channels: **`#cll`** is the project board (registered). Epic/workitem channels follow `#cll-<issue>` / `#cll-<epic>-<item>` using GitHub issue numbers; register channels at creation (`CS REGISTER`) or they lose identity when emptied. Codex worker roles are `codex-cll-<item>` via `bin/irc-role create`.
+- Messages are terse pointers with a machine-scannable prefix (`STATUS:` / `DONE:` / `ASK:` / `ANSWER:` / `ASSUMPTION:` / `HANDOFF:` / `CLAIM:` / `RELEASE:`). Anything durable (the "why") belongs in commits/PRs/issues, never only in IRC.
+- Cross-project concerns that affect the whole machine (disk space, long resource-hungry runs) are announced on `#cll` so other projects' sessions see them; `pm-jbotci` and the owner are reachable the same way.
+- CLL specifics: codex reviews are one-shot (`codex exec`, report files in `research/`), not IRC workers — dispatch the worker protocol only for genuinely long-running workitems. Containerized book builds (podman; ~15 min for an HTML-only target, ~1h for the full build with PDF) and review fan-outs are the project's main local load; `CLAIM:`/`RELEASE:` anything beyond one concurrent build or three concurrent reviews. Pages deploys run on GitHub CI and cost nothing locally. Review prompts must direct any combined-tree/build scratch to `~/build/cll-review-scratch/` with cleanup.
+
+## Shared machine resources (disk)
+
+This machine is shared by many concurrent agent sessions, and `/tmp` is a **32G RAM-backed tmpfs shared by all of them**. On 2026-07-17, CLL review scratch (~25G of per-chapter checkouts and branch build trees) filled it completely, which killed ssh and most in-flight Claude sessions machine-wide. Rules:
+
+- Multi-GB scratch (chapter checkouts, build trees, fan-out worktrees) goes under `~/build/<name>` on the container disk — NOT `/tmp` (RAM-backed) and NOT `~/git` (near-full macOS-backed share). `/tmp` is fine for small files only.
+- Delete superseded scratch as soon as a round completes; never let old rounds accumulate alongside the new one.
+- Before any fan-out that creates many checkouts/build dirs, check `df -h /tmp ~/build` and keep several GB of headroom on each.
+- Announce unusually large temporary usage with a `CLAIM:` on `#cll` (and `RELEASE:` when freed) so other sessions can account for it.

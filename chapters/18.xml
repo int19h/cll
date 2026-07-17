@@ -2324,8 +2324,8 @@
     <para role="status-note">
       <indexterm type="general"><primary>implicit quantifiers</primary><secondary>abolition of, in mekso contexts</secondary>
       </indexterm>
-      (This is the ratified gadri rule; older texts follow a different convention here &ndash; see
-      <xref linkend="appendix-changes" />.)
+      This is the ratified gadri rule; older texts follow a different convention here &ndash; see
+      <xref linkend="appendix-changes" />.
     </para>
   </section>
   <section xml:id="section-radixen">
@@ -3382,14 +3382,14 @@
     <para role="status-note">
       <indexterm type="lojban-word"><primary>tu'o</primary><secondary>contrasted with mo'e zo'e</secondary>
       </indexterm>
-      (A usage note, post-first-edition and unratified: when an operand is not a mere grammatical filler but a genuinely <emphasis>unspecified</emphasis> quantity &ndash;
+      When an operand is not a mere grammatical filler but a genuinely <emphasis>unspecified</emphasis> quantity &ndash;
       <quote>some number or other</quote>
       &ndash; modern practice prefers
       <jbophrase>mo'e zo'e</jbophrase>
       , the elliptical sumti converted to an operand (see
       <xref linkend="section-lojban-within-mekso" />), reserving
       <valsi>tu'o</valsi>
-      for the truly vacuous slot as here.)
+      for the truly vacuous slot as here.
     </para>
     <para>
       <indexterm type="general"><primary>exponential notation</primary><secondary>with &quot;gei&quot;</secondary>

@@ -1250,12 +1250,11 @@
       <jbophrase>mi fi'o kanla viska do</jbophrase>
       absorbs
       <valsi>viska</valsi>
-      into the modal (an eye-type-of-seeing modal, with no main selbri left), where
+      into the modal &ndash; an eye-type-of-seeing modal, with no main selbri left &ndash; where
       <jbophrase>mi fi'o kanla fe'u viska do</jbophrase>
       says
-      <quote>I see you with the eye(s)</quote>
-      (see
-      <xref linkend="section-modal-selbri" />). Words that cannot continue a selbri &ndash; a following sumti, a tense tag, a connective between tags &ndash; do not force the
+      <quote>I see you with the eye(s)</quote>; see
+      <xref linkend="section-modal-selbri" />. Words that cannot continue a selbri &ndash; a following sumti, a tense tag, a connective between tags &ndash; do not force the
       <valsi>fe'u</valsi>
       ; but beware of selbri in disguise, such as number-plus-
       <valsi>moi</valsi>
@@ -2918,18 +2917,20 @@
       <quote>dated</quote>),
       <valsi>du'i</valsi>
       (
-      <quote>as much as</quote>). (A conventions note on
-      <valsi>de'i</valsi>
-      : the tagged date or time is normally a number built with the numerical-punctuation cmavo
+      <quote>as much as</quote>). Some BAI tags can be used equally well in relative phrases or attached to bridi; others seem useful only attached to bridi. But it is also possible that the usefulness of particular BAI modals is an English-speaker bias, and that speakers of other languages may find other BAIs useful in divergent ways.
+    </para>
+    <para>
+      A convention worth knowing for
+      <valsi>de'i</valsi>: the tagged date or time is normally a number built with the numerical-punctuation cmavo
       <valsi>pi'e</valsi>
-      &ndash;
+      , as in
       <jbophrase>de'i li 2026 pi'e 7 pi'e 12</jbophrase>
-      for a year-month-day date &ndash; and clock times use
+      for a year-month-day date. Clock times use
       <valsi>ti'u</valsi>
       the same way; see
       <xref linkend="section-radixen" />
       for
-      <valsi>pi'e</valsi>.) Some BAI tags can be used equally well in relative phrases or attached to bridi; others seem useful only attached to bridi. But it is also possible that the usefulness of particular BAI modals is an English-speaker bias, and that speakers of other languages may find other BAIs useful in divergent ways.
+      <valsi>pi'e</valsi>.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>fi'o</primary><secondary>usage of modals in relative phrases</secondary>
@@ -3324,15 +3325,16 @@
     <para role="status-note">
       <indexterm type="general"><primary>BAI selma'o</primary><secondary>negation, status of</secondary>
       </indexterm>
-      (A status note: this reading of BAI plus
+      This reading of BAI plus
       <jbophrase>nai</jbophrase>
-      &ndash; the main claim stands, the relation is denied, and nothing is said about the tagged event itself &ndash; is checkpointed: the committee's 2005 causals decision adopted it explicitly, settling an old conflict with the word lists in this book's favor. For the other,
+      &ndash; the main claim stands, the relation is denied, and nothing is said about the tagged event itself &ndash; is checkpointed; older word lists read it differently (see
+      <xref linkend="appendix-changes" />). For the other,
       <quote>despite</quote>
       -like sense &ndash; not prevented by &ndash; use
       <jbophrase>to'e ri'a nai</jbophrase>
       and its kin, with scalar
       <valsi>to'e</valsi>
-      on the underlying gismu.)
+      on the underlying gismu.
     </para>
     <para>
       <indexterm type="general"><primary>modals</primary><secondary>scalar negation of</secondary>
@@ -3777,14 +3779,14 @@
     <para role="status-note">
       <indexterm type="general"><primary>BAI selma'o</primary><secondary>status of definitions</secondary>
       </indexterm>
-      (The BAI definitions in this chapter, including every gloss in the table below, follow the committee's checkpointed 2005 restatement. A few rows &ndash;
+      The BAI definitions in this chapter, including every gloss in the table below, are the checkpointed ones. A few rows &ndash;
       <valsi>ti'u</valsi>
       ,
       <valsi>ci'e</valsi>
       ,
       <valsi>tai</valsi>
       &ndash; differ from older lists; see
-      <xref linkend="appendix-changes" />.)
+      <xref linkend="appendix-changes" />.
     </para>
     <para role="allowbreaks" />
     <cmavo-list>
@@ -4404,9 +4406,9 @@
     <para>
       This lujvo is employed because
       <valsi>tarmi</valsi>
-      does not have a place structure useful for the modal's purpose. (A caution for dictionary users: the place structure shown here is the checkpointed one, which the conversion glosses in this chapter follow; the community dictionary's stand-alone
+      does not have a place structure useful for the modal's purpose. A caution for dictionary users: the place structure shown here is the checkpointed one, and the conversion glosses in this chapter follow it. The community dictionary's stand-alone
       <valsi>tamsmi</valsi>
-      entry still carries an older ordering with the form in the x<subscript>2</subscript> place.)
+      entry still carries an older ordering, with the form in the x<subscript>2</subscript> place.
     </para>
   </section>
 </chapter>

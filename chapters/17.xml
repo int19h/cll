@@ -535,9 +535,9 @@
     <para role="status-note">
       <indexterm type="general"><primary>shift word</primary><secondary>scope, status of</secondary>
       </indexterm>
-      (A status note: this bounded-string scope rule is checkpointed &ndash; it is stated by the language-definition committee's frozen 2005 letteral decision, which also gives
-      <valsi>ce'a</valsi>
-      its per-category replacement behavior. The first edition &ndash; and an earlier, superseded 2004 committee page &ndash; instead suggested that a shift might persist until contradicted or until the end of the text, with the bounded reading only a practical presumption; the governing 2005 decision settles it the bounded way.)
+      (This bounded-string scope rule, and
+      <valsi>ce'a</valsi>'s per-category replacement behavior, follow the committee's checkpointed 2005 letteral decision. Older accounts read shifts more broadly; see
+      <xref linkend="appendix-changes" />.)
     </para>
     <para>
       <indexterm type="general"><primary>shift</primary><secondary>single-letter</secondary>
@@ -682,17 +682,13 @@
       </indexterm>
       is needed when discussing
       <valsi>bu</valsi>
-      in Lojban. The first edition also listed here the two members of selma'o BAhE &ndash;
+      in Lojban. Whether
+      <valsi>bu</valsi>
+      may bind the two members of selma'o BAhE &ndash;
       <valsi>ba'e</valsi>
       , the emphasis marker, and
       <valsi>za'e</valsi>
-      , the nonce-word marker; whether
-      <valsi>bu</valsi>
-      may bind either of them (making a
-      <quote>ba'e</quote>
-      or
-      <quote>za'e</quote>
-      letteral) is a genuinely contested corner &ndash; the two principal parsers used to verify this edition allow both &ndash; and is best simply avoided. It is also illegal to attach
+      , the nonce-word marker &ndash; is a genuinely contested corner: current parsers allow both, but the question was never settled, and such letterals are best simply avoided. It is also illegal to attach
       <valsi>bu</valsi>
       to itself, but more than one
       <valsi>bu</valsi>

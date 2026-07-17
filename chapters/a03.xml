@@ -44,11 +44,11 @@
     <para>
       <indexterm type="general"><primary>xorlo</primary><secondary>summary of changes</secondary>
       </indexterm>
-      <emphasis>Ratified</emphasis> (2004 checkpoint; adopted as the working baseline 2007; ratified by LLG vote in 2020 &ndash; the vote fixed a specific archived revision of the committee's gadri page (MediaWiki revision 123823, of 3 April 2020) as the official description, together with two expressly stated corrections: a typo,
+      <emphasis>Ratified</emphasis>. First checkpointed in 2004, adopted as the working baseline in 2007, and ratified by LLG vote in 2020; the vote fixed MediaWiki revision 123823 (3 April 2020) of the committee's gadri page as the official description, together with two expressly stated corrections: a typo,
       <jbophrase>mokla</jbophrase>
       for
       <valsi>moklu</valsi>
-      , and a repaired final clause in its unicorn example). The largest change in the book, taught in
+      , and a repaired final clause in its unicorn example. The largest change in the book, taught in
       <xref linkend="chapter-sumti" />
       and fundamental to
       <xref linkend="chapter-quantifiers" />. The first edition gave every description hidden default quantifiers (
@@ -265,11 +265,31 @@
           <valsi>zei</valsi>
           in its connectives decision, and
           <valsi>bu</valsi>
-          by a definition using an exception list; the
+          by a definition using an exception list. The
           <valsi>y</valsi>
           and
           <valsi>fa'o</valsi>
-          rules have their own checkpointed definitions, and the erasure words were deliberately left out. This edition presents all of it under one uniform principle and flags its two contested corners. The first edition's
+          rules have their own checkpointed definitions;
+          <valsi>fa'o</valsi>'s capture exceptions name
+          <valsi>zo</valsi>
+          ,
+          <jbophrase>lo'u&hellip;le'u</jbophrase>
+          , service as a
+          <valsi>zoi</valsi>
+          delimiter, and a preceding
+          <valsi>zei</valsi>
+          , with capture inside a
+          <valsi>zoi</valsi>
+          payload following from the
+          <valsi>zoi</valsi>
+          rule itself. This edition presents all of it under one uniform principle and flags its two contested corners: whether
+          <valsi>bu</valsi>
+          may bind the BAhE words, and whether
+          <jbophrase>le'u bu</jbophrase>
+          is a letteral.
+        </para>
+        <para>
+          The first edition's
           <jbophrase>zo le'u</jbophrase>
           loophole is gone. A quotation now erases as a single unit &ndash;
           <jbophrase>zo si si</jbophrase>
@@ -277,15 +297,18 @@
           <valsi>zo</valsi>
           took three
           <valsi>si</valsi>
-          words. (The first edition also noted that its own machine parser did not implement
+          words. The first edition also noted that its own machine parser did not implement
           <valsi>si</valsi>
-          erasure at all; the parsers surveyed for this edition do.) Erasure was never voted:
+          erasure at all; the parsers surveyed for this edition do.
+        </para>
+        <para>
+          Erasure was never voted; the boundary rules this edition teaches come from the community's later erasure proposal.
           <valsi>si</valsi>
-          as taught is de facto (implemented alike in the surveyed parsers);
+          as taught is de facto, implemented alike in the surveyed parsers.
           <valsi>su</valsi>
-          is de facto but unevenly implemented (the surveyed parsers disagree on whether the paragraph boundary itself is preserved);
+          is de facto but unevenly implemented: the surveyed parsers disagree on whether the paragraph boundary itself is preserved.
           <valsi>sa</valsi>
-          remains unsettled. See
+          remains unsettled &ndash; its precise rule was deliberately left undecided when the rest of the word-level machinery was frozen, a later proposal (erase back to the last word of the same selma'o) never gained standing, and parsers implement differing approximations. See
           <xref linkend="chapter-structure" />.
         </para>
       </listitem>
@@ -334,7 +357,14 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>e-series attitudinals</primary><secondary>change summary</secondary></indexterm>
-          <emphasis>Editorial, following usage</emphasis> (from a committee rework never put to a vote):
+          <emphasis>Editorial, following usage</emphasis>. The senses taught come from the language-definition committee's reworking of these cmavo, drafted and discussed but never completed or put to a vote; modern use attests them, and the community's own contributions follow them &ndash; witness coinages like
+          <jbophrase>e'ende</jbophrase>
+          ,
+          <quote>exhorts</quote>
+          , and
+          <jbophrase>e'inde</jbophrase>
+          ,
+          <quote>instructs</quote>. In detail:
           <valsi>.e'e</valsi>
           is exhortation (first edition: competence),
           <valsi>.e'i</valsi>
@@ -349,15 +379,13 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>BAI</primary><secondary>change summary</secondary></indexterm>
-          <emphasis>Checkpointed</emphasis> (16 June 2005). The committee restated every BAI place by place, and no BAI's basic relation was reversed &ndash; but the restatement was not empty: it filled in meanings for some thirty converted BAI (forms like
+          <emphasis>Checkpointed</emphasis> (16 June 2005). The committee restated every BAI place by place, and no BAI's basic relation was reversed. The restatement was not empty, though. It filled in meanings for some thirty converted BAI, forms like
           <jbophrase>te pi'o</jbophrase>
-          ) that the first edition's tables left blank, revised the place order of
-          <valsi>tai</valsi>
-          , tightened several glosses to the checkpointed wording (notably
+          , that the first edition's tables left blank. It revised the place order of
+          <valsi>tai</valsi>. It tightened several glosses to the checkpointed wording:
           <valsi>ti'u</valsi>
-          , a time-of-day stamp, and
-          <valsi>ci'e</valsi>
-          , whose
+          is a time-of-day stamp, and
+          <valsi>ci'e</valsi>'s
           <jbophrase>se ci'e</jbophrase>
           became
           <quote>with system structure</quote>
@@ -366,7 +394,7 @@
           , gaining a
           <jbophrase>ve ci'e</jbophrase>
           ,
-          <quote>with synergy in</quote>), and settled the old reading dispute over BAI-plus-
+          <quote>with synergy in</quote>. And it settled the old reading dispute over BAI-plus-
           <jbophrase>-nai</jbophrase>
           in this book's favor. See
           <xref linkend="chapter-sumti-tcita" />.
@@ -379,7 +407,15 @@
           <valsi>.ybu</valsi>
           is recognized as a unit before any word-level processing; the
           <valsi>bu</valsi>
-          rules were fixed by exception list, with two corners where this edition follows the later synthesis instead. See
+          rules were fixed by exception list &ndash; the frozen list exempted the BAhE words and
+          <valsi>le'u</valsi>
+          , among others &ndash; with two corners where this edition follows the later synthesis instead:
+          <jbophrase>ba'e bu</jbophrase>
+          and
+          <jbophrase>za'e bu</jbophrase>
+          (forbidden by the list, permitted by the synthesis and by current parsers), and
+          <jbophrase>le'u bu</jbophrase>
+          (likewise). See
           <xref linkend="chapter-letterals" />.
         </para>
       </listitem>
@@ -422,7 +458,7 @@
         <quote>medium</quote>
         readings; a regularization to
         <quote>unspecified</quote>
-        circulated as a proposal only. See
+        &ndash; along with a re-reading of a distance word's tagged sumti as naming the distance itself rather than the reference point &ndash; circulated as a proposal only. See
         <xref linkend="chapter-tenses" />.
       </para></listitem>
       <listitem><para>

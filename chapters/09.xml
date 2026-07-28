@@ -1246,9 +1246,19 @@
       , semantically it belongs in the x<subscript>1</subscript> place of
       <valsi>kanla</valsi>. The selbri may be terminated with
       <valsi>fe'u</valsi>
-      (of selma'o FEhU), an elidable terminator which is rarely required unless a non-logical connective follows the tag (omitting
+      (of selma'o FEhU), an elidable terminator. It can be left out when a sumti follows, as here. It is required exactly when the following material could otherwise be read as <emphasis>continuing the modal's selbri</emphasis> as a tanru &ndash; above all, when the tagged main selbri comes next:
+      <jbophrase>mi fi'o kanla viska do</jbophrase>
+      absorbs
+      <valsi>viska</valsi>
+      into the modal &ndash; an eye-type-of-seeing modal, with no main selbri left &ndash; where
+      <jbophrase>mi fi'o kanla fe'u viska do</jbophrase>
+      says
+      <quote>I see you with the eye(s)</quote>; see
+      <xref linkend="section-modal-selbri" />. Words that cannot continue a selbri &ndash; a following sumti, a tense tag, a connective between tags &ndash; do not force the
       <valsi>fe'u</valsi>
-      in that case would make the connective affect the selbri).
+      ; but beware of selbri in disguise, such as number-plus-
+      <valsi>moi</valsi>
+      forms.
     </para>
     <para>
       <indexterm type="general"><primary>modal sumti</primary><secondary>and FA marking</secondary>
@@ -1546,7 +1556,7 @@
       <interlinear-gloss>
         <jbo>lo nanmu be--do'e le berti cu klama le tcadu</jbo>
 
-        <gloss>Some man [related-to] the north - came to-the city.</gloss>
+        <gloss>A man [related-to] the north - came to-the city.</gloss>
         <natlang>A man of the north came to the city.</natlang>
       </interlinear-gloss>
     </example>
@@ -2280,16 +2290,20 @@
       justice.
     </para>
     <para>
-      <indexterm type="general"><primary>modal connectives</primary><secondary>fi'o prohibited in</secondary>
+      <indexterm type="general"><primary>modal connectives</primary><secondary>with fi'o</secondary>
       </indexterm>
       <indexterm type="lojban-word"><primary>fi'o</primary><secondary>restriction on use</secondary>
       </indexterm>
-      Note: Due to restrictions on the Lojban parsing algorithm, it is not possible to form modal connectives using the
+      Note: modal connectives can also be formed with the
       <jbophrase>fi'o-</jbophrase>
-      plus-selbri form of modal. Only the predefined modals of selma'o BAI can be compounded as shown in
+      plus-selbri form of modal &ndash; a form like
+      <jbophrase>.i fi'o bapli fe'u bo</jbophrase>
+      is accepted (older grammars differ here; see
+      <xref linkend="appendix-changes" />). Such connectives remain rare in practice, and the BAI forms shown in
       <xref linkend="section-causals" />
       and
-      <xref linkend="section-modal-connectives" />.
+      <xref linkend="section-modal-connectives" />
+      are the usual choice.
     </para>
   </section>
   <section xml:id="section-modal-selbri">
@@ -2906,6 +2920,19 @@
       <quote>as much as</quote>). Some BAI tags can be used equally well in relative phrases or attached to bridi; others seem useful only attached to bridi. But it is also possible that the usefulness of particular BAI modals is an English-speaker bias, and that speakers of other languages may find other BAIs useful in divergent ways.
     </para>
     <para>
+      A convention worth knowing for
+      <valsi>de'i</valsi>: the tagged date or time is normally a number built with the numerical-punctuation cmavo
+      <valsi>pi'e</valsi>
+      , as in
+      <jbophrase>de'i li 2026 pi'e 7 pi'e 12</jbophrase>
+      for a year-month-day date. Clock times use
+      <valsi>ti'u</valsi>
+      the same way; see
+      <xref linkend="section-radixen" />
+      for
+      <valsi>pi'e</valsi>.
+    </para>
+    <para>
       <indexterm type="lojban-word"><primary>fi'o</primary><secondary>usage of modals in relative phrases</secondary>
       </indexterm>
       Note: The uses of modals discussed in this section are applicable both to BAI modals and to
@@ -3295,6 +3322,20 @@
       <xref linkend="example-random-id-ej84" />
       denies that the relationship between my liking you (which is asserted) and your liking me (which is not asserted) is one of motivation. Nothing is said about whether you like me or not, merely that that hypothetical liking is not the motivation for my liking you.
     </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>BAI selma'o</primary><secondary>negation, status of</secondary>
+      </indexterm>
+      This reading of BAI plus
+      <jbophrase>nai</jbophrase>
+      &ndash; the main claim stands, the relation is denied, and nothing is said about the tagged event itself &ndash; is checkpointed; older word lists read it differently (see
+      <xref linkend="appendix-changes" />). For the other,
+      <quote>despite</quote>
+      -like sense &ndash; not prevented by &ndash; use
+      <jbophrase>to'e ri'a nai</jbophrase>
+      and its kin, with scalar
+      <valsi>to'e</valsi>
+      on the underlying gismu.
+    </para>
     <para>
       <indexterm type="general"><primary>modals</primary><secondary>scalar negation of</secondary>
       </indexterm>
@@ -3429,13 +3470,16 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="lojban-word"><primary>fi'o</primary><secondary>proscribed for sticky modals</secondary>
+      <indexterm type="lojban-word"><primary>fi'o</primary><secondary>as sticky modal</secondary>
       </indexterm>
-      <indexterm type="general"><primary>sticky modals</primary><secondary>&apos;fi'o&apos; proscribed from</secondary>
+      <indexterm type="general"><primary>sticky modals</primary><secondary>with &apos;fi'o&apos;</secondary>
       </indexterm>
-      Note: Modals made with
+      Note: modals made with
       <valsi>fi'o</valsi>
-      -plus-selbri cannot be made sticky. This is an unfortunate, but unavoidable, restriction.
+      -plus-selbri can be made sticky like any other:
+      <jbophrase>fi'o bapli fe'u ki</jbophrase>
+      is accepted, with the expected meaning (older grammars differ here; see
+      <xref linkend="appendix-changes" />).
     </para>
   </section>
   <section xml:id="section-connected-modals">
@@ -3732,6 +3776,18 @@
       </indexterm>
       It should be emphasized that the place structures of the gismu control the meanings of the BAI cmavo. The English phrases shown here are only suggestive, and are often too broad or too narrow to correctly specify what the acceptable range of uses for the modal tag are.
     </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>BAI selma'o</primary><secondary>status of definitions</secondary>
+      </indexterm>
+      The BAI definitions in this chapter, including every gloss in the table below, are the checkpointed ones. A few rows &ndash;
+      <valsi>ti'u</valsi>
+      ,
+      <valsi>ci'e</valsi>
+      ,
+      <valsi>tai</valsi>
+      &ndash; differ from older lists; see
+      <xref linkend="appendix-changes" />.
+    </para>
     <para role="allowbreaks" />
     <cmavo-list>
       <cmavo-entry>
@@ -3757,7 +3813,7 @@
         <gismu>bangu</gismu>
         <modal-place>in language</modal-place>
         <modal-place se="se">in language of</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">expressing</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -3775,7 +3831,7 @@
         <gismu>catni</gismu>
         <modal-place>by authority of</modal-place>
         <modal-place se="se">with authority over</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">with basis for authority</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -3792,9 +3848,9 @@
         <cmavo>ci'e</cmavo>
         <gismu>ciste</gismu>
         <modal-place>in system</modal-place>
-        <modal-place se="se">with system function</modal-place>
+        <modal-place se="se">with system structure</modal-place>
         <modal-place se="te">of system components</modal-place>
-        <modal-place se="ve"></modal-place>
+        <modal-place se="ve">with synergy in</modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
       <cmavo-entry>
@@ -3802,7 +3858,7 @@
         <gismu>cinmo</gismu>
         <modal-place>felt by</modal-place>
         <modal-place se="se">feeling emotion</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">emoting about</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -3829,8 +3885,8 @@
         <gismu>detri</gismu>
         <modal-place>dated</modal-place>
         <modal-place se="se">on the same date as</modal-place>
-        <modal-place se="te"></modal-place>
-        <modal-place se="ve"></modal-place>
+        <modal-place se="te">on a date at location</modal-place>
+        <modal-place se="ve">on a date by calendar</modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
       <cmavo-entry>
@@ -3838,7 +3894,7 @@
         <gismu>diklo</gismu>
         <modal-place>at the locus of</modal-place>
         <modal-place se="se">at specific locus</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">at a locus within range</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -3858,7 +3914,7 @@
         <gismu>dunli</gismu>
         <modal-place>as much as</modal-place>
         <modal-place se="se">equal to</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">equal in property</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -3899,7 +3955,7 @@
         <modal-place>created by</modal-place>
         <modal-place se="se">creating work</modal-place>
         <modal-place se="te">created for purpose</modal-place>
-        <modal-place se="ve"></modal-place>
+        <modal-place se="ve">created from</modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
       <cmavo-entry>
@@ -3934,7 +3990,7 @@
         <gismu>javni</gismu>
         <modal-place>by rule</modal-place>
         <modal-place se="se">by rule prescribing</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">by rule within</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -3943,7 +3999,7 @@
         <gismu>jimte</gismu>
         <modal-place>up to limit</modal-place>
         <modal-place se="se">as a limit of</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">limited in property</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -3952,7 +4008,7 @@
         <gismu>jitro</gismu>
         <modal-place>under direction</modal-place>
         <modal-place se="se">controlling</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">controlling event</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -3979,7 +4035,7 @@
         <gismu>krati</gismu>
         <modal-place>represented by</modal-place>
         <modal-place se="se">on behalf of</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">representing in</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -4033,7 +4089,7 @@
         <gismu>klani</gismu>
         <modal-place>as quantity of</modal-place>
         <modal-place se="se">in quantity</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">measured on scale</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -4051,7 +4107,7 @@
         <gismu>lidne</gismu>
         <modal-place>led by</modal-place>
         <modal-place se="se">leading</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">ordered in sequence</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -4069,7 +4125,7 @@
         <gismu>manri</gismu>
         <modal-place>in reference frame</modal-place>
         <modal-place se="se">as a standard of</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">with rules for observation</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -4078,8 +4134,8 @@
         <gismu>zmadu</gismu>
         <modal-place>exceeded by</modal-place>
         <modal-place se="se">more than</modal-place>
-        <modal-place se="te"></modal-place>
-        <modal-place se="ve"></modal-place>
+        <modal-place se="te">more in property</modal-place>
+        <modal-place se="ve">more by amount</modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
       <cmavo-entry>
@@ -4087,8 +4143,8 @@
         <gismu>mleca</gismu>
         <modal-place>undercut by</modal-place>
         <modal-place se="se">less than</modal-place>
-        <modal-place se="te"></modal-place>
-        <modal-place se="ve"></modal-place>
+        <modal-place se="te">less in property</modal-place>
+        <modal-place se="ve">less by amount</modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
       <cmavo-entry>
@@ -4096,7 +4152,7 @@
         <gismu>cmene</gismu>
         <modal-place>with name</modal-place>
         <modal-place se="se">as a name for</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">as a name used by</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -4105,7 +4161,7 @@
         <gismu>mukti</gismu>
         <modal-place>motivated by</modal-place>
         <modal-place se="se">motive therefore</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">motive of person</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -4114,7 +4170,7 @@
         <gismu>mupli</gismu>
         <modal-place>exemplified by</modal-place>
         <modal-place se="se">as an example of</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">example out of set</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -4123,7 +4179,7 @@
         <gismu>nibli</gismu>
         <modal-place>entailed by</modal-place>
         <modal-place se="se">entails</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">under logic system</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -4150,7 +4206,7 @@
         <gismu>pilno</gismu>
         <modal-place>used by</modal-place>
         <modal-place se="se">using tool</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">usage for purpose</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -4159,7 +4215,7 @@
         <gismu>porsi</gismu>
         <modal-place>in the sequence</modal-place>
         <modal-place se="se">sequenced by rule</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">ordering items</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -4168,7 +4224,7 @@
         <gismu>pluka</gismu>
         <modal-place>pleased by</modal-place>
         <modal-place se="se">in order to please</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">pleasing conditions</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -4221,7 +4277,7 @@
         <gismu>rinka</gismu>
         <modal-place>caused by</modal-place>
         <modal-place se="se">causing</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">caused under conditions</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -4248,7 +4304,7 @@
         <gismu>sidju</gismu>
         <modal-place>aided by</modal-place>
         <modal-place se="se">assisting in</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">assisting in</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -4257,7 +4313,7 @@
         <gismu>tadji</gismu>
         <modal-place>by method</modal-place>
         <modal-place se="se">as a method for</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">method conditions</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -4265,9 +4321,9 @@
         <cmavo>tai</cmavo>
         <gismu>tamsmi</gismu>
         <modal-place>as a form of</modal-place>
-        <modal-place se="se">in form</modal-place>
-        <modal-place se="te">in form similar to</modal-place>
-        <modal-place se="ve"></modal-place>
+        <modal-place se="se">resembling</modal-place>
+        <modal-place se="te">with ideal form</modal-place>
+        <modal-place se="ve">similar in property</modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
       <cmavo-entry>
@@ -4282,10 +4338,10 @@
       <cmavo-entry>
         <cmavo>ti'u</cmavo>
         <gismu>tcika</gismu>
-        <modal-place>with time</modal-place>
-        <modal-place se="se">at the time of</modal-place>
-        <modal-place se="te"></modal-place>
-        <modal-place se="ve"></modal-place>
+        <modal-place>at the time-of-day</modal-place>
+        <modal-place se="se">at the same time as</modal-place>
+        <modal-place se="te">on the day of</modal-place>
+        <modal-place se="ve">at the local time of</modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
       <cmavo-entry>
@@ -4311,7 +4367,7 @@
         <gismu>xamgu</gismu>
         <modal-place>benefiting from</modal-place>
         <modal-place se="se">with beneficiary</modal-place>
-        <modal-place se="te"></modal-place>
+        <modal-place se="te">goodness standard</modal-place>
         <modal-place se="ve"></modal-place>
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
@@ -4345,12 +4401,14 @@
     </para>
     <definition>
       <valsi>tamsmi</valsi>
-      <content>x<subscript>1</subscript> has form x<subscript>2</subscript>, similar in form to x<subscript>3</subscript> in property/quality x<subscript>4</subscript></content>
+      <content>x<subscript>1</subscript> resembles x<subscript>2</subscript>, sharing ideal form x<subscript>3</subscript>, in property/quality x<subscript>4</subscript></content>
     </definition>
     <para>
       This lujvo is employed because
       <valsi>tarmi</valsi>
-      does not have a place structure useful for the modal's purpose.
+      does not have a place structure useful for the modal's purpose. A caution for dictionary users: the place structure shown here is the checkpointed one, and the conversion glosses in this chapter follow it. The community dictionary's stand-alone
+      <valsi>tamsmi</valsi>
+      entry still carries an older ordering, with the form in the x<subscript>2</subscript> place.
     </para>
   </section>
 </chapter>

@@ -104,8 +104,24 @@
       The placement of a tense construct within a Lojban bridi is easy: right before the selbri. It goes immediately after the
       <valsi>cu</valsi>
       , and can in fact always replace the
+      <valsi>cu</valsi>. Indeed, a tense (or any tag) directly in front of a selbri binds to that selbri exactly as
       <valsi>cu</valsi>
-      (although in very complex sentences the rules for eliding terminators may be changed as a result). In the following examples,
+      would, unless an explicit
+      <valsi>ku</valsi>
+      intervenes; so
+      <jbophrase>lo nu broda ba brode</jbophrase>
+      is a complete bridi &ndash; the abstraction closes, and
+      <valsi>ba</valsi>
+      opens the main selbri.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>tags</primary><secondary>binding to selbri, status</secondary>
+      </indexterm>
+      This tag-binding rule is committee-approved and current parsers implement it; older grammars group such tags differently &ndash; see
+      <xref linkend="appendix-changes" />.
+    </para>
+    <para>
+      In the following examples,
       <valsi>pu</valsi>
       is the tense marker for
       <quote>past time</quote>
@@ -391,6 +407,19 @@
         <natlang>Slightly to my left, the man bites the dog.</natlang>
       </interlinear-gloss>
     </example>
+
+    <para role="status-note">
+      <indexterm type="general"><primary>VA</primary><secondary>proposed regularization of</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>ZI</primary><secondary>proposed regularization of</secondary>
+      </indexterm>
+      Some newer material reads the middle terms as
+      <quote>unspecified magnitude</quote>
+      rather than
+      <quote>medium</quote>
+      &ndash; a proposed reading only. This book teaches the established meanings; see
+      <xref linkend="appendix-changes" />.
+    </para>
   </section>
   <section xml:id="section-compound-spatial-tenses">
     <title><anchor xml:id="c10s3" />Compound spatial tenses</title>
@@ -1258,7 +1287,7 @@
         <natlang>While moving a long way forward, I eat my meal.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent"> 
+    <para role="noindent">
         (Perhaps I am eating in an airplane.)</para>
     <para>
       <indexterm type="general"><primary>time travel</primary></indexterm>
@@ -1368,7 +1397,7 @@
         <natlang>Long ago I attended school for a long time.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent"> 
+    <para role="noindent">
         probably does not mean that I attended school continuously throughout the whole of that long-ago interval. Actually, I attended school every day, except for school holidays. More explicitly,</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-JM1W">
       <title><anchor xml:id="c10e9d2" /><indexterm type="general"><primary>regularly</primary></indexterm></title>
@@ -2375,42 +2404,52 @@
       <indexterm type="general"><primary>event contours</primary><secondary>as sumtcita</secondary>
       </indexterm>
       The event contours of selma'o ZAhO (and their space equivalents, prefixed with
-      <valsi>fe'e</valsi>) are also useful as sumtcita. The interpretation of ZAhO tcita differs from that of FAhA, VA, PU, and ZI tcita, however. The event described in the sumti is viewed as a process, and the action of the main bridi occurs at the phase of the process which the ZAhO specifies, or at least some part of that phase. The action of the main bridi itself is seen as a point event, so that there is no issue about which phase of the main bridi is intended. For example:
+      <valsi>fe'e</valsi>) are also useful as sumtcita. The interpretation of ZAhO tcita differs from that of FAhA, VA, PU, and ZI tcita, however. Here it is the <emphasis>main bridi</emphasis> that is viewed as a process, and the tagged sumti supplies a reference &ndash; a reference event for the temporal contours, or a reference location for the
+      <valsi>fe'e</valsi>
+      forms: the ZAhO says which phase the main bridi's process is in at the time of that event, or at the place of that location. For the temporal case,
+      <jbophrase>broda ba'o lo nu brode</jbophrase>
+      means the same as
+      <jbophrase>ba'o broda ca lo nu brode</jbophrase>
+      &ndash; at the time of the brode, the broda is already over. For example:
     </para>
 
-    <example role="interlinear-gloss-example" xml:id="example-random-id-Y2Kb">
+    <example role="interlinear-gloss-example" xml:id="example-random-id-xAb1">
       <title>
-        <anchor xml:id="c10e12d6" />
+        <anchor xml:id="c10e12d14" />
         <indexterm type="general"><primary>in the aftermath</primary></indexterm>
-        <indexterm type="general"><primary>die after living</primary></indexterm>
+        <indexterm type="general"><primary>leave before speaking</primary></indexterm>
       </title>
 
       <interlinear-gloss>
-        <jbo>mi morsi ba'o le nu mi jmive</jbo>
-        <gloss>I am-dead [retrospective] the event-of I live.</gloss>
-        <natlang>I am dead in the aftermath of my living.</natlang>
+        <jbo>la .berger. cu cliva le kumfa ba'o lo nu la .klark. cu tavla</jbo>
+        <gloss>Berger leaves the room [retrospective] the event-of Clark speaks.</gloss>
+        <natlang>Berger had already left the room by the time Clark spoke.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
-      Here the (point-)event of my being dead is the portion of my living-process which occurs after the process is complete. Contrast
-      <xref linkend="example-random-id-Y2Kb" />
+      Here the leaving is complete &ndash; in its aftermath &ndash; at the reference event, Clark's speaking. Contrast
+      <xref linkend="example-random-id-xAb1" />
       with:
     </para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-18dT">
-      <title><anchor xml:id="c10e12d7" /></title>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-xAb2">
+      <title><anchor xml:id="c10e12d15" /></title>
 
       <interlinear-gloss>
-        <jbo>mi morsi ba le nu mi jmive</jbo>
-        <gloss>I am-dead [future] the event-of I live.</gloss>
-        <natlang>I am dead after my living.</natlang>
+        <jbo>la .berger. cu cliva le kumfa ba le nu la .klark. cu tavla</jbo>
+        <gloss>Berger leaves the room [future] the event-of Clark speaks.</gloss>
+        <natlang>Berger left the room after Clark spoke.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
-      As explained in
+      With plain
+      <valsi>ba</valsi>
+      the leaving simply follows the speaking; with
+      <valsi>ba'o</valsi>
+      the leaving is already finished business when the speaking happens. (And as explained in
       <xref linkend="section-vagueness" />
-      ,
-      <xref linkend="example-random-id-18dT" />
-      does not exclude the possibility that I died before I ceased to live!
+      , the vague interval of
+      <valsi>ba</valsi>
+      does not even strictly exclude some overlap!)
     </para>
     <para>Likewise, we might say:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-jJzr">
@@ -2421,7 +2460,7 @@
         <gloss>I go-to the store [prospective] the event-of I eat</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">which indicates that before my eating begins, I go to the store, whereas</para>
+    <para role="noindent">which indicates that at the time I eat, my going to the store has not yet begun &ndash; it is still in prospect &ndash; whereas</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-0VJp">
       <title><anchor xml:id="c10e12d9" /></title>
 
@@ -2430,7 +2469,15 @@
         <gloss>I go-to the store [retrospective] the event-of I eat</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">would indicate that I go to the store after I am finished eating.</para>
+    <para role="noindent">indicates that by the time I eat, the store trip is already behind me.</para>
+    <para role="status-note">
+      <indexterm type="general"><primary>ZAhO</primary><secondary>sumtcita interpretation, change of</secondary>
+      </indexterm>
+      The reading taught here is checkpointed. Older text reads a ZAhO sumtcita the other way around &ndash; this book's own old
+      <quote>mi morsi ba'o le nu mi jmive</quote>
+      is a famous example &ndash; so reread it accordingly; see
+      <xref linkend="appendix-changes" />.
+    </para>
 
     <para>Here is an example which mixes temporal ZAhO (as a tense) and spatial ZAhO (as a sumtcita):</para>
 
@@ -2448,11 +2495,15 @@
       <interlinear-gloss>
         <jbo>… fe'e ba'o le lalxu</jbo>
         <gloss>… [space] [retrospective] the lake.</gloss>
-        <natlang>The boat sailed for too long and beyond the lake.</natlang>
+        <natlang>The boat sailed on too long; at the lake's location, its voyage was already over.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
-      Probably it sailed up onto the dock. One point of clarification: although
+      The two contours here make two separate claims. The temporal
+      <valsi>za'o</valsi>
+      says the voyage continued beyond its natural stopping point &ndash; it went on too long. The spatial
+      <jbophrase>fe'e ba'o</jbophrase>
+      takes the lake as a reference <emphasis>location</emphasis> (not an arrival time) and says that there, the actual voyage is in its spatial aftermath: whatever sailing took place is over at that spot. Neither contour says where the natural stopping point lay, or what the boat did instead. One point of clarification: although
       <valsi valid="maybe">xelklama</valsi>
       appears to mean simply
       <quote>is-a-mode-of-transport</quote>
@@ -3415,7 +3466,7 @@
       </indexterm>
       <indexterm type="general"><primary>tense connection</primary><secondary>equivalent meanings</secondary>
       </indexterm>
-      Both the forethought and the afterthought forms are appropriate with PU, ZI, FAhA, VA, and ZAhO tenses. In all cases, the equivalent forms are (where X and Y stand for sentences, and TENSE for a tense cmavo):
+      Both the forethought and the afterthought forms are appropriate with PU, ZI, FAhA, VA, and ZAhO tenses. For all of them except ZAhO, the equivalent forms are (where X and Y stand for sentences, and TENSE for a tense cmavo):
     </para>
     <informaltable>
       <colgroup />
@@ -3438,6 +3489,40 @@
         </td>
       </tr>
     </informaltable>
+    <para>
+      <indexterm type="general"><primary>ZAhO</primary><secondary>in tense connectives</secondary>
+      </indexterm>
+      ZAhO is the exception, because of its reversed sumtcita interpretation (
+      <xref linkend="section-tcita" />): in the subordinate form it is the <emphasis>main</emphasis> sentence X that carries the contour, located at the tagged event Y, while the connective forms keep their first-edition meaning, placing the second sentence at the named contour of the first. The sentences therefore appear in the <emphasis>same</emphasis> order rather than exchanging places:
+    </para>
+    <informaltable>
+      <colgroup />
+      <tr>
+        <td>subordinate</td>
+        <td>
+          <grammar-template>X ZAhO le nu Y</grammar-template>
+        </td>
+      </tr>
+      <tr>
+        <td>afterthought coordinate</td>
+        <td>
+          <grammar-template>X .i+ZAhO+bo Y</grammar-template>
+        </td>
+      </tr>
+      <tr>
+        <td>forethought coordinate</td>
+        <td>
+          <grammar-template>ZAhO+gi X gi Y</grammar-template>
+        </td>
+      </tr>
+    </informaltable>
+    <para>
+      For example,
+      <jbophrase>mi klama le zarci ba'o le nu mi citka</jbophrase>
+      (my store trip is over by the time of the eating) matches
+      <jbophrase>mi klama le zarci .i ba'o bo mi citka</jbophrase>
+      &ndash; the going, and then, in its aftermath, the eating &ndash; not the sentence-swapped form that the other tenses would use.
+    </para>
   </section>
   <section xml:id="section-tense-logical-connection">
     <title><anchor xml:id="c10s17" />Tensed logical connectives</title>
@@ -4645,7 +4730,10 @@
       </grammar-template>
       </member>
     </simplelist>
-    <para>neglecting the question of what is claimed. In the modal sentence schemata, the modal tag is always followed by Y, the sentence representing the event in the x<subscript>1</subscript> place of the gismu that underlies the BAI. In the tensed sentences, no such simple rule exists.</para>
+    <para>neglecting the question of what is claimed. (ZAhO tenses are again the exception: because of their reversed sumtcita interpretation, the subordinate mate of the two connective schemata is
+      <grammar-template>X ZAhO le nu Y</grammar-template>
+      , with the sentences in the same order &ndash; see
+      <xref linkend="section-tense-connection" />.) In the modal sentence schemata, the modal tag is always followed by Y, the sentence representing the event in the x<subscript>1</subscript> place of the gismu that underlies the BAI. In the tensed sentences, no such simple rule exists.</para>
   </section>
   <section xml:id="section-tense-questions">
     <title><anchor xml:id="c10s24" />Tense questions: <valsi>cu'e</valsi></title>

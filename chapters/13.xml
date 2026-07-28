@@ -45,7 +45,7 @@
       <title><anchor xml:id="c13e1d2" /><indexterm type="general"><primary>John is coming</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>.ui la djan klama</jbo>
+        <jbo>.ui la .djan. klama</jbo>
         <gloss>[Whee!] that-named John is-coming!</gloss>
       </interlinear-gloss>
     </example>
@@ -53,7 +53,7 @@
       <title><anchor xml:id="c13e1d3" /><indexterm type="general"><primary>John is coming</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>.uu la djan klama</jbo>
+        <jbo>.uu la .djan. klama</jbo>
         <gloss>[Alas!] that-named John is-coming.</gloss>
       </interlinear-gloss>
     </example>
@@ -65,7 +65,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>.a'o la djan klama</jbo>
+        <jbo>.a'o la .djan. klama</jbo>
         <gloss>[Hopefully] that-named John is-coming.</gloss>
       </interlinear-gloss>
     </example>
@@ -73,7 +73,7 @@
       <title><anchor xml:id="c13e1d5" /><indexterm type="general"><primary>John is coming</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>.ue la djan klama</jbo>
+        <jbo>.ue la .djan. klama</jbo>
         <gloss>[Wow!] that-named John is-coming!</gloss>
       </interlinear-gloss>
     </example>
@@ -81,7 +81,7 @@
       <title><anchor xml:id="c13e1d6" /><indexterm type="general"><primary>John is coming</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>.ianai la djan klama</jbo>
+        <jbo>.ianai la .djan. klama</jbo>
         <gloss>[Nonsense!] that-named John is-coming.</gloss>
       </interlinear-gloss>
     </example>
@@ -89,14 +89,18 @@
 
       <indexterm type="general"><primary>attitudinals</primary><secondary>word-form for primary</secondary>
       </indexterm>
-      The primary Lojban attitudinals are all the cmavo of the form VV or V'V: one of the few cases where cmavo have been classified solely by their form. There are 39 of these cmavo: all 25 possible vowel pairs of the form V'V, the four standard diphthongs (
+      The primary Lojban attitudinals are all the cmavo of the form VV or V'V: one of the few cases where cmavo have been classified solely by their form. There are 39 of these cmavo: all 25 possible vowel pairs of the form V'V, the four diphthongs (
       <valsi>.ai</valsi>
       ,
       <valsi>.au</valsi>
       ,
       <valsi>.ei</valsi>
       , and
-      <valsi>.oi</valsi>), and the ten more diphthongs that are permitted only in these attitudinal indicators and in Lojbanized names and borrowings (
+      <valsi>.oi</valsi>), and ten more cmavo that begin with a glide &ndash; a consonantal
+      <letteral>i</letteral>
+      or
+      <letteral>u</letteral>
+      &ndash; followed by a vowel (
       <valsi>.ia</valsi>
       ,
       <valsi>.ie</valsi>
@@ -115,7 +119,8 @@
       ,
       <valsi>.uo</valsi>
       , and
-      <valsi>.uu</valsi>). Note that each of these cmavo has a period before it, marking the pause that is mandatory before every word beginning with a vowel. Attitudinals, like most of the other kinds of indicators described in this chapter, belong to selma'o UI.
+      <valsi>.uu</valsi>). A glide may begin a word, as in these cmavo, or follow a vowel, but may never follow a consonant; see the status discussion in
+      <xref linkend="chapter-phonology" />. Note that each of these cmavo has a period before it, marking the pause that is mandatory before every word beginning with a vowel. Attitudinals, like most of the other kinds of indicators described in this chapter, belong to selma'o UI.
     </para>
     <para>
       <indexterm type="general"><primary>attitudinals</primary><secondary>compound</secondary>
@@ -617,25 +622,43 @@
       </indexterm>
       <indexterm type="general"><primary>attitudinals</primary><secondary>a- series</secondary>
       </indexterm>
-      There is no sharp distinction between attitudinals beginning with
+      The division of labor between attitudinals beginning with
       <letteral>a</letteral>
       and those beginning with
       <letteral>e</letteral>
-      ; however, the original intent (not entirely realized due to the need to cram too many attitudes into too little space) was to make the members of the
+      is this: the members of the
       <letteral>a</letteral>
-      -series the purer, more attitudinal realizers of a potential world, while the members of the
+      -series express the speaker's own stance toward realizing the potential world &ndash; intending it, working at it, hoping for it, wanting it &ndash; while the members of the
       <letteral>e</letteral>
-      -series were more ambivalent or complex about the speaker's intention with regard to the predication. The relationship between the
-      <letteral>a</letteral>
-      -series and the
-      <letteral>e</letteral>
-      -series is similar to that between the
-      <letteral>u</letteral>
-      -series and the
-      <letteral>o</letteral>
-      -series, respectively. A few propositional attitude indicators overflowed into the
+      -series form a <emphasis>directive</emphasis> family: permitting, exhorting, obliging, commanding, requesting, and suggesting. These are distinct relations, not points on a single scale, but they share a shape: in their most typical uses the speaker is concerned with someone else &ndash; usually the listener &ndash; bringing the situation about (though
+      <valsi>.ei</valsi>
+      , for instance, is just as much at home in
+      <quote>I ought to&hellip;</quote>). A few propositional attitude indicators overflowed into the
       <letteral>i</letteral>
       -series as well.
+    </para>
+    <para>
+      Older text is another matter: the frozen official word lists, and writing that follows them, use different senses for several of these words &ndash;
+      <valsi>.e'e</valsi>
+      as
+      <quote>competence</quote>
+      and
+      <valsi>.e'i</valsi>
+      as
+      <quote>constraint</quote>
+      among them. When the difference matters, say it with a full bridi:
+      <valsi>kakne</valsi>
+      for being able,
+      <valsi>minde</valsi>
+      for commanding.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>e-series attitudinals</primary><secondary>status of</secondary>
+      </indexterm>
+      The directive account of the
+      <letteral>e</letteral>
+      -series is this edition's choice, following attested modern use rather than the frozen official lists. For the full list of reassigned senses, and where this account came from, see
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="general"><primary>attitudinals</primary><secondary>logical language and</secondary>
@@ -680,7 +703,7 @@
         <cmavo>.ai</cmavo>
         <attitudinal-scale point="sai">intent</attitudinal-scale>
         <attitudinal-scale point="cu'i">indecision</attitudinal-scale>
-        <attitudinal-scale point="nai">refusal</attitudinal-scale>
+        <attitudinal-scale point="nai">unintentionality</attitudinal-scale>
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>.a'i</cmavo>
@@ -792,13 +815,7 @@
     <para>
       Here are the propositional attitude indicators beginning with
       <letteral>e</letteral>
-      , which stand roughly in the relation to those beginning with
-      <letteral>a</letteral>
-      as the pure-emotion indicators beginning with
-      <letteral>o</letteral>
-      do to those beginning with
-      <letteral>u</letteral>
-      - they are more complex or difficult:
+      &ndash; the directive series: permission, exhortation, obligation, command, request, and suggestion:
     </para>
     <cmavo-list>
       <cmavo-entry>
@@ -809,9 +826,9 @@
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>.e'e</cmavo>
-        <attitudinal-scale point="sai">competence</attitudinal-scale>
+        <attitudinal-scale point="sai">exhortation</attitudinal-scale>
         <attitudinal-scale point="cu'i"></attitudinal-scale>
-        <attitudinal-scale point="nai">incompetence</attitudinal-scale>
+        <attitudinal-scale point="nai">discouragement</attitudinal-scale>
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>.ei</cmavo>
@@ -821,15 +838,15 @@
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>.e'i</cmavo>
-        <attitudinal-scale point="sai">constraint</attitudinal-scale>
-        <attitudinal-scale point="cu'i">independence</attitudinal-scale>
-        <attitudinal-scale point="nai">resistance to constraint</attitudinal-scale>
+        <attitudinal-scale point="sai">command</attitudinal-scale>
+        <attitudinal-scale point="cu'i"></attitudinal-scale>
+        <attitudinal-scale point="nai">release from command</attitudinal-scale>
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>.e'o</cmavo>
         <attitudinal-scale point="sai">request</attitudinal-scale>
         <attitudinal-scale point="cu'i"></attitudinal-scale>
-        <attitudinal-scale point="nai">negative request</attitudinal-scale>
+        <attitudinal-scale point="nai">offer</attitudinal-scale>
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>.e'u</cmavo>
@@ -838,7 +855,7 @@
         <attitudinal-scale point="nai">warning</attitudinal-scale>
       </cmavo-entry>
     </cmavo-list>
-    <para role="indent"> 
+    <para role="indent">
 
  More examples (after a good night's sleep):</para>
     <example xml:id="example-random-id-qFQ7" role="interlinear-gloss-example">
@@ -850,13 +867,13 @@
         <natlang>Sure, you can drive the car.</natlang>
       </interlinear-gloss>
     </example>
-    <example xml:id="example-random-id-qFR1" role="interlinear-gloss-example">
-      <title><anchor xml:id="c13e3d9" /><indexterm type="lojban-word"><primary>.e'e</primary></indexterm></title>
+    <example xml:id="example-random-id-eEx1" role="interlinear-gloss-example">
+      <title><anchor xml:id="c13e3d18" /><indexterm type="lojban-word"><primary>.e'e</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>.e'e mi lifri tu'a do</jbo>
-        <gloss>[competence] I experience something-related-to you.</gloss>
-        <natlang>I feel up to dealing with you.</natlang>
+        <jbo>.e'e ko troci</jbo>
+        <gloss>[exhortation] You-imperative try.</gloss>
+        <natlang>Go on, try it!</natlang>
       </interlinear-gloss>
     </example>
     <example xml:id="example-random-id-qfS1" role="interlinear-gloss-example">
@@ -866,6 +883,15 @@
         <jbo>.ei mi tisygau le karce ctilyvau</jbo>
         <gloss>[obligation] I fill the car-type-of petroleum-container.</gloss>
         <natlang>I should fill the car's gas tank.</natlang>
+      </interlinear-gloss>
+    </example>
+    <example xml:id="example-random-id-eIx1" role="interlinear-gloss-example">
+      <title><anchor xml:id="c13e3d19" /><indexterm type="lojban-word"><primary>.e'i</primary></indexterm></title>
+
+      <interlinear-gloss>
+        <jbo>.e'i ko ta mi dunda</jbo>
+        <gloss>[command] You-imperative that to-me give.</gloss>
+        <natlang>Give that to me!</natlang>
       </interlinear-gloss>
     </example>
     <example xml:id="example-random-id-qfS7" role="interlinear-gloss-example">
@@ -902,7 +928,7 @@
         <cmavo>.i'a</cmavo>
         <attitudinal-scale point="sai">acceptance</attitudinal-scale>
         <attitudinal-scale point="cu'i"></attitudinal-scale>
-        <attitudinal-scale point="nai">blame</attitudinal-scale>
+        <attitudinal-scale point="nai">refusal; blame</attitudinal-scale>
       </cmavo-entry>
       <cmavo-entry>
         <cmavo>.ie</cmavo>
@@ -1679,7 +1705,7 @@
         <gloss>[Yay-physical-enough!]</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent"> 
+    <para role="noindent">
 
  might be something you say after a large meal which you enjoyed.</para>
 
@@ -1709,27 +1735,35 @@
 
       <interlinear-gloss>
         <jbo>.e'ese'a</jbo>
-        <gloss>[I-can-self-sufficient!]</gloss>
-        <natlang>I can do it all by myself!</natlang>
+        <gloss>[go-for-it!-self-sufficient]</gloss>
+        <natlang>Let me at it &ndash; I'll do it all by myself!</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">is something a Lojban-speaking child might say. On the other hand,</para>
+    <para role="noindent">
+      is something a Lojban-speaking child might say &ndash; here the exhortation of
+      <valsi>.e'e</valsi>
+      is turned on the challenge itself, an eager
+      <quote>bring it on</quote>
+      , and
+      <valsi>se'a</valsi>
+      colors it with self-sufficiency. On the other hand,
+    </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-Arv2">
       <title><anchor xml:id="c13e7d11" /><indexterm type="lojban-word"><primary>.e'ese'anai</primary></indexterm></title>
 
       <interlinear-gloss>
         <jbo>.e'ese'anai</jbo>
-        <gloss>[I-can-dependent]</gloss>
-        <natlang>I can do it if you help me.</natlang>
+        <gloss>[go-for-it!-dependent]</gloss>
+        <natlang>I'm game &ndash; as long as you help me.</natlang>
       </interlinear-gloss>
     </example>
     <para role="noindent">
       from the same child would indicate a (hopefully temporary) loss of self-confidence. It is also possible to negate the
       <valsi>.e'e</valsi>
       in
-      <xref linkend="example-random-id-Pwuv" />
+      <xref linkend="example-random-id-4S14" />
       and
-      <xref linkend="example-random-id-K4aV" />
+      <xref linkend="example-random-id-Arv2" />
       , leading to:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-stdV">
@@ -1737,12 +1771,8 @@
 
       <interlinear-gloss>
         <jbo>.e'enaise'a</jbo>
-        <gloss>[I-can't-self-sufficient]</gloss>
-        <natlang>
-          I can't do it if you insist on
-          <quote>helping</quote>
-          me!
-        </natlang>
+        <gloss>[daunted-self-sufficient]</gloss>
+        <natlang>I don't dare do it all alone!</natlang>
       </interlinear-gloss>
     </example>
     <para role="noindent">and</para>
@@ -1751,8 +1781,8 @@
 
       <interlinear-gloss>
         <jbo>.e'enaise'anai</jbo>
-        <gloss>[I-can't-dependent]</gloss>
-        <natlang>I can't do it by myself!</natlang>
+        <gloss>[daunted-dependent]</gloss>
+        <natlang>I can't face it without you!</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
@@ -2125,7 +2155,7 @@
         <natlang>Fearfully the ship, poor thing, sank.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent"> 
+    <para role="noindent">
 
  suggesting that the ship felt fear at its impending destruction, and simultaneously reporting the speaker's pity for it.</para>
 
@@ -2447,7 +2477,7 @@
       <title><anchor xml:id="c13e11d3" /></title>
 
       <interlinear-gloss>
-        <jbo>ti'e la .uengas cu zergau</jbo>
+        <jbo>ti'e la .uengas. cu zergau</jbo>
         <gloss>[I-hear!] Wenga - is-a-criminal-doer.</gloss>
         <natlang>I hear that Wenga is a crook.</natlang>
       </interlinear-gloss>

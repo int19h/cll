@@ -1,0 +1,356 @@
+{{BPFK Section from tiki|BPFK Section: gadri|95}}
+==Proposed definitions ==
+
+{{BPFK Section box open}}
+=== cmavo: lo (LE) ===
+==== Proposed Definition ====
+Generic article. It converts a selbri, selecting its first argument, into a sumti. The resulting expression refers generically to any or some individual or individuals that fit as the first argument of the selbri. An inner quantifier can be used to indicate the number of individuals. An outer quantifier can be used to quantify distributively over such individuals.
+
+==== See Also ====
+* {le}
+* {la}
+* {loi}
+* {lo'i}
+* {lo'e}
+
+==== Proposed Keywords ====
+* generic article
+==== Usage Examples ====
+;lo rozgu cu xunre: ''Roses are red.''
+
+;xu ro lo rozgu cu xunre i na go'i i mu'a su'o lo rozgu cu pelxu: ''Is every rose red? No, some roses are yellow, for example.''
+
+;lo tadni cu sruri le dinju gi'e krixa: ''Students are surrounding the building and yelling.''
+
+;ko'a pu lebna lo xanlai pe lo cmananba gi'e dunda ciboi cy mi: ''He grabbed a handful of biscuits and gave me three.''
+
+;ca ro nu mi rere'u catlu lo skina kei mi cpacu lo so'i se cusku poi mi na cpacu ca lo pamoi: ''Every time I see a movie for the second time I get all this dialogue that I missed the first time.''
+
+;ei lo verba cu mutce fraxu lo makcu prenu: ''Children should show great forbearance toward grown-up people.''
+
+;ku'i uinai mi na viska lo lanme pa'o lo bitmu be fo lo tanxe i ju'ocu'i mi milxe simsa lo makcu prenu: ''But I, alas, do not see sheep through the walls of boxes. Perhaps I am a little like the grown-ups.''
+
+;ca lo nicte lo cinfo cu kalte lo cidja: ''At night lions hunt for food.'' 
+
+;lo pa pixra cu se vamji lo ki'o valsi: ''One picture is worth a thousand words.''
+
+;de'i li 1960 lo pare sovda cu fepni li 42: ''In 1960 a dozen eggs cost 42 cents.''
+
+;cimai lo ctuca cu fendi lo selctu lo mu gunma be lo vo tadni: ''Step 3: The teacher will divide the class into five groups of four students.'' 
+
+;lo bidjylinsi pe lo ze seldri cu se pagbu ze gunma be lo ze bidju be'o e ji'a ci bidju e lo kucyga'asni: ''The Rosary of the Seven Sorrows consists of seven groups of seven beads, with three additional beads and a Crucifix.''
+
+;ro lo bidjylinsi pe le ze seldri cu se pagbu ze lo gunma be lo ze bidju be'o e ji'a ci lo bidju e pa lo kucyga'asni: ''Every Rosary of the Seven Sorrows consists of seven groups of seven beads, with three additional beads and exactly one Crucifix.''
+
+;lo sanli darxi bo dakli cu culno lo djacu onai lo canre to lo djacu cu pukmau ki'u lo nu slilu tolcando toi gi'e bunda li ji'i 270: ''Standing punching bags are filled with water or sand - water being preferable because of the wave-motion created - and weigh about 270lbs.''
+
+;lo pavyseljirna cu ranmi danlu gi'e simlu lo ka ge ce'u xirma gi lo pa jirna cu cpana lo mebri be ce'u: ''Unicorns are mythical creatures that look like a horse with a horn coming out of their foreheads.''
+
+;re lo so plini cu zmadu le terdi lo ka ce'u jibni le solri: ''Two of the nine planets are closer to the Sun than the Earth.''
+
+==== Notes ====
+{{BPFK Section box close}}
+
+{{BPFK Section box open}}
+=== cmavo: le (LE) ===
+==== Proposed Definition ====
+Specific article. It converts a selbri, selecting its first argument, into a sumti. The resulting expression refers specifically to an individual or individuals that the speaker has in mind and which the speaker describes as fitting the first argument of the selbri. An inner quantifier can be used to indicate the number of individuals. An outer quantifier can be used to quantify distributively over those individuals.
+
+==== See Also ====
+* {lo}
+* {la}
+* {lei}
+* {le'i}
+* {le'e}
+
+==== Proposed Keywords ====
+* specific article
+
+==== Usage Examples ====
+;le palta ba'o porpi i ma gasnu i xu le gerku cu go'i: ''The dish is broken. Who did it? Was it the dog?''
+
+;ko punji le sicni ja'e lo porsi be lo vamrai ku bi'o lo vamtolrai: ''Put the coins in order from greatest to least value.''
+
+;ci le bi ctuca cu ninmu: ''Three of the eight teachers are women.''
+
+;le va ninmu cu mutce melbi iku'i ca'a nanmu gi'e nelci lo nu ninmu dasni: ''That woman is very beautiful, but she's actually a man who likes to dress as a woman.''
+
+;o'i mu xagji sofybakni cu zvati le purdi: ''Caution! There are five hungry Soviet cows in the garden.''
+{{BPFK Section box close}}
+
+{{BPFK Section box open}}
+=== cmavo: la (LA) ===
+==== Proposed Definition ====
+Name article. It converts a selbri, selecting its first argument, or any string of cmevla into a sumti. The resulting expression refers specifically to an individual or individuals that the speaker has in mind and which the speaker names with the selbri or cmevla.  An inner quantifier can be used (in the case of a selbri) as part of the name. An outer quantifier can be used to quantify distributively over those individuals.
+
+==== See Also ====
+* {lo}
+* {le}
+* {lai}
+* {la'i}
+
+==== Proposed Keywords ====
+* name article
+
+==== Usage Examples ====
+;ma'i la midju terdi la sadam na sai me la sauron: ''In Middle Earth-terms, Saddam is by no means a 'Sauron'.''
+
+;la ci bakni ku poi gusta bu'u la kaiapois cu banli ge lo ka vanbi gi lo ka cidja: ''The Three Cows Restaurant in Kaiapoi is a wonderful place, both atmosphere and food-wise.''
+
+;ci la magdonaldz cu jibni le mi briju: ''There are three McDonald's near my office.''
+{{BPFK Section box close}}
+
+<br>
+<br>
+
+{{BPFK Section box open}}
+=== cmavo: loi (LE) ===
+==== Proposed Definition ====
+Generic mass article. It converts a selbri, selecting its first argument, into a sumti. The resulting expression refers generically to a group or groups of individuals that fit the first argument of the selbri and which collectively satisfy the predicate for which the sumti is an argument. An inner quantifier can be used to indicate the cardinality of the group or groups. An outer quantifier can be used to quantify distributively over such groups. A fractional outer quantifier can be used to select a subgroup and indicate its cardinality as a fraction of the cardinality of the group.
+
+==== See Also ====
+* {lo}
+* {lo'i}
+* {lei}
+* {lai}
+
+==== Proposed Keywords ====
+* generic mass article
+
+==== Usage Examples ====
+;loi litru ti jmaji lo ro pagbu be le terdi: ''Tourists gather here from all over the world.'' 
+
+;loi so'i tadni cu sruri le dinju i so'i le tadni cu krixa: ''Many students are surrounding the building. Many of the students are yelling.''
+
+;lo mulno kardygri cu gunma lo vo loi paci karda: ''A full deck consists of four groups of thirteen cards.''
+{{BPFK Section box close}}
+
+{{BPFK Section box open}}
+=== cmavo: lei (LE) ===
+==== Proposed Definition ====
+Specific mass article. It converts a selbri, selecting its first argument, into a sumti. The resulting expression refers specifically to a group of individuals that the speaker has in mind and describes as fitting the first argument of the selbri and which collectively satisfy the predicate for which the sumti is an argument. An inner quantifier can be used to indicate the cardinality of the group. An outer quantifier can be used to quantify distributively over such groups. A fractional outer quantifier can be used to select a subgroup and indicate its cardinality as a fraction of the cardinality of the group.
+
+==== See Also ====
+* {le}
+* {le'i}
+* {loi}
+* {lai}
+
+==== Proposed Keywords ====
+* specific mass article
+
+==== Usage Examples ====
+;lei brazo cu jinga fi lei dotco la kabri: ''The Brazilians beat the Germans for the Cup.''
+{{BPFK Section box close}}
+
+{{BPFK Section box open}}
+=== cmavo: lai (LA) ===
+==== Proposed Definition ====
+Name mass article. It converts a selbri, selecting its first argument, or any string of cmevla into a sumti. The resulting expression refers specifically to a group of individuals that  the speaker has in mind and names with the selbri or cmevla and which collectively satisfy the predicate for which the sumti is an argument. An inner quantifier can be used (in the case of a selbri) as part of the name. An outer quantifier can be used to quantify distributively over such groups. A fractional outer quantifier can be used to select a subgroup and indicate its cardinality as a fraction of the cardinality of the group.
+
+==== See Also ====
+* {la}
+* {la'i}
+* {loi}
+* {lei}
+
+==== Proposed Keywords ====
+* name mass article
+
+==== Usage Examples ====
+;ta melbi pixra lai simpson: ''That's a nice photograph of the Simpsons.''
+{{BPFK Section box close}}
+
+{{BPFK Section box open}}
+=== cmavo: lo'i (LE) ===
+==== Proposed Definition ====
+Generic set article. It converts a selbri, selecting its first argument, into a sumti. The resulting expression refers generically to a set or sets of individuals that fit the first argument of the selbri. An inner quantifier can be used to indicate the cardinality of the set. An outer quantifier can be used to quantify distributively over such sets. A fractional outer quantifier can be used to select a subset and indicate its cardinality as a fraction of the cardinality of the set.
+
+==== See Also ====
+* {lo}
+* {loi}
+* {le'i}
+* {la'i}
+
+==== Proposed Keywords ====
+* generic set article
+
+==== Usage Examples ====
+;ma cnano lo junta lo'i cifnu poi cazi jbena: ''What is the normal weight of a baby at childbirth?'' 
+{{BPFK Section box close}}
+
+{{BPFK Section box open}}
+=== cmavo: le'i (LE) ===
+==== Proposed Definition ====
+Specific set article. It converts a selbri, selecting its first argument, into a sumti. The resulting expression refers specifically to the set of individuals that the speaker has in mind and describes as fitting the first argument of the selbri. An inner quantifier can be used to indicate the cardinality of the set.  An outer quantifier can be used to quantify distributively over such sets. A fractional outer quantifier can be used to select a subset and indicate its cardinality as a fraction of the cardinality of the set.
+
+==== See Also ====
+* {le}
+* {lei}
+* {lo'i}
+* {la'i}
+
+==== Proposed Keywords ====
+* specific set article
+
+==== Usage Examples ====
+;ro le verba pu cuxna pa karda le'i cnita selcra: ''Each child chose a card from the face-down collection.''
+{{BPFK Section box close}}
+
+{{BPFK Section box open}}
+=== cmavo: la'i (LA) ===
+==== Proposed Definition ====
+Name set article. It converts a selbri, selecting its first argument, or any string of cmevla into a sumti. The resulting expression refers specifically to the set of individuals that the speaker has in mind and names with the selbri or cmevla. An inner quantifier can be used (in the case of a selbri) as part of the name.  An outer quantifier can be used to quantify distributively over such sets. A fractional outer quantifier can be used to select a subset and indicate its cardinality as a fraction of the cardinality of the set.
+
+==== See Also ====
+* {la}
+* {lai}
+* {lo'i}
+* {le'i}
+
+==== Proposed Keywords ====
+* name set article
+
+==== Usage Examples ====
+;doi turni do so'i da na fadni la'i kenedis ma'i lo jecra'a: ''Governor, in many respects, you're not a typical Kennedy politically.''
+{{BPFK Section box close}}
+
+{{BPFK Section box open}}
+===Formal definitions ===
+
+{| class="wikitable" 
+| LE, LA || Definition
+|-
+| lo [PA] broda || zo'e noi ke'a broda [gi'e zilkancu li PA lo broda]
+|-
+| le [PA] broda || zo'e noi mi ke'a do skicu lo ka ce'u broda [gi'e zilkancu li PA lo broda] 
+|-
+| la [PA] broda || zo'e noi lu [PA] broda li'u cmene ke'a mi
+|-
+| lo PA ''sumti'' || lo PA me ''sumti''
+|-
+| le PA ''sumti'' || le PA me ''sumti''
+|-
+| la PA ''sumti'' || zo'e noi lu PA ''sumti'' li'u cmene ke'a mi 
+|-
+| loi [PA] broda || lo gunma be lo [PA] broda
+|-
+| lei [PA] broda || lo gunma be le [PA] broda
+|-
+| lai [PA] broda || lo gunma be la [PA] broda
+|-
+| loi PA ''sumti'' || lo gunma be lo PA ''sumti''
+|-
+| lei PA ''sumti'' || lo gunma be le PA ''sumti''
+|-
+| lai PA ''sumti'' || lo gunma be la PA ''sumti''
+|-
+| lo'i [PA] broda || lo selcmi be lo [PA] broda
+|-
+| le'i [PA] broda || lo selcmi be le [PA] broda
+|-
+| la'i [PA] broda || lo selcmi be la [PA] broda
+|-
+| lo'i PA ''sumti'' || lo selcmi be lo PA ''sumti''
+|-
+| le'i PA ''sumti'' || lo selcmi be le PA ''sumti''
+|-
+| la'i PA ''sumti'' || lo selcmi be la PA ''sumti''
+|}
+
+{| class="wikitable" 
+|colspan=1| Quantified terms
+|-
+| PA ''sumti'' || PA da poi ke'a me ''sumti''
+|-
+| PA broda || PA da poi broda 
+|-
+| piPA ''sumti'' || lo piPA si'e be pa me ''sumti''
+|-
+|colspan=1| piPA 
+|}
+{{BPFK Section box close}}
+
+{{BPFK Section box open}}
+
+===Summary ===
+
+{| class="wikitable" 
+| '''Cmavo'''||'''Article'''||'''Key phrase'''||'''Outer quantifier'''||'''Inner quantifier'''||'''Default quantifier'''
+|-
+| lo||Generic +||fits||distributive over individuals||number of individuals not necessarily all that exist +||none +
+|-
+| le||Specific||described as||distributive over individuals||number of individuals||none +
+|-
+| la||Name||named with||distributive over individuals||part of the name||none +
+|-
+| loi||Generic  +mass||fit and collectively satisfy||selects subgroup||number of individuals not necessarily all that exist +||none +
+|-
+| lei||Specific mass||described as and collectively satisfy||selects subgroup||number of individuals||none +
+|-
+| lai||Name mass||named with and collectively satisfy||selects subgroup||part of the name||none +
+|-
+| lo'i||Generic + set||has only members that fit||selects subset||cardinality of set not necessarily all that exist +||none +
+|-
+| le'i||Specific set||has only members described as||selects subset||cardinality of set||none +
+|-
+| la'i||Name set||has only members named with||selects subset||part of the name||none +
+|}
+''changes from CLLare marked with a plus sign''+
+{{BPFK Section box close}}
+
+{{BPFK Section box open}}
+===Notes ===
+
+* An ''individual'' can be anything, including a group, a set, a substance, a number, etc. {lo broda} can refer to one or more individuals. {lo'i broda} can refer only to those individuals that are sets. {loi broda} can refer only to those individuals that are groups ('masses').
+
+* Any term without an explicit outer quantifier is a '''constant''', i.e. not a quantified term. This means that it '''refers''' to one or more individuals, and changing the order in which the constant term appears with respect to a negation or with respect to a quantified term will not change the meaning of the sentence. A constant is something that always keeps the same referent or referents. For example {lo broda} always refers to brodas. In {mu da poi broda zo'u da brode}, "da" is a quantified variable, bound by the quantifier ''mu'', and it takes its values from the set of all things that broda. (Within the scope of the quantifier, it acts as a constant term, but it cannot escape as a constant out of that scope.) Any term with a quantifier in front takes values from the set of things over which the quantifier runs. When an unquantified term is quantified, the quantifier runs over the referents of the unquantified term.
+
+* CLL says about default quantifiers: ^''There are rules for each of the 11 descriptors specifying what the implicit values for the inner and outer quantifiers are. They are meant to provide sensible default values when context is absent, not necessarily to prescribe hard and fast rules. The following table lists the implicit values:'' ^The proposed definitions take the view that the most sensible default value when no explicit quantification is given is no quantification at all and that the unquantified terms are constants. 
+
+* http://groups.google.com/group/lojban/browse_thread/thread/6bab580f0b098348
+** loi/lei quantifier debate
+
+* http://groups.google.com/group/lojban/browse_thread/thread/92df4eed2d387cfa
+** more jbodau
+{{BPFK Section box close}}
+
+{{BPFK Section box open}}
+===Usage convention suggestions ===
+
+* To refer to substances, lo/le/la without any quantifier are appropriate. The number {tu'o} could be used as inner quantifier to emphasize that no cardinality applies. 
+;le nanmu cu se snuti ija'ebo lo tu'o gerku cu kuspe le klaji: ''The guy had an accident and there was dog all over the road.''
+
+* A substance can also be seen as made up of component parts, and this can even be true in a physical sense: the water in a puddle of rain got there drop by drop.  If you look from far enough away, you can't tell whether the "sailor all over the deck" is literally goo, or just an aggregation of sailors standing still. So a substance may be treated as a group made up of individuals without worrying about which individuals they are.
+{{BPFK Section box close}}
+
+{{BPFK Section box open}}
+===Impact ===
+
+* Positive impact: Some usages that make little sense with {lo} = {su'o} become validated. Examples:
+
+  bilga lenu jdice lenu roroi pilno '''lo''' moklu trixe (to zoigy. velar gy. toi) jonai crane (to zoigy. alveolar gy. toi)
+<br>[[tavla fi le tutra pe le terdi]] 
+<br>
+<br>  le cmana '''lo''' cidja ba claxu
+<br>  ''In the mountains there is no food.''
+<br>[[lapoi pelxu ku'o trajynobli]]
+<br>
+<br>  le dargu pe '''lo''' xamgu bangu cu kargu
+<br>  ''The road of the good language is costly.''
+<br>[[lapoi pelxu ku'o trajynobli]]
+<br>
+<br>  la jyryr. tolkien. cu te cukta la djine turni (to la'o gy Lord of the Rings gy toi) .e le so'omoi be '''lo'''  xanri munje lisri ca le lampru na'acto
+<br>[[tenguar]] 
+
+* Negative impact: It is conceivable that some usages become more vague than intended if the default quantifiers played an important role in some expression, such as interactions between su'o and na, but it is hard to determine. If someone finds examples where this happens please report them.
+{{BPFK Section box close}}
+
+==Issues ==
+* [http://groups.google.com/group/lojban/browse_thread/thread/9e44a5728883ff9b lei quantification discussion]
+* This may already be covered here, but I (rlpowell) want to report something mentioned by PC, for future reference: Quite another problem with the cited reference.  It seems to say that {ro lo rozgu} and {ro rozgu} are equivalent, as I hope they are not.  The first talks about each and every one of a bunch of roses (which roses to be worked out from context if necessary) while the second talks about each and every rose, period, essentially {ro da poi rozgu}, so not equivalent (as far as I can tell).
+* See [[gadri: an unofficial commentary from a logical point of view]] for a precise discussion on plural quantification and gadri, including the definitions of terms '''individual(s)''', '''collectivity''' and '''distributivity'''.
+
+{{BPFK Section poll| {MODULE(module=>BPFK Poll: gadri)}BPFK Poll: gadri{MODULE} }}
+[[Category:BPFK Sections including selma'o LE|G]]
+[[Category:BPFK Sections including selma'o LA|G]]

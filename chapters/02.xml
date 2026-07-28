@@ -9,7 +9,7 @@
     <title><anchor xml:id="c2s1" />The concept of the bridi</title>
     <para>      <indexterm type="general"><primary>bridi</primary><secondary>concept of</secondary>      </indexterm>      This chapter gives diagrammed examples of basic Lojban sentence structures. The most general pattern is covered first, followed by successive variations on the basic components of the Lojban sentence. There are many more capabilities not covered in this chapter, but covered in detail in later chapters, so this chapter is a      <quote>quick tour</quote>      of the material later covered more slowly throughout the book. It also introduces most of the Lojban words used to discuss Lojban grammar.
     </para>
-    <para> 
+    <para>
 
 
  Let us consider John and Sam and three statements about them:</para>
@@ -267,21 +267,25 @@
       <quote>say</quote>,
       <quote>boy</quote>,
       and
-      <quote>how</quote>. Other Lojban diphthongs begin with an
+      <quote>how</quote>. These four are the only diphthongs in Lojban. In addition, a syllable may begin with an
       <letteral>i</letteral>
       pronounced like English
       <quote>y</quote>
       (for example,
-      <diphthong>io</diphthong>
+      <morphology>io</morphology>
       is pronounced
-      <quote>yo</quote>) or else with a
+      <quote>yo</quote>) or with a
       <letteral>u</letteral>
       pronounced like English
       <quote>w</quote>
       (for example,
-      <diphthong>ua</diphthong>
+      <morphology>ua</morphology>
       is pronounced
-      <quote>wa</quote>).
+      <quote>wa</quote>); such glide-initial syllables begin a word or follow a vowel, never a consonant.
+    </para>
+    <para role="status-note">
+      The four-diphthong analysis is the de facto standard word-form rule, and the never-after-a-consonant ban is committee-approved; the full story is in
+      <xref linkend="chapter-phonology" />.
     </para>
     <para>
       <indexterm type="general"><primary>period</primary><secondary>quick-tour version</secondary>
@@ -298,9 +302,9 @@
     <para>
       <indexterm type="general"><primary>stress</primary><secondary>quick-tour version</secondary>
       </indexterm>
-      Stress falls on the next to the last syllable of all words, unless that vowel is
-      <letteral>y</letteral>,
-      which is never stressed; in such words the third-to-last syllable is stressed. If a word only has one syllable, then that syllable is not stressed.
+      Stress normally falls on the next-to-the-last syllable; syllables whose vowel is
+      <letteral>y</letteral>, and syllables with no vowel at all, are skipped in the count and never stressed. Strictly, this is the required rule for the content words (brivla); names may mark stress elsewhere, and the little structure words may be stressed anywhere or not at all &ndash; see
+      <xref linkend="chapter-phonology" />. A one-syllable structure word is usually left unstressed.
     </para>
     <para>All Lojban words are pronounced as they are spelled: there are no silent letters.</para>
   </section>
@@ -937,7 +941,7 @@
       <indexterm type="general"><primary>passive voice</primary></indexterm>
       The effect is similar to what in English is called the
       <quote>passive voice</quote>. In Lojban, the converted selbri has a new place structure that is renumbered to reflect the place reversal, thus having effects when such a conversion is used in combination with other constructs such as
-      <jbophrase>le selbri [ku]</jbophrase>
+      <jbophrase>lo selbri [ku]</jbophrase>
       (see
       <xref linkend="section-description-sumti" />).
     </para>
@@ -1019,7 +1023,7 @@
 
       <jbophrase>sutra tavla cutci</jbophrase>
     </example>
-    <para role="noindent"> 
+    <para role="noindent">
 
 
  has the place structure</para>
@@ -1244,11 +1248,20 @@
     <title><anchor xml:id="c2s10" />Description sumti</title>
     <para>      <indexterm type="general"><primary>descriptions</primary><secondary>quick-tour version</secondary>      </indexterm>      Often we wish to talk about things other than the speaker, the listener and things we can point to. Let's say I want to talk about a talker other than      <valsi>mi</valsi>. What I want to talk about would naturally fit into the first place of
       <valsi>tavla</valsi>. Lojban, it turns out, has an operator that pulls this first place out of a selbri and converts it to a sumti called a
-      <quote>description sumti</quote>. The description sumti
-      <jbophrase>le tavla ku</jbophrase>
+      <quote>description sumti</quote>, and the operator itself is called a
+      <quote>descriptor</quote>.
+      <indexterm type="lojban-word"><primary>lo</primary><secondary>quick-tour version</secondary>
+      </indexterm>
+      The description sumti
+      <jbophrase>lo tavla ku</jbophrase>
       means
-      <quote>the talker</quote>,
-      and may be used wherever any sumti may be used.
+      <quote>the talker</quote>
+      &ndash; someone or something that really does talk, with context settling which one(s) &ndash; and may be used wherever any sumti may be used.
+    </para>
+    <para role="status-note">
+      The article system taught in this chapter is the reformed, ratified one; older texts follow a different convention, and older usage remains valid &ndash; see
+      <xref linkend="appendix-changes" />. The full current treatment is in
+      <xref linkend="section-basic-descriptors" />.
     </para>
     <para>For example,</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k0Pj">
@@ -1259,7 +1272,7 @@
           <sumti>mi</sumti>
           <selbri>tavla</selbri>
           <sumti>do</sumti>
-          <sumti>le tavla</sumti>
+          <sumti>lo tavla</sumti>
           <elidable delineated="false">ku</elidable>
         </jbo>
       </interlinear-gloss-itemized>
@@ -1277,11 +1290,11 @@
     </para>
     <para>
       Similarly
-      <jbophrase>le sutra tavla ku</jbophrase>
+      <jbophrase>lo sutra tavla ku</jbophrase>
       is
       <quote>the fast talker</quote>,
       and
-      <jbophrase>le sutra te tavla ku</jbophrase>
+      <jbophrase>lo sutra te tavla ku</jbophrase>
       is
       <quote>the fast subject of talk</quote>
       or
@@ -1300,7 +1313,7 @@
           <sumti>mi</sumti>
           <selbri>tavla</selbri>
           <sumti>do</sumti>
-          <sumti>le tavla</sumti>
+          <sumti>lo tavla</sumti>
         </jbo>
         <gloss>
           <sumti>I</sumti>
@@ -1323,7 +1336,7 @@
       The
       <quote>obvious</quote>
       translation
-      <jbophrase>le sutra tavla</jbophrase>
+      <jbophrase>lo sutra tavla</jbophrase>
       turns out to mean
       <quote>the fast talker</quote>,
       and has no selbri at all. To solve this problem we can use the word
@@ -1343,7 +1356,7 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>le sutra tavla</sumti>
+          <sumti>lo sutra tavla</sumti>
         </jbo>
         <gloss>
           <sumti>The fast talker</sumti>
@@ -1355,7 +1368,7 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>le sutra</sumti>
+          <sumti>lo sutra</sumti>
           <elidable elidable="false">cu</elidable>
           <selbri>tavla</selbri>
         </jbo>
@@ -1371,7 +1384,7 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>le sutra se tavla</sumti>
+          <sumti>lo sutra se tavla</sumti>
         </jbo>
         <gloss>
           <sumti>The fast talked-to one</sumti>
@@ -1383,7 +1396,7 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>le sutra</sumti>
+          <sumti>lo sutra</sumti>
           <elidable elidable="false">cu</elidable>
           <selbri>se tavla</selbri>
         </jbo>
@@ -1409,9 +1422,9 @@
           <sumti>mi</sumti>
           <elidable>cu</elidable>
           <selbri>tavla</selbri>
-          <sumti>le vecnu</sumti>
+          <sumti>lo vecnu</sumti>
           <elidable>ku</elidable>
-          <sumti>le blari'o</sumti>
+          <sumti>lo blari'o</sumti>
           <elidable>ku</elidable>
         </jbo>
         <gloss>
@@ -1427,18 +1440,28 @@
     </example>
     <para role="indent">
       The sumti
-      <jbophrase>le vecnu</jbophrase>
+      <jbophrase>lo vecnu</jbophrase>
       contains the selbri
       <valsi>vecnu</valsi>,
       which has the
       <quote>seller</quote>
-      in the x<subscript>1</subscript> place, and uses it in this sentence to describe a particular
-      <quote>seller</quote>
-      that the speaker has in mind (one that he or she probably expects the listener will also know about). Similarly, the speaker has a particular blue-green thing in mind, which is described using
+      in the x<subscript>1</subscript> place, and uses it in this sentence to refer to a seller &ndash; someone who really sells; as usual, context supplies which seller is meant. Similarly,
+      <jbophrase>lo blari'o</jbophrase>
+      refers to something actually blue-green.
+    </para>
+    <para>
+      <indexterm type="lojban-word"><primary>le</primary><secondary>quick-tour version</secondary>
+      </indexterm>
+      Lojban has a second descriptor for a different job:
       <valsi>le</valsi>
-      to mark
-      <valsi>blari'o</valsi>,
-      a selbri whose first sumti is something blue-green.
+      picks out particular things the speaker has in mind, and merely <emphasis>describes</emphasis> them &ndash;
+      <jbophrase>le vecnu</jbophrase>
+      is
+      <quote>the one(s) I mean, whom I'm calling the seller</quote>
+      , a handy way of pointing with words even if the description is loose. In this chapter we keep to
+      <valsi>lo</valsi>
+      , the everyday default; the two descriptors are treated fully in
+      <xref linkend="section-basic-descriptors" />.
     </para>
     <para>
       It is safe to omit both occurrences of
@@ -1568,7 +1591,7 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>le gerku</sumti>
+          <sumti>lo gerku</sumti>
           <elidable>ku</elidable>
           <elidable elidable="false">cu</elidable>
           <selbri>melbi</selbri>
@@ -1636,7 +1659,7 @@
   <section xml:id="section-possession">
     <title><anchor xml:id="c2s13" />Possession</title>
     <para>      <indexterm type="general"><primary>possession</primary><secondary>quick-tour version</secondary>      </indexterm>      <quote>Possession</quote>      refers to the concept of specifying an object by saying who it belongs to (or with). A full explanation of Lojban possession is given in      <xref linkend="chapter-relative-clauses" />. A simple means of expressing possession, however, is to place a sumti representing the possessor of an object within the description sumti that refers to the object: specifically, between the
-      <valsi>le</valsi>
+      <valsi>lo</valsi>
       and the selbri of the description:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k0zY">
@@ -1644,7 +1667,7 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>le mi gerku</sumti>
+          <sumti>lo mi gerku</sumti>
           <elidable elidable="false">cu</elidable>
           <selbri>sutra</selbri>
         </jbo>
@@ -2107,7 +2130,7 @@
         <natlang>Are you healthy?</natlang>
       </interlinear-gloss-itemized>
     </example>
-    <para role="noindent"> 
+    <para role="noindent">
 
 
  can be answered with</para>
@@ -2158,7 +2181,7 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>le tavla</sumti>
+          <sumti>lo tavla</sumti>
           <elidable elidable="false">cu</elidable>
           <selbri>kanro</selbri>
         </jbo>
@@ -2175,7 +2198,7 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>le tavla</sumti>
+          <sumti>lo tavla</sumti>
           <elidable elidable="false">cu</elidable>
           <selbri>go'i</selbri>
         </jbo>
@@ -2264,7 +2287,7 @@
           <sumti>mi</sumti>
           <elidable>cu</elidable>
           <selbri>klama</selbri>
-          <sumti>le melbi</sumti>
+          <sumti>lo melbi</sumti>
         </jbo>
         <gloss>
           <sumti>I</sumti>
@@ -2469,7 +2492,7 @@
           <sumti>la djan.</sumti>
           <elidable>cu</elidable>
           <selbri>klama</selbri>
-          <sumti>le zarci</sumti>
+          <sumti>lo zarci</sumti>
         </jbo>
         <gloss>
           <sumti>John</sumti>
@@ -2496,7 +2519,7 @@
           <sumti>la djan.</sumti>
           <cmavo>pu</cmavo>
           <selbri>klama</selbri>
-          <sumti>le zarci</sumti>
+          <sumti>lo zarci</sumti>
         </jbo>
         <gloss>
           <sumti>John</sumti>
@@ -2519,7 +2542,7 @@
           <sumti>la djan.</sumti>
           <cmavo>ca</cmavo>
           <selbri>klama</selbri>
-          <sumti>le zarci</sumti>
+          <sumti>lo zarci</sumti>
         </jbo>
         <gloss>
           <sumti>John</sumti>
@@ -2569,7 +2592,7 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>le pu bajra</sumti>
+          <sumti>lo pu bajra</sumti>
           <elidable>ku</elidable>
           <elidable elidable="false">cu</elidable>
           <selbri>tavla</selbri>
@@ -2598,7 +2621,7 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>le vi bajra </sumti>
+          <sumti>lo vi bajra </sumti>
           <elidable>ku</elidable>
           <elidable elidable="false">cu</elidable>
           <selbri>tavla</selbri>
@@ -2636,7 +2659,7 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>le ca vi tavla </sumti>
+          <sumti>lo ca vi tavla </sumti>
           <elidable>ku</elidable>
           <elidable>cu</elidable>
           <selbri>ba vu tavla</selbri>

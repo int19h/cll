@@ -530,7 +530,14 @@
     <para>
       <indexterm type="general"><primary>shift word</primary><secondary>scope</secondary>
       </indexterm>
-      How long does a shift word last? Theoretically, until the next shift word that contradicts it or until the end of text. In practice, it is common to presume that a shift word is only in effect until the next word other than a lerfu word is found.
+      How long does a shift word last? A shift affects every later letteral in the same letteral string &ndash; the unbroken sequence of lerfu words it occurs in &ndash; and only those letterals: the shift expires when the string ends (that is, when a word other than a lerfu word arrives), or earlier if a later shift word of the same category supersedes it within the string. A fresh letteral string starts with no shifts in effect.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>shift word</primary><secondary>scope, status of</secondary>
+      </indexterm>
+      This bounded-string scope rule, and
+      <valsi>ce'a</valsi>'s per-category replacement behavior, are checkpointed. Older accounts read shifts more broadly; see
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="general"><primary>shift</primary><secondary>single-letter</secondary>
@@ -622,10 +629,6 @@
       Formally,
       <valsi>bu</valsi>
       may be attached to any single Lojban word. Compound cmavo do not count as words for this purpose. The special cmavo
-      <valsi>ba'e</valsi>
-      ,
-      <valsi>za'e</valsi>
-      ,
       <valsi>zei</valsi>
       ,
       <valsi>zo</valsi>
@@ -643,11 +646,18 @@
       <valsi>su</valsi>
       , and
       <valsi>fa'o</valsi>
-      may not have
+      cannot end up with
       <valsi>bu</valsi>
-      attached, because they are interpreted before
+      attached &ndash; not because of a special exemption, but because these words act on the words around them, and they act first: everything of this kind applies strictly left to right (the word-level machinery is presented in full in
+      <xref linkend="section-cmavo-interactions" />). By the time a following
       <valsi>bu</valsi>
-      detection is done; in particular,
+      could bind,
+      <valsi>zo</valsi>
+      has already quoted it,
+      <valsi>zoi</valsi>
+      has taken it as a delimiter,
+      <valsi>si</valsi>
+      has erased something, and so on. In particular,
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-WvFu">
       <title><anchor xml:id="c17e4d1" /><indexterm type="lojban-word"><primary>bu</primary></indexterm></title>
@@ -682,6 +692,31 @@
       <valsi>.abu</valsi>.) It does not matter if the word is a cmavo, a cmevla, or a brivla. All such words suffixed by
       <valsi>bu</valsi>
       are treated grammatically as if they were cmavo belonging to selma'o BY.
+    </para>
+    <para>
+      Two corners of the
+      <valsi>bu</valsi>
+      rules are genuinely contested, and careful writing avoids both. One is whether
+      <valsi>bu</valsi>
+      may bind the BAhE words &ndash;
+      <valsi>ba'e</valsi>
+      , the emphasis marker, and
+      <valsi>za'e</valsi>
+      , the nonce-word marker; the two principal parsers used to verify this edition allow it. The other is whether
+      <jbophrase>le'u bu</jbophrase>
+      is a letteral. A parser without erasure support may accept still more &ndash; the standard camxes grammar, having no
+      <valsi>si</valsi>
+      machinery, reads even
+      <jbophrase>su bu</jbophrase>
+      as a letteral &ndash; but that is an artifact, not a rule.
+    </para>
+    <para role="status-note">
+      <indexterm type="lojban-word"><primary>bu</primary><secondary>rules, status of</secondary>
+      </indexterm>
+      The
+      <valsi>bu</valsi>
+      rules are checkpointed, stated there as an exception list; the strictly-left-to-right account given here is the community's later synthesis, which this edition adopts. For the full history, including the frozen list's exact exemptions, see
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>me'o</primary><secondary>as a prefix for logograms</secondary>
@@ -1913,13 +1948,20 @@
       </indexterm>
       <indexterm type="general"><primary>acronyms names based on lerfu words</primary><secondary>omitting &quot;bu&quot;</secondary>
       </indexterm>
+      <indexterm type="lojban-word"><primary>.ybu</primary><secondary>recognized before word-level processing</secondary>
+      </indexterm>
       Some compression can be done by leaving out
       <valsi>bu</valsi>
       after vowel lerfu words (except for
       <valsi>.ybu</valsi>
       , wherein the
       <valsi>bu</valsi>
-      cannot be omitted without ambiguity). Compression is moderately important because it's hard to say long cmevla without introducing an involuntary (and illegal) pause:
+      cannot be omitted without ambiguity &ndash;
+      <valsi>y</valsi>
+      by itself is the hesitation noise, not a letteral, which is why
+      <valsi>.ybu</valsi>
+      is recognized as a single fused word before any other word-level processing happens; see
+      <xref linkend="section-cmavo-interactions" />). Compression is moderately important because it's hard to say long cmevla without introducing an involuntary (and illegal) pause:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-0sin">
       <title>
@@ -1992,7 +2034,7 @@
       <interlinear-gloss>
         <jbo>la me dy ny. .abu</jbo>
         <gloss>
-          that-named what-pertains-to
+          that-named what-is-among-the-referents-of
           <quote>d</quote>
           <quote>n</quote>
           <quote>a</quote>
@@ -2056,8 +2098,8 @@
         <gloss>The-expression [code] 36 -- is-a-letteral-in-set -- ASCII</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>loi rupnu be fi le merko</jbo>
-        <gloss>for-the-mass-of currency-units - in the American-system.</gloss>
+        <jbo>loi rupnu be fi lo merko</jbo>
+        <gloss>for-a-group-of currency-units - in the American-system.</gloss>
         <natlang>The character code 36 in ASCII represents American dollars.</natlang>
         <natlang>
           <quote>$</quote>
@@ -2201,9 +2243,17 @@
       </indexterm>
       Note that LAU cmavo must be followed by a BY cmavo or the equivalent, where
       <quote>equivalent</quote>
-      means: either any Lojban word followed by
+      means: either a word-plus-
       <valsi>bu</valsi>
-      , another LAU cmavo (and its required sequel), or a
+      combination that actually forms a lerfu word under the rules of
+      <xref linkend="section-bu" />
+      (not, say,
+      <jbophrase>zo bu</jbophrase>
+      , where the
+      <valsi>zo</valsi>
+      quotes the
+      <valsi>bu</valsi>
+      first), another LAU cmavo (and its required sequel), or a
       <valsi>tei</valsi>
       &hellip;
       <valsi>foi</valsi>

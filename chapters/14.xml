@@ -471,7 +471,7 @@
       is
       <valsi>.a</valsi>. (Do not confuse A, which is a selma'o, with
       <phrase role="logical-vowel">A</phrase>
-      , which is a truth function, or 
+      , which is a truth function, or
     <valsi>.a</valsi>, which is a cmavo.) Likewise, the cmavo for
       <phrase role="logical-vowel">E</phrase>
       in selma'o GIhA is
@@ -1878,7 +1878,7 @@
       The syntax of giheks is:
     </para>
 
-    <grammar-template> 
+    <grammar-template>
       [na] [se] GIhA [nai]
     </grammar-template>
     <para>which is exactly parallel to the syntax of eks.</para>
@@ -2794,11 +2794,11 @@
 
       <interlinear-gloss>
         <jbo>do djica tu'a loi ckafi</jbo>
-        <gloss>You desire something-about a-mass-of coffee</gloss>
+        <gloss>You desire something-about a-group-of coffee</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… ji loi tcati</jbo>
-        <gloss>… [truth-function?] a-mass-of tea?</gloss>
+        <gloss>… [truth-function?] a-group-of tea?</gloss>
         <natlang>Do you want coffee or tea?</natlang>
       </interlinear-gloss>
     </example>
@@ -2831,11 +2831,11 @@
 
       <interlinear-gloss>
         <jbo>do djica tu'a ge'i loi ckafi</jbo>
-        <gloss>You desire something-about [truth-function?] a-mass-of coffee</gloss>
+        <gloss>You desire something-about [truth-function?] a-group-of coffee</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… gi loi tcati</jbo>
-        <gloss>… [or] a-mass-of tea?</gloss>
+        <gloss>… [or] a-group-of tea?</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent">the answer must be in afterthought form.</para>
@@ -2906,11 +2906,11 @@
 
       <interlinear-gloss>
         <jbo>ganai ti ckafi gi ko bevri loi tcati mi</jbo>
-        <gloss>If this is-coffee then [you!] bring a-mass-of tea to-me,</gloss>
+        <gloss>If this is-coffee then [you!] bring a-group-of tea to-me,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… .ije ganai ti tcati gi ko bevri loi ckafi mi</jbo>
-        <gloss>… and if this is-tea then [you!] bring a-mass-of coffee to-me.</gloss>
+        <gloss>… and if this is-tea then [you!] bring a-group-of coffee to-me.</gloss>
         <natlang>If this is coffee, bring me tea; but if this is tea, bring me coffee.</natlang>
       </interlinear-gloss>
     </example>
@@ -2952,7 +2952,9 @@
     <para role="indent">
 
 
-      <indexterm type="general"><primary>mass</primary><secondary>joining elements into a mass</secondary>
+      <indexterm type="general"><primary>masses</primary><secondary>now called groups</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>groups</primary><secondary>joining members into a group</secondary>
       </indexterm>
       Given the nature of pianos, this probably means that John carried one end and Alice the other. So it is not true that:
     </para>
@@ -2963,29 +2965,40 @@
     </example>
     <para role="noindent">
       which would mean that each of them carried the piano by himself/herself. Lojban deals with this particular linguistic phenomenon as a
-      <quote>mass</quote>. John and Alice are joined together into a mass, John-and-Alice, and it is this mass which carried the piano, not either of them separately. The cmavo
+      <quote>group</quote>
+      (in Lojban,
+      <valsi>gunma</valsi>
+      ; traditionally called a <quote>mass</quote>). John and Alice are joined together into a group, John-and-Alice, and it is this group which carried the piano, not either of them separately. The cmavo
       <valsi>joi</valsi>
-      (of selma'o JOI) is used to join two or more components into a mass:
+      (of selma'o JOI) is used to join two or more members into a group:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-pC5x">
       <title><anchor xml:id="c14e14d3" /></title>
 
       <interlinear-gloss>
         <jbo>la .djan. joi la .alis. cu bevri le pipno</jbo>
-        <gloss>That-named John massed-with that-named Alice - carry the piano.</gloss>
+        <gloss>That-named John in-a-group-with that-named Alice - carry the piano.</gloss>
 
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="general"><primary>components contrasted with mass</primary><secondary>in properties of</secondary>
+      <indexterm type="general"><primary>members contrasted with group</primary><secondary>in properties of</secondary>
       </indexterm>
-      <indexterm type="general"><primary>mass contrasted with components</primary><secondary>in properties of</secondary>
+      <indexterm type="general"><primary>group contrasted with members</primary><secondary>in properties of</secondary>
       </indexterm>
-      <indexterm type="general"><primary>supervising</primary><secondary>as a contribution to mass action</secondary>
+      <indexterm type="general"><primary>supervising</primary><secondary>as a contribution to collective action</secondary>
       </indexterm>
       <xref linkend="example-random-id-pC5x" />
-      covers the case mentioned, where John and Alice divide the labor; it also could mean that John did all the hauling and Alice did the supervising. This possibility arises because the properties of a mass are the properties of its components, which can lead to apparent contradictions: if John is small and Alice is large, then John-and-Alice is both small and large. Masses are also discussed in
+      covers the case mentioned, where John and Alice divide the labor; it also could mean that John did all the hauling and Alice did the supervising. This flexibility arises because the carrying is claimed of the group as a whole: the members satisfy the claim <emphasis>collectively</emphasis>, in whatever division of labor fits, and no member need satisfy it alone. A group has properties of its own, which are not automatically the properties of its members, nor the members' properties those of the group: John-and-Alice may weigh two hundred kilograms together though neither John nor Alice does. Groups are also discussed in
       <xref linkend="section-masses" />.
+    </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>groups</primary><secondary>status of collective satisfaction</secondary>
+      </indexterm>
+      The group account of
+      <valsi>joi</valsi>
+      is part of the ratified gadri reform; older texts follow a different doctrine &ndash; see
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>JA selma'o</primary><secondary>opposed to JOI</secondary>
@@ -3017,7 +3030,7 @@
 
       <interlinear-gloss>
         <jbo>le nanmu ku joi le ninmu [ku] cu klama le zarci</jbo>
-        <gloss>The man - massed-with the woman - - go-to the market.</gloss>
+        <gloss>The man - in-a-group-with the woman - - go-to the market.</gloss>
       </interlinear-gloss>
     </example>
     <para role="indent">
@@ -3065,7 +3078,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      Here the ball is neither wholly blue nor wholly red, but partly blue and partly red. Its blue/redness is a mass property. (Just how blue something has to be to count as
+      Here the ball is neither wholly blue nor wholly red, but partly blue and partly red. Its blue/redness is a property of the mixture as a whole. (Just how blue something has to be to count as
       <quote>wholly blue</quote>
       is an unsettled question, though. A
       <jbophrase>blanu zdani</jbophrase>
@@ -3079,7 +3092,7 @@
           <valsi>joi</valsi>
           B
         </td>
-        <td>the mass with components A and B</td>
+        <td>the group (traditionally called mass) with members A and B</td>
       </tr>
       <tr>
         <td>
@@ -3190,15 +3203,15 @@
     <para role="indent">
 
 
-      <indexterm type="general"><primary>mass</primary><secondary>contrasted with set in distribution of properties</secondary>
+      <indexterm type="general"><primary>groups</primary><secondary>contrasted with sets in properties</secondary>
       </indexterm>
-      <indexterm type="general"><primary>set</primary><secondary>contrasted with mass in distribution of properties</secondary>
+      <indexterm type="general"><primary>set</primary><secondary>contrasted with group in properties</secondary>
       </indexterm>
       <indexterm type="general"><primary>set</primary><secondary>as specified by members</secondary>
       </indexterm>
       The x<subscript>3</subscript> place of
       <valsi>cuxna</valsi>
-      is a set from which the choice is being made. A set is an abstract object which is determined by specifying its members. Unlike those of a mass, the properties of a set are unrelated to its members' properties: the set of all rats is large (since many rats exist), but the rats themselves are small. This chapter does not attempt to explain set theory (the mathematical study of sets) in detail: explaining propositional logic is quite enough for one chapter!
+      is a set from which the choice is being made. A set is an abstract object, determined entirely by specifying its members. A group, by contrast, is a thing in the world that can act, weigh, or gather, its members satisfying claims collectively; a set merely <emphasis>has</emphasis> its members, and its own properties are set-like ones such as size, membership, and inclusion. So the set of all rats is large (it has many members), while the rats themselves are small, and neither smallness nor furriness passes to the set. This chapter does not attempt to explain set theory (the mathematical study of sets) in detail: explaining propositional logic is quite enough for one chapter!
     </para>
 
     <para>
@@ -3224,9 +3237,9 @@
 
       <indexterm type="general"><primary>set</primary><secondary>contrasted with ordered sequence</secondary>
       </indexterm>
-      <indexterm type="general"><primary>mass</primary><secondary>contrasted with ordered sequence</secondary>
+      <indexterm type="general"><primary>groups</primary><secondary>contrasted with ordered sequence</secondary>
       </indexterm>
-      <indexterm type="general"><primary>ordered sequence</primary><secondary>contrasted with mass</secondary>
+      <indexterm type="general"><primary>ordered sequence</primary><secondary>contrasted with group</secondary>
       </indexterm>
       <indexterm type="general"><primary>ordered sequence</primary><secondary>contrasted with set</secondary>
       </indexterm>
@@ -3248,7 +3261,7 @@
       <jbophrase>lo porsi</jbophrase>
       , a sequence.) Here the three sumti connected by
       <valsi>ce'o</valsi>
-      are in a definite order, not just lumped together in a set or a mass.
+      are in a definite order, not just lumped together in a set or a group.
     </para>
 
     <para>
@@ -3262,11 +3275,11 @@
       </indexterm>
       <indexterm type="general"><primary>individuals into set</primary><secondary>by non-logical connection</secondary>
       </indexterm>
-      <indexterm type="general"><primary>individuals into mass</primary><secondary>by non-logical connection</secondary>
+      <indexterm type="general"><primary>individuals into group</primary><secondary>by non-logical connection</secondary>
       </indexterm>
       <indexterm type="general"><primary>non-logical connection</primary><secondary>of individuals into set</secondary>
       </indexterm>
-      <indexterm type="general"><primary>non-logical connection</primary><secondary>of individuals into mass</secondary>
+      <indexterm type="general"><primary>non-logical connection</primary><secondary>of individuals into group</secondary>
       </indexterm>
       So
       <valsi>joi</valsi>
@@ -3274,7 +3287,7 @@
       <valsi>ce</valsi>
       , and
       <valsi>ce'o</valsi>
-      are parallel, in that the sumti connected are taken to be individuals, and the result is something else: a mass, a set, or a sequence respectively. The cmavo
+      are parallel, in that the sumti connected are taken to be individuals, and the result is something else: a group, a set, or a sequence respectively. The cmavo
       <valsi>jo'u</valsi>
       serves as a fourth element in this pattern: the sumti connected are individuals, and the result is still individuals &ndash; but inseparably so. The normal Lojban way of saying that James and George are brothers is:
     </para>
@@ -3330,14 +3343,14 @@
       is not strictly necessary in this sentence, but is used to make clear that we are not saying that James and George are both brothers of some third person not specified. Alternatively, we could turn the tanru around: the x<subscript>1</subscript> place of
       <valsi>re</valsi>
       <valsi>mei</valsi>
-      is a mass with two components, leading to:
+      is a group with two members, leading to:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-t0FJ">
       <title><anchor xml:id="c14e14d11" /><indexterm type="general"><primary>brothers</primary></indexterm></title>
 
       <interlinear-gloss>
         <jbo>la .djeimyz. joi</jbo>
-        <gloss>That-named James massed-with</gloss>
+        <gloss>That-named James in-a-group-with</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>la .djordj. cu bruna remei</jbo>
@@ -3347,7 +3360,7 @@
     <para role="noindent">
       where
       <valsi>joi</valsi>
-      is used to create the necessary mass.
+      is used to create the necessary group.
     </para>
     <para>
 
@@ -3525,7 +3538,7 @@
     <para role="indent">
       The following example uses
       <jbophrase>se remei</jbophrase>
-      , which is a set (not a mass) of two elements:
+      , which is a set (not a group) of two elements:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-D9gz">
       <title><anchor xml:id="c14e15d5" /></title>
@@ -3570,14 +3583,14 @@
 
       <interlinear-gloss>
         <jbo>mi joibo do ce la .djan. joibo la .djein.</jbo>
-        <gloss>(I massed-with you) and (that-named John massed-with that-named Jane)</gloss>
+        <gloss>(I in-a-group-with you) and (that-named John in-a-group-with that-named Jane)</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… cu gunma se remei</jbo>
-        <gloss>… - are-a-mass - type-of-two-set</gloss>
+        <gloss>… - are-a-group - type-of-two-set</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">asserts that there is a set of two items each of which is a mass.</para>
+    <para role="noindent">asserts that there is a set of two items each of which is a group.</para>
     <para>
       <indexterm type="general"><primary>termsets</primary><secondary>non-logical connection of</secondary>
       </indexterm>
@@ -3589,15 +3602,15 @@
     </para>
     <definition>
       <valsi>casnu</valsi>
-      <content>the mass x<subscript>1</subscript> discusses/talks about x<subscript>2</subscript></content>
+      <content>the group x<subscript>1</subscript> discusses/talks about x<subscript>2</subscript></content>
     </definition>
-    <para>so the x<subscript>1</subscript> place must be occupied by a mass (for reasons not explained here); however, different components of the mass may discuss in different languages. To associate each participant with his or her language, we can say:</para>
+    <para>so the x<subscript>1</subscript> place must be occupied by a group (for reasons not explained here); however, different members of the group may discuss in different languages. To associate each participant with his or her language, we can say:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-sdba">
       <title><anchor xml:id="c14e15d7" /><indexterm type="general"><primary>discuss in language</primary></indexterm></title>
 
       <interlinear-gloss>
         <jbo>mi ce'e bau la .lojban. pe'e joi</jbo>
-        <gloss>(I [plus] in-language that-named Lojban [joint] massed-with</gloss>
+        <gloss>(I [plus] in-language that-named Lojban [joint] in-a-group-with</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… do ce'e bau la .gliban. casnu</jbo>
@@ -3759,7 +3772,7 @@
     <para role="indent">
       The result of
       <jbophrase>mi jo'u do</jbophrase>
-      would be two individuals, not a mass, therefore
+      would be two individuals, not a group, therefore
       <valsi>jo'u</valsi>
       is not applicable;
       <valsi>joi</valsi>
@@ -3777,11 +3790,11 @@
 
       <interlinear-gloss>
         <jbo>do djica tu'a loi ckafi</jbo>
-        <gloss>You desire something-about a-mass-of coffee</gloss>
+        <gloss>You desire something-about a-group-of coffee</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… ji loi tcati</jbo>
-        <gloss>… [what-connective?] a-mass-of tea?</gloss>
+        <gloss>… [what-connective?] a-group-of tea?</gloss>
         <natlang>Do you want coffee or tea?</natlang>
       </interlinear-gloss>
     </example>
@@ -3794,8 +3807,8 @@
 
       <interlinear-gloss>
         <jbo>joi</jbo>
-        <gloss>Mixed-mass-and.</gloss>
-        <natlang>Both as a mass (i.e, mixed together).</natlang>
+        <gloss>In-a-group-with.</gloss>
+        <natlang>Both as one group (i.e., mixed together).</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
@@ -4441,7 +4454,7 @@
         <natlang>Arthur was a king, and Arthur will be a king.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent"> 
+    <para role="noindent">
 
 
  can be reduced to:</para>
@@ -4825,6 +4838,12 @@
       is similar to
       <xref linkend="example-random-id-PMTu" />. There is no time relationship specified between the going and the buying; both are simply set in the past.
     </para>
+    <para role="status-note">
+      <indexterm type="general"><primary>tenses</primary><secondary>before forethought connectives, status</secondary>
+      </indexterm>
+      A bare leading tense on a forethought construction is de facto standard &ndash; current grammars read it as a term scoping over the whole construction, which is exactly the both-in-the-past meaning intended here. For its history, see
+      <xref linkend="appendix-changes" />.
+    </para>
   </section>
   <section xml:id="section-abstractors">
     <title><anchor xml:id="c14s19" />Abstractor connection and connection within abstractions</title>
@@ -4872,7 +4891,7 @@
 
       <interlinear-gloss>
         <jbo>mi jinvi le du'u loi jmive</jbo>
-        <gloss>I opine the fact-that a-mass-of living-things</gloss>
+        <gloss>I opine the fact-that a-group-of living-things</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>…  cu zvati gi'onai na zvati vau la .iupiter.</jbo>
@@ -4880,7 +4899,7 @@
         <natlang>I believe there either is or isn't life on Jupiter.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent"> 
+    <para role="noindent">
 
 
  is true, since the embedded sentence is a tautology, but:</para>
@@ -4889,11 +4908,11 @@
 
       <interlinear-gloss>
         <jbo>mi jinvi le du'u loi jmive cu zvati la .iupiter.</jbo>
-        <gloss>I opine the fact-that a-mass-of living-things - is-at that-named Jupiter</gloss>
+        <gloss>I opine the fact-that a-group-of living-things - is-at that-named Jupiter</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… .ijonai mi jinvi le du'u loi jmive</jbo>
-        <gloss>… or-else I opine the fact-that a-mass-of living-things</gloss>
+        <gloss>… or-else I opine the fact-that a-group-of living-things</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… na zvati la .iupiter.</jbo>

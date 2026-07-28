@@ -57,6 +57,12 @@ The ZG (2007) promise stands: pre-xorlo CLL usage is "not incorrect" — describ
 
 Full book build is containerized (`Dockerfile`, `run_container.sh`; Prince for PDF) and slow (~1h). Single-chapter test: `./cll_build -t chapters/NN.xml`. Native-Ubuntu setup notes: `~/git/cll.v0/README-UBUNTU.md`. XML validity: `xmllint` against `dtd/`.
 
+## Releases
+
+- Branding lives in `.env` (`TITLE`, `VERSION`, read by `scripts/merge.sh` into the book's title page). `main` carries `colojban-<last release>+dev`; **cutting an `edition/X.Y.Z` branch means setting both `TITLE` and `VERSION` there** — forgetting `TITLE` reverted the book to UnCLL's on 1.3.1 and 1.3.2.
+- A release is a GitHub release tagged `vX.Y.Z` pointing at the `edition/X.Y.Z` tip (the exact published tree), plus a `pages/versions.tsv` entry.
+- **Release notes are the delta against our own previous release** — not against CLL 1.1 or the first edition. The first release (1.3.2) is the exception: its predecessor is upstream's UnCLL `geklojban-1.2.16`, frozen as `baseline/uncll-1.2.16`. Never credit this edition with something UnCLL already did (dotside and the classical hyphen rules are the traps). Don't rehash the change list either: the book's a03 appendix catalogues changes from the *first edition*, and the site ships a visual diff against the previous release; notes summarize what a reader gains and link to both.
+
 ## Coordination (IRC)
 
 All agent sessions on this machine (Claude PM sessions across projects, Codex workers, the owner) coordinate over a local Ergo IRC server at `127.0.0.1:6667`. **Read `~/git/agent-ops/docs/protocol.md` before first use** — it defines identity, channels, message prefixes, waiting, and durability rules. Tooling lives in `~/git/agent-ops/bin/`.

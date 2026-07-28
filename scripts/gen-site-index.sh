@@ -35,14 +35,15 @@ HTML
   cat <<HTML
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Complete Lojban Language &mdash; community modernization</title>
+<title>The Contemporary Lojban Language</title>
 <style>body{font:16px/1.5 system-ui,sans-serif;max-width:44rem;margin:3rem auto;padding:0 1rem}
 h1{font-size:1.6rem}a{color:#0b6}li{margin:.5rem 0}.muted{color:#666;font-size:.9rem}
 .latest{font-weight:600}</style>
 </head><body>
-<h1>The Complete Lojban Language</h1>
-<p>Community modernization edition &mdash; the CLL updated to describe current
-Lojban, with every change labelled by its level of authority. Work in progress.</p>
+<h1>The Contemporary Lojban Language</h1>
+<p>A community edition of <i>The Complete Lojban Language</i>, updated to describe
+current Lojban, with every change labelled by its level of authority. An unofficial
+publication &mdash; not by the LLG.</p>
 <h2>Versions</h2>
 <ul>
 HTML

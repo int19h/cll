@@ -48,6 +48,35 @@
       had been elided.
     </para>
     <para>
+      <indexterm type="general"><primary>kei</primary><secondary>elision before a tagged selbri</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>tags</primary><secondary>binding across an elided kei</secondary>
+      </indexterm>
+      A tense or modal tag standing directly in front of a selbri binds to that selbri exactly as
+      <valsi>cu</valsi>
+      would &ndash; the tag-binding rule; see
+      <xref linkend="section-tenses-introduction" />
+      for its status. So in
+      <jbophrase>lo nu klama ba brode</jbophrase>
+      , the
+      <valsi>ba</valsi>
+      itself ends the abstraction &ndash; no
+      <valsi>kei</valsi>
+      is needed &ndash; and opens the main selbri
+      <valsi>brode</valsi>. Older texts and grammars group this differently; see
+      <xref linkend="appendix-changes" />. If you <emphasis>want</emphasis> the tag inside the abstraction, follow it with a sumti &ndash;
+      <jbophrase>lo nu klama ba le nu tavla cu xamgu</jbophrase>
+      keeps the
+      <valsi>ba</valsi>
+      phrase inside, with
+      <valsi>cu</valsi>
+      showing where the description ends &ndash; or close the tag with
+      <valsi>ku</valsi>
+      , as in
+      <jbophrase>lo nu klama ba ku cu xamgu</jbophrase>
+      ; a bare tag left standing in front of a selbri will always seize that selbri instead.
+    </para>
+    <para>
       (Technically,
       <valsi>kei</valsi>
       is never necessary, because the elidable terminator
@@ -90,11 +119,29 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
+      <indexterm type="general"><primary>abstractions</primary><secondary>le contrasted with lo before</secondary>
+      </indexterm>
+      The choice of descriptor matters for abstractions just as for anything else (see
+      <xref linkend="section-basic-descriptors" />):
+      <jbophrase>le nu</jbophrase>
+      points to a particular, in-mind event, while
+      <jbophrase>lo nu</jbophrase>
+      refers to whatever event genuinely fits the description, and is the usual choice when no particular occasion is meant. The examples in this chapter mostly use
+      <jbophrase>le nu</jbophrase>
+      , which is fine wherever a specific occasion is in view; read them with that distinction in mind.
+    </para>
+    <para role="indent">
       We will most often use descriptions containing abstraction either at the end of a bridi, or just before the main selbri with its
       <valsi>cu</valsi>
       ; in either of these circumstances,
       <valsi>kei</valsi>
-      can normally be elided.
+      can normally be elided. The same holds when a <emphasis>bare</emphasis> tense or tag stands directly before the main selbri, where the
+      <valsi>cu</valsi>
+      would: by the binding rule just discussed, it closes the abstraction exactly as
+      <valsi>cu</valsi>
+      does. A tag heading a larger construction &ndash; say the
+      <jbophrase>ba bo</jbophrase>
+      of a bridi-tail connective &ndash; does not.
     </para>
     <para>
       <indexterm type="general"><primary>abstractions</primary><secondary>place structure</secondary>
@@ -969,7 +1016,7 @@
     <para>
       However, not everything in life (or even in Lojban) is simply true or false. There are shades of gray even in truth value, and
       <valsi>jei</valsi>
-      is Lojban's mechanism for indicating the shade of grey intended:
+      has been proposed as Lojban's mechanism for indicating the shade of grey intended &ndash; a reading whose status is discussed at the end of this section:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-MRD8">
       <title><anchor xml:id="c11e6d3" /><indexterm type="general"><primary>whether criminal</primary></indexterm></title>
@@ -1005,15 +1052,28 @@
       <indexterm type="general"><primary>fuzzy logic and truth-value abstraction</primary></indexterm>
       <indexterm type="general"><primary>abstractions</primary><secondary>truth-value and fuzzy logic</secondary>
       </indexterm>
-      Abstractions using
+      The first edition proposed
       <valsi>jei</valsi>
-      are the mechanism for fuzzy logic in Lojban; the
-      <valsi>jei</valsi>
-      abstraction refers to a number between 0 and 1 inclusive (as distinct from
+      abstractions as the mechanism for fuzzy logic in Lojban, referring to a number between 0 and 1 inclusive (as distinct from
       <valsi>ni</valsi>
-      abstractions, which are often on open-ended scales). The detailed conventions for using
+      abstractions, which are often on open-ended scales). Even then, the detailed conventions for using
       <valsi>jei</valsi>
-      in fuzzy-logic contexts have not yet been established.
+      that way had not been worked out.
+    </para>
+    <para>
+      They still have not been, and the number-valued reading never became established: where
+      <valsi>jei</valsi>
+      is used at all, prevailing practice treats it as a plain whether-or-not truth value, and says degrees with
+      <valsi>ni</valsi>
+      or with a
+      <valsi>ka</valsi>
+      property and an explicit scale. Expect either reading in the wild, and prefer the unambiguous alternatives when degree matters.
+    </para>
+    <para role="status-note">
+      <indexterm type="lojban-word"><primary>jei</primary><secondary>status of fuzzy interpretation</secondary>
+      </indexterm>
+      The question was never officially settled either way; see
+      <xref linkend="appendix-changes" />.
     </para>
   </section>
   <section xml:id="section-predications">

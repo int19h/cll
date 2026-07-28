@@ -5,8 +5,9 @@ name: pages
 # The site is multi-version: pages/versions.tsv maps each published
 # version to the git ref that holds its content, and every version is
 # rebuilt from its ref on each run (nothing generated is kept in git).
-# UnCLL 1.2.16 (= geklojban-development) is built once as the baseline
-# for the per-version "diff vs UnCLL".
+# UnCLL 1.2.16 is built once from baseline/uncll-1.2.16 (upstream's
+# geklojban-development content plus the modern build fixes) as the
+# baseline for the per-version "diff vs UnCLL".
 #
 # Trigger manually (workflow_dispatch) after updating a version's content
 # branch, or automatically when the pages branch (workflow/scripts) changes.
@@ -52,9 +53,9 @@ jobs:
           npm config set fetch-retry-maxtimeout 120000
           sudo npm install -g regenerator@0.14.12
 
-      - name: Build UnCLL 1.2.16 baseline (geklojban-development)
+      - name: Build UnCLL 1.2.16 baseline (baseline/uncll-1.2.16)
         run: |
-          git worktree add --detach _baseline origin/geklojban-development
+          git worktree add --detach _baseline origin/baseline/uncll-1.2.16
           ( cd _baseline && ./cll_build -n -T xhtml_nochunks )
           test -s _baseline/build/xhtml_no_chunks/index.html
 

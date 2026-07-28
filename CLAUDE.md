@@ -5,7 +5,7 @@ This repo is a fork of the Complete Lojban Language (CLL) being updated to descr
 ## Ground truth
 
 - Book source: `chapters/*.xml` (DocBook 5), one file per chapter + `a01.xml` (chrestomathy appendix). `chapters/21.xml` is the EBNF grammar.
-- Working/integration branch: **`geklojban-development`** (far ahead of `docbook-prince`). All PRs target it.
+- Working/integration branch: **`main`** — the fork's own line of development, and the repo default. All PRs target it. `geklojban-development` tracks upstream `lojban/cll` unchanged (never commit there); `baseline/uncll-1.2.16` freezes upstream's content plus the build fixes and serves as the Pages diff baseline; `docbook-prince` is upstream's default (CLL 1.1 line).
 - `research/` is **local-only** (excluded via `.git/info/exclude`): the full research corpus — `REPORT.md`, `CHANGES.md` (change catalog with per-item authority status), `cll-impact.md` + `impact/chNN.md` (passage-level chapter impact maps), `notes/`, `sources/` (wiki exports), the codex consensus record, `wikipage` (helper to read the local wiki mirror at `~/git/lojban-wiki`). The GitHub issues are self-contained copies of the work items (chapter issues embed their impact tables).
 - Related local checkouts: `~/git/jbotci` (companion toolchain; READ-ONLY for code, use its tools freely), `~/git/ilmentufa` (camxes reference parsers), `~/git/cll.v0` (abandoned prior attempt: reuse build/DocBook fixes only, NEVER its wording).
 
@@ -38,7 +38,7 @@ The ZG (2007) promise stands: pre-xorlo CLL usage is "not incorrect" — describ
 
 ## Workflow
 
-- One branch + PR per issue; PR body references the issue; PRs target `geklojban-development`.
+- One branch + PR per issue; PR body references the issue; PRs target `main`.
 - **Every PR gets a codex review** (GPT-5.6-Sol): `codex exec -m gpt-5.6-sol -c model_reasoning_effort='"xhigh"' -C <repo> - < prompt` (see AGENTS.md for the reviewer contract). Iterate to consensus; per the maintainer's mandate Claude decides when consensus is reached and has the final word if convergence fails, but any unresolved disagreement must be recorded in the PR for the maintainer's attention.
 - **Infra/scaffolding PRs** (CI, fixtures, artifacts, tooling): Claude merges after codex review.
 - **Book-text PRs** (anything touching `chapters/`): iterate with codex, then leave OPEN for the maintainer. **Never self-merge text.**

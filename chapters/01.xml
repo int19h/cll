@@ -8,21 +8,34 @@
 
   <section xml:id="section-what-is-lojban">
     <title><anchor xml:id="c1s1" />What is Lojban?</title>
-    <para>      <indexterm type="general"><primary>Logical Language Group</primary><secondary>relation to Lojban</secondary>      </indexterm>      <indexterm type="general"><primary>Lojban</primary><secondary>history of</secondary>      </indexterm>
+    <para>      <indexterm type="general"><primary>Lojban</primary><secondary>history of</secondary>      </indexterm>      <indexterm type="general"><primary>Loglan</primary><secondary>relation to Lojban</secondary>      </indexterm>      <indexterm type="general"><primary>Brown</primary><secondary>James Cooke</secondary>      </indexterm>
       Lojban (pronounced
-      <quote>LOZH-bahn</quote>) is a constructed language. Previous versions of the language were called
-      <quote>Loglan</quote>
-      by Dr. James Cooke Brown, who founded the Loglan Project and started the development of the language in 1955. The goals for the language were first described in the open literature in the article
+      <quote>LOZH-bahn</quote>) is a constructed language, the younger of two languages to come out of the Loglan Project. The project was founded by Dr. James Cooke Brown, who began work on its first language, Loglan, in 1955, to test the hypothesis that the language we speak shapes the thoughts we can think. The goals for the language were first described in the open literature in the article
       <citetitle pubwork="article">Loglan</citetitle>
       , published in
       <citetitle pubwork="journal">Scientific American</citetitle>
       , June, 1960. Made well-known by that article and by occasional references in science fiction (most notably in Robert Heinlein's novel
-      <citetitle pubwork="book">The Moon Is A Harsh Mistress</citetitle>) and computer publications, Loglan and Lojban have been built over four decades by dozens of workers and hundreds of supporters, led since 1987 by The Logical Language Group (who are the publishers of this book).
+      <citetitle pubwork="book">The Moon Is A Harsh Mistress</citetitle>) and computer publications, the project drew dozens of workers and hundreds of supporters over the following decades.
+    </para>
+    <para>
+      <indexterm type="general"><primary>Logical Language Group</primary><secondary>relation to Lojban</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>Loglan Institute</primary></indexterm>
+      In 1987 the project divided over a question that sooner or later confronts every constructed language: who owns it? Brown and The Loglan Institute, the organization he had founded to develop Loglan, asserted intellectual-property claims over the language, including its individual words; a large group of the project's volunteers wanted the language free for anyone to use. When no agreement could be reached, those volunteers formed The Logical Language Group (which went on to publish the first edition of this book) and rebuilt the language's vocabulary from the ground up, keeping the grammatical design: an entirely new stock of root words, derived afresh from the world's six most widely spoken languages by the same method that had produced Loglan's. The result is Lojban. The dispute over the name
+      <quote>Loglan</quote>
+      itself went to court and ended in 1992 with a ruling on narrow grounds:
+      <quote>Loglan</quote>
+      is the generic name of a language, and so could not remain anyone's registered trademark. Usage has since settled the naming more amicably than litigation did: the name
+      <quote>Loglan</quote>
+      today ordinarily refers to the Institute's language, which remains in use and under development to this day (its materials are at
+      <link xlink:href="https://www.loglan.org/">loglan.org</link>), and
+      <quote>Lojban</quote>
+      to the Group's. The two are sibling languages, alike in grammatical structure &ndash; a simple sentence of one can often be translated word by word into the other &ndash; but with almost entirely different words. Lojban has become much the more widely used of the two, and it is the language this book describes.
     </para>
     <para>
       <indexterm type="general"><primary>Lojban</primary><secondary>features of</secondary>
       </indexterm>
-      There are thousands of artificial languages (of which Esperanto is the best-known), but Loglan/Lojban has been engineered to make it unique in several ways. The following are the main features of Lojban:
+      There are thousands of artificial languages (of which Esperanto is the best-known), but Lojban has been engineered to make it unique in several ways. The following are the main features of Lojban:
     </para>
     <itemizedlist role="bullets">
       <listitem>
@@ -266,7 +279,9 @@
   </section>
   <section xml:id="section-bibliography">
     <title><anchor xml:id="c1s6" />Informal bibliography</title>
-    <para>      <indexterm type="general"><primary>Loglan</primary></indexterm>      <indexterm type="general"><primary>bibliography</primary></indexterm>      The founding document for the Loglan Project, of which this book is one of the products, is      <citetitle pubwork="book">Loglan 1: A Logical Language</citetitle>      by James Cooke Brown (4th ed. 1989, The Loglan Institute, Gainesville, Florida, U.S.A.). The language described therein is not Lojban, but is very close to it and may be considered an ancestral version. It is regrettably necessary to state that nothing in this book has been approved by Dr. Brown, and that the very existence of Lojban is disapproved of by him.
+    <para>      <indexterm type="general"><primary>Loglan</primary></indexterm>      <indexterm type="general"><primary>bibliography</primary></indexterm>      The founding document for the Loglan Project is      <citetitle pubwork="book">Loglan 1: A Logical Language</citetitle>      by James Cooke Brown (4th ed. 1989, The Loglan Institute, Gainesville, Florida, U.S.A.). The language described therein is not Lojban, but the sibling language whose grammatical design Lojban shares (see
+      <xref linkend="section-what-is-lojban" />); The Loglan Institute continues to maintain and develop it, and makes current materials available at
+      <link xlink:href="https://www.loglan.org/">loglan.org</link>.
     </para>
 
     <para>

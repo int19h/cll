@@ -3534,7 +3534,8 @@
     </para>
 
     <para>
-      There exists an alternative orthography for Lojban, which is designed to be as compatible as possible (but no more so) with the orthography used in pre-Lojban versions of Loglan. The consonants undergo no change, except that
+      There exists an alternative orthography for Lojban, which is designed to be as compatible as possible (but no more so) with the orthography used by Loglan, Lojban's sibling language (see
+      <xref linkend="chapter-about" />). The consonants undergo no change, except that
       <letteral>x</letteral>
       is replaced by
       <letteral>h</letteral>. The individual vowels likewise remain unchanged. However, the vowel pairs, diphthongs, and glide-initial combinations are changed as follows (this historical scheme predates the current four-diphthong analysis and is shown with its original groupings):
@@ -3645,7 +3646,7 @@
         <para>It does not represent any changes to the standard Lojban phonology; it is simply a representation of the same phonology using a different written form.</para>
       </listitem>
       <listitem>
-        <para>It was designed to aid in a planned rapprochement between the Logical Language Group and The Loglan Institute, a group headed by James Cooke Brown. The rapprochement never took place.</para>
+        <para>It was designed to aid in a planned rapprochement between the Logical Language Group and The Loglan Institute, then headed by James Cooke Brown. The rapprochement never took place.</para>
 
       </listitem>
     </itemizedlist>

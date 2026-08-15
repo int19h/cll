@@ -9,8 +9,6 @@
       <valsi valid="maybe">.dinas.</valsi>
       <valsi valid="maybe">.elis.</valsi>
       <valsi valid="maybe">.kublaXAN.</valsi>
-      <valsi valid="maybe">.lu'is.karol.</valsi>
-      <valsi valid="maybe">.maikl.turni'anskis.</valsi>
       <valsi valid="maybe">.mulis.</valsi>
       <valsi valid="maybe">.saras.tizdeil.</valsi>
       <valsi valid="maybe">.tamtam.</valsi>
@@ -656,12 +654,12 @@
       <valsi>zvafa'i</valsi>
       <valsi>zvati</valsi>
     </para>
-    <para>An Aesop's fable</para>
+    <para>A fable by Aesop; translated into Lojban by <jbophrase>la gleki</jbophrase>.</para>
     <informaltable>
       <thead>
         <tr>
-          <td>ni'o la berti brife jo'u la solri</td>
-          <td>The North Wind and the Sun</td>
+          <th>ni'o la berti brife jo'u la solri</th>
+          <th>The North Wind and the Sun</th>
         </tr>
       </thead>
       <tbody>
@@ -690,7 +688,8 @@
   </section>
   <section xml:id="section-terry">
     <title><anchor xml:id="a01-terry" />Terry, the Tiger, visits the big city</title>
-    <para>The text in Lojban here uses non-standard with additional punctuation marks that do not add any meaning but serve the purpose of a visual guide.</para>
+    <para>An original Lojban story by Michael Turniansky; the English translation is the author's own.</para>
+    <para>The text in Lojban here uses non-standard punctuation: additional marks that do not add any meaning but serve the purpose of a visual guide.</para>
     <informaltable>
       <thead>
         <tr>
@@ -699,10 +698,6 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>ni'o la .maikl.turni'anskis. di'e finti</td>
-          <td>created by Michael Turniansky</td>
-        </tr>
         <tr>
           <td>ni'o le pa tirxu be me'e zo .teris. pu ki kansa le za'u pendo be lenei leka xabju le foldi be loi spati .i me le bi'unai pendo fa le pa xanto be me'e zo .elis. fa le pa xirnzebra be me'e zo .zois. i la .teris. ze'e ta'e djica lenu lenei cu litru klama le pa barda tcadu noi fa'a ke'a ta'eku le'e vinji ga'u vofli klama .isemu'ibo ca pa donri la .teris. co'a cadzu klama le bi'unai barda tcadu</td>
           <td>Terry the Tiger lived with his friends in the jungle. His friends were Elly the Elephant and Zoe the Zebra. Terry always wanted to visit the big city, where the planes flew overhead to. So one day, Terry started to walk to the big city.</td>
@@ -752,7 +747,7 @@
   </section>
   <section xml:id="section-forest-nymph">
     <title><anchor xml:id="a01-forest-nymph" />Forest nymph</title>
-    <para>A short story by the Bulgarian writer Elin Pelin translated to Lojban and English.</para>
+    <para>A short story by the Bulgarian writer Elin Pelin; translated into Lojban and English by <jbophrase>la gleki</jbophrase>.</para>
     <informaltable>
       <thead>
         <tr>
@@ -871,13 +866,13 @@
   <section xml:id="section-alice01">
     <title><anchor xml:id="a0102" />Alice in Wonderland</title>
     <para>
-      An extract.
+      An extract from the novel by Lewis Carroll; translated into Lojban by <jbophrase>la gleki</jbophrase>.
     </para>
     <informaltable>
       <thead>
         <tr>
-          <td>la .alis. cu zvati la se manci tumla .i finti fa la .lu'is.karol.</td>
-          <td>Alice in Wonderland. Written by Lewis Carroll.</td>
+          <th>la .alis. cu zvati la se manci tumla</th>
+          <th>Alice in Wonderland</th>
         </tr>
       </thead>
       <tbody>
@@ -959,7 +954,7 @@
   <section xml:id="section-in-xanadu">
     <title><anchor xml:id="a01-xanadu" />Kubla Khan</title>
     <para>
-      An extract.
+      An extract from the poem by Samuel Taylor Coleridge; translated into Lojban by <jbophrase>la gleki</jbophrase>.
     </para>
     <informaltable>
       <thead>
@@ -969,10 +964,6 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>.i la .samu'el.tailor.kolridj. di'e finti .i</td>
-          <td>written by Samuel Taylor Coleridge</td>
-        </tr>
         <tr>
 <td>vi la .can.duv. la .kublaXAN.</td>
 <td>In Xanadu did Kubla Khan</td>

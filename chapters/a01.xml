@@ -32,6 +32,7 @@
       <valsi>.iki'ubo</valsi>
       <valsi>.iseki'ubo</valsi>
       <valsi>.isemu'ibo</valsi>
+      <valsi valid="maybe">.maikl.turni'anskis.</valsi>
       <valsi>.o'o</valsi>
       <valsi>.oi</valsi>
       <valsi>.u'a</valsi>
@@ -58,12 +59,14 @@
       <valsi>bersa</valsi>
       <valsi>berti</valsi>
       <valsi>bevri</valsi>
+      <valsi>bifce</valsi>
       <valsi>bilga</valsi>
       <valsi>binxo</valsi>
       <valsi>blabi</valsi>
       <valsi>blaci</valsi>
       <valsi>bo</valsi>
       <valsi>botpi</valsi>
+      <valsi>bradi</valsi>
       <valsi>bramau</valsi>
       <valsi>brife</valsi>
       <valsi>bromeli</valsi>
@@ -76,7 +79,6 @@
       <valsi>cadzu</valsi>
       <valsi>canci</valsi>
       <valsi>canko</valsi>
-      <valsi>canlu</valsi>
       <valsi>carmi</valsi>
       <valsi>carna</valsi>
       <valsi>cartu</valsi>
@@ -87,7 +89,6 @@
       <valsi>ce'u</valsi>
       <valsi>centre</valsi>
       <valsi>cerni</valsi>
-      <valsi>certu</valsi>
       <valsi>ci</valsi>
       <valsi>ciblu</valsi>
       <valsi>cicricfoi</valsi>
@@ -144,7 +145,6 @@
       <valsi>dasni</valsi>
       <valsi>degji</valsi>
       <valsi>denpa</valsi>
-      <valsi>dertu</valsi>
       <valsi>derxi</valsi>
       <valsi>di'a</valsi>
       <valsi>di'e</valsi>
@@ -215,7 +215,6 @@
       <valsi>ja</valsi>
       <valsi>ja'a</valsi>
       <valsi>ja'e</valsi>
-      <valsi>jai</valsi>
       <valsi>jalge</valsi>
       <valsi>jamfu</valsi>
       <valsi>jamna</valsi>
@@ -223,7 +222,6 @@
       <valsi>jarco</valsi>
       <valsi>javni</valsi>
       <valsi>jbini</valsi>
-      <valsi>jdari</valsi>
       <valsi>jdice</valsi>
       <valsi>je</valsi>
       <valsi>je'e</valsi>
@@ -239,6 +237,7 @@
       <valsi>jibni</valsi>
       <valsi>jintyke'a</valsi>
       <valsi>jinvi</valsi>
+      <valsi>jmive</valsi>
       <valsi>jo'u</valsi>
       <valsi>joi</valsi>
       <valsi>ju</valsi>
@@ -288,6 +287,7 @@
       <valsi>la'edi'u</valsi>
       <valsi>la'o</valsi>
       <valsi>ladru</valsi>
+      <valsi>lalxu</valsi>
       <valsi>lampagre</valsi>
       <valsi>lanzu</valsi>
       <valsi>le</valsi>
@@ -309,7 +309,6 @@
       <valsi>lu</valsi>
       <valsi>ma</valsi>
       <valsi>mai</valsi>
-      <valsi valid="maybe">.maikl.turni'anskis.</valsi>
       <valsi>mamta</valsi>
       <valsi>manci</valsi>
       <valsi>manku</valsi>
@@ -322,7 +321,6 @@
       <valsi>menli</valsi>
       <valsi>mensi</valsi>
       <valsi>mi</valsi>
-      <valsi>mi'a</valsi>
       <valsi>mi'o</valsi>
       <valsi>midju</valsi>
       <valsi>milxe</valsi>
@@ -439,6 +437,7 @@
       <valsi>savru</valsi>
       <valsi>se</valsi>
       <valsi>se'i</valsi>
+      <valsi>sei</valsi>
       <valsi>seka'a</valsi>
       <valsi>seldei</valsi>
       <valsi>selfri</valsi>
@@ -449,7 +448,6 @@
       <valsi>serti</valsi>
       <valsi>sezysku</valsi>
       <valsi>si'o</valsi>
-      <valsi>siclu</valsi>
       <valsi>sidbo</valsi>
       <valsi>sidju</valsi>
       <valsi>simlu</valsi>
@@ -458,10 +456,9 @@
       <valsi>sipna</valsi>
       <valsi>sipydji</valsi>
       <valsi>sirji</valsi>
-      <valsi>skicu</valsi>
-      <valsi>slabu</valsi>
       <valsi>sligu</valsi>
       <valsi>smacu</valsi>
+      <valsi>smadi</valsi>
       <valsi>smela</valsi>
       <valsi>smudukti</valsi>
       <valsi>smuni</valsi>
@@ -474,17 +471,20 @@
       <valsi>sovykruji</valsi>
       <valsi>spabi'u</valsi>
       <valsi>spaji</valsi>
+      <valsi>spati</valsi>
       <valsi>spuda</valsi>
       <valsi>sraku</valsi>
       <valsi>sralo</valsi>
       <valsi>sruri</valsi>
+      <valsi>stali</valsi>
+      <valsi>stati</valsi>
       <valsi>stedu</valsi>
       <valsi>stela</valsi>
-      <valsi>stuzi</valsi>
       <valsi>su'o</valsi>
       <valsi>sudga</valsi>
       <valsi>suksa</valsi>
       <valsi>sunsicyjudri</valsi>
+      <valsi>surla</valsi>
       <valsi>sutra</valsi>
       <valsi>ta'e</valsi>
       <valsi>ta'i</valsi>
@@ -512,6 +512,7 @@
       <valsi>toi</valsi>
       <valsi>tolcanci</valsi>
       <valsi>tolcri</valsi>
+      <valsi>toldi</valsi>
       <valsi>traji</valsi>
       <valsi>tricu</valsi>
       <valsi>trixe</valsi>
@@ -550,6 +551,7 @@
       <valsi>vo'a</valsi>
       <valsi>vofli</valsi>
       <valsi>voikla</valsi>
+      <valsi>voksa</valsi>
       <valsi>vorme</valsi>
       <valsi>vrogai</valsi>
       <valsi>vrusi</valsi>
@@ -564,7 +566,6 @@
       <valsi>xanka</valsi>
       <valsi>xanri</valsi>
       <valsi>xanto</valsi>
-      <valsi>xarci</valsi>
       <valsi>xo</valsi>
       <valsi>xrani</valsi>
       <valsi>xrula</valsi>
@@ -704,61 +705,69 @@
   </section>
   <section xml:id="section-soft-rains">
     <title><anchor xml:id="a01-soft-rains" />There Will Come Soft Rains</title>
-    <para>A poem by Sara Teasdale; translated into Lojban by <jbophrase>la lalxu</jbophrase>, and reprinted with the translator's permission. The first eight lines are given as she first circulated them; the last four survive only in a later copy that had been lightly edited, and are restored here by undoing that edit.</para>
+    <para>A poem by Sara Teasdale; translated into Lojban by <jbophrase>la lalxu</jbophrase>, and printed here from the translator's own text, with her permission.</para>
     <informaltable>
       <thead>
         <tr>
-          <th>ba milxe bo carvi</th>
+          <th>ba carvi co milxe</th>
           <th>There Will Come Soft Rains</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>.i ba milxe bo carvi .i panci lo dertu</td>
+          <td>.i ba carvi co milxe .i panci lo spati</td>
           <td>There will come soft rains and the smell of the ground,</td>
         </tr>
         <tr>
-          <td>.i lo cipni ba sutra bo vofli co certu</td>
+          <td>.i lo cipni ku vofli je litru co stati</td>
           <td>And swallows circling with their shimmering sound;</td>
         </tr>
         <tr>
-          <td>.i lo banfi ba sanga .i melbi bo vanci</td>
+          <td>.i lo banfi co lalxu ku sanga co vanci</td>
           <td>And frogs in the pools singing at night,</td>
         </tr>
         <tr>
-          <td>.i lo smela bo tricu ba blabi se manci</td>
+          <td>.i lo smela se tricu ku blabi se manci</td>
           <td>And wild plum trees in tremulous white,</td>
         </tr>
         <tr>
-          <td>.i lo gunse ba dasni lo fagri bo pimlu</td>
+          <td> </td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>.i lo gunse ku dasni lo fagri bo pimlu</td>
           <td>Robins will wear their feathery fire</td>
         </tr>
         <tr>
-          <td>gi'e siclu fe lo jai se gleki co simlu</td>
+          <td>.i lo voksa be ra cu ca surla co simlu</td>
           <td>Whistling their whims on a low fence-wire;</td>
         </tr>
         <tr>
-          <td>.i se slabu lo jamna fa no cmalu danlu</td>
+          <td>.i lo jamna ba vajni no danlu .i smadi</td>
           <td>And not one will know of the war, not one</td>
         </tr>
         <tr>
-          <td>.i no stuzi lo xarci ba su'o roi canlu</td>
+          <td>fa no jmive lo nu ra pu catra lo bradi</td>
           <td>Will care at last when it is done.</td>
         </tr>
         <tr>
-          <td>.i no cipni ba xanka fa no jdari tricu</td>
+          <td> </td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>.i ba xanka se pensi no bifce ja toldi</td>
           <td>Not one would mind, neither bird nor tree</td>
         </tr>
         <tr>
-          <td>fe lo fanmo be mi'a noi no da ba skicu</td>
+          <td>fa lo terdi bo fanmo .i stali lo foldi</td>
           <td>If mankind perished utterly;</td>
         </tr>
         <tr>
-          <td>.i la vensa ba cikna ke viska lo cmana</td>
+          <td>.i la vensa cu cikna ke viska lo cmana</td>
           <td>And Spring herself, when she woke at dawn,</td>
         </tr>
         <tr>
-          <td>.i te mintu lo jalge .i vy. ri na zgana</td>
+          <td>.i te mintu lo jalge .i vy.ri na zgana</td>
           <td>Would scarcely know that we were gone.</td>
         </tr>
       </tbody>

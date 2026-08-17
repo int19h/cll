@@ -30,7 +30,12 @@ shift $((OPTIND-1))
 
 echo "Arg Leftovers: $@"
 
-ofile="$BUILDDIR/cll.xml"
+# Build the merged book in a temp file and move it into place only when
+# complete, so a failed merge can never leave a truncated cll.xml that a
+# later make run trusts as up to date.
+finalfile="$BUILDDIR/cll.xml"
+ofile="$BUILDDIR/cll.xml.tmp"
+trap 'rm -f "$ofile"' EXIT
 
 cp scripts/header.xml "$ofile"
 
@@ -128,3 +133,6 @@ echo '
 </index>
 
 </book>' >>"$ofile"
+
+mv "$ofile" "$finalfile" || exit 1
+trap - EXIT

@@ -134,5 +134,5 @@ echo '
 
 </book>' >>"$ofile"
 
-mv "$ofile" "$finalfile"
+mv "$ofile" "$finalfile" || exit 1
 trap - EXIT

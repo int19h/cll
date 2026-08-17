@@ -16,12 +16,14 @@
 # Produces under <out-dir>/<version>/:
 #   xhtml_section_chunks/   per-section browsable HTML
 #   xhtml_no_chunks/        single-page HTML
+#   cll.pdf, cll.epub       downloadable formats (when prince/java present)
 #   diff_from_uncll/        difference.html, difference_prefixed.html
 #   index.html              version landing page
 #
 # Toolchain: xmlto, xsltproc, ruby (+ nokogiri optimist htmlentities),
-# node (+ regenerator), tidy. Extensible: add xhtml_chapter_chunks / pdf
-# / epub build targets and copy them into the version dir.
+# node (+ regenerator), tidy; plus prince (PDF) and a JRE (ePub epubcheck)
+# for the downloadable formats, which are skipped with a warning when the
+# tools are absent.
 set -euo pipefail
 
 src="$(cd "${1:?usage: build-site.sh <src-tree> <version> <baseline> <out-dir>}" && pwd)"
@@ -47,6 +49,25 @@ cp -pr build/xhtml_section_chunks "$dest/xhtml_section_chunks"
 cp -pr build/xhtml_no_chunks      "$dest/xhtml_no_chunks"
 find "$dest" -name 'sed*' -type f -delete 2>/dev/null || true
 
+# PDF and ePub (skipped with a warning if the toolchain lacks prince/java,
+# so the HTML site can still be built in minimal environments)
+if command -v prince >/dev/null 2>&1; then
+  echo "==> [$version] building PDF"
+  ./cll_build -n -T pdf
+  [ -s build/cll.pdf ] || { echo "no PDF output" >&2; exit 1; }
+  cp -p build/cll.pdf "$dest/cll.pdf"
+else
+  echo "==> [$version] WARNING: prince not found; skipping PDF" >&2
+fi
+if command -v java >/dev/null 2>&1; then
+  echo "==> [$version] building ePub"
+  ./cll_build -n -T epub
+  [ -s build/cll.epub ] || { echo "no ePub output" >&2; exit 1; }
+  cp -p build/cll.epub "$dest/cll.epub"
+else
+  echo "==> [$version] WARNING: java not found; skipping ePub" >&2
+fi
+
 if [ -n "$baseline" ] && [ -s "$baseline/index.html" ]; then
   echo "==> [$version] diffing vs UnCLL baseline"
   # scripts/diff (htmldiff) resolves paths relative to its own dir, so the
@@ -70,15 +91,17 @@ fi
 cat > "$dest/index.html" <<HTML
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Complete Lojban Language &mdash; $version</title>
+<title>The Contemporary Lojban Language &mdash; $version</title>
 <style>body{font:16px/1.5 system-ui,sans-serif;max-width:44rem;margin:3rem auto;padding:0 1rem}
 h1{font-size:1.5rem}a{color:#0b6}li{margin:.4rem 0}.muted{color:#666;font-size:.9rem}</style>
 </head><body>
-<h1>The Complete Lojban Language &mdash; version $version</h1>
-<p class="muted">Community modernization edition. Work in progress.</p>
+<h1>The Contemporary Lojban Language &mdash; version $version</h1>
+<p class="muted">An unofficial publication, community edition (not by the LLG).</p>
 <ul>
 <li><a href="xhtml_section_chunks/">Read online (section by section)</a></li>
 <li><a href="xhtml_no_chunks/">Read online (single page)</a></li>
+$( [ -s "$dest/cll.pdf" ]  && echo '<li><a href="cll.pdf">Download PDF</a></li>' )
+$( [ -s "$dest/cll.epub" ] && echo '<li><a href="cll.epub">Download ePub</a></li>' )
 <li><a href="diff_from_uncll/difference.html">Visual diff vs UnCLL&nbsp;1.2.16</a>
     &middot; <a href="diff_from_uncll/difference_prefixed.html">(with change markers)</a></li>
 </ul>

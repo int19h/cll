@@ -55,7 +55,8 @@ HTML
   cat <<HTML
 </ul>
 <p class="muted">Each version offers the book online (section-by-section and
-single-page) and a visual diff against UnCLL&nbsp;1.2.16.
+single-page), as a downloadable PDF and ePub, and with a visual diff against
+UnCLL&nbsp;1.2.16.
 Source: <a href="https://github.com/int19h/cll">github.com/int19h/cll</a>.</p>
 </body></html>
 HTML

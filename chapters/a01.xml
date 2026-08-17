@@ -28,7 +28,6 @@
       <valsi>.ibabo</valsi>
       <valsi>.iesai</valsi>
       <valsi>.iicai</valsi>
-      <valsi>.ijebo</valsi>
       <valsi>.iki'ubo</valsi>
       <valsi>.iseki'ubo</valsi>
       <valsi>.isemu'ibo</valsi>
@@ -37,7 +36,6 @@
       <valsi>.u'a</valsi>
       <valsi>.u'o</valsi>
       <valsi>.u'u</valsi>
-      <valsi>.uicai</valsi>
       <valsi valid="maybe">.xorxes.</valsi>
       <valsi>ba</valsi>
       <valsi>ba'e</valsi>
@@ -74,7 +72,6 @@
       <valsi>ca'a</valsi>
       <valsi>ca'o</valsi>
       <valsi>cabna</valsi>
-      <valsi>cabnicte</valsi>
       <valsi>cadzu</valsi>
       <valsi>canci</valsi>
       <valsi>canko</valsi>
@@ -92,7 +89,6 @@
       <valsi>certu</valsi>
       <valsi>ci</valsi>
       <valsi>ciblu</valsi>
-      <valsi>cibyseltuple</valsi>
       <valsi>cicricfoi</valsi>
       <valsi>cidni</valsi>
       <valsi>cikna</valsi>
@@ -117,7 +113,6 @@
       <valsi>cmatce</valsi>
       <valsi>cmene</valsi>
       <valsi>cnebo</valsi>
-      <valsi>cnidu'e</valsi>
       <valsi>cnita</valsi>
       <valsi>co</valsi>
       <valsi>co'a</valsi>
@@ -139,7 +134,6 @@
       <valsi>cy</valsi>
       <valsi>da</valsi>
       <valsi>da'i</valsi>
-      <valsi>dakau</valsi>
       <valsi>dakfu</valsi>
       <valsi>dandu</valsi>
       <valsi>danlu</valsi>
@@ -171,7 +165,6 @@
       <valsi>du'u</valsi>
       <valsi>dukse</valsi>
       <valsi>dy</valsi>
-      <valsi>dziseldru</valsi>
       <valsi>dzukla</valsi>
       <valsi>e'o</valsi>
       <valsi>fa</valsi>
@@ -302,7 +295,6 @@
       <valsi>lenku</valsi>
       <valsi>lerci</valsi>
       <valsi>lerfu</valsi>
-      <valsi>lety.</valsi>
       <valsi>li</valsi>
       <valsi>li'u</valsi>
       <valsi>lifri</valsi>
@@ -354,7 +346,6 @@
       <valsi>na</valsi>
       <valsi>na'e</valsi>
       <valsi>nai</valsi>
-      <valsi>nalcumki</valsi>
       <valsi>nalfadni</valsi>
       <valsi>nanla</valsi>
       <valsi>ne'a</valsi>
@@ -373,7 +364,6 @@
       <valsi>noroi</valsi>
       <valsi>nu</valsi>
       <valsi>nuncasnu</valsi>
-      <valsi>nunfarlu</valsi>
       <valsi>nupre</valsi>
       <valsi>nuzlo</valsi>
       <valsi>ny</valsi>
@@ -453,12 +443,9 @@
       <valsi>selfri</valsi>
       <valsi>seljukpa</valsi>
       <valsi>selka'e</valsi>
-      <valsi>selmacygu'e</valsi>
-      <valsi>selvau</valsi>
       <valsi>selxarkei</valsi>
       <valsi>senva</valsi>
       <valsi>serti</valsi>
-      <valsi>sezydicra</valsi>
       <valsi>sezysku</valsi>
       <valsi>si'o</valsi>
       <valsi>siclu</valsi>
@@ -489,7 +476,6 @@
       <valsi>spuda</valsi>
       <valsi>sraku</valsi>
       <valsi>sralo</valsi>
-      <valsi>sruli'u</valsi>
       <valsi>sruri</valsi>
       <valsi>stedu</valsi>
       <valsi>stela</valsi>
@@ -525,10 +511,6 @@
       <valsi>toi</valsi>
       <valsi>tolcanci</valsi>
       <valsi>tolcri</valsi>
-      <valsi>toldjuno</valsi>
-      <valsi>tolmorji</valsi>
-      <valsi>tolmutce</valsi>
-      <valsi>tolpluka</valsi>
       <valsi>traji</valsi>
       <valsi>tricu</valsi>
       <valsi>trixe</valsi>
@@ -567,11 +549,9 @@
       <valsi>vo'a</valsi>
       <valsi>vofli</valsi>
       <valsi>voikla</valsi>
-      <valsi>volratcu</valsi>
       <valsi>vorme</valsi>
       <valsi>vrogai</valsi>
       <valsi>vrusi</valsi>
-      <valsi>vu'irga'e</valsi>
       <valsi>vu'o</valsi>
       <valsi>vy.</valsi>
       <valsi>xabju</valsi>
@@ -584,13 +564,11 @@
       <valsi>xanri</valsi>
       <valsi>xanto</valsi>
       <valsi>xarci</valsi>
-      <valsi>xirmrxipotigre</valsi>
       <valsi>xo</valsi>
       <valsi>xrani</valsi>
       <valsi>xrula</valsi>
       <valsi>xruti</valsi>
       <valsi>xu</valsi>
-      <valsi>xukre'u</valsi>
       <valsi>xunblabi</valsi>
       <valsi>xunre</valsi>
       <valsi>za</valsi>
@@ -599,7 +577,6 @@
       <valsi>za'u</valsi>
       <valsi>zarci</valsi>
       <valsi>zbasu</valsi>
-      <valsi>zbikre</valsi>
       <valsi>zdani</valsi>
       <valsi>ze'i</valsi>
       <valsi>zenba</valsi>

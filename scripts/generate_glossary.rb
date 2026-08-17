@@ -66,7 +66,9 @@ if File.exist?(glossfile) and File.size?(glossfile) and File.size?(glossfile) > 
   $stderr.puts "Glossary file already exists; using."
 else
   $stderr.puts "Generating new glossary file."
-  File.open(glossfile, 'w') do |gfh|
+  # write to a temp file and rename, so an interrupted run can never leave
+  # a truncated glossary that later runs treat as a valid cache
+  File.open(glossfile + ".tmp", 'w') do |gfh|
     tree=Nokogiri::XML(open "#{builddir}/cll_preglossary.xml")
     find_lojban_words( tree ).select { |x| x.attributes['valid'].to_s != 'maybe' }.sort { |a,b| slugify(a.text.to_s).downcase <=> slugify(b.text.to_s).downcase }.map { |x| x.text.to_s }.uniq.each do |word|
       $stderr.print "#{word} "
@@ -124,7 +126,7 @@ definitions.  These definitions are here simply as a quick reference.
         # puts "#{word}, #{definition}"
 
         if definition =~ %r{\$|\\}
-          echo "UNHANDLED LATEX in definition for $word: $definition"
+          $stderr.puts "UNHANDLED LATEX in definition for #{word}: #{definition}"
         end
 
         if definition =~ %r{^\s*$}
@@ -173,6 +175,7 @@ definitions.  These definitions are here simply as a quick reference.
       }
     end
   end
+  File.rename(glossfile + ".tmp", glossfile)
 end
 
 puts %x{cat #{glossfile}}

@@ -3,7 +3,8 @@
   <para>
     <indexterm type="general"><primary>chrestomathy</primary><secondary>editorial principles of</secondary></indexterm>
     The texts of this chrestomathy are reprinted in the form in which their authors and translators
-    published them, and each opens with a note of who wrote it and who translated it. No attempt has been
+    published them, as closely as the surviving copies permit &ndash; the note that opens each text records
+    who wrote it, who translated it, and any editorial departure from the source. No attempt has been
     made to normalise them to a single style: they range from the classical Lojban of this book's first
     edition (the Terry story) through the anonymous fable translation to contemporary usage (the Alice
     extract and the poem), and they differ accordingly in article usage and in orthography. Read them as
@@ -629,7 +630,7 @@
   </section>
   <section xml:id="section-terry">
     <title><anchor xml:id="a01-terry" />Terry, the Tiger, visits the big city</title>
-    <para>An original Lojban story by Michael Turniansky, with the author's own English translation; reprinted as written (CC BY-NC).</para>
+    <para>An original Lojban story by Michael Turniansky, with the author's own English translation; reprinted as written (CC BY-NC), except that the byline is set in this edition's orthography.</para>
     <informaltable>
       <thead>
         <tr>
@@ -703,7 +704,7 @@
   </section>
   <section xml:id="section-soft-rains">
     <title><anchor xml:id="a01-soft-rains" />There Will Come Soft Rains</title>
-    <para>A poem by Sara Teasdale; translated into Lojban by <jbophrase>la lalxu</jbophrase>, and reprinted with the translator's permission.</para>
+    <para>A poem by Sara Teasdale; translated into Lojban by <jbophrase>la lalxu</jbophrase>, and reprinted with the translator's permission. The first eight lines are given as she first circulated them; the last four survive only in a later copy that had been lightly edited, and are restored here by undoing that edit.</para>
     <informaltable>
       <thead>
         <tr>

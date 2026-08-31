@@ -1985,13 +1985,13 @@
       <quote>now a hair-plant</quote>
       &ndash; and the turtle never arrives. Word resolution always splits a cmavo off the front of such a word when what remains is a word too; to get the turtle, you must hold the lujvo together with a y-hyphen &ndash; a leading CVC followed by
       <letteral>y</letteral>
-      always begins a single brivla, which is precisely what makes the hyphen glue &ndash; giving
+      and the rest of a lujvo's shape always begins a single brivla, which is precisely what makes the hyphen glue &ndash; giving
       <valsi>cakyrespa</valsi>.
     </para>
     <para>
       <indexterm type="general"><primary>tosmabru test</primary><secondary>simple statement of</secondary>
       </indexterm>
-      The test is easy to state: a lujvo beginning with a CVC-form rafsi is in danger exactly when the word minus its first two letters &ndash; the final consonant of that rafsi plus everything that follows &ndash; is a well-formed brivla on its own. If it is, a y-hyphen must follow the first rafsi; if it is not, the word cannot shed its first syllable, and no hyphen is needed. This is traditionally called the
+      The test is easy to state: a lujvo beginning with a CVC-form rafsi is in danger exactly when the word minus its first two letters &ndash; the final consonant of that rafsi plus everything that follows &ndash; is a well-formed brivla on its own. If it is, a y-hyphen must follow the first rafsi; if it is not, the word cannot shed its first syllable, and no y-hyphen is needed for this reason (the test is applied last, after any hyphens that the other rules require are already in place). This is traditionally called the
       <quote>tosmabru test</quote>
       , after a demonstration word that Lojban inherited from Loglan:
       <valsi valid="false">tosmabru</valsi>
@@ -2451,7 +2451,7 @@
       , the traditional &ndash; and deliberately illegal &ndash; example after which the test is named, another inheritance from Loglan. By itself it looks like a blameless fu'ivla: it begins with the permissible initial pair
       <morphology>sl</morphology>
       , carries its consonant cluster early, ends in a vowel, and, alone, could be nothing else. But no word is spoken in isolation. Put any CV cmavo in front of it and listen:
-      <jbophrase>pa slinku'i</jbophrase>
+      <jbophrase valid="false">pa slinku'i</jbophrase>
       is the same stream of sounds as
       <valsi valid="maybe">paslinku'i</valsi>
       , and that stream scans perfectly as a lujvo built of the rafsi shapes
@@ -2477,7 +2477,7 @@
       can be no fu'ivla:
       <valsi valid="maybe">calfe</valsi>
       has the shape of a gismu, so
-      <jbophrase>me tcalfe</jbophrase>
+      <jbophrase valid="false">me tcalfe</jbophrase>
       would be heard as the lujvo
       <valsi valid="maybe">metcalfe</valsi>. The formal grammar of
       <xref linkend="appendix-peg-morphology" />

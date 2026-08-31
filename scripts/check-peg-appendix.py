@@ -75,7 +75,7 @@ APPROVED_ARROW_CONTEXTS = [
 # without it, an approved context can be removed and a rule-like impostor put
 # in its place, preserving the count and the pinned path. Editing the
 # introduction means updating this constant in the same commit.
-INTRO_SHA256 = "5fcd570473ff02bcf298deb4cb0032d282c3a2ef24cbe1c7065acf6582272e08"
+INTRO_SHA256 = "c64f67fbb1ae6826e6745874338c0a3d4c24169080df4c91933a8cbdc431e719"
 
 PREDEFINED = {"amp": "&", "lt": "<", "gt": ">", "quot": '"', "apos": "'"}
 
@@ -144,14 +144,26 @@ def check_root(root, problems):
         problems.append(f"duplicate xml:id values: {sorted(dupes)}")
 
 
+def canon(s):
+    """Collapse XML whitespace runs without deciding whether a fragment had
+    leading or trailing separation: 'written <quote>' and 'written<quote>'
+    render differently and must digest differently."""
+    return re.sub(r"[ \t\r\n]+", " ", s or "")
+
+
 def intro_digest(root):
-    """Tags and text of every element before the first grammar section."""
-    parts = []
+    """Everything before the first grammar section that can affect rendering:
+    the root's own leading text, then each element's tag, attributes, text and
+    tail. Attributes matter because a cross-reference's target decides the
+    label it prints."""
+    parts = [canon(root.text)]
     for child in root:
         if child.tag == "section":
             break
         for node in child.iter():
-            parts.extend((node.tag, norm(node.text), norm(node.tail)))
+            parts.append(node.tag)
+            parts.extend(f"{k}={v}" for k, v in sorted(node.attrib.items()))
+            parts.extend((canon(node.text), canon(node.tail)))
     return hashlib.sha256("\x1f".join(parts).encode("utf-8")).hexdigest()
 
 
@@ -185,11 +197,19 @@ def approved_contexts(root, problems):
 
 def check_attributes(root, problems):
     """No attribute may carry an arrow: a rendered one (xreflabel, say) would
-    print a rule-like line that the text audit never sees."""
+    print a rule-like line that the text audit never sees. `endterm` is
+    rejected outright — it tells DocBook to build a link's visible label from
+    another element, so it can print a rule's arrow again from a source that
+    contains no arrow of its own."""
     for el in root.iter():
         for name, value in el.attrib.items():
             if any(tok in value for tok in ARROW_TOKENS):
                 problems.append(f"<{el.tag}> attribute {name}={value!r} contains an arrow")
+            if name == "endterm":
+                problems.append(
+                    f"<{el.tag}> uses endterm={value!r}: generated labels are not "
+                    "auditable from this file; write the link text instead"
+                )
 
 
 def collect(root, problems):
@@ -278,19 +298,28 @@ def collect(root, problems):
     return rules, terms
 
 
-def arrow_owners(root):
+def arrow_owners(root, problems=None):
     """Innermost elements whose rendered text carries an arrow, in document
-    order. Working from rendered text rather than single text nodes catches an
-    arrow split across inline markup."""
+    order, by *occurrence* accounting: an element owns the arrows its
+    flattened text shows minus those its child subtrees show. Counting rather
+    than testing presence means a child cannot mask a new arrow beside it, and
+    an arrow split across inline markup belongs to the block that renders it."""
     owners = []
     for el in root.iter():
         full = "".join(el.itertext())
-        shown = [tok for tok in ARROW_TOKENS if tok in full]
-        if not shown:
+        own = {
+            tok: full.count(tok) - sum("".join(c.itertext()).count(tok) for c in el)
+            for tok in ARROW_TOKENS
+        }
+        total = sum(v for v in own.values() if v > 0)
+        if total <= 0:
             continue
-        child_texts = ["".join(c.itertext()) for c in el]
-        if any(not any(tok in ct for ct in child_texts) for tok in shown):
-            owners.append(el)
+        if total > 1 and problems is not None:
+            problems.append(
+                f"<{el.tag}> shows {total} arrows where one is expected: "
+                f"{norm(full)[:80]!r}"
+            )
+        owners.append(el)
     return owners
 
 
@@ -298,7 +327,7 @@ def arrow_audit(root, approved, terms, problems):
     """The arrows in the appendix are a closed, ordered inventory: the pinned
     prose contexts, in order, then one per rule term — compared by element
     identity, so nothing can take an approved context's place."""
-    owners = arrow_owners(root)
+    owners = arrow_owners(root, problems)
     expected = approved + terms
     if len(owners) != len(expected):
         problems.append(

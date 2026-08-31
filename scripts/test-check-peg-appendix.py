@@ -263,6 +263,55 @@ def m_intro_edit(a, f):
     return sub_once(a, "The notation in full:", "The notation, in full:", "intro edited"), f
 
 
+def m_root_text_arrow(a, f):
+    """Raw text between <article> and its title: outside every element the
+    older digest serialized, but printed by the transform."""
+    return sub_once(a, 'xml:id="appendix-peg-morphology">\n  <title>',
+                    'xml:id="appendix-peg-morphology">FAKE &#8592; ROOT\n  <title>',
+                    "arrow in the root's own text"), f
+
+
+def m_section_title_tail(a, f):
+    return sub_once(a, "    <title>Word classes</title>",
+                    "    <title>Word classes</title>FAKE &#8592; TITLETAIL",
+                    "arrow in a section title's tail"), f
+
+
+def m_last_section_tail(a, f):
+    return sub_once(a, "  </section>\n</article>",
+                    "  </section>FAKE &#8592; LASTTAIL\n</article>",
+                    "arrow after the last section"), f
+
+
+def m_endterm_label(a, f):
+    """A generated cross-reference label reprints a rule's arrow from a
+    source that contains no arrow of its own."""
+    a = sub_once(a, "<term>zifcme &#8592;</term>",
+                 '<term xml:id="fake-arrow-source">zifcme &#8592;</term>',
+                 "endterm: label a term")
+    return sub_once(a, "    <title>cmevla</title>",
+                    "    <title>cmevla</title>\n"
+                    '    <para>FAKE <xref linkend="fake-arrow-source" '
+                    'endterm="fake-arrow-source" /></para>',
+                    "endterm: generated label"), f
+
+
+def m_intro_attribute_only(a, f):
+    """An attribute-only intro change: a cross-reference retargeted, which
+    changes the label it prints."""
+    return sub_once(a, '<xref linkend="chapter-phonology" />',
+                    '<xref linkend="chapter-morphology" />',
+                    "intro cross-reference retargeted"), f
+
+
+def m_inline_boundary_space(a, f):
+    """Removing the spaces around an approved quote changes what prints
+    without changing any word."""
+    return sub_once(a, "is written\n    <quote>&#8592;</quote>\n    where",
+                    "is written<quote>&#8592;</quote>where",
+                    "inline boundary spaces removed"), f
+
+
 MUTATIONS = [
     ("stray rule-like paragraph at article level", m_stray_root_para),
     ("paragraph abusing the notation wording", m_notation_prefix_abuse),
@@ -297,6 +346,12 @@ MUTATIONS = [
     ("approved context relocated with a compensating removal", m_compensating_relocation),
     ("notation context relocated with a compensating removal", m_relocate_notation),
     ("introduction edited without updating its pin", m_intro_edit),
+    ("arrow in the root element's own text", m_root_text_arrow),
+    ("arrow in a section title's tail", m_section_title_tail),
+    ("arrow after the last section", m_last_section_tail),
+    ("generated cross-reference label reprinting a rule arrow", m_endterm_label),
+    ("introduction changed by attribute only", m_intro_attribute_only),
+    ("inline boundary spaces removed around an approved arrow", m_inline_boundary_space),
 ]
 
 

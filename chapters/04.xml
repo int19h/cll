@@ -1337,7 +1337,7 @@
       <title><anchor xml:id="c4e5d6" /></title>
 
       <lujvo-making>
-        <jbo>bralo'i</jbo>
+        <jbo>brablo</jbo>
         <gloss>
           <quote>big-boat</quote>
         </gloss>
@@ -2334,7 +2334,8 @@
           must not be gismu or lujvo, or any combination of cmavo, gismu, and lujvo; furthermore, a fu'ivla with a CV cmavo joined to the front of it must not have the form of a lujvo &ndash; the so-called
           <quote>slinku'i test</quote>
           , stated precisely in
-          <xref linkend="appendix-peg-morphology" />;
+          <xref linkend="appendix-peg-morphology" />, where it appears as the production named
+          <quote>slinkuhi</quote>;
         </para>
 
       </listitem>

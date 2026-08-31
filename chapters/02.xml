@@ -992,7 +992,7 @@
     <para>
       <indexterm type="general"><primary>tanru</primary><secondary>quick-tour version</secondary>
       </indexterm>
-      When two gismu are adjacent, the first one modifies the second, and the selbri takes its place structure from the rightmost word. Such combinations of gismu are called
+      When two brivla &ndash; in this chapter, always two gismu &ndash; are adjacent, the first one modifies the second, and the selbri takes its place structure from the rightmost word. Such combinations of brivla are called
       <valsi>tanru</valsi>. For example,
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-GPcS">
@@ -2668,9 +2668,9 @@
           <sumti>The [present] here talker</sumti>
           <elidable></elidable>
           <elidable></elidable>
-          <selbri>[future] there talks.</selbri>
+          <selbri>[future] far-away talks.</selbri>
         </gloss>
-        <natlang>The one who is talking here will talk there.</natlang>
+        <natlang>The one who is talking here will talk far away.</natlang>
       </interlinear-gloss-itemized>
     </example>
   </section>

@@ -234,6 +234,35 @@ def m_drop_anchor(a, f):
     return sub_once(a, '<anchor xml:id="a02" />', "", "a02 anchor removed"), f
 
 
+def m_compensating_relocation(a, f):
+    """Round-4 finding 3: neutralize the real approved context and put an
+    impostor in its slot, preserving the owner count and the pinned path."""
+    a = sub_once(a, "<quote>&#8592;</quote>", "<quote>the left arrow</quote>",
+                 "relocation: neutralize the real context")
+    return sub_once(a, "  <para>\n    The grammar is the one used",
+                    "  <para>FAKE\n    <quote>&#8592;</quote>\n    wrong</para>\n"
+                    "  <para>\n    The grammar is the one used",
+                    "relocation: insert the impostor"), f
+
+
+def m_relocate_notation(a, f):
+    """The same trick against the notation item."""
+    a = sub_once(a, "A rule has the form <emphasis>name</emphasis> &#8592; expression",
+                 "A rule has the form <emphasis>name</emphasis>, an arrow, then an expression",
+                 "notation relocation: neutralize")
+    return sub_once(a, "  <section xml:id=\"a02-classes\">",
+                    "  <itemizedlist><listitem><para>A rule has the form "
+                    "<emphasis>name</emphasis> &#8592; expression: the construct called "
+                    "name is parsed by that expression.</para></listitem></itemizedlist>\n"
+                    "  <section xml:id=\"a02-classes\">",
+                    "notation relocation: insert"), f
+
+
+def m_intro_edit(a, f):
+    """Any introduction edit must be pinned deliberately."""
+    return sub_once(a, "The notation in full:", "The notation, in full:", "intro edited"), f
+
+
 MUTATIONS = [
     ("stray rule-like paragraph at article level", m_stray_root_para),
     ("paragraph abusing the notation wording", m_notation_prefix_abuse),
@@ -265,6 +294,9 @@ MUTATIONS = [
     ("root id duplicating a section id", m_duplicate_id),
     ("root element retagged", m_root_tag),
     ("a02 anchor removed", m_drop_anchor),
+    ("approved context relocated with a compensating removal", m_compensating_relocation),
+    ("notation context relocated with a compensating removal", m_relocate_notation),
+    ("introduction edited without updating its pin", m_intro_edit),
 ]
 
 

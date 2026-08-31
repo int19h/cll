@@ -60,12 +60,22 @@ SECTION_IDS = [
 # The only places outside a rule's term where the prose may show an arrow,
 # as (tag, exact normalized text). Editing the introduction's notation means
 # updating this list deliberately.
-ALLOWED_ARROW_CONTEXTS = [
-    ("quote", "←"),
-    ("quote", "<-"),
-    ("para", "A rule has the form name ← expression: the construct called "
-             "name is parsed by that expression."),
+# The only places outside a rule's term where the prose may show an arrow,
+# pinned by structural location as well as exact text.
+APPROVED_ARROW_CONTEXTS = [
+    ("./para[2]/quote[1]", "←"),
+    ("./para[2]/quote[2]", "<-"),
+    ("./itemizedlist[1]/listitem[1]/para[1]",
+     "A rule has the form name ← expression: the construct called "
+     "name is parsed by that expression."),
 ]
+
+# Structure-and-text digest of everything before the first grammar section.
+# Pinning the whole introduction is what makes the arrow inventory closed:
+# without it, an approved context can be removed and a rule-like impostor put
+# in its place, preserving the count and the pinned path. Editing the
+# introduction means updating this constant in the same commit.
+INTRO_SHA256 = "5fcd570473ff02bcf298deb4cb0032d282c3a2ef24cbe1c7065acf6582272e08"
 
 PREDEFINED = {"amp": "&", "lt": "<", "gt": ">", "quot": '"', "apos": "'"}
 
@@ -132,6 +142,45 @@ def check_root(root, problems):
     dupes = {i for i in ids if ids.count(i) > 1}
     if dupes:
         problems.append(f"duplicate xml:id values: {sorted(dupes)}")
+
+
+def intro_digest(root):
+    """Tags and text of every element before the first grammar section."""
+    parts = []
+    for child in root:
+        if child.tag == "section":
+            break
+        for node in child.iter():
+            parts.extend((node.tag, norm(node.text), norm(node.tail)))
+    return hashlib.sha256("\x1f".join(parts).encode("utf-8")).hexdigest()
+
+
+def check_intro(root, problems):
+    digest = intro_digest(root)
+    if digest != INTRO_SHA256:
+        problems.append(
+            "the appendix introduction has changed:\n"
+            f"    expected SHA-256 {INTRO_SHA256}\n"
+            f"    found            {digest}\n"
+            "    (update INTRO_SHA256 in the same commit as the prose)"
+        )
+
+
+def approved_contexts(root, problems):
+    """The approved arrow-bearing prose elements, resolved at their pinned
+    locations. Returning the elements themselves lets the audit compare
+    identity, not merely content."""
+    els = []
+    for path, text in APPROVED_ARROW_CONTEXTS:
+        el = root.find(path)
+        if el is None:
+            problems.append(f"the approved arrow context at {path} is missing")
+            continue
+        got = norm("".join(el.itertext()))
+        if got != text:
+            problems.append(f"the approved arrow context at {path} reads {got!r}, expected {text!r}")
+        els.append(el)
+    return els
 
 
 def check_attributes(root, problems):
@@ -245,29 +294,23 @@ def arrow_owners(root):
     return owners
 
 
-def arrow_audit(root, terms, problems):
+def arrow_audit(root, approved, terms, problems):
     """The arrows in the appendix are a closed, ordered inventory: the pinned
-    prose contexts, in order, then one per rule term. Anything added, removed,
-    duplicated or relocated fails."""
+    prose contexts, in order, then one per rule term — compared by element
+    identity, so nothing can take an approved context's place."""
     owners = arrow_owners(root)
-    expected = list(ALLOWED_ARROW_CONTEXTS) + terms
+    expected = approved + terms
     if len(owners) != len(expected):
         problems.append(
             f"arrow-bearing elements: found {len(owners)}, expected "
-            f"{len(ALLOWED_ARROW_CONTEXTS)} in the introduction and one per rule term "
-            f"({len(terms)})"
+            f"{len(approved)} in the introduction and one per rule term ({len(terms)})"
         )
     for i, (got, want) in enumerate(zip(owners, expected)):
-        if i < len(ALLOWED_ARROW_CONTEXTS):
-            key = (got.tag, norm("".join(got.itertext())))
-            if key != want:
-                problems.append(
-                    f"arrow context {i + 1} is {key!r}, expected {want!r}"
-                )
-        elif got is not want:
+        if got is not want:
+            kind = "approved prose context" if i < len(approved) else "rule term"
             problems.append(
-                f"arrow outside a rule term in <{got.tag}>: "
-                f"{norm(''.join(got.itertext()))[:80]!r}"
+                f"arrow-bearing element {i + 1} is not the expected {kind}: "
+                f"<{got.tag}> {norm(''.join(got.itertext()))[:80]!r}"
             )
 
 
@@ -323,9 +366,11 @@ def main():
         return 1
 
     check_root(root, problems)
+    check_intro(root, problems)
     check_attributes(root, problems)
+    approved = approved_contexts(root, problems)
     got, terms = collect(root, problems)
-    arrow_audit(root, terms, problems)
+    arrow_audit(root, approved, terms, problems)
 
     want = [(SECTION_IDS[i] if i < len(SECTION_IDS) else f"(block {i})", n, b, d)
             for i, blk in enumerate(fixture_blocks()) for (n, b, d) in blk]

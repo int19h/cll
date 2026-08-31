@@ -56,6 +56,15 @@ if [ -n "$previous" ] && [ ! -s "$previous/index.html" ]; then
   exit 1
 fi
 
+# The official diff is required (the landing page links it unconditionally),
+# so a source ref without the official CLL 1.1 tree must fail here, before
+# any building, rather than deploy dead links.
+official="$src/official/cll_v1.1_xhtml-no-chunks"
+if [ ! -s "$official/index.html" ]; then
+  echo "build-site.sh: no official CLL 1.1 tree at '$official'" >&2
+  exit 1
+fi
+
 dest="$outdir/$version"
 mkdir -p "$dest"
 cd "$src"
@@ -121,14 +130,6 @@ else
   echo "==> [$version] no baseline; skipping diff"
 fi
 
-# The official diff is required (the landing page links it unconditionally),
-# so a source ref without the official tree must fail the build, not deploy
-# dead links.
-official="$src/official/cll_v1.1_xhtml-no-chunks"
-if [ ! -s "$official/index.html" ]; then
-  echo "build-site.sh: no official CLL 1.1 tree at '$official'" >&2
-  exit 1
-fi
 echo "==> [$version] diffing vs official CLL 1.1"
 make_diff "$official" diff_from_official
 

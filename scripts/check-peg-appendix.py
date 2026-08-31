@@ -43,6 +43,10 @@ ENTITY_FILES = sorted(ROOT.glob("dtd/*.ent")) + sorted(ROOT.glob("xml/*.ent"))
 # typeset it. Update only together with the printed grammar.
 FIXTURE_SHA256 = "327f2e474580d04d9346f2ce85c36773814570666d1d1b6939d8bbdad3e6a886"
 
+ROOT_TAG = "article"
+ROOT_ID = "appendix-peg-morphology"
+ROOT_ANCHOR = "a02"
+
 ARROW = "←"
 ARROW_TOKENS = ("←", "→", "<-")
 
@@ -56,18 +60,22 @@ SECTION_IDS = [
 # The only places outside a rule's term where the prose may show an arrow,
 # as (tag, exact normalized text). Editing the introduction's notation means
 # updating this list deliberately.
-ALLOWED_ARROW_CONTEXTS = {
+ALLOWED_ARROW_CONTEXTS = [
     ("quote", "←"),
     ("quote", "<-"),
     ("para", "A rule has the form name ← expression: the construct called "
              "name is parsed by that expression."),
-}
+]
 
 PREDEFINED = {"amp": "&", "lt": "<", "gt": ">", "quot": '"', "apos": "'"}
 
 
 def norm(s):
-    return re.sub(r"\s+", " ", s or "").strip()
+    """Collapse only XML's formatting whitespace. U+00A0 and friends are
+    meaningful characters here: a definition written with non-breaking spaces
+    renders as one unbreakable run, which is the clipping this appendix was
+    retypeset to fix, so it must not compare equal to ordinary spaces."""
+    return re.sub(r"[ \t\r\n]+", " ", s or "").strip(" \t\r\n")
 
 
 def numeric_refs(s):
@@ -107,11 +115,39 @@ def parent_map(root):
     return {id(c): p for p in root.iter() for c in p}
 
 
+def xml_id(el):
+    return el.get("{http://www.w3.org/XML/1998/namespace}id")
+
+
+def check_root(root, problems):
+    """The appendix's own identity is load-bearing: eight cross-references
+    point at it, and its anchor survives from the first edition."""
+    if root.tag != ROOT_TAG:
+        problems.append(f"root element is <{root.tag}>, expected <{ROOT_TAG}>")
+    if xml_id(root) != ROOT_ID:
+        problems.append(f"root xml:id is {xml_id(root)!r}, expected {ROOT_ID!r}")
+    if not any(el.tag == "anchor" and xml_id(el) == ROOT_ANCHOR for el in root.iter()):
+        problems.append(f"the {ROOT_ANCHOR!r} anchor is missing")
+    ids = [xml_id(el) for el in root.iter() if xml_id(el)]
+    dupes = {i for i in ids if ids.count(i) > 1}
+    if dupes:
+        problems.append(f"duplicate xml:id values: {sorted(dupes)}")
+
+
+def check_attributes(root, problems):
+    """No attribute may carry an arrow: a rendered one (xreflabel, say) would
+    print a rule-like line that the text audit never sees."""
+    for el in root.iter():
+        for name, value in el.attrib.items():
+            if any(tok in value for tok in ARROW_TOKENS):
+                problems.append(f"<{el.tag}> attribute {name}={value!r} contains an arrow")
+
+
 def collect(root, problems):
     """Closed inventory of the appendix's rule entries."""
     parents = parent_map(root)
     sections = list(root.iter("section"))
-    ids = [s.get("{http://www.w3.org/XML/1998/namespace}id") for s in sections]
+    ids = [xml_id(s) for s in sections]
     if ids != SECTION_IDS:
         problems.append(
             "grammar sections differ from the expected set/order:\n"
@@ -120,12 +156,11 @@ def collect(root, problems):
         )
     for s in sections:
         if parents.get(id(s)) is not root:
-            sid = s.get("{http://www.w3.org/XML/1998/namespace}id")
-            problems.append(f"section {sid} is nested inside another element")
-    section_of = {id(s): s.get("{http://www.w3.org/XML/1998/namespace}id") for s in sections}
+            problems.append(f"section {xml_id(s)} is nested inside another element")
+    section_of = {id(s): xml_id(s) for s in sections}
 
     rules = []
-    terms = set()
+    terms = []
     for entry in root.iter("varlistentry"):
         vl = parents.get(id(entry))
         sec = parents.get(id(vl)) if vl is not None else None
@@ -147,13 +182,28 @@ def collect(root, problems):
             problems.append(f"{where}: term does not end with the arrow: {t!r}")
             continue
         name = t[: -len(ARROW)].strip()
-        terms.add(id(term))
 
         li_children = list(listitem)
-        if [c.tag for c in li_children] != ["para"] or norm(listitem.text):
+        if [c.tag for c in li_children] != ["para"]:
             problems.append(f"{where}/{name}: listitem must contain exactly one para")
             continue
         para = li_children[0]
+
+        # Every structural text node around the rule must be formatting only:
+        # stray text anywhere here is printed next to the definition.
+        stray = {
+            "before the term": entry.text,
+            "between term and listitem": term.tail,
+            "before the paragraph": listitem.text,
+            "after the paragraph": para.tail,
+            "after the listitem": listitem.tail,
+            "after the entry": entry.tail,
+        }
+        bad = {k: v for k, v in stray.items() if norm(v)}
+        if bad:
+            problems.append(f"{where}/{name}: stray text {bad}")
+            continue
+
         para_children = list(para)
         directive = None
         if para_children:
@@ -175,24 +225,50 @@ def collect(root, problems):
             directive = m.group(1)
         body = norm(para.text)
         rules.append((where, name, body, directive))
+        terms.append(term)
     return rules, terms
 
 
-def arrow_audit(root, terms, problems):
-    """Every text node that owns an arrow must be a rule's term or one of the
-    approved prose contexts."""
+def arrow_owners(root):
+    """Innermost elements whose rendered text carries an arrow, in document
+    order. Working from rendered text rather than single text nodes catches an
+    arrow split across inline markup."""
+    owners = []
     for el in root.iter():
-        owned = [el.text] + [c.tail for c in el]
-        if not any(tok in (t or "") for t in owned for tok in ARROW_TOKENS):
+        full = "".join(el.itertext())
+        shown = [tok for tok in ARROW_TOKENS if tok in full]
+        if not shown:
             continue
-        if id(el) in terms:
-            continue
-        key = (el.tag, norm("".join(el.itertext())))
-        if key in ALLOWED_ARROW_CONTEXTS:
-            continue
+        child_texts = ["".join(c.itertext()) for c in el]
+        if any(not any(tok in ct for ct in child_texts) for tok in shown):
+            owners.append(el)
+    return owners
+
+
+def arrow_audit(root, terms, problems):
+    """The arrows in the appendix are a closed, ordered inventory: the pinned
+    prose contexts, in order, then one per rule term. Anything added, removed,
+    duplicated or relocated fails."""
+    owners = arrow_owners(root)
+    expected = list(ALLOWED_ARROW_CONTEXTS) + terms
+    if len(owners) != len(expected):
         problems.append(
-            f"arrow outside a rule term in <{el.tag}>: {norm(''.join(el.itertext()))[:80]!r}"
+            f"arrow-bearing elements: found {len(owners)}, expected "
+            f"{len(ALLOWED_ARROW_CONTEXTS)} in the introduction and one per rule term "
+            f"({len(terms)})"
         )
+    for i, (got, want) in enumerate(zip(owners, expected)):
+        if i < len(ALLOWED_ARROW_CONTEXTS):
+            key = (got.tag, norm("".join(got.itertext())))
+            if key != want:
+                problems.append(
+                    f"arrow context {i + 1} is {key!r}, expected {want!r}"
+                )
+        elif got is not want:
+            problems.append(
+                f"arrow outside a rule term in <{got.tag}>: "
+                f"{norm(''.join(got.itertext()))[:80]!r}"
+            )
 
 
 def fixture_blocks():
@@ -246,6 +322,8 @@ def main():
         print(f"check-peg-appendix: FAILED\n - cannot parse {APPENDIX}: {e}")
         return 1
 
+    check_root(root, problems)
+    check_attributes(root, problems)
     got, terms = collect(root, problems)
     arrow_audit(root, terms, problems)
 

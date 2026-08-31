@@ -160,6 +160,80 @@ def m_cross_section_move(a, f):
     return a2, f
 
 
+def m_ui_all_nbsp(a, f):
+    """Round-3 finding 5: an all-NBSP definition renders as one unbreakable
+    run — issue #104's clipping, reintroduced."""
+    m = re.search(r"(<term>UI &#8592;</term>\s*<listitem>\s*<para>)([^<]*)(</para>)", a)
+    if not m:
+        raise SystemExit("self-test setup failed: UI rule not found")
+    return a[: m.start(2)] + m.group(2).replace(" ", "&nbsp;") + a[m.end(2):], f
+
+
+def m_single_nbsp(a, f):
+    return sub_once(a, "<para>gismu / lujvo / fuhivla</para>",
+                    "<para>gismu&nbsp;/ lujvo / fuhivla</para>", "single nbsp"), f
+
+
+def m_thin_space(a, f):
+    return sub_once(a, "<para>gismu / lujvo / fuhivla</para>",
+                    "<para>gismu&thinsp;/ lujvo / fuhivla</para>", "thin space"), f
+
+
+def m_para_tail(a, f):
+    return sub_once(a, "          <para>cmevla</para>\n",
+                    "          <para>cmevla</para> GARBAGE\n", "text after the rule paragraph"), f
+
+
+def m_split_arrow(a, f):
+    return sub_once(a, "    <title>Word classes</title>",
+                    "    <title>Word classes</title>\n"
+                    "    <para>FAKE &lt;<phrase>-</phrase> wrong</para>",
+                    "arrow split across markup"), f
+
+
+def m_reused_quote(a, f):
+    return sub_once(a, "    <title>Word classes</title>",
+                    "    <title>Word classes</title>\n"
+                    "    <para>FAKE <quote>&#8592;</quote> wrong</para>",
+                    "approved context reused elsewhere"), f
+
+
+def m_duplicate_context(a, f):
+    return sub_once(a, "    <quote>&#8592;</quote>",
+                    "    <quote>&#8592;</quote><quote>&#8592;</quote>",
+                    "approved context duplicated"), f
+
+
+def m_remove_context(a, f):
+    return sub_once(a, "    <quote>&lt;-</quote>", "    <quote>the ASCII form</quote>",
+                    "approved context removed"), f
+
+
+def m_xreflabel_arrow(a, f):
+    return sub_once(a, '<article xmlns:xlink="http://www.w3.org/1999/xlink"',
+                    '<article xreflabel="FAKE &#8592; wrong" xmlns:xlink="http://www.w3.org/1999/xlink"',
+                    "arrow in a rendered attribute"), f
+
+
+def m_root_id(a, f):
+    return sub_once(a, 'xml:id="appendix-peg-morphology"', 'xml:id="appendix-peg-morph"',
+                    "root id changed"), f
+
+
+def m_duplicate_id(a, f):
+    return sub_once(a, 'xml:id="appendix-peg-morphology"', 'xml:id="a02-classes"',
+                    "root id duplicates a section id"), f
+
+
+def m_root_tag(a, f):
+    a = sub_once(a, "<article ", "<chapter ", "root tag changed")
+    return sub_once(a, "</article>", "</chapter>", "root tag changed (close)"), f
+
+
+def m_drop_anchor(a, f):
+    return sub_once(a, '<anchor xml:id="a02" />', "", "a02 anchor removed"), f
+
+
 MUTATIONS = [
     ("stray rule-like paragraph at article level", m_stray_root_para),
     ("paragraph abusing the notation wording", m_notation_prefix_abuse),
@@ -178,6 +252,19 @@ MUTATIONS = [
     ("synchronized swap in print and fixture", m_sync_swap),
     ("synchronized duplicate in print and fixture", m_sync_duplicate),
     ("rule moved to the wrong section", m_cross_section_move),
+    ("definition set entirely in non-breaking spaces", m_ui_all_nbsp),
+    ("one non-breaking space in a definition", m_single_nbsp),
+    ("a thin space in a definition", m_thin_space),
+    ("text after the rule paragraph", m_para_tail),
+    ("arrow split across inline markup", m_split_arrow),
+    ("approved arrow context reused in a section", m_reused_quote),
+    ("approved arrow context duplicated", m_duplicate_context),
+    ("approved arrow context removed", m_remove_context),
+    ("arrow in a rendered attribute", m_xreflabel_arrow),
+    ("appendix root id changed", m_root_id),
+    ("root id duplicating a section id", m_duplicate_id),
+    ("root element retagged", m_root_tag),
+    ("a02 anchor removed", m_drop_anchor),
 ]
 
 

@@ -937,10 +937,11 @@
       </listitem>
       <listitem>
         <para>
-          always contain a consonant pair in the first five letters, where
+          always contain a consonant pair, which in gismu and lujvo &ndash; and classically in all brivla &ndash; falls within the first five letters, where
           <letteral>y</letteral>
           and apostrophe are not counted as letters for this purpose (see
-          <xref linkend="section-rafsi" />);
+          <xref linkend="section-rafsi" />; for the relaxed position rule that applies to fu'ivla, see
+          <xref linkend="section-fuhivla" />);
         </para>
       </listitem>
       <listitem>
@@ -1419,7 +1420,7 @@
       </indexterm>
       <indexterm type="general"><primary>lujvo</primary><secondary>rules for formation of</secondary>
       </indexterm>
-      When assembling rafsi together into lujvo, the rules for valid brivla must be followed: a consonant cluster must occur in the first five letters (excluding
+      When assembling rafsi together into lujvo, the rules for valid lujvo must be followed: a consonant cluster must occur in the first five letters (excluding
       <letteral>y</letteral>
       and
       <letteral>'</letteral>), and the lujvo must end in a vowel.
@@ -1905,7 +1906,7 @@
       </indexterm>
       <indexterm type="general"><primary>lujvo</primary><secondary>summary of form characteristics</secondary>
       </indexterm>
-      As noted above, CVC-form rafsi cannot appear as the final rafsi in a lujvo, because all lujvo must end with one or two vowels. As a brivla, a lujvo must also contain a consonant cluster within the first five letters &ndash; this ensures that they cannot be mistaken for compound cmavo. Of course, all lujvo have at least six letters since they have two or more rafsi, each at least three letters long; hence they cannot be confused with gismu.
+      As noted above, CVC-form rafsi cannot appear as the final rafsi in a lujvo, because all lujvo must end with one or two vowels. A lujvo must also contain a consonant cluster within its first five letters &ndash; this ensures that they cannot be mistaken for compound cmavo. Of course, all lujvo have at least six letters since they have two or more rafsi, each at least three letters long; hence they cannot be confused with gismu.
     </para>
     <para>
       <indexterm type="general"><primary>lujvo form</primary><secondary>requirements for hyphen insertion in</secondary>
@@ -1951,7 +1952,7 @@
       <valsi valid="maybe">mudysiclu</valsi>
       must be used. (Remember that
       <letteral>y</letteral>
-      is not counted in determining whether the first five letters of a brivla contain a consonant cluster: this is why.)
+      is not counted in determining whether the first five letters of a lujvo contain a consonant cluster: this is why.)
     </para>
     <para>
       <indexterm type="general"><primary>rafsi</primary><secondary>four-letter</secondary>
@@ -2296,13 +2297,18 @@
           </indexterm>
           <indexterm type="general"><primary>fu'ivla</primary><secondary>rules for formation of</secondary>
           </indexterm>
-          must contain a consonant cluster in the first five letters of the word; if this consonant cluster is at the beginning, it must either be a permissible initial consonant pair, or a longer cluster such that each pair of adjacent consonants in the cluster is a permissible initial consonant pair:
+          must contain a consonant cluster; if this consonant cluster is at the beginning, it must either be a permissible initial consonant pair, or a longer cluster such that each pair of adjacent consonants in the cluster is a permissible initial consonant pair:
           <valsi valid="maybe">spraile</valsi>
           is acceptable, but not
           <valsi valid="false">ktraile</valsi>
           or
-          <valsi valid="false">trkaile</valsi>
-          ;
+          <valsi valid="false">trkaile</valsi>. The first edition also required the cluster to fall within the first five letters of the word (apostrophes, as always, not counted); the word-form grammar of
+          <xref linkend="appendix-peg-morphology" />
+          drops that position limit for fu'ivla, so that a word like
+          <valsi valid="maybe">ro'i'inre'o</valsi>
+          &ndash; whose only cluster,
+          <morphology>nr</morphology>
+          , occupies the fifth and sixth letters &ndash; is also a valid fu'ivla, provided the word still resolves as a single brivla under that grammar's rules;
         </para>
       </listitem>
       <listitem>
@@ -2357,6 +2363,12 @@
         </para>
       </listitem>
     </orderedlist>
+    <para role="status-note">
+      <indexterm type="general"><primary>fu'ivla</primary><secondary>cluster position, status of</secondary>
+      </indexterm>
+      The cluster-position relaxation is part of the de facto word-form standard; gismu and lujvo still carry their cluster within the first five letters by construction. See
+      <xref linkend="appendix-changes" />.
+    </para>
     <para>
       <indexterm type="general"><primary>fu'ivla</primary><secondary>consonant clusters in</secondary>
       </indexterm>

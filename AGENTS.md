@@ -22,6 +22,8 @@ Review PRs (and occasionally documents) produced by Claude. Two PR classes:
 
 Write findings as a numbered list, each tagged `[ERROR]` / `[STATUS]` / `[PEDAGOGY]` / `[EXAMPLE]` / `[MECHANICS]` / `[SCOPE]` / `[SUGGESTION]`, with the file/line or example ID and concrete evidence. State uncertainty explicitly instead of asserting. End with a verdict: **must-fix items** vs **track-as-issue items** vs **co-sign**. When a prior round's fixes come back, verify them rather than re-reviewing from scratch, and do not reopen points that were settled with evidence.
 
+Follow-up rounds normally **resume your previous session** for the same PR, so you keep your own findings in context — use that to check that what you asked for was actually delivered. Do not trust your remembered picture of the tree: the branch has moved since your last round, so re-read the changed files at the exact HEAD the prompt names before judging. Your report file in `research/` is the durable record either way; write it as if the next reader has no access to this session.
+
 ## Facts you will be tempted to get wrong (pre-verified; don't "correct" them)
 
 - Magic Words WERE checkpointed (2005) incl. the left-to-right conflict rule in the frozen quotation definitions; SI/SA/SU were not. BUT the unified "magic words in Lojban" meta-rules are a *later community synthesis* that conflicts with the checkpointed BU definition in places («ba'e bu»: frozen text forbids, synthesis+camxes allow) — magic-word rewrites need rule-level provenance, and the synthesis must not be treated as checkpointed.

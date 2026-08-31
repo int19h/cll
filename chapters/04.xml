@@ -937,11 +937,13 @@
       </listitem>
       <listitem>
         <para>
-          always contain a consonant pair, which in gismu and lujvo &ndash; and classically in all brivla &ndash; falls within the first five letters, where
+          always contain a consonant pair, which in gismu and in lujvo built from their rafsi &ndash; and classically in all brivla &ndash; falls within the first five letters, where
           <letteral>y</letteral>
           and apostrophe are not counted as letters for this purpose (see
-          <xref linkend="section-rafsi" />; for the relaxed position rule that applies to fu'ivla, see
-          <xref linkend="section-fuhivla" />);
+          <xref linkend="section-rafsi" />; for fu'ivla, and for lujvo that borrow a fu'ivla as a rafsi, the pair may come later &ndash; see
+          <xref linkend="section-fuhivla" />
+          and
+          <xref linkend="section-rafsi-fuhivla" />);
         </para>
       </listitem>
       <listitem>
@@ -1420,7 +1422,7 @@
       </indexterm>
       <indexterm type="general"><primary>lujvo</primary><secondary>rules for formation of</secondary>
       </indexterm>
-      When assembling rafsi together into lujvo, the rules for valid lujvo must be followed: a consonant cluster must occur in the first five letters (excluding
+      When assembling rafsi together into a classical lujvo &ndash; one built solely from gismu rafsi &ndash; these rules must be followed: a consonant cluster must occur in the first five letters (excluding
       <letteral>y</letteral>
       and
       <letteral>'</letteral>), and the lujvo must end in a vowel.
@@ -1906,7 +1908,7 @@
       </indexterm>
       <indexterm type="general"><primary>lujvo</primary><secondary>summary of form characteristics</secondary>
       </indexterm>
-      As noted above, CVC-form rafsi cannot appear as the final rafsi in a lujvo, because all lujvo must end with one or two vowels. A lujvo must also contain a consonant cluster within its first five letters &ndash; this ensures that they cannot be mistaken for compound cmavo. Of course, all lujvo have at least six letters since they have two or more rafsi, each at least three letters long; hence they cannot be confused with gismu.
+      As noted above, CVC-form rafsi cannot appear as the final rafsi in a lujvo, because all lujvo must end with one or two vowels. A classical lujvo must also contain a consonant cluster within its first five letters &ndash; this ensures that it cannot be mistaken for compound cmavo. Of course, all lujvo have at least six letters since they have two or more rafsi, each at least three letters long; hence they cannot be confused with gismu.
     </para>
     <para>
       <indexterm type="general"><primary>lujvo form</primary><secondary>requirements for hyphen insertion in</secondary>
@@ -2366,7 +2368,7 @@
     <para role="status-note">
       <indexterm type="general"><primary>fu'ivla</primary><secondary>cluster position, status of</secondary>
       </indexterm>
-      The cluster-position relaxation is part of the de facto word-form standard; gismu and lujvo still carry their cluster within the first five letters by construction. See
+      The cluster-position relaxation is part of the de facto word-form standard; gismu and classical lujvo still carry their cluster within the first five letters by construction, while a lujvo built on a fu'ivla rafsi inherits the fu'ivla's cluster position. See
       <xref linkend="appendix-changes" />.
     </para>
     <para>

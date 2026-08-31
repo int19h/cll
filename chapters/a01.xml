@@ -23,9 +23,11 @@
       <valsi>.au</valsi>
       <valsi valid="maybe">.dinas.</valsi>
       <valsi>.e</valsi>
+      <valsi>.e'o</valsi>
       <valsi>.ei</valsi>
       <valsi valid="maybe">.elis.</valsi>
       <valsi>.i</valsi>
+      <valsi>.ia</valsi>
       <valsi>.ibabo</valsi>
       <valsi>.icabo</valsi>
       <valsi>.iesai</valsi>
@@ -41,7 +43,11 @@
       <valsi>.oiro'a</valsi>
       <valsi>.u'o</valsi>
       <valsi>.u'u</valsi>
+      <valsi>.ua</valsi>
+      <valsi>.uanai</valsi>
       <valsi>.uisaidai</valsi>
+      <valsi>.uo</valsi>
+      <valsi>.uu</valsi>
       <valsi>ba</valsi>
       <valsi>ba'e</valsi>
       <valsi>ba'o</valsi>
@@ -75,7 +81,7 @@
       <valsi>brife</valsi>
       <valsi>bromeli</valsi>
       <valsi>bu'u</valsi>
-      <valsi>by</valsi>
+      <valsi>by.</valsi>
       <valsi>ca</valsi>
       <valsi>ca'a</valsi>
       <valsi>ca'o</valsi>
@@ -135,7 +141,7 @@
       <valsi>cupra</valsi>
       <valsi>cusku</valsi>
       <valsi>cuxna</valsi>
-      <valsi>cy</valsi>
+      <valsi>cy.</valsi>
       <valsi>da</valsi>
       <valsi>dakfu</valsi>
       <valsi>dandu</valsi>
@@ -167,9 +173,8 @@
       <valsi>drudi</valsi>
       <valsi>du'u</valsi>
       <valsi>dukse</valsi>
-      <valsi>dy</valsi>
+      <valsi>dy.</valsi>
       <valsi>dzukla</valsi>
-      <valsi>e'o</valsi>
       <valsi>fa</valsi>
       <valsi>fa'o</valsi>
       <valsi>fa'u</valsi>
@@ -211,7 +216,6 @@
       <valsi>gugde</valsi>
       <valsi>gunse</valsi>
       <valsi>gusni</valsi>
-      <valsi>ia</valsi>
       <valsi>ja</valsi>
       <valsi>ja'aru'e</valsi>
       <valsi>ja'e</valsi>
@@ -246,7 +250,7 @@
       <valsi>jubme</valsi>
       <valsi>jungau</valsi>
       <valsi>junla</valsi>
-      <valsi>jy</valsi>
+      <valsi>jy.</valsi>
       <valsi>ka</valsi>
       <valsi>ka'a</valsi>
       <valsi>ka'e</valsi>
@@ -365,7 +369,7 @@
       <valsi>nuncasnu</valsi>
       <valsi>nupre</valsi>
       <valsi>nuzlo</valsi>
-      <valsi>ny</valsi>
+      <valsi>ny.</valsi>
       <valsi>pa</valsi>
       <valsi>pacna</valsi>
       <valsi>pagre</valsi>
@@ -525,10 +529,6 @@
       <valsi>tugni</valsi>
       <valsi>tunta</valsi>
       <valsi>ty.</valsi>
-      <valsi>ua</valsi>
-      <valsi>uanai</valsi>
-      <valsi>uo</valsi>
-      <valsi>uu</valsi>
       <valsi>va</valsi>
       <valsi>va'o</valsi>
       <valsi>vacri</valsi>

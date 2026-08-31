@@ -40,6 +40,7 @@ def clean(s):
     s = re.sub(r"(?<=\s)-+(?=\s)", " ", " " + s + " ")
     if not re.search(r"\bzoi\b|\bla'o\b", s):
         s = s.replace("--", " ")
+        s = s.replace("\u2013", " ").replace("\u2014", " ")
     return " ".join(s.split())
 
 for p in sys.argv[1:]:

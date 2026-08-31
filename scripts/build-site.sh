@@ -43,6 +43,19 @@ outdir="$(mkdir -p "${4:?missing out-dir}" && cd "$4" && pwd)"
 previous="${5-}"
 prevlabel="${6-}"
 
+# The previous-release arguments come as a pair: both empty (the oldest
+# version, whose predecessor is the UnCLL baseline) or both set — and a
+# supplied previous tree must actually be usable. Fail fast rather than
+# publish a missing or falsely labelled diff.
+if { [ -n "$previous" ] && [ -z "$prevlabel" ]; } || { [ -z "$previous" ] && [ -n "$prevlabel" ]; }; then
+  echo "build-site.sh: <previous> and <previous-label> must be given together (got '$previous' / '$prevlabel')" >&2
+  exit 1
+fi
+if [ -n "$previous" ] && [ ! -s "$previous/index.html" ]; then
+  echo "build-site.sh: previous tree '$previous' is missing or unusable" >&2
+  exit 1
+fi
+
 dest="$outdir/$version"
 mkdir -p "$dest"
 cd "$src"
@@ -108,15 +121,18 @@ else
   echo "==> [$version] no baseline; skipping diff"
 fi
 
+# The official diff is required (the landing page links it unconditionally),
+# so a source ref without the official tree must fail the build, not deploy
+# dead links.
 official="$src/official/cll_v1.1_xhtml-no-chunks"
-if [ -s "$official/index.html" ]; then
-  echo "==> [$version] diffing vs official CLL 1.1"
-  make_diff "$official" diff_from_official
-else
-  echo "==> [$version] WARNING: no official CLL 1.1 tree in this src; skipping diff_from_official" >&2
+if [ ! -s "$official/index.html" ]; then
+  echo "build-site.sh: no official CLL 1.1 tree at '$official'" >&2
+  exit 1
 fi
+echo "==> [$version] diffing vs official CLL 1.1"
+make_diff "$official" diff_from_official
 
-if [ -n "$previous" ] && [ -s "$previous/index.html" ]; then
+if [ -n "$previous" ]; then
   echo "==> [$version] diffing vs previous release ($prevlabel)"
   make_diff "$previous" diff_from_previous
 elif [ -d "$dest/diff_from_uncll" ]; then

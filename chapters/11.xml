@@ -353,11 +353,11 @@
       <title><anchor xml:id="c11e2d12" /><indexterm type="general"><primary>under conditions</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>la .lojban. cu frili - mi</jbo>
-        <gloss>That-named Lojban -- is-easy-for me</gloss>
+        <jbo>la .lojban. cu frili mi</jbo>
+        <gloss>That-named Lojban is-easy-for me</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>-- le nu mi tadni [kei]</jbo>
+        <jbo>le nu mi tadni [kei]</jbo>
         <gloss>under-conditions the event-of I study</gloss>
         <natlang>Lojban is easy for me when I study.</natlang>
       </interlinear-gloss>

@@ -3,6 +3,8 @@
   <para>
     <indexterm type="general"><primary>PEG morphology</primary><secondary>full text of</secondary>
     </indexterm>
+    <indexterm type="general"><primary>slinku'i test</primary><secondary>formal statement of</secondary>
+    </indexterm>
     This appendix reproduces the formal definition of Lojban's word-forms: the morphology section of the parsing expression grammar (PEG) that current Lojban parsing software implements. It is the precise statement of the rules presented informally in
     <xref linkend="chapter-morphology" />
     and

@@ -12,10 +12,10 @@
   </para>
   <para>
     The grammar is the one used by the camxes parser family, at the revision pinned for this edition's verification work; it is the work of Jorge Llambias (<jbophrase>la .xorxes.</jbophrase>). Every rule below is reproduced exactly as that file defines it, but the file itself is a plain-text program, and this appendix is typeset for reading: each rule is set out under its own name, the arrow that separates a rule's name from its definition is written
-    <quote>&#8594;</quote>
+    <quote>&#8592;</quote>
     where the file writes
     <quote>&lt;-</quote>
-    , the rules are grouped under headings, and the explanatory comments carried in the file appear here as ordinary prose. Nothing in a rule's definition has been changed, reordered, or omitted.
+    , and the rules are grouped under headings. Every rule definition is reproduced with its own characters, in the file's own order; none has been changed, reordered, or omitted. What the typesetting does change is everything around them: the section headings are this edition's, not the file's (which carried only three of its own); the implementation directives that follow a few rules are set in italics; and the file's comments appear here as prose, some quoted, some summarized, with one bibliographic link to the parsing literature left out.
   </para>
   <para role="status-note">
     <indexterm type="general"><primary>PEG morphology</primary><secondary>status of</secondary>
@@ -34,7 +34,7 @@
   </para>
   <para>The notation in full:</para>
   <itemizedlist>
-    <listitem><para>A rule has the form <emphasis>name</emphasis> &#8594; expression: the construct called <emphasis>name</emphasis> is parsed by that expression.</para></listitem>
+    <listitem><para>A rule has the form <emphasis>name</emphasis> &#8592; expression: the construct called <emphasis>name</emphasis> is parsed by that expression.</para></listitem>
     <listitem><para>Concatenation is written by juxtaposition, with no operator between the parts.</para></listitem>
     <listitem><para><quote>/</quote> is ordered choice, as described above.</para></listitem>
     <listitem><para><quote>?</quote> makes the element to its left optional; <quote>*</quote> allows it to repeat any number of times, including none; <quote>+</quote> requires at least one. Repetitions take as much as they can.</para></listitem>
@@ -47,19 +47,19 @@
     <title>Word classes</title>
     <variablelist>
       <varlistentry>
-        <term>CMEVLA &#8594;</term>
+        <term>CMEVLA &#8592;</term>
         <listitem>
           <para>cmevla</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>BRIVLA &#8594;</term>
+        <term>BRIVLA &#8592;</term>
         <listitem>
           <para>gismu / lujvo / fuhivla</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>CMAVO &#8594;</term>
+        <term>CMAVO &#8592;</term>
         <listitem>
           <para>A / BAI / BAhE / BE / BEI / BEhO / BIhE / BIhI / BO / BOI / BU / BY / CAhA / CAI / CEI / CEhE / CO / COI / CU / CUhE / DAhO / DOI / DOhU / FA / FAhA / FAhO / FEhE / FEhU / FIhO / FOI / FUhA / FUhE / FUhO / GA / GAhO / GEhU / GI / GIhA / GOI / GOhA / GUhA / I / JA / JAI / JOhI / JOI / KE / KEhE / KEI / KI / KOhA / KU / KUhE / KUhO / LA / LAU / LAhE / LE / LEhU / LI / LIhU / LOhO / LOhU / LU / LUhU / MAhO / MAI / ME / MEhU / MOhE / MOhI / MOI / NA / NAI / NAhE / NAhU / NIhE / NIhO / NOI / NU / NUhA / NUhI / NUhU / PA / PEhE / PEhO / PU / RAhO / ROI / SA / SE / SEI / SEhU / SI / SOI / SU / TAhE / TEhU / TEI / TO / TOI / TUhE / TUhU / UI / VA / VAU / VEI / VEhO / VUhU / VEhA / VIhA / VUhO / XI / ZAhO / ZEhA / ZEI / ZI / ZIhE / ZO / ZOI / ZOhU / cmavo</para>
         </listitem>
@@ -68,44 +68,44 @@
   </section>
   <section xml:id="a02-words">
     <title>Words and ZOI quotes</title>
-    <para>The grammar's entry point is a text: a sequence of words, each optionally followed by a pause. The three rules that follow classify one word.</para>
+    <para>The source file opens with three wrapper productions, kept there as comments because they belong to the parser rather than to the grammar proper: a text is an optional pause followed by any number of words, each optionally followed by a pause; a word is either a Lojban word or a non-Lojban one; and a Lojban word is a cmevla, a cmavo, or a brivla. The two rules printed here state the last of these and attach the spaces that may follow a word.</para>
     <variablelist>
       <varlistentry>
-        <term>lojban_word &#8594;</term>
+        <term>lojban_word &#8592;</term>
         <listitem>
           <para>CMEVLA / CMAVO / BRIVLA</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>any_word &#8594;</term>
+        <term>any_word &#8592;</term>
         <listitem>
           <para>lojban_word spaces?</para>
         </listitem>
       </varlistentry>
     </variablelist>
     <bridgehead renderas="sect2">ZOI quotes</bridgehead>
-    <para>Pure PEG cannot handle ZOI quotes, because it cannot check whether the closing delimiter is the same as the opening one. ZOI quote handling is the only part of Lojban's grammar that needs mechanisms external to the pure PEG grammar to be implemented properly; those mechanisms are implementation-specific. The four rules below therefore carry implementation directives, shown in italics: the opening delimiter is remembered (PUSH), the quoted text must differ from it (PEEK-DIFF), and the closing delimiter must equal it (POP-EQ).</para>
+    <para>Pure PEG cannot handle ZOI quotes, because it cannot check whether the closing delimiter is the same as the opening one. ZOI quote handling is the only part of Lojban's grammar that needs mechanisms external to the pure PEG grammar to be implemented properly; those mechanisms are implementation-specific. The four rules below therefore carry implementation directives, shown in italics: the opening delimiter is remembered (PUSH), the quoted text must differ from it (PEEK-DIFF), and the closing delimiter must equal it (POP-EQ). Two further directives appear on rules elsewhere in the grammar &ndash; LEAF and JOIN, which concern how an implementation builds its parse tree; the source file does not define them.</para>
     <variablelist>
       <varlistentry>
-        <term>zoi_open &#8594;</term>
+        <term>zoi_open &#8592;</term>
         <listitem>
           <para>lojban_word <emphasis>#: PUSH</emphasis></para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>zoi_word_2 &#8594;</term>
+        <term>zoi_word_2 &#8592;</term>
         <listitem>
           <para>non_space+ <emphasis>#: LEAF</emphasis></para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>zoi_word &#8594;</term>
+        <term>zoi_word &#8592;</term>
         <listitem>
           <para>zoi_word_2 <emphasis>#: PEEK-DIFF</emphasis></para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>zoi_close &#8594;</term>
+        <term>zoi_close &#8592;</term>
         <listitem>
           <para>any_word <emphasis>#: POP-EQ</emphasis></para>
         </listitem>
@@ -116,19 +116,19 @@
     <title>cmevla</title>
     <variablelist>
       <varlistentry>
-        <term>cmevla &#8594;</term>
+        <term>cmevla &#8592;</term>
         <listitem>
           <para>jbocme / zifcme</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>zifcme &#8594;</term>
+        <term>zifcme &#8592;</term>
         <listitem>
           <para>!h (nucleus / glide / h / consonant !pause / digit)* consonant &amp;pause</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>jbocme &#8594;</term>
+        <term>jbocme &#8592;</term>
         <listitem>
           <para>&amp;zifcme (any_syllable / digit)+ &amp;pause</para>
         </listitem>
@@ -140,19 +140,19 @@
     <title>cmavo</title>
     <variablelist>
       <varlistentry>
-        <term>cmavo &#8594;</term>
+        <term>cmavo &#8592;</term>
         <listitem>
           <para>!cmevla !CVCy_lujvo cmavo_form &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>CVCy_lujvo &#8594;</term>
+        <term>CVCy_lujvo &#8592;</term>
         <listitem>
           <para>CVC_rafsi y h? initial_rafsi* brivla_core / stressed_CVC_rafsi y short_final_rafsi</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>cmavo_form &#8594;</term>
+        <term>cmavo_form &#8592;</term>
         <listitem>
           <para>!h !cluster onset (nucleus h)* (!stressed nucleus / nucleus !cluster) / y+ / digit</para>
         </listitem>
@@ -163,25 +163,25 @@
     <title>brivla</title>
     <variablelist>
       <varlistentry>
-        <term>brivla &#8594;</term>
+        <term>brivla &#8592;</term>
         <listitem>
           <para>!cmavo initial_rafsi* brivla_core</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>brivla_core &#8594;</term>
+        <term>brivla_core &#8592;</term>
         <listitem>
           <para>fuhivla / gismu / CVV_final_rafsi / stressed_initial_rafsi short_final_rafsi</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>stressed_initial_rafsi &#8594;</term>
+        <term>stressed_initial_rafsi &#8592;</term>
         <listitem>
           <para>stressed_extended_rafsi / stressed_y_rafsi / stressed_y_less_rafsi</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>initial_rafsi &#8594;</term>
+        <term>initial_rafsi &#8592;</term>
         <listitem>
           <para>extended_rafsi / y_rafsi / !any_extended_rafsi y_less_rafsi !any_extended_rafsi</para>
         </listitem>
@@ -192,73 +192,73 @@
     <title>fu'ivla and extended rafsi</title>
     <variablelist>
       <varlistentry>
-        <term>any_extended_rafsi &#8594;</term>
+        <term>any_extended_rafsi &#8592;</term>
         <listitem>
           <para>fuhivla / extended_rafsi / stressed_extended_rafsi</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>fuhivla &#8594;</term>
+        <term>fuhivla &#8592;</term>
         <listitem>
           <para>fuhivla_head stressed_syllable consonantal_syllable* final_syllable</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>stressed_extended_rafsi &#8594;</term>
+        <term>stressed_extended_rafsi &#8592;</term>
         <listitem>
           <para>stressed_brivla_rafsi / stressed_fuhivla_rafsi</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>extended_rafsi &#8594;</term>
+        <term>extended_rafsi &#8592;</term>
         <listitem>
           <para>brivla_rafsi / fuhivla_rafsi</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>stressed_brivla_rafsi &#8594;</term>
+        <term>stressed_brivla_rafsi &#8592;</term>
         <listitem>
           <para>&amp;unstressed_syllable brivla_head stressed_syllable h y</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>brivla_rafsi &#8594;</term>
+        <term>brivla_rafsi &#8592;</term>
         <listitem>
           <para>&amp;(syllable consonantal_syllable* syllable) brivla_head h y h?</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>stressed_fuhivla_rafsi &#8594;</term>
+        <term>stressed_fuhivla_rafsi &#8592;</term>
         <listitem>
           <para>fuhivla_head stressed_syllable consonantal_syllable* !h onset y</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>fuhivla_rafsi &#8594;</term>
+        <term>fuhivla_rafsi &#8592;</term>
         <listitem>
           <para>&amp;unstressed_syllable fuhivla_head !h onset y h?</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>fuhivla_head &#8594;</term>
+        <term>fuhivla_head &#8592;</term>
         <listitem>
           <para>!rafsi_string brivla_head</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>brivla_head &#8594;</term>
+        <term>brivla_head &#8592;</term>
         <listitem>
           <para>!cmavo !slinkuhi !h &amp;onset unstressed_syllable*</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>slinkuhi &#8594;</term>
+        <term>slinkuhi &#8592;</term>
         <listitem>
           <para>!rafsi_string consonant rafsi_string</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>rafsi_string &#8594;</term>
+        <term>rafsi_string &#8592;</term>
         <listitem>
           <para>y_less_rafsi* (gismu / CVV_final_rafsi / stressed_y_less_rafsi short_final_rafsi / y_rafsi / stressed_y_rafsi / stressed_y_less_rafsi? initial_pair y / hy_rafsi / stressed_hy_rafsi)</para>
         </listitem>
@@ -269,109 +269,109 @@
     <title>gismu and rafsi</title>
     <variablelist>
       <varlistentry>
-        <term>gismu &#8594;</term>
+        <term>gismu &#8592;</term>
         <listitem>
           <para>(initial_pair stressed_vowel / consonant stressed_vowel consonant) &amp;final_syllable consonant vowel &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>CVV_final_rafsi &#8594;</term>
+        <term>CVV_final_rafsi &#8592;</term>
         <listitem>
           <para>consonant stressed_vowel h &amp;final_syllable vowel &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>short_final_rafsi &#8594;</term>
+        <term>short_final_rafsi &#8592;</term>
         <listitem>
           <para>&amp;final_syllable (consonant diphthong / initial_pair vowel) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>stressed_y_rafsi &#8594;</term>
+        <term>stressed_y_rafsi &#8592;</term>
         <listitem>
           <para>(stressed_long_rafsi / stressed_CVC_rafsi) y</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>stressed_y_less_rafsi &#8594;</term>
+        <term>stressed_y_less_rafsi &#8592;</term>
         <listitem>
           <para>stressed_CVC_rafsi !y / stressed_CCV_rafsi / stressed_CVV_rafsi</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>stressed_long_rafsi &#8594;</term>
+        <term>stressed_long_rafsi &#8592;</term>
         <listitem>
           <para>initial_pair stressed_vowel consonant / consonant stressed_vowel consonant consonant</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>stressed_CVC_rafsi &#8594;</term>
+        <term>stressed_CVC_rafsi &#8592;</term>
         <listitem>
           <para>consonant stressed_vowel consonant</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>stressed_CCV_rafsi &#8594;</term>
+        <term>stressed_CCV_rafsi &#8592;</term>
         <listitem>
           <para>initial_pair stressed_vowel</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>stressed_CVV_rafsi &#8594;</term>
+        <term>stressed_CVV_rafsi &#8592;</term>
         <listitem>
           <para>consonant (unstressed_vowel h stressed_vowel / stressed_diphthong) r_hyphen?</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>y_rafsi &#8594;</term>
+        <term>y_rafsi &#8592;</term>
         <listitem>
           <para>(long_rafsi / CVC_rafsi) y h?</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>y_less_rafsi &#8594;</term>
+        <term>y_less_rafsi &#8592;</term>
         <listitem>
           <para>!y_rafsi !stressed_y_rafsi !hy_rafsi !stressed_hy_rafsi (CVC_rafsi / CCV_rafsi / CVV_rafsi) !h</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>hy_rafsi &#8594;</term>
+        <term>hy_rafsi &#8592;</term>
         <listitem>
           <para>(long_rafsi vowel / CCV_rafsi / CVV_rafsi) h y h?</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>stressed_hy_rafsi &#8594;</term>
+        <term>stressed_hy_rafsi &#8592;</term>
         <listitem>
           <para>(long_rafsi stressed_vowel / stressed_CCV_rafsi / stressed_CVV_rafsi) h y</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>long_rafsi &#8594;</term>
+        <term>long_rafsi &#8592;</term>
         <listitem>
           <para>initial_pair unstressed_vowel consonant / consonant unstressed_vowel consonant consonant</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>CVC_rafsi &#8594;</term>
+        <term>CVC_rafsi &#8592;</term>
         <listitem>
           <para>consonant unstressed_vowel consonant</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>CCV_rafsi &#8594;</term>
+        <term>CCV_rafsi &#8592;</term>
         <listitem>
           <para>initial_pair unstressed_vowel</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>CVV_rafsi &#8594;</term>
+        <term>CVV_rafsi &#8592;</term>
         <listitem>
           <para>consonant (unstressed_vowel h unstressed_vowel / unstressed_diphthong) r_hyphen?</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>r_hyphen &#8594;</term>
+        <term>r_hyphen &#8592;</term>
         <listitem>
           <para>r &amp;consonant / n &amp;r</para>
         </listitem>
@@ -382,43 +382,43 @@
     <title>Syllables and stress</title>
     <variablelist>
       <varlistentry>
-        <term>final_syllable &#8594;</term>
+        <term>final_syllable &#8592;</term>
         <listitem>
           <para>onset !y !stressed nucleus !cmevla &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>stressed_syllable &#8594;</term>
+        <term>stressed_syllable &#8592;</term>
         <listitem>
           <para>&amp;stressed syllable / syllable &amp;stress</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>stressed_diphthong &#8594;</term>
+        <term>stressed_diphthong &#8592;</term>
         <listitem>
           <para>&amp;stressed diphthong / diphthong &amp;stress</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>stressed_vowel &#8594;</term>
+        <term>stressed_vowel &#8592;</term>
         <listitem>
           <para>&amp;stressed vowel / vowel &amp;stress</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>unstressed_syllable &#8594;</term>
+        <term>unstressed_syllable &#8592;</term>
         <listitem>
           <para>!stressed syllable !stress / consonantal_syllable</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>unstressed_diphthong &#8594;</term>
+        <term>unstressed_diphthong &#8592;</term>
         <listitem>
           <para>!stressed diphthong !stress</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>unstressed_vowel &#8594;</term>
+        <term>unstressed_vowel &#8592;</term>
         <listitem>
           <para>!stressed vowel !stress</para>
         </listitem>
@@ -427,25 +427,25 @@
     <para>The next rule carries a correction for fu'ivla rafsi stress.</para>
     <variablelist>
       <varlistentry>
-        <term>stress &#8594;</term>
+        <term>stress &#8592;</term>
         <listitem>
           <para>(consonant / glide)* h? y? syllable pause</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>stressed &#8594;</term>
+        <term>stressed &#8592;</term>
         <listitem>
           <para>onset comma* [AEIOU]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>any_syllable &#8594;</term>
+        <term>any_syllable &#8592;</term>
         <listitem>
           <para>onset nucleus coda? / consonantal_syllable</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>syllable &#8594;</term>
+        <term>syllable &#8592;</term>
         <listitem>
           <para>onset !y nucleus coda?</para>
         </listitem>
@@ -454,25 +454,25 @@
     <para>The next rule prevents a form like «bla'ypre» from being read as a valid lujvo.</para>
     <variablelist>
       <varlistentry>
-        <term>consonantal_syllable &#8594;</term>
+        <term>consonantal_syllable &#8592;</term>
         <listitem>
           <para>consonant &amp;syllabic coda</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>coda &#8594;</term>
+        <term>coda &#8592;</term>
         <listitem>
           <para>!any_syllable consonant &amp;any_syllable / syllabic? consonant? &amp;pause</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>onset &#8594;</term>
+        <term>onset &#8592;</term>
         <listitem>
           <para>h / glide / initial</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>nucleus &#8594;</term>
+        <term>nucleus &#8592;</term>
         <listitem>
           <para>vowel / diphthong / y !nucleus</para>
         </listitem>
@@ -483,55 +483,55 @@
     <title>Vowels, diphthongs, and glides</title>
     <variablelist>
       <varlistentry>
-        <term>glide &#8594;</term>
+        <term>glide &#8592;</term>
         <listitem>
           <para>(i / u) &amp;nucleus</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>diphthong &#8594;</term>
+        <term>diphthong &#8592;</term>
         <listitem>
           <para>(a i !i / a u !u / e i !i / o i !i) !nucleus</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>vowel &#8594;</term>
+        <term>vowel &#8592;</term>
         <listitem>
           <para>(a / e / i / o / u) !nucleus</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>a &#8594;</term>
+        <term>a &#8592;</term>
         <listitem>
           <para>comma* [aA]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>e &#8594;</term>
+        <term>e &#8592;</term>
         <listitem>
           <para>comma* [eE]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>i &#8594;</term>
+        <term>i &#8592;</term>
         <listitem>
           <para>comma* [iI]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>o &#8594;</term>
+        <term>o &#8592;</term>
         <listitem>
           <para>comma* [oO]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>u &#8594;</term>
+        <term>u &#8592;</term>
         <listitem>
           <para>comma* [uU]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>y &#8594;</term>
+        <term>y &#8592;</term>
         <listitem>
           <para>comma* [yY] !(!y nucleus)</para>
         </listitem>
@@ -542,175 +542,175 @@
     <title>Consonants and letters</title>
     <variablelist>
       <varlistentry>
-        <term>cluster &#8594;</term>
+        <term>cluster &#8592;</term>
         <listitem>
           <para>consonant consonant+</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>initial_pair &#8594;</term>
+        <term>initial_pair &#8592;</term>
         <listitem>
           <para>&amp;initial consonant consonant !consonant</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>initial &#8594;</term>
+        <term>initial &#8592;</term>
         <listitem>
           <para>(affricate / sibilant? other? liquid?) !consonant !glide</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>affricate &#8594;</term>
+        <term>affricate &#8592;</term>
         <listitem>
           <para>t c / t s / d j / d z</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>liquid &#8594;</term>
+        <term>liquid &#8592;</term>
         <listitem>
           <para>l / r</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>other &#8594;</term>
+        <term>other &#8592;</term>
         <listitem>
           <para>p / t !l / k / f / x / b / d !l / g / v / m / n !liquid</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>sibilant &#8594;</term>
+        <term>sibilant &#8592;</term>
         <listitem>
           <para>c / s !x / (j / z) !n !liquid</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>consonant &#8594;</term>
+        <term>consonant &#8592;</term>
         <listitem>
           <para>voiced / unvoiced / syllabic</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>syllabic &#8594;</term>
+        <term>syllabic &#8592;</term>
         <listitem>
           <para>l / m / n / r</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>voiced &#8594;</term>
+        <term>voiced &#8592;</term>
         <listitem>
           <para>b / d / g / j / v / z</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>unvoiced &#8594;</term>
+        <term>unvoiced &#8592;</term>
         <listitem>
           <para>c / f / k / p / s / t / x</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>l &#8594;</term>
+        <term>l &#8592;</term>
         <listitem>
           <para>comma* [lL] !h !glide !l</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>m &#8594;</term>
+        <term>m &#8592;</term>
         <listitem>
           <para>comma* [mM] !h !glide !m !z</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>n &#8594;</term>
+        <term>n &#8592;</term>
         <listitem>
           <para>comma* [nN] !h !glide !n !affricate</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>r &#8594;</term>
+        <term>r &#8592;</term>
         <listitem>
           <para>comma* [rR] !h !glide !r</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>b &#8594;</term>
+        <term>b &#8592;</term>
         <listitem>
           <para>comma* [bB] !h !glide !b !unvoiced</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>d &#8594;</term>
+        <term>d &#8592;</term>
         <listitem>
           <para>comma* [dD] !h !glide !d !unvoiced</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>g &#8594;</term>
+        <term>g &#8592;</term>
         <listitem>
           <para>comma* [gG] !h !glide !g !unvoiced</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>v &#8594;</term>
+        <term>v &#8592;</term>
         <listitem>
           <para>comma* [vV] !h !glide !v !unvoiced</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>j &#8594;</term>
+        <term>j &#8592;</term>
         <listitem>
           <para>comma* [jJ] !h !glide !j !z !unvoiced</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>z &#8594;</term>
+        <term>z &#8592;</term>
         <listitem>
           <para>comma* [zZ] !h !glide !z !j !unvoiced</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>s &#8594;</term>
+        <term>s &#8592;</term>
         <listitem>
           <para>comma* [sS] !h !glide !s !c !voiced</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>c &#8594;</term>
+        <term>c &#8592;</term>
         <listitem>
           <para>comma* [cC] !h !glide !c !s !x !voiced</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>x &#8594;</term>
+        <term>x &#8592;</term>
         <listitem>
           <para>comma* [xX] !h !glide !x !c !k !voiced</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>k &#8594;</term>
+        <term>k &#8592;</term>
         <listitem>
           <para>comma* [kK] !h !glide !k !x !voiced</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>f &#8594;</term>
+        <term>f &#8592;</term>
         <listitem>
           <para>comma* [fF] !h !glide !f !voiced</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>p &#8594;</term>
+        <term>p &#8592;</term>
         <listitem>
           <para>comma* [pP] !h !glide !p !voiced</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>t &#8594;</term>
+        <term>t &#8592;</term>
         <listitem>
           <para>comma* [tT] !h !glide !t !voiced</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>h &#8594;</term>
+        <term>h &#8592;</term>
         <listitem>
           <para>comma* [&#x27;h] &amp;nucleus</para>
         </listitem>
@@ -721,31 +721,31 @@
     <title>Digits, pauses, and word boundaries</title>
     <variablelist>
       <varlistentry>
-        <term>digit &#8594;</term>
+        <term>digit &#8592;</term>
         <listitem>
           <para>comma* [0123456789] !h !nucleus</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>post_word &#8594;</term>
+        <term>post_word &#8592;</term>
         <listitem>
           <para>pause / !nucleus lojban_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>pause &#8594;</term>
+        <term>pause &#8592;</term>
         <listitem>
           <para>comma* space_char+ / EOF</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>EOF &#8594;</term>
+        <term>EOF &#8592;</term>
         <listitem>
           <para>comma* !.</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>comma &#8594;</term>
+        <term>comma &#8592;</term>
         <listitem>
           <para>[,] <emphasis>#: JOIN</emphasis></para>
         </listitem>
@@ -754,22 +754,22 @@
     <para>The following rule is an orphan: no other rule refers to it.</para>
     <variablelist>
       <varlistentry>
-        <term>non_lojban_word &#8594;</term>
+        <term>non_lojban_word &#8592;</term>
         <listitem>
           <para>!lojban_word non_space+</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>non_space &#8594;</term>
+        <term>non_space &#8592;</term>
         <listitem>
           <para>!space_char . <emphasis>#: JOIN</emphasis></para>
         </listitem>
       </varlistentry>
     </variablelist>
-    <para>The character class in space_char is written in an escaped style for portability; the source file records an equivalent literal formulation as a comment.</para>
+    <para>The source file warns that Unicode-style and escaped characters are not compatible with one PEG implementation, cl_peg, and keeps an unescaped formulation of space_char alongside the following rule as a comment.</para>
     <variablelist>
       <varlistentry>
-        <term>space_char &#8594;</term>
+        <term>space_char &#8592;</term>
         <listitem>
           <para>[.\t\n\r?!\u0020] <emphasis>#: JOIN</emphasis></para>
         </listitem>
@@ -780,25 +780,25 @@
     <title>Spaces and the lujvo classifier</title>
     <variablelist>
       <varlistentry>
-        <term>spaces &#8594;</term>
+        <term>spaces &#8592;</term>
         <listitem>
           <para>!Y initial_spaces</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>initial_spaces &#8594;</term>
+        <term>initial_spaces &#8592;</term>
         <listitem>
           <para>(comma* space_char / !ybu Y)+ EOF? / EOF <emphasis>#: LEAF</emphasis></para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>ybu &#8594;</term>
+        <term>ybu &#8592;</term>
         <listitem>
           <para>Y space_char* BU</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>lujvo &#8594;</term>
+        <term>lujvo &#8592;</term>
         <listitem>
           <para>!gismu !fuhivla brivla</para>
         </listitem>
@@ -809,733 +809,733 @@
     <title>The cmavo classes (selma'o)</title>
     <variablelist>
       <varlistentry>
-        <term>A &#8594;</term>
+        <term>A &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( a / e / j i / o / u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>BAI &#8594;</term>
+        <term>BAI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( d u h o / s i h u / z a u / k i h i / d u h i / c u h u / t u h i / t i h u / d i h o / j i h u / r i h a / n i h i / m u h i / k i h u / v a h u / k o i / c a h i / t a h i / p u h e / j a h i / k a i / b a i / f i h e / d e h i / c i h o / m a u / m u h u / r i h i / r a h i / k a h a / p a h u / p a h a / l e h a / k u h u / t a i / b a u / m a h i / c i h e / f a u / p o h i / c a u / m a h e / c i h u / r a h a / p u h a / l i h e / l a h u / b a h i / k a h i / s a u / f a h e / b e h i / t i h i / j a h e / g a h a / v a h o / j i h o / m e h a / d o h e / j i h e / p i h o / g a u / z u h e / m e h e / r a i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>BAhE &#8594;</term>
+        <term>BAhE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( b a h e / z a h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>BE &#8594;</term>
+        <term>BE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( b e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>BEI &#8594;</term>
+        <term>BEI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( b e i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>BEhO &#8594;</term>
+        <term>BEhO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( b e h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>BIhE &#8594;</term>
+        <term>BIhE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( b i h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>BIhI &#8594;</term>
+        <term>BIhI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( m i h i / b i h o / b i h i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>BO &#8594;</term>
+        <term>BO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( b o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>BOI &#8594;</term>
+        <term>BOI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( b o i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>BU &#8594;</term>
+        <term>BU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( b u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>BY &#8594;</term>
+        <term>BY &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( ybu / j o h o / r u h o / g e h o / j e h o / l o h a / n a h a / s e h e / t o h a / g a h e / y h y / b y / c y / d y / f y / g y / j y / k y / l y / m y / n y / p y / r y / s y / t y / v y / x y / z y ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>CAhA &#8594;</term>
+        <term>CAhA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( c a h a / p u h i / n u h o / k a h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>CAI &#8594;</term>
+        <term>CAI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( p e i / c a i / c u h i / s a i / r u h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>CEI &#8594;</term>
+        <term>CEI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( c e i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>CEhE &#8594;</term>
+        <term>CEhE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( c e h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>CO &#8594;</term>
+        <term>CO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( c o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>COI &#8594;</term>
+        <term>COI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( j u h i / c o i / f i h i / t a h a / m u h o / f e h o / c o h o / p e h u / k e h o / n u h e / r e h i / b e h e / j e h e / m i h e / k i h e / v i h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>CU &#8594;</term>
+        <term>CU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( c u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>CUhE &#8594;</term>
+        <term>CUhE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( c u h e / n a u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>DAhO &#8594;</term>
+        <term>DAhO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( d a h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>DOI &#8594;</term>
+        <term>DOI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( d o i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>DOhU &#8594;</term>
+        <term>DOhU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( d o h u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>FA &#8594;</term>
+        <term>FA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( f a i / f a / f e / f o / f u / f i h a / f i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>FAhA &#8594;</term>
+        <term>FAhA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( d u h a / b e h a / n e h u / v u h a / g a h u / t i h a / n i h a / c a h u / z u h a / r i h u / r u h u / r e h o / t e h e / b u h u / n e h a / p a h o / n e h i / t o h o / z o h i / z e h o / z o h a / f a h a ) &amp;post_word &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>FAhO &#8594;</term>
+        <term>FAhO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( f a h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>FEhE &#8594;</term>
+        <term>FEhE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( f e h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>FEhU &#8594;</term>
+        <term>FEhU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( f e h u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>FIhO &#8594;</term>
+        <term>FIhO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( f i h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>FOI &#8594;</term>
+        <term>FOI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( f o i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>FUhA &#8594;</term>
+        <term>FUhA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( f u h a ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>FUhE &#8594;</term>
+        <term>FUhE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( f u h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>FUhO &#8594;</term>
+        <term>FUhO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( f u h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>GA &#8594;</term>
+        <term>GA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( g e h i / g e / g o / g a / g u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>GAhO &#8594;</term>
+        <term>GAhO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( k e h i / g a h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>GEhU &#8594;</term>
+        <term>GEhU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( g e h u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>GI &#8594;</term>
+        <term>GI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( g i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>GIhA &#8594;</term>
+        <term>GIhA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( g i h e / g i h i / g i h o / g i h a / g i h u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>GOI &#8594;</term>
+        <term>GOI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( n o h u / n e / g o i / p o h u / p e / p o h e / p o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>GOhA &#8594;</term>
+        <term>GOhA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( m o / n e i / g o h u / g o h o / g o h i / n o h a / g o h e / g o h a / d u / b u h a / b u h e / b u h i / c o h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>GUhA &#8594;</term>
+        <term>GUhA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( g u h e / g u h i / g u h o / g u h a / g u h u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>I &#8594;</term>
+        <term>I &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>JA &#8594;</term>
+        <term>JA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( j e h i / j e / j o / j a / j u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>JAI &#8594;</term>
+        <term>JAI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( j a i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>JOhI &#8594;</term>
+        <term>JOhI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( j o h i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>JOI &#8594;</term>
+        <term>JOI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( f a h u / p i h u / j o i / c e h o / c e / j o h u / k u h a / j o h e / j u h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>KE &#8594;</term>
+        <term>KE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( k e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>KEhE &#8594;</term>
+        <term>KEhE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( k e h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>KEI &#8594;</term>
+        <term>KEI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( k e i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>KI &#8594;</term>
+        <term>KI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( k i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>KOhA &#8594;</term>
+        <term>KOhA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( d a h u / d a h e / d i h u / d i h e / d e h u / d e h e / d e i / d o h i / m i h o / m a h a / m i h a / d o h o / k o h a / f o h u / k o h e / k o h i / k o h o / k o h u / f o h a / f o h e / f o h i / f o h o / v o h a / v o h e / v o h i / v o h o / v o h u / r u / r i / r a / t a / t u / t i / z i h o / k e h a / m a / z u h i / z o h e / c e h u / d a / d e / d i / k o / m i / d o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>KU &#8594;</term>
+        <term>KU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( k u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>KUhE &#8594;</term>
+        <term>KUhE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( k u h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>KUhO &#8594;</term>
+        <term>KUhO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( k u h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>LA &#8594;</term>
+        <term>LA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( l a i / l a h i / l a ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>LAU &#8594;</term>
+        <term>LAU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( c e h a / l a u / z a i / t a u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>LAhE &#8594;</term>
+        <term>LAhE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( t u h a / l u h a / l u h o / l a h e / v u h i / l u h i / l u h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>LE &#8594;</term>
+        <term>LE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( l e i / l o i / l e h i / l o h i / l e h e / l o h e / l o / l e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>LEhU &#8594;</term>
+        <term>LEhU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( l e h u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>LI &#8594;</term>
+        <term>LI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( m e h o / l i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>LIhU &#8594;</term>
+        <term>LIhU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( l i h u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>LOhO &#8594;</term>
+        <term>LOhO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( l o h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>LOhU &#8594;</term>
+        <term>LOhU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( l o h u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>LU &#8594;</term>
+        <term>LU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( l u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>LUhU &#8594;</term>
+        <term>LUhU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( l u h u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>MAhO &#8594;</term>
+        <term>MAhO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( m a h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>MAI &#8594;</term>
+        <term>MAI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( m o h o / m a i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>ME &#8594;</term>
+        <term>ME &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( m e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>MEhU &#8594;</term>
+        <term>MEhU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( m e h u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>MOhE &#8594;</term>
+        <term>MOhE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( m o h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>MOhI &#8594;</term>
+        <term>MOhI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( m o h i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>MOI &#8594;</term>
+        <term>MOI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( m e i / m o i / s i h e / c u h o / v a h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>NA &#8594;</term>
+        <term>NA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( j a h a / n a ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>NAI &#8594;</term>
+        <term>NAI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( n a i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>NAhE &#8594;</term>
+        <term>NAhE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( t o h e / j e h a / n a h e / n o h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>NAhU &#8594;</term>
+        <term>NAhU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( n a h u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>NIhE &#8594;</term>
+        <term>NIhE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( n i h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>NIhO &#8594;</term>
+        <term>NIhO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( n i h o / n o h i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>NOI &#8594;</term>
+        <term>NOI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( v o i / n o i / p o i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>NU &#8594;</term>
+        <term>NU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( n i / d u h u / s i h o / n u / l i h i / k a / j e i / s u h u / z u h o / m u h e / p u h u / z a h i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>NUhA &#8594;</term>
+        <term>NUhA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( n u h a ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>NUhI &#8594;</term>
+        <term>NUhI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( n u h i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>NUhU &#8594;</term>
+        <term>NUhU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( n u h u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>PA &#8594;</term>
+        <term>PA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( d a u / f e i / g a i / j a u / r e i / v a i / p i h e / p i / f i h u / z a h u / m e h i / n i h u / k i h o / c e h i / m a h u / r a h e / d a h a / s o h a / j i h i / s u h o / s u h e / r o / r a u / s o h u / s o h i / s o h e / s o h o / m o h a / d u h e / t e h o / k a h o / c i h i / t u h o / x o / p a i / n o h o / n o / p a / r e / c i / v o / m u / x a / z e / b i / s o / digit ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>PEhE &#8594;</term>
+        <term>PEhE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( p e h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>PEhO &#8594;</term>
+        <term>PEhO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( p e h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>PU &#8594;</term>
+        <term>PU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( b a / p u / c a ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>RAhO &#8594;</term>
+        <term>RAhO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( r a h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>ROI &#8594;</term>
+        <term>ROI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( r e h u / r o i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>SA &#8594;</term>
+        <term>SA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( s a ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>SE &#8594;</term>
+        <term>SE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( s e / t e / v e / x e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>SEI &#8594;</term>
+        <term>SEI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( s e i / t i h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>SEhU &#8594;</term>
+        <term>SEhU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( s e h u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>SI &#8594;</term>
+        <term>SI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( s i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>SOI &#8594;</term>
+        <term>SOI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( s o i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>SU &#8594;</term>
+        <term>SU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( s u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>TAhE &#8594;</term>
+        <term>TAhE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( r u h i / t a h e / d i h i / n a h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>TEhU &#8594;</term>
+        <term>TEhU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( t e h u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>TEI &#8594;</term>
+        <term>TEI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( t e i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>TO &#8594;</term>
+        <term>TO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( t o h i / t o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>TOI &#8594;</term>
+        <term>TOI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( t o i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>TUhE &#8594;</term>
+        <term>TUhE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( t u h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>TUhU &#8594;</term>
+        <term>TUhU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( t u h u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>UI &#8594;</term>
+        <term>UI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( i h a / i e / a h e / u h i / i h o / i h e / a h a / i a / o h i / o h e / e h e / o i / u o / e h i / u h o / a u / u a / a h i / i h u / i i / u h a / u i / a h o / a i / a h u / i u / e i / o h o / e h a / u u / o h a / o h u / u h u / e h o / i o / e h u / u e / i h i / u h e / b a h a / j a h o / c a h e / s u h a / t i h e / k a h u / s e h o / z a h a / p e h i / r u h a / j u h a / t a h o / r a h u / l i h a / b a h u / m u h a / d o h a / t o h u / v a h i / p a h e / z u h u / s a h e / l a h a / k e h u / s a h u / d a h i / j e h u / s a h a / k a u / t a h u / n a h i / j o h a / b i h u / l i h o / p a u / m i h u / k u h i / j i h a / s i h a / p o h o / p e h a / r o h i / r o h e / r o h o / r o h u / r o h a / r e h e / l e h o / j u h o / f u h i / d a i / g a h i / z o h o / b e h u / r i h e / s e h i / s e h a / v u h e / k i h a / x u / g e h e / b u h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>VA &#8594;</term>
+        <term>VA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( v i / v a / v u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>VAU &#8594;</term>
+        <term>VAU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( v a u ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>VEI &#8594;</term>
+        <term>VEI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( v e i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>VEhO &#8594;</term>
+        <term>VEhO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( v e h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>VUhU &#8594;</term>
+        <term>VUhU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( g e h a / f u h u / p i h i / f e h i / v u h u / s u h i / j u h u / g e i / p a h i / f a h i / t e h a / c u h a / v a h a / n e h o / d e h o / f e h a / s a h o / r e h a / r i h o / s a h i / p i h a / s i h i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>VEhA &#8594;</term>
+        <term>VEhA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( v e h u / v e h a / v e h i / v e h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>VIhA &#8594;</term>
+        <term>VIhA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( v i h i / v i h a / v i h u / v i h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>VUhO &#8594;</term>
+        <term>VUhO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( v u h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>XI &#8594;</term>
+        <term>XI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( x i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>Y &#8594;</term>
+        <term>Y &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( y+ ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>ZAhO &#8594;</term>
+        <term>ZAhO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( c o h i / p u h o / c o h u / m o h u / c a h o / c o h a / d e h a / b a h o / d i h a / z a h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>ZEhA &#8594;</term>
+        <term>ZEhA &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( z e h u / z e h a / z e h i / z e h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>ZEI &#8594;</term>
+        <term>ZEI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( z e i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>ZI &#8594;</term>
+        <term>ZI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( z u / z a / z i ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>ZIhE &#8594;</term>
+        <term>ZIhE &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( z i h e ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>ZO &#8594;</term>
+        <term>ZO &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( z o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>ZOI &#8594;</term>
+        <term>ZOI &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( z o i / l a h o ) &amp;post_word</para>
         </listitem>
       </varlistentry>
       <varlistentry>
-        <term>ZOhU &#8594;</term>
+        <term>ZOhU &#8592;</term>
         <listitem>
           <para>&amp;cmavo ( z o h u ) &amp;post_word</para>
         </listitem>

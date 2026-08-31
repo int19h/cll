@@ -937,7 +937,7 @@
       </listitem>
       <listitem>
         <para>
-          always contain a consonant pair, which in gismu and in lujvo built from their rafsi &ndash; and classically in all brivla &ndash; falls within the first five letters, where
+          always contain a consonant pair, which in gismu and in lujvo built from their rafsi falls within the first five letters, where
           <letteral>y</letteral>
           and apostrophe are not counted as letters for this purpose (see
           <xref linkend="section-rafsi" />; for fu'ivla, and for lujvo that borrow a fu'ivla as a rafsi, the pair may come later &ndash; see
@@ -2363,13 +2363,12 @@
           is acceptable, but not
           <valsi valid="false">ktraile</valsi>
           or
-          <valsi valid="false">trkaile</valsi>. The first edition also required the cluster to fall within the first five letters of the word (apostrophes, as always, not counted); the word-form grammar of
-          <xref linkend="appendix-peg-morphology" />
-          drops that position limit for fu'ivla, so that a word like
+          <valsi valid="false">trkaile</valsi>. The cluster need not fall within the first five letters of the word: a word like
           <valsi valid="maybe">ro'i'inre'o</valsi>
           &ndash; whose only cluster,
           <morphology>nr</morphology>
-          , occupies the fifth and sixth letters &ndash; is also a valid fu'ivla, provided the word still resolves as a single brivla under that grammar's rules;
+          , comes at the fifth and sixth letters, apostrophes not counted &ndash; is a valid fu'ivla, provided the word resolves as a single brivla under the rules of
+          <xref linkend="appendix-peg-morphology" />;
         </para>
       </listitem>
       <listitem>
@@ -2425,7 +2424,7 @@
     <para role="status-note">
       <indexterm type="general"><primary>fu'ivla</primary><secondary>cluster position, status of</secondary>
       </indexterm>
-      The cluster-position relaxation is part of the de facto word-form standard; gismu and classical lujvo still carry their cluster within the first five letters by construction, while a lujvo beginning with a fu'ivla rafsi can inherit the fu'ivla's cluster position. See
+      For the standing and history of the fu'ivla cluster-position rule, see
       <xref linkend="appendix-changes" />.
     </para>
     <para>

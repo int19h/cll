@@ -51,11 +51,16 @@ title=$(read_var TITLE .env)
 subtitle=$(read_var SUBTITL .env)
 datestamp=$(date +%Y-%m-%d)
 
+subtitle_elem=""
+if [ -n "$subtitle" ]; then
+    subtitle_elem="<subtitle>$subtitle</subtitle>"
+fi
+
 echo "
 
 <info>
 <title>$title</title>
-<subtitle>$subtitle</subtitle>
+$subtitle_elem
 <author>
 <personname>
 <firstname>John</firstname>

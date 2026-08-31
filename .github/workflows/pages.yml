@@ -110,14 +110,20 @@ jobs:
         if: steps.site-cache.outputs.cache-hit != 'true'
         run: |
           mkdir -p _site_versions
-          while IFS=$'\t' read -r ver ref; do
+          # oldest first, so each version's fresh build can serve as the
+          # "previous release" side of the next version's diff_from_previous
+          prev=""; prevlabel=""
+          tac pages/versions.tsv | while IFS=$'\t' read -r ver ref; do
             case "$ver" in ''|'#'*) continue ;; esac
             echo "::group::build $ver from $ref"
             git worktree add --detach "_v_$ver" "origin/$ref"
             bash scripts/build-site.sh "_v_$ver" "$ver" \
-              "$PWD/_baseline/build/xhtml_no_chunks" "$PWD/_site_versions"
+              "$PWD/_baseline/build/xhtml_no_chunks" "$PWD/_site_versions" \
+              "$prev" "$prevlabel"
+            prev="$PWD/_site_versions/$ver/xhtml_no_chunks"
+            prevlabel="v$ver"
             echo "::endgroup::"
-          done < pages/versions.tsv
+          done
 
       - name: Assemble the site
         run: |

@@ -60,7 +60,7 @@ Full book build is containerized (`Dockerfile`, `run_container.sh`; Prince for P
 
 ## Releases
 
-- Branding lives in `.env` (`TITLE`, `VERSION`, read by `scripts/merge.sh` into the book's title page). `main` carries `colojban-<last release>+dev`; **cutting an `edition/X.Y.Z` branch means setting both `TITLE` and `VERSION` there** — forgetting `TITLE` reverted the book to UnCLL's on 1.3.1 and 1.3.2.
+- Branding lives in `.env` (`TITLE`, `VERSION`, optional `SUBTITL`, read by `scripts/merge.sh` into the book's title page; the subtitle element is emitted only when `SUBTITL` is non-empty — the UnCLL leftover «Chrestomathy included» was removed before 1.3.3). `main` carries `colojban-<last release>+dev`; **cutting an `edition/X.Y.Z` branch means verifying the whole `.env` block and setting `VERSION` there** — forgetting `TITLE` reverted the book to UnCLL's on 1.3.1 and 1.3.2, and the stale subtitle survived through 1.3.2.
 - A release is a GitHub release tagged `vX.Y.Z` pointing at the `edition/X.Y.Z` tip (the exact published tree), plus a `pages/versions.tsv` entry.
 - **Release notes are the delta against our own previous release** — not against CLL 1.1 or the first edition. The first release (1.3.2) is the exception: its predecessor is upstream's UnCLL `geklojban-1.2.16`, frozen as `baseline/uncll-1.2.16`. Never credit this edition with something UnCLL already did (dotside and the classical hyphen rules are the traps). Don't rehash the change list either: the book's a03 appendix catalogues changes from the *first edition*, and the site ships a visual diff against the previous release; notes summarize what a reader gains and link to both.
 

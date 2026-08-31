@@ -46,7 +46,11 @@ doc = doc.gsub( %r{title="Chapter [0-9]+--CHAPBR--}, 'title="' )
 # we want to remove everything up to and including the --CHAPBR--,
 # so that the a's text and title give different information.
 #
-doc = doc.gsub( %r{--CHAPBR--}, '<br/>' )
+# The space before the break matters: a bare <br/> leaves the heading's text
+# content as "Chapter 21Formal grammars", which is what PDF bookmarks and any
+# other text extraction of the heading see. The space separates the two parts
+# there while the break still puts them on separate lines in print.
+doc = doc.gsub( %r{--CHAPBR--}, ' <br/>' )
 #
 # In both cases, regex is *WAY* easier, and shouldn't cause any
 # trouble.

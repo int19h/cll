@@ -199,6 +199,15 @@
       </listitem>
       <listitem>
         <para>
+          <indexterm type="general"><primary>fu'ivla</primary><secondary>cluster position, change summary</secondary></indexterm>
+          <emphasis>De facto</emphasis> (a working document of the definition effort, implemented in the surveyed parsers). A fu'ivla's consonant cluster need no longer fall within the first five letters of the word. The first edition required that of every brivla; gismu and classical lujvo satisfy it by construction (a lujvo beginning with a fu'ivla rafsi can inherit its cluster position), and the working grammar keeps for fu'ivla only the structural requirement that the word resolve as a single brivla, so a word like
+          <valsi valid="maybe">ro'i'inre'o</valsi>
+          (cluster at the fifth and sixth letters) is now a valid fu'ivla. See
+          <xref linkend="section-fuhivla" />.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
           <indexterm type="general"><primary>rafsi</primary><secondary>extended, change summary</secondary></indexterm>
           <emphasis>De facto</emphasis> (a working document of the definition effort, implemented in the surveyed parsers). Every fu'ivla has combining forms: unchanged in final position (a vowel-initial fu'ivla additionally takes a leading apostrophe when anything is attached before it), with
           <jbophrase>'y</jbophrase>

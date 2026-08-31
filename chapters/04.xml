@@ -937,10 +937,13 @@
       </listitem>
       <listitem>
         <para>
-          always contain a consonant pair in the first five letters, where
+          always contain a consonant pair, which in gismu and in lujvo built from their rafsi falls within the first five letters, where
           <letteral>y</letteral>
           and apostrophe are not counted as letters for this purpose (see
-          <xref linkend="section-rafsi" />);
+          <xref linkend="section-rafsi" />; for fu'ivla, and for lujvo that borrow a fu'ivla as a rafsi, the pair may come later &ndash; see
+          <xref linkend="section-fuhivla" />
+          and
+          <xref linkend="section-rafsi-fuhivla" />);
         </para>
       </listitem>
       <listitem>
@@ -1419,7 +1422,7 @@
       </indexterm>
       <indexterm type="general"><primary>lujvo</primary><secondary>rules for formation of</secondary>
       </indexterm>
-      When assembling rafsi together into lujvo, the rules for valid brivla must be followed: a consonant cluster must occur in the first five letters (excluding
+      When assembling rafsi together into a classical lujvo &ndash; one built solely from gismu rafsi &ndash; these rules must be followed: a consonant cluster must occur in the first five letters (excluding
       <letteral>y</letteral>
       and
       <letteral>'</letteral>), and the lujvo must end in a vowel.
@@ -1905,7 +1908,7 @@
       </indexterm>
       <indexterm type="general"><primary>lujvo</primary><secondary>summary of form characteristics</secondary>
       </indexterm>
-      As noted above, CVC-form rafsi cannot appear as the final rafsi in a lujvo, because all lujvo must end with one or two vowels. As a brivla, a lujvo must also contain a consonant cluster within the first five letters &ndash; this ensures that they cannot be mistaken for compound cmavo. Of course, all lujvo have at least six letters since they have two or more rafsi, each at least three letters long; hence they cannot be confused with gismu.
+      As noted above, CVC-form rafsi cannot appear as the final rafsi in a lujvo, because all lujvo must end with one or two vowels. A classical lujvo must also contain a consonant cluster within its first five letters &ndash; this ensures that it cannot be mistaken for compound cmavo. Of course, all lujvo have at least six letters since they have two or more rafsi, each at least three letters long; hence they cannot be confused with gismu.
     </para>
     <para>
       <indexterm type="general"><primary>lujvo form</primary><secondary>requirements for hyphen insertion in</secondary>
@@ -1928,8 +1931,8 @@
     <para>
       <indexterm type="general"><primary>lujvo form</primary><secondary>requirements for y-hyphen insertion in</secondary>
       </indexterm>
-      The 
-    y-hyphen is used after a CVC-form rafsi when joining it with the following rafsi could result in an impermissible consonant pair, or when the resulting lujvo could fall apart into two or more words (either cmavo or gismu).
+      The
+    y-hyphen is used after a CVC-form rafsi when joining it with the following rafsi could result in an impermissible consonant pair, or when the resulting lujvo could fall apart into two or more words (a cmavo followed by a shorter brivla).
     </para>
     <para>
       <indexterm type="general"><primary>lujvo</primary><secondary>and consonant pairs</secondary>
@@ -1951,7 +1954,66 @@
       <valsi valid="maybe">mudysiclu</valsi>
       must be used. (Remember that
       <letteral>y</letteral>
-      is not counted in determining whether the first five letters of a brivla contain a consonant cluster: this is why.)
+      is not counted in determining whether the first five letters of a lujvo contain a consonant cluster: this is why.)
+    </para>
+    <para>
+      <indexterm type="general"><primary>tosmabru test</primary><secondary>explained</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>lujvo</primary><secondary>falling apart of</secondary>
+      </indexterm>
+      The other danger &ndash; a lujvo that falls apart &ndash; is more insidious, because every consonant pair in the word can be perfectly pronounceable and the word can still be wrong. Consider the tanru
+      <jbophrase>calku respa</jbophrase>
+      (
+      <quote>shell reptile</quote>, i.e. a turtle). Joining the rafsi
+      <rafsi>cak</rafsi>
+      directly to
+      <valsi>respa</valsi>
+      would produce
+      <valsi valid="false">cakrespa</valsi>
+      , in which the pair
+      <morphology>kr</morphology>
+      is not merely permissible but a permissible initial pair &ndash; and that is exactly the trouble. Because
+      <valsi valid="maybe">krespa</valsi>
+      is itself a well-formed lujvo (of
+      <valsi>kerfa</valsi>
+      and
+      <valsi>spati</valsi>
+      : a
+      <quote>hair-plant</quote>, whatever that might be), the stream of sounds breaks up as the two words
+      <jbophrase>ca krespa</jbophrase>
+      &ndash;
+      <quote>now a hair-plant</quote>
+      &ndash; and the turtle never arrives. Word resolution always splits a cmavo off the front of such a word when what remains is a word too; to get the turtle, you must hold the lujvo together with a y-hyphen &ndash; a leading CVC followed by
+      <letteral>y</letteral>
+      and the rest of a lujvo's shape always begins a single brivla, which is precisely what makes the hyphen glue &ndash; giving
+      <valsi>cakyrespa</valsi>.
+    </para>
+    <para>
+      <indexterm type="general"><primary>tosmabru test</primary><secondary>simple statement of</secondary>
+      </indexterm>
+      The test is easy to state: a lujvo beginning with a CVC-form rafsi is in danger exactly when the word minus its first two letters &ndash; the final consonant of that rafsi plus everything that follows &ndash; is a well-formed brivla on its own. If it is, a y-hyphen must follow the first rafsi; if it is not, the word cannot shed its first syllable, and no y-hyphen is needed for this reason (the test is applied last, after any hyphens that the other rules require are already in place). This is traditionally called the
+      <quote>tosmabru test</quote>
+      , after a demonstration word that Lojban inherited from Loglan:
+      <valsi valid="false">tosmabru</valsi>
+      , meant as a hypothetical rafsi
+      <rafsi>tos</rafsi>
+      plus
+      <valsi>mabru</valsi>
+      (
+      <quote>mammal</quote>), actually resolves as
+      <jbophrase>to smabru</jbophrase>
+      &ndash; the parenthesis cmavo
+      <valsi>to</valsi>
+      followed by the lujvo
+      <valsi valid="maybe">smabru</valsi>
+      (
+      <quote>quiet-brush</quote>) &ndash; and must be written
+      <valsi valid="maybe">tosymabru</valsi>
+      to hold together. The exact procedure, including the case of several CVC rafsi in a row, is part of the lujvo-making algorithm of
+      <xref linkend="section-lujvo-making" />; the formal grammar states it as the production named
+      <quote>CVCy_lujvo</quote>
+      (see
+      <xref linkend="appendix-peg-morphology" />).
     </para>
     <para>
       <indexterm type="general"><primary>rafsi</primary><secondary>four-letter</secondary>
@@ -2296,13 +2358,17 @@
           </indexterm>
           <indexterm type="general"><primary>fu'ivla</primary><secondary>rules for formation of</secondary>
           </indexterm>
-          must contain a consonant cluster in the first five letters of the word; if this consonant cluster is at the beginning, it must either be a permissible initial consonant pair, or a longer cluster such that each pair of adjacent consonants in the cluster is a permissible initial consonant pair:
+          must contain a consonant cluster; if this consonant cluster is at the beginning, it must either be a permissible initial consonant pair, or a longer cluster such that each pair of adjacent consonants in the cluster is a permissible initial consonant pair:
           <valsi valid="maybe">spraile</valsi>
           is acceptable, but not
           <valsi valid="false">ktraile</valsi>
           or
-          <valsi valid="false">trkaile</valsi>
-          ;
+          <valsi valid="false">trkaile</valsi>. The cluster need not fall within the first five letters of the word: a word like
+          <valsi valid="maybe">ro'i'inre'o</valsi>
+          &ndash; whose only cluster,
+          <morphology>nr</morphology>
+          , comes at the fifth and sixth letters, apostrophes not counted &ndash; is a valid fu'ivla, provided the word resolves as a single brivla under the rules of
+          <xref linkend="appendix-peg-morphology" />;
         </para>
       </listitem>
       <listitem>
@@ -2333,9 +2399,7 @@
           </indexterm>
           must not be gismu or lujvo, or any combination of cmavo, gismu, and lujvo; furthermore, a fu'ivla with a CV cmavo joined to the front of it must not have the form of a lujvo &ndash; the so-called
           <quote>slinku'i test</quote>
-          , stated precisely in
-          <xref linkend="appendix-peg-morphology" />, where it appears as the production named
-          <quote>slinkuhi</quote>;
+          , explained after this list;
         </para>
 
       </listitem>
@@ -2357,6 +2421,12 @@
         </para>
       </listitem>
     </orderedlist>
+    <para role="status-note">
+      <indexterm type="general"><primary>fu'ivla</primary><secondary>cluster position, status of</secondary>
+      </indexterm>
+      For the standing and history of the fu'ivla cluster-position rule, see
+      <xref linkend="appendix-changes" />.
+    </para>
     <para>
       <indexterm type="general"><primary>fu'ivla</primary><secondary>consonant clusters in</secondary>
       </indexterm>
@@ -2371,6 +2441,58 @@
       </indexterm>
       This is a fairly liberal definition and allows quite a lot of possibilities within
       <quote>fu'ivla space</quote>. Stage 3 fu'ivla can be made easily on the fly, as lujvo can, because the procedure for forming them always guarantees a word that cannot violate any of the rules. Stage 4 fu'ivla require running tests that are not simple to characterize or perform, and should be made only after deliberation and by someone knowledgeable about all the considerations that apply.
+    </para>
+    <para>
+      <indexterm type="general"><primary>slinku'i test</primary><secondary>explained</secondary>
+      </indexterm>
+      The most famous of those tests deserves a proper explanation. Recall the rule that a fu'ivla with a CV cmavo joined to the front of it must not have the form of a lujvo. The trap it guards against is invisible as long as you look at a word in isolation. Consider
+      <valsi valid="false">slinku'i</valsi>
+      , the traditional &ndash; and deliberately illegal &ndash; example after which the test is named, another inheritance from Loglan. By itself it looks like a blameless fu'ivla: it begins with the permissible initial pair
+      <morphology>sl</morphology>
+      , carries its consonant cluster early, ends in a vowel, and, alone, could be nothing else. But no word is spoken in isolation. Put any CV cmavo in front of it and listen:
+      <jbophrase valid="false">pa slinku'i</jbophrase>
+      is the same stream of sounds as
+      <valsi valid="maybe">paslinku'i</valsi>
+      , and that stream scans perfectly as a lujvo built of the rafsi shapes
+      <rafsi>pas</rafsi>
+      ,
+      <rafsi>lin</rafsi>
+      and
+      <rafsi>ku'i</rafsi>. (As it happens, those rafsi are even assigned &ndash; the result would mean something like
+      <quote>robe-chain-caretaker</quote>
+      &ndash; but that is beside the point: word resolution runs on rafsi shapes alone, never on the dictionary, so that a listener can carve up words they have never met.) The lujvo reading wins &ndash; when a fu'ivla form conflicts with any other reading, the fu'ivla loses &ndash; so a word that can be captured this way cannot be allowed as a fu'ivla at all.
+    </para>
+    <para>
+      <indexterm type="general"><primary>slinku'i test</primary><secondary>quick form of</secondary>
+      </indexterm>
+      The quick way to test a candidate is to strip its initial consonant: if what remains is a well-formed lujvo, or could end one, the candidate is banned &ndash; it is, in the traditional jargon, a slinku'i. Stripping the
+      <letteral>s</letteral>
+      from
+      <valsi valid="false">slinku'i</valsi>
+      leaves
+      <valsi valid="maybe">linku'i</valsi>
+      , a well-formed lujvo shape. Likewise
+      <valsi valid="false">tcalfe</valsi>
+      can be no fu'ivla:
+      <valsi valid="maybe">calfe</valsi>
+      has the shape of a gismu, so
+      <jbophrase valid="false">me tcalfe</jbophrase>
+      would be heard as the lujvo
+      <valsi valid="maybe">metcalfe</valsi>. The formal grammar of
+      <xref linkend="appendix-peg-morphology" />
+      states the test as the production named
+      <quote>slinkuhi</quote>.
+    </para>
+    <para>
+      <indexterm type="general"><primary>fu'ivla</primary><secondary>repairing a slinku'i form</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>slinku'i test</primary><secondary>relation to tosmabru test</secondary>
+      </indexterm>
+      A borrowing that lands on a slinku'i form must simply be reshaped, as with the other prohibitions. The dictionary's actual word for a Slinky &ndash; the springy toy the test word suggests &ndash; is
+      <valsi>slinkuui</valsi>
+      : the same borrowing rescued by respelling the final syllables with a glide, so that what follows the initial consonant no longer scans as a string of rafsi. Retreating to a Stage 3 form with a categorizing rafsi (described below) always works as well. Notice, finally, that this test and the tosmabru test of
+      <xref linkend="section-rafsi" />
+      are mirror images of one boundary question: a classical lujvo that could shed a leading CV cmavo must hold itself together with a y-hyphen, while a would-be fu'ivla that a leading CV cmavo could capture is banned outright. Between the two rules, a stream of Lojban sounds resolves into words in exactly one way.
     </para>
     <para>
       <indexterm type="general"><primary>fu'ivla</primary><secondary>algorithm for constructing</secondary>
@@ -3950,7 +4072,8 @@
           <quote>CVC ... CVC + X</quote>
           &ndash; for
           <quote>tosmabru failure</quote>. In order to fail, X must either be a CVCCV long rafsi that happens to have a permissible initial pair as the consonant cluster, or is something which has caused a
-    y-hyphen to be inserted between the preceding CVC and X in step 4.b. The formal word-form grammar states this test precisely, as the rule called
+    y-hyphen to be inserted between the preceding CVC and X in step 4.b. (The failure itself, and its cure, are explained with examples in
+          <xref linkend="section-rafsi" />.) The formal word-form grammar states this test precisely, as the rule called
           <quote>CVCy_lujvo</quote>
           ; see
           <xref linkend="appendix-peg-morphology" />.

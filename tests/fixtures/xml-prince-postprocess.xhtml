@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Fixture for scripts/test-xml-prince-postprocess.py (issue #108).
+
+  Shapes are copied from a real Prince build's cll_processed_xhtml.html, cut
+  down to one instance of each thing scripts/xml_prince_postprocess.rb touches.
+
+  Two details are load-bearing and invisible on screen:
+
+  * The separator between "Chapter" and the number is a literal U+00A0
+    (NO-BREAK SPACE), written raw here exactly as the DocBook XSL writes it.
+    The postprocessor's xref-title regex contains that character, so an
+    ordinary space here would silently stop that rewrite from matching.
+  * The chapter heading and the xref title both carry the CHAPBR separator
+    that the postprocessor rewrites; the test asserts none survives.
+
+  The root element is "book" with a sentinel attribute, so that the header
+  substitution has something to replace and the test can prove it ran.
+-->
+<book xmlns="http://www.w3.org/1999/xhtml" data-postprocess-sentinel="ORIGINAL-ROOT-MUST-BE-REPLACED">
+  <div class="chapter">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h1 class="title"><a id="chapter-grammars"></a>Chapter 21--CHAPBR--<a id="c21"></a>Formal grammars</h1>
+        </div>
+      </div>
+    </div>
+    <p>
+      The grammar is given in <a class="xref" href="#chapter-grammars" title="Chapter 21--CHAPBR--Formal grammars">Chapter 21</a>.
+    </p>
+    <div class="interlinear-gloss-example example">
+      <a id="c1e1"></a>
+      <p class="title"><strong>Example 1.1 </strong></p>
+    </div>
+  </div>
+  <div class="index">
+    <div class="titlepage">
+      <div>
+        <div>
+          <h1 class="title"><a id="id-1.28"></a>Lojban Words Index</h1>
+        </div>
+      </div>
+    </div>
+    <div class="index">
+      <div class="indexdiv">
+        <h3>Symbols</h3>
+        <dl>
+          <dt>.a, <a class="indexterm" href="#id-1.5.4">cmavo</a></dt>
+        </dl>
+      </div>
+    </div>
+  </div>
+</book>

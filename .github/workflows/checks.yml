@@ -44,6 +44,32 @@ jobs:
       - name: PEG appendix check self-test
         run: python3 scripts/test-check-peg-appendix.py
 
+  # scripts/xml_prince_postprocess.rb is the last thing to touch the XHTML
+  # before Prince renders the PDF, and it works by regex over serialized
+  # output. Issue #106 (a chapter heading whose text content read
+  # "Chapter 21Formal grammars" in the PDF outline) was invisible to every
+  # other check here. Its own job, not a step of cmevla-dot-lint: that one is
+  # pure Python, and bolting a Ruby runtime plus a native gem onto it would
+  # make both its name and its dependency profile misleading.
+  prince-postprocess-smoke:
+    # ubuntu-24.04 to match the Dockerfile's base image and the Pages builder.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
+        with:
+          ruby-version: '3.2'
+      # Deliberately not bundler-cache: the checked-in Gemfile.lock resolves
+      # nokogiri 1.10.4, while the Dockerfile and the Pages build both install
+      # 1.18.8. Testing 1.10.4 would characterize a version we never release.
+      # Reconciling the manifest with the released pins is separate work.
+      - name: Install the production Nokogiri version
+        run: gem install --no-document nokogiri:1.18.8
+      - name: Prince postprocessor smoke test
+        run: |
+          ruby -rnokogiri -e 'puts "Nokogiri #{Nokogiri::VERSION}"; abort "expected Nokogiri 1.18.8" unless Nokogiri::VERSION == "1.18.8"'
+          python3 scripts/test-xml-prince-postprocess.py
+
   parser-probes:
     runs-on: ubuntu-latest
     steps:

@@ -38,8 +38,8 @@ Follow-up rounds normally **resume your previous session** for the same PR, so y
 Use Herdr Collab project **`cll`**. Select it explicitly with
 `herdr-collab --project cll ...` or `HERDR_COLLAB_PROJECT=cll`; the current
 directory, repository basename, checkout, and worktree never select a project
-or mailbox. Use only the session named by `HERDR_COLLAB_SESSION` or an explicit
-`--session` argument.
+or mailbox. Every active participant uses the immutable session UUID in
+`HERDR_COLLAB_SESSION`.
 
 CLL's standing Codex reviews are visible, resumable Herdr Collab agent sessions.
 They review the exact branch commit named in the prompt and write
@@ -52,14 +52,24 @@ participants, review order, write boundaries, and completion conditions.
 
 - A reviewer or worker launched with
   `herdr-collab --project cll agent spawn ...` is already registered and
-  receives its project/session identity. It must not call
+  receives `HERDR_COLLAB_PROJECT` and the immutable session UUID in
+  `HERDR_COLLAB_SESSION`. It must not call
   `herdr-collab --project cll session join ...` again.
-  A manually launched session joins exactly once with
-  `herdr-collab --project cll session join --agent-kind KIND HANDLE` and
-  uses the returned handle explicitly. If identity or liveness is uncertain,
+  A manually launched session chooses a human-facing handle, joins exactly
+  once, and captures the command's returned immutable session UUID:
+
+  ```bash
+  session_id=$(herdr-collab --project cll session join --agent-kind KIND HANDLE)
+  export HERDR_COLLAB_PROJECT=cll
+  export HERDR_COLLAB_SESSION="$session_id"
+  ```
+
+  The handle is a label, not the session identity used for commands. If
+  identity or liveness is uncertain,
   inspect `herdr-collab --project cll session list --live` or
-  `herdr-collab --project cll session show SESSION --live`; never infer identity
-  from the checkout.
+  `herdr-collab --project cll session show "$HERDR_COLLAB_SESSION" --live`;
+  never infer identity from the checkout. Elsewhere below, `SESSION` means an
+  immutable target session UUID, never a handle.
 - Use `herdr-collab --project cll send ...` for assignments, source/authority
   decisions, blockers, and questions
   that require an answer, handoffs, exact-commit review submissions, verdicts,
@@ -77,7 +87,7 @@ participants, review order, write boundaries, and completion conditions.
 - Check `herdr-collab --project cll status` and
   `herdr-collab --project cll inbox` after joining, before new work, around
   handoffs and review rounds, and before completion or
-  `herdr-collab --project cll session retire SESSION`. Use
+  `herdr-collab --project cll session retire "$HERDR_COLLAB_SESSION"`. Use
   `herdr-collab --project cll wait --timeout DURATION` only when work genuinely
   depends on later mail; do not busy-poll. Never edit Herdr Collab state files
   manually; use its session, group, mail, acknowledgement, and retirement
@@ -87,8 +97,11 @@ participants, review order, write boundaries, and completion conditions.
   authority to decide.
 - `@all` and every named group are local to the selected project. Use `@all`
   only for information genuinely relevant to every active CLL participant. A
-  machine-resource warning that affects another project must be sent separately
-  in that project's explicit namespace; a CLL `@all` is not a global broadcast.
+  CLL session UUID is invalid in every other project, so merely changing
+  `--project` cannot send a cross-project warning. The sender must use or join
+  its own distinct active identity in each target project, or ask an already
+  registered participant in that project to publish the warning there. A CLL
+  `@all` is not a global broadcast.
 
 Follow-up review rounds normally resume the same reviewer session so it can
 check its own findings, but every prompt must name the new exact HEAD and direct

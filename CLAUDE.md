@@ -69,8 +69,8 @@ Full book build is containerized (`Dockerfile`, `run_container.sh`; Prince for P
 Use Herdr Collab project **`cll`** for every coordinated CLL session. Select it
 explicitly with `herdr-collab --project cll ...` or
 `HERDR_COLLAB_PROJECT=cll`. The cwd, repository basename, checkout, and
-worktree never select a project or mailbox; use only the session named by
-`HERDR_COLLAB_SESSION` or an explicit `--session`.
+worktree never select a project or mailbox. Every active participant uses the
+immutable session UUID in `HERDR_COLLAB_SESSION`.
 
 Herdr Collab provides durable identity and mail but does not enforce a PM
 hierarchy. Choose participants, groups, and duties for the issue: a chapter PR
@@ -82,13 +82,22 @@ the durable public scope; Herdr Collab is the durable coordination thread.
 
 - A session started through `herdr-collab --project cll agent spawn ...` is
   already registered and receives
-  `HERDR_COLLAB_PROJECT` and `HERDR_COLLAB_SESSION`; do not join it again. A
-  manually launched session uses
-  `herdr-collab --project cll session join --agent-kind KIND HANDLE`
-  exactly once and then retains that explicit handle. Check
+  `HERDR_COLLAB_PROJECT` and the immutable session UUID in
+  `HERDR_COLLAB_SESSION`; do not join it again. A manually launched session
+  chooses a human-facing handle, joins exactly once, and captures the command's
+  returned immutable session UUID:
+
+  ```bash
+  session_id=$(herdr-collab --project cll session join --agent-kind KIND HANDLE)
+  export HERDR_COLLAB_PROJECT=cll
+  export HERDR_COLLAB_SESSION="$session_id"
+  ```
+
+  The handle is a label, not the session identity used for commands. Check
   `herdr-collab --project cll session list --live` or
-  `herdr-collab --project cll session show SESSION --live` when identity/
-  liveness is uncertain; never derive it from the worktree.
+  `herdr-collab --project cll session show "$HERDR_COLLAB_SESSION" --live` when
+  identity/liveness is uncertain; never derive it from the worktree. Elsewhere
+  below, `SESSION` means an immutable target session UUID, never a handle.
 - Use `herdr-collab --project cll send ...` for assignments, authority/source
   decisions, blockers, and questions
   requiring an answer, handoffs, exact-commit review requests, verdicts,
@@ -105,7 +114,7 @@ the durable public scope; Herdr Collab is the durable coordination thread.
   Check `herdr-collab --project cll status` and
   `herdr-collab --project cll inbox` after joining, before new work, around
   handoffs/review rounds, and before completion or
-  `herdr-collab --project cll session retire SESSION`. Use
+  `herdr-collab --project cll session retire "$HERDR_COLLAB_SESSION"`. Use
   `herdr-collab --project cll wait --timeout DURATION` only when work genuinely
   depends on later mail; do not busy-poll. Never edit collaboration state
   manually.
@@ -128,9 +137,11 @@ the durable public scope; Herdr Collab is the durable coordination thread.
   and mail are recovery only if native context is actually unavailable, not a
   replacement for it.
 - `@all` and named groups are project-local. Use CLL `@all` only for information
-  relevant to every active CLL participant. If a disk/build warning affects
-  another project, send a separate message under that project's explicit
-  `--project` namespace; CLL `@all` does not reach it.
+  relevant to every active CLL participant. A CLL session UUID is invalid in
+  every other project, so merely changing `--project` cannot send a
+  cross-project warning. The sender must use or join its own distinct active
+  identity in each target project, or ask an already registered participant in
+  that project to publish the warning there. CLL `@all` does not reach it.
 
 Containerized book builds (podman; ~15 minutes for an HTML-only target and ~1
 hour for the full PDF build) and review fan-outs are the principal local load.
@@ -149,4 +160,4 @@ This machine is shared by many concurrent agent sessions, and `/tmp` is a **32G 
 - Multi-GB scratch (chapter checkouts, build trees, fan-out worktrees) goes under `~/build/<name>` on the container disk — NOT `/tmp` (RAM-backed) and NOT `~/git` (near-full macOS-backed share). `/tmp` is fine for small files only.
 - Delete superseded scratch as soon as a round completes; never let old rounds accumulate alongside the new one.
 - Before any fan-out that creates many checkouts/build dirs, check `df -h /tmp ~/build` and keep several GB of headroom on each.
-- Announce unusually large temporary usage with a durable claim message to the affected CLL group (and a release reply when freed). If it could squeeze another project's sessions, send the warning separately in every affected Herdr Collab project; `@all` is project-local.
+- Announce unusually large temporary usage with a durable claim message to the affected CLL group (and a release reply when freed). If it could squeeze another project's sessions, arrange a separate warning from a distinct active identity in each affected Herdr Collab project, or ask an already registered participant there to publish it; `@all` and session UUIDs are project-local.

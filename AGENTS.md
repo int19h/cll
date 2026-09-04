@@ -33,18 +33,94 @@ Follow-up rounds normally **resume your previous session** for the same PR, so y
 - ro is importing per CLL 16.8, and the import must be presented as projective (int19h/jbotci#279) — jbotci's bare-forall output is an implementation gap, not evidence of non-importing ro.
 - jbovlaste is read-only; lensisku is its de facto successor; neither's *content* was ever made official.
 
-## Coordination (IRC) — for dispatched Codex runs
+## Coordination (Herdr Collab) — for Codex reviews and workers
 
-*(Tuned for CLL's workflow by the supervising session, 2026-07-17.)*
+Use Herdr Collab project **`cll`**. Select it explicitly with
+`herdr-collab --project cll ...` or `HERDR_COLLAB_PROJECT=cll`; the current
+directory, repository basename, checkout, and worktree never select a project
+or mailbox. Use only the session named by `HERDR_COLLAB_SESSION` or an explicit
+`--session` argument.
 
-**CLL's standing codex engagements are one-shot reviews**, invoked as `codex exec` against a checkout of the branch under review; they report by writing `research/<item>-review-<round>.md` and do NOT use IRC. Everything below applies only if you were dispatched as a long-running worker on a workitem with an explicit IRC identity in your prompt.
+CLL's standing Codex reviews are visible, resumable Herdr Collab agent sessions.
+They review the exact branch commit named in the prompt and write
+`research/<item>-review-<round>.md`. The reviewer remains an adversarial
+consensus partner, not an implementation writer. Long-running research or
+implementation work may use additional sessions and groups chosen for that
+task; participant handles and duties are conventions, not permissions or fixed
+model roles. The task brief must state the GitHub issue/PR, intended
+participants, review order, write boundaries, and completion conditions.
 
-**Review-scratch discipline (applies to one-shot reviews too):** if your review assembles combined trees, per-chapter checkouts, or builds, put that scratch under `~/build/cll-review-scratch/` and delete it before finishing. Do not create checkouts or build trees under `/tmp` (RAM-backed, shared, has been filled before) or inside `~/git/cll-review` beyond the checkout you were given.
+- A reviewer or worker launched with
+  `herdr-collab --project cll agent spawn ...` is already registered and
+  receives its project/session identity. It must not call
+  `herdr-collab --project cll session join ...` again.
+  A manually launched session joins exactly once with
+  `herdr-collab --project cll session join --agent-kind KIND HANDLE` and
+  uses the returned handle explicitly. If identity or liveness is uncertain,
+  inspect `herdr-collab --project cll session list --live` or
+  `herdr-collab --project cll session show SESSION --live`; never infer identity
+  from the checkout.
+- Use `herdr-collab --project cll send ...` for assignments, source/authority
+  decisions, blockers, and questions
+  that require an answer, handoffs, exact-commit review submissions, verdicts,
+  and completion. Preserve ancestry with
+  `herdr-collab --project cll reply MESSAGE_ID ...`.
+  `herdr-collab --project cll show MESSAGE_ID` prints the selected message body;
+  `herdr-collab --project cll --json show MESSAGE_ID` exposes its complete
+  record, whose referenced message IDs must be followed explicitly. Use
+  `herdr-collab --project cll ack --disposition DISPOSITION MESSAGE_ID` when a
+  disposition is required. Acknowledgement records receipt/disposition, not
+  agreement or co-signing.
+  `herdr-collab --project cll agent prompt --to SESSION ...` is transient
+  live-session context and must not be the only copy of load-bearing
+  instructions or decisions.
+- Check `herdr-collab --project cll status` and
+  `herdr-collab --project cll inbox` after joining, before new work, around
+  handoffs and review rounds, and before completion or
+  `herdr-collab --project cll session retire SESSION`. Use
+  `herdr-collab --project cll wait --timeout DURATION` only when work genuinely
+  depends on later mail; do not busy-poll. Never edit Herdr Collab state files
+  manually; use its session, group, mail, acknowledgement, and retirement
+  commands.
+- Never auto-answer trust, permission, approval, or unrelated prompts on behalf
+  of another session or the user. Surface them to the person or session with
+  authority to decide.
+- `@all` and every named group are local to the selected project. Use `@all`
+  only for information genuinely relevant to every active CLL participant. A
+  machine-resource warning that affects another project must be sent separately
+  in that project's explicit namespace; a CLL `@all` is not a global broadcast.
 
-Agent sessions on this machine coordinate over a local Ergo IRC server (`127.0.0.1:6667`); the full protocol is `~/git/agent-ops/docs/protocol.md`. This applies when you are dispatched as a **worker on a workitem** (not to one-shot `codex exec` reviews, which report their findings directly).
+Follow-up review rounds normally resume the same reviewer session so it can
+check its own findings, but every prompt must name the new exact HEAD and direct
+the reviewer to reread the changed passages. Compact only immediately before an
+anticipated long pause, while the native conversation and prompt cache are
+still likely available, and only after durably sending a status/handoff with
+the issue/PR, report path, branch/worktree, exact HEAD, sources and decisions
+already consulted, findings settled or still open, checks completed or pending,
+blockers, and relevant message IDs. After the requested compaction, verify the
+session identity and live state with
+`herdr-collab --project cll session show "$HERDR_COLLAB_SESSION" --live`. If a
+later cache-expired dialog
+offers continuation choices, default to continuing the full existing native
+conversation and do not compact then. Durable issues, PRs, reports, and mail are
+recovery sources only if the native context is actually unavailable, not a
+replacement for it. Use `herdr-collab --project cll agent resume SESSION` when
+the native reviewer is no longer live, then verify its identity before
+prompting it.
 
-- Your IRC identity is `codex-cll-<item>`, pre-provisioned by the supervisor. The `[mcp_servers.irc]` MCP server in `~/.codex/config.toml` provides the tools; your identity is fixed at launch time by three `-c mcp_servers.irc.env.*` overrides on the `codex exec` invocation (`IRCV3_MCP_CONFIG_DIR`, `IRCV3_MCP_STATE_DIR`, `IRCV3_MCP_SECRET_BACKEND`, per `~/git/agent-ops/README.md`) — the prompt itself cannot change it. Your dispatch prompt states the role and the exact channel.
-- If the dispatch prompt names an IRC identity but the tools connect as `codex-default`, the dispatch is broken — say so in your report instead of posting under the wrong account.
-- Post `STATUS:` / `DONE:` to the workitem channel named in your dispatch prompt (normally `#cll-<epic>-<item>`); `DONE:` must include PR/commit refs and the actual verification state.
-- When blocked or the spec is ambiguous, use the ASK protocol: post `pm-cll: ASK: <one question>` in the workitem channel, wait for `ANSWER:` via `irc_wait_for_events` (mention filter, always thread the cursor from the previous call), budget ~12 minutes total. On timeout, post `ASSUMPTION: <what you will assume and why>` and proceed — the supervisor audits ASSUMPTIONs at review time.
-- **Disk discipline:** `/tmp` is a 32G RAM-backed tmpfs shared by every session on this machine (it has been filled before, killing unrelated sessions). Multi-GB scratch — checkouts, build trees — goes under `~/build/<name>`, never `/tmp`; delete your scratch when the workitem completes.
+Review the exact submitted commit from a clean worktree. Any source change
+makes the prior verdict stale and requires a new round against the successor
+commit. Read the implementation and existing verification evidence first; do
+not rerun an already reported full-book or other heavy build merely to duplicate
+it. Run targeted checks needed to investigate a finding, and request one
+appropriately scoped heavy gate on the final candidate when the change can
+affect it.
+
+**Review-scratch discipline:** if a review assembles combined trees,
+per-chapter checkouts, or builds, put that scratch under
+`~/build/cll-review-scratch/` and delete it before finishing. Do not create
+checkouts or build trees under `/tmp` (RAM-backed and shared) or inside
+`~/git/cll-review` beyond the checkout provided. Reviewers may write only their
+assigned report path; treat book source and every unrelated checkout as
+read-only unless the task explicitly assigns implementation duty and a
+dedicated worktree.

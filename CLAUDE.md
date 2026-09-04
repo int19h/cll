@@ -39,11 +39,11 @@ The ZG (2007) promise stands: pre-xorlo CLL usage is "not incorrect" — describ
 ## Workflow
 
 - One branch + PR per issue; PR body references the issue; PRs target `main`.
-- **Every PR gets a codex review** (GPT-5.6-Sol): `codex exec -m gpt-5.6-sol -c model_reasoning_effort='"xhigh"' -C <repo> - < prompt` (see AGENTS.md for the reviewer contract). Iterate to consensus; per the maintainer's mandate Claude decides when consensus is reached and has the final word if convergence fails, but any unresolved disagreement must be recorded in the PR for the maintainer's attention.
-- **Review sessions are resumable (maintainer decision 2026-08-30): round 1 of each PR runs in a fresh codex session (adversarial independence); follow-up rounds resume that PR's session** — `codex exec resume <session-id> -m … -c … - < prompt`, run from the repo directory (the `resume` subcommand does not accept `-C`; the id is printed as `session id:` in the run output; sessions live under `~/.codex/sessions`). A resumed reviewer retains its own findings and can check that what it asked for was actually delivered. Caveats: its picture of the working tree is stale — every resume prompt must name the exact new HEAD and direct re-reading of the changed passages; and the `research/pr*-review-N.md` report files remain the durable consensus record regardless of session reuse.
+- **Every PR gets an adversarial Codex review** (GPT-5.6-Sol; see AGENTS.md for the reviewer contract) in Herdr Collab project `cll`. Launch round 1 as a fresh visible agent session with `herdr-collab --project cll agent spawn ...`, assign the exact base/head and report path with durable `herdr-collab --project cll send ...`, and use the initial/direct prompt only to tell the reviewer to read that message. Iterate to consensus; per the maintainer's mandate Claude decides when consensus is reached and has the final word if convergence fails, but any unresolved disagreement must be recorded in the PR for the maintainer's attention.
+- **Review sessions are resumable (maintainer decision 2026-08-30): round 1 of each PR is fresh for adversarial independence; follow-up rounds resume that PR's Herdr Collab session.** Send a durable `herdr-collab --project cll reply MESSAGE_ID ...` naming the exact successor HEAD and new report path, use `herdr-collab --project cll agent resume SESSION` if the native session is not live, then use `herdr-collab --project cll agent prompt --to SESSION ...` as a transient wake-up. A resumed reviewer retains its own findings, but its picture of the tree may be stale: every round must direct it to reread the changed passages at the named HEAD. Compact only immediately before an anticipated long pause while native context is likely cached, after persisting the handoff; then verify with `herdr-collab --project cll session show "$HERDR_COLLAB_SESSION" --live`. If a later cache-expired dialog offers continuation choices, continue the full existing native conversation by default and do not compact then. Durable reports and mail are recovery only when native context is unavailable. The `research/pr*-review-N.md` report files remain the durable consensus record regardless of session reuse.
 - **Infra/scaffolding PRs** (CI, fixtures, artifacts, tooling): Claude merges after codex review.
 - **Book-text PRs** (anything touching `chapters/`): iterate with codex, then leave OPEN for the maintainer. **Never self-merge text.**
-- The codex CLI can hit usage limits; if an invocation fails with a quota error, retry after the stated reset time.
+- Native reviewer sessions can hit usage limits. Confirm the actual state with `herdr-collab --project cll session show SESSION --live`, preserve the blocker durably, and resume after the stated reset time rather than treating an empty or interrupted prompt as a review verdict.
 
 ## Writing rules (book text)
 
@@ -64,17 +64,83 @@ Full book build is containerized (`Dockerfile`, `run_container.sh`; Prince for P
 - A release is a GitHub release tagged `vX.Y.Z` pointing at the `edition/X.Y.Z` tip (the exact published tree), plus a `pages/versions.tsv` entry.
 - **Release notes are the delta against our own previous release** — not against CLL 1.1 or the first edition. The first release (1.3.2) is the exception: its predecessor is upstream's UnCLL `geklojban-1.2.16`, frozen as `baseline/uncll-1.2.16`. Never credit this edition with something UnCLL already did (dotside and the classical hyphen rules are the traps). Don't rehash the change list either: the book's a03 appendix catalogues changes from the *first edition*, and the site ships three visual diffs per version — vs the official CLL 1.1 (`diff_from_official/`, old side = the checked-in `official/cll_v1.1_xhtml-no-chunks` tree), vs the UnCLL 1.2.16 baseline (`diff_from_uncll/`), and vs the previous release (`diff_from_previous/`; the site builds versions oldest-first so each can diff against its predecessor, and the oldest mirrors the UnCLL diff); notes summarize what a reader gains and link to them.
 
-## Coordination (IRC)
+## Coordination (Herdr Collab)
 
-All agent sessions on this machine (Claude PM sessions across projects, Codex workers, the owner) coordinate over a local Ergo IRC server at `127.0.0.1:6667`. **Read `~/git/agent-ops/docs/protocol.md` before first use** — it defines identity, channels, message prefixes, waiting, and durability rules. Tooling lives in `~/git/agent-ops/bin/`.
+Use Herdr Collab project **`cll`** for every coordinated CLL session. Select it
+explicitly with `herdr-collab --project cll ...` or
+`HERDR_COLLAB_PROJECT=cll`. The cwd, repository basename, checkout, and
+worktree never select a project or mailbox; use only the session named by
+`HERDR_COLLAB_SESSION` or an explicit `--session`.
 
-- Your role account is **`pm-cll`** (provisioned; credentials under `~/.local/state/agent-irc/pm-cll/`). Global Claude hooks already inject unread messages at turn boundaries — the role is resolved from the git top-level directory basename, so this works without setup from the canonical `~/git/cll` checkout (other checkouts such as `~/git/cll-review` resolve to unprovisioned roles and the hook silently skips them). To wait actively for a reply, run `~/git/agent-ops/bin/irc-checkmail pm-cll --wait` as a background task.
-- Send: `~/git/agent-ops/bin/irc-send pm-cll '#cll' 'STATUS: ...'`.
-- Channels: **`#cll`** is the project board (registered). Epic channels are `#cll-<epic>`, workitem channels `#cll-<epic>-<item>` (segments are GitHub issue numbers); register channels at creation (`CS REGISTER`) or they lose identity when emptied.
-- Worker dispatch: Codex worker roles are `codex-cll-<item>` via `bin/irc-role create`. Dispatch each worker with all three `-c mcp_servers.irc.env.*` overrides (`IRCV3_MCP_CONFIG_DIR`, `IRCV3_MCP_STATE_DIR`, `IRCV3_MCP_SECRET_BACKEND` → `~/.local/state/agent-irc/<role>/…`, per `~/git/agent-ops/README.md`) and name the role and exact channel in the prompt — a prompt alone cannot switch the MCP identity.
-- Messages are terse pointers with a machine-scannable prefix (`STATUS:` / `DONE:` / `ASK:` / `ANSWER:` / `ASSUMPTION:` / `HANDOFF:` / `CLAIM:` / `RELEASE:`). Anything durable (the "why") belongs in commits/PRs/issues, never only in IRC.
-- Cross-project concerns that affect the whole machine (disk space, long resource-hungry runs): channels are pub/sub with no global broadcast, so a note on `#cll` reaches only roles joined there. Announce on `#cll` for the record AND on the affected project's board (e.g. `#jbotci`) so its sessions actually see it; `pm-jbotci` and the owner are reachable the same way.
-- CLL specifics: codex reviews are one-shot (`codex exec`, report files in `research/`), not IRC workers — dispatch the worker protocol only for genuinely long-running workitems. Containerized book builds (podman; ~15 min for an HTML-only target, ~1h for the full build with PDF) and review fan-outs are the project's main local load; `CLAIM:`/`RELEASE:` anything beyond one concurrent build or three concurrent reviews. Pages deploys run on GitHub CI and cost nothing locally. Review prompts must direct any combined-tree/build scratch to `~/build/cll-review-scratch/` with cleanup.
+Herdr Collab provides durable identity and mail but does not enforce a PM
+hierarchy. Choose participants, groups, and duties for the issue: a chapter PR
+usually needs an editorial implementer and an independent Codex reviewer,
+while a cross-chapter or tooling change may need research, implementation, and
+specialist review sessions. Record the issue/PR, roster, review order, write
+boundaries, and completion conditions in the task brief. GitHub issues remain
+the durable public scope; Herdr Collab is the durable coordination thread.
+
+- A session started through `herdr-collab --project cll agent spawn ...` is
+  already registered and receives
+  `HERDR_COLLAB_PROJECT` and `HERDR_COLLAB_SESSION`; do not join it again. A
+  manually launched session uses
+  `herdr-collab --project cll session join --agent-kind KIND HANDLE`
+  exactly once and then retains that explicit handle. Check
+  `herdr-collab --project cll session list --live` or
+  `herdr-collab --project cll session show SESSION --live` when identity/
+  liveness is uncertain; never derive it from the worktree.
+- Use `herdr-collab --project cll send ...` for assignments, authority/source
+  decisions, blockers, and questions
+  requiring an answer, handoffs, exact-commit review requests, verdicts,
+  resource claims/releases, and completion. Use
+  `herdr-collab --project cll reply MESSAGE_ID ...` to preserve ancestry.
+  Inspect a selected immutable message with
+  `herdr-collab --project cll show MESSAGE_ID`; use
+  `herdr-collab --project cll --json show MESSAGE_ID` for its complete record
+  and follow referenced message IDs explicitly. Use
+  `herdr-collab --project cll ack --disposition DISPOSITION MESSAGE_ID` when a
+  read disposition is required. An acknowledgement is not agreement.
+- `herdr-collab --project cll agent prompt --to SESSION ...` is transient
+  wake-up/context, never the sole copy of a load-bearing instruction or answer.
+  Check `herdr-collab --project cll status` and
+  `herdr-collab --project cll inbox` after joining, before new work, around
+  handoffs/review rounds, and before completion or
+  `herdr-collab --project cll session retire SESSION`. Use
+  `herdr-collab --project cll wait --timeout DURATION` only when work genuinely
+  depends on later mail; do not busy-poll. Never edit collaboration state
+  manually.
+- Never auto-answer trust, permission, approval, or unrelated prompts on behalf
+  of another session or the user. Surface them to the person or session with
+  authority to decide.
+- Reviewers write only their assigned `research/<item>-review-<round>.md` path.
+  Implementers get a dedicated branch/worktree and explicit source boundary;
+  do not let sessions edit the same worktree concurrently. Findings go back to
+  the implementer, and every changed commit receives a new exact-head review.
+- Compact only immediately before an anticipated long pause, while the native
+  conversation and prompt cache are still likely available, and only after
+  durably sending the issue/PR, branch/worktree, exact HEAD, report path,
+  decisions and sources consulted, completed/pending checks, open findings,
+  blockers, and relevant message IDs. After the requested compaction, verify
+  with `herdr-collab --project cll session show "$HERDR_COLLAB_SESSION" --live`.
+  If a later cache-expired
+  dialog offers continuation choices, default to continuing the full existing
+  native conversation and do not compact then. Durable issues, PRs, reports,
+  and mail are recovery only if native context is actually unavailable, not a
+  replacement for it.
+- `@all` and named groups are project-local. Use CLL `@all` only for information
+  relevant to every active CLL participant. If a disk/build warning affects
+  another project, send a separate message under that project's explicit
+  `--project` namespace; CLL `@all` does not reach it.
+
+Containerized book builds (podman; ~15 minutes for an HTML-only target and ~1
+hour for the full PDF build) and review fan-outs are the principal local load.
+Send durable claim/release notices to the affected task group, or CLL `@all`
+when every CLL session is affected, for anything beyond one concurrent build or
+three concurrent reviews. Pages deployments run in GitHub CI and cost nothing
+locally. Review prompts must put combined-tree/build scratch under
+`~/build/cll-review-scratch/` and require cleanup. Read existing verification
+evidence before rerunning work; arrange a full heavy build once on the final
+candidate when the changes can affect it.
 
 ## Shared machine resources (disk)
 
@@ -83,4 +149,4 @@ This machine is shared by many concurrent agent sessions, and `/tmp` is a **32G 
 - Multi-GB scratch (chapter checkouts, build trees, fan-out worktrees) goes under `~/build/<name>` on the container disk — NOT `/tmp` (RAM-backed) and NOT `~/git` (near-full macOS-backed share). `/tmp` is fine for small files only.
 - Delete superseded scratch as soon as a round completes; never let old rounds accumulate alongside the new one.
 - Before any fan-out that creates many checkouts/build dirs, check `df -h /tmp ~/build` and keep several GB of headroom on each.
-- Announce unusually large temporary usage with a `CLAIM:` on `#cll` (and `RELEASE:` when freed); if it could squeeze another project's sessions, post the same `CLAIM:` on that project's board too (see the pub/sub note above).
+- Announce unusually large temporary usage with a durable claim message to the affected CLL group (and a release reply when freed). If it could squeeze another project's sessions, send the warning separately in every affected Herdr Collab project; `@all` is project-local.

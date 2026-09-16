@@ -103,8 +103,11 @@ participants, review order, write boundaries, and completion conditions.
   `herdr-collab --project cll reply MESSAGE_ID --require-ack ...` with its
   notification left at the default. `--no-retry-nudge` keeps the one immediate
   native attempt and drops the scheduler retry; `--no-nudge` is the complete
-  opt-out with neither. When a transient notification's structured identity
-  envelope carries `commands.show`, use that exact command for its message ID.
+  opt-out with neither. Combining `--no-ack` with `--no-nudge` leaves durable
+  mail that pending-only checks omit and that never wakes the recipient, so
+  reserve that pair for deliberately silent FYI mail. When a transient
+  notification's structured identity envelope carries `commands.show`, use that
+  exact command for its message ID.
 - Spell acting selectors after the mail subcommand. The installed parser takes
   `--state-root`, `--project`, and `--json` before it and `--session` only after
   it; global acting-selector placement is not installed.
@@ -114,6 +117,17 @@ participants, review order, write boundaries, and completion conditions.
   refusal included — while an acknowledgement does not. Cancel a redundant
   watchdog or wake by its exact wake ID; a subject, a quoted message ID, an
   acknowledgement, and elapsed time all leave it armed.
+- Preserve the request thread with `reply REQUEST_ID`, or
+  `send --in-reply-to REQUEST_ID` when an ordinary send needs different
+  recipients. Inspect the answer rather than treating its arrival as completion:
+  while work remains, issue the next specifically scoped checkpoint under a new
+  idempotency key, or schedule one explicit self-wake. A watched send requires an
+  already-running scheduler for the same canonical state root advertising
+  `reply_watchdog_v1`; default or immediate-only owner notification also requires
+  the acting session's frozen native reference. The optional Herdr plugin is not
+  required. Notification is bounded to one guarded immediate attempt plus, only
+  after proven no-submission, the finite scheduler-owned retry, and
+  `delivered_unsettled` or `submission_unknown` input is never replayed.
 - Attachment assistance is not implemented, integrated, or installed. For a
   manually started or resumed native host, follow
   `docs/HERDR.md#manual-attachment-for-an-existing-native-session` in the
@@ -121,14 +135,15 @@ participants, review order, write boundaries, and completion conditions.
   `herdr-collab --project cll --json project show herdr-collab`, and preserve
   report -> verify -> adopt -> verify. Select an intended native model in the
   host's own arguments after `--`; `agent spawn --model` records Collab metadata
-  and does not itself select a host model.
+  and does not itself select a host model, so verify the host-selected model and
+  effort before relying on either.
 - On the human-designated development VM, approve permission, workspace-trust,
   sandbox-bypass, and task-relevant elevation prompts that are access-only, tied
   to an exact target, and needed for already-authorized work; prefer a supported
   persistent trust or bypass mode. That supplies access only and grants no new
-  task, destructive-action, external-service, production, review, merge, or
-  release authority — the editorial authority model and review contract are
-  unaffected. Never guess an answer to a substantive user choice, and leave
+  task, destructive-action, external-service, production, review, merge,
+  release, or deployment authority — the editorial authority model and review
+  contract are unaffected. Never guess an answer to a substantive user choice, and leave
   ambiguous, inseparably mixed, unrelated, or new decision prompts unanswered:
   surface them durably to the person or session with authority to decide, and
   continue other work. Do not close a pane the current session did not create.

@@ -111,37 +111,82 @@ the durable public scope; Herdr Collab is the durable coordination thread.
   read disposition is required. An acknowledgement is not agreement.
 - `herdr-collab --project cll agent prompt --to SESSION ...` is transient
   wake-up/context, never the sole copy of a load-bearing instruction or answer.
-  Check `herdr-collab --project cll status` and
-  `herdr-collab --project cll inbox` after joining, before new work, around
-  handoffs/review rounds, and before completion or
+  Read the full combined mailbox with unfiltered
+  `herdr-collab --project cll inbox` at turn start and turn end, then inspect
+  each relevant message with exact `herdr-collab --project cll show MESSAGE_ID`.
+  Do this after joining, before new work, around handoffs/review rounds, and
+  before completion or
   `herdr-collab --project cll session retire "$HERDR_COLLAB_SESSION"`. Use
   `herdr-collab --project cll wait --timeout DURATION` only when work genuinely
   depends on later mail; do not busy-poll. Never edit collaboration state
   manually.
-- Never auto-answer trust, permission, approval, or unrelated prompts on behalf
-  of another session or the user. Surface them to the person or session with
-  authority to decide.
+- `inbox --pending` and `status` are additional views of unresolved
+  acknowledgement obligations, not unread-mail counts, so a zero pending count
+  does not mean that no reply or FYI mail arrived. `send` is
+  acknowledgement-required by default while `reply` is not, so a verdict or
+  completion handoff sent as an ordinary reply is normally absent from both.
+  Send a critical verdict or handoff as
+  `herdr-collab --project cll reply MESSAGE_ID --require-ack ...` with its
+  notification left at the default. `--no-retry-nudge` keeps the one immediate
+  native attempt and drops the scheduler retry; `--no-nudge` is the complete
+  opt-out with neither. When a transient notification's structured identity
+  envelope carries `commands.show`, use that exact command for its message ID.
+  Spell acting selectors after the mail subcommand; global acting-selector
+  placement is not installed.
+- For work that expects a response, send one exact `UUID@PROJECT` request with a
+  generous `--reply-within` or `--reply-by` and a stable `--idempotency-key`.
+  Any valid direct answer satisfies that watchdog — a question, blocker, or
+  refusal included — while an acknowledgement does not. Cancel a redundant
+  watchdog or wake by its exact wake ID; a subject, a quoted message ID, an
+  acknowledgement, and elapsed time all leave it armed. Attachment assistance is
+  not implemented, integrated, or installed, so a manually started or resumed
+  host follows
+  `docs/HERDR.md#manual-attachment-for-an-existing-native-session` in the
+  registered `herdr-collab` root. Select an intended native model in the host's
+  own arguments after `--`; `agent spawn --model` records Collab metadata and
+  does not itself select a host model.
+- On the human-designated development VM, approve permission, workspace-trust,
+  sandbox-bypass, and task-relevant elevation prompts that are access-only, tied
+  to an exact target, and needed for already-authorized work; prefer a supported
+  persistent trust or bypass mode. That supplies access only and grants no new
+  task, destructive-action, external-service, production, review, merge, or
+  release authority — the authority model and editorial decisions above are
+  unaffected. Never guess an answer to a substantive user choice, and leave
+  ambiguous, inseparably mixed, unrelated, or new decision prompts unanswered:
+  surface them durably to the person or session with authority to decide, and
+  continue other work. Do not close a pane the current session did not create.
 - Reviewers write only their assigned `research/<item>-review-<round>.md` path.
   Implementers get a dedicated branch/worktree and explicit source boundary;
   do not let sessions edit the same worktree concurrently. Findings go back to
   the implementer, and every changed commit receives a new exact-head review.
-- Compact only immediately before an anticipated long pause, while the native
-  conversation and prompt cache are still likely available, and only after
-  durably sending the issue/PR, branch/worktree, exact HEAD, report path,
-  decisions and sources consulted, completed/pending checks, open findings,
-  blockers, and relevant message IDs. After the requested compaction, verify
+- Native compaction is lossy, so compact only after durably sending the
+  issue/PR, branch/worktree, exact HEAD, report path, decisions and sources
+  consulted, completed/pending checks, open findings, blockers, and relevant
+  message IDs. Once a completed persistent role has published that handoff,
+  compact immediately when its next meaningful turn is forecast more than one
+  hour away or is unscheduled; the hour is a planning threshold, not a claim
+  about any host's prompt cache, so do not wait it out when the forecast is
+  already known. Retire the identity instead when it will not be reused. Framed
+  Collab prompts are ordinary chat: `/model`, `/compact`, and similar native
+  commands use the guarded raw Herdr path in
+  `docs/HERDR.md#native-commands-and-chat-prompts`, and the requested host
+  effect must be verified separately. After the requested compaction, verify
   with `herdr-collab --project cll session show "$HERDR_COLLAB_SESSION" --live`.
   If a later cache-expired
   dialog offers continuation choices, default to continuing the full existing
   native conversation and do not compact then. Durable issues, PRs, reports,
   and mail are recovery only if native context is actually unavailable, not a
   replacement for it.
-- `@all` and named groups are project-local. Use CLL `@all` only for information
-  relevant to every active CLL participant. A CLL session UUID is invalid in
-  every other project, so merely changing `--project` cannot send a
-  cross-project warning. The sender must use or join its own distinct active
-  identity in each target project, or ask an already registered participant in
-  that project to publish the warning there. CLL `@all` does not reach it.
+- `@all` and named groups are project-local, so CLL `@all` is not a global
+  broadcast; use it only for information relevant to every active CLL
+  participant. Reaching another project does not require joining it: a sender
+  stays registered in `cll` and addresses the foreign participant directly as
+  `handle@project` or `UUID@project`, or gives an unqualified target with
+  `--target-project PROJECT`, which is the equivalent form and must not be
+  combined with an already qualified target. Do not create a second identity,
+  and do not ask a registered participant to relay, merely to cross a project
+  boundary. What does not cross is the unqualified audience: a bare `@group` or
+  `@all` always resolves inside the acting project.
 
 Containerized book builds (podman; ~15 minutes for an HTML-only target and ~1
 hour for the full PDF build) and review fan-outs are the principal local load.
@@ -160,4 +205,4 @@ This machine is shared by many concurrent agent sessions, and `/tmp` is a **32G 
 - Multi-GB scratch (chapter checkouts, build trees, fan-out worktrees) goes under `~/build/<name>` on the container disk — NOT `/tmp` (RAM-backed) and NOT `~/git` (near-full macOS-backed share). `/tmp` is fine for small files only.
 - Delete superseded scratch as soon as a round completes; never let old rounds accumulate alongside the new one.
 - Before any fan-out that creates many checkouts/build dirs, check `df -h /tmp ~/build` and keep several GB of headroom on each.
-- Announce unusually large temporary usage with a durable claim message to the affected CLL group (and a release reply when freed). If it could squeeze another project's sessions, arrange a separate warning from a distinct active identity in each affected Herdr Collab project, or ask an already registered participant there to publish it; `@all` and session UUIDs are project-local.
+- Announce unusually large temporary usage with a durable claim message to the affected CLL group (and a release reply when freed). If it could squeeze another project's sessions, warn them directly from this identity, addressing each affected participant as `handle@project` or `UUID@project`; no second identity and no relay are needed. Only the unqualified audience is project-local — a bare `@group` or `@all` always resolves inside `cll` and never reaches another project.

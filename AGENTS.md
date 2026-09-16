@@ -84,33 +84,81 @@ participants, review order, write boundaries, and completion conditions.
   `herdr-collab --project cll agent prompt --to SESSION ...` is transient
   live-session context and must not be the only copy of load-bearing
   instructions or decisions.
-- Check `herdr-collab --project cll status` and
-  `herdr-collab --project cll inbox` after joining, before new work, around
-  handoffs and review rounds, and before completion or
+- Read the full combined mailbox with unfiltered
+  `herdr-collab --project cll inbox` at turn start and turn end, then inspect
+  each relevant message with exact `herdr-collab --project cll show MESSAGE_ID`.
+  Do this after joining, before new work, around handoffs and review rounds, and
+  before completion or
   `herdr-collab --project cll session retire "$HERDR_COLLAB_SESSION"`. Use
   `herdr-collab --project cll wait --timeout DURATION` only when work genuinely
   depends on later mail; do not busy-poll. Never edit Herdr Collab state files
   manually; use its session, group, mail, acknowledgement, and retirement
   commands.
-- Never auto-answer trust, permission, approval, or unrelated prompts on behalf
-  of another session or the user. Surface them to the person or session with
-  authority to decide.
-- `@all` and every named group are local to the selected project. Use `@all`
-  only for information genuinely relevant to every active CLL participant. A
-  CLL session UUID is invalid in every other project, so merely changing
-  `--project` cannot send a cross-project warning. The sender must use or join
-  its own distinct active identity in each target project, or ask an already
-  registered participant in that project to publish the warning there. A CLL
-  `@all` is not a global broadcast.
+- `inbox --pending` and `status` are additional views of unresolved
+  acknowledgement obligations, not unread-mail counts, so a zero pending count
+  does not mean that no reply or FYI mail arrived. `send` is
+  acknowledgement-required by default while `reply` is not, so a review verdict
+  or completion handoff sent as an ordinary reply is normally absent from both.
+  Send a critical verdict or handoff as
+  `herdr-collab --project cll reply MESSAGE_ID --require-ack ...` with its
+  notification left at the default. `--no-retry-nudge` keeps the one immediate
+  native attempt and drops the scheduler retry; `--no-nudge` is the complete
+  opt-out with neither. When a transient notification's structured identity
+  envelope carries `commands.show`, use that exact command for its message ID.
+- Spell acting selectors after the mail subcommand. The installed parser takes
+  `--state-root`, `--project`, and `--json` before it and `--session` only after
+  it; global acting-selector placement is not installed.
+- For work that expects a response, send one exact `UUID@PROJECT` request with a
+  generous `--reply-within` or `--reply-by` and a stable `--idempotency-key`.
+  Any valid direct answer satisfies that watchdog — a question, blocker, or
+  refusal included — while an acknowledgement does not. Cancel a redundant
+  watchdog or wake by its exact wake ID; a subject, a quoted message ID, an
+  acknowledgement, and elapsed time all leave it armed.
+- Attachment assistance is not implemented, integrated, or installed. For a
+  manually started or resumed native host, follow
+  `docs/HERDR.md#manual-attachment-for-an-existing-native-session` in the
+  registered `herdr-collab` root, located with
+  `herdr-collab --project cll --json project show herdr-collab`, and preserve
+  report -> verify -> adopt -> verify. Select an intended native model in the
+  host's own arguments after `--`; `agent spawn --model` records Collab metadata
+  and does not itself select a host model.
+- On the human-designated development VM, approve permission, workspace-trust,
+  sandbox-bypass, and task-relevant elevation prompts that are access-only, tied
+  to an exact target, and needed for already-authorized work; prefer a supported
+  persistent trust or bypass mode. That supplies access only and grants no new
+  task, destructive-action, external-service, production, review, merge, or
+  release authority — the editorial authority model and review contract are
+  unaffected. Never guess an answer to a substantive user choice, and leave
+  ambiguous, inseparably mixed, unrelated, or new decision prompts unanswered:
+  surface them durably to the person or session with authority to decide, and
+  continue other work. Do not close a pane the current session did not create.
+- `@all` and every named group are local to the selected project, and a CLL
+  `@all` is not a global broadcast. Use it only for information genuinely
+  relevant to every active CLL participant. Reaching another project does not
+  require joining it: a sender stays registered in `cll` and addresses the
+  foreign participant directly as `handle@project` or `UUID@project`, or gives
+  an unqualified target together with `--target-project PROJECT`, which is the
+  equivalent form and must not be combined with an already qualified target. Do
+  not create a second identity, and do not ask an already registered participant
+  to relay, merely to cross a project boundary. What does not cross is the
+  unqualified audience: a bare `@group` or `@all` always resolves inside the
+  acting project.
 
 Follow-up review rounds normally resume the same reviewer session so it can
 check its own findings, but every prompt must name the new exact HEAD and direct
-the reviewer to reread the changed passages. Compact only immediately before an
-anticipated long pause, while the native conversation and prompt cache are
-still likely available, and only after durably sending a status/handoff with
-the issue/PR, report path, branch/worktree, exact HEAD, sources and decisions
-already consulted, findings settled or still open, checks completed or pending,
-blockers, and relevant message IDs. After the requested compaction, verify the
+the reviewer to reread the changed passages. Native compaction is lossy, so
+compact only after durably sending a status/handoff with the issue/PR, report
+path, branch/worktree, exact HEAD, sources and decisions already consulted,
+findings settled or still open, checks completed or pending, blockers, and
+relevant message IDs. Once a completed persistent role has published that
+handoff, compact immediately when its next meaningful turn is forecast more than
+one hour away or is unscheduled; the hour is a planning threshold, not a claim
+about any host's prompt cache, so do not wait it out when the forecast is
+already known. Retire the identity instead when it will not be reused. Framed
+Collab prompts are ordinary chat: `/model`, `/compact`, and similar native
+commands use the guarded raw Herdr path in
+`docs/HERDR.md#native-commands-and-chat-prompts`, and the requested host effect
+must be verified separately. After the requested compaction, verify the
 session identity and live state with
 `herdr-collab --project cll session show "$HERDR_COLLAB_SESSION" --live`. If a
 later cache-expired dialog

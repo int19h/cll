@@ -2651,21 +2651,23 @@
       <indexterm type="general"><primary>yielding the floor</primary></indexterm>
       <indexterm type="general"><primary>end of file</primary></indexterm>
       <indexterm type="general"><primary>computer interaction</primary></indexterm>
+      The cmavo
+      <valsi>fa'o</valsi>
+      (of selma'o FAhO) is the usually omitted marker for the end of a text; it can be used in computer interaction to indicate the end of input or output, or for explicitly giving up the floor during a discussion.
+    </para>
+    <para>
       <indexterm type="general"><primary>unconditional signal</primary></indexterm>
       The cmavo
       <valsi>fa'o</valsi>
-      (of selma'o FAhO) is the usually omitted marker for the end of a text; it can be used in computer interaction to indicate the end of input or output, or for explicitly giving up the floor during a discussion. In particular, it is not used at the end of subordinate texts quoted with
+      is outside the regular grammar. When a reader or a parser reaches an effective
+      <valsi>fa'o</valsi>, it reads nothing after it. In particular,
+      <valsi>fa'o</valsi>
+      is not used at the end of subordinate texts quoted with
       <valsi>lu</valsi>
       &hellip;
       <valsi>li'u</valsi>
       or parenthesized with
-      <jbophrase>to ... toi</jbophrase>.
-    </para>
-    <para>
-      The cmavo
-      <valsi>fa'o</valsi>
-      is outside the regular grammar. When a reader or a parser reaches an effective
-      <valsi>fa'o</valsi>, it reads nothing after it. A
+      <jbophrase>to ... toi</jbophrase>. A
       <valsi>fa'o</valsi>
       has no effect only if some earlier word-level operator already captured it, in one of these ways:
     </para>

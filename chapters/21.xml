@@ -39,7 +39,7 @@
     </para>
     <para>
       This chapter prints only the part of the camxes PEG that defines word forms (see
-      <xref linkend="section-peg-grammar" />). That part is short, and it is the only complete definition of how a stream of sounds breaks into words. The camxes PEG for syntax is not in this book.
+      <xref linkend="section-peg-grammar" />). That part is a complete, formal definition of how a stream of sounds breaks into words. Chapters 3 and 4 refer to it. The camxes PEG for syntax is not in this book.
     </para>
     <para role="status-note">
       Sometimes the text of this book or the EBNF below disagrees with the amendments. In those cases the amendments prevail, and the book flags each one where it teaches it. The EBNF itself appears here as baselined.

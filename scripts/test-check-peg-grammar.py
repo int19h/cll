@@ -315,6 +315,43 @@ def m_inline_boundary_space(a, f):
                     "inline boundary spaces removed"), f
 
 
+WRONG_ENTRY = ("<variablelist><varlistentry><term>cmevla &#8592;</term>"
+               "<listitem><para>WRONG</para></listitem></varlistentry></variablelist>")
+EBNF_START = '  <section xml:id="section-EBNF">'
+INTRO_TITLE = '<title><anchor xml:id="c21-intro" />About the formal grammars</title>'
+
+
+def m_sibling_section(a, f):
+    """PR #119 review: a wrong rule in a new section between the PEG section
+    and the EBNF escaped both checks."""
+    return sub_once(a, EBNF_START,
+                    '  <section xml:id="peg-extra"><title>Extra</title>' + WRONG_ENTRY
+                    + "</section>\n" + EBNF_START, "sibling section"), f
+
+
+def m_chapter_level_list(a, f):
+    return sub_once(a, EBNF_START, "  " + WRONG_ENTRY + "\n" + EBNF_START,
+                    "rule list directly in the chapter"), f
+
+
+def m_intro_rule(a, f):
+    return sub_once(a, INTRO_TITLE,
+                    INTRO_TITLE + "\n    <para>cmevla &#8592; WRONG</para>",
+                    "rule-like paragraph in the chapter introduction"), f
+
+
+def m_duplicate_root_id(a, f):
+    return sub_once(a, INTRO_TITLE,
+                    INTRO_TITLE + '\n    <para xml:id="section-peg-grammar">Fake</para>',
+                    "second element with the section's id"), f
+
+
+def m_ebnf_arrow(a, f):
+    title = '<title><anchor xml:id="c21s2" />EBNF grammar of Lojban</title>'
+    return sub_once(a, title, title + "\n    <para>FAKE &#8592; wrong</para>",
+                    "arrow in the EBNF section"), f
+
+
 MUTATIONS = [
     ("stray rule-like paragraph at section level", m_stray_root_para),
     ("paragraph abusing the notation wording", m_notation_prefix_abuse),
@@ -355,6 +392,11 @@ MUTATIONS = [
     ("generated cross-reference label reprinting a rule arrow", m_endterm_label),
     ("introduction changed by attribute only", m_intro_attribute_only),
     ("inline boundary spaces removed around an approved arrow", m_inline_boundary_space),
+    ("wrong rule in a new sibling section", m_sibling_section),
+    ("rule list directly in the chapter", m_chapter_level_list),
+    ("rule-like paragraph in the chapter introduction", m_intro_rule),
+    ("second element with the section's id", m_duplicate_root_id),
+    ("arrow in the EBNF section", m_ebnf_arrow),
 ]
 
 

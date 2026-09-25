@@ -48,6 +48,18 @@ ROOT_TAG = "section"
 ROOT_ID = "section-peg-grammar"
 ROOT_ANCHOR = "c21-peg"
 
+# The section is closed only if nothing rule-like can sit next to it, so the
+# outline of chapter 21 is pinned as well: its direct children, in order.
+CHAPTER_ID = "chapter-grammars"
+CHAPTER_OUTLINE = [
+    ("title", None),
+    ("mediaobject", "chapter-grammars-picture"),
+    ("section", "section-grammars-introduction"),
+    ("section", ROOT_ID),
+    ("section", "section-EBNF"),
+    ("section", "section-cross-reference"),
+]
+
 ARROW = "←"
 ARROW_TOKENS = ("←", "→", "<-")
 
@@ -128,6 +140,36 @@ def parent_map(root):
 
 def xml_id(el):
     return el.get("{http://www.w3.org/XML/1998/namespace}id")
+
+
+def check_chapter(chapter, root, problems):
+    """Pin the chapter around the section: its outline, the uniqueness of the
+    section's ID, and the absence of any arrow outside the section. Without
+    this, a rule printed in a new sibling section or in the chapter's
+    introduction would escape both this check and the EBNF cross-reference
+    check."""
+    if chapter.tag != "chapter" or xml_id(chapter) != CHAPTER_ID:
+        problems.append(f"the root of chapters/21.xml is <{chapter.tag}> {xml_id(chapter)!r}, "
+                        f"expected <chapter> {CHAPTER_ID!r}")
+    outline = [(c.tag, xml_id(c)) for c in chapter]
+    if outline != CHAPTER_OUTLINE:
+        problems.append(
+            "the outline of chapter 21 changed:\n"
+            f"    found:    {outline}\n"
+            f"    expected: {CHAPTER_OUTLINE}"
+        )
+    ids = [xml_id(el) for el in chapter.iter() if xml_id(el)]
+    if ids.count(ROOT_ID) != 1:
+        problems.append(f"chapter 21 has {ids.count(ROOT_ID)} elements with xml:id {ROOT_ID!r}")
+    inside = {id(el) for el in root.iter()}
+    for el in chapter.iter():
+        texts = [el.tail] if id(el) in inside else [el.text, el.tail, *el.attrib.values()]
+        if el is not root and id(el) in inside:
+            continue
+        for t in texts:
+            if t and any(tok in t for tok in ARROW_TOKENS):
+                problems.append(f"an arrow appears in chapter 21 outside the PEG section: "
+                                f"<{el.tag}> {norm(t)[:60]!r}")
 
 
 def check_root(root, problems):
@@ -396,11 +438,12 @@ def main():
     except ET.ParseError as e:
         print(f"check-peg-grammar: FAILED\n - cannot parse {CHAPTER}: {e}")
         return 1
-    root = next((el for el in chapter.iter() if xml_id(el) == ROOT_ID), None)
+    root = next((el for el in chapter if xml_id(el) == ROOT_ID), None)
     if root is None:
-        print(f"check-peg-grammar: FAILED\n - {CHAPTER} has no element with xml:id {ROOT_ID!r}")
+        print(f"check-peg-grammar: FAILED\n - chapter 21 has no child section with xml:id {ROOT_ID!r}")
         return 1
 
+    check_chapter(chapter, root, problems)
     check_root(root, problems)
     check_intro(root, problems)
     check_attributes(root, problems)

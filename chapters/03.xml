@@ -749,7 +749,7 @@
       <diphthong>ai</diphthong>,
       <diphthong>ei</diphthong>,
       <diphthong>oi</diphthong>, and
-      <diphthong>au</diphthong>. A glide is a brief sound between a vowel and a consonant, like the English
+      <diphthong>au</diphthong>. A glide is a brief, vowel-like sound that cannot form a syllable by itself, like the English
       <quote>y</quote>
       or
       <quote>w</quote>. A diphthong is a vowel sound with two elements: a main vowel and a glide after it. We call that glide an off-glide. It is either palatal (IPA
@@ -1015,7 +1015,7 @@
       <cmevla>.iolandas.</cmevla>
       are fine. But a form like
       <quote>kuarka</quote>
-      is not a possible Lojban word. To borrow such a word, change the glide into a true vowel in a syllable of its own, and put an apostrophe at the transition. The result is
+      is not a possible Lojban word. To borrow such a word, change the glide into a true vowel in its own syllable. Put an apostrophe at the transition. The result is
       <jbophrase>ku'arka</jbophrase>, with three syllables and no glide. (See
       <xref linkend="chapter-morphology" />
       for how to form borrowings.)

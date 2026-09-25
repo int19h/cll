@@ -1155,7 +1155,7 @@
       (which is
       <jbophrase>PA da poi broda</jbophrase>), and descriptions with an <emphasis>explicit outer</emphasis> quantifier, like
       <jbophrase>re le ci mlatu</jbophrase>. You can group those in termsets exactly like the variables above. When both quantifiers are
-      <valsi>ro</valsi>, grouping does not matter, because universal claims are independent of order:
+      <valsi>ro</valsi>, the grouping does not matter, because universal claims are independent of order:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-MADY">
       <title><anchor xml:id="c16e7d6" /></title>
@@ -1241,7 +1241,7 @@
       </indexterm>
       It is unsettled whether restricted universal claims carry existential import, that is, whether they imply that something exists. Some writing and software treat
       <jbophrase>ro da poi broda</jbophrase>
-      as vacuously true when nothing brodas: true because there is nothing to check. This book teaches the importing, presuppositional reading, which is the only one consistent with the negation rules of
+      as vacuously true when nothing brodas: true because no counterexample exists. This book teaches the importing, presuppositional reading, which is the only one consistent with the negation rules of
       <xref linkend="section-negation-boundaries" />. But learn to recognize the alternative in real text (see
       <xref linkend="appendix-changes" />).
     </para>
@@ -1329,7 +1329,7 @@
       In
       <xref linkend="example-random-id-e7ta" />, the description
       <jbophrase>lo tanxe poi bramau ti</jbophrase>
-      refers within the hypothesized event of possessing. The event does not have to come to pass, so the sentence points to no actual box. Note that the description itself takes us no further. An unquantified description is a constant, not a disguised quantifier, so you cannot
+      refers within the hypothesized event of possession. The event does not have to come to pass, so the sentence points to no actual box. Note that the description itself takes us no further. An unquantified description is a constant, not a disguised quantifier, so you cannot
       <quote>expand</quote>
       it into a
       <valsi>da</valsi>

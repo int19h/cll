@@ -12,13 +12,13 @@
     present informally. These rules decide which strings of letters are cmevla, cmavo, and brivla, where words begin and end, and which letter sequences are permitted at all.
   </para>
   <para>
-    The grammar is the one that the camxes parser family uses, at the revision that this edition pinned for its verification work. Jorge Llambias (<jbophrase>la .xorxes.</jbophrase>) wrote it. This appendix reproduces every rule below exactly as that file defines it. But the file itself is a plain-text program, and this appendix sets it out for reading. Each rule appears under its own name, and headings group the rules. The arrow between the name of a rule and its definition is
+    The grammar is the one that the camxes parser family uses, at the revision that this edition pinned for its verification work. Jorge Llambias (<jbophrase>la .xorxes.</jbophrase>) wrote it. This appendix reproduces every rule below exactly as that file defines it. But the file itself is a plain-text program, and this appendix lays it out for readers. Each rule appears under its own name, and headings group the rules. The arrow between the name of a rule and its definition is
     <quote>&#8592;</quote>
     here, where the file writes
     <quote>&lt;-</quote>.
   </para>
   <para>
-    Every rule definition appears with its own characters, in the order of the file. We changed, reordered, or omitted none of them. The typesetting changes only everything around them. The section headings come from this edition, not from the file (which had only three headings of its own). The implementation directives after a few rules are in italics. The comments of the file appear here as prose: we quote some, summarize others, and leave out one bibliographic link to the parsing literature.
+    Every rule definition appears with its own characters, in the order of the file. We changed, reordered, or omitted none of them. The typesetting changes only the material around them. The section headings come from this edition, not from the file (which had only three headings of its own). The implementation directives after a few rules are in italics. The comments of the file appear here as prose: we quote some, summarize others, and leave out one bibliographic link to the parsing literature.
   </para>
   <para role="status-note">
     <indexterm type="general"><primary>PEG morphology</primary><secondary>status of</secondary>
@@ -29,18 +29,21 @@
   <para>
     A parsing expression grammar differs from more familiar grammar notations in one important way: the choice operator
     <quote>/</quote>
-    is <emphasis>ordered</emphasis>. When there are several alternatives, the parser takes the first one that succeeds and never tries the rest. The lookahead operators
+    is <emphasis>ordered</emphasis>. When there are several alternatives, the parser takes the first one that succeeds and never tries the rest. The grammar also has two lookahead operators:
     <quote>&amp;</quote>
     (the following material must be present) and
     <quote>!</quote>
-    (the following material must be absent) also help. Together, they make the grammar deterministic: it divides any stream of Lojban sounds into words in exactly one way.
+    (the following material must be absent). Ordered choice and lookahead together make the grammar deterministic: it divides any stream of Lojban sounds into words in exactly one way.
   </para>
   <para>Here is the full notation:</para>
   <itemizedlist>
     <listitem><para>A rule has the form <emphasis>name</emphasis> &#8592; expression: that expression parses the construct called <emphasis>name</emphasis>.</para></listitem>
     <listitem><para>Concatenation is juxtaposition: you write the parts next to each other, with no operator between them.</para></listitem>
     <listitem><para><quote>/</quote> is ordered choice, as described above.</para></listitem>
-    <listitem><para><quote>?</quote> makes the element to its left optional. <quote>*</quote> lets it repeat any number of times, including none. <quote>+</quote> requires at least one. Repetitions take as much as they can.</para></listitem>
+    <listitem><para><quote>?</quote> makes the element to its left optional.</para></listitem>
+    <listitem><para><quote>*</quote> lets the element to its left repeat zero or more times.</para></listitem>
+    <listitem><para><quote>+</quote> lets the element to its left repeat one or more times.</para></listitem>
+    <listitem><para>Both <quote>*</quote> and <quote>+</quote> take as many repetitions as they can.</para></listitem>
     <listitem><para><quote>()</quote> groups the other operators.</para></listitem>
     <listitem><para><quote>&amp;</quote> requires what follows it to be present, and <quote>!</quote> requires it to be absent. Neither consumes any text.</para></listitem>
     <listitem><para><quote>.</quote> stands for any character, <quote>[]</quote> for a class of characters, and text in quotation marks for itself.</para></listitem>
@@ -466,7 +469,7 @@
         </listitem>
       </varlistentry>
     </variablelist>
-    <para>The next rule stops a parser from reading a form like «bla'ypre» as a valid lujvo.</para>
+    <para>The next rule makes sure that a parser does not read a form like «bla'ypre» as a valid lujvo.</para>
     <variablelist>
       <varlistentry>
         <term>consonantal_syllable &#8592;</term>

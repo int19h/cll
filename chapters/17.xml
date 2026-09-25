@@ -655,7 +655,7 @@
       The reason is not a special exemption. These words act on the words around them, and they act first. Everything of this kind applies strictly from left to right (<xref linkend="section-cmavo-interactions" />
       presents this word-level machinery in full). So a following
       <valsi>bu</valsi>
-      never gets a chance to bind. The
+      never gets a chance to bind to one of these words. The
       <valsi>zo</valsi>
       quotes it first, the
       <valsi>zoi</valsi>
@@ -2255,26 +2255,29 @@
         <para>
           A word-plus-<valsi>bu</valsi>
           combination that actually forms a lerfu word under the rules of
-          <xref linkend="section-bu" />. (For example,
-          <jbophrase>zo bu</jbophrase>
-          does not count, because the
-          <valsi>zo</valsi>
-          quotes the
-          <valsi>bu</valsi>
-          first.)
+          <xref linkend="section-bu" />
         </para>
       </listitem>
       <listitem>
-        <para>Another LAU cmavo (and its required sequel).</para>
+        <para>Another LAU cmavo (and its required sequel)</para>
       </listitem>
       <listitem>
         <para>
           A
           <valsi>tei</valsi>&hellip;<valsi>foi</valsi>
-          compound cmavo.
+          compound cmavo
         </para>
       </listitem>
     </itemizedlist>
+    <para>
+      For example,
+      <jbophrase>zo bu</jbophrase>
+      is not a combination of the first kind, because the
+      <valsi>zo</valsi>
+      quotes the
+      <valsi>bu</valsi>
+      first.
+    </para>
   </section>
   <section xml:id="section-proposed-lerfu-words">
     <title><anchor xml:id="c17s15" />Proposed lerfu words &ndash; introduction</title>

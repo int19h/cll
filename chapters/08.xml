@@ -1438,10 +1438,11 @@
     <para>
       <indexterm type="general"><primary>relative clauses on &quot;lo&quot;</primary><secondary>syntax suggestion</secondary>
       </indexterm>
-      So here is the safe strategy. When you attach a
+      So here is the safe strategy for a
       <valsi>noi</valsi>
-      relative clause to a description with an outer quantifier, place the clause after an explicit
-      <valsi>ku</valsi>. Do this unless you really mean to describe every referent of the description. Otherwise, we can end up claiming too much.
+      relative clause on a description with an outer quantifier. If you do not really mean to describe every referent of the description, place the clause after an explicit
+      <valsi>ku</valsi>. With the clause before the
+      <valsi>ku</valsi>, the sentence can claim too much.
     </para>
     <para>
       <indexterm type="general"><primary>relative clauses and names</primary><secondary>placement considerations</secondary>

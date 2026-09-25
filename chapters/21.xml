@@ -10,7 +10,7 @@
     <para>
       <indexterm type="general"><primary>formal grammar</primary><secondary>role of</secondary>
       </indexterm>
-      The designers of Lojban wanted to state its grammar formally. A formal grammar is a precise definition that a machine can test. It defines which strings of words are grammatical text, and how each such text is structured. The designers achieved that aim to a high degree. This chapter presents the formal definition of the <emphasis>syntax</emphasis> of the language: how words combine into sentences and texts.
+      The designers of Lojban built its grammar so that a formal definition can state it. A formal grammar is a precise definition that a machine can test. It defines which strings of words are grammatical text, and how each such text is structured. The designers achieved that aim to a high degree. This chapter presents the formal definition of the <emphasis>syntax</emphasis> of the language: how words combine into sentences and texts.
     </para>
     <para>
       Two companion pieces complete the picture, and three seams remain open. The definition of the <emphasis>word forms</emphasis> (which strings of letters are words in the first place) is a separate document, in
@@ -32,7 +32,7 @@
     <para>
       <indexterm type="general"><primary>camxes</primary><secondary>as de facto compatibility target</secondary>
       </indexterm>
-      Meanwhile, the working grammars of the community use a different formal system: parsing expression grammars (PEG). A PEG covers morphology and syntax together. These grammars include the amendments that the language-definition committee adopted, which this book describes throughout. The standard camxes PEG is the principal de facto target for compatibility across the tools that this edition surveyed. Some of those tools implement it directly, and others reimplement its behavior. All of this is de facto, not official.
+      Meanwhile, the working grammars of the community use a different formal system: parsing expression grammars (PEG). These grammars cover morphology and syntax together. They also include the amendments that the language-definition committee adopted, which this book describes throughout. The standard camxes PEG is the principal de facto target for compatibility across the tools that this edition surveyed. Some of those tools implement it directly, and others reimplement its behavior. All of this is de facto, not official.
     </para>
     <para role="status-note">
       Sometimes the text of this book or the EBNF below disagrees with the amendments. In those cases the amendments prevail, and the book flags each one where it teaches it. The EBNF itself appears here as baselined.
@@ -46,7 +46,7 @@
       <quote>magic words</quote>
       (quotation, erasure, and their kin) only by placeholders. Their real behavior is word-level.
       <xref linkend="chapter-structure" />
-      specifies it rule by rule, including the genuinely unsettled
+      specifies it rule by rule. That specification also covers the genuinely unsettled
       <valsi>sa</valsi>.
     </para>
     <para>

@@ -1385,7 +1385,7 @@
       <xref linkend="section-erasure" />)
     </bridgehead>
 
-    <para>Erases the previous phrase or sentence. (Nobody ever settled the precise rule for
+    <para>Erases the previous phrase or sentence. (No official decision ever settled the precise rule for
       <valsi>sa</valsi>, and machine parsers implement it only approximately: see
       <xref linkend="section-erasure" />.)</para>
     <interlinear-gloss>

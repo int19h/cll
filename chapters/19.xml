@@ -2300,19 +2300,19 @@
     </para>
     <itemizedlist role="bullets">
       <listitem>
-        <para>A <valsi>zo</valsi> quotation.</para>
+        <para>A <valsi>zo</valsi> quotation</para>
       </listitem>
       <listitem>
-        <para>A <jbophrase>lo'u&hellip;le'u</jbophrase> quotation.</para>
+        <para>A <jbophrase>lo'u&hellip;le'u</jbophrase> quotation</para>
       </listitem>
       <listitem>
-        <para>A <valsi>zoi</valsi> quotation.</para>
+        <para>A <valsi>zoi</valsi> quotation</para>
       </listitem>
       <listitem>
-        <para>A <valsi>zei</valsi> compound.</para>
+        <para>A <valsi>zei</valsi> compound</para>
       </listitem>
       <listitem>
-        <para>A word with <valsi>bu</valsi>.</para>
+        <para>A word with <valsi>bu</valsi></para>
       </listitem>
     </itemizedlist>
     <para>
@@ -2424,9 +2424,9 @@
       Then the delimiting word comes again and closes the quotation. Now the whole quotation, with its delimiters, is a single word for
       <valsi>si</valsi>, so one
       <valsi>si</valsi>
-      erases it. Similarly, you repair a stray
+      erases it. Similarly, to repair a stray
       <valsi>lo'u</valsi>
-      quotation mark by completing the quotation and erasing it as a unit:
+      quotation mark, you complete the quotation and erase it as a unit:
       <jbophrase>fy. le'u si</jbophrase>.
     </para>
     <para>
@@ -2533,7 +2533,7 @@
       </indexterm>
       The word
       <valsi>sa</valsi>
-      is the least settled word in this section. The description above conveys the intent, and everyone understands simple uses like the examples. But nobody ever settled the precise rule, and today's parsers implement different approximations. Of the two examples above, one current parser accepts both, and another accepts only the second.
+      is the least settled word in this section. The description above conveys the intent, and everyone understands simple uses like the examples. But no official decision ever settled the precise rule, and today's parsers implement different approximations. Of the two examples above, one current parser accepts both, and another accepts only the second.
       <xref linkend="appendix-changes" />
       gives the history.
     </para>
@@ -2553,19 +2553,19 @@
     </para>
     <itemizedlist role="bullets">
       <listitem>
-        <para>The beginning of the text.</para>
+        <para>The beginning of the text</para>
       </listitem>
       <listitem>
-        <para>A paragraph break with <valsi>ni'o</valsi>.</para>
+        <para>A paragraph break with <valsi>ni'o</valsi></para>
       </listitem>
       <listitem>
-        <para>The opening of a quotation with <valsi>lu</valsi>.</para>
+        <para>The opening of a quotation with <valsi>lu</valsi></para>
       </listitem>
       <listitem>
-        <para>The opening of a <jbophrase>tu'e&hellip;tu'u</jbophrase> group.</para>
+        <para>The opening of a <jbophrase>tu'e&hellip;tu'u</jbophrase> group</para>
       </listitem>
       <listitem>
-        <para>The opening of a <jbophrase>to&hellip;toi</jbophrase> parenthesis.</para>
+        <para>The opening of a <jbophrase>to&hellip;toi</jbophrase> parenthesis</para>
       </listitem>
     </itemizedlist>
     <para>

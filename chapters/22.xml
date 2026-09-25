@@ -54,7 +54,7 @@
   </section>
   <section xml:id="section-dialects-quotation">
     <title><anchor xml:id="c22s2" />Quoting the outside world: <valsi>zo'oi</valsi> and friends</title>
-    <para>The following experimental cmavo are discussed in this section. (In the cmavo lists of this chapter, a star on a selma'o name marks an unofficial assignment. This is either an experimental selma'o, like ZOhOI*, or an experimental addition to a standard selma'o, like PA* later on.)</para>
+    <para>This section discusses the following experimental cmavo. (In the cmavo lists of this chapter, a star on a selma'o name marks an unofficial assignment. This is either an experimental selma'o, like ZOhOI*, or an experimental addition to a standard selma'o, like PA* later on.)</para>
     <cmavo-list>
       <cmavo-entry>
         <cmavo>zo'oi</cmavo>
@@ -84,7 +84,7 @@
       <valsi>zo'oi</valsi>
       quotes exactly one following word, just as
       <valsi>zo</valsi>
-      does for a single Lojban word. Pauses in speech, or spaces in writing, delimit the quoted word:
+      does for a single Lojban word. In speech, pauses delimit the quoted word. In writing, whitespace (spaces, tabs, or line breaks) delimits it:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x22a">
       <title><anchor xml:id="c22e2d1" /></title>
@@ -159,7 +159,7 @@
   </section>
   <section xml:id="section-dialects-plural">
     <title><anchor xml:id="c22s3" />Plural quantifiers: <valsi>su'oi</valsi> and <valsi>ro'oi</valsi></title>
-    <para>The following experimental cmavo are discussed in this section:</para>
+    <para>This section discusses the following experimental cmavo:</para>
     <cmavo-list>
       <cmavo-entry>
         <cmavo>su'oi</cmavo>
@@ -180,7 +180,7 @@
       <valsi>su'o</valsi>
       and
       <valsi>ro</valsi>
-      are <emphasis>singular</emphasis>. A variable that they bind stands for one individual at a time (see <xref linkend="chapter-quantifiers" />). That leaves a genuine gap. Some predicates are true of several things <emphasis>taken together</emphasis>, but not of any one of them. Examples are gathering, surrounding, and being a twosome. You cannot build a claim like
+      are <emphasis>singular</emphasis>. A variable that they bind stands for one individual at a time (see <xref linkend="chapter-quantifiers" />). That leaves a genuine gap. Some predicates are true of several things <emphasis>taken together</emphasis>, but not of any one of them. Examples are <quote>gather</quote>, <quote>surround</quote>, and <quote>be a twosome</quote>. You cannot build a claim like
       <quote>some people are gathering</quote>
       from a singular quantifier at all, because no single person gathers.
     </para>
@@ -295,19 +295,19 @@
     </para>
     <itemizedlist role="bullets">
       <listitem>
-        <para>The well-wishing vocative <jbophrase>di'ai</jbophrase>.</para>
+        <para>The well-wishing vocative <jbophrase>di'ai</jbophrase></para>
       </listitem>
       <listitem>
-        <para>The selma'o quoter <jbophrase>ma'oi</jbophrase> (<jbophrase>ma'oi ba</jbophrase> names selma'o PU by example).</para>
+        <para>The selma'o quoter <jbophrase>ma'oi</jbophrase> (<jbophrase>ma'oi ba</jbophrase> names selma'o PU by example)</para>
       </listitem>
       <listitem>
-        <para>The imperative marker <jbophrase>ko'oi</jbophrase>.</para>
+        <para>The imperative marker <jbophrase>ko'oi</jbophrase></para>
       </listitem>
       <listitem>
-        <para>The aspectual <jbophrase>xa'o</jbophrase> (<quote>already</quote>).</para>
+        <para>The aspectual <jbophrase>xa'o</jbophrase> (<quote>already</quote>)</para>
       </listitem>
       <listitem>
-        <para>The abstractor <jbophrase>poi'i</jbophrase>, common in the plural-logic literature of <xref linkend="section-dialects-plural" />.</para>
+        <para>The abstractor <jbophrase>poi'i</jbophrase>, common in the plural-logic literature of <xref linkend="section-dialects-plural" /></para>
       </listitem>
     </itemizedlist>
     <para role="status-note">
@@ -412,7 +412,7 @@
       <valsi>du</valsi>. It also prints back the standard equivalents.
     </para>
     <para role="status-note">
-      By the community's own assessment, very few people use the dialect. This book includes it as the clearest worked example of what a dialect <emphasis>is</emphasis>. The text of this book uses none of the swaps.
+      By the community's own assessment, the dialect sees very little use. This book includes it as the clearest worked example of what a dialect <emphasis>is</emphasis>. The text of this book uses none of the swaps.
     </para>
   </section>
 </chapter>

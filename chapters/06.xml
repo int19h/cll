@@ -275,7 +275,7 @@
     <para role="noindent">
       must be false in Lojban. Whatever things
       <jbophrase>lo mlatu</jbophrase>
-      picks out are really cats, and no cat is a dog. Pointing at some specific cats or dogs does not make
+      picks out are really cats, and no cat is a dog. Pointing at some specific cats or dogs would not make
       <xref linkend="example-random-id-fSxN" />
       true, because those specific individuals are no more both-cat-and-dog than any others. In general,
       <valsi>lo</valsi>
@@ -624,7 +624,7 @@
     <para role="indent">
       The number
       <valsi>ci</valsi>
-      inside the description tells us that we are talking about three people.
+      inside the description tells us that it refers to three people.
       <xref linkend="section-quantified-descriptions" />
       explains this mechanism fully. I will assume that there is only one piano under discussion.
     </para>
@@ -831,21 +831,21 @@
     <para role="indent">
       <indexterm type="general"><primary>sets</primary><secondary>contrasted with groups</secondary>
       </indexterm>
-      After so much about groups, let us turn to sets. A set, in the mathematical sense, is an abstract object, and its membership alone determines it. A set has essentially only these properties:
+      After so much about groups, let us turn to sets. A set, in the mathematical sense, is an abstract object, and its membership alone determines it. A set has properties like these:
     </para>
     <itemizedlist role="bullets">
       <listitem>
-        <para>Cardinality: how many elements it has.</para>
+        <para>Cardinality: how many elements it has</para>
       </listitem>
       <listitem>
-        <para>Membership: the relationship between a set and its elements.</para>
+        <para>Membership: the relationship between a set and its elements</para>
       </listitem>
       <listitem>
-        <para>Inclusion: the relationship between a set and its subsets.</para>
+        <para>Inclusion: the relationship between a set and its subsets</para>
       </listitem>
     </itemizedlist>
     <para>
-      This makes sets quite different from groups. A group of three people can carry a piano and weigh 200 kilograms. But the <emphasis>set</emphasis> of those three people carries nothing and weighs nothing, because a set is not the sort of thing that acts or weighs. The set descriptors
+      A set has essentially no other properties. This makes sets quite different from groups. A group of three people can carry a piano and weigh 200 kilograms. But the <emphasis>set</emphasis> of those three people carries nothing and weighs nothing, because a set is not the sort of thing that acts or weighs. The set descriptors
       <valsi>le'i</valsi>,
       <valsi>lo'i</valsi>, and
       <valsi>la'i</valsi>
@@ -853,7 +853,7 @@
       <valsi>lei</valsi>,
       <valsi>loi</valsi>, and
       <valsi>lai</valsi>
-      respectively. Here are some examples that contrast
+      respectively. Here are some examples contrasting
       <valsi>lo</valsi>,
       <valsi>loi</valsi>, and
       <valsi>lo'i</valsi>:
@@ -1158,7 +1158,7 @@
     <para>
       <indexterm type="general"><primary>quantifiers</primary><secondary>explicit on sumti</secondary>
       </indexterm>
-      An explicit quantifier can come before any sumti. It tells how many of the referents of the sumti the bridi talks about. Here are some simple examples that contrast sumti with and without explicit quantifiers:
+      An explicit quantifier can come before any sumti. It tells how many of the referents of the sumti the bridi talks about. Here are some simple examples contrasting sumti with and without explicit quantifiers:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-qL61">
       <title><anchor xml:id="c6e6d1" /></title>
@@ -1245,7 +1245,7 @@
       leaves the manner of walking entirely open: single file, arm in arm, or in a heap.
     </para>
     <para>
-      Here we reach one of the most important rules in this book: <emphasis>a sumti without an explicit quantifier has no quantifier at all</emphasis>. It is only a referring expression. In the language of logic, it is a <quote>constant</quote>: a term that names its referents directly. A quantified term like
+      Here is a rule that this book uses throughout: <emphasis>a sumti without an explicit quantifier has no quantifier at all</emphasis>. It is only a referring expression. In the language of logic, it is a <quote>constant</quote>: a term that names its referents directly. A quantified term like
       <jbophrase>re do</jbophrase>
       is different, because it selects from its referents. The distinction does real work in
       <xref linkend="chapter-quantifiers" />, where quantified terms interact with negation and with each other in ways that constants never do. Remember this rule now: no quantifier is present unless you say one.
@@ -1359,9 +1359,8 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      In
       <xref linkend="example-random-id-x6Da" />
-      we are talking about five cows. The context decides which five, exactly as with an unquantified
+      is about five cows. The context decides which five, exactly as with an unquantified
       <jbophrase>lo bakni</jbophrase>. The inner
       <valsi>mu</valsi>
       only reports their number. In
@@ -1467,7 +1466,7 @@
       mean
       <quote>the whole of</quote>
       and
-      <quote>some part of</quote>. Their main use is with groups and with references that are like substances:
+      <quote>some part of</quote>. Their main use is with groups and with references to things treated as substances:
       <jbophrase>piro loi jdini</jbophrase>
       is all the money, and <jbophrase>pisu'o loi djacu</jbophrase> is some of the water.
     </para>
@@ -1524,7 +1523,7 @@
     <para role="indent">
       <xref linkend="example-random-id-gr7Y" />
       quantifies over the referents of
-      <jbophrase>lo gerku</jbophrase>: the dogs that we are talking about, whichever those are in the context. Suppose that the dogs of the neighborhood are under discussion. Then
+      <jbophrase>lo gerku</jbophrase>: the dogs in question, whichever those are in the context. Suppose that the dogs of the neighborhood are under discussion. Then
       <xref linkend="example-random-id-gr7Y" />
       says that three of <emphasis>them</emphasis> are white. But
       <xref linkend="example-random-id-EsVd" />
@@ -2383,7 +2382,7 @@
     <para>
       <indexterm type="general"><primary>pro-sumti</primary><secondary>as referring expressions</secondary>
       </indexterm>
-      The following examples show each of the classes. Pro-sumti are referring expressions, exactly like descriptions. They carry no hidden quantifiers (see
+      The following examples illustrate each of the classes. Pro-sumti are referring expressions, exactly like descriptions. They carry no hidden quantifiers (see
       <xref linkend="section-quantified-sumti" />). An explicit quantifier selects from the referents of a pro-sumti in the usual way:
       <jbophrase>re do</jbophrase>
       is two of the listeners. So you can restrict what a pro-sumti refers to, but naturally you cannot extend it.
@@ -2491,7 +2490,7 @@
       </indexterm>
       (This is not the same as
       <quote>All persons love a certain fish</quote>
-      ; the difference between the two is one of quantifier order.) The da-series has its own conventions for quantification. Roughly, a bare da means su'o da on first use, and after that it keeps referring to the same things.
+      ; the difference between the two is one of quantifier order.) The da-series has its own conventions for quantification. Roughly, a bare da means su'o da on first use, and after that it continues to refer to the same things.
       <xref linkend="chapter-quantifiers" />
       discusses these conventions in detail.
     </para>

@@ -8,7 +8,7 @@
     </para>
     <para>
       <xref linkend="chapter-about" />
-      tells the story of the governance behind these changes. In brief, a language-definition committee (the BPFK) and its parent organization (the LLG) adopted a small number of deliberate amendments between 2004 and 2016. Both bodies are now inactive, with no activity since 2022. So the official language is frozen as amended.
+      tells the story of the governance behind these changes. In brief, a language-definition committee (the BPFK) and its parent organization (the LLG) adopted a small number of deliberate amendments between 2004 and 2016. Both bodies are now effectively inactive. The last recorded meeting of the LLG began in 2022 and ended in 2023. So the official language is frozen as amended.
     </para>
     <para>
       Every entry below carries one of these authority labels:
@@ -24,11 +24,11 @@
       </varlistentry>
       <varlistentry>
         <term>Checkpointed</term>
-        <listitem><para>The checkpoint process of the committee fixed the rule in 2004 and 2005. The frozen snapshot texts of those dates are the authoritative statements.</para></listitem>
+        <listitem><para>The committee fixed the rule in its checkpoint process of 2004&ndash;2005. The frozen snapshot texts of those dates are the authoritative statements.</para></listitem>
       </varlistentry>
       <varlistentry>
         <term>De facto</term>
-        <listitem><para>Nobody voted on the rule. The entry states its class of evidence. The class is a working document of the definition effort, implementation by the current tools that this edition surveyed, attested usage, or a combination. No single class proves consensus by itself.</para></listitem>
+        <listitem><para>No official body voted on the rule. The entry states its class of evidence. The class is a working document of the definition effort, implementation by the current tools that this edition surveyed, attested usage, or a combination. No single class proves consensus by itself.</para></listitem>
       </varlistentry>
       <varlistentry>
         <term>Editorial</term>
@@ -36,7 +36,7 @@
       </varlistentry>
     </variablelist>
     <para>
-      When the LLG adopted the article reform, it made one promise, and that promise extends in spirit to everything here. Text written to the rules of the first edition is <emphasis>not incorrect</emphasis>. It is older Lojban. This appendix exists so that readers can move between the two.
+      In 2007, the LLG adopted the article reform as its working baseline. It made one promise at that time, and that promise extends in spirit to everything here. Text written to the rules of the first edition is <emphasis>not incorrect</emphasis>. It is older Lojban. This appendix exists so that readers can move between the two.
     </para>
     <para>
       <indexterm type="general"><primary>errata</primary><secondary>corrections since the first edition</secondary></indexterm>
@@ -111,7 +111,7 @@
         <valsi>me</valsi>
         is sharper:
         <quote>is/are among the referents of</quote>, not
-        <quote>is one of</quote>. This is a clarification from a working document, and nobody separately voted on it. But the ratified expansions rely on it.
+        <quote>is one of</quote>. This is a clarification from a working document, and no official body separately voted on it. But the ratified expansions rely on it.
       </para></listitem>
       <listitem><para>
         A number directly after
@@ -262,40 +262,32 @@
         <para>
           The first edition allowed fu'ivla only in
           <valsi>zei</valsi>
-          compounds. In place of combining forms, it printed a proposal for cultural fu'ivla that nobody ever adopted (see
+          compounds. In place of combining forms, it printed a proposal for cultural fu'ivla that no official body ever adopted (see
           <xref linkend="section-rafsi-fuhivla" />).
         </para>
       </listitem>
       <listitem>
         <para>
           <indexterm type="general"><primary>hyphens</primary><secondary>change summary</secondary></indexterm>
-          The norm is <emphasis>editorial</emphasis>, and the acceptance is <emphasis>de facto</emphasis>: the surveyed parsers implement it. For writing, this edition keeps the classical, minimal rules for hyphen placement. The working grammar deliberately also accepts unneeded hyphens. In 2019, an attempt to make that official for the previous revision of the book failed by veto.
+          The norm is <emphasis>editorial</emphasis>, and the acceptance is <emphasis>de facto</emphasis>: the surveyed parsers implement it. As the norm for writers, this edition keeps the classical, minimal rules for hyphen placement. The working grammar deliberately also accepts unneeded hyphens. In 2019, an attempt to make that official for the previous revision of the book failed by veto.
         </para>
       </listitem>
       <listitem>
         <para>
           <indexterm type="general"><primary>comma</primary><secondary>change summary</secondary></indexterm>
-          This change is <emphasis>editorial</emphasis>, and it follows the working grammar. The comma is only an aid to pronunciation. It cannot make an otherwise invalid letter sequence valid. This reverses several lessons of the first edition that depended on it. The first edition allowed these uses of the comma:
+          This change is <emphasis>editorial</emphasis>, and it follows the working grammar. The comma is only an aid to pronunciation. It cannot make an otherwise invalid letter sequence valid. This reverses several lessons of the first edition that depended on it.
         </para>
-        <itemizedlist>
-          <listitem><para>
-            Pronunciation like an apostrophe,
-            <phrase role="IPA">[h]</phrase>. But the first edition also said that commas never distinguish words. Nobody ever settled that conflict, and the working grammar of word forms resolves it by ignoring commas entirely.
-          </para></listitem>
-          <listitem><para>
-            A forced syllable division, or another grouping of syllables.
-          </para></listitem>
-          <listitem><para>
-            Commas with a sound in names, as in
-            <quote>.i,ai,i,ai,on.</quote>.
-          </para></listitem>
-          <listitem><para>
-            A syllable separator in borrowings, to permit a sequence of vowels. For example,
-            <quote>bang,r,kore,a</quote>
-            is now
-            <jbophrase>bangrkore'a</jbophrase>, with an apostrophe.
-          </para></listitem>
-        </itemizedlist>
+        <para>
+          The first edition allowed a comma to sound like an apostrophe,
+          <phrase role="IPA">[h]</phrase>. But it also said that commas never distinguish words. No official decision ever settled that conflict. The working grammar of word forms resolves it: it ignores commas entirely.
+        </para>
+        <para>
+          The first edition also allowed three other uses of the comma. It let a comma force a division between syllables, or another grouping of syllables. It let names contain commas with a sound, as in
+          <quote>.i,ai,i,ai,on.</quote>. And it let a comma separate syllables in a borrowing, to permit a sequence of vowels. For example,
+          <quote>bang,r,kore,a</quote>
+          is now
+          <jbophrase>bangrkore'a</jbophrase>, with an apostrophe.
+        </para>
         <para>
           All of these devices are gone: spell the pronunciation that you want (see
           <xref linkend="chapter-phonology" />).
@@ -367,7 +359,7 @@
           erasure at all. The parsers that this edition surveyed do implement it.
         </para>
         <para>
-          Nobody ever voted on erasure. The boundary rules that this edition teaches come from the community's later proposal on erasure. The rule for
+          No official body ever voted on erasure. The boundary rules that this edition teaches come from the community's later proposal on erasure. The rule for
           <valsi>si</valsi>, as taught, is de facto: the surveyed parsers all implement it the same way. The rule for
           <valsi>su</valsi>
           is de facto, but the implementations are uneven. The surveyed parsers disagree on whether the paragraph boundary itself survives.
@@ -393,7 +385,7 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>geks</primary><secondary>tags before, change summary</secondary></indexterm>
-          This change is <emphasis>de facto</emphasis>: the surveyed parsers implement it, and nobody voted on it. A tense or modal tag can now stand directly before a forethought connective, as in
+          This change is <emphasis>de facto</emphasis>: the surveyed parsers implement it, and no official body voted on it. A tense or modal tag can now stand directly before a forethought connective, as in
           <jbophrase>pu ge broda gi brode</jbophrase>. The grammar reads it as a tag on the whole connected bridi. The grammar of the first edition rejected this outright, unless
           <valsi>ke</valsi>
           followed the tag. But the first edition's own prose used the bare form (see
@@ -475,28 +467,26 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>letterals</primary><secondary>change summary</secondary></indexterm>
-          This change is <emphasis>checkpointed</emphasis> (17 March 2004). The rule for the scope of shifts follows a later frozen decision of 11 February 2005. The changes are these:
+          This change is <emphasis>checkpointed</emphasis> (17 March 2004). The rule for the scope of shifts follows a later frozen decision of 11 February 2005. There are three changes.
         </para>
-        <itemizedlist>
-          <listitem><para>
-            A shift word applies only within its letteral string. In the first edition, a shift lasted in theory until a contradicting shift or the end of the text. But the first edition admitted that in practice, readers presumed that it expired at the first word that was not a letteral.
-          </para></listitem>
-          <listitem><para>
-            The word
-            <valsi>.ybu</valsi>
-            counts as a unit before any word-level processing.
-          </para></listitem>
-          <listitem><para>
-            A list of exceptions fixed the
-            <valsi>bu</valsi>
-            rules. The frozen list exempted the BAhE words and
-            <valsi>le'u</valsi>, among others. In two corners, this edition follows the later synthesis instead. The list forbade
-            <jbophrase>ba'e bu</jbophrase>
-            and
-            <jbophrase>za'e bu</jbophrase>, but the synthesis and current parsers permit them. The same is true of
-            <jbophrase>le'u bu</jbophrase>.
-          </para></listitem>
-        </itemizedlist>
+        <para>
+          First, a shift word applies only within its letteral string. In the first edition, a shift lasted in theory until a contradicting shift or the end of the text. But the first edition admitted that in practice, readers presumed that it expired at the first word that was not a letteral.
+        </para>
+        <para>
+          Second, the word
+          <valsi>.ybu</valsi>
+          counts as a unit before any word-level processing.
+        </para>
+        <para>
+          Third, a list of exceptions fixed the
+          <valsi>bu</valsi>
+          rules. The frozen list exempted the BAhE words and
+          <valsi>le'u</valsi>, among others. In two corners, this edition follows the later synthesis instead. The list forbade
+          <jbophrase>ba'e bu</jbophrase>
+          and
+          <jbophrase>za'e bu</jbophrase>, but the synthesis and current parsers permit them. The same is true of
+          <jbophrase>le'u bu</jbophrase>.
+        </para>
         <para>
           See
           <xref linkend="chapter-letterals" />.
@@ -505,27 +495,22 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>terminology</primary><secondary>changes of, in this edition</secondary></indexterm>
-          These changes are <emphasis>editorial</emphasis>. This edition makes three changes of terminology:
+          These changes are <emphasis>editorial</emphasis>. This edition makes three changes of terminology. It says <emphasis>group</emphasis> where the first edition said <emphasis>mass</emphasis>. It adopts the community term <jbophrase>zi'evla</jbophrase> for free-form borrowings. And it uses <emphasis>cmevla</emphasis> for the class of name words throughout.
         </para>
-        <itemizedlist>
-          <listitem><para>It says <emphasis>group</emphasis> where the first edition said <emphasis>mass</emphasis>.</para></listitem>
-          <listitem><para>It adopts the community term <jbophrase>zi'evla</jbophrase> for free-form borrowings.</para></listitem>
-          <listitem><para>It uses <emphasis>cmevla</emphasis> for the class of name words throughout.</para></listitem>
-        </itemizedlist>
       </listitem>
     </itemizedlist>
   </section>
   <section xml:id="section-changes-unchanged">
     <title><anchor xml:id="a03-unchanged" />Debated but not changed</title>
     <para>
-      Readers who know the community discussion can expect some changes that this edition deliberately does not make, because nobody ever adopted them:
+      Readers who know the community discussion can expect some changes that this edition deliberately does not make, because no official body ever adopted them:
     </para>
     <itemizedlist>
       <listitem><para>
         <indexterm type="general"><primary>na</primary><secondary>scope of, unchanged</secondary></indexterm>
         A
         <valsi>na</valsi>
-        before the selbri still negates the whole bridi. Nobody adopted the proposal for a narrower scope in place. (But the positions of
+        before the selbri still negates the whole bridi. No official body adopted the proposal for a narrower scope in place. (But the positions of
         <valsi>na</valsi>
         relative to a tense now do differ. That is a de facto resolution: the semantic software that this edition surveyed implements it, and
         <xref linkend="chapter-negation" />
@@ -547,14 +532,14 @@
       </para></listitem>
       <listitem><para>
         <indexterm type="general"><primary>termsets</primary><secondary>unchanged</secondary></indexterm>
-        Termsets remain official. Nobody adopted a proposal to eliminate them.
+        Termsets remain official. No official body adopted a proposal to eliminate them.
       </para></listitem>
       <listitem><para>
         <indexterm type="general"><primary>su'oi</primary><secondary>never adopted</secondary></indexterm>
         <indexterm type="general"><primary>ro'oi</primary><secondary>never adopted</secondary></indexterm>
         To read the ratified, number-neutral
         <valsi>lo</valsi>
-        as half of a formal system of plural logic is an unofficial analysis. Nobody adopted the proposed plural quantifiers of that system,
+        as half of a formal system of plural logic is an unofficial analysis. No official body adopted the proposed plural quantifiers of that system,
         <valsi>su'oi</valsi>
         and
         <valsi>ro'oi</valsi>, and the standard grammar does not accept them. See

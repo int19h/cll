@@ -14,8 +14,10 @@
     </para>
     <para>
       Two companion pieces complete the picture, and three seams remain open. The definition of the <emphasis>word forms</emphasis> (which strings of letters are words in the first place) is a separate document, in
-      <xref linkend="appendix-peg-morphology" />. The word-level
-      <quote>magic words</quote>, and the unsettled corners that this chapter notes below, lie outside what the printed grammar decides.
+      <xref linkend="appendix-peg-morphology" />. The rules for the word-level
+      <quote>magic words</quote>
+      are in
+      <xref linkend="chapter-structure" />. The magic words, and the unsettled corners that this chapter notes below, lie outside what the printed grammar decides.
     </para>
     <para>
       <indexterm type="general"><primary>formal grammar</primary><secondary>status of versions</secondary>

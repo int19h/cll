@@ -63,7 +63,7 @@
     <para>
       <indexterm type="general"><primary>xorlo</primary><secondary>summary of changes</secondary>
       </indexterm>
-      This change is <emphasis>ratified</emphasis>. The BPFK first checkpointed it in 2004, the LLG adopted it as the working baseline in 2007, and an LLG vote ratified it in 2020. The vote made one revision of the committee's gadri page the official description: MediaWiki revision 123823 (3 April 2020). It added two expressly stated corrections: a typo,
+      This change is <emphasis>ratified</emphasis>. The BPFK first checkpointed it in 2004, the LLG adopted it as the working baseline in 2007, and an LLG vote ratified it in 2020. The vote made one revision of the committee's gadri page the official description: MediaWiki revision 123823 (3 April 2020). The vote added two expressly stated corrections: a typo,
       <jbophrase>mokla</jbophrase>
       for
       <valsi>moklu</valsi>, and a repaired final clause in the unicorn example of the page.
@@ -172,7 +172,7 @@
       The first edition also drew a sharp contrast in the placement of incidental clauses. In
       <jbophrase>lo prenu ku noi blabi</jbophrase>, the clause applied after the outer
       <valsi>su'o</valsi>
-      made its selection. But
+      selected. But
       <jbophrase>lo prenu noi blabi</jbophrase>
       put the clause inside the description. There the hidden inner
       <valsi>ro</valsi>
@@ -269,7 +269,7 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>hyphens</primary><secondary>change summary</secondary></indexterm>
-          The norm is <emphasis>editorial</emphasis>, and the acceptance is <emphasis>de facto</emphasis>: the surveyed parsers implement it. As the norm for writers, this edition keeps the classical, minimal rules for hyphen placement. The working grammar deliberately also accepts unneeded hyphens. In 2019, an attempt to make that official for the previous revision of the book failed by veto.
+          The norm is <emphasis>editorial</emphasis>, and the acceptance is <emphasis>de facto</emphasis>: the surveyed parsers implement it. As the norm for writers, this edition keeps the classical, minimal rules for hyphen placement. The working grammar deliberately also accepts unneeded hyphens. In 2019, an attempt to make that official for the previous revision of the book was vetoed.
         </para>
       </listitem>
       <listitem>
@@ -303,9 +303,9 @@
           <indexterm type="general"><primary>tags</primary><secondary>binding change summary</secondary></indexterm>
           This change is <emphasis>committee-approved</emphasis>: seven of eight members voted for it on 15 March 2016, and the LLG never separately ratified it. A tense or modal tag directly before a selbri binds to that selbri exactly as
           <valsi>cu</valsi>
-          does. The only exception is an explicit
+          does. But an explicit
           <valsi>ku</valsi>
-          that ends the tag construct first. So
+          that ends the tag construct first breaks the binding. So
           <jbophrase>lo nu broda ba brode</jbophrase>
           is a complete bridi. The grammar of the first edition absorbed such tags into the preceding construct. See
           <xref linkend="chapter-tenses" />, and the guidance on elision in
@@ -350,11 +350,10 @@
           <jbophrase>zo le'u</jbophrase>
           loophole of the first edition is gone. A quotation now erases as a single unit, so
           <jbophrase>zo si si</jbophrase>
-          leaves nothing. The first edition counted the pieces of a quotation separately, so the repair of a stray
-          <valsi>zo</valsi>
-          took three
+          leaves nothing. The first edition counted the pieces of a quotation separately, so it took three
           <valsi>si</valsi>
-          words. The first edition also noted that its own machine parser did not implement
+          words to repair a stray
+          <valsi>zo</valsi>. The first edition also noted that its own machine parser did not implement
           <valsi>si</valsi>
           erasure at all. The parsers that this edition surveyed do implement it.
         </para>

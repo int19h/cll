@@ -273,9 +273,9 @@
       <valsi>zo'ei</valsi>
       (with a grammar like LAhE) means
       <quote>something associated with ...</quote>, roughly
-      <jbophrase>zo'e pe</jbophrase>. Speakers often choose it where a lazy speaker stretches
+      <jbophrase>zo'e pe</jbophrase>. It often takes the place of a
       <valsi>tu'a</valsi>
-      beyond its abstraction sense. For example,
+      that a lazy speaker stretches beyond its abstraction sense. For example,
       <jbophrase valid="iffy">mi viska zo'ei la .paris.</jbophrase>
       means
       <quote>I see something related to Paris</quote>: a photograph, perhaps, or the skyline.
@@ -286,7 +286,7 @@
       as a word, because in camxes the string collides with a
       <valsi>zo</valsi>
       quotation. The danger is silent. A full sentence like the one above still parses in camxes, as a quotation of
-      <quote>'ei</quote>, with an entirely different structure. The jbotci tools recognize
+      <quote>'ei</quote>, with an entirely different structure. jbotci recognizes
       <valsi>zo'ei</valsi>
       properly.
     </para>
@@ -317,10 +317,10 @@
     </para>
   </section>
   <section xml:id="section-dialects-cbm">
-    <title><anchor xml:id="c22s5" />The cmevla&ndash;brivla merger</title>
+    <title><anchor xml:id="c22s5" />The cmevla-brivla merger</title>
     <para>
       <indexterm type="general"><primary>cmevla-brivla merger</primary></indexterm>
-      The dialects so far add words. The remaining two change grammar. The <emphasis>cmevla&ndash;brivla merger</emphasis> (CBM) removes the grammatical wall between name words and predicate words. Under it, a cmevla like
+      The dialects so far add words. The remaining two change grammar. The <emphasis>cmevla-brivla merger</emphasis> (CBM) removes the grammatical wall between name words and predicate words. Under it, a cmevla like
       <jbophrase>.djan.</jbophrase>
       can serve as a selbri or a tanru unit. It then predicates of its subject, and the users of the dialect decide its precise place structure. Also, the article
       <valsi>la</valsi>
@@ -329,7 +329,7 @@
     <para>
       The motivating complaint is pedagogical. In standard Lojban,
       <valsi>la</valsi>
-      behaves one way before a cmevla and another way before a brivla. Learners discover that predicates can name things, and they are tempted to write what the standard grammar forbids. Standard camxes and the default grammar of jbotci reject the following sentence, but under CBM it is fine:
+      behaves one way before a cmevla and another way before a brivla. Learners who discover that predicates can name things are tempted to write what the standard grammar forbids. Standard camxes and the default grammar of jbotci reject the following sentence, but under CBM it is fine:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x22h">
       <title><anchor xml:id="c22e5d1" /></title>

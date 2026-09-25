@@ -2658,8 +2658,9 @@
       <indexterm type="general"><primary>unconditional signal</primary></indexterm>
       The cmavo
       <valsi>fa'o</valsi>
-      is outside the regular grammar. When a reader or a parser reaches an effective
-      <valsi>fa'o</valsi>, it reads nothing after it. In particular,
+      is outside the regular grammar. A reader or a parser that reaches an effective
+      <valsi>fa'o</valsi>
+      reads nothing after that word. In particular,
       <valsi>fa'o</valsi>
       is not used at the end of subordinate texts quoted with
       <valsi>lu</valsi>
@@ -2777,7 +2778,7 @@
         <para>
           The word
           <valsi>zei</valsi>
-          joins the single word (or already formed unit) on each side of it into one brivla. The word
+          joins the single word (or already-formed unit) on each side of it into one brivla. The word
           <valsi>bu</valsi>
           binds the single word or unit before it into a letteral, and you can repeat it. Neither can reach past a magic word that acted earlier. A
           <valsi>bu</valsi>

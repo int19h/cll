@@ -96,13 +96,13 @@
       </varlistentry>
     </variablelist>
     <bridgehead renderas="sect2">ZOI quotes</bridgehead>
-    <para>The source file explains the problem in its own words: <quote>Pure PEG cannot handle ZOI quotes, because it cannot check whether the closing delimiter is the same as the opening one. ZOI quote handling is the only part of Lojban's grammar that needs mechanisms external to the pure PEG grammar to be implemented properly; those mechanisms are implementation-specific.</quote> So the four rules below carry implementation directives, shown in italics:</para>
+    <para>The source file explains the problem in its own words: <quote>Pure PEG cannot handle ZOI quotes, because it cannot check whether the closing delimiter is the same as the opening one. ZOI quote handling is the only part of Lojban's grammar that needs mechanisms external to the pure PEG grammar to be implemented properly; those mechanisms are implementation-specific.</quote> So the four rules below carry implementation directives, shown in italics. Three of them handle the delimiters:</para>
     <itemizedlist>
       <listitem><para>PUSH remembers the opening delimiter.</para></listitem>
       <listitem><para>PEEK-DIFF requires the quoted text to differ from it.</para></listitem>
       <listitem><para>POP-EQ requires the closing delimiter to equal it.</para></listitem>
     </itemizedlist>
-    <para>Two more directives appear on rules elsewhere in the grammar: LEAF and JOIN. They concern how an implementation builds its parse tree, and the source file does not define them.</para>
+    <para>The fourth directive here is LEAF, on the rule zoi_word_2. LEAF also appears on one rule elsewhere in the grammar, and JOIN appears on three others. These two directives concern how an implementation builds its parse tree, and the source file does not define them.</para>
     <variablelist>
       <varlistentry>
         <term>zoi_open &#8592;</term>

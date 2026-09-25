@@ -774,7 +774,7 @@
       <morphology>ua</morphology>
       sounds like
       <phrase role="IPA">[wa]</phrase>, as in English
-      <quote>wa</quote>. This analysis, with a glide consonant instead of a diphthong, matters for a rule later in this section.
+      <quote>wa</quote>. This analysis, with a glide consonant instead of a diphthong, matters for the rule later in this section.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>PEG morphology</primary><secondary>status of</secondary>
@@ -782,7 +782,7 @@
       Like the other precise rules for word forms in this book, the analysis with four diphthongs comes from the formal definition of word forms. That definition is the de facto standard, and current Lojban software implements it (see
       <xref linkend="chapter-grammars" />).
       <xref linkend="appendix-changes" />
-      explains what <quote>de facto</quote> means here. Within that definition, the ban on a consonant followed by a glide is separately committee-approved. The note at the end of this section gives the practical consequences.
+      explains what <quote>de facto</quote> means here. Within that definition, the ban on a consonant followed by a glide (the <emphasis>consonant-glide-vowel ban</emphasis>) is separately committee-approved. The note at the end of this section gives the practical consequences.
     </para>
     <para>
       <indexterm type="general"><primary>vowels</primary><secondary>contrasted with consonants</secondary>
@@ -1031,7 +1031,7 @@
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>consonant-glide-vowel ban</primary></indexterm>
-      The ban on a consonant followed by a glide is committee-approved. Older texts contain words that people coined before the ban, like
+      The consonant-glide-vowel ban is committee-approved. Older texts contain words that people coined before the ban, like
       <quote>kuarka</quote>
       or
       <quote>.niuport.</quote>. Today you must respell such words. Usually you change the glide to a full vowel with an apostrophe (<jbophrase>.ni'uport.</jbophrase>), or you double the glide letter. See
@@ -3381,7 +3381,7 @@
     <para>
       <indexterm type="general"><primary>diphthongs</primary><secondary>English analogues of</secondary>
       </indexterm>
-      Here is a list of English words that contain sounds similar to the Lojban diphthongs and glide-initial syllables. The first table covers the four true diphthongs. The second table covers the syllables with a glide and then a vowel (see <xref linkend="section-diphthongs" />). This list does not constitute an official pronunciation guide; it is intended as a help to English-speakers.
+      Here is a list of English words that contain sounds similar to the Lojban diphthongs and glide-initial syllables (see <xref linkend="section-diphthongs" />). The first table covers the four true diphthongs. This list does not constitute an official pronunciation guide; it is intended as a help to English-speakers.
     </para>
     <informaltable class="vertsep">
       <thead>

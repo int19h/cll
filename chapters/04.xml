@@ -945,9 +945,9 @@
       </listitem>
     </orderedlist>
     <para>
-      In gismu, and in lujvo built from their rafsi, the consonant pair falls within the first five letters. For this count,
+      In gismu, and in lujvo built from their rafsi, the consonant pair falls within the first five letters. This count skips
       <letteral>y</letteral>
-      and the apostrophe are not letters (see
+      and the apostrophe (see
       <xref linkend="section-rafsi" />). In fu'ivla, and in lujvo that use a fu'ivla as a rafsi, the pair can come later (see
       <xref linkend="section-fuhivla" />
       and
@@ -1993,7 +1993,7 @@
     <para>
       <indexterm type="general"><primary>tosmabru test</primary><secondary>simple statement of</secondary>
       </indexterm>
-      The test is easy to state. Take a lujvo that begins with a CVC-form rafsi, and remove its first two letters. The remainder is the final consonant of that rafsi and everything after it. The lujvo is in danger exactly when this remainder is a well-formed brivla on its own. If it is, a y-hyphen must follow the first rafsi. If it is not, the word cannot lose its first syllable, and this rule needs no y-hyphen.
+      The test is easy to state. Take a lujvo that begins with a CVC-form rafsi, and remove its first two letters. The remainder is the final consonant of that rafsi and everything after it. The lujvo is in danger exactly when this remainder is a well-formed brivla on its own. If it is, a y-hyphen must follow the first rafsi. If it is not, the word cannot lose its first syllable, and this test does not require a y-hyphen.
     </para>
     <para>
       Apply this test last, after you add any hyphens that the other rules require. Its traditional name is the
@@ -2494,7 +2494,7 @@
     <para>
       Finally, notice that this test and the tosmabru test of
       <xref linkend="section-rafsi" />
-      are mirror images of one question about word boundaries. A classical lujvo that can lose a leading CV cmavo must hold itself together with a y-hyphen. But the rules forbid outright any candidate fu'ivla that a leading CV cmavo can capture. Together, the two rules make a stream of Lojban sounds resolve into words in exactly one way.
+      are mirror images of one question about word boundaries. A classical lujvo that can lose a leading CV cmavo must hold itself together with a y-hyphen. But the rules ban outright any candidate fu'ivla that a leading CV cmavo can capture. Together, the two rules make a stream of Lojban sounds resolve into words in exactly one way.
     </para>
     <para>
       <indexterm type="general"><primary>fu'ivla</primary><secondary>algorithm for constructing</secondary>
@@ -3289,7 +3289,7 @@
         <para>
           <indexterm type="general"><primary>consonant-glide-vowel ban</primary><secondary>in cmevla</secondary>
           </indexterm>
-          Like all Lojban words, they must obey the ban on a consonant followed by a glide (see
+          Like all Lojban words, they must obey the consonant-glide-vowel ban (see
           <xref linkend="section-fuhivla" />
           and
           <xref linkend="chapter-phonology" />). A glide can begin a cmevla, or follow a vowel or

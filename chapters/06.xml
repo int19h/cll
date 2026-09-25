@@ -259,7 +259,7 @@
       <valsi>lo</valsi>
       is that it is <quote>veridical</quote>. That is, whatever
       <jbophrase>lo zarci</jbophrase>
-      refers to must really be a market. It must be something that can appear in the x<subscript>1</subscript> place of a true bridi whose selbri is
+      refers to must really be a market. It must be something that can appear in the x<subscript>1</subscript> place of a truthful bridi whose selbri is
       <valsi>zarci</valsi>. For this reason, the sentence
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-fSxN">
@@ -290,7 +290,7 @@
     </para>
     <para>
       These questions have answers only if the speaker chooses to supply them. The speaker can add a number (see
-      <xref linkend="section-quantified-descriptions" />), or use one of the more specialized descriptors later in this chapter. This reticence is not vagueness for its own sake. Most of the time, the context answers such questions without effort, as it does for the missing distinction of number in the English
+      <xref linkend="section-quantified-descriptions" />), or use one of the more specialized descriptors that this chapter explains later. This reticence is not vagueness for its own sake. Most of the time, the context answers such questions without effort, as it does for the missing distinction of number in the English
       <quote>the sheep</quote>.
     </para>
     <para>
@@ -371,7 +371,7 @@
       <valsi>le</valsi>
       <quote>non-veridicality</quote>. A
       <valsi>le</valsi>
-      description reflects how the speaker identifies things. It does not claim what they really are.
+      description reflects how the speaker identifies things. It makes no claim about what they really are.
     </para>
 
     <para>
@@ -742,8 +742,9 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      This follows naturally from the fully generic nature of
-      <valsi>lo</valsi>. A statement about
+      This follows naturally, because
+      <valsi>lo</valsi>
+      is fully generic. A statement about
       <jbophrase>lo cinfo</jbophrase>
       can be a statement about lions in general, or about lions as a kind. Zoo lions elsewhere do not make it false, and they do not make the English
       <quote>Lions dwell in Africa</quote>
@@ -762,7 +763,7 @@
       <indexterm type="general"><primary>substances</primary></indexterm>
       Here
       <jbophrase>lo matne</jbophrase>
-      refers to butter as such. It does not refer to any particular pat of butter, or to a count of butter objects. Some butter is frozen hard, but that does not make
+      refers to butter as such. It does not refer to any particular pat of butter, or to a count of butter objects. Some particular butter is frozen hard, but that does not make
       <xref linkend="example-random-id-x6Bc" />
       false, just as a green banana does not make
       <quote>bananas are yellow</quote>
@@ -1507,7 +1508,7 @@
       mean? It is a pure statement of quantity: <emphasis>three things that are dogs are white</emphasis>. These are three dogs anywhere in the world under discussion, not three of some particular dogs that the conversation already has on the table. In the notation of
       <xref linkend="chapter-quantifiers" />, it is exactly equivalent to
       <jbophrase>ci da poi gerku cu blabi</jbophrase>:
-      <quote>for exactly three X which are dogs, X is white</quote>.
+      <quote>for exactly three X that are dogs, X is white</quote>.
     </para>
     <para>
       This makes an indefinite sumti subtly different from the corresponding quantified
@@ -1546,9 +1547,9 @@
       <xref linkend="example-random-id-gLpy" />
       also contains an indefinite sumti:
       <jbophrase>su'o ci cutci</jbophrase>,
-      <quote>I own at least three things that are shoes</quote>. Here, quantification over the whole world is exactly what the speaker wants. With
+      <quote>I own at least three things that are shoes</quote>. Here, a quantifier over the whole world is exactly what the speaker wants. With
       <jbophrase>su'o ci lo cutci</jbophrase>
-      instead, the sentence presupposes some shoes that the context supplies, and it counts among those.
+      instead, the sentence presupposes some shoes that the context supplies, and it selects at least three of them.
     </para>
   </section>
   <section xml:id="section-sumti-based-descriptions">
@@ -1591,7 +1592,7 @@
     </example>
     <para role="indent">
       <xref linkend="example-random-id-qLaQ" />
-      specifies that of the listeners, however many they are, two are men.
+      only specifies that of the listeners, however many they are, two are men.
       <xref linkend="example-random-id-qLAr" />, which has the sumti-based description
       <jbophrase>le re do</jbophrase>, refers to two people whom the speaker describes as being among the listeners. It says of them that they are men. The inner quantifier
       <valsi>re</valsi>

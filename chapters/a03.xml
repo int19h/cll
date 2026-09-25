@@ -257,7 +257,10 @@
           <indexterm type="general"><primary>rafsi</primary><secondary>extended, change summary</secondary></indexterm>
           This change is <emphasis>de facto</emphasis>: it comes from a working document of the definition effort, and the surveyed parsers implement it. Every fu'ivla has combining forms, and in final position it stays unchanged. (A fu'ivla that begins with a vowel also takes a leading apostrophe when anything attaches before it.) Elsewhere, it takes
           <jbophrase>'y</jbophrase>, or, when no collision arises, its final vowel changes to
-          <letteral>y</letteral>. In every case, the whole result must still break apart into the intended words. The first edition allowed fu'ivla only in
+          <letteral>y</letteral>. In every case, the whole result must still break apart into the intended words.
+        </para>
+        <para>
+          The first edition allowed fu'ivla only in
           <valsi>zei</valsi>
           compounds. In place of combining forms, it printed a proposal for cultural fu'ivla that nobody ever adopted (see
           <xref linkend="section-rafsi-fuhivla" />).

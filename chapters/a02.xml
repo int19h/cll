@@ -9,7 +9,7 @@
     <xref linkend="chapter-morphology" />
     and
     <xref linkend="chapter-phonology" />
-    present informally. These rules decide which strings of letters are cmevla, cmavo, and brivla, where words begin and end, and which letter sequences are permitted at all.
+    present informally. These rules decide which strings of letters are cmevla, cmavo, and brivla, where words begin and end, and which letter sequences Lojban permits at all.
   </para>
   <para>
     The grammar is the one that the camxes parser family uses, at the revision that this edition pinned for its verification work. Jorge Llambias (<jbophrase>la .xorxes.</jbophrase>) wrote it. This appendix reproduces every rule below exactly as that file defines it. But the file itself is a plain-text program, and this appendix lays it out for readers. Each rule appears under its own name, and headings group the rules. The arrow between the name of a rule and its definition is

@@ -1224,7 +1224,7 @@
       : Lojban universal claims always imply the corresponding existential claims as well.
     </para>
     <para>
-      This implication is of a special, robust kind. It clings to the restriction, not to the claim, so it survives even when you negate the claim. The sentence
+      This implication is of a special kind. It clings to the restriction, not to the claim, so it survives even when you negate the claim. The sentence
       <jbophrase>naku ro da poi klama le zarci cu cadzu le foldi</jbophrase>
       still concerns actual store-goers. Under the negation rules of
       <xref linkend="section-negation-boundaries" />, it is exactly equivalent to
@@ -1329,7 +1329,7 @@
       In
       <xref linkend="example-random-id-e7ta" />, the description
       <jbophrase>lo tanxe poi bramau ti</jbophrase>
-      refers within the hypothesized event of possessing. The event does not have to come to pass, so the sentence points to no actual box. Note that the description itself takes us no further. An unquantified description is a constant, not a disguised quantifier, so you cannot simply
+      refers within the hypothesized event of possessing. The event does not have to come to pass, so the sentence points to no actual box. Note that the description itself takes us no further. An unquantified description is a constant, not a disguised quantifier, so you cannot
       <quote>expand</quote>
       it into a
       <valsi>da</valsi>

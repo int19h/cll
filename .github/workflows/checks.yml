@@ -39,10 +39,10 @@ jobs:
         run: python3 scripts/lint-status-markup.py chapters/*.xml
       - name: Status-markup lint self-test
         run: python3 scripts/test-lint-status-markup.py
-      - name: PEG appendix matches the machine-readable grammar
-        run: python3 scripts/check-peg-appendix.py
-      - name: PEG appendix check self-test
-        run: python3 scripts/test-check-peg-appendix.py
+      - name: PEG word-form grammar in chapter 21 matches the machine-readable grammar
+        run: python3 scripts/check-peg-grammar.py
+      - name: PEG grammar check self-test
+        run: python3 scripts/test-check-peg-grammar.py
 
   # scripts/xml_prince_postprocess.rb is the last thing to touch the XHTML
   # before Prince renders the PDF, and it works by regex over serialized

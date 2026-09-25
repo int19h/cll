@@ -4,7 +4,7 @@ This repo is a fork of the Complete Lojban Language (CLL) being updated to descr
 
 ## Ground truth
 
-- Book source: `chapters/*.xml` (DocBook 5), one file per chapter + `a01.xml` (chrestomathy appendix). `chapters/21.xml` is the EBNF grammar.
+- Book source: `chapters/*.xml` (DocBook 5), one file per chapter + appendices `a01.xml` (chrestomathy) and `a03.xml` (changes from the first edition). `chapters/21.xml` holds both formal grammars: the PEG word-form grammar and the EBNF grammar of syntax.
 - Working/integration branch: **`main`** — the fork's own line of development, and the repo default. All PRs target it. `geklojban-development` tracks upstream `lojban/cll` unchanged (never commit there); `baseline/uncll-1.2.16` freezes upstream's content plus the build fixes and serves as the Pages diff baseline; `docbook-prince` is upstream's default (CLL 1.1 line).
 - `research/` is **local-only** (excluded via `.git/info/exclude`): the full research corpus — `REPORT.md`, `CHANGES.md` (change catalog with per-item authority status), `cll-impact.md` + `impact/chNN.md` (passage-level chapter impact maps), `notes/`, `sources/` (wiki exports), the codex consensus record, `wikipage` (helper to read the local wiki mirror at `~/git/lojban-wiki`). The GitHub issues are self-contained copies of the work items (chapter issues embed their impact tables).
 - Related local checkouts: `~/git/jbotci` (companion toolchain; READ-ONLY for code, use its tools freely), `~/git/ilmentufa` (camxes reference parsers), `~/git/cll.v0` (abandoned prior attempt: reuse build/DocBook fixes only, NEVER its wording).
@@ -29,7 +29,7 @@ The ZG (2007) promise stands: pre-xorlo CLL usage is "not incorrect" — describ
 4. Comma: purely orthographic/non-phonemic.
 5. SA: describe intent; mark unsettled; parser-behavior notes; no normative exotica.
 6. le→lo examples: chapter-by-chapter judgment with a modernizing bias — ch. 2 and 6 fully modern; elsewhere modernize unless an example specifically illustrates «le», which then keeps it.
-7. PEG morphology printed as an appendix; syntax grammars stay online.
+7. The PEG word-form grammar is printed in chapter 21, next to the EBNF (maintainer, 2026-09-25, issue #118; it was appendix a02 before); the PEG syntax grammars stay online.
 8. Hyphens: classical placement rules as the norm + note on liberal parser acceptance (2019 veto acknowledged).
 9. Chrestomathy preserved; texts updated to modern rules or explicitly labeled pre-BPFK; ≥1 good-sized fully modern text required.
 10. Ch. 21 EBNF cross-reference restored (regenerated against EBNF anchors, build-time-generated).

@@ -51,8 +51,9 @@
       <jbophrase>na'e ke</jbophrase>. Those were mistakes when printed, and this edition fixes them. They are not changes to the language, and this appendix does not list them.
     </para>
     <para>
-      One more change is to the book, not to the language. The first edition printed the machine-oriented grammar (YACC) in full. This edition prints only the human-oriented EBNF grammar (see
-      <xref linkend="chapter-grammars" />), and the machine grammars are still available as electronic supplements. The YACC listing is gone because of an informal majority at the 2014 annual meeting of the LLG. That was a decision about what to print, not about the grammar itself.
+      One more change is to the book, not to the language. The first edition printed the machine-oriented grammar (YACC) in full. This edition prints the human-oriented EBNF grammar instead, and the machine grammars are still available as electronic supplements.
+      <xref linkend="chapter-grammars" />
+      also prints the PEG word-form grammar, which the first edition did not have. The YACC listing is gone because of an informal majority at the 2014 annual meeting of the LLG. That was a decision about what to print, not about the grammar itself.
     </para>
     <para>
       The official definition of Lojban syntax is still the EBNF/YACC grammar of the third baseline. The camxes PEG grammars that current software uses are the de facto standard, and nobody ever ratified them.

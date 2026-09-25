@@ -104,21 +104,21 @@
       The placement of a tense construct within a Lojban bridi is easy: right before the selbri. It goes immediately after the
       <valsi>cu</valsi>
       , and can in fact always replace the
-      <valsi>cu</valsi>. Indeed, a tense (or any tag) directly in front of a selbri binds to that selbri exactly as
+      <valsi>cu</valsi>. A tense (or any tag) directly in front of a selbri binds to that selbri exactly as
       <valsi>cu</valsi>
-      would, unless an explicit
+      does. The only exception is an explicit
       <valsi>ku</valsi>
-      intervenes; so
+      between them. So
       <jbophrase>lo nu broda ba brode</jbophrase>
-      is a complete bridi &ndash; the abstraction closes, and
+      is a complete bridi. The abstraction closes, and
       <valsi>ba</valsi>
       opens the main selbri.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>tags</primary><secondary>binding to selbri, status</secondary>
       </indexterm>
-      This tag-binding rule is committee-approved and current parsers implement it; older grammars group such tags differently &ndash; see
-      <xref linkend="appendix-changes" />.
+      This rule for tag binding is committee-approved, and current parsers implement it. Older grammars group such tags differently (see
+      <xref linkend="appendix-changes" />).
     </para>
     <para>
       In the following examples,
@@ -415,10 +415,9 @@
       </indexterm>
       Some newer material reads the middle terms as
       <quote>unspecified magnitude</quote>
-      rather than
-      <quote>medium</quote>
-      &ndash; a proposed reading only. This book teaches the established meanings; see
-      <xref linkend="appendix-changes" />.
+      and not as
+      <quote>medium</quote>. That is only a proposed reading. This book teaches the established meanings (see
+      <xref linkend="appendix-changes" />).
     </para>
   </section>
   <section xml:id="section-compound-spatial-tenses">
@@ -2404,13 +2403,15 @@
       <indexterm type="general"><primary>event contours</primary><secondary>as sumtcita</secondary>
       </indexterm>
       The event contours of selma'o ZAhO (and their space equivalents, prefixed with
-      <valsi>fe'e</valsi>) are also useful as sumtcita. The interpretation of ZAhO tcita differs from that of FAhA, VA, PU, and ZI tcita, however. Here it is the <emphasis>main bridi</emphasis> that is viewed as a process, and the tagged sumti supplies a reference &ndash; a reference event for the temporal contours, or a reference location for the
+      <valsi>fe'e</valsi>) are also useful as sumtcita. The interpretation of ZAhO tcita differs from that of FAhA, VA, PU, and ZI tcita, however.
+    </para>
+    <para>
+      Here we view the <emphasis>main bridi</emphasis> as a process, and the tagged sumti supplies a reference. For the temporal contours, it is a reference event. For the
       <valsi>fe'e</valsi>
-      forms: the ZAhO says which phase the main bridi's process is in at the time of that event, or at the place of that location. For the temporal case,
+      forms, it is a reference location. The ZAhO says which phase the process of the main bridi is in at that time, or at that place. In the temporal case,
       <jbophrase>broda ba'o lo nu brode</jbophrase>
       means the same as
-      <jbophrase>ba'o broda ca lo nu brode</jbophrase>
-      &ndash; at the time of the brode, the broda is already over. For example:
+      <jbophrase>ba'o broda ca lo nu brode</jbophrase>: at the time of the brode, the broda is already over. Here is an example:
     </para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-xAb1">
@@ -2427,7 +2428,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      Here the leaving is complete &ndash; in its aftermath &ndash; at the reference event, Clark's speaking. Contrast
+      Here the leaving is complete at the reference event, Clark's speaking: the leaving is in its aftermath. Contrast
       <xref linkend="example-random-id-xAb1" />
       with:
     </para>
@@ -2442,12 +2443,10 @@
     </example>
     <para role="indent">
       With plain
-      <valsi>ba</valsi>
-      the leaving simply follows the speaking; with
-      <valsi>ba'o</valsi>
-      the leaving is already finished business when the speaking happens. (And as explained in
+      <valsi>ba</valsi>, the leaving follows the speaking. With
+      <valsi>ba'o</valsi>, the leaving is already finished when the speaking happens. (And as
       <xref linkend="section-vagueness" />
-      , the vague interval of
+      explains, the vague interval of
       <valsi>ba</valsi>
       does not even strictly exclude some overlap!)
     </para>
@@ -2460,7 +2459,7 @@
         <gloss>I go-to the store [prospective] the event-of I eat</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">which indicates that at the time I eat, my going to the store has not yet begun &ndash; it is still in prospect &ndash; whereas</para>
+    <para role="noindent">which indicates that at the time I eat, my going to the store has not yet begun (it is still in prospect), whereas</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-0VJp">
       <title><anchor xml:id="c10e12d9" /></title>
 
@@ -2473,10 +2472,9 @@
     <para role="status-note">
       <indexterm type="general"><primary>ZAhO</primary><secondary>sumtcita interpretation, change of</secondary>
       </indexterm>
-      The reading taught here is checkpointed. Older text reads a ZAhO sumtcita the other way around &ndash; this book's own old
-      <quote>mi morsi ba'o le nu mi jmive</quote>
-      is a famous example &ndash; so reread it accordingly; see
-      <xref linkend="appendix-changes" />.
+      The reading taught here is checkpointed. Older text reads a ZAhO sumtcita the other way around. A famous example is
+      <quote>mi morsi ba'o le nu mi jmive</quote>, from the first edition of this book. Reread such text accordingly (see
+      <xref linkend="appendix-changes" />).
     </para>
 
     <para>Here is an example which mixes temporal ZAhO (as a tense) and spatial ZAhO (as a sumtcita):</para>
@@ -2501,9 +2499,12 @@
     <para role="indent">
       The two contours here make two separate claims. The temporal
       <valsi>za'o</valsi>
-      says the voyage continued beyond its natural stopping point &ndash; it went on too long. The spatial
+      says that the voyage continued beyond its natural stopping point: it went on too long. The spatial
       <jbophrase>fe'e ba'o</jbophrase>
-      takes the lake as a reference <emphasis>location</emphasis> (not an arrival time) and says that there, the actual voyage is in its spatial aftermath: whatever sailing took place is over at that spot. Neither contour says where the natural stopping point lay, or what the boat did instead. One point of clarification: although
+      takes the lake as a reference <emphasis>location</emphasis>, not an arrival time. It says that at the lake, the actual voyage is in its spatial aftermath: whatever sailing took place is over at that spot. Neither contour says where the natural stopping point was, or what the boat did instead.
+    </para>
+    <para>
+      One point of clarification: although
       <valsi valid="maybe">xelklama</valsi>
       appears to mean simply
       <quote>is-a-mode-of-transport</quote>
@@ -3492,8 +3493,8 @@
     <para>
       <indexterm type="general"><primary>ZAhO</primary><secondary>in tense connectives</secondary>
       </indexterm>
-      ZAhO is the exception, because of its reversed sumtcita interpretation (
-      <xref linkend="section-tcita" />): in the subordinate form it is the <emphasis>main</emphasis> sentence X that carries the contour, located at the tagged event Y, while the connective forms keep their first-edition meaning, placing the second sentence at the named contour of the first. The sentences therefore appear in the <emphasis>same</emphasis> order rather than exchanging places:
+      ZAhO is the exception, because of its reversed sumtcita interpretation (see
+      <xref linkend="section-tcita" />). In the subordinate form, the <emphasis>main</emphasis> sentence X carries the contour, at the time of the tagged event Y. But the connective forms keep their meaning from the first edition: they place the second sentence at the named contour of the first. So the sentences appear in the <emphasis>same</emphasis> order, and they do not exchange places:
     </para>
     <informaltable>
       <colgroup />
@@ -3520,8 +3521,7 @@
       For example,
       <jbophrase>mi klama le zarci ba'o le nu mi citka</jbophrase>
       (my store trip is over by the time of the eating) matches
-      <jbophrase>mi klama le zarci .i ba'o bo mi citka</jbophrase>
-      &ndash; the going, and then, in its aftermath, the eating &ndash; not the sentence-swapped form that the other tenses would use.
+      <jbophrase>mi klama le zarci .i ba'o bo mi citka</jbophrase>: the going, and then, in its aftermath, the eating. It does not match the form with swapped sentences that the other tenses use.
     </para>
   </section>
   <section xml:id="section-tense-logical-connection">
@@ -4730,9 +4730,8 @@
       </grammar-template>
       </member>
     </simplelist>
-    <para>neglecting the question of what is claimed. (ZAhO tenses are again the exception: because of their reversed sumtcita interpretation, the subordinate mate of the two connective schemata is
-      <grammar-template>X ZAhO le nu Y</grammar-template>
-      , with the sentences in the same order &ndash; see
+    <para>neglecting the question of what is claimed. (ZAhO tenses are again the exception. Because of their reversed sumtcita interpretation, the subordinate mate of the two connective schemata is
+      <grammar-template>X ZAhO le nu Y</grammar-template>, with the sentences in the same order: see
       <xref linkend="section-tense-connection" />.) In the modal sentence schemata, the modal tag is always followed by Y, the sentence representing the event in the x<subscript>1</subscript> place of the gismu that underlies the BAI. In the tensed sentences, no such simple rule exists.</para>
   </section>
   <section xml:id="section-tense-questions">

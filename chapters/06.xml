@@ -229,22 +229,27 @@
       </indexterm>
       The word
       <valsi>lo</valsi>
-      is Lojban's generic article, and the workhorse of everyday Lojban: when in doubt about which descriptor to use, use
-      <valsi>lo</valsi>. A description built with it refers to something &ndash; one thing or several, the word itself does not say &ndash; which genuinely fits the description. The several English translations shown above are all correct: unlike English, Lojban does not force a choice between
+      is the generic article of Lojban, and the workhorse of everyday Lojban. If you are not sure which descriptor to use, use
+      <valsi>lo</valsi>. A description with
+      <valsi>lo</valsi>
+      refers to something that really fits the description. It can be one thing or several, and the word itself does not say which.
+    </para>
+    <para>
+      All the English translations above are correct. Unlike English, Lojban does not force a choice between
       <quote>a market</quote>, <quote>the market</quote>, and
-      <quote>markets</quote>. Only context tells us which is meant. (This does not mean Lojban has no way of specifying the number of markets: that mechanism is explained in
-      <xref linkend="section-quantified-descriptions" />.)
+      <quote>markets</quote>. Only the context tells which one the speaker means. (Lojban does have a way to give the number of markets, as
+      <xref linkend="section-quantified-descriptions" />
+      explains.)
     </para>
     <para>
       <indexterm type="general"><primary>descriptions</primary><secondary>importance of selbri first place in</secondary>
       </indexterm>
       <indexterm type="general"><primary>descriptors</primary><secondary>purpose of</secondary>
       </indexterm>
-      The general purpose of all descriptors is to create a sumti which refers to something that might occur in the x<subscript>1</subscript> place of the selbri belonging to the description. Thus
+      All descriptors have the same general purpose. They create a sumti that refers to something that can occur in the x<subscript>1</subscript> place of the selbri in the description. So
       <jbophrase>lo zarci</jbophrase>
-      refers to something which could be found in the x<subscript>1</subscript> place of
-      <valsi>zarci</valsi>
-      &ndash; a market, or several.
+      refers to something that can fit the x<subscript>1</subscript> place of
+      <valsi>zarci</valsi>: a market, or several markets.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>lo</primary><secondary>and truth of selbri</secondary>
@@ -252,10 +257,10 @@
       <indexterm type="general"><primary>veridicality</primary></indexterm>
       The central property of
       <valsi>lo</valsi>
-      is that it is <quote>veridical</quote>: whatever
+      is that it is <quote>veridical</quote>. That is, whatever
       <jbophrase>lo zarci</jbophrase>
-      refers to must really be a market &ndash; that is, it must be something which can appear in the x<subscript>1</subscript> place of a truthful bridi whose selbri is
-      <valsi>zarci</valsi>. Thus
+      refers to must really be a market. It must be something that can appear in the x<subscript>1</subscript> place of a true bridi whose selbri is
+      <valsi>zarci</valsi>. For this reason, the sentence
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-fSxN">
       <title><anchor xml:id="c6e2d5" /></title>
@@ -268,9 +273,9 @@
       </interlinear-gloss>
     </example>
     <para role="noindent">
-      must be false in Lojban: whatever things
+      must be false in Lojban. Whatever things
       <jbophrase>lo mlatu</jbophrase>
-      picks out are really cats, and no cat is a dog. Pointing at some specific cats or dogs would not make
+      picks out are really cats, and no cat is a dog. Pointing at some specific cats or dogs does not make
       <xref linkend="example-random-id-fSxN" />
       true, because those specific individuals are no more both-cat-and-dog than any others. In general,
       <valsi>lo</valsi>
@@ -279,9 +284,13 @@
     <para>
       <indexterm type="general"><primary>descriptions</primary><secondary>as referring terms</secondary>
       </indexterm>
-      It is worth pausing on what a description like
+      Consider what a description like
       <jbophrase>lo zarci</jbophrase>
-      does and does not say. It <emphasis>refers</emphasis>: it picks out some market or markets, and the rest of the sentence then talks about them. It does not say how many they are, or which ones they are, or whether they do things together or separately. All of those questions have answers only if the speaker chooses to supply them &ndash; by adding a number (<xref linkend="section-quantified-descriptions" />), or by using one of the more specialized descriptors explained later in this chapter. This reticence is not vagueness for its own sake: most of the time, context answers such questions effortlessly, just as it does for the missing number distinction in English
+      says and does not say. It <emphasis>refers</emphasis>. It picks out some market or markets, and the rest of the sentence then talks about them. It does not say how many they are, or which ones they are, or whether they do things together or separately.
+    </para>
+    <para>
+      These questions have answers only if the speaker chooses to supply them. The speaker can add a number (see
+      <xref linkend="section-quantified-descriptions" />), or use one of the more specialized descriptors later in this chapter. This reticence is not vagueness for its own sake. Most of the time, the context answers such questions without effort, as it does for the missing distinction of number in the English
       <quote>the sheep</quote>.
     </para>
     <para>
@@ -292,8 +301,7 @@
       <indexterm type="general"><primary>specific descriptions</primary></indexterm>
       The second descriptor of this section is
       <valsi>le</valsi>. Unlike
-      <valsi>lo</valsi>
-      ,
+      <valsi>lo</valsi>,
       <valsi>le</valsi>
       is specific:
     </para>
@@ -353,18 +361,17 @@
       <indexterm type="lojban-word"><primary>le</primary><secondary>in false-to-fact descriptions</secondary>
       </indexterm>
       Unlike
-      <xref linkend="example-random-id-fSxN" />
-      ,
+      <xref linkend="example-random-id-fSxN" />,
       <xref linkend="example-random-id-PutX" />
       is not self-contradictory in Lojban, because
       <jbophrase>le mlatu</jbophrase>
       merely means something or other which, for my present purposes, I choose to describe as a cat, whether or not it really is a cat. A plausible instance would be: some animal we had assumed to be a cat at a distance turned out to be actually a dog on closer observation.
       <xref linkend="example-random-id-PutX" />
-      is what I would say to point out my observation to you. This property of
+      is what I would say to point out my observation to you. We call this property of
       <valsi>le</valsi>
-      is called <quote>non-veridicality</quote>: a
+      <quote>non-veridicality</quote>. A
       <valsi>le</valsi>
-      description reflects the speaker's way of identifying things, not a claim about what they really are.
+      description reflects how the speaker identifies things. It does not claim what they really are.
     </para>
 
     <para>
@@ -385,13 +392,11 @@
       <valsi>lo</valsi>
       and
       <valsi>le</valsi>
-      turns on two independent questions: is the description offered as really true of the things referred to (veridical
-      <valsi>lo</valsi>
-      versus descriptive
-      <valsi>le</valsi>)? And is the speaker singling out particular things he or she has in mind (specific
-      <valsi>le</valsi>
-      versus generic
-      <valsi>lo</valsi>)? When neither specificity nor a possibly-loose description is wanted &ndash; which is most of the time &ndash;
+      depends on two independent questions. First, does the speaker offer the description as really true of the things (veridical
+      <valsi>lo</valsi>, or descriptive
+      <valsi>le</valsi>)? Second, does the speaker single out particular things that he or she has in mind (specific
+      <valsi>le</valsi>, or generic
+      <valsi>lo</valsi>)? Most of the time, the speaker wants neither specificity nor a description that can be loose. In those cases,
       <valsi>lo</valsi>
       is the right choice.
     </para>
@@ -496,10 +501,10 @@
     </example>
     <para role="indent">
       <xref linkend="example-random-id-nXyo" />
-      is about a specific bear or bearlike thing(s), or thing(s) which the speaker (perhaps whimsically or metaphorically) describes as a bear (or more than one);
+      is about a specific bear or bearlike thing(s), or thing(s) which the speaker (perhaps whimsically or metaphorically) describes as a bear (or more than one).
       <xref linkend="example-random-id-93Yv" />
-      is about one or more genuine bears, and says nothing about which bears they are. If several bears are meant, neither example settles whether each of them wrote separately or they collaborated on the story; Lojban has ways of making that explicit (see
-      <xref linkend="section-masses" />), but plain descriptions leave it to context.
+      is about one or more genuine bears, and it says nothing about which bears they are. If the speaker means several bears, neither example settles whether each bear wrote separately or they worked on the story together. Lojban has ways to make that explicit (see
+      <xref linkend="section-masses" />), but plain descriptions leave it to the context.
     </para>
     <para>
       <indexterm type="general"><primary>bears</primary><secondary>and fuzzy borderlines</secondary>
@@ -519,7 +524,7 @@
       <xref linkend="example-random-id-nXyo" />
       could be true if the speaker is sufficiently peculiar in what he or she describes as a bear,
       <xref linkend="example-random-id-93Yv" />
-      is false unless some genuine bear has taken up authorship.
+      is false unless a genuine bear wrote the story.
     </para>
     <para>Similarly, compare the following two examples, which are analogous to
       <xref linkend="example-random-id-nXyo" />
@@ -554,15 +559,16 @@
       <jbophrase>le remna</jbophrase>
       is in effect a shorthand reference to that person.
       <xref linkend="example-random-id-qKYf" />
-      merely says that the author is human &ndash; a natural thing to say when nothing more is known about the author, or when nothing more is relevant.
+      merely says that the author is human. This is a natural thing to say when the speaker knows nothing more about the author, or when nothing more is relevant.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>xorlo</primary></indexterm>
       <indexterm type="general"><primary>gadri reform</primary></indexterm>
       The meaning of
       <valsi>lo</valsi>
-      given here is the fruit of a reform the community calls <quote>xorlo</quote>, after the nickname of its principal author; it is now the ratified standard. If you learned your Lojban from the first edition of this book, the articles are the biggest thing that has changed &ndash; the old definitions, and how to read older text, are laid out in
-      <xref linkend="appendix-changes" />.
+      in this book comes from a reform that the community calls <quote>xorlo</quote>, after the nickname of its principal author. It is now the ratified standard. If you learned your Lojban from the first edition of this book, the articles are the biggest change.
+      <xref linkend="appendix-changes" />
+      gives the old definitions and explains how to read older text.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>ku</primary></indexterm>
@@ -618,34 +624,37 @@
     <para role="indent">
       The number
       <valsi>ci</valsi>
-      placed inside the description simply tells us that we are talking about three people; this mechanism is explained fully in
-      <xref linkend="section-quantified-descriptions" />. I will assume that there is only one piano under discussion.
+      inside the description tells us that we are talking about three people.
+      <xref linkend="section-quantified-descriptions" />
+      explains this mechanism fully. I will assume that there is only one piano under discussion.
     </para>
     <para>
       <indexterm type="general"><primary>distributivity</primary><secondary>contrasted with collective action</secondary>
       </indexterm>
-      What exactly is being claimed? There are two rather different situations that
+      What exactly does this sentence claim?
       <xref linkend="example-random-id-mwhq" />
-      might describe. Perhaps each of the three carried the piano, alone, one after another &ndash; three separate feats of strength. Philosophers call this the
+      can describe two rather different situations. In the first, each of the three carried the piano alone, one after another: three separate feats of strength. Philosophers call this the
       <quote>distributive</quote>
-      reading: the carrying is distributed over the individuals, each satisfying the selbri by himself or herself. Or perhaps &ndash; pianos being heavy &ndash; person 1 lifted one end, person 2 the other, and person 3 held up the middle, so that no one of them can be said to have carried the piano alone: only all three together did. This is the
+      reading. The carrying is distributed over the individuals, and each of them satisfies the selbri alone.
+    </para>
+    <para>
+      Or perhaps, because pianos are heavy, person 1 lifted one end, person 2 the other, and person 3 supported the middle. So none of them carried the piano alone. Only all three together did. This is the
       <quote>collective</quote>
       reading.
+    </para>
+    <para>
       <xref linkend="example-random-id-mwhq" />
-      is neutral between the two: like number, this is something a plain description simply does not specify, and context usually settles it. (For a piano, the collective reading is the likely guess; if the x<subscript>2</subscript> were a suitcase, we would probably understand the distributive one.)
+      is neutral between the two readings. Like number, a plain description does not specify this, and the context usually settles it. (For a piano, the collective reading is the likely guess. If the x<subscript>2</subscript> is a suitcase, the distributive reading is more likely.)
     </para>
     <para>
       <indexterm type="general"><primary>groups</primary></indexterm>
       <indexterm type="general"><primary>masses</primary><secondary>now called groups</secondary>
       </indexterm>
-      Lojban can, however, make collectivity explicit. That is the job of the descriptors
-      <valsi>loi</valsi>
-      ,
-      <valsi>lei</valsi>
-      , and
-      <valsi>lai</valsi>
-      , which refer to <quote>groups</quote> &ndash; in Lojban,
-      <valsi>gunma</valsi>. (Older texts say <quote>masses</quote>, and mean something rather different by it; see
+      But Lojban can also make the collective reading explicit. That is the job of the descriptors
+      <valsi>loi</valsi>,
+      <valsi>lei</valsi>, and
+      <valsi>lai</valsi>. They refer to <quote>groups</quote> (in Lojban,
+      <valsi>gunma</valsi>). (Older texts say <quote>masses</quote>, and they mean something rather different by it: see
       <xref linkend="appendix-changes" />.)
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Ba">
@@ -660,14 +669,17 @@
     <para role="indent">
       <indexterm type="general"><primary>groups</primary><secondary>collective satisfaction by</secondary>
       </indexterm>
-      Here the three persons are treated as a single unit, a group, and it is the group that does the carrying. A group satisfies a selbri collectively: the claim is true of the group as a whole, and there is no implication that any member satisfies it alone. Indeed, in our piano-moving scene none of the three individually carries the piano &ndash; person 3 may not even be lifting anything, merely steadying it &ndash; yet
+      Here the sentence treats the three persons as a single unit, a group, and the group does the carrying. A group satisfies a selbri collectively. The claim is true of the group as a whole, and it does not imply that any member satisfies it alone. In our piano-moving scene, none of the three carries the piano alone. Perhaps person 3 lifts nothing at all and only steadies the piano. Yet
       <xref linkend="example-random-id-x6Ba" />
-      is straightforwardly true.
+      is true.
     </para>
     <para>
       <indexterm type="general"><primary>groups</primary><secondary>properties of</secondary>
       </indexterm>
-      A group is a thing in its own right, with its own properties. Some of its properties arise from joint action of its members, like carrying the piano; others belong to the group as such &ndash; the group of three people weighs 200 kilograms, has three members, and perhaps has existed as a piano-moving team for years, none of which is true of any single member. And many properties of the members do not carry over to the group at all: each of the three may be strong, while the group as a team is clumsy. A group simply has whatever properties it has, and logic applies to statements about groups exactly as to statements about anything else.
+      A group is a thing in its own right, with its own properties. Some of its properties come from the joint action of its members, like carrying the piano. Other properties belong to the group as such. For example, the group of three people weighs 200 kilograms, and it has three members. Perhaps it is also a piano-moving team that is several years old. None of these properties is true of any single member.
+    </para>
+    <para>
+      Also, many properties of the members do not carry over to the group at all. Each of the three can be strong, while the group as a team is clumsy. A group has whatever properties it has, and logic applies to statements about groups exactly as to statements about anything else.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>loi</primary><secondary>contrasted with &quot;lei&quot;</secondary>
@@ -680,15 +692,15 @@
       <valsi>lo</valsi>
       and
       <valsi>la</valsi>
-      just as
+      in the same way that
       <valsi>lei</valsi>
       is related to
-      <valsi>le</valsi>
-      :
+      <valsi>le</valsi>. So
       <jbophrase>lei ci prenu</jbophrase>
-      is a group of specific individuals whom the speaker describes as persons, while
+      is a group of specific individuals whom the speaker describes as persons. But
       <jbophrase>loi ci prenu</jbophrase>
-      is a group of three genuine persons, without any indication of which ones:
+      is a group of three genuine persons, with no indication of which ones. Here is an example of
+      <valsi>loi</valsi>:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-T1pF">
       <title><anchor xml:id="c6e3d3" /></title>
@@ -701,18 +713,18 @@
     </example>
     <para role="indent">
       <indexterm type="general"><primary>collective predicates</primary></indexterm>
-      Some selbri practically demand a collective subject:
+      Some selbri practically demand a collective subject. The selbri
       <valsi>sruri</valsi>
-      is a good example, since no single student can surround a building. With such predicates the group descriptors are the natural choice. (The number
+      is a good example, because no single student can surround a building. With such predicates, the group descriptors are the natural choice. (The number
       <valsi>so'i</valsi>
       means
-      <quote>many</quote>; placed inside the description, it gives the size of the group.)
+      <quote>many</quote>. Inside the description, it gives the size of the group.)
     </para>
     <para>
       <indexterm type="general"><primary>generic statements</primary></indexterm>
       <indexterm type="lojban-word"><primary>loi</primary><secondary>not needed for generic statements</secondary>
       </indexterm>
-      One thing you do <emphasis>not</emphasis> need a group descriptor for is general statements about kinds. Plain
+      You do <emphasis>not</emphasis> need a group descriptor for general statements about kinds. Plain
       <valsi>lo</valsi>
       does that job by itself:
     </para>
@@ -727,13 +739,12 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      This is a natural consequence of
-      <valsi>lo</valsi>
-      being fully generic: a statement about
+      This follows naturally from the fully generic nature of
+      <valsi>lo</valsi>. A statement about
       <jbophrase>lo cinfo</jbophrase>
-      can be a statement about lions in general, or lions as a kind, and it is not falsified by the existence of zoo lions elsewhere, any more than the English
+      can be a statement about lions in general, or about lions as a kind. Zoo lions elsewhere do not make it false, and they do not make the English
       <quote>Lions dwell in Africa</quote>
-      is. Similarly, English words for substances translate smoothly:
+      false either. Similarly, English words for substances translate smoothly:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Bc">
       <title><anchor xml:id="c6e3d9" /></title>
@@ -748,10 +759,11 @@
       <indexterm type="general"><primary>substances</primary></indexterm>
       Here
       <jbophrase>lo matne</jbophrase>
-      refers to butter as such &ndash; not to any particular pat of it, and not to a count of butter-objects. That some particular butter is frozen hard does not make
+      refers to butter as such. It does not refer to any particular pat of butter, or to a count of butter objects. Some butter is frozen hard, but that does not make
       <xref linkend="example-random-id-x6Bc" />
-      false, any more than a soft banana falsifies
-      <quote>bananas are yellow</quote>. How far such generic reference stretches &ndash; kinds, substances, abstractions &ndash; is deliberately left open by the language definition; speakers differ, and context does most of the work.
+      false, just as a green banana does not make
+      <quote>bananas are yellow</quote>
+      false. The language definition deliberately leaves open how far such generic reference stretches: to kinds, to substances, or to abstractions. Speakers differ, and the context does most of the work.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>lai</primary></indexterm>
@@ -773,30 +785,28 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      in a context where
+      in a context where listeners understand
       <jbophrase>la cribe</jbophrase>
-      would be understood as referring to several people &ndash; say, Tom Bear and Fred Bear &ndash; means that the Bears wrote the book as collaborators: the group did the writing. Using
+      to refer to several people (say, Tom Bear and Fred Bear), means that the Bears wrote the book as collaborators. The group did the writing. With
       <valsi>la</valsi>
       instead of
-      <valsi>lai</valsi>
-      in
+      <valsi>lai</valsi>,
       <xref linkend="example-random-id-H8z5" />
-      would leave the question open, exactly as with
+      leaves the question open, exactly as with
       <jbophrase>lo ci prenu</jbophrase>
       and the piano.
     </para>
     <para>
-      Groups may also be built out of specific named or listed individuals with the connective
+      You can also build groups from specific named or listed individuals with the connective
       <valsi>joi</valsi>
       (see
-      <xref linkend="chapter-connectives" />) and converted to and from other kinds of reference with the qualifiers of
+      <xref linkend="chapter-connectives" />). You can convert groups to and from other kinds of reference with the qualifiers of
       <xref linkend="section-sumti-qualifiers" />. The underlying selbri for groups is
-      <valsi>gunma</valsi>
-      : x<subscript>1</subscript> is a group with members x<subscript>2</subscript>; a sumti like
+      <valsi>gunma</valsi>:
+      <quote>x<subscript>1</subscript> is a group with members x<subscript>2</subscript></quote>. A sumti like
       <jbophrase>loi ci prenu</jbophrase>
-      means neither more nor less than
-      <jbophrase>lo gunma be lo ci prenu</jbophrase>
-      , a group whose members are three people.
+      means exactly the same as
+      <jbophrase>lo gunma be lo ci prenu</jbophrase>, a group whose members are three people.
     </para>
   </section>
   <section xml:id="section-sets">
@@ -821,23 +831,31 @@
     <para role="indent">
       <indexterm type="general"><primary>sets</primary><secondary>contrasted with groups</secondary>
       </indexterm>
-      Having said so much about groups, let us turn to sets. A set, in the mathematical sense, is an abstract object determined entirely by its membership: it has properties like cardinality (how many elements it has), membership (the relationship between a set and its elements), and inclusion (the relationship between a set and its subsets), and essentially no others. This makes sets quite different from groups. A group of three people can carry a piano and weigh 200 kilograms; the <emphasis>set</emphasis> of those three people carries nothing and weighs nothing, for a set is not the sort of thing that acts or weighs. The set descriptors
-      <valsi>le'i</valsi>
-      ,
-      <valsi>lo'i</valsi>
-      and
+      After so much about groups, let us turn to sets. A set, in the mathematical sense, is an abstract object, and its membership alone determines it. A set has essentially only these properties:
+    </para>
+    <itemizedlist role="bullets">
+      <listitem>
+        <para>Cardinality: how many elements it has.</para>
+      </listitem>
+      <listitem>
+        <para>Membership: the relationship between a set and its elements.</para>
+      </listitem>
+      <listitem>
+        <para>Inclusion: the relationship between a set and its subsets.</para>
+      </listitem>
+    </itemizedlist>
+    <para>
+      This makes sets quite different from groups. A group of three people can carry a piano and weigh 200 kilograms. But the <emphasis>set</emphasis> of those three people carries nothing and weighs nothing, because a set is not the sort of thing that acts or weighs. The set descriptors
+      <valsi>le'i</valsi>,
+      <valsi>lo'i</valsi>, and
       <valsi>la'i</valsi>
       correspond to the group descriptors
-      <valsi>lei</valsi>
-      ,
-      <valsi>loi</valsi>
-      , and
+      <valsi>lei</valsi>,
+      <valsi>loi</valsi>, and
       <valsi>lai</valsi>
-      respectively. Here are some examples contrasting
-      <valsi>lo</valsi>
-      ,
-      <valsi>loi</valsi>
-      , and
+      respectively. Here are some examples that contrast
+      <valsi>lo</valsi>,
+      <valsi>loi</valsi>, and
       <valsi>lo'i</valsi>:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Ca">
@@ -869,19 +887,22 @@
     </example>
     <para role="indent">
       <xref linkend="example-random-id-x6Ca" />
-      says something about rats in general, each or any of them &ndash; brownness is a property of individual rats.
+      says something about rats in general, about each or any of them. Brownness is a property of individual rats.
       <xref linkend="example-random-id-x6Cb" />
-      (an unlikely municipal arrangement, but a grammatical one) attributes the cleaning to a group of rats collectively: no single rat cleans the park.
+      (an unlikely municipal arrangement, but a grammatical one) says that a group of rats does the cleaning collectively. No single rat cleans the park.
       <xref linkend="example-random-id-x6Cc" />
-      is about the set of rats, and largeness here is cardinality: the set has billions of members. It would be incorrect to call the set of rats brown &ndash; brown-ness is not the sort of property that sets possess. Note that a bare
+      is about the set of rats, and largeness here is cardinality: the set has billions of members. It is incorrect to call the set of rats brown, because brownness is not the sort of property that sets have.
+    </para>
+    <para>
+      A bare
       <jbophrase>lo'i ratcu</jbophrase>
-      refers to a set of rats supplied by context; taken in the broadest context it is naturally read as the set of all rats there are, but that reading comes from context, not from a built-in
+      refers to a set of rats that the context supplies. In the broadest context, the natural reading is the set of all rats that exist. But that reading comes from the context, not from a built-in
       <quote>all</quote>.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>fadni</primary><secondary>example of set place</secondary>
       </indexterm>
-      Lojban speakers should generally think twice before employing the set descriptors: if the idea is that some things do something together, the group descriptors are wanted instead. However, certain predicates have places that require set sumti to fill them. For example, the place structure of
+      Think twice before you use the set descriptors. If you mean that some things do something together, use the group descriptors instead. However, certain predicates have places that require set sumti to fill them. For example, the place structure of
       <valsi>fadni</valsi>
       is:
     </para>
@@ -905,26 +926,23 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      Note that the x<subscript>2</subscript> place has been omitted; I am not specifying in exactly which way I am typical &ndash; whether in language knowledge, or age, or interests, or something else. If
+      Note that the x<subscript>2</subscript> place has been omitted; I am not specifying in exactly which way I am typical &ndash; whether in language knowledge, or age, or interests, or something else. If you change
       <valsi>lo'i</valsi>
-      were changed to
+      to
       <valsi>lo</valsi>
       in
-      <xref linkend="example-random-id-xIXo" />
-      , the whole point would be lost:
+      <xref linkend="example-random-id-xIXo" />, the sentence loses its whole point. The sumti
       <jbophrase>lo lobypli</jbophrase>
-      supplies a person or persons, and one cannot be typical <emphasis>of a person</emphasis> &ndash; the x<subscript>3</subscript> of
+      supplies a person or persons, and nobody can be typical <emphasis>of a person</emphasis>. The x<subscript>3</subscript> place of
       <valsi>fadni</valsi>
       wants the population as a set, not its members.
     </para>
     <para>
       The underlying selbri for sets is
-      <valsi>selcmi</valsi>
-      : a sumti like
+      <valsi>selcmi</valsi>. A sumti like
       <jbophrase>lo'i ratcu</jbophrase>
       means the same as
-      <jbophrase>lo selcmi be lo ratcu</jbophrase>
-      , a set whose members are rats. Since a set is determined by its members, a set of things can only be formed when it is determinate what its members are; sets of vaguely generic or substance-like referents do not arise in practice.
+      <jbophrase>lo selcmi be lo ratcu</jbophrase>, a set whose members are rats. Its members determine a set, so you can form a set only when its members are determinate. In practice, sets of vaguely generic or substance-like referents do not arise.
     </para>
   </section>
   <section xml:id="section-typicals">
@@ -935,11 +953,11 @@
       <valsi>lo'e</valsi>
       and
       <valsi>le'e</valsi>
-      are the least settled words in this chapter. The language's definition process never finalized their semantics; what follows is the traditional account, essentially that of the first edition, and it is not universally accepted &ndash; some speakers prefer to express typicality with ordinary generic
+      are the least settled words in this chapter. The process that defined the language never finalized their meanings. What follows is the traditional account, which is essentially that of the first edition. Not everyone accepts it: some speakers prefer to express typicality with ordinary generic
       <valsi>lo</valsi>
       (see
-      <xref linkend="section-masses" />) or with the selbri
-      <valsi>fadni</valsi>. They are also, in practice, rarely used. Read this section as a description of a convention, not a settled rule.
+      <xref linkend="section-masses" />), or with the selbri
+      <valsi>fadni</valsi>. In practice, speakers also rarely use these two words. Read this section as a description of a convention, not a settled rule.
     </para>
     <para>The following cmavo are discussed in this section:</para>    <cmavo-list>      <cmavo-entry>        <cmavo>lo'e</cmavo>        <selmaho>LE</selmaho>
         <description>the typical</description>
@@ -952,15 +970,14 @@
       </cmavo-entry>
     </cmavo-list>
     <para role="indent">
-      On the traditional account, then, Lojban has a method for discriminating between
+      Here is the traditional account. Lojban has a method for discriminating between
       <quote>the lion</quote>
       who lives in Africa and
       <quote>the Englishman</quote>
       who, generally speaking, doesn't live in Africa even though some Englishmen do. The descriptor
       <valsi>lo'e</valsi>
-      is glossed
-      <quote>the typical</quote>
-      , as in
+      has the usual gloss
+      <quote>the typical</quote>, as in
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-AJKt">
       <title>
@@ -1141,7 +1158,7 @@
     <para>
       <indexterm type="general"><primary>quantifiers</primary><secondary>explicit on sumti</secondary>
       </indexterm>
-      Any sumti may be preceded by an explicit quantifier, which says how many of the things referred to by the sumti the bridi is talking about. Here are some simple examples contrasting sumti with and without explicit quantifiers:
+      An explicit quantifier can come before any sumti. It tells how many of the referents of the sumti the bridi talks about. Here are some simple examples that contrast sumti with and without explicit quantifiers:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-qL61">
       <title><anchor xml:id="c6e6d1" /></title>
@@ -1193,21 +1210,19 @@
       <indexterm type="general"><primary>quantifiers</primary><secondary>distributive nature of</secondary>
       </indexterm>
       A quantified sumti talks about its things one at a time. When I say
-      <xref linkend="example-random-id-qLAH" />
-      , I claim of each of the two that he or she walks on the ice: quantification is inherently distributive, in the sense of
-      <xref linkend="section-masses" />. If what I want to say is something two people do jointly, a quantifier is the wrong tool, and the group descriptors of
+      <xref linkend="example-random-id-qLAH" />, I claim of each of the two that he or she walks on the ice. Quantification is inherently distributive, in the sense of
+      <xref linkend="section-masses" />. If I want to say that two people do something jointly, a quantifier is the wrong tool. The group descriptors of
       <xref linkend="section-masses" />
-      are the right one. This point matters more than it may seem: it is the reason quantifiers and groups are different mechanisms rather than variations on one theme.
+      are the right one. This point matters more than it seems. It is the reason why quantifiers and groups are different mechanisms, not variations on one theme.
     </para>
     <para>
       <indexterm type="general"><primary>quantifiers</primary><secondary>contrast between quantified and unquantified sumti</secondary>
       </indexterm>
-      What, then, of the unquantified
-      <xref linkend="example-random-id-qL61" />? It simply refers to the listeners &ndash; however many there are &ndash; and says they walk on the ice, without spelling out
-      <quote>each separately</quote>
-      the way
+      What, then, about the unquantified
+      <xref linkend="example-random-id-qL61" />? It refers to the listeners, however many there are, and says that they walk on the ice. It does not spell out
+      <quote>each separately</quote>, as
       <valsi>ro</valsi>
-      would:
+      does:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-0qr0">
       <title><anchor xml:id="c6e6d4" /></title>
@@ -1219,28 +1234,27 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      In most contexts
+      In most contexts,
       <xref linkend="example-random-id-qL61" />
       and
       <xref linkend="example-random-id-0qr0" />
-      come to the same thing, since walking is something people mostly do one by one. But they are not synonyms:
+      come to the same thing, because people mostly walk one by one. But they are not synonyms.
       <xref linkend="example-random-id-0qr0" />
-      insists on the one-at-a-time reading, while
+      insists on the reading with one at a time.
       <xref linkend="example-random-id-qL61" />
-      leaves the manner of walking &ndash; single file, arm in arm, in a heap &ndash; entirely open.
+      leaves the manner of walking entirely open: single file, arm in arm, or in a heap.
     </para>
     <para>
-      Here we reach one of the most important rules in this book: <emphasis>a sumti without an explicit quantifier has no quantifier at all</emphasis>. It is a referring expression, pure and simple &ndash; in the language of logic, a <quote>constant</quote>: a term that names its referents outright, as opposed to a quantified term like
+      Here we reach one of the most important rules in this book: <emphasis>a sumti without an explicit quantifier has no quantifier at all</emphasis>. It is only a referring expression. In the language of logic, it is a <quote>constant</quote>: a term that names its referents directly. A quantified term like
       <jbophrase>re do</jbophrase>
-      , which selects from them. The distinction does real work in
-      <xref linkend="chapter-quantifiers" />
-      , where quantified terms interact with negation and with each other in ways constants never do. Commit the rule to memory now: no quantifier is present unless you say one.
+      is different, because it selects from its referents. The distinction does real work in
+      <xref linkend="chapter-quantifiers" />, where quantified terms interact with negation and with each other in ways that constants never do. Remember this rule now: no quantifier is present unless you say one.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>implicit quantifiers</primary><secondary>abolition of</secondary>
       </indexterm>
-      This rule is part of the ratified article reform; older texts follow a different convention here &ndash; see
-      <xref linkend="appendix-changes" />.
+      This rule is part of the ratified reform of the articles. Older texts follow a different convention here (see
+      <xref linkend="appendix-changes" />).
     </para>
   </section>
   <section xml:id="section-quantified-descriptions">
@@ -1307,7 +1321,7 @@
       <xref linkend="example-random-id-X3iY" />
       must be exact: it therefore follows that the third dog cannot be white.)
     </para>
-    <para>You may also specify an explicit inner quantifier and leave the outer position empty:</para>
+    <para>You can also give an explicit inner quantifier and leave the outer position empty:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-f643">
       <title><anchor xml:id="c6e7d4" /></title>
 
@@ -1320,11 +1334,11 @@
     <para role="indent">
       With no outer quantifier,
       <xref linkend="example-random-id-f643" />
-      simply says of the three dogs that they are white &ndash; all of them, as it happens, since whiteness is the sort of thing that holds of each if it holds of them at all.
+      says of the three dogs that they are white. As it happens, this means all of them. Whiteness is the sort of property that holds of each one if it holds of them at all.
     </para>
     <para>
-      All of this works identically with
-      <valsi>lo</valsi>. The inner quantifier states how many things the description refers to; the outer quantifier picks out how many of them the bridi concerns:
+      All of this works the same way with
+      <valsi>lo</valsi>. The inner quantifier states how many things the description refers to. The outer quantifier picks out how many of them the bridi concerns:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Da">
       <title><anchor xml:id="c6e7d7" /></title>
@@ -1347,67 +1361,62 @@
     <para role="indent">
       In
       <xref linkend="example-random-id-x6Da" />
-      we are talking about five cows &ndash; which five is left to context, exactly as with an unquantified
-      <jbophrase>lo bakni</jbophrase>
-      ; the inner
+      we are talking about five cows. The context decides which five, exactly as with an unquantified
+      <jbophrase>lo bakni</jbophrase>. The inner
       <valsi>mu</valsi>
-      merely reports their number. In
-      <xref linkend="example-random-id-x6Db" />
-      the description refers to ten cows, and the bridi selects five of them.
+      only reports their number. In
+      <xref linkend="example-random-id-x6Db" />, the description refers to ten cows, and the bridi selects five of them.
     </para>
     <para>
-      To restate the essentials: an unquantified description merely refers (see
+      Here are the essentials again. An unquantified description only refers (see
       <xref linkend="section-basic-descriptors" />), and an inner quantifier on
       <valsi>lo</valsi>
-      counts the things referred to. So
+      counts the things that it refers to. So
       <jbophrase>lo ci gerku</jbophrase>
-      is unremarkable, everyday Lojban for
-      <quote>the three dogs (that we're concerned with)</quote>
-      &ndash; it says nothing about how many dogs exist. And because
+      is ordinary, everyday Lojban for
+      <quote>the three dogs (that we are concerned with)</quote>. It says nothing about how many dogs exist. Also,
       <valsi>lo</valsi>
-      carries no quantifier of its own, descriptions get along with negation and quantifier order in the straightforward way described in
-      <xref linkend="chapter-quantifiers" />.
+      carries no quantifier of its own, so descriptions work with negation and quantifier order in the straightforward way that
+      <xref linkend="chapter-quantifiers" />
+      describes.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>implicit quantifiers</primary><secondary>on descriptions, abolition of</secondary>
       </indexterm>
       <indexterm type="general"><primary>xorlo</primary><secondary>and quantified descriptions</secondary>
       </indexterm>
-      Pre-reform Lojban reads these quite differently; if you need to read older text closely, see
+      Lojban before the reform reads these quite differently. If you need to read older text closely, see
       <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>le</primary><secondary>inner quantifier with</secondary>
       </indexterm>
       Note how non-veridicality interacts with an inner quantifier on
-      <valsi>le</valsi>:
+      <valsi>le</valsi>. The description
       <jbophrase>le ci nanmu</jbophrase>
-      refers to exactly three things &ndash; the count is genuine &ndash; which the speaker <emphasis>describes</emphasis> as men, rightly or wrongly. The looseness of a
+      refers to exactly three things, which the speaker <emphasis>describes</emphasis> as men, rightly or wrongly. The count is real. The looseness of a
       <valsi>le</valsi>
-      description lies entirely in the selbri; the number of things referred to is stated as fact.
+      description lies entirely in the selbri. The description states the number of its referents as a fact.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>la</primary><secondary>number after, as part of name</secondary>
       </indexterm>
       With
+      <valsi>la</valsi>, there is no inner quantifier at all. A number string after
       <valsi>la</valsi>
-      , there is no inner quantifier at all: a number string appearing after
-      <valsi>la</valsi>
-      is part of the name. Thus
+      is part of the name. So
       <jbophrase>la ci bakni</jbophrase>
-      is not three of anything; it is somebody or something named
+      is not three of anything. It is somebody or something named
       <quote>ci bakni</quote>
-      (<quote>Three Cows</quote>
-      &ndash; a perfectly good name for a restaurant). An outer quantifier works normally:
+      (<quote>Three Cows</quote>, a perfectly good name for a restaurant). An outer quantifier works normally. For example,
       <jbophrase>ci la .magdonaldz.</jbophrase>
       is three of the referents of
-      <jbophrase>la .magdonaldz.</jbophrase>
-      , say three McDonald's restaurants near my office.
+      <jbophrase>la .magdonaldz.</jbophrase>, say three McDonald's restaurants near my office.
     </para>
     <para>
       <indexterm type="general"><primary>groups</primary><secondary>quantifiers with</secondary>
       </indexterm>
-      Quantifiers combine with the group descriptors in a way that follows naturally from what inner and outer quantifiers mean. The inner quantifier gives the size of the group; the outer quantifier counts <emphasis>groups</emphasis>:
+      Quantifiers combine with the group descriptors in a way that follows naturally from what inner and outer quantifiers mean. The inner quantifier gives the size of the group. The outer quantifier counts <emphasis>groups</emphasis>:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Dc">
       <title><anchor xml:id="c6e7d9" /></title>
@@ -1420,56 +1429,64 @@
     </example>
     <para role="indent">
       <xref linkend="example-random-id-x6Dc" />
-      describes two five-cow teams, each team carrying a piano collectively &ndash; a compact expression for a rather elaborate scene, and a good illustration of how much the two quantifier positions can do. (It does not, strictly, promise that the two teams share no cows; decent style avoids exploiting that loophole without warning.)
+      describes two teams of five cows, and each team carries a piano collectively. This is a compact expression for a rather elaborate scene. It shows well how much the two quantifier positions can do. (Strictly, it does not promise that the two teams share no cows. Decent style does not exploit that loophole without a warning.)
     </para>
     <para>
       <indexterm type="lojban-word"><primary>piro</primary></indexterm>
       <indexterm type="lojban-word"><primary>pisu'o</primary></indexterm>
       <indexterm type="general"><primary>fractional quantifiers</primary></indexterm>
-      Finally, the fractional quantifiers. Why
-      <quote>pi-</quote>?
+      Finally, consider the fractional quantifiers. Why
+      <quote>pi-</quote>? The word
       <valsi>pi</valsi>
       is the Lojban decimal point. Just as
       <valsi>pimu</valsi>
       means
-      <quote>.5</quote>
-      , a fractional outer quantifier specifies a portion. Applied to a group, it selects a subgroup of that fraction of the size:
+      <quote>.5</quote>, a fractional outer quantifier specifies a portion. Applied to a group, it selects a subgroup of that fraction of the size. For example,
       <jbophrase>pimu loi xa bakni</jbophrase>
-      is half of a group of six cows &ndash; three cows, acting as part of the team. Applied to a set, it selects a subset:
+      is half of a group of six cows: three cows that act as part of the team.
+    </para>
+    <para>
+      Applied to a set, a fraction selects a subset. So
       <jbophrase>pimu le'i nanmu</jbophrase>
-      is a subset containing half of the men I have in mind, and is a good way to say
-      <quote>half of the men</quote>. (Note that the result is still a set; to refer to the individuals in it, use
-      <valsi>lu'a</valsi>
-      , explained in
-      <xref linkend="section-sumti-qualifiers" />.) Applied to an individual, a fraction gives a part of one thing:
+      is a subset that contains half of the men I have in mind, and it is a good way to say
+      <quote>half of the men</quote>. (The result is still a set. To refer to the individuals in it, use
+      <valsi>lu'a</valsi>, which
+      <xref linkend="section-sumti-qualifiers" />
+      explains.)
+    </para>
+    <para>
+      Applied to an individual, a fraction gives a part of one thing. So
       <jbophrase>pimu le nanmu</jbophrase>
-      is half a man, not half of the men &ndash; a distinction worth double-checking before speaking. The forms
+      is half a man, not half of the men. Think about this distinction twice before you speak.
+    </para>
+    <para>
+      So the forms
       <valsi>piro</valsi>
       and
       <valsi>pisu'o</valsi>
-      accordingly mean
+      mean
       <quote>the whole of</quote>
       and
-      <quote>some part of</quote>
-      , and see their main use with groups and substance-like references:
+      <quote>some part of</quote>. Their main use is with groups and with references that are like substances:
       <jbophrase>piro loi jdini</jbophrase>
-      , all the money; <jbophrase>pisu'o loi djacu</jbophrase>, some of the water.
+      is all the money, and <jbophrase>pisu'o loi djacu</jbophrase> is some of the water.
     </para>
   </section>
   <section xml:id="section-indefinite-descriptions">
     <title><anchor xml:id="c6s8" />Indefinite sumti</title>
     <para>
       <indexterm type="general"><primary>indefinite descriptions</primary></indexterm>
-      By a quirk of Lojban syntax, a quantifier can be followed directly by a selbri, with no descriptor at all; the result is called an <quote>indefinite sumti</quote>. (The syntactic mold is exact: an explicit quantifier is required, an inner quantifier is impossible &ndash; thus
+      By a quirk of Lojban syntax, a selbri can directly follow a quantifier, with no descriptor at all. We call the result an <quote>indefinite sumti</quote>.
+    </para>
+    <para>
+      The syntactic mold is exact. An explicit quantifier is required, and an inner quantifier is impossible. So
       <jbophrase role="ungrammatical">gerku cu blabi</jbophrase>
       is ungrammatical, and so is
-      <jbophrase role="ungrammatical">reboi ci gerku cu blabi</jbophrase>
-      , though
+      <jbophrase role="ungrammatical">reboi ci gerku cu blabi</jbophrase>. The form
       <jbophrase>re ci gerku cu blabi</jbophrase>
-      is fine but means
-      <quote>23 dogs are white</quote>. Even though no descriptor is present, the elidable terminator
-      <valsi>ku</valsi>
-      may still be used.)
+      is fine, but it means
+      <quote>23 dogs are white</quote>. Even with no descriptor, you can still use the elidable terminator
+      <valsi>ku</valsi>:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-EsVd">
       <title><anchor xml:id="c6e8d1" /></title>
@@ -1485,11 +1502,9 @@
       </indexterm>
       What does
       <xref linkend="example-random-id-EsVd" />
-      mean? It is a pure statement of quantity: <emphasis>three things which are dogs are white</emphasis> &ndash; three dogs anywhere in the world under discussion, not three of some particular dogs already on the conversational table. In the notation of
-      <xref linkend="chapter-quantifiers" />
-      , it is exactly equivalent to
-      <jbophrase>ci da poi gerku cu blabi</jbophrase>
-      :
+      mean? It is a pure statement of quantity: <emphasis>three things that are dogs are white</emphasis>. These are three dogs anywhere in the world under discussion, not three of some particular dogs that the conversation already has on the table. In the notation of
+      <xref linkend="chapter-quantifiers" />, it is exactly equivalent to
+      <jbophrase>ci da poi gerku cu blabi</jbophrase>:
       <quote>for exactly three X which are dogs, X is white</quote>.
     </para>
     <para>
@@ -1509,31 +1524,29 @@
     <para role="indent">
       <xref linkend="example-random-id-gr7Y" />
       quantifies over the referents of
-      <jbophrase>lo gerku</jbophrase>
-      &ndash; the dogs we are talking about, whichever those are in context. If the neighborhood's dogs are under discussion,
+      <jbophrase>lo gerku</jbophrase>: the dogs that we are talking about, whichever those are in the context. Suppose that the dogs of the neighborhood are under discussion. Then
       <xref linkend="example-random-id-gr7Y" />
-      says three of <emphasis>them</emphasis> are white, while
+      says that three of <emphasis>them</emphasis> are white. But
       <xref linkend="example-random-id-EsVd" />
-      says only that the world contains exactly three white dogs in all &ndash; a much stronger and usually stranger claim, unless context has already narrowed
+      says only that the world contains exactly three white dogs in all. That is a much stronger and usually stranger claim, unless the context already narrowed
       <quote>the world</quote>
-      down to something small. When the referents of
+      down to something small. If the listener takes the referents of
       <jbophrase>lo gerku</jbophrase>
-      are understood maximally broadly, the two coincide; in everyday talk they generally do not.
+      as broadly as possible, the two sentences coincide, but in everyday talk they generally do not.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>indefinite descriptions</primary><secondary>change from first edition</secondary>
       </indexterm>
-      Older texts follow a different convention here; see
-      <xref linkend="appendix-changes" />.
+      Older texts follow a different convention here (see
+      <xref linkend="appendix-changes" />).
     </para>
-    <para>Note:
+    <para>
       <xref linkend="example-random-id-gLpy" />
-      also contains an indefinite sumti, namely
-      <jbophrase>su'o ci cutci</jbophrase>:
-      <quote>I own at least three things which are shoes</quote>
-      &ndash; a case where quantifying over the whole world is exactly what is wanted, and where the same thing said with
+      also contains an indefinite sumti:
+      <jbophrase>su'o ci cutci</jbophrase>,
+      <quote>I own at least three things that are shoes</quote>. Here, quantification over the whole world is exactly what the speaker wants. With
       <jbophrase>su'o ci lo cutci</jbophrase>
-      would presuppose some contextually given shoes to count among.
+      instead, the sentence presupposes some shoes that the context supplies, and it counts among those.
     </para>
   </section>
   <section xml:id="section-sumti-based-descriptions">
@@ -1551,7 +1564,7 @@
       A sumti-based description has a sumti where the selbri would normally be, and the inner quantifier is required &ndash; it cannot be implicit. An outer quantifier is permitted but not required.
     </para>
 
-    <para>A sumti-based description built with <valsi>le</valsi> refers to things the speaker describes as being <emphasis>among</emphasis> the referents of the inner sumti; formally, <jbophrase>le re do</jbophrase> amounts to <jbophrase>le re me do</jbophrase>, using the <valsi>me</valsi> conversion of <xref linkend="chapter-selbri" />. Compare the following:</para>
+    <para>A sumti-based description with <valsi>le</valsi> refers to things that the speaker describes as being <emphasis>among</emphasis> the referents of the inner sumti. Formally, <jbophrase>le re do</jbophrase> amounts to <jbophrase>le re me do</jbophrase>, with the <valsi>me</valsi> conversion of <xref linkend="chapter-selbri" />. Compare the following:</para>
     <example xml:id="example-random-id-qLaQ" role="interlinear-gloss-example">
       <title>
 
@@ -1577,12 +1590,10 @@
     <para role="indent">
       <xref linkend="example-random-id-qLaQ" />
       simply specifies that of the listeners, however many they are, two are men.
-      <xref linkend="example-random-id-qLAr" />
-      , which has the sumti-based description
-      <jbophrase>le re do</jbophrase>
-      , refers to two people, described as being among the listeners, and says of them that they are men. The inner quantifier
+      <xref linkend="example-random-id-qLAr" />, which has the sumti-based description
+      <jbophrase>le re do</jbophrase>, refers to two people whom the speaker describes as being among the listeners. It says of them that they are men. The inner quantifier
       <valsi>re</valsi>
-      counts the referents of the whole description &ndash; it does not say how many listeners there are altogether.
+      counts the referents of the whole description. It does not say how many listeners there are altogether.
     </para>
     <para>Here is another group of examples:</para>
     <example xml:id="example-random-id-qLbf" role="interlinear-gloss-example">
@@ -2258,9 +2269,8 @@
       <xref linkend="example-random-id-qLgw" />
       , the significance is that the persons (perhaps only one) I mean to refer to by the name
       <cmevla>.djonz.</cmevla>
-      are going to the store &ndash; each of them, or together, as context suggests. In
-      <xref linkend="example-random-id-qLHn" />
-      , the Joneses go as a group: the family outing, not necessarily every family member (see
+      are going to the store. They go one by one or together, as the context suggests. In
+      <xref linkend="example-random-id-qLHn" />, the Joneses go as a group. This is the family outing, and not necessarily every member of the family goes (see
       <xref linkend="section-masses" />). Of course, by
       <cmevla>.djonz.</cmevla>
       I can mean whomever I want: that person need not use the name
@@ -2368,15 +2378,15 @@
   </section>
   <section xml:id="section-pro-sumti">
     <title><anchor xml:id="c6s13" />Pro-sumti summary</title>
-    <para>      <indexterm type="general"><primary>pro-sumti</primary><secondary>classes of</secondary>      </indexterm>      The Lojban pro-sumti are the cmavo of selma'o KOhA. They fall into several classes: personal, definable, quantificational, reflexive, back-counting, indefinite, demonstrative, metalinguistic, relative, question. More details are given in      <xref linkend="chapter-anaphoric-cmavo" />      ; this section mostly duplicates information found there, summarizing each class from the sumti point of view.
+    <para>      <indexterm type="general"><primary>pro-sumti</primary><secondary>classes of</secondary>      </indexterm>      The Lojban pro-sumti are the cmavo of selma'o KOhA. They fall into several classes: personal, definable, quantificational, reflexive, back-counting, indefinite, demonstrative, metalinguistic, relative, question. More details are given in      <xref linkend="chapter-anaphoric-cmavo" />. This section mostly duplicates information found there, and it summarizes each class from the point of view of sumti.
     </para>
     <para>
       <indexterm type="general"><primary>pro-sumti</primary><secondary>as referring expressions</secondary>
       </indexterm>
-      The following examples illustrate each of the classes. Pro-sumti are referring expressions, exactly like descriptions: they carry no hidden quantifiers (see
-      <xref linkend="section-quantified-sumti" />). An explicit quantifier selects from a pro-sumti's referents in the usual way &ndash;
+      The following examples show each of the classes. Pro-sumti are referring expressions, exactly like descriptions. They carry no hidden quantifiers (see
+      <xref linkend="section-quantified-sumti" />). An explicit quantifier selects from the referents of a pro-sumti in the usual way:
       <jbophrase>re do</jbophrase>
-      is two of the listeners &ndash; so it is possible to restrict, but naturally not to extend, what a pro-sumti refers to.
+      is two of the listeners. So you can restrict what a pro-sumti refers to, but naturally you cannot extend it.
     </para>
     <para>
       <indexterm type="general"><primary>personal pro-sumti</primary></indexterm>
@@ -2414,10 +2424,10 @@
       <valsi>ma'a</valsi>
       , and
       <valsi>do'o</valsi>
-      refer to the relevant combinations of people (you and I, I and others, you and I and others, you and others). As with any plural reference, whether they satisfy a selbri one by one or together is left to context (see
-      <xref linkend="section-masses" />);
+      refer to the relevant combinations of people (you and I, I and others, you and I and others, you and others). As with any plural reference, the context decides whether they satisfy a selbri one by one or together (see
+      <xref linkend="section-masses" />). The most natural reading of
       <jbophrase>mi'o bevri le pipno</jbophrase>
-      is most naturally the two of us carrying it together.
+      is that the two of us carry the piano together.
     </para>
 
     <para>
@@ -2481,8 +2491,9 @@
       </indexterm>
       (This is not the same as
       <quote>All persons love a certain fish</quote>
-      ; the difference between the two is one of quantifier order.) The quantification conventions for the da-series are particular to it (roughly: a bare da means su'o da on first use, and keeps referring to the same things thereafter), and are discussed in detail in
-      <xref linkend="chapter-quantifiers" />.
+      ; the difference between the two is one of quantifier order.) The da-series has its own conventions for quantification. Roughly, a bare da means su'o da on first use, and after that it keeps referring to the same things.
+      <xref linkend="chapter-quantifiers" />
+      discusses these conventions in detail.
     </para>
     <para>
       <indexterm type="general"><primary>reflexive pro-sumti</primary></indexterm>
@@ -2548,8 +2559,9 @@
     <para role="indent">
       <indexterm type="lojban-word"><primary>zo'e</primary><secondary>as referring expression</secondary>
       </indexterm>
+      The word
       <valsi>zo'e</valsi>
-      simply refers to whatever unspecified thing or things make the bridi sensible in context &ndash; the value the speaker couldn't be bothered to spell out. It is a referring expression like any other, and indeed every description can be thought of as a
+      refers to whatever unspecified thing or things make the bridi sensible in the context. It is the value that the speaker did not bother to spell out. It is a referring expression like any other. In fact, you can think of every description as a
       <valsi>zo'e</valsi>
       with an explanation attached:
       <jbophrase>lo zarci</jbophrase>
@@ -2746,7 +2758,7 @@
     <para role="indent">
       <indexterm type="general"><primary>quotation</primary><secondary>as referring expression</secondary>
       </indexterm>
-      Like all other sumti, quotations are referring expressions with no hidden quantifiers: a quotation refers to the quoted words themselves.
+      Like all other sumti, quotations are referring expressions with no hidden quantifiers. A quotation refers to the quoted words themselves.
     </para>
   </section>
   <section xml:id="section-number-summary">
@@ -2841,13 +2853,12 @@
       </indexterm>
       <indexterm type="general"><primary>numbers</primary><secondary>implicit quantifier for</secondary>
       </indexterm>
-      Like all other sumti, these are referring expressions with no hidden quantifiers: a
+      Like all other sumti, these are referring expressions with no hidden quantifiers. A
       <valsi>li</valsi>
-      sumti refers to a number, a
+      sumti refers to a number, and a
       <valsi>me'o</valsi>
-      sumti to a piece of text. The difference matters when counting: there is only one number which is 4, but there are many texts
-      <quote>4</quote>
-      , as many as there are documents in which that numeral appears.
+      sumti refers to a piece of text. The difference matters when you count. There is only one number that is 4, but there are many texts
+      <quote>4</quote>: as many as there are documents in which that numeral appears.
     </para>
   </section>
 </chapter>

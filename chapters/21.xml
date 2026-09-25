@@ -10,10 +10,12 @@
     <para>
       <indexterm type="general"><primary>formal grammar</primary><secondary>role of</secondary>
       </indexterm>
-      Lojban was designed so that its grammar could be stated formally &ndash; as a precise, machine-testable definition of which strings of words constitute grammatical text, and of how each such text is structured &ndash; and that aim was achieved to a remarkable degree. This chapter presents the formal definition of the <emphasis>syntax</emphasis> of the language: how words combine into sentences and texts. Two companion pieces complete the picture, and three seams remain open. The definition of the <emphasis>word-forms</emphasis> &ndash; which strings of letters constitute words in the first place &ndash; is a separate document, printed in
-      <xref linkend="appendix-peg-morphology" />; and the word-level
-      <quote>magic words</quote>
-      and the unsettled corners noted below lie outside what the printed grammar decides.
+      The designers of Lojban wanted a grammar that they could state formally. A formal grammar is a precise definition that a machine can test. It defines which strings of words are grammatical text, and how each such text is structured. The designers achieved that aim to a remarkable degree. This chapter presents the formal definition of the <emphasis>syntax</emphasis> of the language: how words combine into sentences and texts.
+    </para>
+    <para>
+      Two companion pieces complete the picture, and three seams remain open. The definition of the <emphasis>word forms</emphasis> (which strings of letters are words in the first place) is a separate document, in
+      <xref linkend="appendix-peg-morphology" />. The word-level
+      <quote>magic words</quote>, and the unsettled corners that this chapter notes below, lie outside what the printed grammar decides.
     </para>
     <para>
       <indexterm type="general"><primary>formal grammar</primary><secondary>status of versions</secondary>
@@ -23,44 +25,51 @@
       <indexterm type="general"><primary>YACC grammar</primary><secondary>removed from print, 2014</secondary>
       </indexterm>
       <indexterm type="general"><primary>third baseline</primary></indexterm>
-      A word on authority. The grammar printed here, in EBNF notation, is the <emphasis>official</emphasis> grammar: it corresponds to the third baselined machine grammar adopted by the Logical Language Group. The first edition printed, alongside it, the equivalent YACC grammar from which it was derived, and declared the YACC version authoritative in case of discrepancy. This edition no longer prints the YACC listing; it remains available in the electronic supplements to this book, and the decision's history is in
-      <xref linkend="appendix-changes" />.
+      The grammar in this chapter, in EBNF notation, is the <emphasis>official</emphasis> grammar. It corresponds to the third baselined machine grammar, which the Logical Language Group adopted. The first edition also printed the equivalent YACC grammar, which is the source of the EBNF. It declared the YACC version authoritative in case of a discrepancy. This edition no longer prints the YACC listing. The listing is still available in the electronic supplements to this book, and
+      <xref linkend="appendix-changes" />
+      gives the history of that decision.
     </para>
     <para>
       <indexterm type="general"><primary>camxes</primary><secondary>as de facto compatibility target</secondary>
       </indexterm>
-      Meanwhile, the community's working grammars are stated in a different formal system: parsing expression grammars (PEG), which cover morphology and syntax together and incorporate the committee-adopted amendments described throughout this book. The standard camxes PEG is the principal de facto compatibility target across the tooling surveyed for this edition. Some of those tools implement it directly; others reimplement its behavior. All of this is de facto, not official.
+      Meanwhile, the working grammars of the community use a different formal system: parsing expression grammars (PEG). A PEG covers morphology and syntax together. These grammars include the amendments that the language-definition committee adopted, which this book describes throughout. The standard camxes PEG is the principal de facto target for compatibility across the tools that this edition surveyed. Some of those tools implement it directly, and others reimplement its behavior. All of this is de facto, not official.
     </para>
     <para role="status-note">
-      Where this book's text and the EBNF printed below disagree with the amendments, the amendments prevail, and each is flagged where it is taught; the EBNF itself is printed as baselined.
+      Sometimes the text of this book or the EBNF below disagrees with the amendments. In those cases the amendments prevail, and the book flags each one where it teaches it. The EBNF itself appears here as baselined.
     </para>
     <para>
       <indexterm type="general"><primary>tags</primary><secondary>binding to selbri, in the formal grammar</secondary>
       </indexterm>
       <indexterm type="general"><primary>tenses</primary><secondary>before forethought connectives, in the formal grammar</secondary>
       </indexterm>
-      Three known seams between this EBNF and current practice deserve mention. First, the
+      There are three known seams between this EBNF and current practice. First, the rules below represent the
       <quote>magic words</quote>
-      (quotation, erasure, and their kin) are represented below only by placeholder rules. Their real behavior is word-level and is specified in
+      (quotation, erasure, and their kin) only by placeholders. Their real behavior is word-level.
       <xref linkend="chapter-structure" />
-      , rule by rule &ndash; including the genuinely unsettled
-      <valsi>sa</valsi>. Second, where a tag stands directly before a selbri, the EBNF permits more than one grouping. The BPFK-approved tag-binding decision picks one &ndash; the BPFK is the language-definition committee, whose story is told in
+      specifies it rule by rule, including the genuinely unsettled
+      <valsi>sa</valsi>.
+    </para>
+    <para>
+      Second, where a tag stands directly before a selbri, the EBNF permits more than one grouping. The BPFK is the language-definition committee, and
       <xref linkend="chapter-about" />
-      &ndash; and the parsers surveyed for this edition implement that choice; see
-      <xref linkend="section-tenses-introduction" />. Third, a tense standing bare before a forethought connective construction was not accepted by the baseline parser at all. The de facto grammars accept it, reading the tense as a term scoping over the whole construction (see
+      tells its story. The BPFK approved a decision on tag binding that picks one grouping. The parsers that this edition surveyed implement that choice (see
+      <xref linkend="section-tenses-introduction" />).
+    </para>
+    <para>
+      Third, the baseline parser did not accept a bare tense before a forethought connective construction at all. The de facto grammars accept it. They read the tense as a term with scope over the whole construction (see
       <xref linkend="chapter-connectives" />).
     </para>
     <para role="status-note">
-      The three seams carry three different standings &ndash; genuinely unsettled, committee-approved, and de facto, respectively; the full catalog is in
-      <xref linkend="appendix-changes" />.
+      The three seams have three different statuses: genuinely unsettled, committee-approved, and de facto, respectively.
+      <xref linkend="appendix-changes" />
+      has the full catalog.
     </para>
   </section>
   <section xml:id="section-EBNF">
     <title><anchor xml:id="c21s2" />EBNF grammar of Lojban</title>
 
-    <para>Lojban Machine Grammar, EBNF Version, third baseline (the first edition styled this
-      <quote>Final Baseline</quote>
-      ; see the note on the language's governance in
+    <para>Lojban Machine Grammar, EBNF Version, third baseline (the first edition called this
+      <quote>Final Baseline</quote>: see the note on the governance of the language in
       <xref linkend="chapter-about" />)</para>
     <para>This EBNF document is explicitly dedicated to the public domain by its author, The Logical Language Group, Inc. Contact that organization at: 2904 Beau Lane, Fairfax VA 22031 USA 703-385-0273 (intl: +1 703 385 0273)</para>
     <para>Explanation of notation: All rules have the form:</para>

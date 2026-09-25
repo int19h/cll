@@ -1244,21 +1244,26 @@
       is placed following
       <jbophrase>fi'o kanla</jbophrase>
       , semantically it belongs in the x<subscript>1</subscript> place of
-      <valsi>kanla</valsi>. The selbri may be terminated with
+      <valsi>kanla</valsi>.
+    </para>
+    <para>
+      You can end the selbri with
       <valsi>fe'u</valsi>
-      (of selma'o FEhU), an elidable terminator. It can be left out when a sumti follows, as here. It is required exactly when the following material could otherwise be read as <emphasis>continuing the modal's selbri</emphasis> as a tanru &ndash; above all, when the tagged main selbri comes next:
+      (of selma'o FEhU), an elidable terminator. You can leave it out when a sumti follows, as here. You must use it exactly when a listener can otherwise read the following material as <emphasis>a continuation of the modal's selbri</emphasis>, as a tanru. This happens above all when the tagged main selbri comes next. For example,
       <jbophrase>mi fi'o kanla viska do</jbophrase>
       absorbs
       <valsi>viska</valsi>
-      into the modal &ndash; an eye-type-of-seeing modal, with no main selbri left &ndash; where
+      into the modal. The result is a modal of eye-type-of-seeing, and no main selbri is left. But
       <jbophrase>mi fi'o kanla fe'u viska do</jbophrase>
       says
-      <quote>I see you with the eye(s)</quote>; see
-      <xref linkend="section-modal-selbri" />. Words that cannot continue a selbri &ndash; a following sumti, a tense tag, a connective between tags &ndash; do not force the
-      <valsi>fe'u</valsi>
-      ; but beware of selbri in disguise, such as number-plus-
-      <valsi>moi</valsi>
-      forms.
+      <quote>I see you with the eye(s)</quote>
+      (see
+      <xref linkend="section-modal-selbri" />).
+    </para>
+    <para>
+      Words that cannot continue a selbri do not force the
+      <valsi>fe'u</valsi>. Such words are a following sumti, a tense tag, and a connective between tags. But beware of selbri in disguise, such as forms with a number and
+      <valsi>moi</valsi>.
     </para>
     <para>
       <indexterm type="general"><primary>modal sumti</primary><secondary>and FA marking</secondary>
@@ -2294,12 +2299,12 @@
       </indexterm>
       <indexterm type="lojban-word"><primary>fi'o</primary><secondary>restriction on use</secondary>
       </indexterm>
-      Note: modal connectives can also be formed with the
+      You can also form modal connectives with the
       <jbophrase>fi'o-</jbophrase>
-      plus-selbri form of modal &ndash; a form like
+      plus-selbri form of modal. The current grammar accepts a form like
       <jbophrase>.i fi'o bapli fe'u bo</jbophrase>
-      is accepted (older grammars differ here; see
-      <xref linkend="appendix-changes" />). Such connectives remain rare in practice, and the BAI forms shown in
+      (older grammars differ here: see
+      <xref linkend="appendix-changes" />). Such connectives are still rare in practice. The BAI forms in
       <xref linkend="section-causals" />
       and
       <xref linkend="section-modal-connectives" />
@@ -2920,14 +2925,13 @@
       <quote>as much as</quote>). Some BAI tags can be used equally well in relative phrases or attached to bridi; others seem useful only attached to bridi. But it is also possible that the usefulness of particular BAI modals is an English-speaker bias, and that speakers of other languages may find other BAIs useful in divergent ways.
     </para>
     <para>
-      A convention worth knowing for
-      <valsi>de'i</valsi>: the tagged date or time is normally a number built with the numerical-punctuation cmavo
-      <valsi>pi'e</valsi>
-      , as in
+      Here is a useful convention for
+      <valsi>de'i</valsi>. The tagged date or time is normally a number built with the numerical punctuation cmavo
+      <valsi>pi'e</valsi>. For example,
       <jbophrase>de'i li 2026 pi'e 7 pi'e 12</jbophrase>
-      for a year-month-day date. Clock times use
+      gives a date as year, month, and day. Clock times use
       <valsi>ti'u</valsi>
-      the same way; see
+      in the same way. See
       <xref linkend="section-radixen" />
       for
       <valsi>pi'e</valsi>.
@@ -3327,12 +3331,12 @@
       </indexterm>
       This reading of BAI plus
       <jbophrase>nai</jbophrase>
-      &ndash; the main claim stands, the relation is denied, and nothing is said about the tagged event itself &ndash; is checkpointed; older word lists read it differently (see
-      <xref linkend="appendix-changes" />). For the other,
+      is checkpointed. Under it, the main claim stands, and the sentence denies the relation but says nothing about the tagged event itself. Older word lists read it differently (see
+      <xref linkend="appendix-changes" />). For the other sense, which is like
       <quote>despite</quote>
-      -like sense &ndash; not prevented by &ndash; use
+      (that is, <quote>not prevented by</quote>), use
       <jbophrase>to'e ri'a nai</jbophrase>
-      and its kin, with scalar
+      and similar forms, with scalar
       <valsi>to'e</valsi>
       on the underlying gismu.
     </para>
@@ -3474,11 +3478,9 @@
       </indexterm>
       <indexterm type="general"><primary>sticky modals</primary><secondary>with &apos;fi'o&apos;</secondary>
       </indexterm>
-      Note: modals made with
-      <valsi>fi'o</valsi>
-      -plus-selbri can be made sticky like any other:
-      <jbophrase>fi'o bapli fe'u ki</jbophrase>
-      is accepted, with the expected meaning (older grammars differ here; see
+      You can make modals with
+      <valsi>fi'o</valsi>-plus-selbri sticky like any other modal. The current grammar accepts
+      <jbophrase>fi'o bapli fe'u ki</jbophrase>, with the expected meaning (older grammars differ here: see
       <xref linkend="appendix-changes" />).
     </para>
   </section>
@@ -3779,14 +3781,12 @@
     <para role="status-note">
       <indexterm type="general"><primary>BAI selma'o</primary><secondary>status of definitions</secondary>
       </indexterm>
-      The BAI definitions in this chapter, including every gloss in the table below, are the checkpointed ones. A few rows &ndash;
-      <valsi>ti'u</valsi>
-      ,
-      <valsi>ci'e</valsi>
-      ,
+      The BAI definitions in this chapter are the checkpointed ones. This includes every gloss in the table below. A few rows differ from older lists:
+      <valsi>ti'u</valsi>,
+      <valsi>ci'e</valsi>, and
       <valsi>tai</valsi>
-      &ndash; differ from older lists; see
-      <xref linkend="appendix-changes" />.
+      (see
+      <xref linkend="appendix-changes" />).
     </para>
     <para role="allowbreaks" />
     <cmavo-list>

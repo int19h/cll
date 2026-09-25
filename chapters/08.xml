@@ -1345,8 +1345,7 @@
       , then the sumti as a whole is qualified by the relative clause. If there is no
       <valsi>ku</valsi>
       , or if the relative clause comes before an explicit
-      <valsi>ku</valsi>
-      , then the relative clause is understood to apply to every referent of the description itself &ndash; everything the description, with its inner quantifier, actually picks out &ndash; before any outer quantifier makes its selection.
+      <valsi>ku</valsi>, the clause applies to every referent of the description. That is, it applies to everything that the description, with its inner quantifier, actually picks out, before any outer quantifier makes its selection.
     </para>
     <para>
       What about
@@ -1364,13 +1363,13 @@
       </indexterm>
       <indexterm type="general"><primary>constants</primary><secondary>relative-clause attachment to</secondary>
       </indexterm>
-      When a description has no explicit outer quantifier at all, there is nothing for the two positions to disagree about. An unquantified description like
+      When a description has no explicit outer quantifier at all, the two positions have nothing to disagree about. An unquantified description like
       <jbophrase>le gerku</jbophrase>
       or
       <jbophrase>lo gerku</jbophrase>
-      is a constant: it refers to its things directly, with no hidden quantifier making a selection from them (see
-      <xref linkend="section-quantified-descriptions" />). A relative clause on such a sumti describes those referents, and it does so whether it is placed before or after the
-      <valsi>ku</valsi>. Thus:
+      is a constant. It refers to its things directly, and no hidden quantifier makes a selection from them (see
+      <xref linkend="section-quantified-descriptions" />). A relative clause on such a sumti describes those referents, whether the clause comes before or after the
+      <valsi>ku</valsi>. Compare these two examples:
     </para>
     <example xml:id="example-random-id-qmDS" role="interlinear-gloss-example">
       <title><anchor xml:id="c8e6d8" /></title>
@@ -1395,20 +1394,19 @@
       <xref linkend="example-random-id-qmDS" />
       and
       <xref linkend="example-random-id-qmdX" />
-      say the same thing: some people &ndash; whichever people the context supplies as the referents of
-      <jbophrase>lo prenu</jbophrase>
-      &ndash; go to the market, and, incidentally, they are white. With no outer quantifier there is no selection step for the two positions to straddle, so the placement of the
+      say the same thing. Some people go to the market, and, incidentally, they are white. These people are whichever people the context supplies as the referents of
+      <jbophrase>lo prenu</jbophrase>. With no outer quantifier, there is no selection step for the two positions to straddle. So the place of the
       <valsi>ku</valsi>
       makes no difference here.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>relative clauses</primary><secondary>on lo, older analysis</secondary>
       </indexterm>
-      Older texts draw a sharp contrast between these two examples; see
-      <xref linkend="appendix-changes" />.
+      Older texts draw a sharp contrast between these two examples (see
+      <xref linkend="appendix-changes" />).
     </para>
     <para>
-      The two positions come apart as soon as an explicit outer quantifier is present, because then there really are two stages: the description's referents, and the quantifier's selection from them. Compare:
+      The two positions come apart as soon as an explicit outer quantifier is present. Then there really are two stages: the referents of the description, and the selection that the quantifier makes from them. Compare:
     </para>
     <example xml:id="example-random-id-sQn1" role="interlinear-gloss-example">
       <title><anchor xml:id="c8e6d13" /></title>
@@ -1430,23 +1428,20 @@
     </example>
     <para role="indent">
       In
-      <xref linkend="example-random-id-sQn1" />
-      , the relative clause qualifies the quantified sumti: it describes the selected goers. In
-      <xref linkend="example-random-id-sQn2" />
-      , it describes the referents of
+      <xref linkend="example-random-id-sQn1" />, the relative clause qualifies the quantified sumti. It describes the selected people who go. In
+      <xref linkend="example-random-id-sQn2" />, it describes the referents of
       <jbophrase>lo prenu</jbophrase>
-      before the selection, so the incidental whiteness is claimed of every one of the people in question &ndash; not of all humanity, since
+      before the selection. So the sentence claims the incidental whiteness of every one of the people in question. That is not all humanity, because
       <jbophrase>lo prenu</jbophrase>
-      refers only to the people the context supplies, but still of more people than may be intended.
+      refers only to the people that the context supplies. But it is still perhaps more people than the speaker intends.
     </para>
     <para>
       <indexterm type="general"><primary>relative clauses on &quot;lo&quot;</primary><secondary>syntax suggestion</secondary>
       </indexterm>
-      The safe strategy, therefore, is to place the relative clause after an explicit
-      <valsi>ku</valsi>
-      when attaching a
+      So here is the safe strategy. When you attach a
       <valsi>noi</valsi>
-      relative clause to a description with an outer quantifier, unless you really mean to describe every referent of the description. Otherwise we may end up claiming too much.
+      relative clause to a description with an outer quantifier, place the clause after an explicit
+      <valsi>ku</valsi>. Do this unless you really mean to describe every referent of the description. Otherwise, we can end up claiming too much.
     </para>
     <para>
       <indexterm type="general"><primary>relative clauses and names</primary><secondary>placement considerations</secondary>
@@ -1508,15 +1503,12 @@
       <jbophrase>re karce</jbophrase>
       can have relative clauses attached; these are taken to be of the outside-the-
       <valsi>ku</valsi>
-      variety. Under the current rules a bare number on a selbri is genuinely quantificational:
+      variety. Under the current rules, a bare number on a selbri is genuinely quantificational. So
       <jbophrase>re karce</jbophrase>
       means
-      <jbophrase>re da poi karce</jbophrase>
-      ,
-      <quote>two things which are cars</quote>
-      &ndash; it is <emphasis>not</emphasis> an abbreviation of
-      <jbophrase>re lo karce</jbophrase>
-      , which instead selects two from the referents of the constant
+      <jbophrase>re da poi karce</jbophrase>,
+      <quote>two things which are cars</quote>. It is <emphasis>not</emphasis> an abbreviation of
+      <jbophrase>re lo karce</jbophrase>. That form instead selects two from the referents of the constant
       <jbophrase>lo karce</jbophrase>
       (see
       <xref linkend="section-quantified-descriptions" />). Here is an example:
@@ -1534,7 +1526,7 @@
       </indexterm>
       <indexterm type="general"><primary>relative clauses</primary><secondary>syntax with indefinite sumti</secondary>
       </indexterm>
-      The restrictive relative clause simply joins the restriction: two things which are cars <emphasis>and</emphasis> black &ndash; the claim concerns those two, not all cars that exist. It is ungrammatical to try to place a relative clause within an indefinite sumti (that is, before an explicitly expressed terminating
+      The restrictive relative clause joins the restriction: two things that are cars <emphasis>and</emphasis> black. The claim concerns those two, not all cars that exist. It is ungrammatical to try to place a relative clause within an indefinite sumti (that is, before an explicitly expressed terminating
       <valsi>ku</valsi>.) Use an explicit
       <valsi>lo</valsi>
       instead.

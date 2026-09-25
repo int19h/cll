@@ -782,7 +782,7 @@
       Like the other precise rules for word forms in this book, the analysis with four diphthongs comes from the formal definition of word forms. That definition is the de facto standard, and current Lojban software implements it (see
       <xref linkend="chapter-grammars" />).
       <xref linkend="appendix-changes" />
-      explains what <quote>de facto</quote> means here. Within that definition, the ban on a consonant before a glide is separately committee-approved. The note at the end of this section gives the practical consequences.
+      explains what <quote>de facto</quote> means here. Within that definition, the ban on a consonant followed by a glide is separately committee-approved. The note at the end of this section gives the practical consequences.
     </para>
     <para>
       <indexterm type="general"><primary>vowels</primary><secondary>contrasted with consonants</secondary>
@@ -1031,7 +1031,7 @@
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>consonant-glide-vowel ban</primary></indexterm>
-      The ban on a consonant, then a glide, then a vowel is committee-approved. Older texts contain words that people coined before the ban, like
+      The ban on a consonant followed by a glide is committee-approved. Older texts contain words that people coined before the ban, like
       <quote>kuarka</quote>
       or
       <quote>.niuport.</quote>. Today you must respell such words. Usually you change the glide to a full vowel with an apostrophe (<jbophrase>.ni'uport.</jbophrase>), or you double the glide letter. See

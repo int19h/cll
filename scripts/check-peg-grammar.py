@@ -88,7 +88,7 @@ APPROVED_ARROW_CONTEXTS = [
 # without it, an approved context can be removed and a rule-like impostor put
 # in its place, preserving the count and the pinned path. Editing the
 # introduction means updating this constant in the same commit.
-INTRO_SHA256 = "3320ef565a4816729b03f01bfe569d8f3697e7ac7a2f5006d6e0d9e4338d07a5"
+INTRO_SHA256 = "c927465a61ac7eea17ef37125f14fd962aefe6943d3c25ad0b5e2ee843f0faee"
 
 PREDEFINED = {"amp": "&", "lt": "<", "gt": ">", "quot": '"', "apos": "'"}
 
@@ -164,6 +164,13 @@ def check_chapter(chapter, root, problems):
     dupes = sorted({i for i in ids if ids.count(i) > 1})
     if dupes:
         problems.append(f"duplicate xml:id values in chapter 21: {dupes}")
+    # Rule lists may appear only in the PEG section, the EBNF, and the EBNF
+    # cross-reference, which this check and check-cross-reference.py audit.
+    audited = {id(el) for c in chapter if xml_id(c) in (ROOT_ID, "section-EBNF", "section-cross-reference")
+               for el in c.iter()}
+    for el in chapter.iter():
+        if el.tag in ("variablelist", "varlistentry") and id(el) not in audited:
+            problems.append(f"a <{el.tag}> in chapter 21 lies outside the audited sections")
     inside = {id(el) for el in root.iter()}
     for el in chapter.iter():
         texts = [el.tail] if id(el) in inside else [el.text, el.tail, *el.attrib.values()]

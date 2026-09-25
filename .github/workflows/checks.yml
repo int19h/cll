@@ -23,8 +23,8 @@ jobs:
           rc=$?
           set -e
           if [ $rc -ne 0 ]; then echo "$err"; exit $rc; fi
-          # undefined entities surface only as warnings; treat them as failures
-          if echo "$err" | grep -q 'not defined\|parser error'; then echo "$err"; exit 1; fi
+          # undefined entities and duplicate IDs surface only as warnings; treat them as failures
+          if echo "$err" | grep -q 'not defined\|parser error\|already defined'; then echo "$err"; exit 1; fi
           echo "book well-formed ($(ls chapters/*.xml | wc -l) chapters)"
 
   cmevla-dot-lint:

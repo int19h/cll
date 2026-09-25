@@ -354,6 +354,15 @@ def m_duplicate_subsection_id(a, f):
                     "duplicate subsection id in the chapter"), f
 
 
+def m_intro_ebnf_rule(a, f):
+    """PR #119 review (Qwen): an EBNF-shaped rule, with no arrow, in the
+    chapter introduction. check-cross-reference.py no longer reads 21.1."""
+    return sub_once(a, INTRO_TITLE,
+                    INTRO_TITLE + "\n    <variablelist><varlistentry><term>fake-rule 999 =</term>"
+                    "<listitem><para>WRONG</para></listitem></varlistentry></variablelist>",
+                    "EBNF-shaped rule in the chapter introduction"), f
+
+
 def m_ebnf_arrow(a, f):
     title = '<title><anchor xml:id="c21s2" />EBNF grammar of Lojban</title>'
     return sub_once(a, title, title + "\n    <para>FAKE &#8592; wrong</para>",
@@ -406,6 +415,7 @@ MUTATIONS = [
     ("second element with the section's id", m_duplicate_root_id),
     ("arrow in the EBNF section", m_ebnf_arrow),
     ("duplicate subsection id elsewhere in the chapter", m_duplicate_subsection_id),
+    ("EBNF-shaped rule in the chapter introduction", m_intro_ebnf_rule),
 ]
 
 

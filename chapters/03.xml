@@ -780,7 +780,7 @@
       <indexterm type="general"><primary>PEG word-form grammar</primary><secondary>status of</secondary>
       </indexterm>
       Like the other precise rules for word forms, the analysis with four diphthongs comes from a parsing expression grammar (PEG) of word forms. This book calls it the PEG word-form grammar (see
-      <xref linkend="section-peg-grammar" />). It is the de facto standard definition of Lojban word forms, and current Lojban software implements it.
+      <xref linkend="section-peg-grammar" />). This grammar is the de facto standard definition of Lojban word forms, and current Lojban software implements it.
       <xref linkend="appendix-changes" />
       explains what <quote>de facto</quote> means here. Within that grammar, the ban on a consonant followed by a glide (the <emphasis>consonant-glide-vowel ban</emphasis>) is separately committee-approved. The note at the end of this section gives the practical consequences.
     </para>

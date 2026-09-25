@@ -15,7 +15,7 @@
       <xref linkend="section-EBNF" />).
     </para>
     <para>
-      One more piece completes the picture, and three seams remain open. The rules for the word-level
+      The rules for the word-level
       <quote>magic words</quote>
       are in
       <xref linkend="chapter-structure" />. Those rules, and the unsettled corners that this chapter notes below, lie outside what the printed grammars decide.
@@ -39,15 +39,15 @@
     </para>
     <para>
       This chapter prints only the part of the camxes PEG that defines word forms (see
-      <xref linkend="section-peg-grammar" />). That part is a precise, formal definition of how a stream of sounds breaks into words. Chapters 3 and 4 refer to it. The camxes PEG for syntax is not in this book.
+      <xref linkend="section-peg-grammar" />). That part is a precise, formal definition of how a stream of sounds breaks into words. Chapters 3 and 4 refer to it. For syntax, this chapter prints the official EBNF grammar instead, so the camxes PEG for syntax is not in this book.
     </para>
     <para role="status-note">
       Sometimes the text of this book or the EBNF below disagrees with the amendments. In those cases the amendments prevail, and the book flags each one where it teaches it. The EBNF itself appears here as baselined.
     </para>
     <para>
-      <indexterm type="general"><primary>tags</primary><secondary>binding to selbri, in the formal grammar</secondary>
+      <indexterm type="general"><primary>tags</primary><secondary>binding to selbri, in the EBNF grammar</secondary>
       </indexterm>
-      <indexterm type="general"><primary>tenses</primary><secondary>before forethought connectives, in the formal grammar</secondary>
+      <indexterm type="general"><primary>tenses</primary><secondary>before forethought connectives, in the EBNF grammar</secondary>
       </indexterm>
       There are three known seams between this EBNF and current practice. First, the rules below represent the
       <quote>magic words</quote>
@@ -73,13 +73,13 @@
     </para>
   </section>
   <section xml:id="section-peg-grammar">
-    <title><anchor xml:id="c21-peg" />The PEG word-form grammar</title>
+    <title><anchor xml:id="c21-peg" />PEG word-form grammar</title>
     <para>
       <indexterm type="general"><primary>PEG word-form grammar</primary><secondary>full text of</secondary>
       </indexterm>
       <indexterm type="general"><primary>slinku'i test</primary><secondary>formal statement of</secondary>
       </indexterm>
-      This section reproduces the formal definition of Lojban word forms. It is the morphology part of the parsing expression grammar (PEG) that current Lojban software implements. It states precisely the rules that
+      This section reproduces the formal definition of Lojban word forms. It is the morphology part of the PEG that current Lojban software implements. It states precisely the rules that
       <xref linkend="chapter-morphology" />
       and
       <xref linkend="chapter-phonology" />
@@ -3074,7 +3074,7 @@
     <para>FAhO is a universal terminator and signals the end of parsable input.</para>
   </section>
   <section xml:id="section-cross-reference">
-    <title><anchor xml:id="c21s3"/>EBNF Cross-Reference</title>
+    <title><anchor xml:id="c21s3"/>EBNF cross-reference</title>
 
     <variablelist>
       <varlistentry>

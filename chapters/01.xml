@@ -100,7 +100,7 @@
     </para>
     <para>
       By intention, this book is complete in description but not in explanation. For every rule in the formal Lojban grammar (given in
-      <xref linkend="chapter-grammars" />), there is a bit of explanation and an example somewhere in the book, and often a great deal more than a bit. In essence,
+      <xref linkend="section-EBNF" />), there is a bit of explanation and an example somewhere in the book, and often a great deal more than a bit. In essence,
       <xref linkend="chapter-tour" />
       gives a brief overview of the language,
       <xref linkend="chapter-grammars" />

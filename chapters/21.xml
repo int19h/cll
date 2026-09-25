@@ -18,7 +18,7 @@
       One more piece completes the picture, and three seams remain open. The rules for the word-level
       <quote>magic words</quote>
       are in
-      <xref linkend="chapter-structure" />. Those words, and the unsettled corners that this chapter notes below, lie outside what the printed grammars decide.
+      <xref linkend="chapter-structure" />. Those rules, and the unsettled corners that this chapter notes below, lie outside what the printed grammars decide.
     </para>
     <para>
       <indexterm type="general"><primary>formal grammar</primary><secondary>status of versions</secondary>
@@ -39,7 +39,7 @@
     </para>
     <para>
       This chapter prints only the part of the camxes PEG that defines word forms (see
-      <xref linkend="section-peg-grammar" />). That part is a complete, formal definition of how a stream of sounds breaks into words. Chapters 3 and 4 refer to it. The camxes PEG for syntax is not in this book.
+      <xref linkend="section-peg-grammar" />). That part is a precise, formal definition of how a stream of sounds breaks into words. Chapters 3 and 4 refer to it. The camxes PEG for syntax is not in this book.
     </para>
     <para role="status-note">
       Sometimes the text of this book or the EBNF below disagrees with the amendments. In those cases the amendments prevail, and the book flags each one where it teaches it. The EBNF itself appears here as baselined.

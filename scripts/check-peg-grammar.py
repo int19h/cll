@@ -161,6 +161,9 @@ def check_chapter(chapter, root, problems):
     ids = [xml_id(el) for el in chapter.iter() if xml_id(el)]
     if ids.count(ROOT_ID) != 1:
         problems.append(f"chapter 21 has {ids.count(ROOT_ID)} elements with xml:id {ROOT_ID!r}")
+    dupes = sorted({i for i in ids if ids.count(i) > 1})
+    if dupes:
+        problems.append(f"duplicate xml:id values in chapter 21: {dupes}")
     inside = {id(el) for el in root.iter()}
     for el in chapter.iter():
         texts = [el.tail] if id(el) in inside else [el.text, el.tail, *el.attrib.values()]

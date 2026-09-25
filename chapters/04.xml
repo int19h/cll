@@ -2012,7 +2012,7 @@
     </para>
     <para>
       The exact procedure is part of the lujvo-making algorithm in
-      <xref linkend="section-lujvo-making" />, which also covers the case of several CVC rafsi in a row. The formal grammar states it as the grammar rule named
+      <xref linkend="section-lujvo-making" />, which also covers the case of several CVC rafsi in a row. The PEG word-form grammar states it as the grammar rule named
       <quote>CVCy_lujvo</quote>
       (see
       <xref linkend="section-peg-grammar" />).
@@ -3282,7 +3282,7 @@
           <morphology>iy</morphology>
           and
           <morphology>uy</morphology>, in which a glide comes before
-          <letteral>y</letteral>. No standard word of any other kind contains these syllables. But as pure word forms, the formal grammar also counts them among the unassigned experimental cmavo forms.
+          <letteral>y</letteral>. No standard word of any other kind contains these syllables. But as pure word forms, the PEG word-form grammar also counts them among the unassigned experimental cmavo forms.
         </para>
       </listitem>
       <listitem>

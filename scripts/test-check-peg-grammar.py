@@ -346,6 +346,14 @@ def m_duplicate_root_id(a, f):
                     "second element with the section's id"), f
 
 
+def m_duplicate_subsection_id(a, f):
+    """PR #119 review (Kimi): a copy of a subsection's id elsewhere in the
+    chapter must fail, as it did when the grammar was its own document."""
+    return sub_once(a, INTRO_TITLE,
+                    INTRO_TITLE + '\n    <para xml:id="peg-cmevla">Fake</para>',
+                    "duplicate subsection id in the chapter"), f
+
+
 def m_ebnf_arrow(a, f):
     title = '<title><anchor xml:id="c21s2" />EBNF grammar of Lojban</title>'
     return sub_once(a, title, title + "\n    <para>FAKE &#8592; wrong</para>",
@@ -397,6 +405,7 @@ MUTATIONS = [
     ("rule-like paragraph in the chapter introduction", m_intro_rule),
     ("second element with the section's id", m_duplicate_root_id),
     ("arrow in the EBNF section", m_ebnf_arrow),
+    ("duplicate subsection id elsewhere in the chapter", m_duplicate_subsection_id),
 ]
 
 

@@ -4,39 +4,58 @@
     <title><anchor xml:id="a03-how" />How to read this appendix</title>
     <para>
       <indexterm type="general"><primary>changes from the first edition</primary></indexterm>
-      This appendix collects, in one place, every rule of Lojban that this edition teaches differently from the first edition (1997, as corrected through its 1.1 revision &ndash; the corrections were errata, not rule changes). Each change is also marked where it is taught, with a status note; this appendix is the index of those notes. The governance story behind them is told in
-      <xref linkend="chapter-about" />: in brief, a language-definition committee (the BPFK) and its parent organization (the LLG) adopted a small number of deliberate amendments between 2004 and 2016, and have been inactive since 2022, leaving the official language frozen as amended.
+      This appendix collects, in one place, every rule of Lojban that this edition teaches differently from the first edition. The first edition appeared in 1997, and its revisions up to version 1.1 corrected it. Those corrections were errata, not rule changes. Where this book teaches a changed rule, a status note marks it, and this appendix is the index of those notes.
+    </para>
+    <para>
+      <xref linkend="chapter-about" />
+      tells the story of the governance behind these changes. In brief, a language-definition committee (the BPFK) and its parent organization (the LLG) adopted a small number of deliberate amendments between 2004 and 2016. Both bodies became inactive in 2022, which left the official language frozen as amended.
     </para>
     <para>
       Every entry below carries one of these authority labels:
     </para>
-    <itemizedlist>
-      <listitem><para><emphasis>Ratified</emphasis> &ndash; adopted by an LLG vote. Only the article-system reform has this status.</para></listitem>
-      <listitem><para><emphasis>Committee-approved</emphasis> &ndash; adopted by a recorded BPFK vote, never separately ratified by the LLG.</para></listitem>
-      <listitem><para><emphasis>Checkpointed</emphasis> &ndash; fixed by the committee's 2004&ndash;2005 checkpoint process; the frozen snapshot texts of those dates are the authoritative statements.</para></listitem>
-      <listitem><para><emphasis>De facto</emphasis> &ndash; never voted; the entry states its evidence class: a working document of the definition effort, implementation by the current tools surveyed for this edition, attested usage, or a combination. No one class by itself proves consensus.</para></listitem>
-      <listitem><para><emphasis>Editorial</emphasis> &ndash; a convention this edition adopts where the official texts are silent or unsettled, always identified as such.</para></listitem>
-    </itemizedlist>
+    <variablelist>
+      <varlistentry>
+        <term>Ratified</term>
+        <listitem><para>An LLG vote adopted the rule. Only the reform of the article system has this status.</para></listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Committee-approved</term>
+        <listitem><para>A recorded BPFK vote adopted the rule, and the LLG never separately ratified it.</para></listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Checkpointed</term>
+        <listitem><para>The checkpoint process of the committee fixed the rule in 2004 and 2005. The frozen snapshot texts of those dates are the authoritative statements.</para></listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>De facto</term>
+        <listitem><para>Nobody voted on the rule. The entry states its class of evidence. The class is a working document of the definition effort, implementation by the current tools that this edition surveyed, attested usage, or a combination. No single class proves consensus by itself.</para></listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Editorial</term>
+        <listitem><para>This edition adopts a convention where the official texts are silent or unsettled. The entry always says so.</para></listitem>
+      </varlistentry>
+    </variablelist>
     <para>
-      One promise made when the article reform was adopted extends in spirit to everything here: text written to the first edition's rules is <emphasis>not incorrect</emphasis>. It is older Lojban. This appendix exists so that readers can move between the two.
+      When the LLG adopted the article reform, it made one promise, and that promise extends in spirit to everything here. Text written to the rules of the first edition is <emphasis>not incorrect</emphasis>. It is older Lojban. This appendix exists so that readers can move between the two.
     </para>
     <para>
       <indexterm type="general"><primary>errata</primary><secondary>corrections since the first edition</secondary></indexterm>
-      Separately from the rule changes below, the successive revisions corrected genuine errors in the first edition's own Lojban &ndash; wrong words in printed examples, such as a
+      Apart from the rule changes below, the successive revisions corrected genuine errors in the Lojban of the first edition. These were wrong words in printed examples. For example, one example had a
       <valsi>le'u</valsi>
-      where a quotation opener
+      where the quotation opener
       <valsi>lo'u</valsi>
-      was needed, a
+      belonged. Others had a
       <jbophrase>le ka</jbophrase>
       for a
-      <jbophrase>le du'u</jbophrase>
-      , a mis-split
-      <jbophrase>na'e ke</jbophrase>
-      , and the like. Those were mistakes when printed and are simply fixed; they are not changes to the language and are not catalogued here.
+      <jbophrase>le du'u</jbophrase>, or a mis-split
+      <jbophrase>na'e ke</jbophrase>. Those were mistakes when printed, and this edition fixes them. They are not changes to the language, and this appendix does not list them.
     </para>
     <para>
-      One further change is to the book, not the language: the first edition printed the machine-oriented (YACC) grammar in full. This edition prints only the human-oriented EBNF grammar (
-      <xref linkend="chapter-grammars" />); the machine grammars remain available as electronic supplements. Dropping the YACC listing follows an informal majority at the LLG's 2014 annual meeting &ndash; a decision about what to print, not about the grammar itself. The official definition of Lojban's syntax remains the third-baseline EBNF/YACC grammar; the camxes PEG grammars that current software uses are the de facto standard and were never ratified.
+      One more change is to the book, not to the language. The first edition printed the machine-oriented grammar (YACC) in full. This edition prints only the human-oriented EBNF grammar (see
+      <xref linkend="chapter-grammars" />), and the machine grammars are still available as electronic supplements. The YACC listing is gone because of an informal majority at the 2014 annual meeting of the LLG. That was a decision about what to print, not about the grammar itself.
+    </para>
+    <para>
+      The official definition of Lojban syntax is still the EBNF/YACC grammar of the third baseline. The camxes PEG grammars that current software uses are the de facto standard, and nobody ever ratified them.
     </para>
   </section>
   <section xml:id="section-changes-gadri">
@@ -44,50 +63,73 @@
     <para>
       <indexterm type="general"><primary>xorlo</primary><secondary>summary of changes</secondary>
       </indexterm>
-      <emphasis>Ratified</emphasis>. First checkpointed in 2004, adopted as the working baseline in 2007, and ratified by LLG vote in 2020; the vote fixed MediaWiki revision 123823 (3 April 2020) of the committee's gadri page as the official description, together with two expressly stated corrections: a typo,
+      This change is <emphasis>ratified</emphasis>. The BPFK first checkpointed it in 2004, the LLG adopted it as the working baseline in 2007, and an LLG vote ratified it in 2020. The vote made one revision of the committee's gadri page the official description: MediaWiki revision 123823 (3 April 2020). It added two expressly stated corrections: a typo,
       <jbophrase>mokla</jbophrase>
       for
-      <valsi>moklu</valsi>
-      , and a repaired final clause in its unicorn example. The largest change in the book, taught in
+      <valsi>moklu</valsi>, and a repaired final clause in the unicorn example of the page.
+    </para>
+    <para>
+      This is the largest change in the book.
       <xref linkend="chapter-sumti" />
-      and fundamental to
-      <xref linkend="chapter-quantifiers" />. The first edition gave every description hidden default quantifiers (
+      teaches it, and it is fundamental to
+      <xref linkend="chapter-quantifiers" />. The first edition gave every description hidden default quantifiers:
       <jbophrase>lo broda</jbophrase>
       meant
-      <jbophrase>su'o lo ro broda</jbophrase>
-      ,
+      <jbophrase>su'o lo ro broda</jbophrase>, and
       <jbophrase>le broda</jbophrase>
       meant
-      <jbophrase>ro le su'o broda</jbophrase>). All default quantifiers are abolished: an unquantified description is a <emphasis>constant</emphasis>, referring to whatever things the context supplies (formally,
+      <jbophrase>ro le su'o broda</jbophrase>. The reform abolishes all default quantifiers. An unquantified description is a <emphasis>constant</emphasis>, and it refers to whatever things the context supplies. (Formally,
       <jbophrase>lo broda</jbophrase>
       is
-      <jbophrase>zo'e noi ke'a broda</jbophrase>). Consequences threaded through the book:
-      <valsi>lo</valsi>
-      is the everyday default article, referring to one or more things that really fit its description, with no implicit quantifier or count machinery; an outer quantifier, when actually said, selects distributively from a description's referents; an inner quantifier states the referents' count;
-      <jbophrase>PA broda</jbophrase>
-      means
-      <jbophrase>PA da poi broda</jbophrase>
-      and is no longer an abbreviation of
-      <jbophrase>PA lo broda</jbophrase>
-      ; the old mass doctrine (a mass has the properties of its components) is replaced by <emphasis>groups</emphasis> (
-      <valsi>gunma</valsi>) with collective satisfaction and their own properties;
-      <valsi>me</valsi>
-      is sharpened from
-      <quote>is one of</quote>
-      to
-      <quote>is/are among the referents of</quote>
-      (a working-document clarification, never separately voted, on which the ratified expansions rely)
-      ; and a number directly after
-      <valsi>la</valsi>
-      is part of the name, not an inner quantifier. The first edition's descriptor-attachment lessons that were derived from the abolished defaults are re-derived in
+      <jbophrase>zo'e noi ke'a broda</jbophrase>.)
+    </para>
+    <para>
+      The consequences run through the whole book:
+    </para>
+    <itemizedlist>
+      <listitem><para>
+        <valsi>lo</valsi>
+        is the everyday default article. It refers to one or more things that really fit its description, with no implicit quantifier or count machinery.
+      </para></listitem>
+      <listitem><para>
+        An outer quantifier, when actually said, selects distributively from the referents of a description.
+      </para></listitem>
+      <listitem><para>
+        An inner quantifier states the count of the referents.
+      </para></listitem>
+      <listitem><para>
+        <jbophrase>PA broda</jbophrase>
+        means
+        <jbophrase>PA da poi broda</jbophrase>, and it is no longer an abbreviation of
+        <jbophrase>PA lo broda</jbophrase>.
+      </para></listitem>
+      <listitem><para>
+        <emphasis>Groups</emphasis> (<valsi>gunma</valsi>), with collective satisfaction and properties of their own, replace the old mass doctrine, in which a mass has the properties of its components.
+      </para></listitem>
+      <listitem><para>
+        The gloss of
+        <valsi>me</valsi>
+        is sharper:
+        <quote>is/are among the referents of</quote>, not
+        <quote>is one of</quote>. This is a clarification from a working document, and nobody separately voted on it. But the ratified expansions rely on it.
+      </para></listitem>
+      <listitem><para>
+        A number directly after
+        <valsi>la</valsi>
+        is part of the name, not an inner quantifier.
+      </para></listitem>
+    </itemizedlist>
+    <para>
+      Some lessons of the first edition about attachment to descriptors derived from the abolished defaults.
       <xref linkend="chapter-relative-clauses" />
       and
-      <xref linkend="chapter-quantifiers" />.
+      <xref linkend="chapter-quantifiers" />
+      derive them again.
     </para>
     <para>
       <indexterm type="general"><primary>implicit quantifiers</primary><secondary>first-edition table of</secondary>
       </indexterm>
-      For reading older text, here is the abolished machinery in full. The first edition held that <emphasis>every</emphasis> sumti carried one or two quantifiers implicitly, filled in automatically whenever no explicit ones appeared. For the descriptors:
+      To help you read older text, here is the abolished machinery in full. The first edition held that <emphasis>every</emphasis> sumti carried one or two implicit quantifiers. These applied automatically whenever no explicit quantifiers appeared. For the descriptors, they were these:
     </para>
     <informaltable>
       <thead>
@@ -107,45 +149,49 @@
     </informaltable>
     <para>
       Beyond the descriptors, personal pro-sumti carried an implicit
-      <valsi>ro</valsi>
-      (or
+      <valsi>ro</valsi>, or
       <valsi>pisu'o</valsi>
-      when read as masses &ndash; the composite pro-sumti like
+      when read as masses. The first edition said that the composite pro-sumti like
       <valsi>mi'o</valsi>
-      were themselves said to represent masses, equal to the
+      represent masses, equal to the
       <valsi>joi</valsi>
-      forms), quotations an implicit
-      <valsi>su'o</valsi>
-      , and so on. The consequences ran deep. Because
+      forms. Quotations carried an implicit
+      <valsi>su'o</valsi>, and other kinds of sumti had defaults too.
+    </para>
+    <para>
+      The consequences ran deep. Because
       <jbophrase>lo broda</jbophrase>
       contained a real
-      <quote>at least one</quote>
-      , every bare description was a quantified claim, subject to the scope rules of
+      <quote>at least one</quote>, every bare description was a quantified claim, subject to the scope rules of
       <xref linkend="chapter-quantifiers" />. An inner quantifier on
       <valsi>lo</valsi>
-      counted everything in existence fitting the description &ndash; the first edition warned readers away from
-      <jbophrase>lo ci gerku</jbophrase>
-      as claiming a three-dog universe. It also drew a sharp placement contrast for incidental clauses:
-      <jbophrase>lo prenu ku noi blabi</jbophrase>
-      applied the clause after the outer
+      counted everything in existence that fits the description. So the first edition warned readers away from
+      <jbophrase>lo ci gerku</jbophrase>, because it claims that only three dogs exist.
+    </para>
+    <para>
+      The first edition also drew a sharp contrast in the placement of incidental clauses. In
+      <jbophrase>lo prenu ku noi blabi</jbophrase>, the clause applied after the outer
       <valsi>su'o</valsi>
-      selected, while
+      made its selection. But
       <jbophrase>lo prenu noi blabi</jbophrase>
-      put it inside the description, where the hidden inner
+      put the clause inside the description. There the hidden inner
       <valsi>ro</valsi>
-      made it a claim that all persons whatsoever are white. And the first edition's definite/indefinite lessons were largely lessons about which defaults you were getting. None of this survives. An unquantified description is a constant, and the only quantifiers in a bridi are the ones somebody said.
+      made it a claim that all persons whatsoever are white. And the lessons of the first edition about definite and indefinite descriptions were largely lessons about which defaults you got.
+    </para>
+    <para>
+      None of this survives. An unquantified description is a constant, and the only quantifiers in a bridi are the ones that somebody said.
     </para>
     <para>
       <indexterm type="general"><primary>masses</primary><secondary>first-edition doctrine</secondary>
       </indexterm>
-      The first edition's <emphasis>mass</emphasis> was also a stranger beast than today's group. A mass was said to inherit the properties of each of its components, insofar as they were relevant to it, and could have properties of its own besides: a mass of people with both fair-skinned and dark-skinned members had fair skin <emphasis>and</emphasis> dark skin (though it was not of molecular dimensions merely because its people's molecules are). Ordinary logical reasoning was accordingly suspended for mass statements. A group (
-      <valsi>gunma</valsi>) just has whatever properties it has, collectively satisfied or otherwise, and logic applies as usual. The first edition also used
+      The <emphasis>mass</emphasis> of the first edition was also a stranger thing than the group of today. The first edition said that a mass inherits the properties of each of its components, where they are relevant to it. It also said that a mass has properties of its own. So a mass of people with fair-skinned and dark-skinned members had fair skin <emphasis>and</emphasis> dark skin. (But the mass was not of molecular size merely because the molecules of its people are.) As a result, ordinary logical reasoning did not apply to statements about masses.
+    </para>
+    <para>
+      A group (<valsi>gunma</valsi>) has whatever properties it has, collectively satisfied or not, and logic applies as usual. The first edition also used
       <valsi>loi</valsi>
-      for generic statements about kinds:
-      <jbophrase>loi cinfo cu xabju le fi'ortu'a</jbophrase>
-      ,
-      <quote>Lions dwell in Africa</quote>
-      , read as <quote>some part of the mass of all lions dwells in Africa</quote> &ndash; true because some lions do, and by the same token too weak to say that lions generally do. In current Lojban plain
+      for generic statements about kinds. It read
+      <jbophrase>loi cinfo cu xabju le fi'ortu'a</jbophrase>,
+      <quote>Lions dwell in Africa</quote>, as <quote>some part of the mass of all lions dwells in Africa</quote>. That is true because some lions do, and for the same reason it is too weak to say that lions generally do. In current Lojban, plain
       <jbophrase>lo cinfo cu xabju lo fi'ortu'a</jbophrase>
       says it, because
       <valsi>lo</valsi>
@@ -158,85 +204,98 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>dotside</primary><secondary>change summary</secondary></indexterm>
-          <emphasis>Committee-approved</emphasis> (a recorded BPFK vote of 8 August 2015, seven in favor with one abstention; never separately ratified by the LLG). Every cmevla is written with a leading and trailing dot, and the first edition's ban on
-          <valsi>la</valsi>
-          ,
-          <valsi>lai</valsi>
-          ,
-          <valsi>la'i</valsi>
-          ,
+          This change is <emphasis>committee-approved</emphasis>: a recorded BPFK vote adopted it on 8 August 2015, with seven votes in favor and one abstention. The LLG never separately ratified it. Every cmevla has a dot at the start and at the end. The first edition's ban on
+          <valsi>la</valsi>,
+          <valsi>lai</valsi>,
+          <valsi>la'i</valsi>, and
           <valsi>doi</valsi>
-          inside cmevla is lifted. Used throughout this edition.
+          inside cmevla no longer applies. This edition uses the rule throughout.
         </para>
       </listitem>
       <listitem>
         <para>
           <indexterm type="general"><primary>consonant-glide-vowel ban</primary><secondary>change summary</secondary></indexterm>
-          <emphasis>Committee-approved</emphasis> (27 December 2014; a transition-period vote predating the committee's 2015 reauthorization) <emphasis>and de facto</emphasis> (implemented in the surveyed word-form grammars). No word may contain a consonant directly followed by a glide: the first edition's
+          This change is <emphasis>committee-approved</emphasis> and <emphasis>de facto</emphasis>. The committee approved it on 27 December 2014, in a vote from the transition period before its reauthorization in 2015. The surveyed grammars of word forms implement it. No word can contain a consonant directly followed by a glide. So the first edition's
           <quote>kuarka</quote>
           and
           <quote>.niuport.</quote>
-          are respelled
+          are now spelled
           <valsi>ku'arka</valsi>
-          ,
-          <cmevla>.ni'uport.</cmevla>. See
+          and
+          <cmevla>.ni'uport.</cmevla>
+          (see
           <xref linkend="chapter-phonology" />
           and
-          <xref linkend="chapter-morphology" />.
+          <xref linkend="chapter-morphology" />).
         </para>
       </listitem>
       <listitem>
         <para>
           <indexterm type="general"><primary>diphthongs</primary><secondary>change summary</secondary></indexterm>
-          <emphasis>De facto</emphasis> (a working document of the definition effort, implemented in the surveyed parsers). Only
-          <diphthong>ai</diphthong>, <diphthong>ei</diphthong>, <diphthong>oi</diphthong>, <diphthong>au</diphthong>
-          are diphthongs; the first edition's other ten (which it permitted only in attitudinal indicators and in Lojbanized names and borrowings) are glide-initial syllables, permitted word-initially or after a vowel, and its two name-only diphthongs
+          This change is <emphasis>de facto</emphasis>: it comes from a working document of the definition effort, and the surveyed parsers implement it. Only
+          <diphthong>ai</diphthong>, <diphthong>ei</diphthong>, <diphthong>oi</diphthong>, and <diphthong>au</diphthong>
+          are diphthongs. The first edition had ten other diphthongs, and it permitted them only in attitudinal indicators and in Lojbanized names and borrowings. They are now glide-initial syllables, permitted at the start of a word or after a vowel. The two diphthongs that the first edition allowed only in names,
           <morphology>iy</morphology>
           and
-          <morphology>uy</morphology>
-          are likewise glide-plus-<letteral>y</letteral> syllables. The same grammar makes word resolution deterministic (at each point the first matching rule wins, so a string of Lojban text breaks into words in exactly one way), extends the space of permitted experimental cmavo shapes, admits digits inside cmevla, and states per-class rules for consonantal syllables and stress. The full grammar is printed in this edition's appendices.
+          <morphology>uy</morphology>, are also syllables with a glide and then <letteral>y</letteral>.
+        </para>
+        <para>
+          The same grammar makes word resolution deterministic. At each point the first matching rule wins, so a string of Lojban text breaks into words in exactly one way. The grammar also extends the space of permitted experimental cmavo shapes, and it admits digits inside cmevla. For each word class, it states rules for consonantal syllables and for stress. The appendices of this edition print the full grammar.
         </para>
       </listitem>
       <listitem>
         <para>
           <indexterm type="general"><primary>fu'ivla</primary><secondary>cluster position, change summary</secondary></indexterm>
-          <emphasis>De facto</emphasis> (a working document of the definition effort, implemented in the surveyed parsers). A fu'ivla's consonant cluster need no longer fall within the first five letters of the word. The first edition required that of every brivla; gismu and classical lujvo satisfy it by construction (a lujvo beginning with a fu'ivla rafsi can inherit its cluster position), and the working grammar keeps for fu'ivla only the structural requirement that the word resolve as a single brivla, so a word like
+          This change is <emphasis>de facto</emphasis>: it comes from a working document of the definition effort, and the surveyed parsers implement it. The consonant cluster of a fu'ivla no longer has to fall within the first five letters of the word. The first edition required that of every brivla. Gismu and classical lujvo satisfy it by construction, and a lujvo that begins with a fu'ivla rafsi can inherit the cluster position of the fu'ivla. For fu'ivla, the working grammar keeps only the structural requirement: the word must resolve as a single brivla. So a word like
           <valsi valid="maybe">ro'i'inre'o</valsi>
-          (cluster at the fifth and sixth letters) is now a valid fu'ivla. See
-          <xref linkend="section-fuhivla" />.
+          (with its cluster at the fifth and sixth letters) is now a valid fu'ivla (see
+          <xref linkend="section-fuhivla" />).
         </para>
       </listitem>
       <listitem>
         <para>
           <indexterm type="general"><primary>rafsi</primary><secondary>extended, change summary</secondary></indexterm>
-          <emphasis>De facto</emphasis> (a working document of the definition effort, implemented in the surveyed parsers). Every fu'ivla has combining forms: unchanged in final position (a vowel-initial fu'ivla additionally takes a leading apostrophe when anything is attached before it), with
-          <jbophrase>'y</jbophrase>
-          (or, when no collision arises, final-vowel-to-
-          <letteral>y</letteral>
-          substitution) elsewhere &ndash; always subject to the whole result still breaking apart into the intended words. The first edition confined fu'ivla to
+          This change is <emphasis>de facto</emphasis>: it comes from a working document of the definition effort, and the surveyed parsers implement it. Every fu'ivla has combining forms, and in final position it stays unchanged. (A fu'ivla that begins with a vowel also takes a leading apostrophe when anything attaches before it.) Elsewhere, it takes
+          <jbophrase>'y</jbophrase>, or, when no collision arises, its final vowel changes to
+          <letteral>y</letteral>. In every case, the whole result must still break apart into the intended words. The first edition allowed fu'ivla only in
           <valsi>zei</valsi>
-          compounds and printed a never-adopted cultural-fu'ivla proposal in its place. See
-          <xref linkend="section-rafsi-fuhivla" />.
+          compounds. In place of combining forms, it printed a proposal for cultural fu'ivla that nobody ever adopted (see
+          <xref linkend="section-rafsi-fuhivla" />).
         </para>
       </listitem>
       <listitem>
         <para>
           <indexterm type="general"><primary>hyphens</primary><secondary>change summary</secondary></indexterm>
-          <emphasis>Editorial norm, de facto acceptance</emphasis> (implemented in the surveyed parsers). This edition keeps the classical minimal hyphen-placement rules for writing; the working grammar deliberately also accepts unneeded hyphens, and a 2019 attempt to make that official for the previous revision was vetoed.
+          The norm is <emphasis>editorial</emphasis>, and the acceptance is <emphasis>de facto</emphasis>: the surveyed parsers implement it. For writing, this edition keeps the classical, minimal rules for hyphen placement. The working grammar deliberately also accepts unneeded hyphens. In 2019, an attempt to make that official for the previous revision of the book failed by veto.
         </para>
       </listitem>
       <listitem>
         <para>
           <indexterm type="general"><primary>comma</primary><secondary>change summary</secondary></indexterm>
-          <emphasis>Editorial, following the working grammar</emphasis>. The comma is purely a pronunciation aid: it cannot license otherwise-invalid letter sequences, reversing several first-edition lessons that leaned on it. In the first edition a comma could be pronounced
-          <phrase role="IPA">[h]</phrase>
-          like an apostrophe (though commas were also said never to distinguish words &ndash; a conflict never adjudicated; the working word-form grammar resolves it by ignoring commas entirely); it could force a syllable division or an alternative syllable grouping; names could be spelled with sound-bearing commas (
-          <quote>.i,ai,i,ai,on.</quote>); and borrowings could use it as a syllable separator licensing a vowel sequence (
-          <quote>bang,r,kore,a</quote>
-          , now
-          <jbophrase>bangrkore'a</jbophrase>
-          with an apostrophe). All of these devices are gone: spell what you want said. See
-          <xref linkend="chapter-phonology" />.
+          This change is <emphasis>editorial</emphasis>, and it follows the working grammar. The comma is only an aid to pronunciation. It cannot make an otherwise invalid letter sequence valid. This reverses several lessons of the first edition that depended on it. The first edition allowed these uses of the comma:
+        </para>
+        <itemizedlist>
+          <listitem><para>
+            Pronunciation like an apostrophe,
+            <phrase role="IPA">[h]</phrase>. But the first edition also said that commas never distinguish words. Nobody ever settled that conflict, and the working grammar of word forms resolves it by ignoring commas entirely.
+          </para></listitem>
+          <listitem><para>
+            A forced syllable division, or another grouping of syllables.
+          </para></listitem>
+          <listitem><para>
+            Commas with a sound in names, as in
+            <quote>.i,ai,i,ai,on.</quote>.
+          </para></listitem>
+          <listitem><para>
+            A syllable separator in borrowings, to permit a sequence of vowels. For example,
+            <quote>bang,r,kore,a</quote>
+            is now
+            <jbophrase>bangrkore'a</jbophrase>, with an apostrophe.
+          </para></listitem>
+        </itemizedlist>
+        <para>
+          All of these devices are gone: spell the pronunciation that you want (see
+          <xref linkend="chapter-phonology" />).
         </para>
       </listitem>
     </itemizedlist>
@@ -247,98 +306,95 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>tags</primary><secondary>binding change summary</secondary></indexterm>
-          <emphasis>Committee-approved</emphasis> (15 March 2016, seven of eight members in favor; never separately LLG-ratified). A tense or modal tag directly before a selbri binds to that selbri exactly as
+          This change is <emphasis>committee-approved</emphasis>: seven of eight members voted for it on 15 March 2016, and the LLG never separately ratified it. A tense or modal tag directly before a selbri binds to that selbri exactly as
           <valsi>cu</valsi>
-          would &ndash; unless an explicit
+          does. The only exception is an explicit
           <valsi>ku</valsi>
-          ends the tag construct first:
+          that ends the tag construct first. So
           <jbophrase>lo nu broda ba brode</jbophrase>
-          is a complete bridi. The first edition's grammar absorbed such tags into the preceding construct. See
-          <xref linkend="chapter-tenses" />
-          and the elision guidance in
+          is a complete bridi. The grammar of the first edition absorbed such tags into the preceding construct. See
+          <xref linkend="chapter-tenses" />, and the guidance on elision in
           <xref linkend="chapter-abstractions" />.
         </para>
       </listitem>
       <listitem>
         <para>
           <indexterm type="general"><primary>magic words</primary><secondary>change summary</secondary></indexterm>
-          <emphasis>Checkpointed per word</emphasis> (2005), <emphasis>synthesis editorial</emphasis>. The quoting and binding words each received a fixed left-to-right conflict rule, replacing the first edition's inconsistent pairwise list:
-          <valsi>zo</valsi>
-          ,
-          <valsi>zoi</valsi>
-          ,
-          <valsi>la'o</valsi>
-          , and
-          <valsi>lo'u</valsi>
-          in the committee's quotations decision,
-          <valsi>zei</valsi>
-          in its connectives decision, and
-          <valsi>bu</valsi>
-          by a definition using an exception list. The
+          The rules for each word are <emphasis>checkpointed</emphasis> (2005), and the synthesis is <emphasis>editorial</emphasis>. Each quoting and binding word received a fixed left-to-right rule for conflicts. These rules replace the inconsistent pairwise list of the first edition. The committee's decision on quotations covers
+          <valsi>zo</valsi>,
+          <valsi>zoi</valsi>,
+          <valsi>la'o</valsi>, and
+          <valsi>lo'u</valsi>. Its decision on connectives covers
+          <valsi>zei</valsi>. A definition with a list of exceptions covers
+          <valsi>bu</valsi>.
+        </para>
+        <para>
+          The
           <valsi>y</valsi>
           and
           <valsi>fa'o</valsi>
-          rules have their own checkpointed definitions;
-          <valsi>fa'o</valsi>'s capture exceptions name
-          <valsi>zo</valsi>
-          ,
-          <jbophrase>lo'u&hellip;le'u</jbophrase>
-          , service as a
+          rules have their own checkpointed definitions. The capture exceptions of
+          <valsi>fa'o</valsi>
+          name
+          <valsi>zo</valsi>,
+          <jbophrase>lo'u&hellip;le'u</jbophrase>, service as a
           <valsi>zoi</valsi>
           delimiter, and a preceding
-          <valsi>zei</valsi>
-          , with capture inside a
+          <valsi>zei</valsi>. Capture inside the quoted text of a
           <valsi>zoi</valsi>
-          payload following from the
+          follows from the
           <valsi>zoi</valsi>
-          rule itself. This edition presents all of it under one uniform principle and flags its two contested corners: whether
+          rule itself. This edition presents all of this under one uniform principle. It flags the two contested corners: whether
           <valsi>bu</valsi>
-          may bind the BAhE words, and whether
+          can bind the BAhE words, and whether
           <jbophrase>le'u bu</jbophrase>
           is a letteral.
         </para>
         <para>
-          The first edition's
+          The
           <jbophrase>zo le'u</jbophrase>
-          loophole is gone. A quotation now erases as a single unit &ndash;
+          loophole of the first edition is gone. A quotation now erases as a single unit, so
           <jbophrase>zo si si</jbophrase>
-          leaves nothing &ndash; where the first edition counted its pieces separately, so that repairing a stray
+          leaves nothing. The first edition counted the pieces of a quotation separately, so the repair of a stray
           <valsi>zo</valsi>
           took three
           <valsi>si</valsi>
           words. The first edition also noted that its own machine parser did not implement
           <valsi>si</valsi>
-          erasure at all; the parsers surveyed for this edition do.
+          erasure at all. The parsers that this edition surveyed do implement it.
         </para>
         <para>
-          Erasure was never voted; the boundary rules this edition teaches come from the community's later erasure proposal.
-          <valsi>si</valsi>
-          as taught is de facto, implemented alike in the surveyed parsers.
+          Nobody ever voted on erasure. The boundary rules that this edition teaches come from the community's later proposal on erasure. The rule for
+          <valsi>si</valsi>, as taught, is de facto: the surveyed parsers all implement it the same way. The rule for
           <valsi>su</valsi>
-          is de facto but unevenly implemented: the surveyed parsers disagree on whether the paragraph boundary itself is preserved.
+          is de facto, but the implementations are uneven. The surveyed parsers disagree on whether the paragraph boundary itself survives.
+        </para>
+        <para>
+          The word
           <valsi>sa</valsi>
-          remains unsettled &ndash; its precise rule was deliberately left undecided when the rest of the word-level machinery was frozen, a later proposal (erase back to the last word of the same selma'o) never gained standing, and parsers implement differing approximations. See
+          remains unsettled. When the committee froze the rest of the word-level machinery, it deliberately left the precise rule for
+          <valsi>sa</valsi>
+          undecided. A later proposal (erase back to the last word of the same selma'o) never gained standing, and parsers implement different approximations. See
           <xref linkend="chapter-structure" />.
         </para>
       </listitem>
       <listitem>
         <para>
           <indexterm type="general"><primary>fi'o</primary><secondary>restriction changes summary</secondary></indexterm>
-          <emphasis>De facto</emphasis> (implemented in the surveyed parsers). Two of the first edition's parser restrictions on
+          This change is <emphasis>de facto</emphasis>: the surveyed parsers implement it. Two parser restrictions of the first edition on
           <valsi>fi'o</valsi>
-          modals have lapsed (modal connectives and sticky modals now parse); direct negation still does not. See
+          modals no longer apply: modal connectives and sticky modals now parse. Direct negation still does not parse. See
           <xref linkend="chapter-sumti-tcita" />.
         </para>
       </listitem>
       <listitem>
         <para>
           <indexterm type="general"><primary>geks</primary><secondary>tags before, change summary</secondary></indexterm>
-          <emphasis>De facto</emphasis> (implemented in the surveyed parsers; never voted). A tense or modal tag may now stand directly before a forethought connective (
-          <jbophrase>pu ge broda gi brode</jbophrase>
-          ), read as a tag on the whole connected bridi; the first edition's grammar rejected this outright unless
+          This change is <emphasis>de facto</emphasis>: the surveyed parsers implement it, and nobody voted on it. A tense or modal tag can now stand directly before a forethought connective, as in
+          <jbophrase>pu ge broda gi brode</jbophrase>. The grammar reads it as a tag on the whole connected bridi. The grammar of the first edition rejected this outright, unless
           <valsi>ke</valsi>
-          followed the tag &ndash; even though the first edition's own prose used the bare form. See
-          <xref linkend="chapter-connectives" />.
+          followed the tag. But the first edition's own prose used the bare form (see
+          <xref linkend="chapter-connectives" />).
         </para>
       </listitem>
     </itemizedlist>
@@ -347,17 +403,21 @@
     <title><anchor xml:id="a03-tenses" />Tenses</title>
     <para>
       <indexterm type="general"><primary>ZAhO</primary><secondary>change summary</secondary></indexterm>
-      <emphasis>Checkpointed</emphasis> (24 May 2004). An event contour used as a sumtcita is reversed from the first edition: in
-      <jbophrase>broda ba'o lo nu brode</jbophrase>
-      , it is the <emphasis>main</emphasis> bridi that carries the contour, located at the tagged event &ndash; the same as
-      <jbophrase>ba'o broda ca lo nu brode</jbophrase>. The first edition read it the other way around: the tagged event was the process, and the main bridi sat at the named phase of it, so
+      This change is <emphasis>checkpointed</emphasis> (24 May 2004). An event contour used as a sumtcita now has the reverse reading from the first edition. In
+      <jbophrase>broda ba'o lo nu brode</jbophrase>, the <emphasis>main</emphasis> bridi carries the contour, at the time of the tagged event. This is the same as
+      <jbophrase>ba'o broda ca lo nu brode</jbophrase>.
+    </para>
+    <para>
+      The first edition read it the other way around. The tagged event was the process, and the main bridi was at the named phase of that process. So
       <jbophrase>mi klama le zarci pu'o le nu mi citka</jbophrase>
       meant
-      <quote>before my eating begins, I go to the store</quote>. First-edition text must be reread accordingly &ndash; including this book's own famous old example
-      <quote>mi morsi ba'o le nu mi jmive</quote>
-      ,
-      <quote>I am dead after living</quote>. Contours used directly as tenses are unaffected, and the sentence-connective forms keep their first-edition meaning, so ZAhO is the one tense whose subordinate and coordinate forms use the <emphasis>same</emphasis> sentence order. See
-      <xref linkend="chapter-tenses" />.
+      <quote>before my eating begins, I go to the store</quote>. You must reread text from the first edition accordingly. This includes the famous old example of this book,
+      <quote>mi morsi ba'o le nu mi jmive</quote>,
+      <quote>I am dead after living</quote>.
+    </para>
+    <para>
+      Contours used directly as tenses do not change. The sentence-connective forms also keep their meaning from the first edition. So ZAhO is the one tense whose subordinate and coordinate forms use the <emphasis>same</emphasis> sentence order (see
+      <xref linkend="chapter-tenses" />).
     </para>
   </section>
   <section xml:id="section-changes-meanings">
@@ -366,136 +426,146 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>e-series attitudinals</primary><secondary>change summary</secondary></indexterm>
-          <emphasis>Editorial, following usage</emphasis>. The senses taught come from the language-definition committee's reworking of these cmavo, drafted and discussed but never completed or put to a vote; modern use attests them, and the community's own contributions follow them &ndash; witness coinages like
+          This change is <emphasis>editorial</emphasis>, and it follows usage. The senses taught here come from the language-definition committee's rework of these cmavo. The committee drafted and discussed that rework, but it never completed it or put it to a vote. Modern use attests the new senses, and the community's own contributions follow them. Coinages like
           <jbophrase>e'ende</jbophrase>
-          ,
-          <quote>exhorts</quote>
-          , and
+          (<quote>exhorts</quote>) and
           <jbophrase>e'inde</jbophrase>
-          ,
-          <quote>instructs</quote>. In detail:
+          (<quote>instructs</quote>) show this.
+        </para>
+        <para>
+          In detail,
           <valsi>.e'e</valsi>
-          is exhortation (first edition: competence),
+          is exhortation (in the first edition, competence), and
           <valsi>.e'i</valsi>
-          is command (first edition: constraint); the
+          is command (in the first edition, constraint). The opposite on the
           <valsi>.e'o</valsi>
-          scale's opposite is now offer, and
+          scale is now offer, and
           <jbophrase>.ai nai</jbophrase>
-          is unintentionality rather than refusal. The frozen official word lists keep the old senses; expect them in older text. See
-          <xref linkend="chapter-attitudinals" />.
+          is unintentionality, not refusal. The frozen official word lists keep the old senses, so expect them in older text (see
+          <xref linkend="chapter-attitudinals" />).
         </para>
       </listitem>
       <listitem>
         <para>
           <indexterm type="general"><primary>BAI</primary><secondary>change summary</secondary></indexterm>
-          <emphasis>Checkpointed</emphasis> (16 June 2005). The committee restated every BAI place by place, and no BAI's basic relation was reversed. The restatement was not empty, though. It filled in meanings for some thirty converted BAI, forms like
-          <jbophrase>te pi'o</jbophrase>
-          , that the first edition's tables left blank. It revised the place order of
-          <valsi>tai</valsi>. It tightened several glosses to the checkpointed wording:
+          This change is <emphasis>checkpointed</emphasis> (16 June 2005). The committee restated every BAI place by place, and it reversed the basic relation of no BAI. But the restatement was not empty. It filled in meanings for some thirty converted BAI, like
+          <jbophrase>te pi'o</jbophrase>, that the tables of the first edition left blank. It also revised the place order of
+          <valsi>tai</valsi>.
+        </para>
+        <para>
+          The restatement tightened several glosses to the checkpointed wording. The BAI
           <valsi>ti'u</valsi>
-          is a time-of-day stamp, and
-          <valsi>ci'e</valsi>'s
+          is a time-of-day stamp. For
+          <valsi>ci'e</valsi>, the
           <jbophrase>se ci'e</jbophrase>
-          became
-          <quote>with system structure</quote>
-          rather than
-          <quote>with system function</quote>
-          , gaining a
-          <jbophrase>ve ci'e</jbophrase>
-          ,
-          <quote>with synergy in</quote>. And it settled the old reading dispute over BAI-plus-
-          <jbophrase>-nai</jbophrase>
-          in this book's favor. See
-          <xref linkend="chapter-sumti-tcita" />.
+          form became
+          <quote>with system structure</quote>, not
+          <quote>with system function</quote>, and
+          <valsi>ci'e</valsi>
+          gained a
+          <jbophrase>ve ci'e</jbophrase>:
+          <quote>with synergy in</quote>. The restatement also settled the old dispute about the reading of BAI plus
+          <jbophrase>-nai</jbophrase>, in favor of this book (see
+          <xref linkend="chapter-sumti-tcita" />).
         </para>
       </listitem>
       <listitem>
         <para>
           <indexterm type="general"><primary>letterals</primary><secondary>change summary</secondary></indexterm>
-          <emphasis>Checkpointed</emphasis> (17 March 2004; the shift-scope rule follows a later frozen decision of 11 February 2005). Shift words are bounded to their letteral string. The first edition instead had a shift last, in theory, until a contradicting shift or the end of the text, while conceding that in practice readers presumed it expired at the first non-letteral word;
-          <valsi>.ybu</valsi>
-          is recognized as a unit before any word-level processing; the
-          <valsi>bu</valsi>
-          rules were fixed by exception list &ndash; the frozen list exempted the BAhE words and
-          <valsi>le'u</valsi>
-          , among others &ndash; with two corners where this edition follows the later synthesis instead:
-          <jbophrase>ba'e bu</jbophrase>
-          and
-          <jbophrase>za'e bu</jbophrase>
-          (forbidden by the list, permitted by the synthesis and by current parsers), and
-          <jbophrase>le'u bu</jbophrase>
-          (likewise). See
+          This change is <emphasis>checkpointed</emphasis> (17 March 2004). The rule for the scope of shifts follows a later frozen decision of 11 February 2005. The changes are these:
+        </para>
+        <itemizedlist>
+          <listitem><para>
+            A shift word applies only within its letteral string. In the first edition, a shift lasted in theory until a contradicting shift or the end of the text. But the first edition admitted that in practice, readers presumed that it expired at the first word that was not a letteral.
+          </para></listitem>
+          <listitem><para>
+            The word
+            <valsi>.ybu</valsi>
+            counts as a unit before any word-level processing.
+          </para></listitem>
+          <listitem><para>
+            A list of exceptions fixed the
+            <valsi>bu</valsi>
+            rules. The frozen list exempted the BAhE words and
+            <valsi>le'u</valsi>, among others. In two corners, this edition follows the later synthesis instead. The list forbade
+            <jbophrase>ba'e bu</jbophrase>
+            and
+            <jbophrase>za'e bu</jbophrase>, but the synthesis and current parsers permit them. The same is true of
+            <jbophrase>le'u bu</jbophrase>.
+          </para></listitem>
+        </itemizedlist>
+        <para>
+          See
           <xref linkend="chapter-letterals" />.
         </para>
       </listitem>
       <listitem>
         <para>
           <indexterm type="general"><primary>terminology</primary><secondary>changes of, in this edition</secondary></indexterm>
-          <emphasis>Editorial</emphasis>. This edition says <emphasis>group</emphasis> where the first edition said <emphasis>mass</emphasis>; adopts the community term
-          <jbophrase>zi'evla</jbophrase>
-          for free-form borrowings; and uses
-          <emphasis>cmevla</emphasis>
-          for the name-word class throughout.
+          These changes are <emphasis>editorial</emphasis>. This edition makes three changes of terminology:
         </para>
+        <itemizedlist>
+          <listitem><para>It says <emphasis>group</emphasis> where the first edition said <emphasis>mass</emphasis>.</para></listitem>
+          <listitem><para>It adopts the community term <jbophrase>zi'evla</jbophrase> for free-form borrowings.</para></listitem>
+          <listitem><para>It uses <emphasis>cmevla</emphasis> for the class of name words throughout.</para></listitem>
+        </itemizedlist>
       </listitem>
     </itemizedlist>
   </section>
   <section xml:id="section-changes-unchanged">
     <title><anchor xml:id="a03-unchanged" />Debated but not changed</title>
     <para>
-      Readers who have followed community discussion may expect changes that this edition deliberately does not make, because nothing was ever adopted:
+      Readers who know the community discussion can expect some changes that this edition deliberately does not make, because nobody ever adopted them:
     </para>
     <itemizedlist>
       <listitem><para>
         <indexterm type="general"><primary>na</primary><secondary>scope of, unchanged</secondary></indexterm>
+        A
         <valsi>na</valsi>
-        before the selbri still negates the whole bridi; the narrower in-place-scope proposal was never adopted (though the positions of
+        before the selbri still negates the whole bridi. Nobody adopted the proposal for a narrower scope in place. (But the positions of
         <valsi>na</valsi>
-        relative to a tense now do differ &ndash; a de facto resolution, implemented in the semantic software surveyed for this edition and taught in
-        <xref linkend="chapter-negation" />).
+        relative to a tense now do differ. That is a de facto resolution: the semantic software that this edition surveyed implements it, and
+        <xref linkend="chapter-negation" />
+        teaches it.)
       </para></listitem>
       <listitem><para>
         <indexterm type="general"><primary>ro</primary><secondary>existential import, unchanged</secondary></indexterm>
-        Restricted universal claims (
-        <jbophrase>ro da poi broda</jbophrase>) still carry existential import, presented in this edition as presuppositional; the vacuous-truth alternative was never settled. See
+        Restricted universal claims (<jbophrase>ro da poi broda</jbophrase>) still carry existential import, and this edition presents it as presuppositional. The alternative reading, with vacuous truth, never became settled. See
         <xref linkend="chapter-quantifiers" />.
       </para></listitem>
       <listitem><para>
         <indexterm type="general"><primary>distance tenses</primary><secondary>medium readings, unchanged</secondary></indexterm>
-        The middle members of the space/time distance and interval series (
-        <valsi>va</valsi>, <valsi>za</valsi>, <valsi>ve'a</valsi>, <valsi>ze'a</valsi>) keep their first-edition
+        The middle members of the space and time series for distance and interval (<valsi>va</valsi>, <valsi>za</valsi>, <valsi>ve'a</valsi>, <valsi>ze'a</valsi>) keep their
         <quote>medium</quote>
-        readings; a regularization to
+        readings from the first edition. A regularization to
         <quote>unspecified</quote>
-        &ndash; along with a re-reading of a distance word's tagged sumti as naming the distance itself rather than the reference point &ndash; circulated as a proposal only. See
+        circulated only as a proposal. So did a new reading of the tagged sumti of a distance word, as the distance itself and not as the reference point. See
         <xref linkend="chapter-tenses" />.
       </para></listitem>
       <listitem><para>
         <indexterm type="general"><primary>termsets</primary><secondary>unchanged</secondary></indexterm>
-        Termsets remain official; a proposal to eliminate them was not adopted.
+        Termsets remain official. Nobody adopted a proposal to eliminate them.
       </para></listitem>
       <listitem><para>
         <indexterm type="general"><primary>su'oi</primary><secondary>never adopted</secondary></indexterm>
         <indexterm type="general"><primary>ro'oi</primary><secondary>never adopted</secondary></indexterm>
-        Construing the ratified number-neutral
+        To read the ratified, number-neutral
         <valsi>lo</valsi>
-        as half of a formal plural-logic system is an unofficial analysis, and the system's proposed plural quantifiers,
+        as half of a formal system of plural logic is an unofficial analysis. Nobody adopted the proposed plural quantifiers of that system,
         <valsi>su'oi</valsi>
         and
-        <valsi>ro'oi</valsi>
-        , were never adopted; the standard grammar does not accept them. See
+        <valsi>ro'oi</valsi>, and the standard grammar does not accept them. See
         <xref linkend="chapter-dialects" />.
       </para></listitem>
       <listitem><para>
         <indexterm type="general"><primary>lo'e</primary><secondary>unsettled status</secondary></indexterm>
         <indexterm type="general"><primary>le'e</primary><secondary>unsettled status</secondary></indexterm>
         <indexterm type="general"><primary>jei</primary><secondary>unsettled status</secondary></indexterm>
-        <valsi>lo'e</valsi>
-        ,
-        <valsi>le'e</valsi>
-        , and
+        The words
+        <valsi>lo'e</valsi>,
+        <valsi>le'e</valsi>, and
         <valsi>jei</valsi>
-        remain as unsettled as the first edition left them, and are so marked where taught.
+        remain as unsettled as the first edition left them. This book marks them so where it teaches them.
       </para></listitem>
     </itemizedlist>
   </section>

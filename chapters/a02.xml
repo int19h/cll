@@ -5,43 +5,46 @@
     </indexterm>
     <indexterm type="general"><primary>slinku'i test</primary><secondary>formal statement of</secondary>
     </indexterm>
-    This appendix reproduces the formal definition of Lojban's word-forms: the morphology section of the parsing expression grammar (PEG) that current Lojban parsing software implements. It is the precise statement of the rules presented informally in
+    This appendix reproduces the formal definition of Lojban word forms. It is the morphology section of the parsing expression grammar (PEG) that current Lojban software implements. It states precisely the rules that
     <xref linkend="chapter-morphology" />
     and
-    <xref linkend="chapter-phonology" />: which strings of letters constitute cmevla, cmavo, and brivla, where words begin and end, and which letter sequences are permitted at all.
+    <xref linkend="chapter-phonology" />
+    present informally. These rules decide which strings of letters are cmevla, cmavo, and brivla, where words begin and end, and which letter sequences are permitted at all.
   </para>
   <para>
-    The grammar is the one used by the camxes parser family, at the revision pinned for this edition's verification work; it is the work of Jorge Llambias (<jbophrase>la .xorxes.</jbophrase>). Every rule below is reproduced exactly as that file defines it, but the file itself is a plain-text program, and this appendix is typeset for reading: each rule is set out under its own name, the arrow that separates a rule's name from its definition is written
+    The grammar is the one that the camxes parser family uses, at the revision that this edition pinned for its verification work. Jorge Llambias (<jbophrase>la .xorxes.</jbophrase>) wrote it. This appendix reproduces every rule below exactly as that file defines it. But the file itself is a plain-text program, and this appendix sets it out for reading. Each rule appears under its own name, and headings group the rules. The arrow between the name of a rule and its definition is
     <quote>&#8592;</quote>
-    where the file writes
-    <quote>&lt;-</quote>
-    , and the rules are grouped under headings. Every rule definition is reproduced with its own characters, in the file's own order; none has been changed, reordered, or omitted. What the typesetting does change is everything around them: the section headings are this edition's, not the file's (which carried only three of its own); the implementation directives that follow a few rules are set in italics; and the file's comments appear here as prose, some quoted, some summarized, with one bibliographic link to the parsing literature left out.
+    here, where the file writes
+    <quote>&lt;-</quote>.
+  </para>
+  <para>
+    Every rule definition appears with its own characters, in the order of the file. We changed, reordered, or omitted none of them. The typesetting changes only everything around them. The section headings come from this edition, not from the file (which had only three headings of its own). The implementation directives after a few rules are in italics. The comments of the file appear here as prose: we quote some, summarize others, and leave out one bibliographic link to the parsing literature.
   </para>
   <para role="status-note">
     <indexterm type="general"><primary>PEG morphology</primary><secondary>status of</secondary>
     </indexterm>
-    This grammar is the de facto standard definition of Lojban's word-forms, implemented by current software; the consonant-glide-vowel ban within it is separately committee-approved. For the full authority history, see
+    This grammar is the de facto standard definition of Lojban word forms, and current software implements it. Within it, the ban on a consonant followed by a glide is separately committee-approved. For the full history of its authority, see
     <xref linkend="appendix-changes" />.
   </para>
   <para>
-    A parsing expression grammar differs from more familiar grammar notations in one crucial way: the choice operator
+    A parsing expression grammar differs from more familiar grammar notations in one important way: the choice operator
     <quote>/</quote>
-    is <emphasis>ordered</emphasis>. When several alternatives are given, the first one that succeeds is taken, and the rest are never tried. Together with the lookahead operators
+    is <emphasis>ordered</emphasis>. When there are several alternatives, the parser takes the first one that succeeds and never tries the rest. The lookahead operators
     <quote>&amp;</quote>
     (the following material must be present) and
     <quote>!</quote>
-    (the following material must be absent), this makes the grammar deterministic: any stream of Lojban sounds is divided into words in exactly one way.
+    (the following material must be absent) also help. Together, they make the grammar deterministic: it divides any stream of Lojban sounds into words in exactly one way.
   </para>
-  <para>The notation in full:</para>
+  <para>Here is the full notation:</para>
   <itemizedlist>
-    <listitem><para>A rule has the form <emphasis>name</emphasis> &#8592; expression: the construct called <emphasis>name</emphasis> is parsed by that expression.</para></listitem>
-    <listitem><para>Concatenation is written by juxtaposition, with no operator between the parts.</para></listitem>
+    <listitem><para>A rule has the form <emphasis>name</emphasis> &#8592; expression: that expression parses the construct called <emphasis>name</emphasis>.</para></listitem>
+    <listitem><para>Concatenation is juxtaposition: you write the parts next to each other, with no operator between them.</para></listitem>
     <listitem><para><quote>/</quote> is ordered choice, as described above.</para></listitem>
-    <listitem><para><quote>?</quote> makes the element to its left optional; <quote>*</quote> allows it to repeat any number of times, including none; <quote>+</quote> requires at least one. Repetitions take as much as they can.</para></listitem>
+    <listitem><para><quote>?</quote> makes the element to its left optional. <quote>*</quote> lets it repeat any number of times, including none. <quote>+</quote> requires at least one. Repetitions take as much as they can.</para></listitem>
     <listitem><para><quote>()</quote> groups the other operators.</para></listitem>
-    <listitem><para><quote>&amp;</quote> requires what follows it to be present, and <quote>!</quote> requires it to be absent; neither consumes any text.</para></listitem>
+    <listitem><para><quote>&amp;</quote> requires what follows it to be present, and <quote>!</quote> requires it to be absent. Neither consumes any text.</para></listitem>
     <listitem><para><quote>.</quote> stands for any character, <quote>[]</quote> for a class of characters, and text in quotation marks for itself.</para></listitem>
-    <listitem><para>An italic note such as <emphasis>#: PUSH</emphasis> after a rule is a directive to the implementation, not part of the rule; the ZOI rules explain the ones used here.</para></listitem>
+    <listitem><para>An italic note such as <emphasis>#: PUSH</emphasis> after a rule is a directive to the implementation, not a part of the rule. The ZOI rules explain the directives used here.</para></listitem>
   </itemizedlist>
   <section xml:id="a02-classes">
     <title>Word classes</title>
@@ -68,7 +71,13 @@
   </section>
   <section xml:id="a02-words">
     <title>Words and ZOI quotes</title>
-    <para>The source file opens with three wrapper productions, kept there as comments because they belong to the parser rather than to the grammar proper: a text is an optional pause followed by any number of words, each optionally followed by a pause; a word is either a Lojban word or a non-Lojban one; and a Lojban word is a cmevla, a cmavo, or a brivla. The two rules printed here state the last of these and attach the spaces that may follow a word.</para>
+    <para>The source file opens with three wrapper rules. It keeps them as comments, because they belong to the parser, not to the grammar proper. They say this:</para>
+    <itemizedlist>
+      <listitem><para>A text is an optional pause followed by any number of words, each optionally followed by a pause.</para></listitem>
+      <listitem><para>A word is either a Lojban word or a non-Lojban word.</para></listitem>
+      <listitem><para>A Lojban word is a cmevla, a cmavo, or a brivla.</para></listitem>
+    </itemizedlist>
+    <para>The two rules here state the last of these, and they attach the spaces that can follow a word.</para>
     <variablelist>
       <varlistentry>
         <term>lojban_word &#8592;</term>
@@ -84,7 +93,13 @@
       </varlistentry>
     </variablelist>
     <bridgehead renderas="sect2">ZOI quotes</bridgehead>
-    <para>Pure PEG cannot handle ZOI quotes, because it cannot check whether the closing delimiter is the same as the opening one. ZOI quote handling is the only part of Lojban's grammar that needs mechanisms external to the pure PEG grammar to be implemented properly; those mechanisms are implementation-specific. The four rules below therefore carry implementation directives, shown in italics: the opening delimiter is remembered (PUSH), the quoted text must differ from it (PEEK-DIFF), and the closing delimiter must equal it (POP-EQ). Two further directives appear on rules elsewhere in the grammar &ndash; LEAF and JOIN, which concern how an implementation builds its parse tree; the source file does not define them.</para>
+    <para>The source file explains the problem in its own words: <quote>Pure PEG cannot handle ZOI quotes, because it cannot check whether the closing delimiter is the same as the opening one. ZOI quote handling is the only part of Lojban's grammar that needs mechanisms external to the pure PEG grammar to be implemented properly; those mechanisms are implementation-specific.</quote> So the four rules below carry implementation directives, shown in italics:</para>
+    <itemizedlist>
+      <listitem><para>PUSH remembers the opening delimiter.</para></listitem>
+      <listitem><para>PEEK-DIFF requires the quoted text to differ from it.</para></listitem>
+      <listitem><para>POP-EQ requires the closing delimiter to equal it.</para></listitem>
+    </itemizedlist>
+    <para>Two more directives appear on rules elsewhere in the grammar: LEAF and JOIN. They concern how an implementation builds its parse tree, and the source file does not define them.</para>
     <variablelist>
       <varlistentry>
         <term>zoi_open &#8592;</term>
@@ -134,7 +149,7 @@
         </listitem>
       </varlistentry>
     </variablelist>
-    <para>The source file also carries, as comments, an earlier formulation of the cmevla rules in terms of a cmevla_syllable and a doi_la_lai_lahi guard; the rules above supersede it.</para>
+    <para>The source file also keeps, as comments, an earlier formulation of the cmevla rules. That formulation uses a cmevla_syllable and a doi_la_lai_lahi guard. The rules above replace it.</para>
   </section>
   <section xml:id="a02-cmavo">
     <title>cmavo</title>
@@ -451,7 +466,7 @@
         </listitem>
       </varlistentry>
     </variablelist>
-    <para>The next rule prevents a form like «bla'ypre» from being read as a valid lujvo.</para>
+    <para>The next rule stops a parser from reading a form like «bla'ypre» as a valid lujvo.</para>
     <variablelist>
       <varlistentry>
         <term>consonantal_syllable &#8592;</term>
@@ -766,7 +781,7 @@
         </listitem>
       </varlistentry>
     </variablelist>
-    <para>The source file warns that Unicode-style and escaped characters are not compatible with one PEG implementation, cl_peg, and keeps an unescaped formulation of space_char alongside the following rule as a comment.</para>
+    <para>The source file warns that one PEG implementation, cl_peg, is not compatible with Unicode-style and escaped characters. So the file keeps an unescaped formulation of space_char, as a comment, beside the following rule.</para>
     <variablelist>
       <varlistentry>
         <term>space_char &#8592;</term>

@@ -2,14 +2,14 @@
   <title><anchor xml:id="a01" />Chrestomathy</title>
   <para>
     <indexterm type="general"><primary>chrestomathy</primary><secondary>editorial principles of</secondary></indexterm>
-    The texts of this chrestomathy are reprinted in the form in which their authors and translators
-    published them, as closely as the surviving copies permit &ndash; the note that opens each text records
-    who wrote it, who translated it, and any editorial departure from the source. No attempt has been
-    made to normalise them to a single style: they range from classical Lojban (the Terry story, from
-    this book's first edition, and the Alice extract) through the anonymous fable translation to
-    contemporary usage (the poem), and they differ accordingly in article usage and in orthography. Read them as
-    what they are &ndash; genuine Lojban text from different hands and different eras; as everywhere in
-    this book, the older usage is not an error (see
+    This chrestomathy reprints its texts in the form in which their authors and translators
+    published them, as closely as the surviving copies permit. The note at the start of each text records
+    who wrote it, who translated it, and any editorial departure from the source. We did not try to
+    normalize them to a single style. They range from classical Lojban (the Terry story, from the first
+    edition of this book, and the Alice extract), through the anonymous fable translation, to contemporary
+    usage (the poem), so they differ in article usage and in orthography. Read them as what they are:
+    genuine Lojban text from different hands and different eras. As everywhere in this book, the older
+    usage is not an error (see
     <xref linkend="appendix-changes" />).
   </para>
   <section xml:id="section-north-wind">
@@ -598,7 +598,7 @@
       <valsi>zutse</valsi>
       <valsi>zvati</valsi>
     </para>
-    <para>A fable by Aesop. The Lojban translation was published anonymously and released into the public domain; the translator is unknown. It is reprinted as published.</para>
+    <para>This is a fable by Aesop. The Lojban translation appeared anonymously and in the public domain, and the translator is unknown. This book reprints it as published.</para>
     <informaltable>
       <thead>
         <tr>
@@ -632,7 +632,7 @@
   </section>
   <section xml:id="section-terry">
     <title><anchor xml:id="a01-terry" />Terry, the Tiger, visits the big city</title>
-    <para>An original Lojban story by Michael Turniansky, with the author's own English translation; reprinted as written (CC BY-NC), except that the byline is set in this edition's orthography.</para>
+    <para>This is an original Lojban story by Michael Turniansky, with the author's own English translation. This book reprints it as written (CC BY-NC). The only exception is the byline, which uses the orthography of this edition.</para>
     <informaltable>
       <thead>
         <tr>
@@ -706,7 +706,7 @@
   </section>
   <section xml:id="section-soft-rains">
     <title><anchor xml:id="a01-soft-rains" />There Will Come Soft Rains</title>
-    <para>A poem by Sara Teasdale; translated into Lojban by <jbophrase>la lalxu</jbophrase>, and printed here from the translator's own text, with her permission.</para>
+    <para>This is a poem by Sara Teasdale, translated into Lojban by <jbophrase>la lalxu</jbophrase>. This book prints it from the translator's own text, with her permission.</para>
     <informaltable>
       <thead>
         <tr>
@@ -776,11 +776,11 @@
   </section>
   <section xml:id="section-alice01">
     <title><anchor xml:id="a0102" />Alice in Wonderland</title>
-    <para>An extract from the novel by Lewis Carroll. The Lojban translation is the early community
-    translation, credited collectively to <jbophrase>la .lojbangirz.</jbophrase> (the Logical Language
-    Group) and explicitly placed in the public domain by its contributors; the community's own index of
-    texts records that the vast majority of it is the work of <jbophrase>la .xorxes.</jbophrase> (Jorge
-    Llambias). It is reprinted as published, in the classical orthography of its era.</para>
+    <para>This is an extract from the novel by Lewis Carroll. The Lojban translation is the early community
+    translation. Its credit goes collectively to <jbophrase>la .lojbangirz.</jbophrase> (the Logical Language
+    Group), and its contributors explicitly placed it in the public domain. The community's own index of
+    texts records that <jbophrase>la .xorxes.</jbophrase> (Jorge Llambias) did the vast majority of it.
+    This book reprints it as published, in the classical orthography of its era.</para>
     <informaltable>
       <thead>
         <tr>

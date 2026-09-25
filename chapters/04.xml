@@ -1999,9 +1999,9 @@
       Apply this test last, after you add any hyphens that the other rules require. Its traditional name is the
       <quote>tosmabru test</quote>, after a demonstration word that Lojban inherited from Loglan. The word
       <valsi valid="false">tosmabru</valsi>
-      is meant as a hypothetical rafsi
+      tries to join a hypothetical rafsi
       <rafsi>tos</rafsi>
-      plus
+      to
       <valsi>mabru</valsi>
       (<quote>mammal</quote>). But it actually resolves as
       <jbophrase>to smabru</jbophrase>: the parenthesis cmavo

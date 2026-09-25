@@ -652,8 +652,7 @@
       attached.
     </para>
     <para>
-      The reason is not a special exemption. These words act on the words around them, and they act first. Everything of this kind applies strictly from left to right (
-      <xref linkend="section-cmavo-interactions" />
+      The reason is not a special exemption. These words act on the words around them, and they act first. Everything of this kind applies strictly from left to right (<xref linkend="section-cmavo-interactions" />
       presents this word-level machinery in full). So a following
       <valsi>bu</valsi>
       never gets a chance to bind. The

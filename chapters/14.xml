@@ -2967,8 +2967,7 @@
       which would mean that each of them carried the piano by himself/herself. Lojban deals with this particular linguistic phenomenon as a
       <quote>group</quote>
       (in Lojban,
-      <valsi>gunma</valsi>
-      ; traditionally called a <quote>mass</quote>). John and Alice are joined together into a group, John-and-Alice, and it is this group which carried the piano, not either of them separately. The cmavo
+      <valsi>gunma</valsi>, and traditionally called a <quote>mass</quote>). John and Alice are joined together into a group, John-and-Alice, and it is this group which carried the piano, not either of them separately. The cmavo
       <valsi>joi</valsi>
       (of selma'o JOI) is used to join two or more members into a group:
     </para>
@@ -2989,7 +2988,10 @@
       <indexterm type="general"><primary>supervising</primary><secondary>as a contribution to collective action</secondary>
       </indexterm>
       <xref linkend="example-random-id-pC5x" />
-      covers the case mentioned, where John and Alice divide the labor; it also could mean that John did all the hauling and Alice did the supervising. This flexibility arises because the carrying is claimed of the group as a whole: the members satisfy the claim <emphasis>collectively</emphasis>, in whatever division of labor fits, and no member need satisfy it alone. A group has properties of its own, which are not automatically the properties of its members, nor the members' properties those of the group: John-and-Alice may weigh two hundred kilograms together though neither John nor Alice does. Groups are also discussed in
+      covers the case mentioned, where John and Alice divide the labor; it also could mean that John did all the hauling and Alice did the supervising. This flexibility arises because the sentence claims the carrying of the group as a whole. The members satisfy the claim <emphasis>collectively</emphasis>, in whatever division of labor fits, and no member has to satisfy it alone.
+    </para>
+    <para>
+      A group has properties of its own. They are not automatically the properties of its members, and the properties of the members are not automatically those of the group. For example, John-and-Alice can weigh two hundred kilograms together, although neither John nor Alice does. Groups are also discussed in
       <xref linkend="section-masses" />.
     </para>
     <para role="status-note">
@@ -2997,8 +2999,8 @@
       </indexterm>
       The group account of
       <valsi>joi</valsi>
-      is part of the ratified gadri reform; older texts follow a different doctrine &ndash; see
-      <xref linkend="appendix-changes" />.
+      is part of the ratified reform of the gadri. Older texts follow a different doctrine (see
+      <xref linkend="appendix-changes" />).
     </para>
     <para>
       <indexterm type="lojban-word"><primary>JA selma'o</primary><secondary>opposed to JOI</secondary>
@@ -3211,7 +3213,10 @@
       </indexterm>
       The x<subscript>3</subscript> place of
       <valsi>cuxna</valsi>
-      is a set from which the choice is being made. A set is an abstract object, determined entirely by specifying its members. A group, by contrast, is a thing in the world that can act, weigh, or gather, its members satisfying claims collectively; a set merely <emphasis>has</emphasis> its members, and its own properties are set-like ones such as size, membership, and inclusion. So the set of all rats is large (it has many members), while the rats themselves are small, and neither smallness nor furriness passes to the set. This chapter does not attempt to explain set theory (the mathematical study of sets) in detail: explaining propositional logic is quite enough for one chapter!
+      is a set from which the choice is being made. A set is an abstract object, and its members alone determine it.
+    </para>
+    <para>
+      A group, by contrast, is a thing in the world that can act, weigh, or gather, and its members satisfy claims collectively. A set only <emphasis>has</emphasis> its members. Its own properties are properties of sets, such as size, membership, and inclusion. So the set of all rats is large (it has many members), but the rats themselves are small. Neither smallness nor furriness passes to the set. This chapter does not attempt to explain set theory (the mathematical study of sets) in detail: explaining propositional logic is quite enough for one chapter!
     </para>
 
     <para>
@@ -4841,7 +4846,7 @@
     <para role="status-note">
       <indexterm type="general"><primary>tenses</primary><secondary>before forethought connectives, status</secondary>
       </indexterm>
-      A bare leading tense on a forethought construction is de facto standard &ndash; current grammars read it as a term scoping over the whole construction, which is exactly the both-in-the-past meaning intended here. For its history, see
+      A bare leading tense on a forethought construction is de facto standard. Current grammars read it as a term with scope over the whole construction. That is exactly the meaning intended here: both events are in the past. For its history, see
       <xref linkend="appendix-changes" />.
     </para>
   </section>

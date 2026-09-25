@@ -181,11 +181,12 @@
       </indexterm>
       The scope of
       <valsi>na</valsi>
-      is officially unsettled; this whole-bridi rule is the working account, and current semantic software implements it &ndash; see
-      <xref linkend="appendix-changes" />. How
+      is officially unsettled. This rule for the whole bridi is the working account, and current semantic software implements it (see
+      <xref linkend="appendix-changes" />).
+      <xref linkend="chapter-quantifiers" />
+      discusses how
       <valsi>na</valsi>
-      interacts with quantified variables is taken up in
-      <xref linkend="chapter-quantifiers" />.
+      interacts with quantified variables.
     </para>
 
     <para>
@@ -330,9 +331,14 @@
       When a selbri is tagged with a tense or a modal, negation with
       <valsi>na</valsi>
       is permitted in two positions: before or after the tag. The first edition left the difference between them to
-      <quote>future, Lojban-speaking, logicians</quote>; the logicians have spoken, and the two positions differ. Placed before the tag,
+      <quote>future, Lojban-speaking, logicians</quote>. The logicians spoke, and the two positions differ.
+    </para>
+    <para>
+      Before the tag,
       <valsi>na</valsi>
-      denies the tensed claim as a whole; placed after the tag, it lies within the scope of the tense, so the sentence makes a (tensed) claim about something <emphasis>not</emphasis> happening. The difference is easiest to see with one of the less familiar tenses. Starting from:
+      denies the tensed claim as a whole. After the tag,
+      <valsi>na</valsi>
+      lies within the scope of the tense, so the sentence makes a (tensed) claim about something that does <emphasis>not</emphasis> happen. The difference is easiest to see with one of the less familiar tenses. Start from this sentence:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-fgmv">
       <title><anchor xml:id="c15e2d13" /></title>
@@ -369,15 +375,15 @@
     </example>
     <para role="indent">
       <xref linkend="example-random-id-nTg1" />
-      denies that my going to the market is habitual &ndash; perhaps I do go, but only now and then.
+      denies that my going to the market is habitual. Perhaps I do go, but only now and then.
       <xref linkend="example-random-id-nTg2" />
-      claims a habit, and the habit is one of non-going: staying away from the market is my custom. The second is a much stronger statement; the two forms cannot be casually interchanged.
+      claims a habit, and the habit is one of not going: staying away from the market is my custom. The second is a much stronger statement. You cannot casually interchange the two forms.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>na</primary><secondary>with tenses, status</secondary>
       </indexterm>
-      This resolution is de facto &ndash; current semantic software implements it; see
-      <xref linkend="appendix-changes" />.
+      This resolution is de facto: current semantic software implements it (see
+      <xref linkend="appendix-changes" />).
     </para>
 
     <para>A final caution on translating English negations into Lojban: if you translate the English literally, you'll get the wrong one. With English causal statements, and other statements with auxiliary clauses, this problem is more likely.</para>
@@ -1035,20 +1041,20 @@
 
 
     <para>
-      Since there is no current King of France, the description
+      There is no current King of France, so the description
       <jbophrase>lo ca nolraitru be le fasygu'e</jbophrase>
-      has nothing to refer to:
+      has nothing to refer to. The word
       <valsi>lo</valsi>
       is veridical, so whatever it picks out must really be a current King of France, and nothing is (see
-      <xref linkend="section-basic-descriptors" />). The claim therefore cannot come off: there is nothing for it to be about.
+      <xref linkend="section-basic-descriptors" />). As a result, the claim fails: there is nothing for it to be about.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>descriptions</primary><secondary>reference failure under negation</secondary>
       </indexterm>
-      What truth value such a failed claim receives is not settled by the official definitions. This book's convention: an affirmative claim about a failed description counts as false, and its contradictory negation as true.
+      The official definitions do not settle what truth value such a failed claim gets. This book follows a convention: an affirmative claim about a failed description counts as false, and its contradictory negation counts as true.
     </para>
     <para>
-      Under that convention, it is false to say that the King is bald, or non-bald, or anything else affirmative. Any sentence about the current King of France containing only a selbri negation is as false as the sentence without the negation, because selbri negations still make affirmative claims. No amount of selbri negations have any effect on the truth value of the sentence, which is invariably
+      Under that convention, it is false to say that the King is bald, or non-bald, or anything else affirmative. Any sentence about the current King of France containing only a selbri negation is as false as the sentence without the negation. The reason is that selbri negations still make affirmative claims. No amount of selbri negations have any effect on the truth value of the sentence, which is invariably
       <quote>false</quote>. On the other hand, bridi negation does produce a truth:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-Bwdy">
@@ -1067,17 +1073,20 @@
     <para role="indent">
       Note:
       <valsi>lo</valsi>
-      is used in these sentences because negation relates to truth conditions. To meaningfully talk about truth conditions in sentences carrying a description, it must be clear that the description truly applies to whatever it refers to, and only
+      is used in these sentences because negation relates to truth conditions. To meaningfully talk about truth conditions in sentences carrying a description, it must be clear that the description truly applies to whatever it refers to. Only
       <valsi>lo</valsi>
-      guarantees that. A sentence using
+      guarantees that.
+    </para>
+    <para>
+      A sentence using
       <valsi>le</valsi>
       instead of
       <valsi>lo</valsi>
-      can be true even if there is no current king of France: the referents of a
+      can be true even if there is no current king of France. The referents of a
       <valsi>le</valsi>
-      description are whatever the speaker has in mind, and calling them
+      description are whatever the speaker has in mind. To call them
       <quote>the current king of France</quote>
-      is mere description, which need not be truthful. (See the explanations of
+      is only a description, and it does not have to be true. (See the explanations of
       <valsi>le</valsi>
       in
       <xref linkend="section-basic-descriptors" />.)
@@ -1332,15 +1341,18 @@
       Is
       <xref linkend="example-random-id-PL1E" />
       true? <indexterm type="general"><primary>outer quantifier</primary><secondary>zero, over description referents</secondary>
-      </indexterm>When France has kings, the sentence is at least straightforward:
+      </indexterm>When France has kings, the sentence is at least straightforward. The word
       <valsi>no</valsi>
       counts the referents of the description (see
-      <xref linkend="section-quantified-descriptions" />), so the sentence then denies baldness of every one of them, and it is true just in case none of those kings is in fact bald. But when there are no current Kings of France at all, the description has nothing to refer to, and the sentence inherits the reference problem discussed in
-      <xref linkend="section-nahe" />. To make the plainly true claim directly &ndash; without first asking a description to refer to nonexistent kings &ndash; quantify over a variable instead:
-      <jbophrase>no da poi ca nolraitru be le fasygu'e cu krecau</jbophrase>
-      , that is, nothing-that-is a current King of France lacks hair. This is true precisely because nothing satisfies the restriction. (Older texts read descriptions like the one in
+      <xref linkend="section-quantified-descriptions" />). So the sentence denies baldness of every one of them, and it is true exactly when none of those kings is in fact bald. But when there are no current Kings of France at all, the description has nothing to refer to. Then the sentence inherits the reference problem that
+      <xref linkend="section-nahe" />
+      discusses.
+    </para>
+    <para>
+      To make the plainly true claim directly, quantify over a variable, so that no description has to refer to nonexistent kings:
+      <jbophrase>no da poi ca nolraitru be le fasygu'e cu krecau</jbophrase>. That is, nothing that is a current King of France lacks hair. This sentence is true precisely because nothing satisfies the restriction. (Older texts read descriptions like the one in
       <xref linkend="example-random-id-PL1E" />
-      quite differently; see
+      quite differently: see
       <xref linkend="appendix-changes" />.)
     </para>
     <para>
@@ -1626,21 +1638,19 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      As explained in
+      As
       <xref linkend="section-bridi-negation" />
-      , sentences like
+      explains, sentences like
       <xref linkend="example-random-id-Fn2c" />
       and
       <xref linkend="example-random-id-2SK0" />
       differ. In
-      <xref linkend="example-random-id-Fn2c" />
-      , with
+      <xref linkend="example-random-id-Fn2c" />,
       <valsi>na</valsi>
-      before the tense, the whole future claim is denied: it is not the case that John will go to both Paris and Rome. In
-      <xref linkend="example-random-id-2SK0" />
-      , with
+      comes before the tense, so the sentence denies the whole future claim. It is not the case that John will go to both Paris and Rome. In
+      <xref linkend="example-random-id-2SK0" />,
       <valsi>na</valsi>
-      after the tense, the negation lies within the tense's scope: the sentence locates in the future an occasion on which John is not going to both cities &ndash; a far weaker statement, and probably not what a negative answer to the question intends. The straightforward negative answer about the future is therefore
+      comes after the tense, so the negation lies within the scope of the tense. The sentence places in the future an occasion on which John is not going to both cities. That is a far weaker statement, and probably not what a negative answer to the question intends. So the straightforward negative answer about the future is
       <xref linkend="example-random-id-rii2" />.
     </para>
     <para>

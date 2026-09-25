@@ -96,11 +96,11 @@
       ,
       <valsi>.ei</valsi>
       , and
-      <valsi>.oi</valsi>), and ten more cmavo that begin with a glide &ndash; a consonantal
+      <valsi>.oi</valsi>), and ten more cmavo that begin with a glide (an
       <letteral>i</letteral>
       or
       <letteral>u</letteral>
-      &ndash; followed by a vowel (
+      that acts as a consonant) followed by a vowel (
       <valsi>.ia</valsi>
       ,
       <valsi>.ie</valsi>
@@ -119,8 +119,8 @@
       ,
       <valsi>.uo</valsi>
       , and
-      <valsi>.uu</valsi>). A glide may begin a word, as in these cmavo, or follow a vowel, but may never follow a consonant; see the status discussion in
-      <xref linkend="chapter-phonology" />. Note that each of these cmavo has a period before it, marking the pause that is mandatory before every word beginning with a vowel. Attitudinals, like most of the other kinds of indicators described in this chapter, belong to selma'o UI.
+      <valsi>.uu</valsi>). A glide can begin a word, as in these cmavo, or follow a vowel. But it can never follow a consonant (see the status discussion in
+      <xref linkend="chapter-phonology" />). Note that each of these cmavo has a period before it, marking the pause that is mandatory before every word beginning with a vowel. Attitudinals, like most of the other kinds of indicators described in this chapter, belong to selma'o UI.
     </para>
     <para>
       <indexterm type="general"><primary>attitudinals</primary><secondary>compound</secondary>
@@ -622,33 +622,31 @@
       </indexterm>
       <indexterm type="general"><primary>attitudinals</primary><secondary>a- series</secondary>
       </indexterm>
-      The division of labor between attitudinals beginning with
+      The attitudinals that begin with
       <letteral>a</letteral>
-      and those beginning with
+      and those that begin with
       <letteral>e</letteral>
-      is this: the members of the
-      <letteral>a</letteral>
-      -series express the speaker's own stance toward realizing the potential world &ndash; intending it, working at it, hoping for it, wanting it &ndash; while the members of the
-      <letteral>e</letteral>
-      -series form a <emphasis>directive</emphasis> family: permitting, exhorting, obliging, commanding, requesting, and suggesting. These are distinct relations, not points on a single scale, but they share a shape: in their most typical uses the speaker is concerned with someone else &ndash; usually the listener &ndash; bringing the situation about (though
-      <valsi>.ei</valsi>
-      , for instance, is just as much at home in
-      <quote>I ought to&hellip;</quote>). A few propositional attitude indicators overflowed into the
-      <letteral>i</letteral>
-      -series as well.
+      divide the work in this way. The
+      <letteral>a</letteral>-series expresses the speaker's own stance toward realizing the potential world: intending it, working at it, hoping for it, or wanting it. The
+      <letteral>e</letteral>-series forms a <emphasis>directive</emphasis> family: permitting, exhorting, obliging, commanding, requesting, and suggesting.
     </para>
     <para>
-      Older text is another matter: the frozen official word lists, and writing that follows them, use different senses for several of these words &ndash;
+      These are distinct relations, not points on a single scale. But they share a shape. In their most typical uses, the speaker is concerned with someone else, usually the listener, who brings the situation about. (But
+      <valsi>.ei</valsi>, for instance, is just as much at home in
+      <quote>I ought to&hellip;</quote>.) A few propositional attitude indicators overflowed into the
+      <letteral>i</letteral>-series as well.
+    </para>
+    <para>
+      Older text is another matter. The frozen official word lists, and writing that follows them, use different senses for several of these words. Among them are
       <valsi>.e'e</valsi>
       as
       <quote>competence</quote>
       and
       <valsi>.e'i</valsi>
       as
-      <quote>constraint</quote>
-      among them. When the difference matters, say it with a full bridi:
+      <quote>constraint</quote>. When the difference matters, say it with a full bridi:
       <valsi>kakne</valsi>
-      for being able,
+      for being able, and
       <valsi>minde</valsi>
       for commanding.
     </para>
@@ -657,7 +655,7 @@
       </indexterm>
       The directive account of the
       <letteral>e</letteral>
-      -series is this edition's choice, following attested modern use rather than the frozen official lists. For the full list of reassigned senses, and where this account came from, see
+      -series is the choice of this edition. It follows attested modern use, not the frozen official lists. For the full list of reassigned senses, and for the origin of this account, see
       <xref linkend="appendix-changes" />.
     </para>
     <para>
@@ -813,9 +811,8 @@
       Splitting off the attitude into an indicator allows the regular bridi grammar to do what it does best: express the relationships between concepts that are intended, desired, hoped for, or whatever. Rephrasing these examples to express the attitude as the main selbri would make for unacceptably heavyweight grammar.
     </para>
     <para>
-      Here are the propositional attitude indicators beginning with
-      <letteral>e</letteral>
-      &ndash; the directive series: permission, exhortation, obligation, command, request, and suggestion:
+      Here are the propositional attitude indicators that begin with
+      <letteral>e</letteral>, the directive series of permission, exhortation, obligation, command, request, and suggestion:
     </para>
     <cmavo-list>
       <cmavo-entry>
@@ -1740,11 +1737,10 @@
       </interlinear-gloss>
     </example>
     <para role="noindent">
-      is something a Lojban-speaking child might say &ndash; here the exhortation of
+      is something a Lojban-speaking child might say. Here the speaker turns the exhortation of
       <valsi>.e'e</valsi>
-      is turned on the challenge itself, an eager
-      <quote>bring it on</quote>
-      , and
+      on the challenge itself, as an eager
+      <quote>bring it on</quote>. The
       <valsi>se'a</valsi>
       colors it with self-sufficiency. On the other hand,
     </para>

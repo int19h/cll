@@ -28,6 +28,7 @@ match those shapes:
    entity files first, so an entity spelling cannot smuggle an arrow past the
    audit; an entity this script cannot resolve is a failure, not a shrug.
 """
+import copy
 import hashlib
 import re
 import sys
@@ -171,15 +172,38 @@ def check_chapter(chapter, root, problems):
     for el in chapter.iter():
         if el.tag in ("variablelist", "varlistentry") and id(el) not in audited:
             problems.append(f"a <{el.tag}> in chapter 21 lies outside the audited sections")
-    inside = {id(el) for el in root.iter()}
-    for el in chapter.iter():
-        texts = [el.tail] if id(el) in inside else [el.text, el.tail, *el.attrib.values()]
-        if el is not root and id(el) in inside:
-            continue
-        for t in texts:
-            if t and any(tok in t for tok in ARROW_TOKENS):
-                problems.append(f"an arrow appears in chapter 21 outside the PEG section: "
-                                f"<{el.tag}> {norm(t)[:60]!r}")
+    # Audit the rest of the chapter as rendered text: a copy without the
+    # section, flattened per element, so an arrow split across inline markup
+    # is still seen. The section's tail stays, because it prints outside it.
+    outside = copy.deepcopy(chapter)
+    kids = list(outside)
+    for i, c in enumerate(kids):
+        if xml_id(c) == ROOT_ID:
+            if c.tail:
+                if i:
+                    kids[i - 1].tail = (kids[i - 1].tail or "") + c.tail
+                else:
+                    outside.text = (outside.text or "") + c.tail
+            outside.remove(c)
+            break
+    for el in arrow_owners(outside):
+        problems.append(f"an arrow appears in chapter 21 outside the PEG section: "
+                        f"<{el.tag}> {norm(''.join(el.itertext()))[:60]!r}")
+    # Generated labels and rendered attributes, as check_attributes does inside
+    # the section: an endterm link outside it could reprint a rule's arrow.
+    for el in outside.iter():
+        for name, value in el.attrib.items():
+            if any(tok in value for tok in ARROW_TOKENS):
+                problems.append(f"<{el.tag}> attribute {name}={value!r} in chapter 21 contains an arrow")
+            if name == "endterm":
+                problems.append(f"<{el.tag}> in chapter 21 uses endterm={value!r}: "
+                                "generated labels are not auditable; write the link text instead")
+    # No element inside a rule entry may carry an ID, so no link anywhere in the
+    # book can print a rule's term as its label.
+    for entry in root.iter("varlistentry"):
+        for el in entry.iter():
+            if xml_id(el):
+                problems.append(f"an element inside a rule entry has xml:id {xml_id(el)!r}")
 
 
 def check_root(root, problems):

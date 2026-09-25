@@ -363,6 +363,40 @@ def m_intro_ebnf_rule(a, f):
                     "EBNF-shaped rule in the chapter introduction"), f
 
 
+def m_intro_split_arrow(a, f):
+    """PR #119 round 2 (Astra): an arrow split across inline markup outside
+    the section."""
+    return sub_once(a, INTRO_TITLE,
+                    INTRO_TITLE + "\n    <para>cmevla &lt;<phrase>-</phrase> WRONG</para>",
+                    "split arrow in the chapter introduction"), f
+
+
+def m_intro_endterm(a, f):
+    """PR #119 round 2 (Astra): a link outside the section that reprints a
+    rule's term through endterm."""
+    a = sub_once(a, "<term>CMEVLA &#8592;</term>",
+                 '<term xml:id="fake-arrow-source">CMEVLA &#8592;</term>',
+                 "outside endterm: label a term")
+    return sub_once(a, INTRO_TITLE,
+                    INTRO_TITLE + '\n    <para><xref linkend="fake-arrow-source" '
+                    'endterm="fake-arrow-source" /> WRONG</para>',
+                    "outside endterm: generated label"), f
+
+
+def m_term_id_only(a, f):
+    """An ID on a rule term alone: any chapter could then reprint the term."""
+    return sub_once(a, "<term>CMEVLA &#8592;</term>",
+                    '<term xml:id="fake-arrow-source">CMEVLA &#8592;</term>',
+                    "id on a rule term"), f
+
+
+def m_intro_endterm_only(a, f):
+    """The endterm ban on its own, without an ID on a rule term."""
+    return sub_once(a, INTRO_TITLE,
+                    INTRO_TITLE + '\n    <para><xref linkend="c21-intro" endterm="c21-intro" /></para>',
+                    "endterm link without a rule target"), f
+
+
 def m_ebnf_arrow(a, f):
     title = '<title><anchor xml:id="c21s2" />EBNF grammar of Lojban</title>'
     return sub_once(a, title, title + "\n    <para>FAKE &#8592; wrong</para>",
@@ -416,6 +450,10 @@ MUTATIONS = [
     ("arrow in the EBNF section", m_ebnf_arrow),
     ("duplicate subsection id elsewhere in the chapter", m_duplicate_subsection_id),
     ("EBNF-shaped rule in the chapter introduction", m_intro_ebnf_rule),
+    ("arrow split across markup in the chapter introduction", m_intro_split_arrow),
+    ("endterm link in the chapter introduction", m_intro_endterm),
+    ("id on a rule term", m_term_id_only),
+    ("endterm link without a rule target", m_intro_endterm_only),
 ]
 
 

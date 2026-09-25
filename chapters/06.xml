@@ -627,7 +627,7 @@
     <para role="indent">
       The number
       <valsi>ci</valsi>
-      inside the description tells us that it refers to three people.
+      inside the description tells us that the description refers to three people.
       <xref linkend="section-quantified-descriptions" />
       explains this mechanism fully. I will assume that there is only one piano under discussion.
     </para>

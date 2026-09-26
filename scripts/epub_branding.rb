@@ -2,11 +2,12 @@
 # Branding for the ePub, taken from .env so that no template names the book.
 #
 #   epub_branding.rb fill  < template > file   replaces REPLACETITLE,
-#                                              REPLACEFILEAS, REPLACEPUBLISHER
+#                                              REPLACEFILEAS, REPLACEPUBLISHER,
+#                                              REPLACEREVISER
 #   epub_branding.rb cover > cover.svg         writes a plain cover image
 #
-# The values come from the environment variables TITLE, PUBLISHER, and
-# AUTHOR. scripts/build_epub.sh reads TITLE and PUBLISHER from .env, like
+# The values come from the environment variables TITLE, PUBLISHER, REVISER,
+# and AUTHOR. scripts/build_epub.sh reads all but AUTHOR from .env, like
 # scripts/merge.sh does for the title page.
 
 def xml_escape(s)
@@ -83,6 +84,7 @@ when "fill"
   out = out.gsub("REPLACETITLE", xml_escape(title))
            .gsub("REPLACEFILEAS", xml_escape(file_as(title)))
            .gsub("REPLACEPUBLISHER", xml_escape(need("PUBLISHER")))
+           .gsub("REPLACEREVISER", xml_escape(need("REVISER")))
   print out
 when "cover"
   title = wrap(need("TITLE"), 12)
@@ -92,6 +94,7 @@ when "cover"
   by_y = 420 + title.length * 180 + 200
   body += text_lines(["by"], by_y, 0, 80, ' font-style="italic" font-weight="bold"')
   body += text_lines([author], by_y + 110, 0, 90, ' font-style="italic" font-weight="bold"')
+  body += text_lines(["revised by #{need("REVISER")}"], by_y + 230, 0, 70, ' font-style="italic"')
   puts <<~SVG
     <?xml version="1.0" encoding="UTF-8"?>
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="1600" height="2500" viewBox="0 0 1600 2500">

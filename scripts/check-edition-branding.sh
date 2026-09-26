@@ -28,21 +28,25 @@ read_var() {
 }
 export TITLE="$(read_var TITLE)"
 export PUBLISHER="$(read_var PUBLISHER)"
+export REVISER="$(read_var REVISER)"
 export AUTHOR="John Woldemar Cowan"
 [ -n "$TITLE" ] || bad ".env has no TITLE"
 [ -n "$PUBLISHER" ] || bad ".env has no PUBLISHER"
+[ -n "$REVISER" ] || bad ".env has no REVISER"
 
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 for t in content.opf.s1 toc.xhtml.s1 cover.html; do
   ruby scripts/epub_branding.rb fill <"epub/$t" >"$tmp/$t"
-  if grep -n 'REPLACETITLE\|REPLACEFILEAS\|REPLACEPUBLISHER' "$tmp/$t"; then
+  if grep -n 'REPLACETITLE\|REPLACEFILEAS\|REPLACEPUBLISHER\|REPLACEREVISER' "$tmp/$t"; then
     bad "epub/$t keeps a placeholder after filling"
   fi
   grep -qF "$TITLE" "$tmp/$t" || bad "epub/$t does not name the title from .env"
 done
 grep -qF "<dc:publisher>$PUBLISHER</dc:publisher>" "$tmp/content.opf.s1" ||
   bad "content.opf.s1 does not name the publisher from .env"
+grep -qF "<dc:contributor id=\"reviser\">$REVISER</dc:contributor>" "$tmp/content.opf.s1" ||
+  bad "content.opf.s1 does not name the reviser from .env"
 if grep -n 'urn:isbn:' "$tmp/content.opf.s1"; then
   bad "content.opf.s1 uses an ISBN, but this edition has none"
 fi

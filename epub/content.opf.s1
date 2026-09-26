@@ -7,6 +7,8 @@
     <dc:creator id="creator">John Woldemar Cowan</dc:creator>
     <meta refines="#creator" property="file-as">Cowan, John Woldemar</meta>
     <meta refines="#creator" property="role" scheme="marc:relators">aut</meta>
+    <dc:contributor id="reviser">REPLACEREVISER</dc:contributor>
+    <meta refines="#reviser" property="role" scheme="marc:relators">edt</meta>
     <!-- This edition has no ISBN. The ISBN of the first edition belongs to
          that edition, so this fixed UUID identifies this edition instead. -->
     <dc:identifier id="book-id">urn:uuid:b3a48812-3799-4068-aa0c-794b61a9f218</dc:identifier>

@@ -129,8 +129,9 @@ $(builddir)/epub-xhtml/index.html: $(builddir)/cll_processed_xhtml.xml xml/docbo
 	mkdir -p $(builddir)/epub-xhtml/
 	cp -pr $(PWD)/dtd $(builddir)/epub-xhtml/
 	xmlto -m xml/docbook2html_config_epub.xsl -o $(builddir)/epub-xhtml/ -x $(xsl_base)/xhtml/chunk.xsl xhtml $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
-	mv $(PWD)/assets/css/master.css $(builddir)/epub-xhtml/final.css	
+	cp -p $(PWD)/assets/css/master.css $(builddir)/epub-xhtml/final.css
 	cp -pr $(PWD)/assets $(builddir)/epub-xhtml/
+	rm -rf $(builddir)/epub-xhtml/assets/css
 	rm -rf $(builddir)/epub-xhtml/assets/scripts
 	rm -rf $(builddir)/epub-xhtml/assets/media/examples/
 	rm -rf $(builddir)/epub-xhtml/assets/media/vreji/

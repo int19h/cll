@@ -180,7 +180,7 @@ print display
   /* Yes, absolute padding.  If you can think of something better to
    * put this stuff at the bottom of the page... */
   h3.othercredit {
-    padding-top: 180pt;
+    padding-top: 140pt;
   }
 
   /* The first othercredit is the reviser credit from .env ("revised by

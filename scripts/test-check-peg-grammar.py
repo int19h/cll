@@ -403,6 +403,14 @@ def m_ebnf_arrow(a, f):
                     "arrow in the EBNF section"), f
 
 
+def m_ebnf_split_arrow(a, f):
+    """PR #119 round 2 (Astra): an arrow split across inline markup in the
+    EBNF section."""
+    title = '<title><anchor xml:id="c21s2" />EBNF grammar of Lojban</title>'
+    return sub_once(a, title, title + "\n    <para>cmevla &lt;<phrase>-</phrase> WRONG</para>",
+                    "split arrow in the EBNF section"), f
+
+
 MUTATIONS = [
     ("stray rule-like paragraph at section level", m_stray_root_para),
     ("paragraph abusing the notation wording", m_notation_prefix_abuse),
@@ -451,6 +459,7 @@ MUTATIONS = [
     ("duplicate subsection id elsewhere in the chapter", m_duplicate_subsection_id),
     ("EBNF-shaped rule in the chapter introduction", m_intro_ebnf_rule),
     ("arrow split across markup in the chapter introduction", m_intro_split_arrow),
+    ("arrow split across markup in the EBNF section", m_ebnf_split_arrow),
     ("endterm link in the chapter introduction", m_intro_endterm),
     ("id on a rule term", m_term_id_only),
     ("endterm link without a rule target", m_intro_endterm_only),

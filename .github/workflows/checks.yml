@@ -44,6 +44,15 @@ jobs:
       - name: PEG grammar check self-test
         run: python3 scripts/test-check-peg-grammar.py
 
+  # The PDF running head and the ePub must name this edition, from .env
+  # (issue #121). The check fills the ePub templates without a book build.
+  edition-branding:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Running head and ePub name the edition from .env
+        run: scripts/check-edition-branding.sh
+
   # scripts/xml_prince_postprocess.rb is the last thing to touch the XHTML
   # before Prince renders the PDF, and it works by regex over serialized
   # output. Issue #106 (a chapter heading whose text content read

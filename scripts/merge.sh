@@ -48,6 +48,7 @@ read_var() {
 version=$(read_var VERSION .env)
 publisher=$(read_var PUBLISHER .env)
 title=$(read_var TITLE .env)
+reviser=$(read_var REVISER .env)
 subtitle=$(read_var SUBTITL .env)
 datestamp=$(date +%Y-%m-%d)
 
@@ -68,6 +69,11 @@ $subtitle_elem
 <surname>Cowan</surname>
 </personname>
 </author>
+<othercredit>
+<orgname>
+revised by $reviser
+</orgname>
+</othercredit>
 <releaseinfo>
 Version $version, Generated $datestamp
 </releaseinfo>

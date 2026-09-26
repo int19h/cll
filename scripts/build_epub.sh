@@ -19,6 +19,7 @@ read_var() {
 }
 export TITLE="$(read_var TITLE)"
 export PUBLISHER="$(read_var PUBLISHER)"
+export REVISER="$(read_var REVISER)"
 export AUTHOR="John Woldemar Cowan"
 brand="ruby $basedir/scripts/epub_branding.rb"
 

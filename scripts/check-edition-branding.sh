@@ -28,29 +28,41 @@ read_var() {
 }
 export TITLE="$(read_var TITLE)"
 export PUBLISHER="$(read_var PUBLISHER)"
+export REVISER="$(read_var REVISER)"
 export AUTHOR="John Woldemar Cowan"
 [ -n "$TITLE" ] || bad ".env has no TITLE"
 [ -n "$PUBLISHER" ] || bad ".env has no PUBLISHER"
+[ -n "$REVISER" ] || bad ".env has no REVISER"
 
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 for t in content.opf.s1 toc.xhtml.s1 cover.html; do
   ruby scripts/epub_branding.rb fill <"epub/$t" >"$tmp/$t"
-  if grep -n 'REPLACETITLE\|REPLACEFILEAS\|REPLACEPUBLISHER' "$tmp/$t"; then
+  if grep -n 'REPLACETITLE\|REPLACEFILEAS\|REPLACEPUBLISHER\|REPLACEREVISER' "$tmp/$t"; then
     bad "epub/$t keeps a placeholder after filling"
   fi
   grep -qF "$TITLE" "$tmp/$t" || bad "epub/$t does not name the title from .env"
 done
 grep -qF "<dc:publisher>$PUBLISHER</dc:publisher>" "$tmp/content.opf.s1" ||
   bad "content.opf.s1 does not name the publisher from .env"
+grep -qF "<dc:contributor id=\"reviser\">$REVISER</dc:contributor>" "$tmp/content.opf.s1" ||
+  bad "content.opf.s1 does not name the reviser from .env"
 if grep -n 'urn:isbn:' "$tmp/content.opf.s1"; then
   bad "content.opf.s1 uses an ISBN, but this edition has none"
 fi
 
-# 4. The generated cover is well-formed SVG and names the title.
+# 4. The title page and the cover credit the reviser from .env.
+grep -q '^revised by \$reviser$' scripts/merge.sh ||
+  bad "scripts/merge.sh does not print \"revised by \$reviser\" on the title page"
+grep -q 'reviser=\$(read_var REVISER .env)' scripts/merge.sh ||
+  bad "scripts/merge.sh does not read REVISER from .env"
+
+# 5. The generated cover is well-formed SVG and names the title.
 ruby scripts/epub_branding.rb cover >"$tmp/cover.svg"
 python3 -c 'import sys, xml.dom.minidom; xml.dom.minidom.parse(sys.argv[1])' "$tmp/cover.svg" ||
   bad "the generated cover is not well-formed XML"
+grep -qF ">revised by $REVISER<" "$tmp/cover.svg" ||
+  bad "the cover does not show \"revised by $REVISER\""
 for word in $TITLE; do
   grep -qF ">$word<" "$tmp/cover.svg" || grep -qF " $word<" "$tmp/cover.svg" ||
     grep -qF ">$word " "$tmp/cover.svg" || bad "the cover does not show the word $word of the title"

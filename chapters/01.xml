@@ -311,6 +311,34 @@
       Of course, the entire Loglan Project owes a considerable debt to James Cooke Brown as the language inventor, and also to several earlier contributors to the development of the language. Especially noteworthy are Doug Landauer, Jeff Prothero, Scott Layson, Jeff Taylor, and Bob McIvor. Final responsibility for the remaining errors and infelicities is solely mine.
     </para>
 
+    <bridgehead renderas="sect3">After the first edition</bridgehead>
+    <para>
+      <indexterm type="general"><primary>this book</primary><secondary>contributors since 1997</secondary>
+      </indexterm>
+      John Cowan wrote the credits above for the first edition, in 1997. After that, many other people shaped this book. The history of the project records some of them only under a nickname, so this section uses that name. Some contributions came under anonymous names, and this section cannot credit them by name.
+    </para>
+    <para>
+      From 2008 to 2016, volunteers converted the book into DocBook, the format of its source files, and prepared its release as version 1.1. Robin Lee Powell led that work, with much help from Zort. Chris Done, Elmo Todurov, Sarefo, Twey, Dag Odenhall, Eitan Postavsky, Pierre Abbat, Matthew Walton, and dundas selzar contributed to it. So did James Royston, Frank D. Martinez, Ali Sajid Imami, Marica Odagaki, Judson, Alex Burka, Ilmen, selpahi, la mukti, Dan Rosén, Riley Martinez-Lynch, danmo rozgu, Bruno Panasiewicz, maltys, and Andrew Toskin.
+    </para>
+    <para>
+      From 2017 on, Gleki Arxokuna (lagleki) kept a community version of the book, known as UnCLL. It corrected errata and added new material, such as the tables of the zbalermorna script. This edition starts from that version. Ilmen, la-ninpre, mezohe, Corbin, Vexatos, and Gregorio Guidi also contributed to it.
+    </para>
+    <para>
+      The formal grammar of word forms in
+      <xref linkend="section-peg-grammar" />
+      is the work of Jorge Llambias. It comes from camxes, the parser that he and Robin Lee Powell first wrote. Masato Hagiwara ported camxes to JavaScript, and the ilmentufa project of Ilmen, Gleki Arxokuna, and others maintains the current version. The translators of the texts in
+      <xref linkend="volume-chrestomathy" />
+      appear with each text.
+    </para>
+    <para>
+      The changes to the language after 1997 come from the BPFK, the Logical Language Group, and the wider Lojban community.
+      <xref linkend="appendix-changes" />
+      lists them, and this book names the source of each change where it teaches it.
+    </para>
+    <para>
+      Pavel Minaev started this edition in 2026 and made its editorial decisions. Claude, an AI model made by Anthropic, wrote the new and changed text with him, under his direction. AI models from OpenAI, xAI, Moonshot AI, Alibaba, and Google reviewed that text. The camxes parser tests every Lojban example in the book. jbotci, a Lojban toolkit, helped to test the new examples.
+    </para>
+
   </section>
   <section xml:id="section-bibliography">
     <title><anchor xml:id="c1s6" />Informal bibliography</title>

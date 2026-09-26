@@ -92,6 +92,11 @@
       <quote>&lt;-</quote>.
     </para>
     <para>
+      The file is under the MIT license.
+      <xref linkend="section-copyright" />
+      prints its copyright and permission notices, which also cover the rules in this section.
+    </para>
+    <para>
       Every rule definition appears with its own characters, in the order of the file. We changed, reordered, or omitted none of them. The typesetting changes only the material around them. The headings of the subsections come from this edition, not from the file (which had only three headings of its own). The implementation directives after a few rules are in italics. The comments of the file appear here as prose: we quote some, summarize others, and leave out one bibliographic link to the parsing literature.
     </para>
     <para role="status-note">

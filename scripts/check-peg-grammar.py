@@ -89,7 +89,7 @@ APPROVED_ARROW_CONTEXTS = [
 # without it, an approved context can be removed and a rule-like impostor put
 # in its place, preserving the count and the pinned path. Editing the
 # introduction means updating this constant in the same commit.
-INTRO_SHA256 = "c927465a61ac7eea17ef37125f14fd962aefe6943d3c25ad0b5e2ee843f0faee"
+INTRO_SHA256 = "6db18bfb8c7ab2ab44ae27195238107898659eff5c9a382b9c17f96dfcf35161"
 
 PREDEFINED = {"amp": "&", "lt": "<", "gt": ">", "quot": '"', "apos": "'"}
 

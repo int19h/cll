@@ -41,7 +41,13 @@ def main(path):
     if cut < 0:
         print('cross-reference section not found')
         return 1
-    ebnf, xr = s[:cut], s[cut:]
+    # The chapter also prints the PEG word-form grammar, whose rule lists
+    # precede the EBNF. Only the EBNF section feeds the cross-reference.
+    start = s.find('<section xml:id="section-EBNF">')
+    if start < 0 or start > cut:
+        print('EBNF section not found before the cross-reference')
+        return 1
+    ebnf, xr = s[start:cut], s[cut:]
     bad = 0
 
     # ---- parse the EBNF rules ----

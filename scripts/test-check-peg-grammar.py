@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""Self-test for scripts/check-peg-appendix.py.
+"""Self-test for scripts/check-peg-grammar.py.
 
-The appendix's fidelity claim rests on that checker, so the checker's own
+The fidelity claim of the PEG section in chapter 21 rests on that checker, so the checker's own
 blind spots are a correctness problem. Each case below is a way the printed
 grammar could come to contradict the pinned fixture — most of them raised by
 the PR #105 review, and all of them valid or plausible enough to survive the
 repository's other checks. Every one must make the checker fail; the
 unmodified tree must make it pass.
 
-Run: python3 scripts/test-check-peg-appendix.py
+Run: python3 scripts/test-check-peg-grammar.py
 """
 import re
 import shutil
@@ -19,12 +19,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
-CMEVLA_ENTRY = """      <varlistentry>
-        <term>CMEVLA &#8592;</term>
-        <listitem>
-          <para>cmevla</para>
-        </listitem>
-      </varlistentry>
+CMEVLA_ENTRY = """        <varlistentry>
+          <term>CMEVLA &#8592;</term>
+          <listitem>
+            <para>cmevla</para>
+          </listitem>
+        </varlistentry>
 """
 
 
@@ -34,35 +34,35 @@ def sub_once(text, old, new, label):
     return text.replace(old, new, 1)
 
 
-# Each mutation takes (appendix_text, fixture_text) and returns the pair.
+# Each mutation takes (chapter_text, fixture_text) and returns the pair.
 def m_stray_root_para(a, f):
-    return sub_once(a, "  <section xml:id=\"a02-classes\">",
-                    "  <para>FAKE &#8592; wrong</para>\n  <section xml:id=\"a02-classes\">",
+    return sub_once(a, "    <section xml:id=\"peg-classes\">",
+                    "    <para>FAKE &#8592; wrong</para>\n    <section xml:id=\"peg-classes\">",
                     "stray root para"), f
 
 
 def m_notation_prefix_abuse(a, f):
-    return sub_once(a, "    <title>Word classes</title>",
-                    "    <title>Word classes</title>\n"
+    return sub_once(a, "      <title>Word classes</title>",
+                    "      <title>Word classes</title>\n"
                     "    <para>A rule has the form FAKE &#8592; wrong</para>",
                     "notation-prefix abuse"), f
 
 
 def m_simpara(a, f):
-    return sub_once(a, "    <title>Word classes</title>",
-                    "    <title>Word classes</title>\n    <simpara>FAKE &#8592; wrong</simpara>",
+    return sub_once(a, "      <title>Word classes</title>",
+                    "      <title>Word classes</title>\n    <simpara>FAKE &#8592; wrong</simpara>",
                     "simpara"), f
 
 
 def m_second_term(a, f):
-    return sub_once(a, "        <term>CMEVLA &#8592;</term>",
-                    "        <term>CMEVLA &#8592;</term>\n        <term>FAKE &#8592;</term>",
+    return sub_once(a, "          <term>CMEVLA &#8592;</term>",
+                    "          <term>CMEVLA &#8592;</term>\n          <term>FAKE &#8592;</term>",
                     "second term"), f
 
 
 def m_second_para(a, f):
-    return sub_once(a, "          <para>cmevla</para>",
-                    "          <para>cmevla</para>\n          <para>FAKE &#8592; wrong</para>",
+    return sub_once(a, "            <para>cmevla</para>",
+                    "            <para>cmevla</para>\n            <para>FAKE &#8592; wrong</para>",
                     "second para"), f
 
 
@@ -84,35 +84,35 @@ def m_directive_phrase(a, f):
 
 
 def m_nested_section(a, f):
-    return sub_once(a, "    <title>Word classes</title>",
-                    "    <title>Word classes</title>\n"
-                    "    <section xml:id=\"a02-fake\"><title>Fake</title><variablelist>\n"
+    return sub_once(a, "      <title>Word classes</title>",
+                    "      <title>Word classes</title>\n"
+                    "      <section xml:id=\"peg-fake\"><title>Fake</title><variablelist>\n"
                     + CMEVLA_ENTRY.replace("CMEVLA", "FAKE").replace("cmevla", "wrong")
-                    + "    </variablelist></section>",
+                    + "      </variablelist></section>",
                     "nested section"), f
 
 
 def m_entity_arrow(a, f):
-    return sub_once(a, "    <title>Word classes</title>",
-                    "    <title>Word classes</title>\n    <para>FAKE &larr; wrong</para>",
+    return sub_once(a, "      <title>Word classes</title>",
+                    "      <title>Word classes</title>\n    <para>FAKE &larr; wrong</para>",
                     "entity arrow"), f
 
 
 def m_ascii_arrow(a, f):
-    return sub_once(a, "    <title>Word classes</title>",
-                    "    <title>Word classes</title>\n    <para>FAKE &lt;- wrong</para>",
+    return sub_once(a, "      <title>Word classes</title>",
+                    "      <title>Word classes</title>\n    <para>FAKE &lt;- wrong</para>",
                     "ascii arrow"), f
 
 
 def m_entry_outside_list(a, f):
-    return sub_once(a, "    <title>Word classes</title>",
-                    "    <title>Word classes</title>\n" + CMEVLA_ENTRY.replace("CMEVLA", "FAKE"),
+    return sub_once(a, "      <title>Word classes</title>",
+                    "      <title>Word classes</title>\n" + CMEVLA_ENTRY.replace("CMEVLA", "FAKE"),
                     "entry outside a variablelist"), f
 
 
 def m_unknown_entity(a, f):
-    return sub_once(a, "    <title>Word classes</title>",
-                    "    <title>Word classes</title>\n    <para>&nosuchentity;</para>",
+    return sub_once(a, "      <title>Word classes</title>",
+                    "      <title>Word classes</title>\n    <para>&nosuchentity;</para>",
                     "unresolvable entity"), f
 
 
@@ -143,19 +143,19 @@ def m_sync_duplicate(a, f):
 
 
 def m_cross_section_move(a, f):
-    entry = """      <varlistentry>
-        <term>cmevla &#8592;</term>
-        <listitem>
-          <para>jbocme / zifcme</para>
-        </listitem>
-      </varlistentry>
+    entry = """        <varlistentry>
+          <term>cmevla &#8592;</term>
+          <listitem>
+            <para>jbocme / zifcme</para>
+          </listitem>
+        </varlistentry>
 """
     a2 = sub_once(a, entry, "", "cross-section move (remove)")
-    a2 = sub_once(a2, "  <section xml:id=\"a02-cmevla\">",
-                  "  <section xml:id=\"a02-cmevla\">", "anchor")
+    a2 = sub_once(a2, "    <section xml:id=\"peg-cmevla\">",
+                  "    <section xml:id=\"peg-cmevla\">", "anchor")
     # reinsert into the previous section's list
-    a2 = sub_once(a2, "    </variablelist>\n  </section>\n  <section xml:id=\"a02-cmevla\">",
-                  entry + "    </variablelist>\n  </section>\n  <section xml:id=\"a02-cmevla\">",
+    a2 = sub_once(a2, "      </variablelist>\n    </section>\n    <section xml:id=\"peg-cmevla\">",
+                  entry + "      </variablelist>\n    </section>\n    <section xml:id=\"peg-cmevla\">",
                   "cross-section move (insert)")
     return a2, f
 
@@ -180,58 +180,61 @@ def m_thin_space(a, f):
 
 
 def m_para_tail(a, f):
-    return sub_once(a, "          <para>cmevla</para>\n",
-                    "          <para>cmevla</para> GARBAGE\n", "text after the rule paragraph"), f
+    return sub_once(a, "            <para>cmevla</para>\n",
+                    "            <para>cmevla</para> GARBAGE\n", "text after the rule paragraph"), f
 
 
 def m_split_arrow(a, f):
-    return sub_once(a, "    <title>Word classes</title>",
-                    "    <title>Word classes</title>\n"
+    return sub_once(a, "      <title>Word classes</title>",
+                    "      <title>Word classes</title>\n"
                     "    <para>FAKE &lt;<phrase>-</phrase> wrong</para>",
                     "arrow split across markup"), f
 
 
 def m_reused_quote(a, f):
-    return sub_once(a, "    <title>Word classes</title>",
-                    "    <title>Word classes</title>\n"
+    return sub_once(a, "      <title>Word classes</title>",
+                    "      <title>Word classes</title>\n"
                     "    <para>FAKE <quote>&#8592;</quote> wrong</para>",
                     "approved context reused elsewhere"), f
 
 
 def m_duplicate_context(a, f):
-    return sub_once(a, "    <quote>&#8592;</quote>",
-                    "    <quote>&#8592;</quote><quote>&#8592;</quote>",
+    return sub_once(a, "      <quote>&#8592;</quote>",
+                    "      <quote>&#8592;</quote><quote>&#8592;</quote>",
                     "approved context duplicated"), f
 
 
 def m_remove_context(a, f):
-    return sub_once(a, "    <quote>&lt;-</quote>", "    <quote>the ASCII form</quote>",
+    return sub_once(a, "      <quote>&lt;-</quote>", "      <quote>the ASCII form</quote>",
                     "approved context removed"), f
 
 
 def m_xreflabel_arrow(a, f):
-    return sub_once(a, '<article xmlns:xlink="http://www.w3.org/1999/xlink"',
-                    '<article xreflabel="FAKE &#8592; wrong" xmlns:xlink="http://www.w3.org/1999/xlink"',
+    return sub_once(a, '<section xml:id="section-peg-grammar">',
+                    '<section xreflabel="FAKE &#8592; wrong" xml:id="section-peg-grammar">',
                     "arrow in a rendered attribute"), f
 
 
 def m_root_id(a, f):
-    return sub_once(a, 'xml:id="appendix-peg-morphology"', 'xml:id="appendix-peg-morph"',
+    return sub_once(a, 'xml:id="section-peg-grammar"', 'xml:id="section-peg-gram"',
                     "root id changed"), f
 
 
 def m_duplicate_id(a, f):
-    return sub_once(a, 'xml:id="appendix-peg-morphology"', 'xml:id="a02-classes"',
+    return sub_once(a, 'xml:id="section-peg-grammar"', 'xml:id="peg-classes"',
                     "root id duplicates a section id"), f
 
 
 def m_root_tag(a, f):
-    a = sub_once(a, "<article ", "<chapter ", "root tag changed")
-    return sub_once(a, "</article>", "</chapter>", "root tag changed (close)"), f
+    a = sub_once(a, '<section xml:id="section-peg-grammar">',
+                 '<article xml:id="section-peg-grammar">', "root tag changed")
+    return sub_once(a, '    </section>\n  </section>\n  <section xml:id="section-EBNF">',
+                    '    </section>\n  </article>\n  <section xml:id="section-EBNF">',
+                    "root tag changed (close)"), f
 
 
 def m_drop_anchor(a, f):
-    return sub_once(a, '<anchor xml:id="a02" />', "", "a02 anchor removed"), f
+    return sub_once(a, '<anchor xml:id="c21-peg" />', "", "c21-peg anchor removed"), f
 
 
 def m_compensating_relocation(a, f):
@@ -239,9 +242,9 @@ def m_compensating_relocation(a, f):
     impostor in its slot, preserving the owner count and the pinned path."""
     a = sub_once(a, "<quote>&#8592;</quote>", "<quote>the left arrow</quote>",
                  "relocation: neutralize the real context")
-    return sub_once(a, "  <para>\n    The grammar is the one that",
-                    "  <para>FAKE\n    <quote>&#8592;</quote>\n    wrong</para>\n"
-                    "  <para>\n    The grammar is the one that",
+    return sub_once(a, "    <para>\n      The grammar is the one that",
+                    "    <para>FAKE\n      <quote>&#8592;</quote>\n      wrong</para>\n"
+                    "    <para>\n      The grammar is the one that",
                     "relocation: insert the impostor"), f
 
 
@@ -250,11 +253,11 @@ def m_relocate_notation(a, f):
     a = sub_once(a, "A rule has the form <emphasis>name</emphasis> &#8592; expression",
                  "A rule has the form <emphasis>name</emphasis>, an arrow, then an expression",
                  "notation relocation: neutralize")
-    return sub_once(a, "  <section xml:id=\"a02-classes\">",
-                    "  <itemizedlist><listitem><para>A rule has the form "
+    return sub_once(a, "    <section xml:id=\"peg-classes\">",
+                    "    <itemizedlist><listitem><para>A rule has the form "
                     "<emphasis>name</emphasis> &#8592; expression: that expression parses "
                     "the construct called name.</para></listitem></itemizedlist>\n"
-                    "  <section xml:id=\"a02-classes\">",
+                    "    <section xml:id=\"peg-classes\">",
                     "notation relocation: insert"), f
 
 
@@ -264,22 +267,22 @@ def m_intro_edit(a, f):
 
 
 def m_root_text_arrow(a, f):
-    """Raw text between <article> and its title: outside every element the
-    older digest serialized, but printed by the transform."""
-    return sub_once(a, 'xml:id="appendix-peg-morphology">\n  <title>',
-                    'xml:id="appendix-peg-morphology">FAKE &#8592; ROOT\n  <title>',
+    """Raw text between the root <section> and its title: outside every element
+    the older digest serialized, but printed by the transform."""
+    return sub_once(a, 'xml:id="section-peg-grammar">\n    <title>',
+                    'xml:id="section-peg-grammar">FAKE &#8592; ROOT\n    <title>',
                     "arrow in the root's own text"), f
 
 
 def m_section_title_tail(a, f):
-    return sub_once(a, "    <title>Word classes</title>",
-                    "    <title>Word classes</title>FAKE &#8592; TITLETAIL",
+    return sub_once(a, "      <title>Word classes</title>",
+                    "      <title>Word classes</title>FAKE &#8592; TITLETAIL",
                     "arrow in a section title's tail"), f
 
 
 def m_last_section_tail(a, f):
-    return sub_once(a, "  </section>\n</article>",
-                    "  </section>FAKE &#8592; LASTTAIL\n</article>",
+    return sub_once(a, '    </section>\n  </section>\n  <section xml:id="section-EBNF">',
+                    '    </section>FAKE &#8592; LASTTAIL\n  </section>\n  <section xml:id="section-EBNF">',
                     "arrow after the last section"), f
 
 
@@ -289,9 +292,9 @@ def m_endterm_label(a, f):
     a = sub_once(a, "<term>zifcme &#8592;</term>",
                  '<term xml:id="fake-arrow-source">zifcme &#8592;</term>',
                  "endterm: label a term")
-    return sub_once(a, "    <title>cmevla</title>",
-                    "    <title>cmevla</title>\n"
-                    '    <para>FAKE <xref linkend="fake-arrow-source" '
+    return sub_once(a, "      <title>cmevla</title>",
+                    "      <title>cmevla</title>\n"
+                    '      <para>FAKE <xref linkend="fake-arrow-source" '
                     'endterm="fake-arrow-source" /></para>',
                     "endterm: generated label"), f
 
@@ -307,13 +310,109 @@ def m_intro_attribute_only(a, f):
 def m_inline_boundary_space(a, f):
     """Removing the spaces around an approved quote changes what prints
     without changing any word."""
-    return sub_once(a, "definition is\n    <quote>&#8592;</quote>\n    here",
+    return sub_once(a, "definition is\n      <quote>&#8592;</quote>\n      here",
                     "definition is<quote>&#8592;</quote>here",
                     "inline boundary spaces removed"), f
 
 
+WRONG_ENTRY = ("<variablelist><varlistentry><term>cmevla &#8592;</term>"
+               "<listitem><para>WRONG</para></listitem></varlistentry></variablelist>")
+EBNF_START = '  <section xml:id="section-EBNF">'
+INTRO_TITLE = '<title><anchor xml:id="c21-intro" />About the formal grammars</title>'
+
+
+def m_sibling_section(a, f):
+    """PR #119 review: a wrong rule in a new section between the PEG section
+    and the EBNF escaped both checks."""
+    return sub_once(a, EBNF_START,
+                    '  <section xml:id="peg-extra"><title>Extra</title>' + WRONG_ENTRY
+                    + "</section>\n" + EBNF_START, "sibling section"), f
+
+
+def m_chapter_level_list(a, f):
+    return sub_once(a, EBNF_START, "  " + WRONG_ENTRY + "\n" + EBNF_START,
+                    "rule list directly in the chapter"), f
+
+
+def m_intro_rule(a, f):
+    return sub_once(a, INTRO_TITLE,
+                    INTRO_TITLE + "\n    <para>cmevla &#8592; WRONG</para>",
+                    "rule-like paragraph in the chapter introduction"), f
+
+
+def m_duplicate_root_id(a, f):
+    return sub_once(a, INTRO_TITLE,
+                    INTRO_TITLE + '\n    <para xml:id="section-peg-grammar">Fake</para>',
+                    "second element with the section's id"), f
+
+
+def m_duplicate_subsection_id(a, f):
+    """PR #119 review (Kimi): a copy of a subsection's id elsewhere in the
+    chapter must fail, as it did when the grammar was its own document."""
+    return sub_once(a, INTRO_TITLE,
+                    INTRO_TITLE + '\n    <para xml:id="peg-cmevla">Fake</para>',
+                    "duplicate subsection id in the chapter"), f
+
+
+def m_intro_ebnf_rule(a, f):
+    """PR #119 review (Qwen): an EBNF-shaped rule, with no arrow, in the
+    chapter introduction. check-cross-reference.py no longer reads 21.1."""
+    return sub_once(a, INTRO_TITLE,
+                    INTRO_TITLE + "\n    <variablelist><varlistentry><term>fake-rule 999 =</term>"
+                    "<listitem><para>WRONG</para></listitem></varlistentry></variablelist>",
+                    "EBNF-shaped rule in the chapter introduction"), f
+
+
+def m_intro_split_arrow(a, f):
+    """PR #119 round 2 (Astra): an arrow split across inline markup outside
+    the section."""
+    return sub_once(a, INTRO_TITLE,
+                    INTRO_TITLE + "\n    <para>cmevla &lt;<phrase>-</phrase> WRONG</para>",
+                    "split arrow in the chapter introduction"), f
+
+
+def m_intro_endterm(a, f):
+    """PR #119 round 2 (Astra): a link outside the section that reprints a
+    rule's term through endterm."""
+    a = sub_once(a, "<term>CMEVLA &#8592;</term>",
+                 '<term xml:id="fake-arrow-source">CMEVLA &#8592;</term>',
+                 "outside endterm: label a term")
+    return sub_once(a, INTRO_TITLE,
+                    INTRO_TITLE + '\n    <para><xref linkend="fake-arrow-source" '
+                    'endterm="fake-arrow-source" /> WRONG</para>',
+                    "outside endterm: generated label"), f
+
+
+def m_term_id_only(a, f):
+    """An ID on a rule term alone: any chapter could then reprint the term."""
+    return sub_once(a, "<term>CMEVLA &#8592;</term>",
+                    '<term xml:id="fake-arrow-source">CMEVLA &#8592;</term>',
+                    "id on a rule term"), f
+
+
+def m_intro_endterm_only(a, f):
+    """The endterm ban on its own, without an ID on a rule term."""
+    return sub_once(a, INTRO_TITLE,
+                    INTRO_TITLE + '\n    <para><xref linkend="c21-intro" endterm="c21-intro" /></para>',
+                    "endterm link without a rule target"), f
+
+
+def m_ebnf_arrow(a, f):
+    title = '<title><anchor xml:id="c21s2" />EBNF grammar of Lojban</title>'
+    return sub_once(a, title, title + "\n    <para>FAKE &#8592; wrong</para>",
+                    "arrow in the EBNF section"), f
+
+
+def m_ebnf_split_arrow(a, f):
+    """PR #119 round 2 (Astra): an arrow split across inline markup in the
+    EBNF section."""
+    title = '<title><anchor xml:id="c21s2" />EBNF grammar of Lojban</title>'
+    return sub_once(a, title, title + "\n    <para>cmevla &lt;<phrase>-</phrase> WRONG</para>",
+                    "split arrow in the EBNF section"), f
+
+
 MUTATIONS = [
-    ("stray rule-like paragraph at article level", m_stray_root_para),
+    ("stray rule-like paragraph at section level", m_stray_root_para),
     ("paragraph abusing the notation wording", m_notation_prefix_abuse),
     ("rule-like simpara inside a section", m_simpara),
     ("second term in an entry", m_second_term),
@@ -339,10 +438,10 @@ MUTATIONS = [
     ("approved arrow context duplicated", m_duplicate_context),
     ("approved arrow context removed", m_remove_context),
     ("arrow in a rendered attribute", m_xreflabel_arrow),
-    ("appendix root id changed", m_root_id),
+    ("section root id changed", m_root_id),
     ("root id duplicating a section id", m_duplicate_id),
     ("root element retagged", m_root_tag),
-    ("a02 anchor removed", m_drop_anchor),
+    ("c21-peg anchor removed", m_drop_anchor),
     ("approved context relocated with a compensating removal", m_compensating_relocation),
     ("notation context relocated with a compensating removal", m_relocate_notation),
     ("introduction edited without updating its pin", m_intro_edit),
@@ -352,12 +451,24 @@ MUTATIONS = [
     ("generated cross-reference label reprinting a rule arrow", m_endterm_label),
     ("introduction changed by attribute only", m_intro_attribute_only),
     ("inline boundary spaces removed around an approved arrow", m_inline_boundary_space),
+    ("wrong rule in a new sibling section", m_sibling_section),
+    ("rule list directly in the chapter", m_chapter_level_list),
+    ("rule-like paragraph in the chapter introduction", m_intro_rule),
+    ("second element with the section's id", m_duplicate_root_id),
+    ("arrow in the EBNF section", m_ebnf_arrow),
+    ("duplicate subsection id elsewhere in the chapter", m_duplicate_subsection_id),
+    ("EBNF-shaped rule in the chapter introduction", m_intro_ebnf_rule),
+    ("arrow split across markup in the chapter introduction", m_intro_split_arrow),
+    ("arrow split across markup in the EBNF section", m_ebnf_split_arrow),
+    ("endterm link in the chapter introduction", m_intro_endterm),
+    ("id on a rule term", m_term_id_only),
+    ("endterm link without a rule target", m_intro_endterm_only),
 ]
 
 
 def run_checker(tree):
     return subprocess.run(
-        [sys.executable, str(tree / "scripts" / "check-peg-appendix.py")],
+        [sys.executable, str(tree / "scripts" / "check-peg-grammar.py")],
         capture_output=True, text=True,
     ).returncode
 
@@ -371,9 +482,9 @@ def main():
             dst = tree / sub
             dst.parent.mkdir(parents=True, exist_ok=True)
             shutil.copytree(src, dst, ignore=shutil.ignore_patterns("*.pdf", "*.zip"))
-        appendix = tree / "chapters" / "a02.xml"
+        chapter = tree / "chapters" / "21.xml"
         fixture = tree / "tests" / "fixtures" / "peg-morphology.peg"
-        base_a = appendix.read_text(encoding="utf-8")
+        base_a = chapter.read_text(encoding="utf-8")
         base_f = fixture.read_text(encoding="utf-8")
 
         rc = run_checker(tree)
@@ -383,23 +494,23 @@ def main():
 
         for label, mutate in MUTATIONS:
             a, f = mutate(base_a, base_f)
-            appendix.write_text(a, encoding="utf-8")
+            chapter.write_text(a, encoding="utf-8")
             fixture.write_text(f, encoding="utf-8")
             rc = run_checker(tree)
             ok = rc != 0
             print(f"{'ok  ' if ok else 'FAIL'}  detected: {label}")
             if not ok:
                 failures.append(label)
-            appendix.write_text(base_a, encoding="utf-8")
+            chapter.write_text(base_a, encoding="utf-8")
             fixture.write_text(base_f, encoding="utf-8")
 
     print()
     if failures:
-        print(f"test-check-peg-appendix: {len(failures)} case(s) NOT detected:")
+        print(f"test-check-peg-grammar: {len(failures)} case(s) NOT detected:")
         for f in failures:
             print(" -", f)
         return 1
-    print(f"test-check-peg-appendix: all {len(MUTATIONS)} corruption cases detected")
+    print(f"test-check-peg-grammar: all {len(MUTATIONS)} corruption cases detected")
     return 0
 
 

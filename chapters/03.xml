@@ -777,12 +777,12 @@
       <quote>wa</quote>. This analysis, with a glide consonant instead of a diphthong, matters for the rule later in this section.
     </para>
     <para role="status-note">
-      <indexterm type="general"><primary>PEG morphology</primary><secondary>status of</secondary>
+      <indexterm type="general"><primary>PEG word-form grammar</primary><secondary>status of</secondary>
       </indexterm>
-      Like the other precise rules for word forms in this book, the analysis with four diphthongs comes from the formal definition of word forms. That definition is the de facto standard, and current Lojban software implements it (see
-      <xref linkend="chapter-grammars" />).
+      Like the other precise rules for word forms, the analysis with four diphthongs comes from a parsing expression grammar (PEG). This book calls it the PEG word-form grammar (see
+      <xref linkend="section-peg-grammar" />). This grammar is the de facto standard definition of Lojban word forms, and current Lojban software implements it.
       <xref linkend="appendix-changes" />
-      explains what <quote>de facto</quote> means here. Within that definition, the ban on a consonant followed by a glide (the <emphasis>consonant-glide-vowel ban</emphasis>) is separately committee-approved. The note at the end of this section gives the practical consequences.
+      explains what <quote>de facto</quote> means here. Within that grammar, the ban on a consonant followed by a glide (the <emphasis>consonant-glide-vowel ban</emphasis>) is separately committee-approved. The note at the end of this section gives the practical consequences.
     </para>
     <para>
       <indexterm type="general"><primary>vowels</primary><secondary>contrasted with consonants</secondary>
@@ -2299,7 +2299,7 @@
     <para>
       <indexterm type="general"><primary>stress</primary><secondary>secondary</secondary>
       </indexterm>
-      Secondary stress is the optional and non-distinctive emphasis used for other syllables besides those required to have either weak or primary stress. There are few rules governing secondary stress, which typically will follow a speaker's native language habits or preferences. Secondary stress can be used for contrast, or for emphasis of a point. Secondary stress can be emphasized at any level up to primary stress, although the speaker must not allow a false primary stress in brivla, since errors in word resolution could result.
+      Secondary stress is the optional and non-distinctive emphasis used for other syllables besides those required to have either weak or primary stress. There are few rules governing secondary stress, which typically will follow a speaker's native language habits or preferences. Secondary stress can be used for contrast, or for emphasis of a point. Secondary stress can be emphasized at any level up to primary stress, although the speaker must not allow a false primary stress in brivla, since errors in word resolution could result. (Word resolution breaks a stream of sounds into words.)
     </para>
     <para>  The following are Lojban words with stress explicitly shown:</para>
     <example role="pronunciation-example" xml:id="example-random-id-cxzt">

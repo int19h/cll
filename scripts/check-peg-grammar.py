@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""Verify that the typeset PEG appendix still states the grammar exactly.
+"""Verify that the typeset PEG word-form grammar still states the grammar exactly.
 
-chapters/a02.xml prints the word-form grammar as a variablelist per section,
+Chapter 21 (chapters/21.xml) prints the word-form grammar in its section
+"section-peg-grammar", as a variablelist per subsection,
 one entry per rule, with the file's ASCII arrow set as U+2190. The
 machine-readable grammar it was made from is kept verbatim at
 tests/fixtures/peg-morphology.peg.
 
-The appendix claims that every rule definition is reproduced with its own
+The section claims that every rule definition is reproduced with its own
 characters, in the file's own order. Proving that needs three things, because
 comparing two mutable copies proves nothing against an edit to both, and
 searching for expected shapes proves nothing about content that does not
@@ -16,17 +17,18 @@ match those shapes:
    equal FIXTURE_SHA256. A deliberate grammar update changes that constant in
    a reviewable commit; an accidental edit fails.
 2. **The printed inventory is closed and matches it.** Every section, every
-   varlistentry and every rule paragraph in the appendix is accounted for —
+   varlistentry and every rule paragraph in the section is accounted for —
    not merely searched for — with the expected shape, and the rules match the
    fixture's names, order, definitions, directives, and block-to-section
    grouping.
-3. **Nothing else in the appendix can read as a rule.** Every piece of text
+3. **Nothing else in the section can read as a rule.** Every piece of text
    that owns an arrow (U+2190 or U+2192, or the source's ASCII "<-") must be
    either a rule's term or one of the few approved places where the prose
    names the notation. DTD entities are resolved from the repository's own
    entity files first, so an entity spelling cannot smuggle an arrow past the
    audit; an entity this script cannot resolve is a failure, not a shrug.
 """
+import copy
 import hashlib
 import re
 import sys
@@ -34,27 +36,39 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-APPENDIX = ROOT / "chapters" / "a02.xml"
+CHAPTER = ROOT / "chapters" / "21.xml"
 FIXTURE = ROOT / "tests" / "fixtures" / "peg-morphology.peg"
 ENTITY_FILES = sorted(ROOT.glob("dtd/*.ent")) + sorted(ROOT.glob("xml/*.ent"))
 
 # SHA-256 of tests/fixtures/peg-morphology.peg: the grammar as published, the
-# exact bytes of the programlisting chapters/a02.xml carried before PR #105
+# exact bytes of the programlisting that appendix a02 carried before PR #105
 # typeset it. Update only together with the printed grammar.
 FIXTURE_SHA256 = "327f2e474580d04d9346f2ce85c36773814570666d1d1b6939d8bbdad3e6a886"
 
-ROOT_TAG = "article"
-ROOT_ID = "appendix-peg-morphology"
-ROOT_ANCHOR = "a02"
+ROOT_TAG = "section"
+ROOT_ID = "section-peg-grammar"
+ROOT_ANCHOR = "c21-peg"
+
+# The section is closed only if nothing rule-like can sit next to it, so the
+# outline of chapter 21 is pinned as well: its direct children, in order.
+CHAPTER_ID = "chapter-grammars"
+CHAPTER_OUTLINE = [
+    ("title", None),
+    ("mediaobject", "chapter-grammars-picture"),
+    ("section", "section-grammars-introduction"),
+    ("section", ROOT_ID),
+    ("section", "section-EBNF"),
+    ("section", "section-cross-reference"),
+]
 
 ARROW = "←"
 ARROW_TOKENS = ("←", "→", "<-")
 
-# The appendix's grammar sections, in the order the fixture's blocks appear.
+# The section's grammar subsections, in the order the fixture's blocks appear.
 SECTION_IDS = [
-    "a02-classes", "a02-words", "a02-cmevla", "a02-cmavo", "a02-brivla",
-    "a02-fuhivla", "a02-gismu", "a02-syllables", "a02-vowels",
-    "a02-consonants", "a02-boundaries", "a02-spaces", "a02-selmaho",
+    "peg-classes", "peg-words", "peg-cmevla", "peg-cmavo", "peg-brivla",
+    "peg-fuhivla", "peg-gismu", "peg-syllables", "peg-vowels",
+    "peg-consonants", "peg-boundaries", "peg-spaces", "peg-selmaho",
 ]
 
 # The only places outside a rule's term where the prose may show an arrow,
@@ -75,7 +89,7 @@ APPROVED_ARROW_CONTEXTS = [
 # without it, an approved context can be removed and a rule-like impostor put
 # in its place, preserving the count and the pinned path. Editing the
 # introduction means updating this constant in the same commit.
-INTRO_SHA256 = "c8125ebf49d5f80760afba6c95ba2516b84b874cc49cfeecc55f4d017907c8e8"
+INTRO_SHA256 = "c927465a61ac7eea17ef37125f14fd962aefe6943d3c25ad0b5e2ee843f0faee"
 
 PREDEFINED = {"amp": "&", "lt": "<", "gt": ">", "quot": '"', "apos": "'"}
 
@@ -83,7 +97,7 @@ PREDEFINED = {"amp": "&", "lt": "<", "gt": ">", "quot": '"', "apos": "'"}
 def norm(s):
     """Collapse only XML's formatting whitespace. U+00A0 and friends are
     meaningful characters here: a definition written with non-breaking spaces
-    renders as one unbreakable run, which is the clipping this appendix was
+    renders as one unbreakable run, which is the clipping the typeset grammar was
     retypeset to fix, so it must not compare equal to ordinary spaces."""
     return re.sub(r"[ \t\r\n]+", " ", s or "").strip(" \t\r\n")
 
@@ -129,9 +143,74 @@ def xml_id(el):
     return el.get("{http://www.w3.org/XML/1998/namespace}id")
 
 
+def check_chapter(chapter, root, problems):
+    """Pin the chapter around the section: its outline, the uniqueness of the
+    section's ID, and the absence of any arrow outside the section. Without
+    this, a rule printed in a new sibling section or in the chapter's
+    introduction would escape both this check and the EBNF cross-reference
+    check."""
+    if chapter.tag != "chapter" or xml_id(chapter) != CHAPTER_ID:
+        problems.append(f"the root of chapters/21.xml is <{chapter.tag}> {xml_id(chapter)!r}, "
+                        f"expected <chapter> {CHAPTER_ID!r}")
+    outline = [(c.tag, xml_id(c)) for c in chapter]
+    if outline != CHAPTER_OUTLINE:
+        problems.append(
+            "the outline of chapter 21 changed:\n"
+            f"    found:    {outline}\n"
+            f"    expected: {CHAPTER_OUTLINE}"
+        )
+    ids = [xml_id(el) for el in chapter.iter() if xml_id(el)]
+    if ids.count(ROOT_ID) != 1:
+        problems.append(f"chapter 21 has {ids.count(ROOT_ID)} elements with xml:id {ROOT_ID!r}")
+    dupes = sorted({i for i in ids if ids.count(i) > 1})
+    if dupes:
+        problems.append(f"duplicate xml:id values in chapter 21: {dupes}")
+    # Rule lists may appear only in the PEG section, the EBNF, and the EBNF
+    # cross-reference. This check audits the PEG section in full.
+    # check-cross-reference.py audits only the reverse index of the EBNF,
+    # not the text of each EBNF rule.
+    audited = {id(el) for c in chapter if xml_id(c) in (ROOT_ID, "section-EBNF", "section-cross-reference")
+               for el in c.iter()}
+    for el in chapter.iter():
+        if el.tag in ("variablelist", "varlistentry") and id(el) not in audited:
+            problems.append(f"a <{el.tag}> in chapter 21 lies outside the audited sections")
+    # Audit the rest of the chapter as rendered text: a copy without the
+    # section, flattened per element, so an arrow split across inline markup
+    # is still seen. The section's tail stays, because it prints outside it.
+    outside = copy.deepcopy(chapter)
+    kids = list(outside)
+    for i, c in enumerate(kids):
+        if xml_id(c) == ROOT_ID:
+            if c.tail:
+                if i:
+                    kids[i - 1].tail = (kids[i - 1].tail or "") + c.tail
+                else:
+                    outside.text = (outside.text or "") + c.tail
+            outside.remove(c)
+            break
+    for el in arrow_owners(outside):
+        problems.append(f"an arrow appears in chapter 21 outside the PEG section: "
+                        f"<{el.tag}> {norm(''.join(el.itertext()))[:60]!r}")
+    # Generated labels and rendered attributes, as check_attributes does inside
+    # the section: an endterm link outside it could reprint a rule's arrow.
+    for el in outside.iter():
+        for name, value in el.attrib.items():
+            if any(tok in value for tok in ARROW_TOKENS):
+                problems.append(f"<{el.tag}> attribute {name}={value!r} in chapter 21 contains an arrow")
+            if name == "endterm":
+                problems.append(f"<{el.tag}> in chapter 21 uses endterm={value!r}: "
+                                "generated labels are not auditable; write the link text instead")
+    # No element inside a rule entry may carry an ID, so no link anywhere in the
+    # book can print a rule's term as its label.
+    for entry in root.iter("varlistentry"):
+        for el in entry.iter():
+            if xml_id(el):
+                problems.append(f"an element inside a rule entry has xml:id {xml_id(el)!r}")
+
+
 def check_root(root, problems):
-    """The appendix's own identity is load-bearing: eight cross-references
-    point at it, and its anchor survives from the first edition."""
+    """The section's own identity is load-bearing: the book's cross-references
+    to the word-form grammar point at it."""
     if root.tag != ROOT_TAG:
         problems.append(f"root element is <{root.tag}>, expected <{ROOT_TAG}>")
     if xml_id(root) != ROOT_ID:
@@ -171,7 +250,7 @@ def check_intro(root, problems):
     digest = intro_digest(root)
     if digest != INTRO_SHA256:
         problems.append(
-            "the appendix introduction has changed:\n"
+            "the introduction of the PEG section has changed:\n"
             f"    expected SHA-256 {INTRO_SHA256}\n"
             f"    found            {digest}\n"
             "    (update INTRO_SHA256 in the same commit as the prose)"
@@ -213,9 +292,11 @@ def check_attributes(root, problems):
 
 
 def collect(root, problems):
-    """Closed inventory of the appendix's rule entries."""
+    """Closed inventory of the section's rule entries."""
     parents = parent_map(root)
-    sections = list(root.iter("section"))
+    # The root is itself a <section>, so only its descendants are the grammar
+    # subsections.
+    sections = [el for el in root.iter("section") if el is not root]
     ids = [xml_id(s) for s in sections]
     if ids != SECTION_IDS:
         problems.append(
@@ -324,7 +405,7 @@ def arrow_owners(root, problems=None):
 
 
 def arrow_audit(root, approved, terms, problems):
-    """The arrows in the appendix are a closed, ordered inventory: the pinned
+    """The arrows in the section are a closed, ordered inventory: the pinned
     prose contexts, in order, then one per rule term — compared by element
     identity, so nothing can take an approved context's place."""
     owners = arrow_owners(root, problems)
@@ -382,18 +463,23 @@ def main():
             "    (update FIXTURE_SHA256 only together with the printed grammar)"
         )
 
-    text, unknown = resolve_entities(APPENDIX.read_text(encoding="utf-8"))
+    text, unknown = resolve_entities(CHAPTER.read_text(encoding="utf-8"))
     if unknown:
         problems.append(
             f"entity references this check cannot resolve: {sorted(unknown)} "
             "(add the defining .ent file, or spell the character directly)"
         )
     try:
-        root = ET.fromstring(text)
+        chapter = ET.fromstring(text)
     except ET.ParseError as e:
-        print(f"check-peg-appendix: FAILED\n - cannot parse {APPENDIX}: {e}")
+        print(f"check-peg-grammar: FAILED\n - cannot parse {CHAPTER}: {e}")
+        return 1
+    root = next((el for el in chapter if xml_id(el) == ROOT_ID), None)
+    if root is None:
+        print(f"check-peg-grammar: FAILED\n - chapter 21 has no child section with xml:id {ROOT_ID!r}")
         return 1
 
+    check_chapter(chapter, root, problems)
     check_root(root, problems)
     check_intro(root, problems)
     check_attributes(root, problems)
@@ -405,32 +491,32 @@ def main():
             for i, blk in enumerate(fixture_blocks()) for (n, b, d) in blk]
 
     if len(got) != len(want):
-        problems.append(f"rule count: appendix {len(got)}, fixture {len(want)}")
+        problems.append(f"rule count: section {len(got)}, fixture {len(want)}")
 
     names = [r[1] for r in got]
     dupes = {n for n in names if names.count(n) > 1}
     if dupes:
-        problems.append(f"duplicate rule names in the appendix: {sorted(dupes)}")
+        problems.append(f"duplicate rule names in the section: {sorted(dupes)}")
 
     for i, (g, w) in enumerate(zip(got, want)):
         if g[1:] != w[1:]:
             problems.append(
                 f"rule {i + 1} differs:\n"
-                f"    appendix: {g[1]} <- {g[2]}" + (f"  #: {g[3]}" if g[3] else "") + "\n"
+                f"    printed:  {g[1]} <- {g[2]}" + (f"  #: {g[3]}" if g[3] else "") + "\n"
                 f"    fixture:  {w[1]} <- {w[2]}" + (f"  #: {w[3]}" if w[3] else "")
             )
         elif g[0] != w[0]:
             problems.append(f"rule {g[1]} is printed in section {g[0]}, but belongs to {w[0]}")
 
     if problems:
-        print("check-peg-appendix: FAILED")
+        print("check-peg-grammar: FAILED")
         for p in problems[:20]:
             print(" -", p)
         if len(problems) > 20:
             print(f" … and {len(problems) - 20} more")
         return 1
     print(
-        f"check-peg-appendix: {len(got)} rules in {len(SECTION_IDS)} sections match "
+        f"check-peg-grammar: {len(got)} rules in {len(SECTION_IDS)} subsections match "
         f"tests/fixtures/peg-morphology.peg (digest pinned, inventory closed)"
     )
     return 0

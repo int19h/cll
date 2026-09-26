@@ -51,8 +51,9 @@
       <jbophrase>na'e ke</jbophrase>. Those were mistakes when printed, and this edition fixes them. They are not changes to the language, and this appendix does not list them.
     </para>
     <para>
-      One more change is to the book, not to the language. The first edition printed the machine-oriented grammar (YACC) in full. This edition prints only the human-oriented EBNF grammar (see
-      <xref linkend="chapter-grammars" />), and the machine grammars are still available as electronic supplements. The YACC listing is gone because of an informal majority at the 2014 annual meeting of the LLG. That was a decision about what to print, not about the grammar itself.
+      One more change is to the book, not to the language. The first edition printed the machine-oriented grammar (YACC) in full. This edition prints the human-oriented EBNF grammar instead, and the YACC grammar is still available as an electronic supplement.
+      <xref linkend="chapter-grammars" />
+      also prints the PEG word-form grammar, which the first edition did not have. The YACC listing is gone because of an informal majority at the 2014 annual meeting of the LLG. That was a decision about what to print, not about the grammar itself.
     </para>
     <para>
       The official definition of Lojban syntax is still the EBNF/YACC grammar of the third baseline. The camxes PEG grammars that current software uses are the de facto standard, and nobody ever ratified them.
@@ -240,7 +241,8 @@
           <morphology>uy</morphology>, are also syllables with a glide and then <letteral>y</letteral>.
         </para>
         <para>
-          The same grammar makes word resolution deterministic. At each point the first matching rule wins, so a string of Lojban text breaks into words in exactly one way. The grammar also extends the space of permitted experimental cmavo shapes, and it admits digits inside cmevla. For each word class, it states rules for consonantal syllables and for stress. The appendices of this edition print the full grammar.
+          The same grammar makes word resolution deterministic. At each point the first matching rule wins, so a string of Lojban text breaks into words in exactly one way. The grammar also extends the space of permitted experimental cmavo shapes, and it admits digits inside cmevla. For each word class, it states rules for consonantal syllables and for stress. This edition prints the full grammar in
+          <xref linkend="section-peg-grammar" />.
         </para>
       </listitem>
       <listitem>
@@ -315,7 +317,7 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>magic words</primary><secondary>change summary</secondary></indexterm>
-          The rules for each word are <emphasis>checkpointed</emphasis> (2005), and the synthesis is <emphasis>editorial</emphasis>. Each quoting and binding word received a fixed left-to-right rule for conflicts. These rules replace the inconsistent pairwise list of the first edition. The committee's decision on quotations covers
+          The rules for each word are <emphasis>checkpointed</emphasis> (2005), and the adoption of the community synthesis by this edition is <emphasis>editorial</emphasis>. Each quoting and binding word received a fixed left-to-right rule for conflicts. These rules replace the inconsistent pairwise list of the first edition. The committee's decision on quotations covers
           <valsi>zo</valsi>,
           <valsi>zoi</valsi>,
           <valsi>la'o</valsi>, and

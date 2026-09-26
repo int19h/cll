@@ -36,8 +36,8 @@
       </indexterm>
       A stream of Lojban sounds can be uniquely broken up into its component words according to specific rules. These so-called
       <quote>morphology rules</quote>
-      are summarized in this chapter. A complete, formal statement of these rules also exists. It is the PEG morphology: a grammar of Lojban word forms that a computer can test.
-      <xref linkend="appendix-peg-morphology" />
+      are summarized in this chapter. A complete, formal statement of these rules also exists: the PEG word-form grammar (PEG means <quote>parsing expression grammar</quote>). A computer can test this grammar.
+      <xref linkend="section-peg-grammar" />
       prints it in full, and this chapter presents the same system informally. First, here are some conventions used to talk about groups of Lojban letters, including vowels and consonants.
     </para>
 
@@ -688,8 +688,8 @@
       means that these words have no officially assigned meanings. They provide an escape hatch: a way to add grammatical mechanisms that nobody foresaw a need for. In practice, some experimental cmavo are now in real use in the community. The community dictionaries record them, clearly marked as unofficial. None of them is part of standard Lojban as this book describes it.
     </para>
     <para>
-      The formal grammar of word forms in
-      <xref linkend="appendix-peg-morphology" />
+      The PEG word-form grammar in
+      <xref linkend="section-peg-grammar" />
       also accepts two more cmavo <emphasis>shapes</emphasis>, beyond the forms with vowels and apostrophes above. One shape is a word of one or more
       <letteral>y</letteral>
       letters. The other is a word of a single digit character. These shapes are capabilities of the working grammar, which reads them as cmavo. They are not standard word assignments. Apart from
@@ -2012,10 +2012,10 @@
     </para>
     <para>
       The exact procedure is part of the lujvo-making algorithm in
-      <xref linkend="section-lujvo-making" />, which also covers the case of several CVC rafsi in a row. The formal grammar states it as the grammar rule named
+      <xref linkend="section-lujvo-making" />, which also covers the case of several CVC rafsi in a row. The PEG word-form grammar states it as the grammar rule named
       <quote>CVCy_lujvo</quote>
       (see
-      <xref linkend="appendix-peg-morphology" />).
+      <xref linkend="section-peg-grammar" />).
     </para>
     <para>
       <indexterm type="general"><primary>rafsi</primary><secondary>four-letter</secondary>
@@ -2080,7 +2080,7 @@
       <valsi valid="maybe">rokre'o</valsi>.
     </para>
     <para>
-      This book teaches the classical rule: a hyphen appears exactly where it is needed, and nowhere else. The formal grammar of word forms is more liberal. It also accepts unneeded hyphens, for example in
+      This book teaches the classical rule: a hyphen appears exactly where it is needed, and nowhere else. The PEG word-form grammar is more liberal. It also accepts unneeded hyphens, for example in
       <jbophrase>naltosymabru</jbophrase>. Expect software to accept such hyphens, but write them only where the classical rule needs them.
     </para>
     <para role="status-note">
@@ -2368,7 +2368,7 @@
           <valsi valid="maybe">ro'i'inre'o</valsi>
           is
           <morphology>nr</morphology>, at the fifth and sixth letters (apostrophes do not count). This word is a valid fu'ivla if it resolves as a single brivla under the rules of
-          <xref linkend="appendix-peg-morphology" />;
+          <xref linkend="section-peg-grammar" />;
         </para>
       </listitem>
       <listitem>
@@ -2478,8 +2478,8 @@
       <valsi valid="maybe">calfe</valsi>, has the shape of a gismu, so a listener hears
       <jbophrase valid="false">me tcalfe</jbophrase>
       as the lujvo
-      <valsi valid="maybe">metcalfe</valsi>. The formal grammar of
-      <xref linkend="appendix-peg-morphology" />
+      <valsi valid="maybe">metcalfe</valsi>. The PEG word-form grammar in
+      <xref linkend="section-peg-grammar" />
       states the test as the grammar rule named
       <quote>slinkuhi</quote>.
     </para>
@@ -3282,7 +3282,7 @@
           <morphology>iy</morphology>
           and
           <morphology>uy</morphology>, in which a glide comes before
-          <letteral>y</letteral>. No standard word of any other kind contains these syllables. But as pure word forms, the formal grammar also counts them among the unassigned experimental cmavo forms.
+          <letteral>y</letteral>. No standard word of any other kind contains these syllables. But as pure word forms, the PEG word-form grammar also counts them among the unassigned experimental cmavo forms.
         </para>
       </listitem>
       <listitem>
@@ -4066,10 +4066,10 @@
           &ndash; for
           <quote>tosmabru failure</quote>. In order to fail, X must either be a CVCCV long rafsi that happens to have a permissible initial pair as the consonant cluster, or is something which has caused a
     y-hyphen to be inserted between the preceding CVC and X in step 4.b. (<xref linkend="section-rafsi" />
-          explains the failure and its cure with examples.) The formal grammar of word forms states this test precisely, as the rule called
+          explains the failure and its cure with examples.) The PEG word-form grammar states this test precisely, as the rule called
           <quote>CVCy_lujvo</quote>
           (see
-          <xref linkend="appendix-peg-morphology" />).
+          <xref linkend="section-peg-grammar" />).
         </para>
         <para>The test is as follows:</para>
         <orderedlist>
@@ -6127,8 +6127,8 @@
       <indexterm type="general"><primary>fu'ivla</primary><secondary>in lujvo</secondary>
       </indexterm>
       <indexterm type="general"><primary>extended rafsi</primary></indexterm>
-      The mechanism in this section is de facto standard Lojban. It is part of the formal grammar of word forms in
-      <xref linkend="appendix-peg-morphology" />, and current software implements it. For its history, see
+      The mechanism in this section is de facto standard Lojban. It is part of the PEG word-form grammar in
+      <xref linkend="section-peg-grammar" />, and current software implements it. For its history, see
       <xref linkend="appendix-changes" />.
     </para>
     <para>

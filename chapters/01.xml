@@ -336,7 +336,7 @@
       lists them, and this book names the source of each change where it teaches it.
     </para>
     <para>
-      Pavel Minaev started this edition in 2026 and made its editorial decisions. Claude, an AI model made by Anthropic, wrote the new and changed text with him, under his direction. AI models from OpenAI, xAI, Moonshot AI, Alibaba, and Google reviewed that text. The camxes parser tests every Lojban example in the book, and jbotci, a Lojban toolkit, helped to test the new examples.
+      Pavel Minaev started this edition in 2026 and made its editorial decisions. Claude, an AI model made by Anthropic, wrote the new and changed text with him, under his direction. AI models from OpenAI, xAI, Moonshot AI, Alibaba, and Google reviewed that text. The camxes parser tests every Lojban example in the book. jbotci, a Lojban toolkit, helped to test the new examples.
     </para>
 
   </section>

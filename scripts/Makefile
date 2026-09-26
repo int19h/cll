@@ -20,7 +20,7 @@ realclean: clean
 # Basic prep
 #*******
 
-$(builddir)/cll.xml: $(chapters) xml/iso-pub.ent xml/identity.xsl xml/docbook2html_config_common.xsl scripts/update_jbovlaste_xml.sh scripts/generate_glossary.rb scripts/merge.sh
+$(builddir)/cll.xml: $(chapters) xml/iso-pub.ent xml/identity.xsl xml/docbook2html_config_common.xsl scripts/update_jbovlaste_xml.sh scripts/generate_glossary.rb scripts/merge.sh .env
 	regenerator --include-runtime $(PWD)/assets/scripts/sance-next.js > $(builddir)/sance.js
 	rm -rf $(builddir)/xml $(builddir)/dtd
 	cp -pr $(PWD)/xml $(builddir)/

@@ -12,6 +12,16 @@ builddir="$basedir/build"
 epubbuilddir="$builddir/epub"
 srcdir="$basedir/epub"
 
+# The title and the publisher come from .env, like the title page that
+# scripts/merge.sh makes. No template names the book.
+read_var() {
+  grep "^$1=" "$basedir/.env" | head -n 1 | cut -d= -f2- | sed -e 's/^"//' -e 's/"$//'
+}
+export TITLE="$(read_var TITLE)"
+export PUBLISHER="$(read_var PUBLISHER)"
+export AUTHOR="John Woldemar Cowan"
+brand="ruby $basedir/scripts/epub_branding.rb"
+
 rm -rf $epubbuilddir/
 mkdir $epubbuilddir/
 
@@ -43,7 +53,7 @@ mv build/epub/index.html.new build/epub/index.html
 
 rm -f $epubbuilddir/cll.appcache
 
-cp $srcdir/toc.xhtml.s1 $epubbuilddir/toc.xhtml
+$brand fill <$srcdir/toc.xhtml.s1 >$epubbuilddir/toc.xhtml
 grep -P '^\s*(<a |(</?dl>|</?dt>)\s*$)' build/epub-xhtml/index.html | \
   sed -r -e 's/dt>\s*$/li>/g' -e 's/<dl>\s*$/<ol>/' -e 's;</dl>\s*$;</ol></li>;' | \
   ruby -e 'puts STDIN.read.gsub(%r{</li>\s*<ol>}m, "<ol>")' >>$epubbuilddir/toc.xhtml
@@ -59,7 +69,7 @@ do
 done
 
 version="$(grep '^Version ' build/epub/index.html)"
-cat $srcdir/content.opf.s1 | sed "s/REPLACEDATE/$(date -u +%Y-%m-%dT%H:%M:%SZ)/" | \
+$brand fill <$srcdir/content.opf.s1 | sed "s/REPLACEDATE/$(date -u +%Y-%m-%dT%H:%M:%SZ)/" | \
   sed "s/REPLACEVERSION/$version/" >$epubbuilddir/content.opf
 
 cd $epubbuilddir/
@@ -113,8 +123,8 @@ done
 
 cat $srcdir/content.opf.s3 >>$epubbuilddir/content.opf
 
-cp $srcdir/cover.jpg $epubbuilddir/assets/media/cover.jpg
-cp $srcdir/cover.html $epubbuilddir/cover.html
+$brand cover >$epubbuilddir/assets/media/cover.svg
+$brand fill <$srcdir/cover.html >$epubbuilddir/cover.html
 
 rm -f $basedir/build/cll.epub $basedir/build/cll.mobi
 

@@ -20,7 +20,7 @@ realclean: clean
 # Basic prep
 #*******
 
-$(builddir)/cll.xml: $(chapters) xml/iso-pub.ent xml/identity.xsl xml/docbook2html_config_common.xsl scripts/update_jbovlaste_xml.sh scripts/generate_glossary.rb scripts/merge.sh
+$(builddir)/cll.xml: $(chapters) xml/iso-pub.ent xml/identity.xsl xml/docbook2html_config_common.xsl scripts/update_jbovlaste_xml.sh scripts/generate_glossary.rb scripts/merge.sh .env
 	regenerator --include-runtime $(PWD)/assets/scripts/sance-next.js > $(builddir)/sance.js
 	rm -rf $(builddir)/xml $(builddir)/dtd
 	cp -pr $(PWD)/xml $(builddir)/
@@ -107,7 +107,7 @@ endif
 mobi: $(builddir)/cll.epub
 epub: $(builddir)/cll.epub
 
-$(builddir)/cll.epub: $(builddir)/epub-xhtml/index.html scripts/build_epub.sh epub/mimetype epub/* epub/META-INF/container.xml
+$(builddir)/cll.epub: $(builddir)/epub-xhtml/index.html scripts/build_epub.sh scripts/epub_branding.rb .env epub/mimetype epub/* epub/META-INF/container.xml
 	scripts/build_epub.sh $(PWD)
 	mv $(builddir)/cll.epub $(builddir)/cll.tmp.epub
 	java -jar $(PWD)/epub/epubcheck-4.0.1/epubcheck.jar $(builddir)/cll.tmp.epub 2>&1 | grep -v "should have the extension '.xhtml'"

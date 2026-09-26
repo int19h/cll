@@ -122,11 +122,18 @@ print display
 
   /* define default page and names pages: cover, blank, frontmatter */
 
+  /* The left-hand running head repeats the title of the book.
+   * scripts/merge.sh puts TITLE from .env into the title page, and the
+   * title page passes it on here, so no stylesheet names the title. */
+  .book > .titlepage h1.title {
+    string-set: header content(), booktitle content();
+  }
+
   @page chapter :left {
     @top-left {
       font-size: 9pt;
       text-align: center;
-      content: "The Complete Lojban Language";
+      content: string(booktitle, first);
       vertical-align: bottom;
       margin-top: 13mm;
       padding-bottom: 2mm;

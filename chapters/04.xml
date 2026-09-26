@@ -36,7 +36,7 @@
       </indexterm>
       A stream of Lojban sounds can be uniquely broken up into its component words according to specific rules. These so-called
       <quote>morphology rules</quote>
-      are summarized in this chapter. A complete, formal statement of these rules also exists: the PEG word-form grammar, a parsing expression grammar (PEG) of Lojban word forms. A computer can test this grammar.
+      are summarized in this chapter. A complete, formal statement of these rules also exists: the PEG word-form grammar (PEG means <quote>parsing expression grammar</quote>). A computer can test this grammar.
       <xref linkend="section-peg-grammar" />
       prints it in full, and this chapter presents the same system informally. First, here are some conventions used to talk about groups of Lojban letters, including vowels and consonants.
     </para>

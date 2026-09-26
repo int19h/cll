@@ -166,7 +166,9 @@ def check_chapter(chapter, root, problems):
     if dupes:
         problems.append(f"duplicate xml:id values in chapter 21: {dupes}")
     # Rule lists may appear only in the PEG section, the EBNF, and the EBNF
-    # cross-reference, which this check and check-cross-reference.py audit.
+    # cross-reference. This check audits the PEG section in full.
+    # check-cross-reference.py audits only the reverse index of the EBNF,
+    # not the text of each EBNF rule.
     audited = {id(el) for c in chapter if xml_id(c) in (ROOT_ID, "section-EBNF", "section-cross-reference")
                for el in c.iter()}
     for el in chapter.iter():

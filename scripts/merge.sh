@@ -69,7 +69,7 @@ $subtitle_elem
 <surname>Cowan</surname>
 </personname>
 </author>
-<othercredit class="reviser">
+<othercredit class='reviser'>
 <orgname>
 revised by $reviser
 </orgname>

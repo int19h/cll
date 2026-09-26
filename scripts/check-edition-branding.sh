@@ -51,10 +51,18 @@ if grep -n 'urn:isbn:' "$tmp/content.opf.s1"; then
   bad "content.opf.s1 uses an ISBN, but this edition has none"
 fi
 
-# 4. The generated cover is well-formed SVG and names the title.
+# 4. The title page and the cover credit the reviser from .env.
+grep -q '^revised by \$reviser$' scripts/merge.sh ||
+  bad "scripts/merge.sh does not print \"revised by \$reviser\" on the title page"
+grep -q 'reviser=\$(read_var REVISER .env)' scripts/merge.sh ||
+  bad "scripts/merge.sh does not read REVISER from .env"
+
+# 5. The generated cover is well-formed SVG and names the title.
 ruby scripts/epub_branding.rb cover >"$tmp/cover.svg"
 python3 -c 'import sys, xml.dom.minidom; xml.dom.minidom.parse(sys.argv[1])' "$tmp/cover.svg" ||
   bad "the generated cover is not well-formed XML"
+grep -qF ">revised by $REVISER<" "$tmp/cover.svg" ||
+  bad "the cover does not show \"revised by $REVISER\""
 for word in $TITLE; do
   grep -qF ">$word<" "$tmp/cover.svg" || grep -qF " $word<" "$tmp/cover.svg" ||
     grep -qF ">$word " "$tmp/cover.svg" || bad "the cover does not show the word $word of the title"

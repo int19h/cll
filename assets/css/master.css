@@ -182,6 +182,19 @@ print display
   h3.othercredit {
     padding-top: 180pt;
   }
+
+  /* The first othercredit is the reviser credit from .env ("revised by
+   * ..."), which sits directly under the author. Only the publisher line
+   * after it goes to the bottom of the page. The two othercredits are
+   * always followed by the release info, so the reviser credit is the
+   * third wrapper from the end, with or without a subtitle. */
+  .book > .titlepage > div > div:nth-last-child(3) h3.othercredit {
+    padding-top: 0;
+    margin-top: 1em;
+    text-align: center;
+    font-style: italic;
+    font-weight: normal;
+  }
 }
 /****
 }}}

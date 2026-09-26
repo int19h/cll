@@ -239,9 +239,9 @@ def m_compensating_relocation(a, f):
     impostor in its slot, preserving the owner count and the pinned path."""
     a = sub_once(a, "<quote>&#8592;</quote>", "<quote>the left arrow</quote>",
                  "relocation: neutralize the real context")
-    return sub_once(a, "  <para>\n    The grammar is the one used",
+    return sub_once(a, "  <para>\n    The grammar is the one that",
                     "  <para>FAKE\n    <quote>&#8592;</quote>\n    wrong</para>\n"
-                    "  <para>\n    The grammar is the one used",
+                    "  <para>\n    The grammar is the one that",
                     "relocation: insert the impostor"), f
 
 
@@ -252,15 +252,15 @@ def m_relocate_notation(a, f):
                  "notation relocation: neutralize")
     return sub_once(a, "  <section xml:id=\"a02-classes\">",
                     "  <itemizedlist><listitem><para>A rule has the form "
-                    "<emphasis>name</emphasis> &#8592; expression: the construct called "
-                    "name is parsed by that expression.</para></listitem></itemizedlist>\n"
+                    "<emphasis>name</emphasis> &#8592; expression: that expression parses "
+                    "the construct called name.</para></listitem></itemizedlist>\n"
                     "  <section xml:id=\"a02-classes\">",
                     "notation relocation: insert"), f
 
 
 def m_intro_edit(a, f):
     """Any introduction edit must be pinned deliberately."""
-    return sub_once(a, "The notation in full:", "The notation, in full:", "intro edited"), f
+    return sub_once(a, "Here is the full notation:", "Here is the notation, in full:", "intro edited"), f
 
 
 def m_root_text_arrow(a, f):
@@ -307,8 +307,8 @@ def m_intro_attribute_only(a, f):
 def m_inline_boundary_space(a, f):
     """Removing the spaces around an approved quote changes what prints
     without changing any word."""
-    return sub_once(a, "is written\n    <quote>&#8592;</quote>\n    where",
-                    "is written<quote>&#8592;</quote>where",
+    return sub_once(a, "definition is\n    <quote>&#8592;</quote>\n    here",
+                    "definition is<quote>&#8592;</quote>here",
                     "inline boundary spaces removed"), f
 
 

@@ -10,27 +10,37 @@
     <title><anchor xml:id="c1s1" />What is Lojban?</title>
     <para>      <indexterm type="general"><primary>Lojban</primary><secondary>history of</secondary>      </indexterm>      <indexterm type="general"><primary>Loglan</primary><secondary>relation to Lojban</secondary>      </indexterm>      <indexterm type="general"><primary>Brown</primary><secondary>James Cooke</secondary>      </indexterm>
       Lojban (pronounced
-      <quote>LOZH-bahn</quote>) is a constructed language, the younger of two languages to come out of the Loglan Project. The project was founded by Dr. James Cooke Brown, who began work on its first language, Loglan, in 1955, to test the hypothesis that the language we speak shapes the thoughts we can think. The goals for the language were first described in the open literature in the article
-      <citetitle pubwork="article">Loglan</citetitle>
-      , published in
-      <citetitle pubwork="journal">Scientific American</citetitle>
-      , June, 1960. Made well-known by that article and by occasional references in science fiction (most notably in Robert Heinlein's novel
-      <citetitle pubwork="book">The Moon Is A Harsh Mistress</citetitle>) and computer publications, the project drew dozens of workers and hundreds of supporters over the following decades.
+      <quote>LOZH-bahn</quote>) is a constructed language. It is the younger of two languages that came out of the Loglan Project. Dr. James Cooke Brown founded the project, and in 1955 he started work on its first language, Loglan. His aim was to test the hypothesis that the language that we speak shapes the thoughts that we can think.
+    </para>
+    <para>
+      The goals for the language were first described in the open literature in the article
+      <citetitle pubwork="article">Loglan</citetitle>, published in
+      <citetitle pubwork="journal">Scientific American</citetitle>, June, 1960. That article made the project well known. So did occasional references in science fiction (most notably in Robert Heinlein's novel
+      <citetitle pubwork="book">The Moon Is A Harsh Mistress</citetitle>) and in computer publications. Over the following decades, the project drew dozens of workers and hundreds of supporters.
     </para>
     <para>
       <indexterm type="general"><primary>Logical Language Group</primary><secondary>relation to Lojban</secondary>
       </indexterm>
       <indexterm type="general"><primary>Loglan Institute</primary></indexterm>
-      In 1987 the project divided over a question that sooner or later confronts every constructed language: who owns it? Brown and The Loglan Institute, the organization he had founded to develop Loglan, asserted intellectual-property claims over the language, including its individual words; a large group of the project's volunteers wanted the language free for anyone to use. When no agreement could be reached, those volunteers formed The Logical Language Group (which went on to publish the first edition of this book) and rebuilt the language's vocabulary from the ground up, keeping the grammatical design: an entirely new stock of root words, derived afresh from the world's six most widely spoken languages by the same method that had produced Loglan's. The result is Lojban. The dispute over the name
+      In 1987 the project divided over a question that every constructed language meets sooner or later: who owns it? Earlier, Brown founded The Loglan Institute to develop Loglan. Brown and the Institute claimed the language as their intellectual property. Their claims also covered its individual words. A large group of the project's volunteers wanted the language to be free for anyone to use. The two sides did not reach an agreement, so those volunteers formed The Logical Language Group, which later published the first edition of this book.
+    </para>
+    <para>
+      The volunteers rebuilt the vocabulary of the language from the ground up, but they kept its grammatical design. They made an entirely new stock of root words from the six most widely spoken languages of the world. To do this, they used the same method that gave Loglan its root words. The result is Lojban.
+    </para>
+    <para>
+      The dispute over the name
       <quote>Loglan</quote>
-      itself went to court and ended in 1992 with a ruling on narrow grounds:
+      itself went to court, and the case ended in 1992. The ruling was on narrow grounds:
       <quote>Loglan</quote>
-      is the generic name of a language, and so could not remain anyone's registered trademark. Usage has since settled the naming more amicably than litigation did: the name
+      is the generic name of a language, so nobody can keep it as a registered trademark. Later, usage settled the names more amicably than the court case did. Today the name
       <quote>Loglan</quote>
-      today ordinarily refers to the Institute's language, which remains in use and under development to this day (its materials are at
-      <link xlink:href="https://www.loglan.org/">loglan.org</link>), and
+      usually refers to the language of the Institute. People still use and develop that language, and its materials are at
+      <link xlink:href="https://www.loglan.org/">loglan.org</link>. The name
       <quote>Lojban</quote>
-      to the Group's. The two are sibling languages, alike in grammatical structure &ndash; a simple sentence of one can often be translated word by word into the other &ndash; but with almost entirely different words. Lojban has become much the more widely used of the two, and it is the language this book describes.
+      refers to the language of the Group.
+    </para>
+    <para>
+      The two are sibling languages. Their grammatical structure is alike: you can often translate a simple sentence of one language word by word into the other. But almost all of their words are different. Of the two, Lojban is now much more widely used. It is the language that this book describes.
     </para>
     <para>
       <indexterm type="general"><primary>Lojban</primary><secondary>features of</secondary>
@@ -100,20 +110,45 @@
       <indexterm type="general"><primary>linguistic drift</primary></indexterm>
       <indexterm type="general"><primary>Lojban</primary><secondary>stability of</secondary>
       </indexterm>
-      Nevertheless, the publication of the first edition of this book, in 1997, was in one sense the completion of a long period of language evolution: the language was declared baselined, and even the possibility of revision was deferred for five years. History kept roughly to that script, though not to its spirit of finality. A 2002 baseline statement set the plan in motion, and in 2003 the Logical Language Group &ndash; the organization then responsible for the language &ndash; chartered a language-definition committee, the
+      Nevertheless, the publication of the first edition of this book in 1997 was, in one sense, the completion of a long period of language evolution. The Logical Language Group declared the language baselined: its official definition became a fixed reference point. Even the consideration of a revision had to wait for five years. Later events roughly followed that plan, but not its spirit of finality.
+    </para>
+    <para>
+      A baseline statement in 2002 started the plan. In 2003 the Logical Language Group, which was then responsible for the language, chartered a language-definition committee. Its Lojban name is
       <indexterm type="general"><primary>BPFK</primary><secondary>language-definition committee</secondary>
       </indexterm>
-      <jbophrase>baupla fuzykamni</jbophrase>
-      or BPFK, to produce a definitive specification; along the way, that committee and the Group adopted a small number of deliberate changes to the language this book describes. The most consequential are the reformed article system (adopted in stages between 2004 and 2020), a stricter word-form rule (2014), and a rule binding a grammatical tag tightly to the predicate expression that follows it (2016). This edition teaches the language as so amended, and every changed rule is identified where it is taught, with a note on who adopted it, and when, and how firmly &ndash; so that you can always tell settled ground from live community practice.
+      <jbophrase>baupla fuzykamni</jbophrase>, or BPFK for short. Its task was to produce a definitive specification of the language. Along the way, the BPFK and the Group adopted a small number of deliberate changes to the language that this book describes. The changes with the largest consequences are these:
+    </para>
+    <itemizedlist role="bullets">
+      <listitem>
+        <para>A reformed system of articles, adopted in stages between 2004 and 2020</para>
+      </listitem>
+      <listitem>
+        <para>A stricter rule for word forms (2014)</para>
+      </listitem>
+      <listitem>
+        <para>A rule that attaches a tense word, or a similar word, tightly to a following phrase that names a relation (2016)</para>
+      </listitem>
+    </itemizedlist>
+    <para>
+      This edition teaches the language with these changes. Where it teaches a changed rule, a note tells you who adopted the rule, when, and how firmly. With these notes, you can always tell settled rules from community practice that is still in motion.
     </para>
     <para>
       <indexterm type="general"><primary>Logical Language Group</primary><secondary>status of</secondary>
       </indexterm>
       <indexterm type="general"><primary>Lojban</primary><secondary>governance of</secondary>
       </indexterm>
-      Deliberate change has since ceased &ndash; though not by proclamation this time. The Logical Language Group is now effectively inactive: its last recorded meeting, the 2022 Annual Meeting, ended in 2023, and no later activity is on record. The committee's remaining open questions were left deferred, and they now remain so indefinitely. The established core &ndash; the old baseline, together with the later decisions described here at their several levels of authority &ndash; is in practice frozen. The language itself is not: Lojban continues to grow the way living languages do, through use, through new vocabulary &ndash; the community has coined thousands of words since the first edition, by the processes
+      Later, deliberate change stopped. This time it stopped without a proclamation. The Logical Language Group is now effectively inactive. Its last recorded meeting was the 2022 Annual Meeting, which ended in 2023. No later activity is on record. The BPFK left its remaining open questions deferred, and they now stay deferred indefinitely.
+    </para>
+    <para>
+      In practice, the established core of the language is frozen. This core is the old baseline plus the later decisions that this book describes, each at its own level of authority. The language itself is not frozen.
+    </para>
+    <para>
+      Lojban still grows the way living languages do: through use, new vocabulary, and consensus in usage and in the tools that everyone shares. After the first edition, the community coined thousands of words by the processes that
       <xref linkend="chapter-lujvo" />
-      describes, submitted to the community's dictionaries &ndash; and through consensus in usage and in the tools everyone shares, all in a fully decentralized fashion. (Teach your children Lojban!) You can learn the language described here with reasonable assurance that its core will not shift beneath you: not because further fiddling is forbidden, but because there is no longer anyone whose job is to fiddle.
+      describes, and it submitted them to the community dictionaries. All of this growth is fully decentralized. (Teach your children Lojban!)
+    </para>
+    <para>
+      You can learn the language that this book describes with reasonable assurance that its core will not change under you. Nobody forbids further changes, but it is now nobody's job to make them.
     </para>
     <para>
       <indexterm type="general"><primary>this book</primary><secondary>structure of</secondary>
@@ -279,8 +314,8 @@
   </section>
   <section xml:id="section-bibliography">
     <title><anchor xml:id="c1s6" />Informal bibliography</title>
-    <para>      <indexterm type="general"><primary>Loglan</primary></indexterm>      <indexterm type="general"><primary>bibliography</primary></indexterm>      The founding document for the Loglan Project is      <citetitle pubwork="book">Loglan 1: A Logical Language</citetitle>      by James Cooke Brown (4th ed. 1989, The Loglan Institute, Gainesville, Florida, U.S.A.). The language described therein is not Lojban, but the sibling language whose grammatical design Lojban shares (see
-      <xref linkend="section-what-is-lojban" />); The Loglan Institute continues to maintain and develop it, and makes current materials available at
+    <para>      <indexterm type="general"><primary>Loglan</primary></indexterm>      <indexterm type="general"><primary>bibliography</primary></indexterm>      The founding document for the Loglan Project is      <citetitle pubwork="book">Loglan 1: A Logical Language</citetitle>      by James Cooke Brown (4th ed. 1989, The Loglan Institute, Gainesville, Florida, U.S.A.). The language in that book is not Lojban. It is the sibling language whose grammatical design Lojban shares (see
+      <xref linkend="section-what-is-lojban" />). The Loglan Institute continues to maintain and develop it, and it makes current materials available at
       <link xlink:href="https://www.loglan.org/">loglan.org</link>.
     </para>
 
@@ -300,10 +335,10 @@
 
     <para>
       <indexterm type="general"><primary>books about Lojban</primary></indexterm>
-      The first edition here promised three future books &ndash; a textbook, a Lojban/English dictionary, and a general-information book. What actually arrived was better suited to the internet age: community lexicography &ndash; the
+      At this point in its text, the first edition promised three future books: a textbook, a Lojban/English dictionary, and a book of general information. What arrived instead suited the internet age better. The community built its own dictionary collection,
       <indexterm type="general"><primary>jbovlaste</primary><secondary>community dictionary, read-only status</secondary>
       </indexterm>
-      community-built jbovlaste collection, now read-only but carried forward by the current dictionary tools &ndash; along with free online courses and textbooks, and a steady stream of translated and original Lojban text. Any web search for Lojban will find the current versions of these; being online, they stay more current than any printed list could.
+      jbovlaste, which is now read-only, but the current dictionary tools carry its content forward. Free online courses and textbooks also appeared, with a steady stream of translated and original Lojban text. Any web search for Lojban finds the current versions of all of these. Because they are online, they stay more current than any printed list can.
     </para>
 
   </section>

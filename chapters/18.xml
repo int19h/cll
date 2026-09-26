@@ -1807,8 +1807,8 @@
       ; and so on down to
       <valsi>piso'u</valsi>
       ,
-      <quote>a tiny part of</quote>. These numbers are particularly useful with groups and with substance-like references (see
-      <xref linkend="section-masses" />): on a group, a fraction selects a subgroup with that fraction of the members; on a substance, it selects an amount, as
+      <quote>a tiny part of</quote>. These numbers are particularly useful with groups and with references to things treated as substances (see
+      <xref linkend="section-masses" />). On a group, a fraction selects a subgroup with that fraction of the members. On a substance, it selects an amount, as
       <xref linkend="example-random-id-dwJI" />
       shows.
     </para>
@@ -2318,14 +2318,14 @@
       <xref linkend="section-quantified-descriptions" />. Descriptions in general are outside the scope of this chapter.
     </para>
     <para>
-      An unquantified description is a constant, and a quantifier applies only when actually said (see
+      An unquantified description is a constant, and a quantifier applies only when the speaker actually says one (see
       <xref linkend="section-quantified-descriptions" />).
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>implicit quantifiers</primary><secondary>abolition of, in mekso contexts</secondary>
       </indexterm>
-      This is the ratified gadri rule; older texts follow a different convention here &ndash; see
-      <xref linkend="appendix-changes" />.
+      This rule is part of the ratified reform of the articles. Older texts follow a different convention here (see
+      <xref linkend="appendix-changes" />).
     </para>
   </section>
   <section xml:id="section-radixen">
@@ -2731,8 +2731,8 @@
       <jbophrase>poi pamei</jbophrase>
       says so explicitly. Like any personal pro-sumti,
       <valsi>mi</valsi>
-      refers to the relevant person or people &ndash; one referent or several, as context supplies (see
-      <xref linkend="chapter-anaphoric-cmavo" />); the relative clause pins the count to exactly one.
+      refers to the relevant person or people: one referent or several, as the context supplies (see
+      <xref linkend="chapter-anaphoric-cmavo" />). The relative clause fixes the count at exactly one.
     </para>
     <para>
       However, when the number expressed before
@@ -2780,10 +2780,8 @@
       In
       <xref linkend="example-random-id-GJsg" />
       , the x<subscript>2</subscript> and x<subscript>3</subscript> places are vacant, and the x<subscript>4</subscript> place is filled by
-      <jbophrase>lo'i ratcu</jbophrase>
-      &ndash; a set of rats. Like any unquantified description it refers to whatever the context supplies; in a comparison like this one, the natural comparison set is
-      <quote>the set of all rats</quote>
-      , and that is a contextual choice, not something the missing quantifiers contribute.
+      <jbophrase>lo'i ratcu</jbophrase>, a set of rats. Like any unquantified description, it refers to whatever the context supplies. In a comparison like this one, the natural comparison set is
+      <quote>the set of all rats</quote>. That is a choice of the context, not something that the missing quantifiers contribute.
     </para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-n52D">
@@ -3382,14 +3380,12 @@
     <para role="status-note">
       <indexterm type="lojban-word"><primary>tu'o</primary><secondary>contrasted with mo'e zo'e</secondary>
       </indexterm>
-      When an operand is not a mere grammatical filler but a genuinely <emphasis>unspecified</emphasis> quantity &ndash;
-      <quote>some number or other</quote>
-      &ndash; modern practice prefers
-      <jbophrase>mo'e zo'e</jbophrase>
-      , the elliptical sumti converted to an operand (see
-      <xref linkend="section-lojban-within-mekso" />), reserving
+      Sometimes an operand is not a mere grammatical filler but a genuinely <emphasis>unspecified</emphasis> quantity:
+      <quote>some number or other</quote>. For such an operand, modern practice prefers
+      <jbophrase>mo'e zo'e</jbophrase>, the elliptical sumti converted to an operand (see
+      <xref linkend="section-lojban-within-mekso" />). It keeps
       <valsi>tu'o</valsi>
-      for the truly vacuous slot as here.
+      for the truly vacuous slot, as here.
     </para>
     <para>
       <indexterm type="general"><primary>exponential notation</primary><secondary>with &quot;gei&quot;</secondary>

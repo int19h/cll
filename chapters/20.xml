@@ -1048,7 +1048,7 @@
     </bridgehead>
 
     <para>
-      Produces a tanru unit from a sumti; the result is true of whatever is among the referents of the sumti. Terminated by
+      Produces a tanru unit from a sumti. The result is true of whatever is among the referents of the sumti. Terminated by
       <xref linkend="MEhU" />.
     </para>
     <interlinear-gloss>
@@ -1385,9 +1385,8 @@
       <xref linkend="section-erasure" />)
     </bridgehead>
 
-    <para>Erases the previous phrase or sentence. (The precise rule for
-      <valsi>sa</valsi>
-      was never settled, and machine parsers implement it only approximately; see
+    <para>Erases the previous phrase or sentence. (No official decision ever settled the precise rule for
+      <valsi>sa</valsi>, and machine parsers implement it only approximately: see
       <xref linkend="section-erasure" />.)</para>
     <interlinear-gloss>
       <jbo>mi klama sa do klama le zarci</jbo>

@@ -1485,9 +1485,7 @@
     <para role="status-note">
       The
       <jbophrase>lo'e ckule</jbophrase>
-      here &ndash;
-      <quote>the typical school</quote>
-      &ndash; uses a descriptor whose meaning was never settled; see the status discussion in
+      here (<quote>the typical school</quote>) uses a descriptor whose meaning is still unsettled. See the status discussion in
       <xref linkend="section-typicals" />.
     </para>
     <para role="indent">
@@ -2269,15 +2267,14 @@
         <quote>[the sumti]</quote>
       </content>
     </definition>
-    <para>which is true of the thing, or things, that are the referents of the sumti &ndash; one of them, several of them, or all of them together &ndash; and not of anything else. For example, consider the sumti</para>
+    <para>which is true of the thing, or things, that are the referents of the sumti (one of them, several of them, or all of them together), and not of anything else.</para>
     <para>
-      The ratified gadri definitions lean on this
+      The ratified definitions of the articles (gadri) depend on this
       <quote>among</quote>
-      reading: they expand
+      reading. They expand
       <jbophrase>lo PA sumti</jbophrase>
       as
-      <jbophrase>lo PA me sumti</jbophrase>
-      , and a quantified term
+      <jbophrase>lo PA me sumti</jbophrase>. They expand a quantified term
       <jbophrase>PA sumti</jbophrase>
       as
       <jbophrase>PA da poi ke'a me sumti</jbophrase>
@@ -2287,12 +2284,13 @@
     <para role="status-note">
       <indexterm type="lojban-word"><primary>me</primary><secondary>sharpened definition, status</secondary>
       </indexterm>
-      The sharpened
+      The sharper
       <quote>among</quote>
-      wording is a working-document clarification; older texts gloss
+      wording is a clarification from a working document. Older texts gloss
       <valsi>me</valsi>
-      a little differently &ndash; see
-      <xref linkend="appendix-changes" />.</para>
+      a little differently (see
+      <xref linkend="appendix-changes" />).</para>
+    <para>For example, consider the sumti</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-v6QW">
       <title>
 

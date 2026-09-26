@@ -267,25 +267,24 @@
       <quote>say</quote>,
       <quote>boy</quote>,
       and
-      <quote>how</quote>. These four are the only diphthongs in Lojban. In addition, a syllable may begin with an
+      <quote>how</quote>. These four are the only diphthongs in Lojban. A syllable can also begin with an
       <letteral>i</letteral>
-      pronounced like English
-      <quote>y</quote>
-      (for example,
+      that sounds like English
+      <quote>y</quote>: for example,
       <morphology>io</morphology>
-      is pronounced
-      <quote>yo</quote>) or with a
+      sounds like
+      <quote>yo</quote>. Or it can begin with a
       <letteral>u</letteral>
-      pronounced like English
-      <quote>w</quote>
-      (for example,
+      that sounds like English
+      <quote>w</quote>: for example,
       <morphology>ua</morphology>
-      is pronounced
-      <quote>wa</quote>); such glide-initial syllables begin a word or follow a vowel, never a consonant.
+      sounds like
+      <quote>wa</quote>. Both kinds of syllable begin a word or follow a vowel. They never follow a consonant.
     </para>
     <para role="status-note">
-      The four-diphthong analysis is the de facto standard word-form rule, and the never-after-a-consonant ban is committee-approved; the full story is in
-      <xref linkend="chapter-phonology" />.
+      The analysis with only four diphthongs is the de facto standard rule for word forms. The ban on these syllables after a consonant is committee-approved.
+      <xref linkend="chapter-phonology" />
+      tells the full story.
     </para>
     <para>
       <indexterm type="general"><primary>period</primary><secondary>quick-tour version</secondary>
@@ -302,9 +301,9 @@
     <para>
       <indexterm type="general"><primary>stress</primary><secondary>quick-tour version</secondary>
       </indexterm>
-      Stress normally falls on the next-to-the-last syllable; syllables whose vowel is
-      <letteral>y</letteral>, and syllables with no vowel at all, are skipped in the count and never stressed. Strictly, this is the required rule for the content words (brivla); names may mark stress elsewhere, and the little structure words may be stressed anywhere or not at all &ndash; see
-      <xref linkend="chapter-phonology" />. A one-syllable structure word is usually left unstressed.
+      Stress normally falls on the next-to-the-last syllable. When you count the syllables, skip each syllable whose vowel is
+      <letteral>y</letteral>, and each syllable with no vowel at all. These syllables never have stress. Strictly, the content words (brivla) must follow this rule. Names can mark stress on another syllable, and the little structure words can have stress on any syllable or on none (see
+      <xref linkend="chapter-phonology" />). A structure word with one syllable usually has no stress.
     </para>
     <para>All Lojban words are pronounced as they are spelled: there are no silent letters.</para>
   </section>
@@ -992,7 +991,7 @@
     <para>
       <indexterm type="general"><primary>tanru</primary><secondary>quick-tour version</secondary>
       </indexterm>
-      When two brivla &ndash; in this chapter, always two gismu &ndash; are adjacent, the first one modifies the second, and the selbri takes its place structure from the rightmost word. Such combinations of brivla are called
+      When two brivla are adjacent, the first one modifies the second, and the selbri takes its place structure from the rightmost word. (In this chapter, the two brivla are always gismu.) We call such combinations of brivla
       <valsi>tanru</valsi>. For example,
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-GPcS">
@@ -1248,20 +1247,22 @@
     <title><anchor xml:id="c2s10" />Description sumti</title>
     <para>      <indexterm type="general"><primary>descriptions</primary><secondary>quick-tour version</secondary>      </indexterm>      Often we wish to talk about things other than the speaker, the listener and things we can point to. Let's say I want to talk about a talker other than      <valsi>mi</valsi>. What I want to talk about would naturally fit into the first place of
       <valsi>tavla</valsi>. Lojban, it turns out, has an operator that pulls this first place out of a selbri and converts it to a sumti called a
-      <quote>description sumti</quote>, and the operator itself is called a
+      <quote>description sumti</quote>. We call the operator itself a
       <quote>descriptor</quote>.
+    </para>
+    <para>
       <indexterm type="lojban-word"><primary>lo</primary><secondary>quick-tour version</secondary>
       </indexterm>
       The description sumti
       <jbophrase>lo tavla ku</jbophrase>
       means
-      <quote>the talker</quote>
-      &ndash; someone or something that really does talk, with context settling which one(s) &ndash; and may be used wherever any sumti may be used.
+      <quote>the talker</quote>: someone or something that really does talk. The context settles which one or ones. You can use a description sumti wherever you can use any other sumti.
     </para>
     <para role="status-note">
-      The article system taught in this chapter is the reformed, ratified one; older texts follow a different convention, and older usage remains valid &ndash; see
-      <xref linkend="appendix-changes" />. The full current treatment is in
-      <xref linkend="section-basic-descriptors" />.
+      This chapter teaches the reformed and ratified system of articles. Older texts follow a different convention, and older usage remains valid (see
+      <xref linkend="appendix-changes" />).
+      <xref linkend="section-basic-descriptors" />
+      gives the full current treatment.
     </para>
     <para>For example,</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k0Pj">
@@ -1445,23 +1446,22 @@
       <valsi>vecnu</valsi>,
       which has the
       <quote>seller</quote>
-      in the x<subscript>1</subscript> place, and uses it in this sentence to refer to a seller &ndash; someone who really sells; as usual, context supplies which seller is meant. Similarly,
+      in the x<subscript>1</subscript> place. In this sentence, the sumti uses that place to refer to a seller: someone who really sells. As usual, the context tells which seller the speaker means. Similarly,
       <jbophrase>lo blari'o</jbophrase>
-      refers to something actually blue-green.
+      refers to something that really is blue-green.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>le</primary><secondary>quick-tour version</secondary>
       </indexterm>
-      Lojban has a second descriptor for a different job:
+      Lojban has a second descriptor for a different job. The descriptor
       <valsi>le</valsi>
-      picks out particular things the speaker has in mind, and merely <emphasis>describes</emphasis> them &ndash;
+      picks out particular things that the speaker has in mind, and it only <emphasis>describes</emphasis> them. So
       <jbophrase>le vecnu</jbophrase>
       is
-      <quote>the one(s) I mean, whom I'm calling the seller</quote>
-      , a handy way of pointing with words even if the description is loose. In this chapter we keep to
-      <valsi>lo</valsi>
-      , the everyday default; the two descriptors are treated fully in
-      <xref linkend="section-basic-descriptors" />.
+      <quote>the one(s) I mean, whom I am calling the seller</quote>. This is a handy way to point at things with words, even when the description is loose. In this chapter we use only
+      <valsi>lo</valsi>, the everyday default.
+      <xref linkend="section-basic-descriptors" />
+      treats both descriptors fully.
     </para>
     <para>
       It is safe to omit both occurrences of

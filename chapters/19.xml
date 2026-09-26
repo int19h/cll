@@ -441,10 +441,9 @@
       where
       <valsi>ri</valsi>
       repeats
-      <jbophrase>loi jdini</jbophrase>
-      , a group of money. But
+      <jbophrase>loi jdini</jbophrase>, a group of money. But
       <valsi>djica</valsi>
-      requires an event in that place, not a thing, so say instead:
+      requires an event in that place, not a thing. So say this instead:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-fx2b">
       <title><anchor xml:id="c19e4d11" /></title>
@@ -1540,21 +1539,23 @@
       , do not operate in text between
       <valsi>lo'u</valsi>
       and
-      <valsi>le'u</valsi>. Indeed, <emphasis>nothing</emphasis> operates inside a
+      <valsi>le'u</valsi>. In fact, <emphasis>nothing</emphasis> operates inside a
       <jbophrase>lo'u&hellip;le'u</jbophrase>
-      quotation: the very first
+      quotation. The very first
       <valsi>le'u</valsi>
-      encountered ends it, unconditionally &ndash; there is no way to smuggle a
+      ends it, unconditionally. There is no way to smuggle a
       <valsi>le'u</valsi>
       inside, not even with
-      <valsi>zo</valsi>. It follows that
+      <valsi>zo</valsi>.
+    </para>
+    <para>
+      As a result,
       <jbophrase>lo'u&hellip;le'u</jbophrase>
-      quotations cannot nest; nor can a closed quotation be reopened &ndash; to add more quoted words, join a second quotation to it with
+      quotations cannot nest. You also cannot reopen a closed quotation. To add more quoted words, join a second quotation to it with
       <valsi>joi</valsi>. To quote text that itself contains
-      <valsi>le'u</valsi>
-      , use
+      <valsi>le'u</valsi>, use
       <valsi>zoi</valsi>
-      (<xref linkend="section-more-quotations" />). Note that
+      (see <xref linkend="section-more-quotations" />). Note that
       <valsi>le'u</valsi>
       is not an elidable terminator; it is required.
     </para>
@@ -1563,8 +1564,8 @@
       </indexterm>
       The
       <jbophrase>lo'u&hellip;le'u</jbophrase>
-      rules of this section are checkpointed; see
-      <xref linkend="appendix-changes" />.
+      rules of this section are checkpointed (see
+      <xref linkend="appendix-changes" />).
     </para>
   </section>
   <section xml:id="section-more-quotations">
@@ -1586,11 +1587,11 @@
     <para role="indent">
       The cmavo
       <valsi>zo</valsi>
-      (of selma'o ZO) is a strong quotation mark for the single following word, which can be any Lojban word whatsoever &ndash; with one curious exception: the hesitation noise
+      (of selma'o ZO) is a strong quotation mark for the single following word, which can be any Lojban word whatsoever. There is one curious exception. The hesitation noise
       <valsi>.y.</valsi>
       is invisible to the word-level machinery, so
       <valsi>zo</valsi>
-      skips right over it and quotes the word after it instead (see
+      skips over it and quotes the next word instead (see
       <xref linkend="section-hesitation" />). Among other uses,
       <valsi>zo</valsi>
       allows a metalinguistic word to be referenced without having it act on the surrounding text. The word must be a morphologically legal (but not necessarily meaningful) single Lojban word; compound cmavo are not permitted. For example:
@@ -1618,7 +1619,7 @@
       <valsi>zoi</valsi>
       (of selma'o ZOI) is a quotation mark for quoting non-Lojban text. Its syntax is
       <jbophrase>zoi .X. text .X</jbophrase>
-      , where X is a single Lojban word (called the delimiting word) which is separated from the quoted text by pauses, and which is not found in the written text or spoken phoneme stream. Both occurrences of the delimiting word are required &ndash; neither may be elided &ndash; and within this construct the delimiting word serves purely as a bracket, losing whatever grammatical function it has elsewhere. It is common, but not required, to use the lerfu word (of selma'o BY) which corresponds to the Lojban name of the language being quoted:
+      , where X is a single Lojban word (called the delimiting word) which is separated from the quoted text by pauses, and which is not found in the written text or spoken phoneme stream. Both occurrences of the delimiting word are required, and you cannot elide either of them. Within this construct, the delimiting word serves only as a bracket, and it loses whatever grammatical function it has elsewhere. It is common, but not required, to use the lerfu word (of selma'o BY) which corresponds to the Lojban name of the language being quoted:
     </para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-wYzm">
@@ -1707,23 +1708,22 @@
       </interlinear-gloss>
     </example>
     <para role="noindent">
-      (A minor note on interaction between
+      (A minor note on the interaction between
       <jbophrase>lo'u ... le'u</jbophrase>
       and
-      <valsi>zoi</valsi>
-      : inside a
+      <valsi>zoi</valsi>: inside a
       <jbophrase>lo'u&hellip;le'u</jbophrase>
       quotation,
       <valsi>zoi</valsi>
-      is just another quoted word &ndash; it does not begin a quotation there, and the material between
+      is just another quoted word. It does not begin a quotation there. So the material between
       <valsi>lo'u</valsi>
       and
       <valsi>le'u</valsi>
-      must accordingly consist entirely of Lojban words. Conversely, a
+      must consist entirely of Lojban words. Conversely, a
       <valsi>zoi</valsi>
-      quotation elsewhere may of course mention
+      quotation elsewhere can mention
       <valsi>le'u</valsi>
-      safely, since
+      safely, because
       <valsi>zoi</valsi>
       captures everything up to its delimiting word.)
     </para>
@@ -1833,14 +1833,12 @@
       for all names rather than Lojbanizing, however, makes for very cumbersome text. A rough equivalent of
       <valsi>la'o</valsi>
       might be
-      <jbophrase>la me zoi</jbophrase>
-      : here
+      <jbophrase>la me zoi</jbophrase>. Here
       <valsi>me</valsi>
       turns the
       <valsi>zoi</valsi>
-      quotation into a selbri meaning
-      <quote>is among the referents of the quoted thing</quote>
-      , and
+      quotation into a selbri that means
+      <quote>is among the referents of the quoted thing</quote>. Then
       <valsi>la</valsi>
       builds a name from that selbri (see
       <xref linkend="chapter-selbri" />
@@ -1854,10 +1852,10 @@
       <valsi>zoi</valsi>
       and
       <valsi>la'o</valsi>
-      delimiter rules of this section &ndash; any single Lojban word as delimiter, the payload running to the delimiter's next occurrence, the functionless bracket words, the required closing delimiter &ndash; are checkpointed, as is the
+      delimiters in this section follow checkpointed rules. Under these rules, any single Lojban word can be the delimiter, and the quoted text runs to the next occurrence of the delimiter. The bracket words have no function, and the closing delimiter is required. The
       <valsi>zo</valsi>
-      rule of the previous section; see
-      <xref linkend="appendix-changes" />.
+      rule of the previous section is also checkpointed (see
+      <xref linkend="appendix-changes" />).
     </para>
   </section>
   <section xml:id="section-bahe">
@@ -2297,24 +2295,34 @@
     <para role="indent">
       <indexterm type="general"><primary>erasure</primary><secondary>of quotations with &quot;zo&quot;</secondary>
       </indexterm>
-      For erasure purposes, a construct that the word-level machinery has bound into a single unit &ndash; a
-      <valsi>zo</valsi>
-      quotation, a
-      <jbophrase>lo'u&hellip;le'u</jbophrase>
-      quotation, a
-      <valsi>zoi</valsi>
-      quotation, a
-      <valsi>zei</valsi>
-      compound, or a word with
-      <valsi>bu</valsi>
-      &ndash; counts as one word:
+      For erasure, a construct that the word-level machinery binds into a single unit counts as one word. These constructs are:
+    </para>
+    <itemizedlist role="bullets">
+      <listitem>
+        <para>A <valsi>zo</valsi> quotation</para>
+      </listitem>
+      <listitem>
+        <para>A <jbophrase>lo'u&hellip;le'u</jbophrase> quotation</para>
+      </listitem>
+      <listitem>
+        <para>A <valsi>zoi</valsi> quotation</para>
+      </listitem>
+      <listitem>
+        <para>A <valsi>zei</valsi> compound</para>
+      </listitem>
+      <listitem>
+        <para>A word with <valsi>bu</valsi></para>
+      </listitem>
+    </itemizedlist>
+    <para>
+      So
       <jbophrase>zo .bab. si</jbophrase>
       erases the whole quotation, not just
-      <cmevla>.bab.</cmevla>. One consequence is that a
+      <cmevla>.bab.</cmevla>. One consequence is that you cannot directly erase a
       <valsi>zo</valsi>
-      spoken in error cannot be erased directly, because
+      that you said in error. The
       <valsi>zo</valsi>
-      quotes whatever follows it &ndash; including a
+      quotes whatever follows it, even a
       <valsi>si</valsi>. The way out is to let it do so, and then erase the resulting quotation:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-zSQi">
@@ -2334,13 +2342,13 @@
     <para role="indent">
       The first
       <valsi>si</valsi>
-      does not erase anything: it is captured by
+      does not erase anything. The
       <valsi>zo</valsi>
-      , forming the quotation
+      captures it and forms the quotation
       <jbophrase>zo si</jbophrase>
       (<quote>the word si</quote>). The second
       <valsi>si</valsi>
-      then erases that quotation as a single unit. (Older texts follow a different accounting here; see
+      then erases that quotation as a single unit. (Older texts follow a different accounting here: see
       <xref linkend="appendix-changes" />.)
     </para>
     <para>
@@ -2406,25 +2414,26 @@
       <xref linkend="example-random-id-zoWF" />
       , the first
       <valsi>fy.</valsi>
-      is taken to be the delimiting word. The quoted material runs until the next occurrence of that same word, so the delimiting word itself cannot appear inside the payload;
+      is taken to be the delimiting word. The quoted material runs until the next occurrence of that same word, so the delimiting word itself cannot appear inside the quoted text. The quoted text here is one word,
       <valsi>gy.</valsi>
-      , the Lojban name for the letter
-      <letteral>g</letteral>
-      , was chosen arbitrarily as the (one-word) payload here &ndash; even an empty payload would do. Then the delimiting word is repeated, closing the quotation &ndash; and the whole quotation, delimiters and all, is now a single word as far as
+      (the Lojban name for the letter
+      <letteral>g</letteral>), chosen arbitrarily. Even an empty quotation works.
+    </para>
+    <para>
+      Then the delimiting word comes again and closes the quotation. Now the whole quotation, with its delimiters, is a single word for
+      <valsi>si</valsi>, so one
       <valsi>si</valsi>
-      is concerned, so one
-      <valsi>si</valsi>
-      erases it. Similarly, a stray
+      erases it. Similarly, to repair a stray
       <valsi>lo'u</valsi>
-      quotation mark is repaired by completing the quotation and erasing it as a unit:
+      quotation mark, complete the quotation. Then erase it as a unit:
       <jbophrase>fy. le'u si</jbophrase>.
     </para>
     <para>
-      There is no way to erase <emphasis>less</emphasis> than an entire quotation:
+      There is no way to erase <emphasis>less</emphasis> than an entire quotation. The
       <valsi>si</valsi>
-      sees the bound construct, not its parts. To replace the word quoted by
+      sees the bound construct, not its parts. To replace the word that
       <valsi>zo</valsi>
-      , erase the whole quotation and start over:
+      quotes, erase the whole quotation and start again:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-FzoX">
       <title><anchor xml:id="c19e13d6" /></title>
@@ -2440,13 +2449,14 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      A parser will reject
+      A parser rejects an attempt like
       <jbophrase valid="false">mi se cmene zo .djan. si si .djordj.</jbophrase>
-      -style attempts to peel the quotation apart: the first
+      to peel the quotation apart. The first
       <valsi>si</valsi>
-      removes the quotation whole, the second then eats
-      <jbophrase>cmene</jbophrase>
-      &ndash; there is no leftover half-quotation for it to trim &ndash; and the sentence collapses.
+      removes the whole quotation. Then the second
+      <valsi>si</valsi>
+      eats
+      <jbophrase>cmene</jbophrase>, because there is no leftover half-quotation for it to trim. So the sentence collapses.
     </para>
     <para role="status-note">
       Modern Lojban parsers implement
@@ -2520,16 +2530,17 @@
     <para role="status-note">
       <indexterm type="general"><primary>sa</primary><secondary>unsettled status of</secondary>
       </indexterm>
+      The word
       <valsi>sa</valsi>
-      is the least settled word in this section: the description above conveys the intent, and simple uses like the examples are understood by everyone, but the precise rule was never settled and today's parsers implement differing approximations &ndash; of the two examples above, one current parser accepts both, another only the second. The history is in
-      <xref linkend="appendix-changes" />.
+      is the least settled word in this section. The description above conveys the intent, and everyone understands simple uses like the examples. But no official decision ever settled the precise rule, and today's parsers implement different approximations. Of the two examples above, one current parser accepts both, and another accepts only the second.
+      <xref linkend="appendix-changes" />
+      gives the history.
     </para>
     <para>
-      In practice: use
+      In practice, use
       <valsi>sa</valsi>
-      freely in speech, where a human listener does the repair work; in text meant for machines, prefer
-      <valsi>si</valsi>
-      or rephrasing.
+      freely in speech, where a human listener does the repair work. In text for machines, prefer
+      <valsi>si</valsi>, or rephrase the sentence.
     </para>
     <para>
       <indexterm type="general"><primary>erasure</primary><secondary>total</secondary>
@@ -2537,27 +2548,39 @@
       <indexterm type="general"><primary>multiple speakers</primary></indexterm>
       The cmavo
       <valsi>su</valsi>
-      (of selma'o SU) is yet another metalinguistic operator that erases everything said so far &ndash; more precisely, back to the nearest preceding structural boundary: the beginning of the text, or a paragraph break with
-      <valsi>ni'o</valsi>
-      , or the opening of a quotation with
-      <valsi>lu</valsi>
-      , of a
-      <jbophrase>tu'e&hellip;tu'u</jbophrase>
-      group, or of a
-      <jbophrase>to&hellip;toi</jbophrase>
-      parenthesis. Erasing back to such a boundary rather than blindly to the start of everything keeps
+      (of selma'o SU) is yet another metalinguistic operator. It erases everything said so far, or more precisely, everything back to the nearest preceding structural boundary. Such a boundary is one of these:
+    </para>
+    <itemizedlist role="bullets">
+      <listitem>
+        <para>The beginning of the text</para>
+      </listitem>
+      <listitem>
+        <para>A paragraph break with <valsi>ni'o</valsi></para>
+      </listitem>
+      <listitem>
+        <para>The opening of a quotation with <valsi>lu</valsi></para>
+      </listitem>
+      <listitem>
+        <para>The opening of a <jbophrase>tu'e&hellip;tu'u</jbophrase> group</para>
+      </listitem>
+      <listitem>
+        <para>The opening of a <jbophrase>to&hellip;toi</jbophrase> parenthesis</para>
+      </listitem>
+    </itemizedlist>
+    <para>
+      Because
       <valsi>su</valsi>
-      usable inside quotations and parentheses. By convention, in a conversation
+      erases back to such a boundary, and not blindly to the start of everything, you can use it inside quotations and parentheses. By convention, in a conversation
       <valsi>su</valsi>
-      abandons only the speaker's own remarks;
+      abandons only the speaker's own remarks. The form
       <jbophrase>susu</jbophrase>
       abandons the whole discussion.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>su</primary><secondary>status of</secondary>
       </indexterm>
-      The boundary rule above is de facto, and unevenly implemented: the standard camxes grammar erases back to the boundary and preserves it, as described, while at least one other current parser mishandles the boundary itself. Erasing from the start of a text works everywhere; see
-      <xref linkend="appendix-changes" />.
+      The boundary rule above is de facto, and implementations are uneven. The standard camxes grammar erases back to the boundary and keeps the boundary, as described. But at least one other current parser mishandles the boundary itself. Erasure from the start of a text works everywhere (see
+      <xref linkend="appendix-changes" />).
     </para>
 
   </section>
@@ -2584,25 +2607,31 @@
       in some dialects of Spanish, roughly meaning
       <quote>that is</quote>), and Lojban's audio-visual isomorphism requires a written representation of all meaningful spoken behavior. Of course,
       <valsi>.y.</valsi>
-      has no grammatical significance: it can appear anywhere at all in a Lojban sentence except in the middle of a word. Even the word-level machinery of this chapter treats it as if it were silence: a hesitation between, say, a word and an erasing
+      has no grammatical significance: it can appear anywhere at all in a Lojban sentence except in the middle of a word.
+    </para>
+    <para>
+      Even the word-level machinery of this chapter treats it as silence. For example, a hesitation between a word and an erasing
       <valsi>si</valsi>
       changes nothing. The single exception is the letteral
       <valsi>.ybu</valsi>
       (the name of the letter
-      <letteral>y</letteral>), which is recognized as a unit before anything else happens; see
-      <xref linkend="chapter-letterals" />.
+      <letteral>y</letteral>). The machinery recognizes
+      <valsi>.ybu</valsi>
+      as a unit before anything else happens (see
+      <xref linkend="chapter-letterals" />).
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>y</primary><secondary>word-level invisibility, status</secondary>
       </indexterm>
       The invisibility of
       <valsi>.y.</valsi>
-      to the word-level machinery, and the
+      to the word-level machinery is checkpointed, and so is the
       <valsi>.ybu</valsi>
-      exception, are checkpointed &ndash; down to the consequence that
+      exception. The checkpoint includes even one consequence:
       <valsi>zo</valsi>
       cannot quote
-      <valsi>.y.</valsi>.
+      <valsi>.y.</valsi>
+      at all.
     </para>
   </section>
   <section xml:id="section-faho">
@@ -2621,34 +2650,48 @@
       <indexterm type="general"><primary>yielding the floor</primary></indexterm>
       <indexterm type="general"><primary>end of file</primary></indexterm>
       <indexterm type="general"><primary>computer interaction</primary></indexterm>
+      The cmavo
+      <valsi>fa'o</valsi>
+      (of selma'o FAhO) is the usually omitted marker for the end of a text; it can be used in computer interaction to indicate the end of input or output, or for explicitly giving up the floor during a discussion.
+    </para>
+    <para>
       <indexterm type="general"><primary>unconditional signal</primary></indexterm>
       The cmavo
       <valsi>fa'o</valsi>
-      (of selma'o FAhO) is the usually omitted marker for the end of a text; it can be used in computer interaction to indicate the end of input or output, or for explicitly giving up the floor during a discussion. It is outside the regular grammar: once an effective
+      is outside the regular grammar. A reader or a parser that reaches an effective
       <valsi>fa'o</valsi>
-      is reached, nothing after it is read at all. A
+      reads nothing after that word. In particular,
       <valsi>fa'o</valsi>
-      is ineffective only if some earlier word-level operator has already captured it &ndash; quoted with
-      <valsi>zo</valsi>
-      , inside
-      <jbophrase>lo'u ... le'u</jbophrase>
-      , serving as the delimiter of a
-      <valsi>zoi</valsi>
-      quotation or lying inside its payload, or bound into a compound with
-      <valsi>zei</valsi>. In particular, it is not used at the end of subordinate texts quoted with
+      is not used at the end of subordinate texts quoted with
       <valsi>lu</valsi>
       &hellip;
       <valsi>li'u</valsi>
       or parenthesized with
-      <jbophrase>to ... toi</jbophrase>.
+      <jbophrase>to ... toi</jbophrase>. A
+      <valsi>fa'o</valsi>
+      has no effect only if some earlier word-level operator already captured it, in one of these ways:
     </para>
+    <itemizedlist role="bullets">
+      <listitem>
+        <para>A <valsi>zo</valsi> quotes it.</para>
+      </listitem>
+      <listitem>
+        <para>It is inside <jbophrase>lo'u ... le'u</jbophrase>.</para>
+      </listitem>
+      <listitem>
+        <para>It is the delimiter of a <valsi>zoi</valsi> quotation, or it is inside the quoted text.</para>
+      </listitem>
+      <listitem>
+        <para>A <valsi>zei</valsi> binds it into a compound.</para>
+      </listitem>
+    </itemizedlist>
     <para role="status-note">
       <indexterm type="general"><primary>fa'o</primary><secondary>status of</secondary>
       </indexterm>
       The
       <valsi>fa'o</valsi>
-      rule and its capture exceptions are checkpointed; see
-      <xref linkend="appendix-changes" />.
+      rule and its exceptions for capture are checkpointed (see
+      <xref linkend="appendix-changes" />).
     </para>
   </section>
   <section xml:id="section-cmavo-interactions">
@@ -2656,146 +2699,137 @@
     <para>
       <indexterm type="general"><primary>magic words</primary></indexterm>
       <indexterm type="general"><primary>left-to-right rule</primary></indexterm>
-      The words discussed in this chapter that operate on <emphasis>words as words</emphasis> &ndash;
-      <valsi>zo</valsi>
-      ,
+      Some words in this chapter operate on <emphasis>words as words</emphasis>. They are
+      <valsi>zo</valsi>,
       <valsi>zoi</valsi>
       and
-      <valsi>la'o</valsi>
-      ,
+      <valsi>la'o</valsi>,
       <valsi>lo'u</valsi>
       (with its delimiter
       <valsi>le'u</valsi>),
-      <valsi>zei</valsi>
-      ,
-      <valsi>bu</valsi>
-      ,
-      <valsi>si</valsi>
-      ,
-      <valsi>sa</valsi>
-      ,
-      <valsi>su</valsi>
-      , and
-      <valsi>fa'o</valsi>
-      &ndash; are informally called the <quote>magic words</quote>. They act before the ordinary grammar sees the text, and their interactions all follow one uniform principle (the first edition handled them differently; see
+      <valsi>zei</valsi>,
+      <valsi>bu</valsi>,
+      <valsi>si</valsi>,
+      <valsi>sa</valsi>,
+      <valsi>su</valsi>, and
+      <valsi>fa'o</valsi>. We informally call them the <quote>magic words</quote>. They act before the ordinary grammar sees the text. All their interactions follow one uniform principle (the first edition handled them differently: see
       <xref linkend="appendix-changes" />):
     </para>
     <para>
-      <emphasis>Magic words take effect strictly left to right. Whatever an earlier magic word has captured is no longer available to a later one; the product of a quotation or compound acts as a single word for the machinery that follows.</emphasis>
+      <emphasis>Magic words take effect strictly from left to right. Whatever an earlier magic word captured is no longer available to a later one. The product of a quotation or compound acts as a single word for the machinery that follows.</emphasis>
     </para>
     <para>
-      Two small preliminaries complete the picture: the letteral
+      Two small preliminaries complete the picture. The machinery recognizes the letteral
       <valsi>.ybu</valsi>
-      is recognized as a single word before anything else happens, and the hesitation sound
+      as a single word before anything else happens. And the hesitation sound
       <valsi>.y.</valsi>
-      is invisible to this machinery altogether (<xref linkend="section-hesitation" />).
+      is invisible to this machinery altogether (see <xref linkend="section-hesitation" />).
     </para>
     <para>
-      A few worked consequences:
+      Here are a few worked consequences:
     </para>
     <itemizedlist role="bullets">
       <listitem>
         <para>
+          The phrase
           <jbophrase>zo si</jbophrase>
           is a quotation of
-          <valsi>si</valsi>
-          , not an erasure:
+          <valsi>si</valsi>, not an erasure. The
           <valsi>zo</valsi>
           comes first and captures the
           <valsi>si</valsi>. The same holds for
-          <jbophrase>zo zo</jbophrase>
-          ,
-          <jbophrase>zo fa'o</jbophrase>
-          , and indeed
+          <jbophrase>zo zo</jbophrase>, for
+          <jbophrase>zo fa'o</jbophrase>, and in fact for
           <valsi>zo</valsi>
-          before any word at all (
-          <valsi>.y.</valsi>
-          excepted, as always).
+          before any word at all (except
+          <valsi>.y.</valsi>, as always).
         </para>
       </listitem>
       <listitem>
         <para>
-          Inside a
+          Nothing operates inside a
           <jbophrase>lo'u&hellip;le'u</jbophrase>
           or
           <valsi>zoi</valsi>
-          quotation, nothing operates: the quotation opened first, so everything up to its closing word is mere quoted material. A
+          quotation. The quotation opened first, so everything up to its closing word is only quoted material. A
           <valsi>si</valsi>
           or
           <valsi>fa'o</valsi>
-          in there erases and terminates nothing.
+          in there erases nothing and ends nothing.
         </para>
       </listitem>
       <listitem>
         <para>
           A completed quotation or
           <valsi>zei</valsi>
-          compound is one word thereafter: one
+          compound is one word after that. One
           <valsi>si</valsi>
           erases all of
           <jbophrase>zo .bab.</jbophrase>
           or
-          <jbophrase>broda zei brode</jbophrase>
-          ;
+          <jbophrase>broda zei brode</jbophrase>. A
           <valsi>bu</valsi>
           after
           <jbophrase>zo .bab.</jbophrase>
-          makes a letteral out of the quoted word; an attitudinal after it comments on the whole of it.
+          makes a letteral out of the quoted word. An attitudinal after it comments on the whole of it.
         </para>
       </listitem>
       <listitem>
         <para>
+          The word
           <valsi>zei</valsi>
-          joins the single word (or already-formed unit) on each side of it into one brivla;
+          joins the single word (or already-formed unit) on each side of it into one brivla. The word
           <valsi>bu</valsi>
-          binds the single word or unit before it into a letteral, and may be repeated. Neither can reach past a magic word that acted earlier, and a
+          binds the single word or unit before it into a letteral, and you can use it more than once. Neither can reach past a magic word that acted earlier. A
           <valsi>bu</valsi>
           or
           <valsi>zei</valsi>
-          with nothing available to bind is simply ungrammatical.
+          with nothing available to bind is ungrammatical.
         </para>
       </listitem>
       <listitem>
         <para>
+          The word
           <valsi>ba'e</valsi>
-          marks the next word, and attitudinals of UI and CAI (with an attached
-          <valsi>nai</valsi>
-          , if any) comment on the previous word or unit; but neither fuses with its target &ndash; a later magic word still sees them as separate words. Thus
+          marks the next word. Attitudinals of UI and CAI (with an attached
+          <valsi>nai</valsi>, if any) comment on the previous word or unit. But neither fuses with its target: a later magic word still sees them as separate words. So
           <jbophrase>broda ba'e da si da</jbophrase>
           erases only the
-          <valsi>da</valsi>
-          , leaving the emphasis marker to claim the replacement.
+          <valsi>da</valsi>, and the emphasis marker then applies to the replacement.
         </para>
       </listitem>
     </itemizedlist>
     <para>
-      Wherever the frozen per-word rules and the uniform principle agree &ndash; which is almost everywhere &ndash; the principle simply restates settled material. One corner is genuinely contested: whether
+      The frozen rules for each word and the uniform principle agree almost everywhere. Where they agree, the principle only restates settled material. One corner is genuinely contested: whether
       <valsi>bu</valsi>
-      may bind a preceding
+      can bind a preceding
       <valsi>ba'e</valsi>
       (see
       <xref linkend="chapter-letterals" />). Treat
       <jbophrase>ba'e bu</jbophrase>
-      and similar exotica as curiosities, not tools. One more limit of the
+      and similar exotica as curiosities, not tools.
+    </para>
+    <para>
+      The metaphor of a
       <quote>single word</quote>
-      metaphor: a quotation still remembers the selma'o of the word that formed it &ndash; ZO for a
+      has one more limit. A quotation still remembers the selma'o of the word that formed it. That is ZO for a
       <valsi>zo</valsi>
       quote, ZOI for
       <valsi>zoi</valsi>
       and
-      <valsi>la'o</valsi>
-      , and LOhU and LEhU for the two ends of a
+      <valsi>la'o</valsi>, and LOhU and LEhU for the two ends of a
       <jbophrase>lo'u&hellip;le'u</jbophrase>
-      quote &ndash; so that rules which match on selma'o can still work.
+      quote. So rules that match on selma'o can still work.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>magic words</primary><secondary>status of interaction rules</secondary>
       </indexterm>
-      The uniform principle is this edition's synthesis; the frozen rules were stated word by word, and
+      The uniform principle is a synthesis by this edition. The frozen rules state each word separately, and
       <valsi>sa</valsi>
-      remains unsettled &ndash; see
-      <xref linkend="section-erasure" />. The word-by-word provenance is catalogued in
-      <xref linkend="appendix-changes" />.
+      remains unsettled (see
+      <xref linkend="section-erasure" />).
+      <xref linkend="appendix-changes" />
+      gives the provenance of the rule for each word.
     </para>
   </section>
   <section xml:id="section-elidable-terminators">

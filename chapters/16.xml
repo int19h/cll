@@ -1142,19 +1142,20 @@
       What about descriptions, like
       <jbophrase>le nanmu</jbophrase>
       or
-      <jbophrase>ci lo gerku</jbophrase>
-      ? An <emphasis>unquantified</emphasis> description is a constant (see
-      <xref linkend="section-quantified-descriptions" />): it refers to particular things, and constants take no part in scope distinctions at all &ndash;
+      <jbophrase>ci lo gerku</jbophrase>? An <emphasis>unquantified</emphasis> description is a constant (see
+      <xref linkend="section-quantified-descriptions" />). It refers to particular things, and constants take no part in scope distinctions at all. So
       <jbophrase>le nanmu cu batci le gerku</jbophrase>
-      raises no how-many-per-which questions, any more than
+      raises no questions of scope (how many for each), just as
       <jbophrase>la .djan. cu batci la .spat.</jbophrase>
-      does. Scope questions arise only for genuinely quantified terms: bare
+      raises none.
+    </para>
+    <para>
+      Scope questions arise only for genuinely quantified terms. These are bare
       <jbophrase>PA broda</jbophrase>
       (which is
-      <jbophrase>PA da poi broda</jbophrase>) and descriptions with an <emphasis>explicit outer</emphasis> quantifier, like
-      <jbophrase>re le ci mlatu</jbophrase>. Those can be grouped in termsets exactly like the variables above. And when both quantifiers are
-      <valsi>ro</valsi>
-      , grouping does not matter, since universal claims are independent of order:
+      <jbophrase>PA da poi broda</jbophrase>), and descriptions with an <emphasis>explicit outer</emphasis> quantifier, like
+      <jbophrase>re le ci mlatu</jbophrase>. You can group those in termsets exactly like the variables above. When both quantifiers are
+      <valsi>ro</valsi>, the grouping does not matter, because universal claims are independent of order:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-MADY">
       <title><anchor xml:id="c16e7d6" /></title>
@@ -1165,16 +1166,21 @@
       </interlinear-gloss>
     </example>
     <para role="noindent">
-      means that each of the dogs specified bites each of the men specified, for six acts of biting altogether. Both
+      means that each of the dogs specified bites each of the men specified, for six acts of biting altogether.
+    </para>
+    <para>
+      You must actually say both
       <valsi>ro</valsi>
-      quantifiers must actually be said: it is the explicit
+      quantifiers. The explicit
       <valsi>ro</valsi>
-      that asserts the one-by-one, every-with-every distribution. The unquantified
+      asserts the distribution one by one, every dog with every man. The unquantified
       <jbophrase>le ci gerku cu batci le re nanmu</jbophrase>
-      merely says of the dogs and the men that biting goes on between them, without formally spelling out the six pairs &ndash; often the same in practice, but not a synonym. (Older texts follow a different convention here; see
-      <xref linkend="appendix-changes" />.) With explicit quantifiers other than
-      <valsi>ro</valsi>
-      , the scope problems of this section reappear.
+      only says of the dogs and the men that biting goes on between them. It does not formally spell out the six pairs. In practice this is often the same, but it is not a synonym. (Older texts follow a different convention here: see
+      <xref linkend="appendix-changes" />.)
+    </para>
+    <para>
+      With explicit quantifiers other than
+      <valsi>ro</valsi>, the scope problems of this section reappear.
     </para>
   </section>
   <section xml:id="section-any">
@@ -1215,33 +1221,33 @@
       <jbophrase>ro da poi klama</jbophrase>
       requires that there are things which
       <valsi>klama</valsi>
-      : Lojban universal claims always imply the corresponding existential claims as well. This implication is of a special, robust kind: it clings to the restriction rather than to the claim, so it survives even when the claim is negated.
+      : Lojban universal claims always imply the corresponding existential claims as well.
+    </para>
+    <para>
+      This implication is of a special kind. It clings to the restriction, not to the claim, so it survives even when you negate the claim. The sentence
       <jbophrase>naku ro da poi klama le zarci cu cadzu le foldi</jbophrase>
-      still concerns actual store-goers, and is exactly equivalent to
-      <jbophrase>su'o da poi klama le zarci ku'o naku cadzu le foldi</jbophrase>
-      under the negation rules of
-      <xref linkend="section-negation-boundaries" />
-      (the
+      still concerns actual store-goers. Under the negation rules of
+      <xref linkend="section-negation-boundaries" />, it is exactly equivalent to
+      <jbophrase>su'o da poi klama le zarci ku'o naku cadzu le foldi</jbophrase>, where the
       <valsi>ku'o</valsi>
       keeps the
       <valsi>naku</valsi>
-      from being swallowed into the relative clause). Logicians call such survivors <quote>presuppositions</quote>; without this reading, the universal-existential implication and the negation rules could not both hold.
-      <xref linkend="example-random-id-R4mX" />
-      , on the other hand, does not require that there are any people who go to the store: it simply states, conditionally, that if there is anyone who goes to the store, he or she walks across the field as well. This conditional form mirrors the true Lojban translation of
-      <xref linkend="example-random-id-R4mX" />
-      :
+      out of the relative clause. Logicians call such survivors <quote>presuppositions</quote>. Without this reading, the universal-existential implication and the negation rules cannot both hold.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>ro</primary><secondary>existential import of, status</secondary>
       </indexterm>
       <indexterm type="general"><primary>presupposition</primary><secondary>existential import as</secondary>
       </indexterm>
-      Whether restricted universal claims carry existential import is unsettled; some writing and software treat
+      It is unsettled whether restricted universal claims carry existential import, that is, whether they imply that something exists. Some writing and software treat
       <jbophrase>ro da poi broda</jbophrase>
-      as vacuously true when nothing brodas. This book teaches the importing, presuppositional reading &ndash; the only one consistent with the negation rules of
-      <xref linkend="section-negation-boundaries" />
-      &ndash; but recognize the alternative in the wild; see
-      <xref linkend="appendix-changes" />.
+      as vacuously true when nothing brodas: true because no counterexample exists. This book teaches the importing, presuppositional reading, which is the only one consistent with the negation rules of
+      <xref linkend="section-negation-boundaries" />. But learn to recognize the alternative in real text (see
+      <xref linkend="appendix-changes" />).
+    </para>
+    <para>
+      <xref linkend="example-random-id-R4mX" />, on the other hand, does not require that there are any people who go to the store: it simply states, conditionally, that if there is anyone who goes to the store, he or she walks across the field as well. This conditional form mirrors the true Lojban translation of
+      <xref linkend="example-random-id-R4mX" />:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-BwU7">
       <title><anchor xml:id="c16e8d3" /></title>
@@ -1304,9 +1310,8 @@
     <para role="indent">
       What to do? Well, the x<subscript>2</subscript> place of
       <valsi>nitcu</valsi>
-      can be filled with an event as well as an object, and that gives us another way to express
-      <xref linkend="example-random-id-7Eu9" />
-      :
+      can hold an event as well as an object. That gives us another way to express
+      <xref linkend="example-random-id-7Eu9" />:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-e7ta">
       <title><anchor xml:id="c16e8d7" /></title>
@@ -1322,12 +1327,11 @@
     </example>
     <para role="indent">
       In
-      <xref linkend="example-random-id-e7ta" />
-      , the description
+      <xref linkend="example-random-id-e7ta" />, the description
       <jbophrase>lo tanxe poi bramau ti</jbophrase>
-      refers within the hypothesized event of possessing: since the event need not ever come to pass, no actual box is being pointed to. Note that this is as far as the description itself takes us &ndash; an unquantified description is a constant, not a disguised quantifier, so it cannot simply be
-      <quote>expanded</quote>
-      into a
+      refers within the hypothesized event of possession. The event does not have to come to pass, so the sentence points to no actual box. Note that the description itself takes us no further. An unquantified description is a constant, not a disguised quantifier, so you cannot
+      <quote>expand</quote>
+      it into a
       <valsi>da</valsi>
       (see
       <xref linkend="section-quantified-descriptions" />). To make the logic fully explicit, we say it with a variable of our own, bound inside the abstraction:
@@ -1398,12 +1402,11 @@
       </indexterm>
       which is what
       <xref linkend="example-random-id-fAo5" />
-      says, whereas
+      says. But
       <xref linkend="example-random-id-4Pz8" />
-      &ndash; and its looser everyday counterpart
-      <xref linkend="example-random-id-e7ta" />
-      &ndash; turns out to be an effective translation of our original
-      <xref linkend="example-random-id-7Eu9" />. So uses of
+      turns out to be an effective translation of our original
+      <xref linkend="example-random-id-7Eu9" />, and so does its looser everyday counterpart,
+      <xref linkend="example-random-id-e7ta" />. So uses of
       <quote>any</quote>
       that aren't universal end up being reflected by variables bound in the prenex of a subordinate bridi.
     </para>
@@ -1425,12 +1428,13 @@
       </indexterm>
       The scope of
       <valsi>na</valsi>
-      is officially unsettled; this whole-bridi rule &ndash;
+      is officially unsettled. The working account is the rule for the whole bridi. Under this rule,
       <valsi>na</valsi>
       before the selbri equals
       <valsi>naku</valsi>
-      at the left end of the prenex, outscoping even quantifiers that precede it &ndash; is the working account, implemented by current semantic software. The alternatives are catalogued in
-      <xref linkend="appendix-changes" />.
+      at the left end of the prenex. So it has scope even over quantifiers that come before it. Current semantic software implements this rule.
+      <xref linkend="appendix-changes" />
+      lists the alternatives.
     </para>
     <para>
       <indexterm type="general"><primary>bridi negation</primary><secondary>two forms of</secondary>

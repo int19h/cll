@@ -4,7 +4,9 @@ name: pages
 #
 # The site is multi-version: pages/versions.tsv maps each published
 # version to the git ref that holds its content, and every listed version
-# is rebuilt from its ref on each run (nothing generated is kept in git).
+# is built from its ref once, and its output is then kept as an archive on
+# its GitHub release (cll-<version>-html.tar.gz); later runs restore it from
+# there instead of rebuilding it (issue #128, scripts/build-versions.sh).
 # UnCLL 1.2.16 is built once from baseline/uncll-1.2.16 (upstream's
 # geklojban-development content plus the modern build fixes) as the
 # baseline for the per-version "diff vs UnCLL". That branch is frozen, so
@@ -16,6 +18,11 @@ name: pages
 
 on:
   workflow_dispatch:
+    inputs:
+      force_rebuild:
+        description: Rebuild every version and replace the HTML archives on the releases
+        type: boolean
+        default: false
   push:
     branches: [pages]
 
@@ -24,7 +31,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write          # upload the per-version archives to the releases
   pages: write
   id-token: write
 
@@ -86,44 +93,15 @@ jobs:
       - name: Check the baseline build is usable
         run: test -s _baseline/build/xhtml_no_chunks/index.html
 
-      - name: Resolve the published versions' refs
-        id: versions
-        run: |
-          shas=$(while IFS=$'\t' read -r ver ref; do
-            case "$ver" in ''|'#'*) continue ;; esac
-            printf '%s=%s\n' "$ver" "$(git rev-parse "origin/$ref")"
-          done < pages/versions.tsv)
-          echo "$shas"
-          echo "hash=$(echo "$shas" | sha256sum | cut -c1-16)" >> "$GITHUB_OUTPUT"
-
-      - name: Restore the cached version builds
-        id: site-cache
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: _site_versions
-          # a hit means the exact same content refs were built by the same
-          # site scripts; bump the suffix to force a rebuild on toolchain
-          # changes that affect the output.
-          key: site-versions-v1-${{ hashFiles('scripts/build-site.sh') }}-${{ steps.versions.outputs.hash }}
-
-      - name: Build each published version
-        if: steps.site-cache.outputs.cache-hit != 'true'
-        run: |
-          mkdir -p _site_versions
-          # oldest first, so each version's fresh build can serve as the
-          # "previous release" side of the next version's diff_from_previous
-          prev=""; prevlabel=""
-          tac pages/versions.tsv | while IFS=$'\t' read -r ver ref; do
-            case "$ver" in ''|'#'*) continue ;; esac
-            echo "::group::build $ver from $ref"
-            git worktree add --detach "_v_$ver" "origin/$ref"
-            bash scripts/build-site.sh "_v_$ver" "$ver" \
-              "$PWD/_baseline/build/xhtml_no_chunks" "$PWD/_site_versions" \
-              "$prev" "$prevlabel"
-            prev="$PWD/_site_versions/$ver/xhtml_no_chunks"
-            prevlabel="v$ver"
-            echo "::endgroup::"
-          done
+      - name: Build or restore each published version
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FORCE_REBUILD: ${{ inputs.force_rebuild || 'false' }}
+          BASELINE_COMMIT: ${{ steps.baseline.outputs.sha }}
+        # A version whose release carries a matching cll-<version>-html.tar.gz
+        # is restored from it; any other version is built and its archive is
+        # uploaded to its release (issue #128). See scripts/build-versions.sh.
+        run: bash scripts/build-versions.sh pages/versions.tsv "$PWD/_baseline/build/xhtml_no_chunks" "$PWD/_site_versions"
 
       - name: Assemble the site
         run: |

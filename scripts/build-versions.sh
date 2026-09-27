@@ -12,8 +12,9 @@
 #
 # - A published version serves the book files of its release, unchanged:
 #   the HTML (xhtml_section_chunks, xhtml_no_chunks) from the release's
-#   archive, and cll.pdf and cll.epub from the release's own assets. Only
-#   its comparison pages (diff_from_*) and its landing page are made again,
+#   archive, and cll.pdf and cll.epub from the release's own assets. A
+#   published release that lacks any of these three files stops the run.
+#   Only its comparison pages (diff_from_*) and its landing page are made again,
 #   with the current tooling (build-site.sh with DIFFS_ONLY=1).
 # - A version without a published release is built from source. A draft
 #   release gets the PDF, the ePub, and the archive of each run. So create
@@ -142,15 +143,17 @@ while IFS=$'\t' read -r ver ref; do
   published=""
   released=""
   if [ -n "$(release_field "$tag" id)" ] && [ "$(release_field "$tag" draft)" != "true" ]; then
-    if has_asset "$tag" "$archive"; then
-      published=yes
-      released="$archive:$(asset_digest "$tag" "$archive")"
-      for f in cll.pdf cll.epub; do
-        has_asset "$tag" "$f" && released="$released,$f:$(asset_digest "$tag" "$f")"
-      done
-    else
-      echo "::warning::published release $tag has no $archive; building $ver from source, so the site can differ from the release"
-    fi
+    # A published release must carry the whole book: the HTML archive, the
+    # PDF, and the ePub. The site serves exactly these files, so a missing
+    # one is an error, not a reason to build from source.
+    published=yes
+    for f in "$archive" cll.pdf cll.epub; do
+      if ! has_asset "$tag" "$f"; then
+        echo "::error::published release $tag has no $f; attach it to the release, then deploy again"
+        exit 1
+      fi
+      released="${released:+$released,}$f:$(asset_digest "$tag" "$f")"
+    done
   fi
   want="$(expect "$ver" "$commit" "$prev_commit" "$released")"
 
@@ -175,7 +178,7 @@ while IFS=$'\t' read -r ver ref; do
       unpack "$dl/$archive" "$ver" || { echo "the release archive $tag/$archive is damaged" >&2; exit 1; }
       rm -rf "$outdir/$ver"/diff_from_* "$outdir/$ver/BUILD-INFO" "$outdir/$ver/cll.pdf" "$outdir/$ver/cll.epub"
       for f in cll.pdf cll.epub; do
-        if has_asset "$tag" "$f"; then fetch "$tag" "$f" "$outdir/$ver"; fi
+        fetch "$tag" "$f" "$outdir/$ver"
       done
       DIFFS_ONLY=1 bash scripts/build-site.sh "_v_$ver" "$ver" "$baseline" "$outdir" "$prev" "$prevlabel"
       echo "==> [$ver] served the book files of $tag, rebuilt its diffs"

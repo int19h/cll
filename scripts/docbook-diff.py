@@ -1544,8 +1544,10 @@ def main():
     t0 = time.perf_counter()
     repo = Path(a.repo).resolve()
     so, sn = Source(a.old, repo), Source(a.new, repo)
-    ents = entity_map([sn, so])
-    old, new = Book(so, ents), Book(sn, ents)
+    # Each book expands entities with its own definitions, so a changed
+    # definition shows as a change of the text. The other tree only fills
+    # in a name that this tree does not define.
+    old, new = Book(so, entity_map([so, sn])), Book(sn, entity_map([sn, so]))
     rep = finalize(old, new)
     t1 = time.perf_counter()
     align(old, new)

@@ -30,6 +30,11 @@
 #   diff_from_previous/     same, vs the previous release
 #   index.html              version landing page
 #
+# DIFFS_ONLY=1 in the environment keeps the book files already in
+# <out-dir>/<version>/ (xhtml_section_chunks, xhtml_no_chunks, cll.pdf,
+# cll.epub) and makes only the diffs and index.html (issue #128: a
+# published version serves the book files of its release).
+#
 # Toolchain: xmlto, xsltproc, ruby (+ nokogiri optimist htmlentities),
 # node (+ regenerator), tidy; plus prince (PDF) and a JRE (ePub epubcheck)
 # for the downloadable formats, which are skipped with a warning when the
@@ -69,6 +74,18 @@ dest="$outdir/$version"
 mkdir -p "$dest"
 cd "$src"
 
+if [ -n "${DIFFS_ONLY:-}" ]; then
+  # A published version keeps the book files of its release (restored into
+  # <out-dir>/<version>/ by build-versions.sh); only the comparison pages
+  # and the landing page are made again. The diffs read this build's
+  # single-page HTML from build/xhtml_no_chunks, so put the restored copy
+  # there.
+  [ -s "$dest/xhtml_no_chunks/index.html" ] || { echo "DIFFS_ONLY: no restored xhtml_no_chunks in $dest" >&2; exit 1; }
+  echo "==> [$version] keeping the released book files; rebuilding the diffs only"
+  rm -rf build/xhtml_no_chunks
+  mkdir -p build
+  cp -pr "$dest/xhtml_no_chunks" build/xhtml_no_chunks
+else
 echo "==> [$version] building xhtml_section_chunks + xhtml_no_chunks in $src"
 rm -rf build/xhtml_section_chunks build/xhtml_section_chunks.done \
        build/xhtml_no_chunks build/xhtml_no_chunks.done \
@@ -101,6 +118,7 @@ if command -v java >/dev/null 2>&1; then
 else
   echo "==> [$version] WARNING: java not found; skipping ePub" >&2
 fi
+fi  # DIFFS_ONLY
 
 # Produce one visual diff: <old-tree> vs this build's xhtml_no_chunks,
 # published as <dest>/<outname>/difference{,_prefixed}.html.

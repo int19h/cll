@@ -4,11 +4,10 @@ name: pages
 #
 # The site is multi-version: pages/versions.tsv maps each published
 # version to the git ref that holds its content, and every listed version
-# is built from its ref once, and its output is then kept as an archive
-# (cll-<version>-html.tar.gz) in the site-build-cache draft release; later
-# runs restore it from there instead of rebuilding it. A draft release of
-# the version also gets the archive, the PDF, and the ePub (issue #128,
-# scripts/build-versions.sh).
+# is built from its ref, or, once published, served from the book files of
+# its release with freshly built diffs. Each result is cached as
+# cll-<version>-html.tar.gz in the site-build-cache draft release, and later
+# runs restore it from there (issue #128, scripts/build-versions.sh).
 # UnCLL 1.2.16 is built once from baseline/uncll-1.2.16 (upstream's
 # geklojban-development content plus the modern build fixes) as the
 # baseline for the per-version "diff vs UnCLL". That branch is frozen, so
@@ -22,7 +21,7 @@ on:
   workflow_dispatch:
     inputs:
       force_rebuild:
-        description: Ignore all archives and rebuild every version (refreshes the site-build-cache draft and draft releases; published releases never change)
+        description: Ignore the build cache (unpublished versions rebuild from source, published versions rebuild their diffs; published releases never change)
         type: boolean
         default: false
   push:
@@ -100,11 +99,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           FORCE_REBUILD: ${{ inputs.force_rebuild || 'false' }}
           BASELINE_COMMIT: ${{ steps.baseline.outputs.sha }}
-        # A version with a matching cll-<version>-html.tar.gz in the
-        # site-build-cache draft release (or on its own release) is restored
-        # from it; any other version is built and cached. Draft releases get
-        # the PDF, the ePub, and the archive; published releases never change
-        # (issue #128). See scripts/build-versions.sh.
+        # A published version serves the book files of its release and
+        # rebuilds only its diffs; other versions build from source. Each
+        # result is cached in the site-build-cache draft release and restored
+        # when it still matches. Draft releases get the PDF, the ePub, and the
+        # archive; published releases never change (issue #128).
+        # See scripts/build-versions.sh.
         run: bash scripts/build-versions.sh pages/versions.tsv "$PWD/_baseline/build/xhtml_no_chunks" "$PWD/_site_versions"
 
       - name: Assemble the site

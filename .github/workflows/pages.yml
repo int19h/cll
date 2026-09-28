@@ -8,11 +8,10 @@ name: pages
 # its release with freshly built diffs. Each result is cached as
 # cll-<version>-html.tar.gz in the site-build-cache draft release, and later
 # runs restore it from there (issue #128, scripts/build-versions.sh).
-# UnCLL 1.2.16 is built once from baseline/uncll-1.2.16 (upstream's
-# geklojban-development content plus the modern build fixes) as the
-# baseline for the per-version "diff vs UnCLL". That branch is frozen, so
-# its build is cached on the ref's own SHA and normally restored rather
-# than rebuilt (~10 min of the run).
+# The three visual diffs of each version are computed on the DocBook
+# sources (scripts/docbook-diff.py, issue #127) against the sources of the
+# official CLL 1.1, of UnCLL 1.2.16 (baseline/uncll-1.2.16), and of the
+# previous release; they need only those refs, not their builds.
 #
 # Trigger manually (workflow_dispatch) after updating a version's content
 # branch, or automatically when the pages branch (workflow/scripts) changes.
@@ -75,25 +74,6 @@ jobs:
         id: baseline
         run: echo "sha=$(git rev-parse origin/baseline/uncll-1.2.16)" >> "$GITHUB_OUTPUT"
 
-      - name: Restore the cached baseline build
-        id: baseline-cache
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-        with:
-          path: _baseline/build/xhtml_no_chunks
-          # keyed on the baseline commit itself: a hit means the exact same
-          # tree was built before. Bump the suffix to force a rebuild if the
-          # toolchain above changes in a way that affects the output.
-          key: baseline-xhtml_no_chunks-v1-${{ steps.baseline.outputs.sha }}
-
-      - name: Build UnCLL 1.2.16 baseline (baseline/uncll-1.2.16)
-        if: steps.baseline-cache.outputs.cache-hit != 'true'
-        run: |
-          git worktree add --detach _baseline origin/baseline/uncll-1.2.16
-          ( cd _baseline && ./cll_build -n -T xhtml_nochunks )
-
-      - name: Check the baseline build is usable
-        run: test -s _baseline/build/xhtml_no_chunks/index.html
-
       - name: Build or restore each published version
         env:
           GH_TOKEN: ${{ github.token }}
@@ -105,7 +85,7 @@ jobs:
         # when it still matches. Draft releases get the PDF, the ePub, and the
         # archive; published releases never change (issue #128).
         # See scripts/build-versions.sh.
-        run: bash scripts/build-versions.sh pages/versions.tsv "$PWD/_baseline/build/xhtml_no_chunks" "$PWD/_site_versions"
+        run: bash scripts/build-versions.sh pages/versions.tsv origin/baseline/uncll-1.2.16 "$PWD/_site_versions"
 
       - name: Assemble the site
         run: |

@@ -2,7 +2,7 @@
 #
 # Build or restore every published version of the site (issue #128).
 #
-#   scripts/build-versions.sh <versions.tsv> <baseline-nochunks-dir> <out-dir>
+#   scripts/build-versions.sh <versions.tsv> <baseline-ref> <out-dir>
 #
 # The site output of a version, <out-dir>/<version>/, is kept as the
 # archive cll-<version>-html.tar.gz. It unpacks to <version>/ and holds a
@@ -28,7 +28,8 @@
 # BUILD-INFO matches this run in all of these fields:
 #
 #   commit             the version's content commit (its git ref today)
-#   build_site_sha256  sha256 of scripts/build-site.sh
+#   tools_sha256       sha256 of the site tooling: build-site.sh,
+#                      docbook-diff.py, docbook-diff.xsl
 #   previous_commit    the content commit of the version before it
 #                      (diff_from_previous)
 #   baseline_commit    the UnCLL baseline commit (diff_from_uncll)
@@ -48,13 +49,13 @@
 #   BASELINE_COMMIT     the baseline commit, recorded in BUILD-INFO
 set -euo pipefail
 
-tsv="${1:?usage: build-versions.sh <versions.tsv> <baseline-dir> <out-dir>}"
-baseline="${2:?missing baseline dir}"
+tsv="${1:?usage: build-versions.sh <versions.tsv> <baseline-ref> <out-dir>}"
+baseline="${2:?missing baseline ref}"
 outdir="$(mkdir -p "${3:?missing out-dir}" && cd "$3" && pwd)"
 repo="${GITHUB_REPOSITORY:?}"
 force="${FORCE_REBUILD:-false}"
 baseline_commit="${BASELINE_COMMIT:?}"
-bs_sha="$(sha256sum scripts/build-site.sh | cut -c1-64)"
+bs_sha="$(cat scripts/build-site.sh scripts/docbook-diff.py scripts/docbook-diff.xsl | sha256sum | cut -c1-64)"
 cache_tag="site-build-cache"
 dl="$(mktemp -d)"
 trap 'rm -rf "$dl"' EXIT
@@ -120,7 +121,7 @@ unpack() { # <file> <ver>
 # include the digests of its release files, so the entry proves that its
 # book files are the release's.
 expect() { # <ver> <commit> <prev-commit> <released-digests>
-  printf 'commit=%s\nbuild_site_sha256=%s\nprevious_commit=%s\nbaseline_commit=%s\nrelease_files=%s\n' \
+  printf 'commit=%s\ntools_sha256=%s\nprevious_commit=%s\nbaseline_commit=%s\nrelease_files=%s\n' \
     "$2" "$bs_sha" "$3" "$baseline_commit" "$4"
 }
 matches() { # <ver> <expected-fields>
@@ -132,8 +133,8 @@ matches() { # <ver> <expected-fields>
 }
 
 prev=""; prevlabel=""; prev_commit=""
-# oldest first, so each version's output can serve as the "previous
-# release" side of the next version's diff_from_previous
+# oldest first, so each version's ref serves as the "previous release"
+# side of the next version's diff_from_previous
 while IFS=$'\t' read -r ver ref; do
   case "$ver" in ''|'#'*) continue ;; esac
   echo "::group::$ver from $ref"
@@ -206,7 +207,7 @@ while IFS=$'\t' read -r ver ref; do
   fi
   rm -f "$dl/$archive"
 
-  prev="$outdir/$ver/xhtml_no_chunks"
+  prev="origin/$ref"
   prevlabel="v$ver"
   prev_commit="$commit"
   echo "::endgroup::"

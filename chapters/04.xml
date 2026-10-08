@@ -1907,9 +1907,30 @@
       <valsi valid="false">mudsiclu</valsi>
       ; instead,
       <valsi valid="maybe">mudysiclu</valsi>
-      must be used. (Remember that
+      must be used. (A classical lujvo must have a consonant cluster within its first five letters, and at first sight
+      <valsi valid="maybe">mudysiclu</valsi>
+      seems to lack one. But in looking for that cluster,
       <letteral>y</letteral>
-      is not counted in determining whether the first five letters of a lujvo contain a consonant cluster: this is why.)
+      is simply passed over: it is not counted as one of the five letters, and it does not separate the consonants on either side of it. The letters that count are thus
+      <letteral>m</letteral>,
+      <letteral>u</letteral>,
+      <letteral>d</letteral>,
+      <letteral>s</letteral>, and
+      <letteral>i</letteral>, and
+      <letteral>d</letteral>
+      and
+      <letteral>s</letteral>
+      supply the cluster. Passing over
+      <letteral>y</letteral>
+      in this way is a matter of counting letters, not of pronunciation: the
+      <letteral>y</letteral>
+      is still pronounced, and it is there to keep the pair
+      <morphology>ds</morphology>
+      from being spoken, which is not permissible because
+      <letteral>d</letteral>
+      is voiced and
+      <letteral>s</letteral>
+      is unvoiced.)
     </para>
     <para><indexterm type="general"><primary>tosmabru test</primary><secondary>explained</secondary>
       </indexterm><indexterm type="general"><primary>lujvo</primary><secondary>falling apart of</secondary>

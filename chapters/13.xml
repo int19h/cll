@@ -594,15 +594,8 @@
   </section>
   <section xml:id="section-propositional-emotions">
     <title><anchor xml:id="c13s3" />Propositional attitude indicators</title>
-    <para>      <indexterm type="general"><primary>hypothetical world</primary></indexterm>      <indexterm type="general"><primary>internal world</primary></indexterm>      <indexterm type="general"><primary>propositional</primary><secondary>of attitudinals</secondary>      </indexterm>      <indexterm type="general"><primary>indicators</primary><secondary>placement of</secondary>
-      </indexterm>
-      As mentioned at the beginning of
-      <xref linkend="section-pure-emotions" />
-      , attitudinals may be divided into two groups, the pure emotion indicators explained in that section, and a contrasting group which may be called the
-      <quote>propositional attitude indicators</quote>. These indicators establish an internal, hypothetical world which the speaker is reacting to, distinct from the world as it really is. Thus we may be expressing our attitude towards
-      <quote>what the world would be like if ...</quote>
-      , or more directly stating our attitude towards making the potential world a reality.
-    </para>
+    <para><indexterm type="general"><primary>hypothetical world</primary></indexterm><indexterm type="general"><primary>internal world</primary></indexterm><indexterm type="general"><primary>propositional</primary><secondary>of attitudinals</secondary>      </indexterm><indexterm type="general"><primary>indicators</primary><secondary>placement of</secondary>
+      </indexterm>As mentioned at the beginning of <xref linkend="section-pure-emotions" />, attitudinals may be divided into two groups: the pure emotion indicators explained in that section, and a contrasting group which may be called the <quote>propositional attitude indicators</quote>. These indicators establish an internal, hypothetical world which the speaker is reacting to, distinct from the world as it really is. Thus we may be expressing our attitude towards <quote>what the world would be like if ...</quote>, or more directly stating our attitude towards making the potential world a reality.</para>
     <para>
       <indexterm type="general"><primary>attitudinals</primary><secondary>propositional effect on claim</secondary>
       </indexterm>
@@ -1493,17 +1486,8 @@
         <attitudinal-scale point="nai">dependency</attitudinal-scale>
       </cmavo-entry>
     </cmavo-list>
-    <para role="noindent">
-
-      <indexterm type="general"><primary>self-orientation</primary><secondary>example</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>attitudinal modifiers</primary></indexterm>
-      It turned out that, once we had devised the six emotion categories, we also recognized some other commonalities among emotions. These tended to fit nicely on scales of their own, but generally tend not to be thought of as separate emotions. Some of these are self-explanatory, some need to be placed in context. Some of these tend to go well with only a few of the attitudinals, others go with nearly all of them. To really understand these modifiers, try to use them in combination with one or two of the attitudinals found in
-      <xref linkend="section-pure-emotions" />
-      and
-      <xref linkend="section-propositional-emotions" />
-      , and see what emotional pictures you can build:
-    </para>
+    <para role="noindent">Once<indexterm type="general"><primary>self-orientation</primary><secondary>example</secondary>
+      </indexterm><indexterm type="general"><primary>attitudinal modifiers</primary></indexterm> we had devised the six emotion categories, it turned out that we also recognized some other commonalities among emotions. These tended to fit nicely on scales of their own, but are generally not thought of as separate emotions. Some of them are self-explanatory, and some need to be placed in context. Some tend to go well with only a few of the attitudinals, while others go with nearly all of them. To really understand these modifiers, try using them in combination with one or two of the attitudinals found in <xref linkend="section-pure-emotions" /> and <xref linkend="section-propositional-emotions" />, and see what emotional pictures you can build:</para>
 
     <para>
       The cmavo
@@ -1525,15 +1509,8 @@
         <natlang>I would be honored if you would enter my residence.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>imperatives</primary><secondary>attitude</secondary>
-      </indexterm>
-      Note that imperatives in Lojban need not be imperious! Corresponding examples with
-      <valsi>ga'icu'i</valsi>
-      and
-      <valsi>ga'i</valsi>
-      :
-    </para>
+    <para role="indent"><indexterm type="general"><primary>imperatives</primary><secondary>attitude</secondary>
+      </indexterm>Note that imperatives in Lojban need not be imperious! Here are corresponding examples with <valsi>ga'icu'i</valsi> and <valsi>ga'i</valsi>:</para>
 
     <example xml:id="example-random-id-qfWn" role="interlinear-gloss-example">
       <title><anchor xml:id="c13e7d2" /><indexterm type="lojban-word"><primary>ga'icu'i</primary></indexterm><indexterm type="general"><primary>deference</primary></indexterm></title>
@@ -1553,16 +1530,7 @@
         <natlang>You! Get inside!</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      Since
-      <valsi>ga'i</valsi>
-      expresses the relative rank of the speaker and the referent, it does not make much sense to attach it to
-      <valsi>mi</valsi>
-      , unless the speaker is using
-      <valsi>mi</valsi>
-      to refer to a group (as in English
-      <quote>we</quote>), or a past or future version of himself with a different rank.
-    </para>
+    <para role="indent">Since <valsi>ga'i</valsi> expresses the relative rank of the speaker and the referent, it does not make much sense to attach it to <valsi>mi</valsi>, unless the speaker is using <valsi>mi</valsi> to refer to a group (as in English <quote>we</quote>), or to a past or future version of himself with a different rank.</para>
     <para>
       It is also possible to attach
       <valsi>ga'i</valsi>
@@ -1578,41 +1546,14 @@
         <natlang>The pig ate (which is an event beneath my notice).</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      When used without being attached to any bridi,
-      <valsi>ga'i</valsi>
-      expresses the speaker's superiority to things in general, which may represent an absolute social rank:
-      <jbophrase>ga'icai</jbophrase>
-      is an appropriate opening word for an emperor's address from the throne.
-    </para>
+    <para role="indent">When <valsi>ga'i</valsi> is used without being attached to any bridi, it expresses the speaker's superiority to things in general, which may represent an absolute social rank: <jbophrase>ga'icai</jbophrase> is an appropriate opening word for an emperor's address from the throne.</para>
 
-    <para>
-      The cmavo
-      <valsi>le'o</valsi>
-      represents the scale of aggressiveness. We seldom overtly recognize that we are feeling aggressive or defensive, but perhaps in counseling sessions, a psychologist might encourage someone to express these feelings on this scale. And football teams could be urged on by their coach using
-      <jbophrase>ro'ole'o</jbophrase>.
-      <valsi>le'o</valsi>
-      is also useful in threats as an alternative to
-      <jbophrase>.o'onai</jbophrase>
-      , which expresses anger.
-    </para>
+    <para>The cmavo <valsi>le'o</valsi> represents the scale of aggressiveness. We seldom overtly recognize that we are feeling aggressive or defensive, but perhaps in counseling sessions a psychologist might encourage someone to express these feelings on this scale. And football teams could be urged on by their coach using <jbophrase>ro'ole'o</jbophrase>. <valsi>le'o</valsi> is also useful in threats, as an alternative to <jbophrase>.o'onai</jbophrase>, which expresses anger.</para>
 
-    <para>
-
-      <indexterm type="general"><primary>sinful</primary><secondary>example</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>virtue</primary><secondary>example</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>righteous indignation</primary><secondary>example</secondary>
-      </indexterm>
-      The cmavo
-      <valsi>vu'e</valsi>
-      represents ethical virtue or its absence. An excess of almost any emotion is usually somewhat
-      <quote>sinful</quote>
-      in the eyes of most ethical systems. On the other hand, we often feel virtuous about our feelings &ndash; what we call righteous indignation might be
-      <jbophrase>.o'onaivu'e</jbophrase>. Note that this is distinct from lack of guilt:
-      <valsi>.u'unai</valsi>.
-    </para>
+    <para><indexterm type="general"><primary>sinful</primary><secondary>example</secondary>
+      </indexterm><indexterm type="general"><primary>virtue</primary><secondary>example</secondary>
+      </indexterm><indexterm type="general"><primary>righteous indignation</primary><secondary>example</secondary>
+      </indexterm>The cmavo <valsi>vu'e</valsi> represents ethical virtue or its absence. An excess of almost any emotion is usually somewhat <quote>sinful</quote> in the eyes of most ethical systems. On the other hand, we often feel virtuous about our feelings: what we call righteous indignation might be <jbophrase>.o'onaivu'e</jbophrase>. Note that this is distinct from lack of guilt, which is <valsi>.u'unai</valsi>.</para>
     <para>
       The cmavo
       <valsi>se'i</valsi>
@@ -1637,19 +1578,7 @@
         <natlang>I want you to have it!</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      In both cases, the English
-      <quote>it</quote>
-      is vague, reflecting the absence of a bridi.
-      <xref linkend="example-random-id-qFxm" />
-      and
-      <xref linkend="example-random-id-qfXq" />
-      are pure expressions of attitude. Analogously,
-      <jbophrase>.uuse'i</jbophrase>
-      is self-pity, whereas
-      <jbophrase>.uuse'inai</jbophrase>
-      is pity for someone else.
-    </para>
+    <para role="indent">In both cases the English <quote>it</quote> is vague, reflecting the absence of a bridi. <xref linkend="example-random-id-qFxm" /> and <xref linkend="example-random-id-qfXq" /> are pure expressions of attitude. Analogously, <jbophrase>.uuse'i</jbophrase> is self-pity, whereas <jbophrase>.uuse'inai</jbophrase> is pity for someone else.</para>
 
     <para>
       The modifier
@@ -1735,14 +1664,7 @@
         <natlang>Let me at it &ndash; I'll do it all by myself!</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      is something a Lojban-speaking child might say. Here the speaker turns the exhortation of
-      <valsi>.e'e</valsi>
-      on the challenge itself, as an eager
-      <quote>bring it on</quote>. The
-      <valsi>se'a</valsi>
-      colors it with self-sufficiency. On the other hand,
-    </para>
+    <para role="noindent">is something a Lojban-speaking child might say. Here the speaker turns the exhortation of <valsi>.e'e</valsi> on the challenge itself, as an eager <quote>bring it on</quote>, and <valsi>se'a</valsi> colors it with self-sufficiency. On the other hand,</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-Arv2">
       <title><anchor xml:id="c13e7d11" /><indexterm type="lojban-word"><primary>.e'ese'anai</primary></indexterm></title>
 
@@ -1780,11 +1702,8 @@
         <natlang>I can't face it without you!</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>attitudinals</primary><secondary>complexity</secondary>
-      </indexterm>
-      Some of the emotional expressions may seem too complicated to use. They might be for most circumstances. It is likely that most combinations will never get used. But if one person uses one of these expressions, another person can understand (as unambiguously as the expresser intends) what emotion is being expressed. Most probably as the system becomes well-known and internalized by Lojban-speakers, particular attitudinal combinations will come to be standard expressions (if not cliches) of emotion.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>attitudinals</primary><secondary>complexity</secondary>
+      </indexterm>Some of the emotional expressions may seem too complicated to use, and for most circumstances they might be. It is likely that most combinations will never get used. But if one person uses one of these expressions, another person can understand (as unambiguously as the expresser intends) what emotion is being expressed. Most probably, as the system becomes well-known and internalized by Lojban-speakers, particular attitudinal combinations will come to be standard expressions (if not cliches) of emotion.</para>
   </section>
   <section xml:id="section-compound-attitudinals">
     <title><anchor xml:id="c13s8" />Compound indicators</title>
@@ -2294,24 +2213,12 @@
         <attitudinal-scale point="sai">I state</attitudinal-scale>
       </cmavo-entry>
     </cmavo-list>
-    <para role="indent">
-      <indexterm type="general"><primary>evidentials</primary><secondary>inspiration for</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>evidentials</primary><secondary>definition</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>Láadan evidentials</primary></indexterm>
-      <indexterm type="general"><primary>American Indian languages and evidentials</primary></indexterm>
-      <indexterm type="general"><primary>Elgin</primary><secondary>Suzette Haden and evidentials</secondary>
-      </indexterm>
-      Now we proceed from the attitudinal indicators and their relatives to the other, semantically unrelated, categories of indicators. The indicators known as
-      <quote>evidentials</quote>
-      show how the speaker came to say the utterance; i.e. the source of the information or the idea. Lojban's list of evidentials was derived from lists describing several American Indian languages. Evidentials are also essential to the constructed language Láadan, designed by the linguist and novelist Suzette Haden Elgin. Láadan's set of indicators was drawn on extensively in developing the Lojban indicator system.
-    </para>
-    <para>
-      <indexterm type="general"><primary>evidentials</primary><secondary>in English</secondary>
-      </indexterm>
-      It is important to realize, however, that evidentials are not some odd system used by some strange people who live at the other end of nowhere: although their English equivalents aren't single words, English-speakers have vivid notions of what constitutes evidence, and of the different kinds of evidence.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>evidentials</primary><secondary>inspiration for</secondary>
+      </indexterm><indexterm type="general"><primary>evidentials</primary><secondary>definition</secondary>
+      </indexterm><indexterm type="general"><primary>Láadan evidentials</primary></indexterm><indexterm type="general"><primary>American Indian languages and evidentials</primary></indexterm><indexterm type="general"><primary>Elgin</primary><secondary>Suzette Haden and evidentials</secondary>
+      </indexterm>Now we move on from the attitudinal indicators and their relatives to the other categories of indicators, which are semantically unrelated to them. The indicators known as <quote>evidentials</quote> show how the speaker came to say the utterance; i.e. the source of the information or the idea. Lojban's list of evidentials was derived from lists describing several American Indian languages. Evidentials are also essential to the constructed language Láadan, designed by the linguist and novelist Suzette Haden Elgin, and Láadan's set of indicators was drawn on extensively in developing the Lojban indicator system.</para>
+    <para><indexterm type="general"><primary>evidentials</primary><secondary>in English</secondary>
+      </indexterm>It is important to realize, though, that evidentials are not some odd system used by some strange people who live at the other end of nowhere. Their English equivalents aren't single words, but English-speakers have vivid notions of what constitutes evidence, and of the different kinds of evidence.</para>
 
 
     <para>
@@ -2323,51 +2230,17 @@
     </para>
 
 
-    <para>
-      <indexterm type="general"><primary>evidentials</primary><secondary>rhetorical flavor</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>evidentials</primary><secondary>indisputable bridi</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>indisputable bridi</primary></indexterm>
-      A bridi with an evidential in it becomes
-      <quote>indisputable</quote>
-      , in the sense that the speaker is saying
-      <quote>how it is with him or her</quote>
-      , which is beyond argument. Claims about one's own mental states may be true or false, but are hardly subject to other people's examination. If you say that you think, or perceive, or postulate such-and-such a predication, who can contradict you? Discourse that uses evidentials has therefore a different rhetorical flavor than discourse that does not; arguments tend to become what can be called dialogues or alternating monologues, depending on your prejudices.
-    </para>
+    <para><indexterm type="general"><primary>evidentials</primary><secondary>rhetorical flavor</secondary>
+      </indexterm><indexterm type="general"><primary>evidentials</primary><secondary>indisputable bridi</secondary>
+      </indexterm><indexterm type="general"><primary>indisputable bridi</primary></indexterm>A bridi with an evidential in it becomes <quote>indisputable</quote>, in the sense that the speaker is saying <quote>how it is with him or her</quote>, which is beyond argument. Claims about one's own mental states may be true or false, but they are hardly subject to other people's examination. If you say that you think, or perceive, or postulate such-and-such a predication, who can contradict you? Discourse that uses evidentials therefore has a different rhetorical flavor from discourse that doesn't: arguments tend to become what can be called dialogues or alternating monologues, depending on your prejudices.</para>
 
 
-    <para>
-      <indexterm type="general"><primary>evidentials</primary><secondary>placement in bridi</secondary>
-      </indexterm>
-      Evidentials are most often placed at the beginning of sentences, and are often attached to the
-      <valsi>.i</valsi>
-      that separates sentences in connected discourse. It is in the nature of an evidential to affect the entire bridi in which it is placed: like the propositional attitude indicators, they strongly affect the claim made by the main bridi.
-    </para>
-    <para>
-
-      <indexterm type="general"><primary>deduction</primary><secondary>example</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>thus</primary><secondary>example</secondary>
-      </indexterm>
-      A bridi marked by
-      <valsi>ja'o</valsi>
-      is a conclusion by the speaker based on other (stated or unstated) information or ideas. Rough English equivalents of
-      <valsi>ja'o</valsi>
-      are
-      <quote>thus</quote>
-      and
-      <quote>therefore</quote>.
-    </para>
-    <para>
-      A bridi marked by
-      <valsi>ca'e</valsi>
-      is true because the speaker says so. In addition to definitions of words,
-      <valsi>ca'e</valsi>
-      is also appropriate in what are called performatives, where the very act of speaking the words makes them true. An English example is
-      <quote>I now pronounce you husband and wife</quote>
-      , where the very act of uttering the words makes the listeners into husband and wife. A Lojban translation might be:
-    </para>
+    <para><indexterm type="general"><primary>evidentials</primary><secondary>placement in bridi</secondary>
+      </indexterm>Evidentials are most often placed at the beginning of sentences, and are often attached to the <valsi>.i</valsi> that separates sentences in connected discourse. It is in the nature of an evidential to affect the entire bridi in which it is placed: like the propositional attitude indicators, evidentials strongly affect the claim made by the main bridi.</para>
+    <para><indexterm type="general"><primary>deduction</primary><secondary>example</secondary>
+      </indexterm><indexterm type="general"><primary>thus</primary><secondary>example</secondary>
+      </indexterm>A bridi marked by <valsi>ja'o</valsi> is a conclusion by the speaker, based on other (stated or unstated) information or ideas. Rough English equivalents of <valsi>ja'o</valsi> are <quote>thus</quote> and <quote>therefore</quote>.</para>
+    <para>A bridi marked by <valsi>ca'e</valsi> is true because the speaker says so. Besides definitions of words, <valsi>ca'e</valsi> is also appropriate in what are called performatives, where the very act of speaking the words makes them true. An English example is <quote>I now pronounce you husband and wife</quote>: the very act of uttering the words makes the listeners into husband and wife. A Lojban translation might be:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-Po4T">
       <title>
@@ -2380,24 +2253,10 @@
         <gloss>[I-define!] the two of-you - are-mutual spouses.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-
-      <indexterm type="general"><primary>remembered</primary><secondary>example</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>anticipated</primary><secondary>example</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>evidentials</primary><secondary>&quot;ba'a&quot; scale</secondary>
-      </indexterm>
-      The three scale positions of
-      <valsi>ba'a</valsi>
-      , when attached to a bridi, indicate that it is based on the speaker's view of the real world. Thus
-      <valsi>ba'a</valsi>
-      means that the statement represents a future event as anticipated by the speaker;
-      <valsi>ba'acu'i</valsi>
-      , a present event as experienced by the speaker;
-      <valsi>ba'anai</valsi>
-      , a past event as remembered by the speaker. It is accidental that this scale runs from future to past instead of past to future.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>remembered</primary><secondary>example</secondary>
+      </indexterm><indexterm type="general"><primary>anticipated</primary><secondary>example</secondary>
+      </indexterm><indexterm type="general"><primary>evidentials</primary><secondary>&quot;ba'a&quot; scale</secondary>
+      </indexterm>The three scale positions of <valsi>ba'a</valsi>, when attached to a bridi, indicate that it is based on the speaker's view of the real world. Thus <valsi>ba'a</valsi> means that the statement represents a future event as anticipated by the speaker; <valsi>ba'acu'i</valsi>, a present event as experienced by the speaker; <valsi>ba'anai</valsi>, a past event as remembered by the speaker. It is accidental that this scale runs from future to past instead of from past to future.</para>
 
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-B87W">
@@ -2409,26 +2268,10 @@
         <natlang>My leg hurts.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-
-      <indexterm type="general"><primary>induction</primary><secondary>example</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>evidentials</primary><secondary>&quot;ja'o&quot; contrasted with &quot;su'a&quot;</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>evidentials</primary><secondary>&quot;su'a&quot; contrasted with &quot;ja'o&quot;</secondary>
-      </indexterm>
-      A bridi marked by
-      <valsi>su'a</valsi>
-      is a generalization by the speaker based on other (stated or unstated) information or ideas. The difference between
-      <valsi>su'a</valsi>
-      and
-      <valsi>ja'o</valsi>
-      is that
-      <valsi>ja'o</valsi>
-      suggests some sort of reasoning or deduction (not necessarily rigorous), whereas
-      <valsi>su'a</valsi>
-      suggests some sort of induction or pattern recognition from existing examples (not necessarily rigorous).
-    </para>
+    <para role="noindent"><indexterm type="general"><primary>induction</primary><secondary>example</secondary>
+      </indexterm><indexterm type="general"><primary>evidentials</primary><secondary>&quot;ja'o&quot; contrasted with &quot;su'a&quot;</secondary>
+      </indexterm><indexterm type="general"><primary>evidentials</primary><secondary>&quot;su'a&quot; contrasted with &quot;ja'o&quot;</secondary>
+      </indexterm>A bridi marked by <valsi>su'a</valsi> is a generalization by the speaker, based on other (stated or unstated) information or ideas. The difference between <valsi>su'a</valsi> and <valsi>ja'o</valsi> is that <valsi>ja'o</valsi> suggests some sort of reasoning or deduction (not necessarily rigorous), whereas <valsi>su'a</valsi> suggests some sort of induction or pattern recognition from existing examples (not necessarily rigorous).</para>
 
     <para>
 
@@ -2457,16 +2300,8 @@
       or
       <quote>in particular</quote>.
     </para>
-    <para>
-
-      <indexterm type="general"><primary>hearsay</primary><secondary>example</secondary>
-      </indexterm>
-      A bridi marked by
-      <valsi>ti'e</valsi>
-      is relayed information from some source other than the speaker. There is no necessary implication that the information was relayed via the speaker's ears; what we read in a newspaper is an equally good example of
-      <valsi>ti'e</valsi>
-      , unless we have personal knowledge of the content.
-    </para>
+    <para><indexterm type="general"><primary>hearsay</primary><secondary>example</secondary>
+      </indexterm>A bridi marked by <valsi>ti'e</valsi> is relayed information from some source other than the speaker. There is no necessary implication that the information reached the speaker via the ears; what we read in a newspaper is an equally good example of <valsi>ti'e</valsi>, unless we have personal knowledge of the content.</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-jiXV">
       <title><anchor xml:id="c13e11d3" /></title>
@@ -2477,18 +2312,9 @@
         <natlang>I hear that Wenga is a crook.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-
-      <indexterm type="general"><primary>cultural knowledge</primary><secondary>example</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>myth</primary><secondary>example</secondary>
-      </indexterm>
-      A bridi marked by
-      <valsi>ka'u</valsi>
-      is one held to be true in the speaker's cultural context, as a matter of myth or custom, for example. Such statements should be agreed on by a community of people &ndash; you cannot just make up your own cultural context &ndash; although
-      <quote>objectivity</quote>
-      in the sense of actual correspondence with the facts is certainly not required.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>cultural knowledge</primary><secondary>example</secondary>
+      </indexterm><indexterm type="general"><primary>myth</primary><secondary>example</secondary>
+      </indexterm>A bridi marked by <valsi>ka'u</valsi> is one held to be true in the speaker's cultural context, as a matter of myth or custom, for example. Such statements should be agreed on by a community of people (you cannot just make up your own cultural context), although <quote>objectivity</quote> in the sense of actual correspondence with the facts is certainly not required.</para>
     <para>
 
       <indexterm type="general"><primary>dream</primary><secondary>example</secondary>

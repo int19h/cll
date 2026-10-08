@@ -252,40 +252,10 @@
       <letteral>r</letteral>
       can be trilled, but doesn't have to be.
     </para>
-    <para>
-      <indexterm type="general"><primary>diphthongs</primary><secondary>pronunciation of</secondary>
+    <para><indexterm type="general"><primary>diphthongs</primary><secondary>pronunciation of</secondary>
         <tertiary>quick-tour version</tertiary>
-      </indexterm>
-      The Lojban diphthongs
-      <diphthong>ai</diphthong>,
-      <diphthong>ei</diphthong>,
-      <diphthong>oi</diphthong>,
-      and
-      <diphthong>au</diphthong>
-      are pronounced much as in the English words
-      <quote>sigh</quote>,
-      <quote>say</quote>,
-      <quote>boy</quote>,
-      and
-      <quote>how</quote>. These four are the only diphthongs in Lojban. A syllable can also begin with an
-      <letteral>i</letteral>
-      that sounds like English
-      <quote>y</quote>: for example,
-      <morphology>io</morphology>
-      sounds like
-      <quote>yo</quote>. Or it can begin with a
-      <letteral>u</letteral>
-      that sounds like English
-      <quote>w</quote>: for example,
-      <morphology>ua</morphology>
-      sounds like
-      <quote>wa</quote>. Both kinds of syllable begin a word or follow a vowel. They never follow a consonant.
-    </para>
-    <para role="status-note">
-      The analysis with only four diphthongs is the de facto standard rule for word forms. The ban on these syllables after a consonant is committee-approved.
-      <xref linkend="chapter-phonology" />
-      tells the full story.
-    </para>
+      </indexterm>The Lojban diphthongs <diphthong>ai</diphthong>, <diphthong>ei</diphthong>, <diphthong>oi</diphthong>, and <diphthong>au</diphthong> are pronounced much as in the English words <quote>sigh</quote>, <quote>say</quote>, <quote>boy</quote>, and <quote>how</quote>. These four are the only diphthongs in Lojban. A syllable can also begin with an <letteral>i</letteral> that sounds like English <quote>y</quote> (for example, <morphology>io</morphology> sounds like <quote>yo</quote>), or with a <letteral>u</letteral> that sounds like English <quote>w</quote> (for example, <morphology>ua</morphology> sounds like <quote>wa</quote>). Both kinds of syllable begin a word or follow a vowel; they never follow a consonant.</para>
+    <para role="status-note">The analysis with only four diphthongs is the de facto standard rule for word forms, and the ban on these syllables after a consonant is committee-approved. <xref linkend="chapter-phonology" /> tells the full story.</para>
     <para>
       <indexterm type="general"><primary>period</primary><secondary>quick-tour version</secondary>
       </indexterm>
@@ -298,13 +268,8 @@
       the period, the comma and the apostrophe. The period represents a glottal stop or a pause; it is a required stoppage of the flow of air in the speech stream. The apostrophe sounds just like the English letter
       <quote>h</quote>. Unlike a regular consonant, it is not found at the beginning or end of a word, nor is it found adjacent to a consonant; it is only found between two vowels. The comma has no sound associated with it, and is used to separate syllables that might ordinarily run together. It is not used in this chapter.
     </para>
-    <para>
-      <indexterm type="general"><primary>stress</primary><secondary>quick-tour version</secondary>
-      </indexterm>
-      Stress normally falls on the next-to-the-last syllable. When you count the syllables, skip each syllable whose vowel is
-      <letteral>y</letteral>, and each syllable with no vowel at all. These syllables never have stress. Strictly, the content words (brivla) must follow this rule. Names can mark stress on another syllable, and the little structure words can have stress on any syllable or on none (see
-      <xref linkend="chapter-phonology" />). A structure word with one syllable usually has no stress.
-    </para>
+    <para><indexterm type="general"><primary>stress</primary><secondary>quick-tour version</secondary>
+      </indexterm>Stress normally falls on the next-to-the-last syllable. When you count the syllables, skip each syllable whose vowel is <letteral>y</letteral>, and each syllable with no vowel at all, since these never have stress. Strictly, only the content words (brivla) must follow this rule: names can mark stress on another syllable, and the little structure words can have stress on any syllable or on none (see <xref linkend="chapter-phonology" />). A structure word with one syllable usually has no stress.</para>
     <para>All Lojban words are pronounced as they are spelled: there are no silent letters.</para>
   </section>
   <section xml:id="section-sumti-cmavo">
@@ -854,8 +819,7 @@
   </section>
   <section xml:id="section-order-of-sumti">
     <title><anchor xml:id="c2s7" />Varying the order of sumti</title>
-    <para>      <indexterm type="general"><primary>sumti reordering</primary><secondary>quick-tour version</secondary>      </indexterm>      For one reason or another you may want to change the order, placing one particular sumti at the front of the bridi. The cmavo      <valsi>se</valsi>, when placed before the last word of the selbri, will switch the meanings of the first and second sumti places. So
-    </para>
+    <para><indexterm type="general"><primary>sumti reordering</primary><secondary>quick-tour version</secondary>      </indexterm>For one reason or another you may want to change the order, so that one particular sumti comes first in the bridi. The cmavo <valsi>se</valsi>, when placed before the last word of the selbri, switches the meanings of the first and second sumti places. So</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k0dU">
       <title><anchor xml:id="c2e7d1" /></title>
 
@@ -883,11 +847,7 @@
         <natlang>You are talked to by me about this.</natlang>
       </interlinear-gloss-itemized>
     </example>
-    <para role="indent">
-      The cmavo
-      <valsi>te</valsi>,
-      when used in the same location, switches the meanings of the first and the third sumti places.
-    </para>
+    <para role="indent">The cmavo <valsi>te</valsi>, used in the same location, switches the meanings of the first and the third sumti places.</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k0FJ">
       <title><anchor xml:id="c2e7d3" /></title>
 
@@ -915,7 +875,7 @@
         <natlang>This is talked about to you by me.</natlang>
       </interlinear-gloss-itemized>
     </example>
-    <para role="indent">Note that only the first and third sumti have switched places; the second sumti has remained in the second place.</para>
+    <para role="indent">Note that only the first and third sumti have switched places; the second sumti has stayed right where it was, in the second place.</para>
     <para>
       The cmavo
       <valsi>ve</valsi>
@@ -931,19 +891,8 @@
       <valsi>xe</valsi>
       cmavo are said to convert the selbri.
     </para>
-    <para>
-      More than one of these operators may be used on a given selbri at one time, and in such a case they are evaluated from left to right. However, in practice they are used one at a time, as there are better tools for complex manipulation of the sumti places. See
-      <xref linkend="section-SE" />
-      for details.
-    </para>
-    <para>
-      <indexterm type="general"><primary>passive voice</primary></indexterm>
-      The effect is similar to what in English is called the
-      <quote>passive voice</quote>. In Lojban, the converted selbri has a new place structure that is renumbered to reflect the place reversal, thus having effects when such a conversion is used in combination with other constructs such as
-      <jbophrase>lo selbri [ku]</jbophrase>
-      (see
-      <xref linkend="section-description-sumti" />).
-    </para>
+    <para>More than one of these operators may be used on a given selbri at one time, and in such a case they are evaluated from left to right. In practice, though, they are used one at a time, since there are better tools for complex manipulation of the sumti places. See <xref linkend="section-SE" /> for details.</para>
+    <para><indexterm type="general"><primary>passive voice</primary></indexterm>The effect is similar to what in English is called the <quote>passive voice</quote>. In Lojban, the converted selbri has a new place structure that is renumbered to reflect the place reversal, and this has consequences when such a conversion is used in combination with other constructs such as <jbophrase>lo selbri [ku]</jbophrase> (see <xref linkend="section-description-sumti" />).</para>
   </section>
   <section xml:id="section-structure-of-utterances">
     <title><anchor xml:id="c2s8" />The basic structure of longer utterances</title>
@@ -1010,13 +959,8 @@
       <para>x<subscript>1</subscript> is a fast type-of talker to x<subscript>2</subscript> about x<subscript>3</subscript> in language x<subscript>4</subscript></para>
       <para>x<subscript>1</subscript> talks fast to x<subscript>2</subscript> about x<subscript>3</subscript> in language x<subscript>4</subscript></para>
     </example>
-    <para role="indent">
-
-
-      <indexterm type="general"><primary>tanru default grouping</primary><secondary>quick-tour version</secondary>
-      </indexterm>
-      When three or more gismu are in a row, the first modifies the second, and that combined meaning modifies the third, and that combined meaning modifies the fourth, and so on. For example
-    </para>
+    <para role="indent"><indexterm type="general"><primary>tanru default grouping</primary><secondary>quick-tour version</secondary>
+      </indexterm>When three or more gismu are in a row, the first modifies the second, that combined meaning modifies the third, that combined meaning modifies the fourth, and so on. For example</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-pzS9">
       <title><anchor xml:id="c2e9d3" /></title>
 
@@ -1035,13 +979,9 @@
 
       <para>s1 is a fast-talker type of shoe worn by s2 of material s3</para>
     </example>
-    <para role="indent">That is, it is a shoe that is worn by a fast talker rather than a shoe that is fast and is also worn by a talker.</para>
+    <para role="indent">That is, it is a shoe worn by a fast talker, not a shoe that is fast and is also worn by a talker.</para>
 
-    <para>
-      Note especially the use of
-      <quote>type-of</quote>
-      as a mechanism for connecting the English translations of the two or more gismu; this convention helps the learner understand each tanru in its context. Creative interpretations are also possible, however:
-    </para>
+    <para>Note especially the use of <quote>type-of</quote> to connect the English translations of the two or more gismu; this convention helps the learner understand each tanru in its context. Creative interpretations are also possible, however:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-jE94">
       <title>
         <indexterm type="general"><primary>runner shoe</primary></indexterm>
@@ -1054,10 +994,7 @@
         <gloss>runner shoe</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      most probably refers to shoes suitable for runners, but might be interpreted in some imaginative instances as
-      <quote>shoes that run (by themselves?)</quote>. In general, however, the meaning of a tanru is determined by the literal meaning of its components, and not by any connotations or figurative meanings. Thus
-    </para>
+    <para role="noindent">most probably refers to shoes suitable for runners, but might be interpreted in some imaginative instances as <quote>shoes that run (by themselves?)</quote>. In general, though, the meaning of a tanru is determined by the literal meaning of its components, and not by any connotations or figurative meanings. Thus</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-HcV5">
       <title><anchor xml:id="c2e9d6" /></title>
 
@@ -1085,13 +1022,9 @@
       must always be a moth or a butterfly.
     </para>
 
-    <para>
-      <indexterm type="general"><primary>tanru</primary><secondary>place structure of</secondary>
+    <para><indexterm type="general"><primary>tanru</primary><secondary>place structure of</secondary>
         <tertiary>quick-tour version</tertiary>
-      </indexterm>
-      The place structure of a tanru is always that of the final component of the tanru. Thus, the following has the place structure of
-      <valsi>klama</valsi>:
-    </para>
+      </indexterm>The place structure of a tanru is always that of its final component. Thus, the following has the place structure of <valsi>klama</valsi>:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k0FP">
       <title><anchor xml:id="c2e9d8" /></title>
 
@@ -1176,7 +1109,7 @@
       <valsi>tavla</valsi>,
       but note the two distinct interpretations.
     </para>
-    <para>Now, using conversion, we can modify the place structure order:</para>
+    <para>Now, using conversion, we can change the order of the places:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-k0mh">
       <title><anchor xml:id="c2e9d11" /></title>
@@ -1202,8 +1135,8 @@
         </gloss>
       </interlinear-gloss-itemized>
     </example>
-    <para role="noindent">and we see that the modification has been changed so as to focus on Mary's role in the bridi relationship, leading to a different set of possible interpretations.</para>
-    <para>Note that there is no place structure change if the modifying term is converted, and so less drastic variation in possible meanings:</para>
+    <para role="noindent">and we see that the modification has changed to focus on Mary's role in the bridi relationship, which leads to a different set of possible interpretations.</para>
+    <para>Note that if the modifying term is converted instead, the place structure doesn't change, and so the possible meanings vary less drastically:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-qIv0">
       <title><anchor xml:id="c2e9d12" /><indexterm type="general"><primary>talker</primary></indexterm></title>
 
@@ -1241,7 +1174,7 @@
         </gloss>
       </interlinear-gloss-itemized>
     </example>
-    <para role="noindent">and we see that the manner in which Tom is seen as beautiful by Mary changes, but Tom is still the one perceived as beautiful, and Mary, the observer of beauty.</para>
+    <para role="noindent">and we see that the manner in which Mary sees Tom as beautiful changes, but Tom is still the one perceived as beautiful, and Mary, the observer of beauty.</para>
   </section>
   <section xml:id="section-description-sumti">
     <title><anchor xml:id="c2s10" />Description sumti</title>
@@ -1439,17 +1372,7 @@
         </gloss>
       </interlinear-gloss-itemized>
     </example>
-    <para role="indent">
-      The sumti
-      <jbophrase>lo vecnu</jbophrase>
-      contains the selbri
-      <valsi>vecnu</valsi>,
-      which has the
-      <quote>seller</quote>
-      in the x<subscript>1</subscript> place. In this sentence, the sumti uses that place to refer to a seller: someone who really sells. As usual, the context tells which seller the speaker means. Similarly,
-      <jbophrase>lo blari'o</jbophrase>
-      refers to something that really is blue-green.
-    </para>
+    <para role="indent">The sumti <jbophrase>lo vecnu</jbophrase> contains the selbri <valsi>vecnu</valsi>, which has the <quote>seller</quote> in the x<subscript>1</subscript> place. In this sentence the sumti uses that place to refer to a seller: someone who really sells. As usual, the context tells which seller the speaker means. Similarly, <jbophrase>lo blari'o</jbophrase> refers to something that really is blue-green.</para>
     <para>
       <indexterm type="lojban-word"><primary>le</primary><secondary>quick-tour version</secondary>
       </indexterm>
@@ -1578,12 +1501,7 @@
   </section>
   <section xml:id="section-dihu-and-lahe-dihu">
     <title><anchor xml:id="c2s12" />The sumti <valsi>di'u</valsi> and <jbophrase>la'e di'u</jbophrase></title>
-    <para>      <indexterm type="general"><primary>reference</primary><secondary>quick-tour version</secondary>      </indexterm>      In English, I might say      <quote>The dog is beautiful</quote>, and you might reply
-      <quote>This pleases me.</quote>
-      How do you know what
-      <quote>this</quote>
-      refers to? Lojban uses different expressions to convey the possible meanings of the English:
-    </para>
+    <para><indexterm type="general"><primary>reference</primary><secondary>quick-tour version</secondary>      </indexterm>In English, I might say <quote>The dog is beautiful</quote>, and you might reply <quote>This pleases me.</quote> How do you know what <quote>this</quote> refers to? Lojban has several different expressions to convey the possible meanings of the English:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k0wB">
       <title>
         <indexterm type="general"><primary>beautiful dog</primary></indexterm>
@@ -1646,22 +1564,11 @@
 
       </interlinear-gloss-itemized>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>pleases</primary></indexterm>
-      <xref linkend="example-random-id-k0YS" />
-      uses one sumti to point to or refer to another by inference. It is common to write
-      <valsi>la'edi'u</valsi>
-      as a single word; it is used more often than
-      <valsi>di'u</valsi>
-      by itself.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>pleases</primary></indexterm><xref linkend="example-random-id-k0YS" /> uses one sumti to point to or refer to another by inference. It is common to write <valsi>la'edi'u</valsi> as a single word, and it is used more often than <valsi>di'u</valsi> by itself.</para>
   </section>
   <section xml:id="section-possession">
     <title><anchor xml:id="c2s13" />Possession</title>
-    <para>      <indexterm type="general"><primary>possession</primary><secondary>quick-tour version</secondary>      </indexterm>      <quote>Possession</quote>      refers to the concept of specifying an object by saying who it belongs to (or with). A full explanation of Lojban possession is given in      <xref linkend="chapter-relative-clauses" />. A simple means of expressing possession, however, is to place a sumti representing the possessor of an object within the description sumti that refers to the object: specifically, between the
-      <valsi>lo</valsi>
-      and the selbri of the description:
-    </para>
+    <para><indexterm type="general"><primary>possession</primary><secondary>quick-tour version</secondary>      </indexterm><quote>Possession</quote> refers to the concept of specifying an object by saying who it belongs to (or with). A full explanation of Lojban possession is given in <xref linkend="chapter-relative-clauses" />. A simple means of expressing possession, however, is to place a sumti representing the possessor of an object inside the description sumti that refers to the object: specifically, between the <valsi>lo</valsi> and the selbri of the description:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k0zY">
       <title><anchor xml:id="c2e13d1" /></title>
 
@@ -1679,18 +1586,8 @@
         <natlang>My dog is fast.</natlang>
       </interlinear-gloss-itemized>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>possession not ownership</primary><secondary>quick-tour version</secondary>
-      </indexterm>
-      In Lojban, possession doesn't necessarily mean ownership: one may
-      <quote>possess</quote>
-      a chair simply by sitting on it, even though it actually belongs to someone else. English uses possession casually in the same way, but also uses it to refer to actual ownership or even more intimate relationships:
-      <quote>my arm</quote>
-      doesn't mean
-      <quote>some arm I own</quote>
-      but rather
-      <quote>the arm that is part of my body</quote>. Lojban has methods of specifying all these different kinds of possession precisely and easily.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>possession not ownership</primary><secondary>quick-tour version</secondary>
+      </indexterm>In Lojban, possession doesn't necessarily mean ownership: one may <quote>possess</quote> a chair simply by sitting on it, even though it actually belongs to someone else. English uses possession casually in the same way, but it also uses it for actual ownership and even for more intimate relationships: <quote>my arm</quote> doesn't mean <quote>some arm I own</quote> but rather <quote>the arm that is part of my body</quote>. Lojban has methods of specifying all these different kinds of possession precisely and easily.</para>
   </section>
   <section xml:id="section-vocatives-and-commands">
     <title><anchor xml:id="c2s14" />Vocatives and commands</title>
@@ -1862,30 +1759,12 @@
   </section>
   <section xml:id="section-basic-questions">
     <title><anchor xml:id="c2s15" />Questions</title>
-    <para>      <indexterm type="general"><primary>questions</primary><secondary>quick-tour version</secondary>      </indexterm>      There are many kinds of questions in Lojban: full explanations appear in      <xref linkend="section-questions-and-answers" />      and in various other chapters throughout the book. In this chapter, we will introduce three kinds: sumti questions, selbri questions, and yes/no questions.
-    </para>
+    <para>Lojban has<indexterm type="general"><primary>questions</primary><secondary>quick-tour version</secondary>      </indexterm> many kinds of questions, and full explanations appear in <xref linkend="section-questions-and-answers" /> and in various other chapters throughout the book. In this chapter we will introduce three: sumti questions, selbri questions, and yes/no questions.</para>
 
 
-    <para>
-      <indexterm type="general"><primary>sumti questions</primary><secondary>quick-tour version</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>questions</primary><secondary>quick-tour version</secondary>
-      </indexterm>
-      The cmavo
-      <valsi>ma</valsi>
-      is used to create a sumti question: it indicates that the speaker wishes to know the sumti which should be placed at the location of the
-      <valsi>ma</valsi>
-      to make the bridi true. It can be translated as
-      <quote>Who?</quote>
-      or
-      <quote>What?</quote>
-      in most cases, but also serves for
-      <quote>When?</quote>,
-      <quote>Where?</quote>,
-      and
-      <quote>Why?</quote>
-      when used in sumti places that express time, location, or cause. For example:
-    </para>
+    <para><indexterm type="general"><primary>sumti questions</primary><secondary>quick-tour version</secondary>
+      </indexterm><indexterm type="general"><primary>questions</primary><secondary>quick-tour version</secondary>
+      </indexterm>The cmavo <valsi>ma</valsi> creates a sumti question. It indicates that the speaker wishes to know which sumti, placed where the <valsi>ma</valsi> is, would make the bridi true. In most cases it can be translated as <quote>Who?</quote> or <quote>What?</quote>, but it also serves for <quote>When?</quote>, <quote>Where?</quote>, and <quote>Why?</quote> when it is used in sumti places that express time, location, or cause. For example:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k161">
       <title><anchor xml:id="c2e15d1" /></title>
 
@@ -1916,12 +1795,7 @@
         <natlang>John (is talking to you about me).</natlang>
       </interlinear-gloss-itemized>
     </example>
-    <para role="indent">
-      Like
-      <valsi>ko</valsi>,
-      <valsi>ma</valsi>
-      can occur in any position where a sumti is allowed, not just in the first position:
-    </para>
+    <para role="indent">Like <valsi>ko</valsi>, <valsi>ma</valsi> can occur in any position where a sumti is allowed, not just the first:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k1aE">
       <title><anchor xml:id="c2e15d3" /></title>
 
@@ -1940,11 +1814,7 @@
         </gloss>
       </interlinear-gloss-itemized>
     </example>
-    <para role="indent">
-      A
-      <valsi>ma</valsi>
-      can also appear in multiple sumti positions in one sentence, in effect asking several questions at once.
-    </para>
+    <para role="indent">A <valsi>ma</valsi> can also appear in several sumti positions in one sentence, in effect asking several questions at once.</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k1dc">
       <title><anchor xml:id="c2e15d4" /></title>
 
@@ -1963,25 +1833,12 @@
         </gloss>
       </interlinear-gloss-itemized>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>separate questions</primary><secondary>quick-tour version</secondary>
-      </indexterm>
-      The two separate
-      <valsi>ma</valsi>
-      positions ask two separate questions, and can therefore be answered with different values in each sumti place.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>separate questions</primary><secondary>quick-tour version</secondary>
+      </indexterm>The two <valsi>ma</valsi> positions ask two separate questions, so each can be answered with a different value in its own sumti place.</para>
 
-    <para>
-      <indexterm type="general"><primary>bridi questions</primary><secondary>quick-tour version</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>selbri questions</primary><secondary>quick-tour version</secondary>
-      </indexterm>
-      The cmavo
-      <valsi>mo</valsi>
-      is the selbri analogue of
-      <valsi>ma</valsi>. It asks the respondent to provide a selbri that would be a true relation if inserted in place of the
-      <valsi>mo</valsi>:
-    </para>
+    <para><indexterm type="general"><primary>bridi questions</primary><secondary>quick-tour version</secondary>
+      </indexterm><indexterm type="general"><primary>selbri questions</primary><secondary>quick-tour version</secondary>
+      </indexterm>The cmavo <valsi>mo</valsi> is the selbri analogue of <valsi>ma</valsi>. It asks the respondent to supply a selbri that would make a true relation if it were inserted in place of the <valsi>mo</valsi>:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k1DE">
       <title><anchor xml:id="c2e15d5" /></title>
 
@@ -1998,15 +1855,7 @@
         </gloss>
       </interlinear-gloss-itemized>
     </example>
-    <para role="indent">
-      A
-      <valsi>mo</valsi>
-      may be used anywhere a brivla or other selbri might. Keep this in mind for later examples. Unfortunately, by itself,
-      <valsi>mo</valsi>
-      is a very non-specific question. The response to the question in
-      <xref linkend="example-random-id-k1DE" />
-      could be:
-    </para>
+    <para role="indent">A <valsi>mo</valsi> may be used anywhere a brivla or other selbri might, so keep this in mind for later examples. Unfortunately, by itself <valsi>mo</valsi> is a very non-specific question. The response to the question in <xref linkend="example-random-id-k1DE" /> could be:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k1DR">
       <title><anchor xml:id="c2e15d6" /></title>
 
@@ -2032,20 +1881,8 @@
         <natlang>I talk.</natlang>
       </interlinear-gloss-itemized>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>speaker-listener cooperation</primary></indexterm>
-      Clearly,
-      <valsi>mo</valsi>
-      requires some cooperation between the speaker and the respondent to ensure that the right question is being answered. If context doesn't make the question specific enough, the speaker must ask the question more specifically using a more complex construction such as a tanru (see
-      <xref linkend="section-basic-tanru" />).
-    </para>
-    <para>
-      It is perfectly permissible for the respondent to fill in other unspecified places in responding to a
-      <valsi>mo</valsi>
-      question. Thus, the respondent in
-      <xref linkend="example-random-id-k1gh" />
-      could have also specified an audience, a topic, and/or a language in the response.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>speaker-listener cooperation</primary></indexterm>Clearly, <valsi>mo</valsi> takes some cooperation between the speaker and the respondent, to make sure the right question is being answered. If context doesn't make the question specific enough, the speaker must ask it more specifically, using a more complex construction such as a tanru (see <xref linkend="section-basic-tanru" />).</para>
+    <para>The respondent is perfectly free to fill in other unspecified places when answering a <valsi>mo</valsi> question. Thus the respondent in <xref linkend="example-random-id-k1gh" /> could also have specified an audience, a topic, and/or a language.</para>
     <para>
       <indexterm type="general"><primary>yes/no questions</primary><secondary>quick-tour version</secondary>
       </indexterm>
@@ -2070,11 +1907,7 @@
 
       <para>Is it true that you are talking to me?</para>
     </example>
-    <para role="indent">
-      In Lojban we have a word that asks precisely that question in precisely the same way. The cmavo
-      <valsi>xu</valsi>,
-      when placed in front of a bridi, asks whether that bridi is true as stated. So
-    </para>
+    <para role="indent">Lojban has a word that asks precisely that question in precisely the same way. The cmavo <valsi>xu</valsi>, when placed in front of a bridi, asks whether that bridi is true as stated. So</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k1gp">
       <title><anchor xml:id="c2e15d10" /></title>
 
@@ -2097,24 +1930,10 @@
       is the Lojban translation of
       <xref linkend="example-random-id-fVMN" />.
     </para>
-    <para>
-      <indexterm type="general"><primary>affirmative answer</primary><secondary>quick-tour version</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>go'i</primary><secondary>with xu; quick-tour version</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>xu go'i</primary><secondary>quick-tour version</secondary>
-      </indexterm>
-      The answer
-      <quote>Yes</quote>
-      may be given by simply restating the bridi without the
-      <valsi>xu</valsi>
-      question word. Lojban has a shorthand for doing this with the word
-      <valsi>go'i</valsi>,
-      mentioned in
-      <xref linkend="section-some-brivla" />. Instead of a negative answer, the bridi may be restated in such a way as to make it true. If this can be done by substituting sumti, it may be done with
-      <valsi>go'i</valsi>
-      as well. For example:
-    </para>
+    <para><indexterm type="general"><primary>affirmative answer</primary><secondary>quick-tour version</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>go'i</primary><secondary>with xu; quick-tour version</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>xu go'i</primary><secondary>quick-tour version</secondary>
+      </indexterm>The answer <quote>Yes</quote> may be given by simply restating the bridi without the <valsi>xu</valsi> question word. Lojban has a shorthand for doing this: the word <valsi>go'i</valsi>, mentioned in <xref linkend="section-some-brivla" />. Instead of a negative answer, the bridi may be restated in such a way as to make it true. If this can be done by substituting sumti, it may be done with <valsi>go'i</valsi> as well. For example:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k1gU">
       <title>
         <indexterm type="general"><primary>healthy</primary></indexterm>
@@ -2206,18 +2025,8 @@
 
       </interlinear-gloss-itemized>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>negative answer</primary><secondary>quick-tour version</secondary>
-      </indexterm>
-      A general negative answer may be given by
-      <jbophrase>na go'i</jbophrase>.
-      <valsi>na</valsi>
-      may be placed before any selbri (but after the
-      <valsi>cu</valsi>). It is equivalent to stating
-      <quote>It is not true that ...</quote>
-      before the bridi. It does not imply that anything else is true or untrue, only that that specific bridi is not true. More details on negative statements are available in
-      <xref linkend="chapter-negation" />.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>negative answer</primary><secondary>quick-tour version</secondary>
+      </indexterm>A general negative answer may be given by <jbophrase>na go'i</jbophrase>. The <valsi>na</valsi> may be placed before any selbri (but after the <valsi>cu</valsi>), and it is equivalent to stating <quote>It is not true that ...</quote> before the bridi. It does not imply that anything else is true or untrue, only that that specific bridi is not true. More details on negative statements are available in <xref linkend="chapter-negation" />.</para>
   </section>
   <section xml:id="section-attitudinals">
     <title><anchor xml:id="c2s16" />Indicators</title>
@@ -2231,11 +2040,7 @@
       etc.), but they vary greatly from culture to culture.
     </para>
 
-    <para>
-      Lojban has a group of cmavo known as
-      <quote>attitudinal indicators</quote>
-      which specifically covers this type of commentary on spoken statements. They are both written and spoken, but require no specific intonation or gestures. Grammatically they are very simple: one or more attitudinals at the beginning of a bridi apply to the entire bridi; anywhere else in the bridi they apply to the word immediately to the left. For example:
-    </para>
+    <para>Lojban has a group of cmavo known as <quote>attitudinal indicators</quote>, which specifically cover this type of commentary on spoken statements. They are both written and spoken, but require no specific intonation or gestures. Grammatically they are very simple: one or more attitudinals at the beginning of a bridi apply to the entire bridi; anywhere else in the bridi they apply to the word immediately to the left. For example:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-k1LH">
       <title><anchor xml:id="c2e16d1" /></title>
@@ -2307,25 +2112,9 @@
         </gloss>
       </interlinear-gloss-itemized>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>but/and equivalence</primary></indexterm>
-      <indexterm type="general"><primary>metalinguistic words</primary><secondary>quick-tour version</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>discursives</primary><secondary>quick-tour version</secondary>
-      </indexterm>
-      Not all indicators indicate attitudes. Discursives, another group of cmavo with the same grammatical rules as attitudinal indicators, allow free expression of certain kinds of commentary about the main utterances. Using discursives allows a clear separation of these so-called
-      <quote>metalinguistic</quote>
-      features from the underlying statements and logical structure. By comparison, the English words
-      <quote>but</quote>
-      and
-      <quote>also</quote>,
-      which discursively indicate contrast or an added weight of example, are logically equivalent to
-      <quote>and</quote>,
-      which does not have a discursive content. The average English-speaker does not think about, and may not even realize, the paradoxical idea that
-      <quote>but</quote>
-      basically means
-      <quote>and</quote>.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>but/and equivalence</primary></indexterm><indexterm type="general"><primary>metalinguistic words</primary><secondary>quick-tour version</secondary>
+      </indexterm><indexterm type="general"><primary>discursives</primary><secondary>quick-tour version</secondary>
+      </indexterm>Not all indicators indicate attitudes. Discursives, another group of cmavo with the same grammatical rules as attitudinal indicators, allow free expression of certain kinds of commentary about the main utterances. Using discursives allows a clear separation of these so-called <quote>metalinguistic</quote> features from the underlying statements and logical structure. Compare the English words <quote>but</quote> and <quote>also</quote>, which discursively indicate contrast or an added weight of example: logically, they are equivalent to <quote>and</quote>, which has no discursive content. The average English-speaker does not think about, and may not even realize, the paradoxical idea that <quote>but</quote> basically means <quote>and</quote>.</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k1Rd">
       <title><anchor xml:id="c2e16d4" /></title>
 
@@ -2408,18 +2197,8 @@
         </gloss>
       </interlinear-gloss-itemized>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>evidentials</primary><secondary>quick-tour version</secondary>
-      </indexterm>
-      Another group of indicators are called
-      <quote>evidentials</quote>. Evidentials show the speaker's relationship to the statement, specifically how the speaker came to make the statement. These include
-      <valsi>za'a</valsi>
-      (I directly observe the relationship),
-      <valsi>pe'i</valsi>
-      (I believe that the relationship holds),
-      <valsi>ru'a</valsi>
-      (I postulate the relationship), and others. Many American Indian languages use this kind of words.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>evidentials</primary><secondary>quick-tour version</secondary>
+      </indexterm>Another group of indicators are called <quote>evidentials</quote>. Evidentials show the speaker's relationship to the statement, specifically how the speaker came to make it. These include <valsi>za'a</valsi> (I directly observe the relationship), <valsi>pe'i</valsi> (I believe that the relationship holds), <valsi>ru'a</valsi> (I postulate the relationship), and others. Many American Indian languages use this kind of word.</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-k1uT">
       <title><anchor xml:id="c2e16d7" /></title>
@@ -2502,15 +2281,7 @@
         </gloss>
       </interlinear-gloss-itemized>
     </example>
-    <para role="noindent">
-      serves as a translation of either
-      <xref linkend="example-random-id-xIVa" />
-      or
-      <xref linkend="example-random-id-1Acu" />,
-      and of many other possible English sentences as well. It is not marked for tense, and can refer to an event in the past, the present or the future. This rule does not mean that Lojban has no way of representing the time of an event. A close translation of
-      <xref linkend="example-random-id-xIVa" />
-      would be:
-    </para>
+    <para role="noindent">serves as a translation of either <xref linkend="example-random-id-xIVa" /> or <xref linkend="example-random-id-1Acu" />, and of many other possible English sentences as well. It is not marked for tense, and so can refer to an event in the past, the present or the future. This doesn't mean that Lojban has no way of representing the time of an event. A close translation of <xref linkend="example-random-id-xIVa" /> would be:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-k1Y5">
       <title><anchor xml:id="c2e17d4" /></title>
 
@@ -2552,14 +2323,7 @@
         </gloss>
       </interlinear-gloss-itemized>
     </example>
-    <para role="noindent">
-      necessarily refers to the present, because of the tag
-      <valsi>ca</valsi>. Tags used in this way always appear at the very beginning of the selbri, just after the
-      <valsi>cu</valsi>,
-      and they may make a
-      <valsi>cu</valsi>
-      unnecessary, since tags cannot be absorbed into tanru. Such tags serve as an equivalent to English tenses and adverbs. In Lojban, tense information is completely optional. If unspecified, the appropriate tense is picked up from context.
-    </para>
+    <para role="noindent">necessarily refers to the present, because of the tag <valsi>ca</valsi>. Tags used in this way always appear at the very beginning of the selbri, just after the <valsi>cu</valsi>, and they may make a <valsi>cu</valsi> unnecessary, since tags cannot be absorbed into tanru. Such tags serve as an equivalent to English tenses and adverbs. In Lojban, tense information is completely optional. If it is left unspecified, the appropriate tense is picked up from context.</para>
 
     <para>
       <indexterm type="general"><primary>space tenses</primary><secondary>quick-tour version</secondary>

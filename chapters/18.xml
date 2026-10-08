@@ -1666,20 +1666,7 @@
         <description>too little of</description>
       </cmavo-entry>
     </cmavo-list>
-    <para role="indent">
-      Not all the cmavo of PA represent numbers in the usual mathematical sense. For example, the cmavo
-      <valsi>ro</valsi>
-      means
-      <quote>all</quote>
-      or
-      <quote>each</quote>. This number does not have a definite value in the abstract:
-      <jbophrase>li ro</jbophrase>
-      is undefined. But when used to count or quantify something, the parallel between
-      <valsi>ro</valsi>
-      and
-      <valsi>pa</valsi>
-      is clearer:
-    </para>
+    <para role="indent">Not all the cmavo of PA represent numbers in the usual mathematical sense. For example, the cmavo <valsi>ro</valsi> means <quote>all</quote> or <quote>each</quote>. This number does not have a definite value in the abstract: <jbophrase>li ro</jbophrase> is undefined. But when it is used to count or quantify something, the parallel between <valsi>ro</valsi> and <valsi>pa</valsi> is clearer:</para>
     <example xml:id="example-random-id-qI27" role="interlinear-gloss-example">
       <title><anchor xml:id="c18e8d1" /></title>
 
@@ -1780,17 +1767,7 @@
       or
       <quote>more than half</quote>.
     </para>
-    <para>
-      Each of these numbers, plus
-      <valsi>ro</valsi>
-      , may be prefixed with
-      <valsi>pi</valsi>
-      (the decimal point) in order to make a fractional form which represents part of a whole rather than some elements of a totality.
-      <valsi>piro</valsi>
-      therefore means
-      <quote>the whole of</quote>
-      :
-    </para>
+    <para>Each of these numbers, plus <valsi>ro</valsi>, may be prefixed with <valsi>pi</valsi> (the decimal point) to make a fractional form, one which represents part of a whole rather than some elements of a totality. <valsi>piro</valsi> therefore means <quote>the whole of</quote>:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-dwJI">
       <title><anchor xml:id="c18e8d8" /></title>
 
@@ -1799,34 +1776,8 @@
         <gloss>I eat the-whole-of the-group-of bread</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      Similarly,
-      <valsi>piso'a</valsi>
-      means
-      <quote>almost the whole of</quote>
-      ; and so on down to
-      <valsi>piso'u</valsi>
-      ,
-      <quote>a tiny part of</quote>. These numbers are particularly useful with groups and with references to things treated as substances (see
-      <xref linkend="section-masses" />). On a group, a fraction selects a subgroup with that fraction of the members. On a substance, it selects an amount, as
-      <xref linkend="example-random-id-dwJI" />
-      shows.
-    </para>
-    <para>
-      In addition to these cmavo, there is
-      <valsi>no'o</valsi>
-      , meaning
-      <quote>the typical value</quote>
-      , and
-      <jbophrase>pino'o</jbophrase>
-      , meaning
-      <quote>the typical portion</quote>
-      : Sometimes
-      <valsi>no'o</valsi>
-      can be translated
-      <quote>the average value</quote>
-      , but the average in question is not, in general, a mathematical mean, median, or mode; these would be more appropriately represented by operators.
-    </para>
+    <para role="indent">Similarly, <valsi>piso'a</valsi> means <quote>almost the whole of</quote>, and so on down to <valsi>piso'u</valsi>, <quote>a tiny part of</quote>. These numbers are particularly useful with groups and with references to things treated as substances (see <xref linkend="section-masses" />). On a group, a fraction selects a subgroup with that fraction of the members. On a substance, it selects an amount, as <xref linkend="example-random-id-dwJI" /> shows.</para>
+    <para>In addition to these cmavo, there is <valsi>no'o</valsi>, meaning <quote>the typical value</quote>, and <jbophrase>pino'o</jbophrase>, meaning <quote>the typical portion</quote>. Sometimes <valsi>no'o</valsi> can be translated <quote>the average value</quote>, but the average in question is not, in general, a mathematical mean, median, or mode; these would be more appropriately represented by operators.</para>
     <example xml:id="example-random-id-qi7Q" role="interlinear-gloss-example">
       <title><anchor xml:id="c18e8d9" /></title>
 
@@ -1953,25 +1904,9 @@
         <gloss>I possess the currency-units of - a-positive-number.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>indefinite values</primary><secondary>subjective</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>subjective amounts</primary><secondary>expressing</secondary>
-      </indexterm>
-      All of the numbers discussed so far are objective, even if indefinite. If there are exactly six superpowers (
-      <valsi valid="maybe">rairgugde</valsi>
-      ,
-      <quote>superlative-states</quote>) in the world, then
-      <jbophrase>ro rairgugde</jbophrase>
-      means the same as
-      <jbophrase>xa rairgugde</jbophrase>. It is often useful, however, to express subjective indefinite values. The cmavo
-      <valsi>rau</valsi>
-      (enough),
-      <valsi>du'e</valsi>
-      (too many), and
-      <valsi>mo'a</valsi>
-      (too few) are then appropriate:
-    </para>
+    <para role="indent"><indexterm type="general"><primary>indefinite values</primary><secondary>subjective</secondary>
+      </indexterm><indexterm type="general"><primary>subjective amounts</primary><secondary>expressing</secondary>
+      </indexterm>All of the numbers discussed so far are objective, even if indefinite. If there are exactly six superpowers (<valsi valid="maybe">rairgugde</valsi>, <quote>superlative-states</quote>) in the world, then <jbophrase>ro rairgugde</jbophrase> means the same as <jbophrase>xa rairgugde</jbophrase>. It is often useful, however, to express subjective indefinite values, and for those the cmavo <valsi>rau</valsi> (enough), <valsi>du'e</valsi> (too many), and <valsi>mo'a</valsi> (too few) are appropriate:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-TIiE">
       <title><anchor xml:id="c18e8d17" /><indexterm type="general"><primary>enough currency</primary></indexterm></title>
@@ -2005,13 +1940,9 @@
       means
       <quote>a sufficient part of.</quote>
     </para>
-    <para>
-      <indexterm type="general"><primary>definite numbers</primary><secondary>combined with indefinite</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>indefinite numbers</primary><secondary>combined with definite</secondary>
-      </indexterm>
-      Another possibility is that of combining definite and indefinite numbers into a single number. This usage implies that the two kinds of numbers have the same value in the given context:
-    </para>
+    <para><indexterm type="general"><primary>definite numbers</primary><secondary>combined with indefinite</secondary>
+      </indexterm><indexterm type="general"><primary>indefinite numbers</primary><secondary>combined with definite</secondary>
+      </indexterm>Another possibility is to combine definite and indefinite numbers into a single number. This usage implies that the two kinds of numbers have the same value in the given context:</para>
 
     <example xml:id="example-random-id-qibb" role="interlinear-gloss-example">
       <title><anchor xml:id="c18e8d18" /><indexterm type="general"><primary>both dogs</primary></indexterm></title>
@@ -3347,14 +3278,7 @@
 
       </cmavo-entry>
     </cmavo-list>
-    <para role="indent">
-      The infix operators presented so far have always had exactly two operands, and for more or fewer operands forethought notation has been required. However, it is possible to use an operator in infix style even though it has more or fewer than two operands, through the use of a pair of tricks: the null operand
-      <valsi>tu'o</valsi>
-      and the null operator
-      <valsi>ge'a</valsi>. The first is suitable when there are too few operands, the second when there are too many. For example, suppose we wanted to express the numerical negation operator
-      <valsi>va'a</valsi>
-      in infix form. We would use:
-    </para>
+    <para role="indent">The infix operators presented so far have always had exactly two operands, and forethought notation has been required whenever there were more or fewer. However, it is possible to use an operator in infix style even though it has more or fewer than two operands, through a pair of tricks: the null operand <valsi>tu'o</valsi> and the null operator <valsi>ge'a</valsi>. The first is suitable when there are too few operands, the second when there are too many. For example, suppose we wanted to express the numerical negation operator <valsi>va'a</valsi> in infix form. We would use:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-8Uh9">
       <title><anchor xml:id="c18e14d1" /></title>
 
@@ -3377,16 +3301,8 @@
       <valsi>va'a</valsi>
       , even though semantically none is needed or wanted.
     </para>
-    <para role="status-note">
-      <indexterm type="lojban-word"><primary>tu'o</primary><secondary>contrasted with mo'e zo'e</secondary>
-      </indexterm>
-      Sometimes an operand is not a mere grammatical filler but a genuinely <emphasis>unspecified</emphasis> quantity:
-      <quote>some number or other</quote>. For such an operand, modern practice prefers
-      <jbophrase>mo'e zo'e</jbophrase>, the elliptical sumti converted to an operand (see
-      <xref linkend="section-lojban-within-mekso" />). It keeps
-      <valsi>tu'o</valsi>
-      for the truly vacuous slot, as here.
-    </para>
+    <para role="status-note"><indexterm type="lojban-word"><primary>tu'o</primary><secondary>contrasted with mo'e zo'e</secondary>
+      </indexterm>Sometimes, though, an operand is not a mere grammatical filler but a genuinely <emphasis>unspecified</emphasis> quantity: <quote>some number or other</quote>. For such an operand, modern practice prefers <jbophrase>mo'e zo'e</jbophrase>, the elliptical sumti converted to an operand (see <xref linkend="section-lojban-within-mekso" />). <valsi>tu'o</valsi> is kept for the truly vacuous slot, as here.</para>
     <para>
       <indexterm type="general"><primary>exponential notation</primary><secondary>with &quot;gei&quot;</secondary>
       </indexterm>
@@ -4195,18 +4111,10 @@
         <description>terminator for all three</description>
       </cmavo-entry>
     </cmavo-list>
-    <para role="indent">
-      <indexterm type="lojban-word"><primary>mo'e</primary><secondary>terminator for</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>ni'e</primary><secondary>terminator for</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>na'u</primary><secondary>terminator for</secondary>
-      </indexterm>
-      One of the mekso design goals requires the ability to make use of Lojban's vocabulary resources within mekso to extend the built-in cmavo for operands and operators. There are three relevant constructs: all three share the elidable terminator
-      <valsi>te'u</valsi>
-      (which is also used to terminate vectors marked with
-      <valsi>jo'i</valsi>)
-    </para>
+    <para role="indent"><indexterm type="lojban-word"><primary>mo'e</primary><secondary>terminator for</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>ni'e</primary><secondary>terminator for</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>na'u</primary><secondary>terminator for</secondary>
+      </indexterm>One of the mekso design goals calls for making use of Lojban's vocabulary resources within mekso, so that the built-in cmavo for operands and operators can be extended. Three constructs serve this purpose, and all three share the elidable terminator <valsi>te'u</valsi> (which is also used to terminate vectors marked with <valsi>jo'i</valsi>)</para>
     <para>
       <indexterm type="general"><primary>operator derived from selbri</primary><secondary>effect of selbri place structure on</secondary>
       </indexterm>
@@ -4244,24 +4152,10 @@
       <valsi>na'u</valsi>
       here makes it into an operator which is then used in forethought
     </para>
-    <para>
-      <indexterm type="general"><primary>formulae</primary><secondary>expressing based on pure dimensions</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>conversion of selbri into operand</primary></indexterm>
-      <indexterm type="general"><primary>operand</primary><secondary>converting selbri into</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>selbri</primary><secondary>converting into an operand</secondary>
-      </indexterm>
-      The cmavo
-      <valsi>ni'e</valsi>
-      makes a selbri into an operand. The x<subscript>1</subscript> place of the selbri generally represents a number, and therefore is often a
-      <valsi>ni</valsi>
-      abstraction, since
-      <valsi>ni</valsi>
-      abstractions represent numbers. The
-      <valsi>ni'e</valsi>
-      makes that number available as a mekso operand. A common application is to make equations relating pure dimensions:
-    </para>
+    <para><indexterm type="general"><primary>formulae</primary><secondary>expressing based on pure dimensions</secondary>
+      </indexterm><indexterm type="general"><primary>conversion of selbri into operand</primary></indexterm><indexterm type="general"><primary>operand</primary><secondary>converting selbri into</secondary>
+      </indexterm><indexterm type="general"><primary>selbri</primary><secondary>converting into an operand</secondary>
+      </indexterm>The cmavo <valsi>ni'e</valsi> makes a selbri into an operand. The x<subscript>1</subscript> place of the selbri generally represents a number, and so is often a <valsi>ni</valsi> abstraction, since <valsi>ni</valsi> abstractions represent numbers. The <valsi>ni'e</valsi> makes that number available as a mekso operand. A common application is to make equations relating pure dimensions:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-wCJQ">
       <title><anchor xml:id="c18e18d2" /><indexterm type="general"><primary>Length × Width × Depth = Volume</primary></indexterm></title>
@@ -4284,22 +4178,10 @@
         <dbmath>Length × Width × Depth = Volume</dbmath>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-
-
-      <indexterm type="general"><primary>dimensioned numbers</primary><secondary>expressing</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>conversion of sumti into operand</primary></indexterm>
-      <indexterm type="general"><primary>operand</primary><secondary>converting sumti into</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>sumti</primary><secondary>converting into an operand</secondary>
-      </indexterm>
-      The cmavo
-      <valsi>mo'e</valsi>
-      operates similarly to
-      <valsi>ni'e</valsi>
-      , but makes a sumti (rather than a selbri) into an operand. This construction is useful in stating equations involving dimensioned numbers:
-    </para>
+    <para role="indent"><indexterm type="general"><primary>dimensioned numbers</primary><secondary>expressing</secondary>
+      </indexterm><indexterm type="general"><primary>conversion of sumti into operand</primary></indexterm><indexterm type="general"><primary>operand</primary><secondary>converting sumti into</secondary>
+      </indexterm><indexterm type="general"><primary>sumti</primary><secondary>converting into an operand</secondary>
+      </indexterm>The cmavo <valsi>mo'e</valsi> works much like <valsi>ni'e</valsi>, except that it makes a sumti (rather than a selbri) into an operand. This is handy for stating equations involving dimensioned numbers:</para>
 
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-ETmX">

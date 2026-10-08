@@ -7,65 +7,22 @@
   </mediaobject>
   <section xml:id="section-grammars-introduction">
     <title><anchor xml:id="c21-intro" />About the formal grammars</title>
-    <para>
-      <indexterm type="general"><primary>formal grammar</primary><secondary>role of</secondary>
-      </indexterm>
-      The designers of Lojban built its grammar so that a formal definition can state it. A formal grammar is a precise definition that a machine can test. The designers achieved that aim to a high degree. This chapter presents two formal grammars. The first defines the <emphasis>word forms</emphasis>: which strings of letters are words in the first place, and where each word begins and ends (see
-      <xref linkend="section-peg-grammar" />). The second defines the <emphasis>syntax</emphasis>: which strings of words are grammatical text, and what structure each such text has (see
-      <xref linkend="section-EBNF" />).
-    </para>
-    <para>
-      The rules for the word-level
-      <quote>magic words</quote>
-      are in
-      <xref linkend="chapter-structure" />. Those rules, and the unsettled corners that this chapter notes below, lie outside what the printed grammars decide.
-    </para>
-    <para>
-      <indexterm type="general"><primary>formal grammar</primary><secondary>status of versions</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>EBNF grammar</primary><secondary>status of</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>YACC grammar</primary><secondary>removed from print, 2014</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>third baseline</primary></indexterm>
-      The grammar of syntax in this chapter, in EBNF notation, is the <emphasis>official</emphasis> grammar. It corresponds to the third baselined machine grammar, which the Logical Language Group adopted. The first edition also printed the equivalent YACC grammar, which is the source of the EBNF. It declared the YACC version authoritative in case of a discrepancy. This edition no longer prints the YACC listing. The listing is still available in the electronic supplements to this book, and
-      <xref linkend="appendix-changes" />
-      gives the history of that decision.
-    </para>
-    <para>
-      <indexterm type="general"><primary>camxes</primary><secondary>as de facto compatibility target</secondary>
-      </indexterm>
-      Meanwhile, the working grammars of the community use a different formal system: parsing expression grammars (PEG). These grammars cover morphology and syntax together. They also include the amendments that the language-definition committee adopted, which this book describes throughout. The standard camxes PEG is the principal de facto target for compatibility across the tools that this edition surveyed. Some of those tools implement it directly, and others reimplement its behavior. All of this is de facto, not official.
-    </para>
-    <para>
-      This chapter prints only the part of the camxes PEG that defines word forms (see
-      <xref linkend="section-peg-grammar" />). That part is a precise, formal definition of how a stream of sounds breaks into words. For syntax, this chapter prints the official EBNF grammar instead, so the camxes PEG for syntax is not in this book.
-    </para>
-    <para role="status-note">
-      Sometimes the text of this book or the EBNF below disagrees with the amendments. In those cases the amendments prevail, and the book flags each one where it teaches it. The EBNF itself appears here as baselined.
-    </para>
-    <para>
-      <indexterm type="general"><primary>tags</primary><secondary>binding to selbri, in the EBNF grammar</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>tenses</primary><secondary>before forethought connectives, in the EBNF grammar</secondary>
-      </indexterm>
-      There are three known seams between this EBNF and current practice. First, the rules below represent the
-      <quote>magic words</quote>
-      (quotation, erasure, and their kin) only by placeholders. Their real behavior is word-level.
-      <xref linkend="chapter-structure" />
-      specifies it rule by rule. That specification also covers the genuinely unsettled
-      <valsi>sa</valsi>.
-    </para>
-    <para>
-      Second, where a tag stands directly before a selbri, the EBNF permits more than one grouping. The BPFK is the language-definition committee, and
-      <xref linkend="chapter-about" />
-      tells its story. The BPFK approved a decision on tag binding that picks one grouping. The parsers that this edition surveyed implement that choice (see
-      <xref linkend="section-tenses-introduction" />).
-    </para>
-    <para>
-      Third, the baseline parser did not accept a bare tense before a forethought connective construction at all. The de facto grammars accept it. They read the tense as a term with scope over the whole construction (see
-      <xref linkend="chapter-connectives" />).
-    </para>
+    <para><indexterm type="general"><primary>formal grammar</primary><secondary>role of</secondary>
+      </indexterm>Lojban was designed so that a formal definition could state its grammar, and the designers largely achieved that aim. A formal grammar is a precise definition that a machine can test. This chapter presents two of them. The first defines the <emphasis>word forms</emphasis>: which strings of letters are words in the first place, and where each word begins and ends (see <xref linkend="section-peg-grammar" />). The second defines the <emphasis>syntax</emphasis>: which strings of words are grammatical text, and what structure each such text has (see <xref linkend="section-EBNF" />).</para>
+    <para>The rules for the word-level <quote>magic words</quote> are in <xref linkend="chapter-structure" />. Those rules, along with the unsettled corners this chapter notes below, lie outside what the printed grammars decide.</para>
+    <para><indexterm type="general"><primary>formal grammar</primary><secondary>status of versions</secondary>
+      </indexterm><indexterm type="general"><primary>EBNF grammar</primary><secondary>status of</secondary>
+      </indexterm><indexterm type="general"><primary>YACC grammar</primary><secondary>removed from print, 2014</secondary>
+      </indexterm><indexterm type="general"><primary>third baseline</primary></indexterm>The syntax grammar printed here, in EBNF notation, is the <emphasis>official</emphasis> one. It corresponds to the third baselined machine grammar, the one the Logical Language Group adopted. The first edition of this book also printed the equivalent YACC grammar, which is the source of the EBNF, and declared the YACC version authoritative in case of a discrepancy. This edition no longer prints the YACC listing. You can still find it in the electronic supplements to this book, and <xref linkend="appendix-changes" /> gives the history of that decision.</para>
+    <para><indexterm type="general"><primary>camxes</primary><secondary>as de facto compatibility target</secondary>
+      </indexterm>Meanwhile, the working grammars of the community use a different formal system: parsing expression grammars (PEG). These cover morphology and syntax together, and they include the amendments that the language-definition committee adopted, which this book describes throughout. The standard camxes PEG is the principal de facto target for compatibility across the tools this edition surveyed. Some of those tools implement it directly, and others reimplement its behavior. All of this is de facto, not official.</para>
+    <para>Of the camxes PEG, this chapter prints only the part that defines word forms (see <xref linkend="section-peg-grammar" />). That part is a precise, formal definition of how a stream of sounds breaks into words. For syntax we print the official EBNF grammar instead, so the camxes PEG for syntax is not in this book.</para>
+    <para role="status-note">Sometimes the text of this book or the EBNF below disagrees with the amendments. When that happens, the amendments prevail, and the book flags each one where it teaches it. The EBNF itself appears here as baselined.</para>
+    <para><indexterm type="general"><primary>tags</primary><secondary>binding to selbri, in the EBNF grammar</secondary>
+      </indexterm><indexterm type="general"><primary>tenses</primary><secondary>before forethought connectives, in the EBNF grammar</secondary>
+      </indexterm>There are three known seams between this EBNF and current practice. First, the rules below represent the <quote>magic words</quote> (quotation, erasure, and their kin) only by placeholders. Their real behavior is word-level, and <xref linkend="chapter-structure" /> specifies it rule by rule. That specification also covers the genuinely unsettled <valsi>sa</valsi>.</para>
+    <para>Second, where a tag stands directly before a selbri, the EBNF permits more than one grouping. The BPFK, whose story <xref linkend="chapter-about" /> tells, is the language-definition committee, and it approved a decision on tag binding that picks one grouping. The parsers this edition surveyed implement that choice (see <xref linkend="section-tenses-introduction" />).</para>
+    <para>Third, the baseline parser did not accept a bare tense before a forethought connective construction at all. The de facto grammars accept it, and they read the tense as a term with scope over the whole construction (see <xref linkend="chapter-connectives" />).</para>
     <para role="status-note">
       The three seams have three different statuses: genuinely unsettled, committee-approved, and de facto, respectively.
       <xref linkend="appendix-changes" />
@@ -74,49 +31,26 @@
   </section>
   <section xml:id="section-peg-grammar">
     <title><anchor xml:id="c21-peg" />PEG word-form grammar</title>
-    <para>
-      <indexterm type="general"><primary>PEG word-form grammar</primary><secondary>full text of</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>slinku'i test</primary><secondary>formal statement of</secondary>
-      </indexterm>
-      This section reproduces the formal definition of Lojban word forms. It is the morphology part of the PEG that current Lojban software implements. It states precisely the rules that
-      <xref linkend="chapter-morphology" />
-      and
-      <xref linkend="chapter-phonology" />
-      present informally. These rules decide which strings of letters are cmevla, cmavo, and brivla, where words begin and end, and which letter sequences Lojban permits at all.
-    </para>
-    <para>
-      The grammar is the one that the camxes parser family uses, at the revision that this edition pinned for its verification work. Jorge Llambias (<jbophrase>la .xorxes.</jbophrase>) wrote it. This section reproduces every rule below exactly as that file defines it. But the file itself is a plain-text program, and this section lays it out for readers. Each rule appears under its own name, and headings group the rules. The arrow between the name of a rule and its definition is
-      <quote>&#8592;</quote>
-      here, where the file writes
-      <quote>&lt;-</quote>.
-    </para>
+    <para><indexterm type="general"><primary>PEG word-form grammar</primary><secondary>full text of</secondary>
+      </indexterm><indexterm type="general"><primary>slinku'i test</primary><secondary>formal statement of</secondary>
+      </indexterm>This section reproduces the formal definition of Lojban word forms. It is the morphology part of the PEG that current Lojban software implements, and it states precisely what <xref linkend="chapter-morphology" /> and <xref linkend="chapter-phonology" /> present informally. These rules decide which strings of letters are cmevla, cmavo, and brivla, where words begin and end, and which letter sequences Lojban permits at all.</para>
+    <para>The grammar is the one the camxes parser family uses, at the revision this edition pinned for its verification work. It was written by Jorge Llambias (<jbophrase>la .xorxes.</jbophrase>). Every rule below appears exactly as his file defines it. The file itself, though, is a plain-text program, so this section lays it out for readers: each rule appears under its own name, and headings group the rules. The arrow between the name of a rule and its definition is <quote>&#8592;</quote> here, where the file writes <quote>&lt;-</quote>.</para>
     <para>
       The file is under the MIT license.
       <xref linkend="section-copyright" />
       prints its copyright and permission notices, which also cover the rules in this section.
     </para>
-    <para>
-      Every rule definition appears with its own characters, in the order of the file. We changed, reordered, or omitted none of them. The typesetting changes only the material around them. The headings of the subsections come from this edition, not from the file (which had only three headings of its own). The implementation directives after a few rules are in italics. The comments of the file appear here as prose: we quote some, summarize others, and leave out one bibliographic link to the parsing literature.
-    </para>
+    <para>Every rule definition appears with its own characters, in the order of the file. We changed, reordered, or omitted none of them; the typesetting changes only the material around them. The headings of the subsections come from this edition, not from the file (which had only three headings of its own). The implementation directives after a few rules are in italics. The comments of the file appear here as prose: we quote some, summarize others, and leave out one bibliographic link to the parsing literature.</para>
     <para role="status-note">
       <indexterm type="general"><primary>PEG word-form grammar</primary><secondary>status of</secondary>
       </indexterm>
       This grammar is the de facto standard definition of Lojban word forms, and current software implements it. Within it, the ban on a consonant followed by a glide is separately committee-approved. For the full history of its authority, see
       <xref linkend="appendix-changes" />.
     </para>
-    <para>
-      A parsing expression grammar differs from more familiar grammar notations in one important way: the choice operator
-      <quote>/</quote>
-      is <emphasis>ordered</emphasis>. When there are several alternatives, the parser takes the first one that succeeds and never tries the rest. The grammar also has two lookahead operators:
-      <quote>&amp;</quote>
-      (the following material must be present) and
-      <quote>!</quote>
-      (the following material must be absent). Ordered choice and lookahead together make the grammar deterministic: it divides any stream of Lojban sounds into words in exactly one way.
-    </para>
+    <para>A parsing expression grammar differs from the more familiar grammar notations in one important way: the choice operator <quote>/</quote> is <emphasis>ordered</emphasis>. When there are several alternatives, the parser takes the first one that succeeds and never tries the rest. The grammar also has two lookahead operators, <quote>&amp;</quote> (the following material must be present) and <quote>!</quote> (the following material must be absent). Ordered choice and lookahead together make the grammar deterministic, so it divides any stream of Lojban sounds into words in exactly one way.</para>
     <para>Here is the full notation:</para>
     <itemizedlist>
-      <listitem><para>A rule has the form <emphasis>name</emphasis> &#8592; expression: that expression parses the construct called <emphasis>name</emphasis>.</para></listitem>
+      <listitem><para>A rule has the form <emphasis>name</emphasis> &#8592; expression, which means that the expression parses the construct called <emphasis>name</emphasis>.</para></listitem>
       <listitem><para>Concatenation is juxtaposition: you write the parts next to each other, with no operator between them.</para></listitem>
       <listitem><para><quote>/</quote> is ordered choice, as described above.</para></listitem>
       <listitem><para><quote>?</quote> makes the element to its left optional.</para></listitem>
@@ -153,7 +87,7 @@
     </section>
     <section xml:id="peg-words">
       <title>Words and ZOI quotes</title>
-      <para>The source file opens with three wrapper rules. It keeps them as comments, because they belong to the parser, not to the grammar proper. They say this:</para>
+      <para>The source file opens with three wrapper rules. It keeps them as comments, because they belong to the parser and not to the grammar proper. They say this:</para>
       <itemizedlist>
         <listitem><para>A text is an optional pause followed by any number of words, each optionally followed by a pause.</para></listitem>
         <listitem><para>A word is either a Lojban word or a non-Lojban word.</para></listitem>

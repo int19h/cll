@@ -47,23 +47,9 @@
       <valsi>kei</valsi>
       had been elided.
     </para>
-    <para>
-      <indexterm type="general"><primary>kei</primary><secondary>elision before a tagged selbri</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>tags</primary><secondary>binding across an elided kei</secondary>
-      </indexterm>
-      A tense or modal tag directly in front of a selbri binds to that selbri exactly as
-      <valsi>cu</valsi>
-      does. This is the rule for tag binding (see
-      <xref linkend="section-tenses-introduction" />
-      for its status). So in
-      <jbophrase>lo nu klama ba brode</jbophrase>, the
-      <valsi>ba</valsi>
-      itself ends the abstraction, with no need for
-      <valsi>kei</valsi>, and it opens the main selbri
-      <valsi>brode</valsi>. Older texts and grammars group this differently (see
-      <xref linkend="appendix-changes" />).
-    </para>
+    <para><indexterm type="general"><primary>kei</primary><secondary>elision before a tagged selbri</secondary>
+      </indexterm><indexterm type="general"><primary>tags</primary><secondary>binding across an elided kei</secondary>
+      </indexterm>A tense or modal tag standing directly in front of a selbri binds to that selbri exactly as <valsi>cu</valsi> does. This is the rule for tag binding (see <xref linkend="section-tenses-introduction" /> for its status). So in <jbophrase>lo nu klama ba brode</jbophrase>, the <valsi>ba</valsi> itself ends the abstraction, with no need for <valsi>kei</valsi>, and it opens the main selbri <valsi>brode</valsi>. Older texts and grammars group this differently (see <xref linkend="appendix-changes" />).</para>
     <para>
       If you <emphasis>want</emphasis> the tag inside the abstraction, you have two choices. You can follow the tag with a sumti:
       <jbophrase>lo nu klama ba le nu tavla cu xamgu</jbophrase>
@@ -117,29 +103,9 @@
         <gloss>That-named John -- desires the event-of being-a-soldier.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>abstractions</primary><secondary>le contrasted with lo before</secondary>
-      </indexterm>
-      The choice of descriptor matters for abstractions, just as for anything else (see
-      <xref linkend="section-basic-descriptors" />). The form
-      <jbophrase>le nu</jbophrase>
-      points to a particular event that the speaker has in mind. The form
-      <jbophrase>lo nu</jbophrase>
-      refers to whatever event really fits the description. It is the usual choice when the speaker means no particular occasion. The examples in this chapter mostly use
-      <jbophrase>le nu</jbophrase>, which is fine wherever a specific occasion is in view. Read them with that distinction in mind.
-    </para>
-    <para role="indent">
-      We will most often use descriptions containing abstraction either at the end of a bridi, or just before the main selbri with its
-      <valsi>cu</valsi>
-      ; in either of these circumstances,
-      <valsi>kei</valsi>
-      can normally be elided. The same holds when a <emphasis>bare</emphasis> tense or tag stands directly before the main selbri, in the place of the
-      <valsi>cu</valsi>. By the binding rule above, the tag closes the abstraction exactly as
-      <valsi>cu</valsi>
-      does. A tag that heads a larger construction does not close it. An example is the
-      <jbophrase>ba bo</jbophrase>
-      of a bridi-tail connective.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>abstractions</primary><secondary>le contrasted with lo before</secondary>
+      </indexterm>The choice of descriptor matters for abstractions just as it does for anything else (see <xref linkend="section-basic-descriptors" />). The form <jbophrase>le nu</jbophrase> points to a particular event that the speaker has in mind. The form <jbophrase>lo nu</jbophrase> refers to whatever event really fits the description, and it is the usual choice when the speaker means no particular occasion. The examples in this chapter mostly use <jbophrase>le nu</jbophrase>, which is fine wherever a specific occasion is in view; read them with that distinction in mind.</para>
+    <para role="indent">We will most often use descriptions containing abstraction either at the end of a bridi, or just before the main selbri with its <valsi>cu</valsi>; in either of these circumstances, <valsi>kei</valsi> can normally be elided. The same holds when a <emphasis>bare</emphasis> tense or tag stands directly before the main selbri, in the place of the <valsi>cu</valsi>: by the binding rule above, the tag closes the abstraction exactly as <valsi>cu</valsi> does. A tag that heads a larger construction, however, does not close it. An example is the <jbophrase>ba bo</jbophrase> of a bridi-tail connective.</para>
     <para>
       <indexterm type="general"><primary>abstractions</primary><secondary>place structure</secondary>
       </indexterm>
@@ -249,13 +215,8 @@
       <xref linkend="example-random-id-qf97" />
       describes something associated with the bridi as a whole: the event of it.
     </para>
-    <para>
-      <indexterm type="general"><primary>events</primary><secondary>duration</secondary>
-      </indexterm>
-      In Lojban, the term
-      <quote>event</quote>
-      is divorced from its ordinary English sense of something that happens over a short period of time. The description:
-    </para>
+    <para><indexterm type="general"><primary>events</primary><secondary>duration</secondary>
+      </indexterm>In Lojban, the term <quote>event</quote> has nothing to do with its ordinary English sense of something that happens over a short period of time. The description:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-mxAt">
       <title><anchor xml:id="c11e2d7" /></title>
 
@@ -278,17 +239,8 @@
       <indexterm type="general"><primary>normal circumstances</primary></indexterm>
       is relatively brief by comparison (again, under normal circumstances).
     </para>
-    <para>
-      <indexterm type="general"><primary>abstractions</primary><secondary>sumti ellipsis in</secondary>
-      </indexterm>
-      We can see from
-      <xref linkend="example-random-id-qf97" />
-      through
-      <xref linkend="example-random-id-BPcI" />
-      that ellipsis of sumti is valid in the bridi of abstraction selbri, just as in the main bridi of a sentence. Any sumti may be ellipsized if the listener will be able to figure out from context what the proper value of it is, or else to recognize that the proper value is unimportant. It is extremely common for
-      <valsi>nu</valsi>
-      abstractions in descriptions to have the x<subscript>1</subscript> place ellipsized:
-    </para>
+    <para><indexterm type="general"><primary>abstractions</primary><secondary>sumti ellipsis in</secondary>
+      </indexterm>We can see from <xref linkend="example-random-id-qf97" /> through <xref linkend="example-random-id-BPcI" /> that sumti may be ellipsized in the bridi of an abstraction selbri, just as in the main bridi of a sentence. Any sumti may be left out if the listener can work out from context what its proper value is, or else can recognize that the proper value is unimportant. It is extremely common for <valsi>nu</valsi> abstractions in descriptions to have the x<subscript>1</subscript> place ellipsized:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-FRoP">
       <title><anchor xml:id="c11e2d9" /></title>
 
@@ -1010,11 +962,7 @@
       is equivalent to
       <quote>falsehood</quote>.
     </para>
-    <para>
-      However, not everything in life (or even in Lojban) is simply true or false. There are shades of gray even in truth value. The first edition of this book proposed
-      <valsi>jei</valsi>
-      as the Lojban mechanism to indicate the intended shade of gray. (The end of this section discusses the status of this reading.) Here is an example:
-    </para>
+    <para>However, not everything in life (or even in Lojban) is simply true or false. There are shades of gray even in truth value. The first edition of this book proposed <valsi>jei</valsi> as the Lojban mechanism for indicating the shade of gray intended. (The end of this section discusses the status of this reading.) Here is an example:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-MRD8">
       <title><anchor xml:id="c11e6d3" /><indexterm type="general"><primary>whether criminal</primary></indexterm></title>
 

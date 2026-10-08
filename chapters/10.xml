@@ -92,28 +92,11 @@
       </listitem>
     </itemizedlist>
     <para role="noindent">as well as many other possibilities: context resolves which is correct.</para>
-    <para>
-      <indexterm type="lojban-word"><primary>cu</primary><secondary>effect of tense specification</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>tense specification</primary><secondary>effect on elidability of terminators</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>tense specification</primary><secondary>effect on &quot;cu&quot;</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>tense</primary><secondary>position of in sentence</secondary>
-      </indexterm>
-      The placement of a tense construct within a Lojban bridi is easy: right before the selbri. It goes immediately after the
-      <valsi>cu</valsi>
-      , and can in fact always replace the
-      <valsi>cu</valsi>. A tense (or any tag) directly in front of a selbri binds to that selbri exactly as
-      <valsi>cu</valsi>
-      does. But an explicit
-      <valsi>ku</valsi>
-      between them breaks the binding. So
-      <jbophrase>lo nu broda ba brode</jbophrase>
-      is a complete bridi. The abstraction closes, and
-      <valsi>ba</valsi>
-      opens the main selbri.
-    </para>
+    <para><indexterm type="lojban-word"><primary>cu</primary><secondary>effect of tense specification</secondary>
+      </indexterm><indexterm type="general"><primary>tense specification</primary><secondary>effect on elidability of terminators</secondary>
+      </indexterm><indexterm type="general"><primary>tense specification</primary><secondary>effect on &quot;cu&quot;</secondary>
+      </indexterm><indexterm type="general"><primary>tense</primary><secondary>position of in sentence</secondary>
+      </indexterm>The placement of a tense construct within a Lojban bridi is easy: right before the selbri. It goes immediately after the <valsi>cu</valsi>, and can in fact always replace the <valsi>cu</valsi>. A tense (or any tag) directly in front of a selbri binds to that selbri exactly as <valsi>cu</valsi> does. But an explicit <valsi>ku</valsi> between them breaks the binding. So <jbophrase>lo nu broda ba brode</jbophrase> is a complete bridi: the abstraction closes, and <valsi>ba</valsi> opens the main selbri.</para>
     <para role="status-note">
       <indexterm type="general"><primary>tags</primary><secondary>binding to selbri, status</secondary>
       </indexterm>
@@ -248,23 +231,12 @@
       (The complete list of FAhA cmavo can be found in
       <xref linkend="section-direction-cmavo" />.)
     </para>
-    <para>
-      Why is this section about spatial tenses rather than the more familiar time tenses of
-      <xref linkend="section-tenses-introduction" />
-      , asks the reader? Because the model to be used in explaining both will be easier to grasp for space than for time. The explanation of time tenses will resume in
-      <xref linkend="section-temporal-tenses" />.
-    </para>
-    <para>
-      <indexterm type="general"><primary>temporal tense elision</primary><secondary>compared with spatial tense elision in meaning</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>temporal tense</primary><secondary>compared with spatial tense in elidability</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>spatial tense</primary><secondary>compared with temporal tense in elidability</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>spatial tense</primary><secondary>as optional in English</secondary>
-      </indexterm>
-      English doesn't have mandatory spatial tenses. Although there are plenty of ways in English of showing where an event happens, there is absolutely no need to do so. Considering this fact may give the reader a feel for what the optional Lojban time tenses are like. From the Lojban point of view, space and time are interchangeable, although they are not treated identically.
-    </para>
+    <para>Why is this section about spatial tenses rather than the more familiar time tenses of <xref linkend="section-tenses-introduction" />, asks the reader? Because the model used to explain both is easier to grasp for space than for time. The explanation of time tenses will resume in <xref linkend="section-temporal-tenses" />.</para>
+    <para><indexterm type="general"><primary>temporal tense elision</primary><secondary>compared with spatial tense elision in meaning</secondary>
+      </indexterm><indexterm type="general"><primary>temporal tense</primary><secondary>compared with spatial tense in elidability</secondary>
+      </indexterm><indexterm type="general"><primary>spatial tense</primary><secondary>compared with temporal tense in elidability</secondary>
+      </indexterm><indexterm type="general"><primary>spatial tense</primary><secondary>as optional in English</secondary>
+      </indexterm>English doesn't have mandatory spatial tenses. There are plenty of ways in English to show where an event happens, but absolutely no need to use any of them. Thinking about this may give the reader a feel for what the optional Lojban time tenses are like. From the Lojban point of view, space and time are interchangeable, although they are not treated identically.</para>
 
     <para>
       <indexterm type="general"><primary>spatial tense</primary><secondary>distance</secondary>
@@ -327,17 +299,13 @@
         <gloss>The man [left] bites the dog.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">Here the imaginary journey is again from the speaker's location to the location of the bridi, but it is now performed by going to the left (in the speaker's reference frame) for an unspecified distance. So a reasonable translation is:</para>
+    <para role="indent">Here the imaginary journey again runs from the speaker's location to the location of the bridi, but this time it goes to the left (in the speaker's reference frame) for an unspecified distance. So a reasonable translation is:</para>
     <blockquote>
       <para>
         To my left, the man bites the dog.
       </para>
     </blockquote>
-    <para>
-      The
-      <quote>my</quote>
-      does not have an explicit equivalent in the Lojban, because the speaker's location is understood as the starting point.
-    </para>
+    <para>The <quote>my</quote> has no explicit equivalent in the Lojban, because the speaker's location is understood as the starting point.</para>
     <para>
       <indexterm type="lojban-word"><primary>VA selma'o</primary><secondary>relation of words to &quot;ti&quot;</secondary>
         <tertiary>ta, tu</tertiary>
@@ -2321,17 +2289,9 @@
       <valsi>pu</valsi>
       , the sumtcita?
     </para>
-    <para>
-      <indexterm type="general"><primary>imaginary journey</primary><secondary>starting at a different point</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>imaginary journey</primary><secondary>starting point</secondary>
-      </indexterm>
-      All of our imaginary journeys so far have started at the speaker's location in space and time. Now we are specifying an imaginary journey that starts at a different location, namely at the event of your going to the house.
-      <xref linkend="example-random-id-4aPT" />
-      then says that my going to the market is in the past, relative not to the speaker's present moment, but instead relative to the moment when you went to the house.
-      <xref linkend="example-random-id-4aPT" />
-      can therefore be translated:
-    </para>
+    <para><indexterm type="general"><primary>imaginary journey</primary><secondary>starting at a different point</secondary>
+      </indexterm><indexterm type="general"><primary>imaginary journey</primary><secondary>starting point</secondary>
+      </indexterm>All of our imaginary journeys so far have started at the speaker's location in space and time. Now we are specifying an imaginary journey that starts somewhere else, namely at the event of your going to the house. <xref linkend="example-random-id-4aPT" /> then says that my going to the market is in the past, relative not to the speaker's present moment, but to the moment when you went to the house. <xref linkend="example-random-id-4aPT" /> can therefore be translated:</para>
     <blockquote>
       <para>I had gone to the market before you went to the house.</para>
     </blockquote>
@@ -2405,14 +2365,7 @@
       The event contours of selma'o ZAhO (and their space equivalents, prefixed with
       <valsi>fe'e</valsi>) are also useful as sumtcita. The interpretation of ZAhO tcita differs from that of FAhA, VA, PU, and ZI tcita, however.
     </para>
-    <para>
-      Here we view the <emphasis>main bridi</emphasis> as a process, and the tagged sumti supplies a reference. For the temporal contours, it is a reference event. For the
-      <valsi>fe'e</valsi>
-      forms, it is a reference location. The ZAhO says which phase the process of the main bridi is in at that time, or at that place. In the temporal case,
-      <jbophrase>broda ba'o lo nu brode</jbophrase>
-      means the same as
-      <jbophrase>ba'o broda ca lo nu brode</jbophrase>: at the time of the brode, the broda is already over. Here is an example:
-    </para>
+    <para>Here we view the <emphasis>main bridi</emphasis> as a process, and the tagged sumti supplies a reference. For the temporal contours, that reference is an event; for the <valsi>fe'e</valsi> forms, it is a location. The ZAhO tells us which phase the process of the main bridi is in at that time, or at that place. In the temporal case, <jbophrase>broda ba'o lo nu brode</jbophrase> means the same as <jbophrase>ba'o broda ca lo nu brode</jbophrase>: at the time of the brode, the broda is already over. Here is an example:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-xAb1">
       <title>
@@ -3215,8 +3168,7 @@
   </section>
   <section xml:id="section-tense-connection">
     <title><anchor xml:id="c10s16" />Tense relations between sentences</title>
-    <para>      <indexterm type="general"><primary>tense with sumtcita</primary><secondary>asymmetry of</secondary>      </indexterm>      The sumtcita method, explained in      <xref linkend="section-tcita" />      , of asserting a tense relationship between two events suffers from asymmetry. Specifically,
-    </para>
+    <para><indexterm type="general"><primary>tense with sumtcita</primary><secondary>asymmetry of</secondary>      </indexterm>The sumtcita method of asserting a tense relationship between two events, explained in <xref linkend="section-tcita" />, suffers from asymmetry. Specifically,</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-vreo">
       <title><anchor xml:id="c10e16d1" /></title>
 
@@ -3230,17 +3182,9 @@
         <natlang>The child walks on the ice to the left of where the man bites the dog.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      <indexterm type="general"><primary>sentences</primary><secondary>connecting with tense</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>tense</primary><secondary>connecting sentences in with</secondary>
-      </indexterm>
-      which specifies an imaginary journey leftward from the man biting the dog to the child walking on the ice, claims only that the child walks on the ice. By the nature of
-      <jbophrase>le nu</jbophrase>
-      , the man's biting the dog is merely referred to without being claimed. If it seems desirable to claim both, each event can be expressed as a main sentence bridi, with a special form of
-      <valsi>.i</valsi>
-      connecting them:
-    </para>
+    <para role="noindent"><indexterm type="general"><primary>sentences</primary><secondary>connecting with tense</secondary>
+      </indexterm><indexterm type="general"><primary>tense</primary><secondary>connecting sentences in with</secondary>
+      </indexterm>specifies an imaginary journey leftward from the man biting the dog to the child walking on the ice, but it claims only that the child walks on the ice. By the nature of <jbophrase>le nu</jbophrase>, the man's biting the dog is merely referred to, not claimed. If we want to claim both, each event can be expressed as a main sentence bridi, with a special form of <valsi>.i</valsi> connecting them:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-9Q0x">
       <title><anchor xml:id="c10e16d2" /></title>
 
@@ -3254,35 +3198,12 @@
         <natlang>The man bites the dog. To the left, the child walks on the ice.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      <jbophrase>.izu'abo</jbophrase>
-      is a compound cmavo: the
-      <valsi>.i</valsi>
-      separates the sentences and the
-      <valsi>zu'a</valsi>
-      is the tense. The
-      <valsi>bo</valsi>
-      is required to prevent the
-      <valsi>zu'a</valsi>
-      from gobbling up the following sumti, namely
-      <jbophrase>le verba</jbophrase>.
-    </para>
-    <para>
-      <indexterm type="general"><primary>tense</primary><secondary>sumtcita form contrasted with connected sentences</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>tense connection of sentences</primary><secondary>contrasted with sumtcita form</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>imaginary journey</primary><secondary>origin of in tense-connected sentences</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>tense connection of sentences</primary><secondary>order of</secondary>
-      </indexterm>
-      Note that the bridi in
-      <xref linkend="example-random-id-9Q0x" />
-      appear in the reverse order from their appearance in
-      <xref linkend="example-random-id-vreo" />. With
-      <jbophrase>.izu'abo</jbophrase>
-      (and all other afterthought tense connectives) the sentence specifying the origin of the journey comes first. This is a natural order for sentences, but requires some care when converting between this form and the sumtcita form.
-    </para>
+    <para role="noindent"><jbophrase>.izu'abo</jbophrase> is a compound cmavo: the <valsi>.i</valsi> separates the sentences, and the <valsi>zu'a</valsi> is the tense. The <valsi>bo</valsi> is required to keep the <valsi>zu'a</valsi> from gobbling up the following sumti, namely <jbophrase>le verba</jbophrase>.</para>
+    <para><indexterm type="general"><primary>tense</primary><secondary>sumtcita form contrasted with connected sentences</secondary>
+      </indexterm><indexterm type="general"><primary>tense connection of sentences</primary><secondary>contrasted with sumtcita form</secondary>
+      </indexterm><indexterm type="general"><primary>imaginary journey</primary><secondary>origin of in tense-connected sentences</secondary>
+      </indexterm><indexterm type="general"><primary>tense connection of sentences</primary><secondary>order of</secondary>
+      </indexterm>Note that the bridi in <xref linkend="example-random-id-9Q0x" /> appear in the reverse order from their appearance in <xref linkend="example-random-id-vreo" />. With <jbophrase>.izu'abo</jbophrase> (and all other afterthought tense connectives) the sentence specifying the origin of the journey comes first. That is a natural order for sentences, but it requires some care when you convert between this form and the sumtcita form.</para>
 
     <para>
       <xref linkend="example-random-id-9Q0x" />
@@ -3301,15 +3222,8 @@
         <natlang>The man bites the dog. Left of what I just mentioned, the child walks on the ice.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>tense connected sentences</primary><secondary>importance of bo in</secondary>
-      </indexterm>
-      If the
-      <valsi>bo</valsi>
-      is omitted in
-      <xref linkend="example-random-id-9Q0x" />
-      , the meaning changes:
-    </para>
+    <para role="indent"><indexterm type="general"><primary>tense connected sentences</primary><secondary>importance of bo in</secondary>
+      </indexterm>If the <valsi>bo</valsi> is omitted from <xref linkend="example-random-id-9Q0x" />, the meaning changes:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-jThf">
       <title><anchor xml:id="c10e16d4" /></title>
 
@@ -3323,23 +3237,10 @@
         <natlang>The man bites the dog. To the left of the child, something walks on the ice.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      Here the first place of the second sentence is unspecified, because
-      <valsi>zu'a</valsi>
-      has absorbed the sumti
-      <jbophrase>le verba</jbophrase>.
-    </para>
-    <para>
-      Do not confuse either
-      <xref linkend="example-random-id-9Q0x" />
-      or
-      <xref linkend="example-random-id-jThf" />
-      with the following:
-      <indexterm type="general"><primary>separately tensed sentences</primary><secondary>contrasted with tense connected sentences</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>tense connected sentences</primary><secondary>contrasted with separately tensed sentences</secondary>
-      </indexterm>
-    </para>
+    <para role="indent">Here the first place of the second sentence is left unspecified, because <valsi>zu'a</valsi> has absorbed the sumti <jbophrase>le verba</jbophrase>.</para>
+    <para>Don't confuse either <xref linkend="example-random-id-9Q0x" /> or <xref linkend="example-random-id-jThf" /> with the following:<indexterm type="general"><primary>separately tensed sentences</primary><secondary>contrasted with tense connected sentences</secondary>
+      </indexterm><indexterm type="general"><primary>tense connected sentences</primary><secondary>contrasted with separately tensed sentences</secondary>
+      </indexterm></para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-MzxF">
       <title><anchor xml:id="c10e16d5" /></title>
 
@@ -3353,33 +3254,17 @@
         <natlang>The man bites the dog. Left of me, the child walks on the ice.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      In
-      <xref linkend="example-random-id-MzxF" />
-      , the origin point is the speaker, as is usual with
-      <jbophrase>zu'aku</jbophrase>.
-      <xref linkend="example-random-id-9Q0x" />
-      makes the origin point of the tense the event described by the first sentence.
-    </para>
+    <para role="indent">In <xref linkend="example-random-id-MzxF" /> the origin point is the speaker, as is usual with <jbophrase>zu'aku</jbophrase>. <xref linkend="example-random-id-9Q0x" />, on the other hand, makes the event described by the first sentence the origin point of the tense.</para>
     <para>
       <indexterm type="general"><primary>tense connected sentences</primary><secondary>forethought mode</secondary>
       </indexterm>
       Two sentences may also be connected in forethought by a tense relationship. Just like afterthought tense connection, forethought tense connection claims both sentences, and in addition claims that the time or space relationship specified by the tense holds between the events the two sentences describe.
     </para>
-    <para>
-      <indexterm type="lojban-word"><primary>PU selma'o</primary><secondary>for forethought tense connection of sentences</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>imaginary journey</primary><secondary>origin in tense forethought sentence connection</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>sentences</primary><secondary>forethought tense connection of</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>forethought tense connection of sentences</primary><secondary>order of</secondary>
-      </indexterm>
-      The origin sentence is placed first, preceded by a tense plus
-      <valsi>gi</valsi>. Another
-      <valsi>gi</valsi>
-      is used to separate the sentences:
-    </para>
+    <para><indexterm type="lojban-word"><primary>PU selma'o</primary><secondary>for forethought tense connection of sentences</secondary>
+      </indexterm><indexterm type="general"><primary>imaginary journey</primary><secondary>origin in tense forethought sentence connection</secondary>
+      </indexterm><indexterm type="general"><primary>sentences</primary><secondary>forethought tense connection of</secondary>
+      </indexterm><indexterm type="general"><primary>forethought tense connection of sentences</primary><secondary>order of</secondary>
+      </indexterm>The origin sentence goes first, preceded by a tense plus <valsi>gi</valsi>. Another <valsi>gi</valsi> separates the sentences:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-9cXU">
       <title><anchor xml:id="c10e16d6" /></title>
 
@@ -3389,15 +3274,10 @@
         <natlang>Before I go to the market, I go to the house.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      A parallel construction can be used to express a tense relationship between sumti:
-      <indexterm type="general"><primary>sumti</primary><secondary>forethought tense connection of</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>imaginary journey</primary><secondary>origin in tense forethought sumti connection</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>forethought tense connection of sumti</primary><secondary>order of</secondary>
-      </indexterm>
-    </para>
+    <para role="indent">A parallel construction can express a tense relationship between sumti:<indexterm type="general"><primary>sumti</primary><secondary>forethought tense connection of</secondary>
+      </indexterm><indexterm type="general"><primary>imaginary journey</primary><secondary>origin in tense forethought sumti connection</secondary>
+      </indexterm><indexterm type="general"><primary>forethought tense connection of sumti</primary><secondary>order of</secondary>
+      </indexterm></para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-o3Yg">
       <title><anchor xml:id="c10e16d7" /></title>
 
@@ -3406,15 +3286,7 @@
         <gloss>I go-to [past] the market [,] the house.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      Because English does not have any direct way of expressing a tense-like relationship between nouns,
-      <xref linkend="example-random-id-o3Yg" />
-      cannot be expressed in English without paraphrasing it either into
-      <xref linkend="example-random-id-9cXU" />
-      or else into
-      <quote>I go to the house before the market</quote>
-      , which is ambiguous &ndash; is the market going?
-    </para>
+    <para role="indent">English has no direct way of expressing a tense-like relationship between nouns, so <xref linkend="example-random-id-o3Yg" /> can't be put into English without paraphrasing it either into <xref linkend="example-random-id-9cXU" /> or else into <quote>I go to the house before the market</quote>, which is ambiguous – is the market going?</para>
     <para>
       <indexterm type="general"><primary>bridi-tails</primary><secondary>forethought tense connection of</secondary>
       </indexterm>
@@ -3490,12 +3362,8 @@
         </td>
       </tr>
     </informaltable>
-    <para>
-      <indexterm type="general"><primary>ZAhO</primary><secondary>in tense connectives</secondary>
-      </indexterm>
-      ZAhO is the exception, because of its reversed sumtcita interpretation (see
-      <xref linkend="section-tcita" />). In the subordinate form, the <emphasis>main</emphasis> sentence X carries the contour, at the time of the tagged event Y. But the connective forms keep their meaning from the first edition: they place the second sentence at the named contour of the first. So the sentences appear in the <emphasis>same</emphasis> order, and they do not exchange places:
-    </para>
+    <para><indexterm type="general"><primary>ZAhO</primary><secondary>in tense connectives</secondary>
+      </indexterm>ZAhO is the exception, because its sumtcita interpretation is reversed (see <xref linkend="section-tcita" />). In the subordinate form, the <emphasis>main</emphasis> sentence X carries the contour, at the time of the tagged event Y. The connective forms, however, keep their meaning from the first edition: they place the second sentence at the named contour of the first. So the sentences appear in the <emphasis>same</emphasis> order, and they do not exchange places:</para>
     <informaltable>
       <colgroup />
       <tr>
@@ -4520,18 +4388,11 @@
   </section>
   <section xml:id="section-tenses-vs-modals">
     <title><anchor xml:id="c10s23" />Tenses versus modals</title>
-    <para>      <indexterm type="general"><primary>modals</primary><secondary>contrasted with tenses in semantics</secondary>      </indexterm>      <indexterm type="general"><primary>tenses</primary><secondary>contrasted with modals in semantics</secondary>      </indexterm>      <indexterm type="general"><primary>modals</primary><secondary>compared with tenses in syntax</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>tenses</primary><secondary>compared with modals in syntax</secondary>
-      </indexterm>
-      Grammatically, every use of tenses seen so far is exactly paralleled by some use of modals as explained in
-      <xref linkend="chapter-sumti-tcita" />. Modals and tenses alike can be followed by sumti, can appear before the selbri, can be used in pure and mixed connections, can participate in JAI conversions. The parallelism is perfect. However, there is a deep difference in the semantics of tense constructs and modal constructs, grounded in historical differences between the two forms. Originally, modals and tenses were utterly different things in earlier versions of Loglan; only in Lojban have they become grammatically interchangeable. And even now, differences in semantics continue to be maintained.
-    </para>
-    <para>
-      <indexterm type="general"><primary>modals</primary><secondary>importance of 1st sumti place for sumtcita use</secondary>
-      </indexterm>
-      The core distinction is that whereas the modal bridi
-    </para>
+    <para><indexterm type="general"><primary>modals</primary><secondary>contrasted with tenses in semantics</secondary>      </indexterm><indexterm type="general"><primary>tenses</primary><secondary>contrasted with modals in semantics</secondary>      </indexterm><indexterm type="general"><primary>modals</primary><secondary>compared with tenses in syntax</secondary>
+      </indexterm><indexterm type="general"><primary>tenses</primary><secondary>compared with modals in syntax</secondary>
+      </indexterm>Grammatically, every use of tenses seen so far is paralleled exactly by some use of modals, as explained in <xref linkend="chapter-sumti-tcita" />. Modals and tenses alike can be followed by sumti, can appear before the selbri, can be used in pure and mixed connections, and can take part in JAI conversions. The parallelism is perfect. Semantically, however, tense constructs and modal constructs differ deeply, and the difference is grounded in the history of the two forms. In earlier versions of Loglan, modals and tenses were utterly different things; only in Lojban have they become grammatically interchangeable. Even now, the differences in semantics are maintained.</para>
+    <para><indexterm type="general"><primary>modals</primary><secondary>importance of 1st sumti place for sumtcita use</secondary>
+      </indexterm>The core distinction is that the modal bridi</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-YLmV">
       <title><anchor xml:id="c10e23d1" /></title>
 
@@ -4542,14 +4403,7 @@
         <natlang>I like you because you like me.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      places the
-      <jbophrase>le nu</jbophrase>
-      sumti in the x<subscript>1</subscript> place of the gismu
-      <valsi>mukti</valsi>
-      (which underlies the modal
-      <valsi>mu'i</valsi>), namely the motivating event, the tensed bridi
-    </para>
+    <para role="noindent">places the <jbophrase>le nu</jbophrase> sumti in the x<subscript>1</subscript> place of the gismu <valsi>mukti</valsi> (which underlies the modal <valsi>mu'i</valsi>), namely the motivating event, whereas the tensed bridi</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-zXi8">
       <title><anchor xml:id="c10e23d2" /></title>
@@ -4560,24 +4414,8 @@
         <natlang>I like you after you like me.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      <indexterm type="general"><primary>tenses</primary><secondary>importance of 2nd sumti place for sumtcita use</secondary>
-      </indexterm>
-      places the
-      <jbophrase>le nu</jbophrase>
-      sumti in the x<subscript>2</subscript> place of the gismu
-      <valsi>balvi</valsi>
-      (which underlies the tense
-      <valsi>ba</valsi>), namely the point of reference for the future tense. Paraphrases of
-      <xref linkend="example-random-id-YLmV" />
-      and
-      <xref linkend="example-random-id-zXi8" />
-      , employing the brivla
-      <valsi>mukti</valsi>
-      and
-      <valsi>balvi</valsi>
-      explicitly, would be:
-    </para>
+    <para role="noindent"><indexterm type="general"><primary>tenses</primary><secondary>importance of 2nd sumti place for sumtcita use</secondary>
+      </indexterm>places the <jbophrase>le nu</jbophrase> sumti in the x<subscript>2</subscript> place of the gismu <valsi>balvi</valsi> (which underlies the tense <valsi>ba</valsi>), namely the point of reference for the future tense. Paraphrases of <xref linkend="example-random-id-YLmV" /> and <xref linkend="example-random-id-zXi8" /> that employ the brivla <valsi>mukti</valsi> and <valsi>balvi</valsi> explicitly would be:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-JbEU">
       <title><anchor xml:id="c10e23d3" /></title>
 
@@ -4605,13 +4443,7 @@
         <natlang>My liking you follows (in time) your liking me.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      (Note that the paraphrase is not perfect due to the difference in what is claimed;
-      <xref linkend="example-random-id-JbEU" />
-      and
-      <xref linkend="example-random-id-8sjA" />
-      claim only the causal and temporal relationships between the events, not the existence of the events themselves.)
-    </para>
+    <para role="noindent">(Note that the paraphrase is not perfect, because what is claimed differs: <xref linkend="example-random-id-JbEU" /> and <xref linkend="example-random-id-8sjA" /> claim only the causal and temporal relationships between the events, not the existence of the events themselves.)</para>
     <para>
       <indexterm type="general"><primary>afterthought sentence connection</primary><secondary>modal contrasted with tense</secondary>
       </indexterm>
@@ -4637,24 +4469,7 @@
         <gloss>You like me. Afterward, I like you.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      In
-      <xref linkend="example-random-id-qewe" />
-      , the order of the two bridi
-      <jbophrase>mi nelci do</jbophrase>
-      and
-      <jbophrase>do nelci mi</jbophrase>
-      is the same as in
-      <xref linkend="example-random-id-YLmV" />. In
-      <xref linkend="example-random-id-qEWp" />
-      , however, the order is reversed: the origin point
-      <jbophrase>do nelci mi</jbophrase>
-      physically appears before the future-time event
-      <jbophrase>mi nelci do</jbophrase>. In both cases, the bridi characterizing the event in the x<subscript>2</subscript> place appears before the bridi characterizing the event in the x<subscript>1</subscript> place of
-      <valsi>mukti</valsi>
-      or
-      <valsi>balvi</valsi>.
-    </para>
+    <para role="indent">In <xref linkend="example-random-id-qewe" />, the two bridi <jbophrase>mi nelci do</jbophrase> and <jbophrase>do nelci mi</jbophrase> come in the same order as in <xref linkend="example-random-id-YLmV" />. In <xref linkend="example-random-id-qEWp" />, though, the order is reversed: the origin point <jbophrase>do nelci mi</jbophrase> physically appears before the future-time event <jbophrase>mi nelci do</jbophrase>. In both cases, the bridi characterizing the event in the x<subscript>2</subscript> place of <valsi>mukti</valsi> or <valsi>balvi</valsi> appears before the bridi characterizing the event in the x<subscript>1</subscript> place.</para>
     <para>
       <indexterm type="general"><primary>afterthought tense connection</primary><secondary>contrasted with forethought in likeness to modal connection</secondary>
       </indexterm>
@@ -4730,9 +4545,7 @@
       </grammar-template>
       </member>
     </simplelist>
-    <para>neglecting the question of what is claimed. (ZAhO tenses are again the exception. Because of their reversed sumtcita interpretation, the subordinate mate of the two connective schemata is
-      <grammar-template>X ZAhO le nu Y</grammar-template>, with the sentences in the same order: see
-      <xref linkend="section-tense-connection" />.) In the modal sentence schemata, the modal tag is always followed by Y, the sentence representing the event in the x<subscript>1</subscript> place of the gismu that underlies the BAI. In the tensed sentences, no such simple rule exists.</para>
+    <para>neglecting the question of what is claimed. (ZAhO tenses are again the exception. Because their sumtcita interpretation is reversed, the subordinate mate of the two connective schemata is <grammar-template>X ZAhO le nu Y</grammar-template>, with the sentences in the same order: see <xref linkend="section-tense-connection" /> .) In the modal sentence schemata, the modal tag is always followed by Y, the sentence representing the event in the x<subscript>1</subscript> place of the gismu that underlies the BAI. In the tensed sentences, no such simple rule exists.</para>
   </section>
   <section xml:id="section-tense-questions">
     <title><anchor xml:id="c10s24" />Tense questions: <valsi>cu'e</valsi></title>

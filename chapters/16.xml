@@ -1021,21 +1021,9 @@
         <gloss>Three dogs - bite two men.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-
-
-      <indexterm type="general"><primary>multiple indefinite sumti</primary><secondary>meaning</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>indefinite sumti</primary><secondary>meaning when multiple in sentence</secondary>
-      </indexterm>
-      The question raised by
-      <xref linkend="example-random-id-Uovr" />
-      is, does each of the dogs bite the same two men, or is it possible that there are two different men per dog, for six men altogether? If the former interpretation is taken, the number of men involved is fixed at two; but if the latter, then the speaker has to be taken as saying that there might be any number of men between two and six inclusive. Let us transform
-      <xref linkend="example-random-id-Uovr" />
-      step by step as we did with
-      <xref linkend="example-random-id-Kr4S" />
-      :
-    </para>
+    <para role="indent"><indexterm type="general"><primary>multiple indefinite sumti</primary><secondary>meaning</secondary>
+      </indexterm><indexterm type="general"><primary>indefinite sumti</primary><secondary>meaning when multiple in sentence</secondary>
+      </indexterm>The question raised by <xref linkend="example-random-id-Uovr" /> is this: does each of the dogs bite the same two men, or is it possible that there are two different men per dog, for six men altogether? If the former interpretation is taken, the number of men involved is fixed at two; but if the latter, then the speaker has to be taken as saying that there might be any number of men between two and six inclusive. Let us transform <xref linkend="example-random-id-Uovr" /> step by step, as we did with <xref linkend="example-random-id-Kr4S" />:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-neNT">
       <title><anchor xml:id="c16e7d2" /></title>
 
@@ -1065,7 +1053,7 @@
         <gloss>… X bites Y.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">Here we see that indeed each of the dogs is said to bite two men, and it might be different men each time; a total of six biting events altogether.</para>
+    <para role="indent">Here we see that indeed each of the dogs is said to bite two men, and it might be different men each time, for a total of six biting events altogether.</para>
     <para>
       <indexterm type="general"><primary>multiple indefinite sumti</primary><secondary>effect of re-ordering in sentence</secondary>
       </indexterm>
@@ -1149,14 +1137,7 @@
       <jbophrase>la .djan. cu batci la .spat.</jbophrase>
       raises none.
     </para>
-    <para>
-      Scope questions arise only for genuinely quantified terms. These are bare
-      <jbophrase>PA broda</jbophrase>
-      (which is
-      <jbophrase>PA da poi broda</jbophrase>), and descriptions with an <emphasis>explicit outer</emphasis> quantifier, like
-      <jbophrase>re le ci mlatu</jbophrase>. You can group those in termsets exactly like the variables above. When both quantifiers are
-      <valsi>ro</valsi>, the grouping does not matter, because universal claims are independent of order:
-    </para>
+    <para>Scope questions arise only for genuinely quantified terms. These are bare <jbophrase>PA broda</jbophrase> (which is <jbophrase>PA da poi broda</jbophrase>), and descriptions with an <emphasis>explicit outer</emphasis> quantifier, like <jbophrase>re le ci mlatu</jbophrase>. You can group those in termsets exactly as you can the variables above. When both quantifiers are <valsi>ro</valsi>, the grouping doesn't matter, because universal claims are independent of order:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-MADY">
       <title><anchor xml:id="c16e7d6" /></title>
 
@@ -1168,16 +1149,7 @@
     <para role="noindent">
       means that each of the dogs specified bites each of the men specified, for six acts of biting altogether.
     </para>
-    <para>
-      You must actually say both
-      <valsi>ro</valsi>
-      quantifiers. The explicit
-      <valsi>ro</valsi>
-      asserts the distribution one by one, every dog with every man. The unquantified
-      <jbophrase>le ci gerku cu batci le re nanmu</jbophrase>
-      only says of the dogs and the men that biting goes on between them. It does not formally spell out the six pairs. In practice this is often the same, but it is not a synonym. (Older texts follow a different convention here: see
-      <xref linkend="appendix-changes" />.)
-    </para>
+    <para>You must actually say both <valsi>ro</valsi> quantifiers. The explicit <valsi>ro</valsi> asserts the distribution one by one, every dog with every man. The unquantified <jbophrase>le ci gerku cu batci le re nanmu</jbophrase> says only of the dogs and the men that biting goes on between them, and does not formally spell out the six pairs. In practice this often comes to the same thing, but the two are not synonyms. (Older texts follow a different convention here: see <xref linkend="appendix-changes" /> .)</para>
     <para>
       With explicit quantifiers other than
       <valsi>ro</valsi>, the scope problems of this section reappear.
@@ -1413,29 +1385,9 @@
   </section>
   <section xml:id="section-negation-boundaries">
     <title><anchor xml:id="c16s9" />Negation boundaries</title>
-    <para>      <indexterm type="general"><primary>there is a Y</primary><secondary>expression &quot;there is a Y&quot; in English</secondary>        <tertiary>notation convention</tertiary>      </indexterm>      This section, as well as      <xref linkend="section-connectives" />
-      through
-      <xref linkend="section-demorgans-law" />
-      , are in effect a continuation of
-      <xref linkend="chapter-negation" />
-      , introducing features of Lojban negation that require an understanding of prenexes and variables. In the examples below,
-      <quote>there is a Y</quote>
-      and the like must be understood as
-      <quote>there is at least one Y, possibly more</quote>.
-    </para>
-    <para role="status-note">
-      <indexterm type="general"><primary>na</primary><secondary>scope of, status</secondary>
-      </indexterm>
-      The scope of
-      <valsi>na</valsi>
-      is officially unsettled. The working account is the rule for the whole bridi. Under this rule,
-      <valsi>na</valsi>
-      before the selbri equals
-      <valsi>naku</valsi>
-      at the left end of the prenex. So it has scope even over quantifiers that come before it. Current semantic software implements this rule.
-      <xref linkend="appendix-changes" />
-      lists the alternatives.
-    </para>
+    <para><indexterm type="general"><primary>there is a Y</primary><secondary>expression &quot;there is a Y&quot; in English</secondary>        <tertiary>notation convention</tertiary>      </indexterm>This section, along with <xref linkend="section-connectives" /> through <xref linkend="section-demorgans-law" />, is in effect a continuation of <xref linkend="chapter-negation" />. It introduces features of Lojban negation that require an understanding of prenexes and variables. In the examples below, <quote>there is a Y</quote> and the like must be understood as <quote>there is at least one Y, possibly more</quote>.</para>
+    <para role="status-note"><indexterm type="general"><primary>na</primary><secondary>scope of, status</secondary>
+      </indexterm>The scope of <valsi>na</valsi> is officially unsettled. The working account is the rule for the whole bridi. Under this rule, <valsi>na</valsi> before the selbri equals <valsi>naku</valsi> at the left end of the prenex, so it has scope even over quantifiers that come before it. Current semantic software implements this rule. <xref linkend="appendix-changes" /> lists the alternatives.</para>
     <para>
       <indexterm type="general"><primary>bridi negation</primary><secondary>two forms of</secondary>
       </indexterm>
@@ -1455,20 +1407,7 @@
         <natlang>I don't go to the store.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      The other form of bridi negation is expressed by using the compound cmavo
-      <jbophrase>naku</jbophrase>
-      in the prenex, which is identified and compounded by the lexer before looking at the sentence grammar. In Lojban grammar,
-      <jbophrase>naku</jbophrase>
-      is then treated like a sumti. In a prenex,
-      <jbophrase>naku</jbophrase>
-      means precisely the same thing as the logician's
-      <quote>it is not the case that</quote>
-      in a similar English context. (Outside of a prenex,
-      <jbophrase>naku</jbophrase>
-      is also grammatically treated as a single entity &ndash; the equivalent of a sumti &ndash; but does not have this exact meaning; we'll discuss these other situations in
-      <xref linkend="section-na-outside-prenex" />.)
-    </para>
+    <para role="indent">The other form of bridi negation uses the compound cmavo <jbophrase>naku</jbophrase> in the prenex. The lexer identifies and compounds naku before it looks at the sentence grammar, and in Lojban grammar <jbophrase>naku</jbophrase> is then treated like a sumti. In a prenex, <jbophrase>naku</jbophrase> means precisely the same thing as the logician's <quote>it is not the case that</quote> in a similar English context. (Outside of a prenex, <jbophrase>naku</jbophrase> is also grammatically treated as a single entity – the equivalent of a sumti – but does not have this exact meaning; we'll discuss these other situations in <xref linkend="section-na-outside-prenex" /> .)</para>
     <para>
       <indexterm type="general"><primary>external bridi negation</primary><secondary>compared to internal bridi negation</secondary>
       </indexterm>
@@ -1532,7 +1471,7 @@
         <natlang>There is something that doesn't sit.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">The relative position of negation and quantification terms within a prenex has a drastic effect on meaning. Starting without a negation, we can have:</para>
+    <para role="indent">Where the negation and the quantification terms sit relative to each other within a prenex has a drastic effect on meaning. Starting without a negation, we can have:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-21Y5">
       <title><anchor xml:id="c16e9d5" /><indexterm type="general"><primary>everybody loves something</primary></indexterm></title>
 
@@ -1552,7 +1491,7 @@
         <natlang>There is at least one particular thing that is loved by everybody.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">The simplest form of bridi negation to interpret is one where the negation term is at the beginning of the prenex:</para>
+    <para role="indent">The easiest form of bridi negation to interpret is the one where the negation term comes at the beginning of the prenex:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-1LqV">
       <title><anchor xml:id="c16e9d7" /></title>
 

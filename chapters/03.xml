@@ -658,17 +658,11 @@
       </indexterm>
       A period also may be found apparently embedded in a word. When this occurs, such a written string is not one word but two, written together to indicate that the writer intends a unitary meaning for the compound. It is not really necessary to use a space between words if a period appears.
     </para>
-    <para>
-      <indexterm type="general"><primary>pause</primary><secondary>contrasted with syllable break</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>syllable break</primary><secondary>contrasted with pause</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>syllable break</primary><secondary>representation in Lojban</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>comma</primary><secondary>definition of</secondary>
-      </indexterm>
-      The comma is only a reading aid. It marks a syllable break within a word, usually a break that is not obvious to the reader. Unlike the period, you must never pronounce a comma as a pause or a glottal stop, because that splits the word into two words. Between two vowels, a comma shows that the vowels belong to separate syllables, which you pronounce in one smooth flow. Any slight transition between them is a fact of pronunciation, not an extra phoneme. The comma has no sound of its own, so no two Lojban words can differ only by the presence or placement of a comma.
-    </para>
+    <para><indexterm type="general"><primary>pause</primary><secondary>contrasted with syllable break</secondary>
+      </indexterm><indexterm type="general"><primary>syllable break</primary><secondary>contrasted with pause</secondary>
+      </indexterm><indexterm type="general"><primary>syllable break</primary><secondary>representation in Lojban</secondary>
+      </indexterm><indexterm type="general"><primary>comma</primary><secondary>definition of</secondary>
+      </indexterm>The comma, by contrast, is only a reading aid. It marks a syllable break within a word, usually one that is not obvious to the reader. Unlike the period, a comma must never be pronounced as a pause or a glottal stop, because that would split the word into two words. Between two vowels, a comma shows that the vowels belong to separate syllables, which are pronounced in one smooth flow. Any slight transition between them is a fact of pronunciation, not an extra phoneme. The comma has no sound of its own, and so no two Lojban words can differ only by the presence or placement of a comma.</para>
     <para role="status-note">
       <indexterm type="general"><primary>comma</primary><secondary>change from first edition</secondary>
       </indexterm>
@@ -719,9 +713,7 @@
       <xref linkend="example-random-id-k2B4" />
       is a string of meaningful Lojban words, as a sentence it makes very little sense. (Note the use of periods embedded within the written word.)
     </para>
-    <para>
-      To make a single Lojbanized name of it instead (one word that ends in a consonant), you must join the syllables inside the word. The comma has no sound, so you join them with apostrophes:
-    </para>
+    <para>If we want a single Lojbanized name instead (one word, ending in a consonant), the syllables inside the word have to be joined. Since the comma has no sound, we join them with apostrophes:</para>
 
     <example role="pronunciation-example" xml:id="example-random-id-k2bc">
       <title><anchor xml:id="c3e3d4" /></title>
@@ -731,59 +723,15 @@
         <ipa>[ʔi hai hi hai honʔ]</ipa>
       </pronunciation>
     </example>
-    <para role="noindent">
-      <indexterm type="general"><primary>apostrophe</primary><secondary>example of</secondary>
-      </indexterm>
-      which preserves the rhythm and length, if not the exact sounds, of the original English. Perfection is not possible in any case, because some sounds have no reasonable counterparts in Lojban. Spell out the pronunciation that you want, with apostrophes or with glide letters (an
-      <letteral>i</letteral>
-      or
-      <letteral>u</letteral>
-      before another vowel, as
-      <xref linkend="section-diphthongs" />
-      explains).
-    </para>
+    <para role="noindent"><indexterm type="general"><primary>apostrophe</primary><secondary>example of</secondary>
+      </indexterm>which preserves the rhythm and length, if not the exact sounds, of the original English. Perfection, in any event, is not possible, because some sounds have no reasonable counterparts in Lojban. So spell out the pronunciation that you want, with apostrophes or with glide letters (an <letteral>i</letteral> or <letteral>u</letteral> before another vowel, as <xref linkend="section-diphthongs" /> explains).</para>
   </section>
   <section xml:id="section-diphthongs">
     <title><anchor xml:id="c3s4" />Diphthongs, glides, and syllabic consonants</title>
-    <para>      <indexterm type="general"><primary>diphthongs</primary><secondary>definition of</secondary>      </indexterm>      Lojban has exactly four diphthongs:
-      <diphthong>ai</diphthong>,
-      <diphthong>ei</diphthong>,
-      <diphthong>oi</diphthong>, and
-      <diphthong>au</diphthong>. A glide is a vowel-like sound that never forms a syllable alone, like the English
-      <quote>y</quote>
-      or
-      <quote>w</quote>. A diphthong is a vowel sound with two elements: a main vowel and a glide after it. We call that glide an off-glide. It is either palatal (IPA
-      <phrase role="IPA">[j]</phrase>, spelled
-      <letteral>i</letteral>) or labial (IPA
-      <phrase role="IPA">[w]</phrase>, spelled
-      <letteral>u</letteral>). A diphthong is always a single syllable.
-    </para>
-    <para>
-      The letters
-      <letteral>i</letteral>
-      and
-      <letteral>u</letteral>
-      can also come <emphasis>before</emphasis> another vowel. There they are not vowels. They are the glide consonants
-      <phrase role="IPA">[j]</phrase>
-      and
-      <phrase role="IPA">[w]</phrase>, and they begin the syllable. So
-      <morphology>ia</morphology>
-      sounds like
-      <phrase role="IPA">[ja]</phrase>, as in English
-      <quote>ya</quote>, and
-      <morphology>ua</morphology>
-      sounds like
-      <phrase role="IPA">[wa]</phrase>, as in English
-      <quote>wa</quote>. This analysis, with a glide consonant instead of a diphthong, matters for the rule later in this section.
-    </para>
-    <para role="status-note">
-      <indexterm type="general"><primary>PEG word-form grammar</primary><secondary>status of</secondary>
-      </indexterm>
-      Like the other precise rules for word forms, the analysis with four diphthongs comes from a parsing expression grammar (PEG). This book calls it the PEG word-form grammar (see
-      <xref linkend="section-peg-grammar" />). This grammar is the de facto standard definition of Lojban word forms, and current Lojban software implements it.
-      <xref linkend="appendix-changes" />
-      explains what <quote>de facto</quote> means here. Within that grammar, the ban on a consonant followed by a glide (the <emphasis>consonant-glide-vowel ban</emphasis>) is separately committee-approved. The note at the end of this section gives the practical consequences.
-    </para>
+    <para><indexterm type="general"><primary>diphthongs</primary><secondary>definition of</secondary>      </indexterm>Lojban has exactly four diphthongs: <diphthong>ai</diphthong>, <diphthong>ei</diphthong>, <diphthong>oi</diphthong>, and <diphthong>au</diphthong>. A glide is a vowel-like sound that never forms a syllable alone, like the English <quote>y</quote> or <quote>w</quote>. A diphthong is a vowel sound made of two elements, a main vowel and a glide after it. We call that glide an off-glide. It is either palatal (IPA <phrase role="IPA">[j]</phrase>, spelled <letteral>i</letteral>) or labial (IPA <phrase role="IPA">[w]</phrase>, spelled <letteral>u</letteral>). A diphthong is always a single syllable.</para>
+    <para>The letters <letteral>i</letteral> and <letteral>u</letteral> can also come <emphasis>before</emphasis> another vowel, and there they are not vowels at all. They are the glide consonants <phrase role="IPA">[j]</phrase> and <phrase role="IPA">[w]</phrase>, and they begin the syllable. So <morphology>ia</morphology> sounds like <phrase role="IPA">[ja]</phrase>, as in English <quote>ya</quote>, and <morphology>ua</morphology> sounds like <phrase role="IPA">[wa]</phrase>, as in English <quote>wa</quote>. Treating these as a glide consonant plus a vowel, rather than as diphthongs, matters for a rule later in this section.</para>
+    <para role="status-note"><indexterm type="general"><primary>PEG word-form grammar</primary><secondary>status of</secondary>
+      </indexterm>Like the other precise rules for word forms, this analysis with four diphthongs comes from a parsing expression grammar (PEG). This book calls it the PEG word-form grammar (see <xref linkend="section-peg-grammar" />). The grammar is the de facto standard definition of Lojban word forms, and current Lojban software implements it. <xref linkend="appendix-changes" /> explains what <quote>de facto</quote> means here. Within that grammar, the ban on a consonant followed by a glide (the <emphasis>consonant-glide-vowel ban</emphasis>) is separately committee-approved. The note at the end of this section gives the practical consequences.</para>
     <para>
       <indexterm type="general"><primary>vowels</primary><secondary>contrasted with consonants</secondary>
       </indexterm>
@@ -1008,27 +956,8 @@
       <morphology>auu</morphology>
       do not occur.
     </para>
-    <para>
-      As a result, the cmavo
-      <valsi>ia</valsi>
-      and names like
-      <cmevla>.iolandas.</cmevla>
-      are fine. But a form like
-      <quote>kuarka</quote>
-      is not a possible Lojban word. To borrow such a word, change the glide into a true vowel in its own syllable. Put an apostrophe at the transition. The result is
-      <jbophrase>ku'arka</jbophrase>, with three syllables and no glide. (See
-      <xref linkend="chapter-morphology" />
-      for how to form borrowings.)
-    </para>
-    <para>
-      The combinations
-      <morphology>iy</morphology>
-      and
-      <morphology>uy</morphology>
-      (a glide before the vowel
-      <letteral>y</letteral>) occur in practice only in Lojbanized names. As pure word forms, the formal definition also counts them among the unassigned cmavo forms (see
-      <xref linkend="chapter-morphology" />). But no standard word uses them.
-    </para>
+    <para>As a result, the cmavo <valsi>ia</valsi> and names like <cmevla>.iolandas.</cmevla> are fine. But a form like <quote>kuarka</quote> is not a possible Lojban word. To borrow such a word, change the glide into a true vowel in its own syllable by putting an apostrophe at the transition. The result is <jbophrase>ku'arka</jbophrase>, with three syllables and no glide. (See <xref linkend="chapter-morphology" /> for how to form borrowings.)</para>
+    <para>The combinations <morphology>iy</morphology> and <morphology>uy</morphology> (a glide before the vowel <letteral>y</letteral>) occur in practice only in Lojbanized names. As pure word forms, the formal definition also counts them among the unassigned cmavo forms (see <xref linkend="chapter-morphology" />), but no standard word uses them.</para>
     <para role="status-note">
       <indexterm type="general"><primary>consonant-glide-vowel ban</primary></indexterm>
       The consonant-glide-vowel ban is committee-approved. Older texts contain words that people coined before the ban, like
@@ -1259,11 +1188,8 @@
       is so used &ndash; it is the Lojban name of the apostrophe letter (see
       <xref linkend="section-lerfu-liste" />).
     </para>
-    <para>
-      <indexterm type="general"><primary>vowel pairs</primary><secondary>grouping of</secondary>
-      </indexterm>
-      When more than two vowel letters occur together in Lojban, the rules for word forms decide the grouping. Only one grouping is possible, so the speaker has no choice to make. Consider this Lojbanized name:
-    </para>
+    <para><indexterm type="general"><primary>vowel pairs</primary><secondary>grouping of</secondary>
+      </indexterm>When more than two vowel letters occur together in Lojban, the rules for word forms decide the grouping, and only one grouping is possible, so the speaker has no choice to make. Consider this Lojbanized name:</para>
     <example role="pronunciation-example" xml:id="example-random-id-RxtI">
       <title><anchor xml:id="c3e5d1" /></title>
 
@@ -1272,16 +1198,7 @@
         <jbo role="pronunciation">.me,iin.</jbo>
       </pronunciation>
     </example>
-    <para role="indent">
-      At first sight, the diphthong
-      <diphthong>ei</diphthong>
-      seems to form here, which gives
-      <quote>May Een</quote>. But a diphthong never forms when the next letter is the same as its final letter. Also, two vowel syllables cannot touch directly inside a word. So the
-      <letteral>i</letteral>
-      after the
-      <letteral>e</letteral>
-      must act as a glide that begins the next syllable.
-    </para>
+    <para role="indent">At first sight, the diphthong <diphthong>ei</diphthong> seems to form here, which would give <quote>May Een</quote>. But a diphthong never forms when the next letter is the same as its final letter. Also, two vowel syllables cannot touch directly inside a word. So the <letteral>i</letteral> after the <letteral>e</letteral> must act as a glide that begins the next syllable.</para>
     <para>
       As a result,
       <xref linkend="example-random-id-RxtI" />
@@ -2482,9 +2399,7 @@
   </section>
   <section xml:id="section-anglophone-phonetics">
     <title><anchor xml:id="c3s10" />IPA for English speakers</title>
-    <para>      <indexterm type="general"><primary>IPA pronunciation</primary><secondary>description</secondary>      </indexterm>      <indexterm type="general"><primary>television</primary></indexterm>      <indexterm type="general"><primary>Received Pronunciation</primary></indexterm>      <indexterm type="general"><primary>General American</primary></indexterm>
-      There are many dialects of English, thus making it difficult to define the standardized symbols of the IPA in terms useful to every reader. All the symbols used in this chapter are repeated here, in more or less alphabetical order, with examples drawn from General American. In addition, some attention is given to the Received Pronunciation of (British) English. These two dialects are referred to as GA and RP respectively. Speakers of other dialects should consult a book on phonetics or their local television sets.
-    </para>
+    <para>English comes in<indexterm type="general"><primary>IPA pronunciation</primary><secondary>description</secondary>      </indexterm><indexterm type="general"><primary>television</primary></indexterm><indexterm type="general"><primary>Received Pronunciation</primary></indexterm><indexterm type="general"><primary>General American</primary></indexterm> many dialects, which makes it hard to define the standardized symbols of the IPA in terms that will be useful to every reader. All the symbols used in this chapter are repeated here, in more or less alphabetical order, with examples drawn from General American. Some attention is also given to the Received Pronunciation of (British) English. These two dialects are referred to as GA and RP respectively. Speakers of other dialects should consult a book on phonetics or their local television sets.</para>
 
 
     <para role="allowbreaks" />
@@ -3118,7 +3033,7 @@
         </td>
       </tr>
     </informaltable>
-    <para>The following guide will help American English speakers approximate Lojban sounds using familiar reference points from their dialect. When speaking Lojban, aim to pronounce each sound clearly and distinctly. Avoid the tendency in American English to reduce unstressed vowels to schwa or to add glides to pure vowels. Practice each sound individually and in combination to improve your Lojban pronunciation.</para>
+    <para>The following guide will help American English speakers approximate Lojban sounds using familiar reference points from their own dialect. When you speak Lojban, aim to pronounce each sound clearly and distinctly. American English tends to reduce unstressed vowels to schwa and to add glides to pure vowels, so avoid both habits. Practice each sound on its own and in combination with others to improve your Lojban pronunciation.</para>
     <para role="allowbreaks" />
     <informaltable class="vertsep">
       <colgroup />
@@ -3279,9 +3194,7 @@
         </td>
       </tr>
     </informaltable>
-    <para>
-      The following table is tailored for speakers of British English, particularly those familiar with Received Pronunciation (RP). While Lojban has a standardised pronunciation, some sounds may be challenging for RP speakers. This guide aims to clarify these differences and provide familiar reference points.
-    </para>
+    <para>The following table is tailored for speakers of British English, particularly those familiar with Received Pronunciation (RP). Lojban has a standardised pronunciation, but some of its sounds may be challenging for RP speakers. This guide aims to clarify the differences and to give familiar reference points.</para>
 
     <para role="allowbreaks" />
     <informaltable class="vertsep">
@@ -3348,9 +3261,7 @@
       </tr>
     </informaltable>
 
-    <para>
-      Note that Lojban consonants not listed here are pronounced similarly to their RP counterparts. RP speakers should be particularly mindful of the following:
-    </para>
+    <para>Lojban consonants not listed here are pronounced much like their RP counterparts. RP speakers should be particularly mindful of the following:</para>
 
     <itemizedlist role="bullets">
       <listitem>
@@ -3525,23 +3436,15 @@
   <section xml:id="section-oddball-orthographies">
     <title><anchor xml:id="c3s12" />Oddball orthographies</title>
 
-    <para>
-      <indexterm type="general"><primary>orthography</primary><secondary>non-standard</secondary>
-      </indexterm>
-      The following notes describe ways in which Lojban has been written or could be written that differ from the standard orthography explained in the rest of this chapter. Nobody needs to read this section except people with an interest in the obscure. Technicalities are used without explanation or further apology.
-    </para>
+    <para><indexterm type="general"><primary>orthography</primary><secondary>non-standard</secondary>
+      </indexterm>The following notes describe ways in which Lojban has been written, or could be written, that differ from the standard orthography explained in the rest of this chapter. Nobody needs to read this section except people with an interest in the obscure. Technicalities are used without explanation or further apology.</para>
 
     <para>
       There exists an alternative orthography for Lojban. Its design makes it as compatible as possible (but no more so) with the orthography that Loglan used at that time. (Loglan is the sibling language of Lojban, as
       <xref linkend="chapter-about" />
       explains.)
     </para>
-    <para>
-      The consonants undergo no change, except that
-      <letteral>x</letteral>
-      is replaced by
-      <letteral>h</letteral>. The individual vowels likewise remain unchanged. But the vowel pairs, diphthongs, and glide-initial combinations change. This historical scheme is older than the current analysis with four diphthongs, so the list below keeps its original groupings:
-    </para>
+    <para>The consonants undergo no change, except that <letteral>x</letteral> is replaced by <letteral>h</letteral>. The individual vowels likewise remain unchanged. The vowel pairs, diphthongs, and glide-initial combinations, however, do change. This historical scheme is older than the current analysis with four diphthongs, so the list below keeps its original groupings:</para>
 
     <itemizedlist role="bullets">
       <listitem>
@@ -3627,11 +3530,7 @@
 
       </listitem>
     </itemizedlist>
-    <para role="indent">
-      The result of these rules is to eliminate the apostrophe altogether, replacing it with comma where necessary, and otherwise with nothing. In addition, names and the cmavo
-      <valsi>.i</valsi>
-      are capitalized, and irregular stress is marked with an apostrophe (now no longer used for a sound) following the stressed syllable.
-    </para>
+    <para role="indent">The result of these rules is to eliminate the apostrophe altogether, replacing it with a comma where necessary and otherwise with nothing. In addition, names and the cmavo <valsi>.i</valsi> are capitalized, and irregular stress is marked with an apostrophe (now no longer used for a sound) following the stressed syllable.</para>
 
 
     <para>Three points must be emphasized about this alternative orthography:</para>
@@ -3652,11 +3551,8 @@
 
       </listitem>
     </itemizedlist>
-    <para role="indent">
-      <indexterm type="general"><primary>non-standard orthographies</primary><secondary>Cyrillic</secondary>
-      </indexterm>
-      There also exists a Cyrillic orthography for Lojban which was designed when the introductory Lojban brochure was translated into Russian.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>non-standard orthographies</primary><secondary>Cyrillic</secondary>
+      </indexterm>There also exists a Cyrillic orthography for Lojban, which was designed when the introductory Lojban brochure was translated into Russian.</para>
     <informaltable>
       <colgroup />
       <tr>
@@ -3889,20 +3785,10 @@
         <td></td>
       </tr>
     </informaltable>
-    <para>
-      The Lojban letter
-      <quote>y</quote>      is mapped onto the hard sign
-      <quote>ъ</quote>      , as in Bulgarian. The apostrophe, comma, and period are unchanged. Diphthongs are written as vowel pairs, as in the Roman representation. Capital Lojban letters are written using corresponding capital Cyrillic letters.
-    </para>
-    <para>
-      <indexterm type="general"><primary>Tolkien</primary><secondary>and non-standard Lojban orthography</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>non-standard orthographies</primary><secondary>Tengwar</secondary>
-      </indexterm>
-      An orthography using the Tengwar of Féanor, a fictional orthography invented by J. R. R. Tolkien and described in the Appendixes to
-      <citetitle pubwork="book">The Lord Of The Rings</citetitle>
-      , has been devised for Lojban. The following mapping, which closely resembles that used for Westron, will be meaningful only to those who have read those appendixes. In brief, the tincotéma and parmatéma are used in the conventional ways; the calmatéma represents palatal consonants, and the quessetéma represents velar consonants.
-    </para>
+    <para>The Lojban letter <quote>y</quote> is mapped onto the hard sign <quote>ъ</quote>, as in Bulgarian. The apostrophe, comma, and period are unchanged. Diphthongs are written as vowel pairs, as in the Roman representation. Capital Lojban letters are written using the corresponding capital Cyrillic letters.</para>
+    <para><indexterm type="general"><primary>Tolkien</primary><secondary>and non-standard Lojban orthography</secondary>
+      </indexterm><indexterm type="general"><primary>non-standard orthographies</primary><secondary>Tengwar</secondary>
+      </indexterm>An orthography using the Tengwar of Féanor has also been devised for Lojban. The Tengwar is a fictional orthography invented by J. R. R. Tolkien and described in the Appendixes to <citetitle pubwork="book">The Lord Of The Rings</citetitle>. The following mapping, which closely resembles that used for Westron, will be meaningful only to those who have read those appendixes. In brief, the tincotéma and parmatéma are used in the conventional ways; the calmatéma represents palatal consonants, and the quessetéma represents velar consonants.</para>
 
     <informaltable>
       <colgroup />
@@ -4144,28 +4030,7 @@
       </tr>
     </informaltable>
 
-    <para>
-      The letters
-      <quote xml:lang="qya">vala</quote>      and
-      <quote xml:lang="qya">anna</quote>      are used for
-      <letteral>u</letteral>
-      and
-      <letteral>i</letteral>
-      only when those letters are used to represent glides. Of the additional letters,
-      <letteral>r</letteral>
-      ,
-      <letteral>l</letteral>
-      ,
-      <letteral>s</letteral>
-      , and
-      <letteral>z</letteral>
-      are written with
-      <quote xml:lang="qya">rómen</quote>      ,
-      <quote xml:lang="qya">lambe</quote>      ,
-      <quote xml:lang="qya">silme</quote>      , and
-      <quote xml:lang="qya">áre</quote>      /
-      <quote xml:lang="qya">esse</quote>      respectively; the inverted forms are used as free variants.
-    </para>
+    <para>The letters <quote xml:lang="qya">vala</quote> and <quote xml:lang="qya">anna</quote> are used for <letteral>u</letteral> and <letteral>i</letteral> only when those letters represent glides. Of the additional letters, <letteral>r</letteral>, <letteral>l</letteral>, <letteral>s</letteral>, and <letteral>z</letteral> are written with <quote xml:lang="qya">rómen</quote>, <quote xml:lang="qya">lambe</quote>, <quote xml:lang="qya">silme</quote>, and <quote xml:lang="qya">áre</quote> / <quote xml:lang="qya">esse</quote> respectively; the inverted forms are used as free variants.</para>
     <para>
       <indexterm type="general"><primary>non-standard orthographies</primary><secondary>zbalermorna</secondary>
       </indexterm>
@@ -4173,11 +4038,7 @@
       </indexterm>
       Finally, the zbalermorna orthography exists, which is completely unofficial.
     </para>
-    <para>
-      In this orthography each symbol is made of a base
-      <quote>radical element</quote>, which represents a consonant, which is then modified, if necessary, by another smaller symbol called
-      a <quote>diacritic element</quote>, which represents a vowel.
-    </para>
+    <para>In this orthography each symbol is made of a base <quote>radical element</quote>, which represents a consonant. If necessary, the radical element is then modified by another, smaller symbol called a <quote>diacritic element</quote>, which represents a vowel.</para>
     <para>If the consonant is not followed by a vowel then no diacritic element is used.</para>
     <para>
       The set of radical elements in zbalermorna:
@@ -4546,23 +4407,14 @@ Words in zbalermorna are separated with spaces.
     <para>
     The radical element for the Lojban letter <quote xml:lang="jbo">i</quote> (<quote xml:lang="jbo"><foreignphrase xml:lang="zlm"></foreignphrase></quote>) is only used in front of vowels; it is not interchangeable with <quote xml:lang="jbo"><foreignphrase xml:lang="zlm">    </foreignphrase></quote>. Similarly, the element for <quote xml:lang="jbo">u</quote> (<quote xml:lang="jbo"><foreignphrase xml:lang="zlm"></foreignphrase></quote>) is only used in front of vowels and is not interchangeable with <quote xml:lang="jbo"><foreignphrase xml:lang="zlm">    </foreignphrase></quote>).
     </para>
-    <para>
-      When a fu'ivla or a cmavo starts with
-      <quote xml:lang="jbo">i</quote> or
-      <quote xml:lang="jbo">u</quote> and a vowel follows it
-      then in zbalermorna the radical for the initial period is not used.
-    </para>
+    <para>When a fu'ivla or a cmavo starts with <quote xml:lang="jbo">i</quote> or <quote xml:lang="jbo">u</quote> and a vowel follows it, then in zbalermorna the radical for the initial period is not used.</para>
     <para>
       An example would be
       <quote xml:lang="jbo"><foreignphrase xml:lang="zlm">  </foreignphrase></quote>
       (<quote xml:lang="jbo">do .io .ui</quote> with no initial periods).
     </para>
-    <para>
-      The symbol for the period after the word can also be optionally omitted for the word of any class in cases when this word is the last word of the text and in cases when the current and the next word are separated with space. Periods in front of and after cmevla are not required, and are discouraged from being used when they are at text borders or separated by space from other words.
-    </para>
-    <para>
-      In zbalermorna there is an alternate form of the apostrophe called the <quote>combining .y'y.bu</quote> or <quote>attitudinal shorthand</quote>; it exists to make it more natural to write a period and an apostrophe in two consecutive syllables (a sequence, which represents the majority of the set of attitudinals). The <quote>combining .y'y.bu</quote> spans over both syllables and replaces the radical elements in them.
-    </para>
+    <para>The symbol for the period after a word can also optionally be omitted, for a word of any class, when that word is the last word of the text or when the current and the next word are separated with a space. Periods in front of and after cmevla are not required, and are discouraged when they would fall at text borders or next to a space separating them from other words.</para>
+    <para>In zbalermorna there is an alternate form of the apostrophe, called the <quote>combining .y'y.bu</quote> or <quote>attitudinal shorthand</quote>. It exists to make it more natural to write a period and an apostrophe in two consecutive syllables (a sequence that accounts for the majority of the set of attitudinals). The <quote>combining .y'y.bu</quote> spans both syllables and replaces the radical elements in them.</para>
     <para>
       Examples would be
       <quote xml:lang="jbo"><foreignphrase xml:lang="zlm"></foreignphrase></quote>
@@ -4683,7 +4535,7 @@ Words in zbalermorna are separated with spaces.
       </informaltable>
     </para>
     <para>
-      These full vowels elements are to be used in cmevla and fu'ivla instead of diacritic elements.
+      These full vowel elements are to be used in cmevla and fu'ivla instead of diacritic elements.
       Symbols <quote xml:lang="jbo"><foreignphrase xml:lang="zlm"></foreignphrase></quote> (for <letteral>i</letteral> before vowels) and
       <quote xml:lang="jbo"><foreignphrase xml:lang="zlm"></foreignphrase></quote> (for <letteral>u</letteral> before vowels) are used as previously explained. Examples of cmevla would be
       <simplelist type="horiz">

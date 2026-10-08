@@ -1162,33 +1162,16 @@
         <description>modal terminator</description>
       </cmavo-entry>
     </cmavo-list>
-    <para role="indent">
-      Sometimes the place structures engineered into Lojban are inadequate to meet the needs of actual speech. Consider the gismu
-      <valsi>viska</valsi>
-      , whose place structure is:
-    </para>
+    <para role="indent">Sometimes the place structures engineered into Lojban turn out to be inadequate for the needs of actual speech. Consider the gismu <valsi>viska</valsi>, whose place structure is:</para>
     <definition>
       <valsi>viska</valsi>
       <content>x<subscript>1</subscript> sees x<subscript>2</subscript> under conditions x<subscript>3</subscript></content>
     </definition>
     <para>Seeing is a threefold relationship, involving an agent (le viska), an object of sight (le se viska), and an environment that makes seeing possible (le te viska). Seeing is done with one or more eyes, of course; in general, the eyes belong to the entity in the x<subscript>1</subscript> place.</para>
-    <para>
-
-
-      <indexterm type="lojban-word"><primary>fi'o</primary><secondary>use in adding places to place structure</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>place structure</primary><secondary>adding new places to with modal sumti</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>fi'o</primary><secondary>as modal tag</secondary>
-      </indexterm>
-      Suppose, however, that you are blind in one eye and are talking to someone who doesn't know that. You might want to say,
-      <quote>I see you with the left eye.</quote>
-      There is no place in the place structure of
-      <valsi>viska</valsi>
-      such as
-      <quote>with eye x<subscript>4</subscript></quote>
-      or the like. Lojban allows you to solve the problem by adding a new place, changing the relationship:
-    </para>
+    <para><indexterm type="lojban-word"><primary>fi'o</primary><secondary>use in adding places to place structure</secondary>
+      </indexterm><indexterm type="general"><primary>place structure</primary><secondary>adding new places to with modal sumti</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>fi'o</primary><secondary>as modal tag</secondary>
+      </indexterm>Suppose, however, that you are blind in one eye and are talking to someone who doesn't know that. You might want to say, <quote>I see you with the left eye.</quote> There is no place in the place structure of <valsi>viska</valsi> such as <quote>with eye x<subscript>4</subscript></quote> or the like. Lojban lets you solve the problem by adding a new place, thereby changing the relationship:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-BSAc">
       <title>
         <indexterm type="general"><primary>see with left eye</primary></indexterm>
@@ -1246,24 +1229,8 @@
       , semantically it belongs in the x<subscript>1</subscript> place of
       <valsi>kanla</valsi>.
     </para>
-    <para>
-      You can end the selbri with
-      <valsi>fe'u</valsi>
-      (of selma'o FEhU), an elidable terminator. When a sumti follows, as here, you can leave it out. But sometimes a listener can read the following material as a tanru that <emphasis>continues the modal's selbri</emphasis>. In exactly that case, use
-      <valsi>fe'u</valsi>.
-    </para>
-    <para>
-      This misreading happens above all when the tagged main selbri comes next:
-      <jbophrase>mi fi'o kanla viska do</jbophrase>
-      absorbs
-      <valsi>viska</valsi>
-      into the modal. The result is a modal of eye-type-of-seeing, and no main selbri is left. But
-      <jbophrase>mi fi'o kanla fe'u viska do</jbophrase>
-      says
-      <quote>I see you with the eye(s)</quote>
-      (see
-      <xref linkend="section-modal-selbri" />).
-    </para>
+    <para>You can end the selbri of the tag with <valsi>fe'u</valsi> (of selma'o FEhU), an elidable terminator. When a sumti follows, as in <xref linkend="example-random-id-BSAc" />, you can leave it out. Sometimes, though, a listener can read the material that follows as a tanru continuing <emphasis>the modal's selbri</emphasis>, and in exactly that case you should use <valsi>fe'u</valsi>.</para>
+    <para>This misreading happens above all when the main selbri comes next: <jbophrase>mi fi'o kanla viska do</jbophrase> absorbs <valsi>viska</valsi> into the modal. The result is a modal of eye-type-of-seeing, and no main selbri is left over. But <jbophrase>mi fi'o kanla fe'u viska do</jbophrase> says <quote>I see you with the eye(s)</quote> (see <xref linkend="section-modal-selbri" />).</para>
     <para>
       Words that cannot continue a selbri do not force the
       <valsi>fe'u</valsi>. Such words include a following sumti, a tense tag, and a connective between tags. But beware of selbri in disguise, such as forms with a number and
@@ -1350,45 +1317,19 @@
   </section>
   <section xml:id="section-BAI">
     <title><anchor xml:id="c9s6" />Modal tags: BAI</title>
-    <para>      <indexterm type="lojban-word"><primary>BAI selma'o</primary><secondary>introduction</secondary>      </indexterm>      There are certain selbri which seem particularly useful in constructing modal tags. In particular,      <valsi>pilno</valsi>      is one of them. The place structure of
-      <valsi>pilno</valsi>
-      is:
-    </para>
+    <para>Certain<indexterm type="lojban-word"><primary>BAI selma'o</primary><secondary>introduction</secondary>      </indexterm> selbri seem particularly useful for constructing modal tags, and <valsi>pilno</valsi> is one of them. The place structure of <valsi>pilno</valsi> is:</para>
     <definition>
       <valsi>pilno</valsi>
       <content>x<subscript>1</subscript> uses x<subscript>2</subscript> as a tool for purpose x<subscript>3</subscript></content>
     </definition>
-    <para>
-      <indexterm type="lojban-word"><primary>BAI selma'o</primary><secondary>rationale for modal tags</secondary>
-      </indexterm>
-      and almost any selbri which represents an action may need to specify a tool. Having to say
-      <jbophrase>fi'o se pilno</jbophrase>
-      frequently would make many Lojban sentences unnecessarily verbose and clunky, so an abbreviation is provided in the language design: the compound cmavo
-      <valsi>sepi'o</valsi>.
-    </para>
+    <para><indexterm type="lojban-word"><primary>BAI selma'o</primary><secondary>rationale for modal tags</secondary>
+      </indexterm>and almost any selbri which represents an action may need to specify a tool. Having to say <jbophrase>fi'o se pilno</jbophrase> over and over would make many Lojban sentences unnecessarily verbose and clunky, so the language design provides an abbreviation: the compound cmavo <valsi>sepi'o</valsi>.</para>
 
-    <para>
-      <indexterm type="general"><primary>conversion</primary><secondary>of BAI cmavo</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>modal tags</primary><secondary>short forms as BAI cmavo</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>fi'o</primary><secondary>&quot;fi'o&quot;-constructs ; short forms as BAI cmavo</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>BAI selma'o</primary><secondary>as short forms for &quot;fi'o&quot;-constructs</secondary>
-      </indexterm>
-      Here
-      <valsi>se</valsi>
-      is used before a cmavo, namely
-      <valsi>pi'o</valsi>
-      , rather than before a brivla. The meaning of this cmavo, which belongs to selma'o BAI, is exactly the same as that of
-      <jbophrase>fi'o pilno fe'u</jbophrase>. Since what we want is a tag based on
-      <jbophrase>se pilno</jbophrase>
-      rather than
-      <jbophrase>pilno-</jbophrase>
-      the tool, not the tool user &ndash; the grammar allows a BAI cmavo to be converted using a SE cmavo.
-      <xref linkend="example-random-id-Lu15" />
-      may therefore be rewritten as:
-    </para>
+    <para><indexterm type="general"><primary>conversion</primary><secondary>of BAI cmavo</secondary>
+      </indexterm><indexterm type="general"><primary>modal tags</primary><secondary>short forms as BAI cmavo</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>fi'o</primary><secondary>&quot;fi'o&quot;-constructs ; short forms as BAI cmavo</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>BAI selma'o</primary><secondary>as short forms for &quot;fi'o&quot;-constructs</secondary>
+      </indexterm>Here <valsi>se</valsi> is used before a cmavo, namely <valsi>pi'o</valsi>, rather than before a brivla. The meaning of this cmavo, which belongs to selma'o BAI, is exactly the same as that of <jbophrase>fi'o pilno fe'u</jbophrase>. Since what we want is a tag based on <jbophrase>se pilno</jbophrase> rather than <jbophrase>pilno</jbophrase> (the tool, not the tool user), the grammar allows a BAI cmavo to be converted using a SE cmavo. <xref linkend="example-random-id-Lu15" /> may therefore be rewritten as:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-N32m">
       <title><anchor xml:id="c9e6d1" /></title>
 
@@ -1399,35 +1340,10 @@
         <natlang>I see you using my left eye.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      The compound cmavo
-      <valsi>sepi'o</valsi>
-      is much shorter than
-      <jbophrase>fi'o se pilno [fe'u]</jbophrase>
-      and can be thought of as a single word meaning
-      <quote>with-tool</quote>. The modal tag
-      <valsi>pi'o</valsi>
-      , with no
-      <valsi>se</valsi>
-      , similarly means
-      <quote>with-tool-user</quote>
-      , probably a less useful concept. Nevertheless, the parallelism with the place structure of
-      <valsi>pilno</valsi>
-      makes the additional syllable worthwhile.
-    </para>
-    <para>
-      <indexterm type="general"><primary>conversion</primary><secondary>effect on BAI</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>BAI selma'o</primary><secondary>effect of conversion on</secondary>
-      </indexterm>
-      Some BAI cmavo make sense with as well as without a SE cmavo; for example,
-      <valsi>ka'a</valsi>
-      , the BAI corresponding to the gismu
-      <valsi>klama</valsi>
-      , has five usable forms corresponding to the five places of
-      <valsi>klama</valsi>
-      respectively:
-    </para>
+    <para role="indent">The compound cmavo <valsi>sepi'o</valsi> is much shorter than <jbophrase>fi'o se pilno [fe'u]</jbophrase>, and can be thought of as a single word meaning <quote>with-tool</quote>. The modal tag <valsi>pi'o</valsi>, with no <valsi>se</valsi>, similarly means <quote>with-tool-user</quote>, probably a less useful concept. Nevertheless, the parallelism with the place structure of <valsi>pilno</valsi> makes the additional syllable worthwhile.</para>
+    <para><indexterm type="general"><primary>conversion</primary><secondary>effect on BAI</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>BAI selma'o</primary><secondary>effect of conversion on</secondary>
+      </indexterm>Some BAI cmavo make sense with as well as without a SE cmavo. For example, <valsi>ka'a</valsi>, the BAI corresponding to the gismu <valsi>klama</valsi>, has five usable forms corresponding to the five places of <valsi>klama</valsi> respectively:</para>
     <informaltable>
       <colgroup />
       <tr>
@@ -1485,13 +1401,7 @@
         <natlang>I am a traveling cosmetics salesperson for Avon.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      (
-      <xref linkend="example-random-id-r0QA" />
-      may seem a bit strained, but it illustrates the way in which an existing selbri,
-      <valsi>vecnu</valsi>
-      in this case, may have a place added to it which might otherwise seem utterly unrelated.)
-    </para>
+    <para role="noindent">(<xref linkend="example-random-id-r0QA" /> may seem a bit strained, but it illustrates how an existing selbri, <valsi>vecnu</valsi> in this case, may have added to it a place which might otherwise seem utterly unrelated.)</para>
     <example xml:id="example-random-id-qmJM" role="interlinear-gloss-example">
       <title><anchor xml:id="c9e6d3" /></title>
 
@@ -1528,20 +1438,10 @@
         <natlang>I eat in the airplane.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>English prepositions</primary><secondary>contrasted with modal tags in preciseness</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>modal tags</primary><secondary>contrasted with English prepositions in preciseness</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>BAI selma'o</primary><secondary>rationale for selection of BAI cmavo</secondary>
-      </indexterm>
-      There are sixty-odd cmavo of selma'o BAI, based on selected gismu that seemed useful in a variety of settings. The list is somewhat biased toward English, because many of the cmavo were selected on the basis of corresponding English prepositions and preposition compounds such as
-      <quote>with</quote>
-      ,
-      <quote>without</quote>
-      , and
-      <quote>by means of</quote>. The BAI cmavo, however, are far more precise than English prepositions, because their meanings are fixed by the place structures of the corresponding gismu.
-    </para>
+    <para role="indent">Selma'o BAI contains<indexterm type="general"><primary>English prepositions</primary><secondary>contrasted with modal tags in preciseness</secondary>
+      </indexterm><indexterm type="general"><primary>modal tags</primary><secondary>contrasted with English prepositions in preciseness</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>BAI selma'o</primary><secondary>rationale for selection of BAI cmavo</secondary>
+      </indexterm> sixty-odd cmavo, based on selected gismu that seemed useful in a variety of settings. The list is somewhat biased toward English, because many of the cmavo were chosen on the basis of corresponding English prepositions and preposition compounds such as <quote>with</quote>, <quote>without</quote>, and <quote>by means of</quote>. The BAI cmavo, however, are far more precise than English prepositions, because their meanings are fixed by the place structures of the corresponding gismu.</para>
 
     <para>
       <indexterm type="lojban-word"><primary>BAI selma'o</primary><secondary>form of cmavo in</secondary>
@@ -1550,14 +1450,9 @@
       <xref linkend="section-irregular-BAI" />
       shows the exceptions.
     </para>
-    <para>
-      <indexterm type="general"><primary>vague relationship</primary><secondary>modal tag for</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>modal tag</primary><secondary>for vague relationship</secondary>
-      </indexterm>
-      There is one additional BAI cmavo that is not derived from a gismu:
-      <valsi>do'e</valsi>. This cmavo is used when an extra place is needed, but it seems useful to be vague about the semantic implications of the extra place:
-    </para>
+    <para><indexterm type="general"><primary>vague relationship</primary><secondary>modal tag for</secondary>
+      </indexterm><indexterm type="general"><primary>modal tag</primary><secondary>for vague relationship</secondary>
+      </indexterm>There is one additional BAI cmavo that is not derived from a gismu: <valsi>do'e</valsi>. It is used when an extra place is needed, but it seems useful to be vague about the semantic implications of that extra place:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-2vMd">
       <title><anchor xml:id="c9e6d7" /></title>
@@ -1569,27 +1464,11 @@
         <natlang>A man of the north came to the city.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>modal place</primary><secondary>on description selbri</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>of</primary><secondary>English word &quot;of&quot;</secondary>
+    <para role="indent"><indexterm type="general"><primary>modal place</primary><secondary>on description selbri</secondary>
+      </indexterm><indexterm type="general"><primary>of</primary><secondary>English word &quot;of&quot;</secondary>
         <tertiary>compared with &quot;do'e&quot;</tertiary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>do'e</primary><secondary>compared with English &quot;of&quot;</secondary>
-      </indexterm>
-      Here
-      <jbophrase>le berti</jbophrase>
-      is provided as a modal place of the selbri
-      <valsi>nanmu</valsi>
-      , but its exact significance is vague, and is paralleled in the colloquial translation by the vague English preposition
-      <quote>of</quote>.
-      <xref linkend="example-random-id-2vMd" />
-      also illustrates a modal place bound into a selbri with
-      <valsi>be</valsi>. This construction is useful when the selbri of a description requires a modal place; this and other uses of
-      <valsi>be</valsi>
-      are more fully explained in
-      <xref linkend="section-be-sumti" />.
-    </para>
+      </indexterm><indexterm type="lojban-word"><primary>do'e</primary><secondary>compared with English &quot;of&quot;</secondary>
+      </indexterm>Here <jbophrase>le berti</jbophrase> is provided as a modal place of the selbri <valsi>nanmu</valsi>, but its exact significance is vague, and the colloquial translation parallels that vagueness with the vague English preposition <quote>of</quote>. <xref linkend="example-random-id-2vMd" /> also illustrates a modal place bound into a selbri with <valsi>be</valsi>. This construction is useful when the selbri of a description requires a modal place; this and other uses of <valsi>be</valsi> are more fully explained in <xref linkend="section-be-sumti" />.</para>
   </section>
   <section xml:id="section-causals">
     <title><anchor xml:id="c9s7" />Modal sentence connection: the causals</title>
@@ -2082,19 +1961,10 @@
         <natlang>Because I grasp the cup, I grasp the water.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>forethought modal sentence connection</primary><secondary>relation to modal of second bridi in</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>forethought modal sentence connection</primary><secondary>relation to modal of first bridi in</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>forethought modal sentence connection for causals</primary><secondary>order of cause and effect</secondary>
-      </indexterm>
-      Note that the cause, the x<subscript>1</subscript> of
-      <valsi>rinka</valsi>
-      is now placed first. To keep the two bridi in the original order of
-      <xref linkend="example-random-id-2D4c" />
-      , we could say:
-    </para>
+    <para role="indent"><indexterm type="general"><primary>forethought modal sentence connection</primary><secondary>relation to modal of second bridi in</secondary>
+      </indexterm><indexterm type="general"><primary>forethought modal sentence connection</primary><secondary>relation to modal of first bridi in</secondary>
+      </indexterm><indexterm type="general"><primary>forethought modal sentence connection for causals</primary><secondary>order of cause and effect</secondary>
+      </indexterm>Note that the cause, the x<subscript>1</subscript> of <valsi>rinka</valsi>, is now placed first. To keep the two bridi in the original order of <xref linkend="example-random-id-2D4c" />, we could say:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-rQ77">
       <title><anchor xml:id="c9e8d3" /></title>
 
@@ -2150,14 +2020,8 @@
       <xref linkend="example-random-id-rQ77" />
       , but there is no idiomatic English translation that will distinguish it from them.
     </para>
-    <para>
-      <indexterm type="general"><primary>termset modal connection</primary></indexterm>
-      <indexterm type="general"><primary>modals</primary><secondary>termset connection</secondary>
-      </indexterm>
-      If the two connected bridi are different in more than one sumti, then a termset may be employed. Termsets are explained more fully in
-      <xref linkend="section-termsets" />
-      , but are essentially a mechanism for creating connections between multiple sumti simultaneously.
-    </para>
+    <para><indexterm type="general"><primary>termset modal connection</primary></indexterm><indexterm type="general"><primary>modals</primary><secondary>termset connection</secondary>
+      </indexterm>If the two connected bridi differ in more than one sumti, then a termset may be employed. Termsets are explained more fully in <xref linkend="section-termsets" />, but are essentially a mechanism for creating connections between multiple sumti simultaneously.</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-LetE">
       <title><anchor xml:id="c9e8d5" /></title>
 
@@ -2221,15 +2085,7 @@
         <gloss>I because saw, therefore took, - the book.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      where
-      <jbophrase>le cukta</jbophrase>
-      is set off by the non-elidable
-      <valsi>vau</valsi>
-      and is made to belong to both bridi-tails &ndash; see
-      <xref linkend="section-compound-bridi" />
-      for more explanations.
-    </para>
+    <para role="noindent">where <jbophrase>le cukta</jbophrase> is set off by the non-elidable <valsi>vau</valsi> and is made to belong to both bridi-tails (see <xref linkend="section-compound-bridi" /> for more explanations).</para>
     <para>
       <indexterm type="general"><primary>shared bridi-tail sumti</primary><secondary>avoiding</secondary>
       </indexterm>
@@ -2298,22 +2154,9 @@
       <xref linkend="example-random-id-Mfe4" />
       justice.
     </para>
-    <para>
-      <indexterm type="general"><primary>modal connectives</primary><secondary>with fi'o</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>fi'o</primary><secondary>restriction on use</secondary>
-      </indexterm>
-      You can also form modal connectives with the
-      <jbophrase>fi'o-</jbophrase>
-      plus-selbri form of modal. The current grammar accepts a form like
-      <jbophrase>.i fi'o bapli fe'u bo</jbophrase>
-      (older grammars differ here: see
-      <xref linkend="appendix-changes" />). Such connectives are still rare in practice. The BAI forms in
-      <xref linkend="section-causals" />
-      and
-      <xref linkend="section-modal-connectives" />
-      are the usual choice.
-    </para>
+    <para>Modal connectives<indexterm type="general"><primary>modal connectives</primary><secondary>with fi'o</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>fi'o</primary><secondary>restriction on use</secondary>
+      </indexterm> can be formed with the <jbophrase>fi'o-</jbophrase> plus-selbri form of modal too. The current grammar accepts a form like <jbophrase>.i fi'o bapli fe'u bo</jbophrase> (older grammars differ here: see <xref linkend="appendix-changes" />). Such connectives are still rare in practice, though, and the BAI forms of <xref linkend="section-causals" /> and <xref linkend="section-modal-connectives" /> are the usual choice.</para>
   </section>
   <section xml:id="section-modal-selbri">
     <title><anchor xml:id="c9s9" />Modal selbri</title>
@@ -2567,10 +2410,7 @@
         <description>mleca modal</description>
       </cmavo-entry>
     </cmavo-list>
-    <para role="indent">
-      Relative phrases and clauses are explained in much more detail in
-      <xref linkend="chapter-relative-clauses" />. However, there is a construction which combines a modal with a relative phrase which is relevant to this chapter. Consider the following examples of relative clauses:
-    </para>
+    <para role="indent">Relative phrases and clauses are explained in much more detail in <xref linkend="chapter-relative-clauses" />. However, there is a construction which combines a modal with a relative phrase, and it belongs in this chapter. Consider the following examples of relative clauses:</para>
     <example xml:id="example-random-id-qmPP" role="interlinear-gloss-example">
       <title>
         <indexterm type="general"><primary>Artur Rubenstein</primary></indexterm>
@@ -2600,19 +2440,7 @@
         <gloss>… that-named Beethoven, - is-liked-by me.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      In
-      <xref linkend="example-random-id-qmPP" />
-      ,
-      <jbophrase>la .apasionatas.</jbophrase>
-      refers to a particular performance of the sonata, namely the one performed by Rubinstein. Therefore, the relative clause
-      <jbophrase>poi se cusku</jbophrase>
-      uses the cmavo
-      <valsi>poi</valsi>
-      (of selma'o NOI) to restrict the meaning of
-      <jbophrase>la .apasionatas</jbophrase>
-      to the performance in question.
-    </para>
+    <para role="indent">In <xref linkend="example-random-id-qmPP" />, <jbophrase>la .apasionatas.</jbophrase> refers to a particular performance of the sonata, namely the one performed by Rubinstein. The relative clause <jbophrase>poi se cusku</jbophrase> therefore uses the cmavo <valsi>poi</valsi> (of selma'o NOI) to restrict the meaning of <jbophrase>la .apasionatas</jbophrase> to the performance in question.</para>
     <para>
       In
       <xref linkend="example-random-id-qmPr" />
@@ -2661,13 +2489,8 @@
         <gloss>The Appassionata, which-is-of that-named Beethoven, is-liked-by me.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>relative phrases</primary><secondary>contrasted with relative clauses in preciseness</secondary>
-      </indexterm>
-      Here the precise selbri of the relative clauses is lost: all we can tell is that the Appassionata is connected in some way with Rubinstein (in
-      <xref linkend="example-random-id-qMq1" />) and Beethoven (in
-      <xref linkend="example-random-id-qMQ1" />), and that the relationships are respectively restrictive and incidental.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>relative phrases</primary><secondary>contrasted with relative clauses in preciseness</secondary>
+      </indexterm>Here the precise selbri of the relative clauses is lost. All we can tell is that the Appassionata is connected in some way with Rubinstein (in <xref linkend="example-random-id-qMq1" />) and with Beethoven (in <xref linkend="example-random-id-qMQ1" />), and that the relationships are respectively restrictive and incidental.</para>
     <para>
       It happens that both
       <valsi>cusku</valsi>
@@ -2908,26 +2731,8 @@
         <gloss>liking that-named Mary.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>modals often attached with relative phrases</primary><secondary>list</secondary>
-      </indexterm>
-      The mechanisms explained in this section are appropriate to many modals other than
-      <valsi>semau</valsi>
-      and
-      <valsi>seme'a</valsi>. Some other modals that are often associated with relative phrases are:
-      <valsi>seba'i</valsi>
-      (
-      <quote>instead of</quote>),
-      <valsi>ci'u</valsi>
-      (
-      <quote>on scale</quote>),
-      <valsi>de'i</valsi>
-      (
-      <quote>dated</quote>),
-      <valsi>du'i</valsi>
-      (
-      <quote>as much as</quote>). Some BAI tags can be used equally well in relative phrases or attached to bridi; others seem useful only attached to bridi. But it is also possible that the usefulness of particular BAI modals is an English-speaker bias, and that speakers of other languages may find other BAIs useful in divergent ways.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>modals often attached with relative phrases</primary><secondary>list</secondary>
+      </indexterm>The mechanisms explained in this section suit many modals other than <valsi>semau</valsi> and <valsi>seme'a</valsi>. Some other modals that are often associated with relative phrases are: <valsi>seba'i</valsi> (<quote>instead of</quote>), <valsi>ci'u</valsi> (<quote>on scale</quote>), <valsi>de'i</valsi> (<quote>dated</quote>), <valsi>du'i</valsi> (<quote>as much as</quote>). Some BAI tags can be used equally well in relative phrases or attached to bridi; others seem useful only attached to bridi. But it is also possible that the usefulness of particular BAI modals is an English-speaker bias, and that speakers of other languages may find other BAIs useful in divergent ways.</para>
     <para>
       Here is a useful convention for
       <valsi>de'i</valsi>. The tagged date or time is normally a number built with the numerical punctuation cmavo
@@ -3398,19 +3203,10 @@
         <description>stickiness flag</description>
       </cmavo-entry>
     </cmavo-list>
-    <para role="indent">
-      <indexterm type="general"><primary>modals</primary><secondary>making sticky</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>modals</primary><secondary>making long-scope</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>sticky modals</primary><secondary>definition</secondary>
-      </indexterm>
-      Like tenses, modals can be made persistent from the bridi in which they appear to all following bridi. The effect of this
-      <quote>stickiness</quote>
-      is to make the modal, along with its following sumti, act as if it appeared in every successive bridi. Stickiness is put into effect by following the modal (but not any following sumti) with the cmavo
-      <valsi>ki</valsi>
-      of selma'o KI. For example,
-    </para>
+    <para role="indent"><indexterm type="general"><primary>modals</primary><secondary>making sticky</secondary>
+      </indexterm><indexterm type="general"><primary>modals</primary><secondary>making long-scope</secondary>
+      </indexterm><indexterm type="general"><primary>sticky modals</primary><secondary>definition</secondary>
+      </indexterm>Like tenses, modals can be made to persist from the bridi in which they appear into all the bridi that follow. The effect of this <quote>stickiness</quote> is to make the modal, along with its following sumti, act as if it appeared in every successive bridi. Stickiness is put into effect by following the modal (but not any following sumti) with the cmavo <valsi>ki</valsi> of selma'o KI. For example,</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-1UGf">
       <title><anchor xml:id="c9e14d1" /></title>
 
@@ -3448,27 +3244,9 @@
         <gloss>… some-property-of that-named Frank.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      In
-      <xref linkend="example-random-id-1UGf" />
-      ,
-      <valsi>bai</valsi>
-      is made sticky, and so Frank's compelling is made applicable to every following bridi.
-      <valsi>bau</valsi>
-      is not sticky, and so the language may vary from bridi to bridi, and if not specified in a particular bridi, no assumption can safely be made about its value.
-    </para>
-    <para>
-      <indexterm type="general"><primary>sticky modals</primary><secondary>canceling</secondary>
-      </indexterm>
-      To cancel stickiness, use the form
-      <jbophrase>BAI ki ku</jbophrase>
-      , which stops any modal value for the specified BAI from being passed to the next bridi. To cancel stickiness for all modals simultaneously, and also for any sticky tenses that exist (
-      <valsi>ki</valsi>
-      is used for both modals and tenses), use
-      <valsi>ki</valsi>
-      by itself, either before the selbri or (in the form
-      <jbophrase>ki ku</jbophrase>) anywhere in the bridi:
-    </para>
+    <para role="indent">In <xref linkend="example-random-id-1UGf" />, <valsi>bai</valsi> is made sticky, and so Frank's compelling applies to every following bridi. The modal <valsi>bau</valsi> is not sticky, and so the language may vary from bridi to bridi; if it isn't specified in a particular bridi, no assumption can safely be made about its value.</para>
+    <para><indexterm type="general"><primary>sticky modals</primary><secondary>canceling</secondary>
+      </indexterm>To cancel stickiness, use the form <jbophrase>BAI ki ku</jbophrase>, which stops any modal value for the specified BAI from being passed to the next bridi. To cancel stickiness for all modals at once, and also for any sticky tenses that exist (<valsi>ki</valsi> is used for both modals and tenses), use <valsi>ki</valsi> by itself, either before the selbri or (in the form <jbophrase>ki ku</jbophrase>) anywhere in the bridi:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-sYdo">
       <title><anchor xml:id="c9e14d3" /></title>
 
@@ -3782,16 +3560,8 @@
       </indexterm>
       It should be emphasized that the place structures of the gismu control the meanings of the BAI cmavo. The English phrases shown here are only suggestive, and are often too broad or too narrow to correctly specify what the acceptable range of uses for the modal tag are.
     </para>
-    <para role="status-note">
-      <indexterm type="general"><primary>BAI selma'o</primary><secondary>status of definitions</secondary>
-      </indexterm>
-      The BAI definitions in this chapter are the checkpointed ones. This includes every gloss in the table below. A few rows differ from older lists:
-      <valsi>ti'u</valsi>,
-      <valsi>ci'e</valsi>, and
-      <valsi>tai</valsi>
-      (see
-      <xref linkend="appendix-changes" />).
-    </para>
+    <para role="status-note"><indexterm type="general"><primary>BAI selma'o</primary><secondary>status of definitions</secondary>
+      </indexterm>The BAI definitions in this chapter are the checkpointed ones, and that includes every gloss in the table below. A few rows differ from older lists: <valsi>ti'u</valsi>, <valsi>ci'e</valsi>, and <valsi>tai</valsi> (see <xref linkend="appendix-changes" />).</para>
     <para role="allowbreaks" />
     <cmavo-list>
       <cmavo-entry>
@@ -4407,12 +4177,6 @@
       <valsi>tamsmi</valsi>
       <content>x<subscript>1</subscript> resembles x<subscript>2</subscript>, sharing ideal form x<subscript>3</subscript>, in property/quality x<subscript>4</subscript></content>
     </definition>
-    <para>
-      This lujvo is employed because
-      <valsi>tarmi</valsi>
-      does not have a place structure useful for the modal's purpose. A caution for dictionary users: the place structure shown here is the checkpointed one, and the conversion glosses in this chapter follow it. The community dictionary's stand-alone
-      <valsi>tamsmi</valsi>
-      entry still carries an older ordering, with the form in the x<subscript>2</subscript> place.
-    </para>
+    <para>This lujvo is employed because <valsi>tarmi</valsi> does not have a place structure useful for the modal's purpose. A word of caution for those who use the dictionary: the place structure shown here is the checkpointed one, and the conversion glosses in this chapter follow it. The community dictionary's stand-alone <valsi>tamsmi</valsi> entry still carries an older ordering, with the form in the x<subscript>2</subscript> place.</para>
   </section>
 </chapter>

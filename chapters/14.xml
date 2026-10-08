@@ -2544,30 +2544,14 @@
   </section>
   <section xml:id="section-truth-and-connective-questions">
     <title><anchor xml:id="c14s13" />Truth questions and connective questions</title>
-    <para>So far we have addressed only sentences which are statements. Lojban, like all human languages, needs also to deal with sentences which are questions. There are many ways of asking questions in Lojban, but some of these (like questions about quantity, tense, and emotion) are discussed in other chapters.</para>    <para>      <indexterm type="general"><primary>truth questions</primary><secondary>simple</secondary>      </indexterm>      The simplest kind of question is of the type
-      <quote>Is it true that ...</quote>
-      where some statement follows. This type is called a
-      <quote>truth question</quote>
-      , and can be represented in English by
-      <xref linkend="example-random-id-bMjE" />
-      :
-    </para>
+    <para>So far we have dealt only with sentences that are statements. Lojban, like all human languages, also has to cope with sentences that are questions. There are many ways of asking questions in Lojban, but some of them (like questions about quantity, tense, and emotion) are discussed in other chapters.</para>    <para><indexterm type="general"><primary>truth questions</primary><secondary>simple</secondary>      </indexterm>The simplest kind of question is of the type <quote>Is it true that ...</quote>, where some statement follows. This type is called a <quote>truth question</quote>, and can be represented in English by <xref linkend="example-random-id-bMjE" />:</para>
     <example xml:id="example-random-id-bMjE">
       <title><anchor xml:id="c14e13d1" /></title>
 
       <para>Is it true that Fido is a dog?</para>
       <para>Is Fido a dog?</para>
     </example>
-    <para role="indent">
-      Note the two formulations. English truth questions can always be formed by prefixing
-      <quote>Is it true that</quote>
-      to the beginning of a statement; there is also usually a more idiomatic way involving putting the verb before its subject.
-      <quote>Is Fido a dog?</quote>
-      is the truth question corresponding to
-      <quote>Fido is a dog</quote>. In Lojban, the equivalent mechanism is to prefix the cmavo
-      <valsi>xu</valsi>
-      (of selma'o UI) to the statement:
-    </para>
+    <para role="indent">Note the two formulations. English truth questions can always be formed by prefixing <quote>Is it true that</quote> to the beginning of a statement; there is also usually a more idiomatic way, which puts the verb before its subject. <quote>Is Fido a dog?</quote> is the truth question corresponding to <quote>Fido is a dog</quote>. In Lojban, the equivalent mechanism is to prefix the cmavo <valsi>xu</valsi> (of selma'o UI) to the statement:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-gKaM">
       <title><anchor xml:id="c14e13d2" /></title>
 
@@ -2582,30 +2566,10 @@
       <xref linkend="example-random-id-gKaM" />
       are equivalent in meaning.
     </para>
-    <para>
-      <indexterm type="general"><primary>truth questions</primary><secondary>answering in English with &quot;no&quot;</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>truth questions</primary><secondary>answering in English with &quot;yes&quot;</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>truth questions</primary><secondary>as yes-or-no questions</secondary>
-      </indexterm>
-      A truth question can be answered
-      <quote>yes</quote>
-      or
-      <quote>no</quote>
-      , depending on the truth or falsity, respectively, of the underlying statement. The standard way of saying
-      <quote>yes</quote>
-      in Lojban is
-      <valsi>go'i</valsi>
-      and of saying
-      <quote>no</quote>
-      is
-      <valsi>na</valsi>
-      <valsi>go'i</valsi>. (The reasons for this rule are explained in
-      <xref linkend="section-ri-gohi-series" />.) In answer to
-      <xref linkend="example-random-id-gKaM" />
-      , the possible answers are:
-    </para>
+    <para><indexterm type="general"><primary>truth questions</primary><secondary>answering in English with &quot;no&quot;</secondary>
+      </indexterm><indexterm type="general"><primary>truth questions</primary><secondary>answering in English with &quot;yes&quot;</secondary>
+      </indexterm><indexterm type="general"><primary>truth questions</primary><secondary>as yes-or-no questions</secondary>
+      </indexterm>A truth question can be answered <quote>yes</quote> or <quote>no</quote>, depending on whether the underlying statement is true or false, respectively. The standard way of saying <quote>yes</quote> in Lojban is <valsi>go'i</valsi>, and of saying <quote>no</quote> is <valsi>na</valsi> <valsi>go'i</valsi>. (The reasons for this rule are explained in <xref linkend="section-ri-gohi-series" />.) In answer to <xref linkend="example-random-id-gKaM" />, the possible answers are:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-XSmq">
       <title><anchor xml:id="c14e13d3" /></title>
 
@@ -2624,33 +2588,20 @@
         <natlang>Fido is not a dog.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>truth questions</primary><secondary>contrasted with connection questions</secondary>
-      </indexterm>
-      Some English questions seemingly have the same form as the truth questions so far discussed. Consider
-    </para>
+    <para role="indent"><indexterm type="general"><primary>truth questions</primary><secondary>contrasted with connection questions</secondary>
+      </indexterm>Some English questions seemingly have the same form as the truth questions we have discussed so far. Consider</para>
     <example xml:id="example-random-id-mftC">
       <title><anchor xml:id="c14e13d5" /><indexterm type="general"><primary>dog or cat</primary></indexterm></title>
 
       <para>Is Fido a dog or a cat?</para>
     </example>
-    <para role="indent">
-      Superficially,
-      <xref linkend="example-random-id-mftC" />
-      seems like a truth question with the underlying statement:
-    </para>
+    <para role="indent">Superficially, <xref linkend="example-random-id-mftC" /> looks like a truth question with the underlying statement:</para>
     <example xml:id="example-random-id-n6Ec">
       <title><anchor xml:id="c14e13d6" /><indexterm type="general"><primary>dog or cat</primary></indexterm></title>
 
       <para>Fido is a dog or a cat.</para>
     </example>
-    <para role="indent">
-      By translating
-      <xref linkend="example-random-id-n6Ec" />
-      into Lojban and prefixing
-      <valsi>xu</valsi>
-      to signal a truth question, we get:
-    </para>
+    <para role="indent">If we translate <xref linkend="example-random-id-n6Ec" /> into Lojban and prefix <valsi>xu</valsi> to signal a truth question, we get:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-hz4S">
       <title><anchor xml:id="c14e13d7" /><indexterm type="general"><primary>dog or cat</primary></indexterm></title>
 
@@ -2667,18 +2618,9 @@
       <valsi>go'i</valsi>.
     </para>
 
-    <para>
-      But that is not what an English-speaker who utters
-      <xref linkend="example-random-id-mftC" />
-      is asking! The true significance of
-      <xref linkend="example-random-id-mftC" />
-      is that the speaker desires to know the truth value of either of the two underlying bridi (it is presupposed that only one is true).
-    </para>
-    <para>
-      <indexterm type="general"><primary>questions</primary><secondary>connection</secondary>
-      </indexterm>
-      Lojban has an elegant mechanism for rendering this kind of question which is very unlike that used in English. Instead of asking about the truth value of the connected bridi, Lojban users ask about the truth function which connects them. This is done by using a special question cmavo: there is one of these for each of the logical connective selma'o, as shown by the following table:
-    </para>
+    <para>But that is not what an English-speaker who utters <xref linkend="example-random-id-mftC" /> is asking! What the speaker really wants to know is the truth value of either of the two underlying bridi (it is presupposed that only one is true).</para>
+    <para><indexterm type="general"><primary>questions</primary><secondary>connection</secondary>
+      </indexterm>Lojban has an elegant mechanism for rendering this kind of question, and it is very unlike the English one. Instead of asking about the truth value of the connected bridi, Lojban users ask about the truth function that connects them. This is done with a special question cmavo; there is one of these for each of the logical connective selma'o, as the following table shows:</para>
     <cmavo-list>
       <cmavo-entry>
         <cmavo>ge'i</cmavo>
@@ -2776,13 +2718,9 @@
       <xref linkend="example-random-id-qGRz" />
       is correct but uncooperative.
     </para>
-    <para>
-      <indexterm type="general"><primary>afterthought connectives</primary><secondary>as complete grammatical utterance</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>connectives</primary><secondary>as complete grammatical utterance</secondary>
-      </indexterm>
-      As usual, Lojban questions are answered by filling in the blank left by the question. Here the blank is a logical connective, and therefore it is grammatical in Lojban to utter a bare logical connective without anything for it to connect.
-    </para>
+    <para><indexterm type="general"><primary>afterthought connectives</primary><secondary>as complete grammatical utterance</secondary>
+      </indexterm><indexterm type="general"><primary>connectives</primary><secondary>as complete grammatical utterance</secondary>
+      </indexterm>As usual, Lojban questions are answered by filling in the blank the question leaves. Here the blank is a logical connective, so it is grammatical in Lojban to utter a bare logical connective with nothing for it to connect.</para>
     <para>
       The answer
       <valsi>gi'e</valsi>
@@ -2807,25 +2745,11 @@
       <valsi>.e</valsi>
       , meaning that I want both, is perfectly plausible, if not necessarily polite.
     </para>
-    <para>
-      <indexterm type="general"><primary>afterthought connection</primary><secondary>contrasted with forethought for grammatical utterances</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>forethought connection</primary><secondary>contrasted with afterthought for grammatical utterances</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>forethought connectives</primary><secondary>as ungrammatical utterance</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>connectives</primary><secondary>as ungrammatical utterance</secondary>
-      </indexterm>
-      The forethought questions
-      <valsi>ge'i</valsi>
-      and
-      <valsi>gu'i</valsi>
-      are used like the others, but ambiguity forbids the use of isolated forethought connectives as answers &ndash; they sound like the start of forethought-connected bridi. So although
-      <xref linkend="example-random-id-286J" />
-      is the forethought version of
-      <xref linkend="example-random-id-xtIf" />
-      :
-    </para>
+    <para><indexterm type="general"><primary>afterthought connection</primary><secondary>contrasted with forethought for grammatical utterances</secondary>
+      </indexterm><indexterm type="general"><primary>forethought connection</primary><secondary>contrasted with afterthought for grammatical utterances</secondary>
+      </indexterm><indexterm type="general"><primary>forethought connectives</primary><secondary>as ungrammatical utterance</secondary>
+      </indexterm><indexterm type="general"><primary>connectives</primary><secondary>as ungrammatical utterance</secondary>
+      </indexterm>The forethought questions <valsi>ge'i</valsi> and <valsi>gu'i</valsi> are used like the others, but ambiguity forbids using isolated forethought connectives as answers – they sound like the start of forethought-connected bridi. So although <xref linkend="example-random-id-286J" /> is the forethought version of <xref linkend="example-random-id-xtIf" />:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-286J">
       <title><anchor xml:id="c14e13d14" /></title>
 
@@ -2875,26 +2799,11 @@
       </indexterm>
       However, Chinese does not use logical connectives in the reply to such a question, so the resemblance, though striking, is superficial.
     </para>
-    <para>
-
-
-      <indexterm type="general"><primary>imperatives</primary><secondary>and truth</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>truth</primary><secondary>in imperative sentences</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>bridi connection</primary><secondary>use of imperatives in</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>bridi connection</primary><secondary>use of truth questions in</secondary>
-      </indexterm>
-      Truth questions may be used in bridi connection. This form of sentence is perfectly legitimate, and can be interpreted by using the convention that a truth question is true if the answer is
-      <quote>yes</quote>
-      and false if the answer is
-      <valsi>no</valsi>. Analogously, an imperative sentence (involving the special pro-sumti
-      <valsi>ko</valsi>
-      , which means
-      <quote>you</quote>
-      but marks the sentence as a command) is true if the command is obeyed, and false otherwise. A request of Abraham Lincoln's may be translated thus:
-    </para>
+    <para><indexterm type="general"><primary>imperatives</primary><secondary>and truth</secondary>
+      </indexterm><indexterm type="general"><primary>truth</primary><secondary>in imperative sentences</secondary>
+      </indexterm><indexterm type="general"><primary>bridi connection</primary><secondary>use of imperatives in</secondary>
+      </indexterm><indexterm type="general"><primary>bridi connection</primary><secondary>use of truth questions in</secondary>
+      </indexterm>Truth questions may be used in bridi connection. This form of sentence is perfectly legitimate, and can be interpreted by the convention that a truth question is true if the answer is <quote>yes</quote> and false if the answer is <valsi>no</valsi>. Analogously, an imperative sentence (one involving the special pro-sumti <valsi>ko</valsi>, which means <quote>you</quote> but marks the sentence as a command) is true if the command is obeyed, and false otherwise. A request of Abraham Lincoln's may be translated thus:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-BPv0">
       <title>
@@ -3474,24 +3383,8 @@
   </section>
   <section xml:id="section-non-logical-continued">
     <title><anchor xml:id="c14s15" />More about non-logical connectives</title>
-    <para>      <indexterm type="general"><primary>cross-product</primary><secondary>of sets</secondary>      </indexterm>      <indexterm type="general"><primary>intersection</primary><secondary>of sets</secondary>      </indexterm>      <indexterm type="general"><primary>union</primary><secondary>of sets</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>set operations</primary></indexterm>
-      The final three JOI cmavo,
-      <valsi>jo'e</valsi>
-      ,
-      <valsi>ku'a</valsi>
-      , and
-      <valsi>pi'u</valsi>
-      , are probably only useful when talking explicitly about sets. They represent three standard set operators usually called
-      <quote>union</quote>
-      ,
-      <quote>intersection</quote>
-      , and
-      <quote>cross product</quote>
-      (also known as
-      <quote>Cartesian product</quote>). The union of two sets is a set containing all the members that are in either set; the intersection of two sets is a set containing all the members that are in both sets. The cross product of two sets is the set of all possible ordered pairs, where each ordered pair contains a single element from the first set followed by a single element from the second. This may seem very abstract; hopefully, the following examples will help:
-    </para>
+    <para><indexterm type="general"><primary>cross-product</primary><secondary>of sets</secondary>      </indexterm><indexterm type="general"><primary>intersection</primary><secondary>of sets</secondary>      </indexterm><indexterm type="general"><primary>union</primary><secondary>of sets</secondary>
+      </indexterm><indexterm type="general"><primary>set operations</primary></indexterm>The final three JOI cmavo, <valsi>jo'e</valsi>, <valsi>ku'a</valsi>, and <valsi>pi'u</valsi>, are probably only useful when talking explicitly about sets. They represent three standard set operators, usually called <quote>union</quote>, <quote>intersection</quote>, and <quote>cross product</quote> (also known as <quote>Cartesian product</quote>). The union of two sets is a set containing all the members that are in either set; the intersection of two sets is a set containing all the members that are in both. The cross product of two sets is the set of all possible ordered pairs, where each ordered pair contains a single element from the first set followed by a single element from the second. This may seem very abstract; hopefully, the following examples will help:</para>
 
 
     <example xml:id="example-random-id-qGSA" role="interlinear-gloss-example">
@@ -3510,19 +3403,9 @@
         <gloss>The-set-of rich-things - intersection the-set-of German-things - is-small.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-
-
-      <indexterm type="general"><primary>intersection of sets</primary><secondary>compared with English &quot;and&quot;</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>union of sets</primary><secondary>compared with English &quot;or&quot;</secondary>
-      </indexterm>
-      There is a parallelism between logic and set theory that makes
-      <xref linkend="example-random-id-qGSA" />
-      and
-      <xref linkend="example-random-id-qgSe" />
-      equivalent respectively to:
-    </para>
+    <para role="indent"><indexterm type="general"><primary>intersection of sets</primary><secondary>compared with English &quot;and&quot;</secondary>
+      </indexterm><indexterm type="general"><primary>union of sets</primary><secondary>compared with English &quot;or&quot;</secondary>
+      </indexterm>There is a parallelism between logic and set theory that makes <xref linkend="example-random-id-qGSA" /> and <xref linkend="example-random-id-qgSe" /> equivalent, respectively, to:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-azCQ">
       <title><anchor xml:id="c14e15d3" /></title>
 
@@ -3540,11 +3423,7 @@
         <gloss>The-set-of (rich-things and German-things) - is-small.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      The following example uses
-      <jbophrase>se remei</jbophrase>
-      , which is a set (not a group) of two elements:
-    </para>
+    <para role="indent">The next example uses <jbophrase>se remei</jbophrase>, which is a set (not a group) of two elements:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-D9gz">
       <title><anchor xml:id="c14e15d5" /></title>
 
@@ -3557,32 +3436,15 @@
         <gloss>… that-named Mary and-set that-named Martha - are-lover - type-of-pairs.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      <indexterm type="general"><primary>and</primary><secondary>contrasted with cross-product</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>cross-product</primary><secondary>contrasted with &quot;and&quot;</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>.e</primary><secondary>contrasted with &quot;pi'u&quot;</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>pi'u</primary><secondary>contrasted with &quot;.e&quot;</secondary>
-      </indexterm>
-      means that each of the pairs James/Mary, George/Mary, James/Martha, and George/Martha love each other. Therefore it is similar in meaning to
-      <xref linkend="example-random-id-7bv3" />
-      ; however, that example speaks only of the men loving the women, not vice versa.
-    </para>
-    <para>
-      <indexterm type="lojban-word"><primary>JOI selma'o</primary><secondary>compared to logical connectives</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>non-logical connectives</primary><secondary>grouping</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>joiks</primary><secondary>grouping</secondary>
-      </indexterm>
-      Joiks may be combined with
-      <valsi>bo</valsi>
-      or with
-      <valsi>ke</valsi>
-      in the same way as eks and jeks; this allows grouping of non-logical connections between sumti and tanru units, in complete parallelism with logical connections:
-    </para>
+    <para role="noindent"><indexterm type="general"><primary>and</primary><secondary>contrasted with cross-product</secondary>
+      </indexterm><indexterm type="general"><primary>cross-product</primary><secondary>contrasted with &quot;and&quot;</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>.e</primary><secondary>contrasted with &quot;pi'u&quot;</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>pi'u</primary><secondary>contrasted with &quot;.e&quot;</secondary>
+      </indexterm>means that each of the pairs James/Mary, George/Mary, James/Martha, and George/Martha love each other. It is therefore similar in meaning to <xref linkend="example-random-id-7bv3" />; that example, however, speaks only of the men loving the women, not vice versa.</para>
+    <para><indexterm type="lojban-word"><primary>JOI selma'o</primary><secondary>compared to logical connectives</secondary>
+      </indexterm><indexterm type="general"><primary>non-logical connectives</primary><secondary>grouping</secondary>
+      </indexterm><indexterm type="general"><primary>joiks</primary><secondary>grouping</secondary>
+      </indexterm>Joiks may be combined with <valsi>bo</valsi> or with <valsi>ke</valsi> in the same way as eks and jeks. This allows grouping of non-logical connections between sumti and tanru units, in complete parallelism with logical connections:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-mwpo">
       <title><anchor xml:id="c14e15d6" /></title>
 
@@ -3595,16 +3457,10 @@
         <gloss>… - are-a-group - type-of-two-set</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">asserts that there is a set of two items each of which is a group.</para>
-    <para>
-      <indexterm type="general"><primary>termsets</primary><secondary>non-logical connection of</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>non-logical connection</primary><secondary>of termsets</secondary>
-      </indexterm>
-      Non-logical connection is permitted at the joint of a termset; this is useful for associating more than one sumti or tagged sumti with each side of the non-logical connection. The place structure of
-      <valsi>casnu</valsi>
-      is:
-    </para>
+    <para role="noindent">asserts that there is a set of two items, each of which is a group.</para>
+    <para><indexterm type="general"><primary>termsets</primary><secondary>non-logical connection of</secondary>
+      </indexterm><indexterm type="general"><primary>non-logical connection</primary><secondary>of termsets</secondary>
+      </indexterm>Non-logical connection is permitted at the joint of a termset. This kind of connection is useful for associating more than one sumti or tagged sumti with each side of the non-logical connection. The place structure of <valsi>casnu</valsi> is:</para>
     <definition>
       <valsi>casnu</valsi>
       <content>the group x<subscript>1</subscript> discusses/talks about x<subscript>2</subscript></content>
@@ -3634,15 +3490,10 @@
 
       <jbophrase>nu'i joigi mi bau la .lojban. gi do bau la .gliban. nu'u casnu</jbophrase>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>respectively</primary><secondary>with different relationships</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>tagged sumti termsets</primary><secondary>connecting with non-logical forethought connectives</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>non-logical forethought termsets</primary><secondary>connecting tagged sumti</secondary>
-      </indexterm>
-      Non-logical forethought termsets are also useful when the things to be non-logically connected are sumti preceded with tense or modal (BAI) tags:
-    </para>
+    <para role="indent"><indexterm type="general"><primary>respectively</primary><secondary>with different relationships</secondary>
+      </indexterm><indexterm type="general"><primary>tagged sumti termsets</primary><secondary>connecting with non-logical forethought connectives</secondary>
+      </indexterm><indexterm type="general"><primary>non-logical forethought termsets</primary><secondary>connecting tagged sumti</secondary>
+      </indexterm>Non-logical forethought termsets are also useful when the things to be non-logically connected are sumti preceded by tense or modal (BAI) tags:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-wVSG">
       <title><anchor xml:id="c14e15d9" /></title>
@@ -3670,28 +3521,14 @@
       associates speaking in Lojban with John, and speaking under George's compulsion with Frank. We do not know what language Frank uses, or whether John speaks under anyone's compulsion.
     </para>
 
-    <para>
-      <indexterm type="lojban-word"><primary>JOI selma'o</primary><secondary>usage with I</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>sequence of events</primary><secondary>expressing non-time-related sequences</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>.ice'o</primary><secondary>contrasted with &quot;.ibabo&quot;</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>ce'o</primary><secondary>&quot;.ice'o&quot; contrasted with &quot;.ibabo&quot;</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>sentences</primary><secondary>connecting non-logically</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>non-logical connectives</primary><secondary>sentence</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>ijoik</primary><secondary>definition</secondary>
-      </indexterm>
-      Joiks may be prefixed with
-      <valsi>.i</valsi>
-      to produce ijoiks, which serve to non-logically connect sentences. The ijoik
-      <valsi>.i</valsi>
-      <valsi>ce'o</valsi>
-      indicates that the event of the second bridi follows that of the first bridi in some way other than a time relationship (which is handled with a tense):
-    </para>
+    <para><indexterm type="lojban-word"><primary>JOI selma'o</primary><secondary>usage with I</secondary>
+      </indexterm><indexterm type="general"><primary>sequence of events</primary><secondary>expressing non-time-related sequences</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>.ice'o</primary><secondary>contrasted with &quot;.ibabo&quot;</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>ce'o</primary><secondary>&quot;.ice'o&quot; contrasted with &quot;.ibabo&quot;</secondary>
+      </indexterm><indexterm type="general"><primary>sentences</primary><secondary>connecting non-logically</secondary>
+      </indexterm><indexterm type="general"><primary>non-logical connectives</primary><secondary>sentence</secondary>
+      </indexterm><indexterm type="general"><primary>ijoik</primary><secondary>definition</secondary>
+      </indexterm>Joiks may be prefixed with <valsi>.i</valsi> to produce ijoiks, which serve to connect sentences non-logically. The ijoik <valsi>.i</valsi> <valsi>ce'o</valsi> indicates that the event of the second bridi follows that of the first bridi in some way other than a time relationship (which is handled with a tense):</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-27xU">
       <title>
@@ -3714,58 +3551,16 @@
         <natlang>List of things to do: Figure taxes. Wash car. Walk dog.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-
-
-      <indexterm type="lojban-word"><primary>tu'e</primary><secondary>use in lists</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>tu'e</primary><secondary>effect on &quot;di'e&quot;</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>di'e</primary><secondary>effect of &quot;tu'e&quot;/&quot;tu'u&quot; on</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>lists</primary><secondary>use of &quot;tu'e&quot;/&quot;tu'u&quot; in</secondary>
-      </indexterm>
-      <xref linkend="example-random-id-27xU" />
-      represents a list of things to be done in priority order. The order is important, hence the need for a sequence connective, but does not necessarily represent a time order (the dog may end up getting walked first). Note the use of
-      <valsi>tu'e</valsi>
-      and
-      <valsi>tu'u</valsi>
-      as general brackets around the whole list. This is related to, but distinct from, their use in
-      <xref linkend="section-afterthought-connectives-grouping" />
-      , because there is no logical connective between the introductory phrase
-      <jbophrase>mi ba gasnu la'edi'e</jbophrase>
-      and the rest. The brackets effectively show how large an utterance the word
-      <valsi>di'e</valsi>
-      , which means
-      <quote>the following utterance</quote>
-      , refers to.
-    </para>
-    <para>
-      Similarly,
-      <valsi>.i</valsi>
-      <valsi>joi</valsi>
-      is used to connect sentences that represent the components of a joint event such as a joint cause: the Lojban equivalent of
-      <quote>Fran hit her head and fell out of the boat, so that she drowned</quote>
-      would join the events
-      <quote>Fran hit her head</quote>
-      and
-      <quote>Fran fell out of the boat</quote>
-      with
-      <valsi>.i</valsi>
-      <valsi>joi</valsi>.
-    </para>
-    <para>
-      <indexterm type="general"><primary>scalar negation of non-logical connective</primary></indexterm>
-      <indexterm type="general"><primary>non-logical connectives</primary><secondary>effect of &quot;nai&quot; on</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>joiks</primary><secondary>effect of &quot;nai&quot; on</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>nai</primary><secondary>effect on joiks</secondary>
-      </indexterm>
-      The following
-      <valsi>nai</valsi>
-      , if present, does not negate either of the things to be connected, but instead specifies that some other connection (logical or non-logical) is applicable: it is a scalar negation:
-    </para>
+    <para role="indent"><indexterm type="lojban-word"><primary>tu'e</primary><secondary>use in lists</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>tu'e</primary><secondary>effect on &quot;di'e&quot;</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>di'e</primary><secondary>effect of &quot;tu'e&quot;/&quot;tu'u&quot; on</secondary>
+      </indexterm><indexterm type="general"><primary>lists</primary><secondary>use of &quot;tu'e&quot;/&quot;tu'u&quot; in</secondary>
+      </indexterm><xref linkend="example-random-id-27xU" /> represents a list of things to be done in priority order. The order is important, hence the need for a sequence connective, but it does not necessarily represent a time order (the dog may end up getting walked first). Note the use of <valsi>tu'e</valsi> and <valsi>tu'u</valsi> as general brackets around the whole list. This is related to, but distinct from, their use in <xref linkend="section-afterthought-connectives-grouping" />, because there is no logical connective between the introductory phrase <jbophrase>mi ba gasnu la'edi'e</jbophrase> and the rest. The brackets effectively show how large an utterance the word <valsi>di'e</valsi>, which means <quote>the following utterance</quote>, refers to.</para>
+    <para>Similarly, <valsi>.i</valsi> <valsi>joi</valsi> is used to connect sentences that represent the components of a joint event such as a joint cause. The Lojban equivalent of <quote>Fran hit her head and fell out of the boat, so that she drowned</quote> would join the events <quote>Fran hit her head</quote> and <quote>Fran fell out of the boat</quote> with <valsi>.i</valsi> <valsi>joi</valsi>.</para>
+    <para><indexterm type="general"><primary>scalar negation of non-logical connective</primary></indexterm><indexterm type="general"><primary>non-logical connectives</primary><secondary>effect of &quot;nai&quot; on</secondary>
+      </indexterm><indexterm type="general"><primary>joiks</primary><secondary>effect of &quot;nai&quot; on</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>nai</primary><secondary>effect on joiks</secondary>
+      </indexterm>The following <valsi>nai</valsi>, if present, does not negate either of the things to be connected. Instead it specifies that some other connection (logical or non-logical) is applicable: it is a scalar negation:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-mMdb">
       <title><anchor xml:id="c14e15d11" /></title>
 
@@ -3774,15 +3569,7 @@
         <gloss>I in-common-with [not!] you - are-a-twosome</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      The result of
-      <jbophrase>mi jo'u do</jbophrase>
-      would be two individuals, not a group, therefore
-      <valsi>jo'u</valsi>
-      is not applicable;
-      <valsi>joi</valsi>
-      would be the correct connective.
-    </para>
+    <para role="indent">The result of <jbophrase>mi jo'u do</jbophrase> would be two individuals, not a group, so <valsi>jo'u</valsi> is not applicable; <valsi>joi</valsi> would be the correct connective.</para>
     <para>
       <indexterm type="general"><primary>connective answers</primary><secondary>non-logical</secondary>
       </indexterm>
@@ -4430,13 +4217,7 @@
   </section>
   <section xml:id="section-sumtcita">
     <title><anchor xml:id="c14s18" />Tenses, modals, and logical connection</title>
-    <para>      The tense and modal systems of Lojban interact with the logical connective system. No one chapter can explain all of these simultaneously, so each chapter must present its own view of the area of interaction with emphasis on its own concepts and terminology. In the examples of this chapter, the many tenses of various selma'o as well as the modals of selma'o BAI are represented by the simple time cmavo      <valsi>pu</valsi>      ,      <valsi>ca</valsi>      , and
-      <valsi>ba</valsi>
-      (of selma'o PU) representing the past, the present, and the future respectively. Preceding a selbri, these cmavo state the time when the bridi was, is, or will be true (analogous to English verb tenses); preceding a sumti, they state that the event of the main bridi is before, simultaneous with, or after the event given by the sumti (which is generally a
-      <jbophrase>le nu</jbophrase>
-      abstraction; see
-      <xref linkend="section-events" />).
-    </para>
+    <para>The tense and modal systems of Lojban interact with the logical connective system. No one chapter can explain all of these simultaneously, so each chapter must present its own view of the area of interaction, with emphasis on its own concepts and terminology. In the examples of this chapter, the many tenses of various selma'o, as well as the modals of selma'o BAI, are represented by the simple time cmavo <valsi>pu</valsi>, <valsi>ca</valsi>, and <valsi>ba</valsi> (of selma'o PU), standing for the past, the present, and the future respectively. Preceding a selbri, these cmavo state the time when the bridi was, is, or will be true (analogous to English verb tenses); preceding a sumti, they state that the event of the main bridi is before, simultaneous with, or after the event given by the sumti (which is generally a <jbophrase>le nu</jbophrase> abstraction; see <xref linkend="section-events" />).</para>
     <para>
       <indexterm type="general"><primary>logically connected tenses</primary><secondary>definition</secondary>
       </indexterm>
@@ -4498,17 +4279,11 @@
       The full tense system makes more interesting tense intervals expressible, such as
       <quote>from a medium time ago until a long time from now</quote>.
     </para>
-    <para>
-      <indexterm type="general"><primary>tenses</primary><secondary>grouping of connectives in</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>grouping</primary><secondary>of connection in tenses</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>tenses</primary><secondary>forethought connection in</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>forethought connection</primary><secondary>in tenses</secondary>
-      </indexterm>
-      No forethought connections between tenses are permitted by the grammar, nor is there any way to override the default left-grouping rule; these limitations are imposed to keep the tense grammar simpler. Whatever can be said with tenses or modals can be said with subordinate bridi stating the time, place, or mode explicitly, so it is reasonable to try to remove at least some complications.
-    </para>
+    <para>The grammar permits no<indexterm type="general"><primary>tenses</primary><secondary>grouping of connectives in</secondary>
+      </indexterm><indexterm type="general"><primary>grouping</primary><secondary>of connection in tenses</secondary>
+      </indexterm><indexterm type="general"><primary>tenses</primary><secondary>forethought connection in</secondary>
+      </indexterm><indexterm type="general"><primary>forethought connection</primary><secondary>in tenses</secondary>
+      </indexterm> forethought connection between tenses, and there is no way to override the default left-grouping rule; these limitations are imposed to keep the tense grammar simpler. Whatever can be said with tenses or modals can be said with subordinate bridi stating the time, place, or mode explicitly, so it is reasonable to try to remove at least some complications.</para>
 
     <para>
       <indexterm type="general"><primary>tensed logical connection</primary></indexterm>
@@ -4751,59 +4526,18 @@
         <natlang>I am a doctor and future rich person.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-
-
-      <indexterm type="lojban-word"><primary>tu'e</primary><secondary>contrasted with &quot;bo&quot; for tensed logical connection</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>bo</primary><secondary>contrasted with &quot;tu'e&quot; for tensed logical connection</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>ke</primary><secondary>contrasted with &quot;bo&quot; for tensed logical connection</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>bo</primary><secondary>contrasted with &quot;ke&quot; for tensed logical connection</secondary>
-      </indexterm>
-      As can be seen from
-      <xref linkend="example-random-id-AhnP" />
-      and
-      <xref linkend="example-random-id-GBgP" />
-      , the choice between
-      <valsi>bo</valsi>
-      and
-      <valsi>ke</valsi>
-      (or
-      <valsi>tu'e</valsi>) is arbitrary when there are only two things to be connected. If there were no tense information to include, of course neither would be required; it is only the rule that tense information must always be sandwiched between the logical connective and a following
-      <valsi>bo</valsi>
-      ,
-      <valsi>ke</valsi>
-      , or
-      <valsi>tu'e</valsi>
-      that requires the use of one of these grouping cmavo in
-      <xref linkend="example-random-id-129L" />
-      and
-      <xref linkend="example-random-id-APPE" />
-      through
-      <xref linkend="example-random-id-Ce09" />.
-    </para>
-    <para>
-      <indexterm type="general"><primary>mathematical expressions</primary><secondary>tensed connection in</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>tensed connectives</primary><secondary>in mathematical expressions</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>tensed non-logical connectives</primary><secondary>forethought</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>tensed logical connectives</primary><secondary>forethought</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>forethought connectives</primary><secondary>with tense</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>tensed non-logical connectives</primary></indexterm>
-      <indexterm type="general"><primary>non-logical connectives</primary><secondary>including tense</secondary>
-      </indexterm>
-      Non-logical connectives with
-      <valsi>bo</valsi>
-      and
-      <valsi>ke</valsi>
-      can include tense information in exactly the same way as logical connectives. Forethought connectives, however (except as noted below) are unable to do so, as are termsets or tense connectives. Mathematical operands and operators can also include tense information in their logical connectives as a result of their close parallelism with sumti and tanru components respectively:
-    </para>
+    <para role="indent"><indexterm type="lojban-word"><primary>tu'e</primary><secondary>contrasted with &quot;bo&quot; for tensed logical connection</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>bo</primary><secondary>contrasted with &quot;tu'e&quot; for tensed logical connection</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>ke</primary><secondary>contrasted with &quot;bo&quot; for tensed logical connection</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>bo</primary><secondary>contrasted with &quot;ke&quot; for tensed logical connection</secondary>
+      </indexterm>As <xref linkend="example-random-id-AhnP" /> and <xref linkend="example-random-id-GBgP" /> show, the choice between <valsi>bo</valsi> and <valsi>ke</valsi> (or <valsi>tu'e</valsi>) is arbitrary when only two things are being connected. If there were no tense information to include, of course neither would be required; it is only the rule that tense information must always be sandwiched between the logical connective and a following <valsi>bo</valsi>, <valsi>ke</valsi>, or <valsi>tu'e</valsi> that calls for one of these grouping cmavo in <xref linkend="example-random-id-129L" /> and <xref linkend="example-random-id-APPE" /> through <xref linkend="example-random-id-Ce09" />.</para>
+    <para><indexterm type="general"><primary>mathematical expressions</primary><secondary>tensed connection in</secondary>
+      </indexterm><indexterm type="general"><primary>tensed connectives</primary><secondary>in mathematical expressions</secondary>
+      </indexterm><indexterm type="general"><primary>tensed non-logical connectives</primary><secondary>forethought</secondary>
+      </indexterm><indexterm type="general"><primary>tensed logical connectives</primary><secondary>forethought</secondary>
+      </indexterm><indexterm type="general"><primary>forethought connectives</primary><secondary>with tense</secondary>
+      </indexterm><indexterm type="general"><primary>tensed non-logical connectives</primary></indexterm><indexterm type="general"><primary>non-logical connectives</primary><secondary>including tense</secondary>
+      </indexterm>Non-logical connectives with <valsi>bo</valsi> and <valsi>ke</valsi> can include tense information in exactly the same way as logical connectives. Forethought connectives, however (except as noted below), cannot do so, nor can termsets or tense connectives. Mathematical operands and operators can also include tense information in their logical connectives, because they parallel sumti and tanru components so closely, operands corresponding to sumti and operators to tanru components respectively:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-sgUo">
       <title><anchor xml:id="c14e18d14" /></title>
 
@@ -4869,28 +4603,16 @@
         <natlang>The doctor is interested in the process of me sleeping but not in the state of me sleeping.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-
-
-      <indexterm type="general"><primary>abstractions</primary><secondary>grouping of connectives in</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>grouping</primary><secondary>of connection in abstractions</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>abstractions</primary><secondary>forethought connection in</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>forethought connection</primary><secondary>in abstractions</secondary>
-      </indexterm>
-      As with tenses and modals, there is no forethought and no way to override the left-grouping rule.
-    </para>
-    <para>
-      <indexterm type="general"><primary>logical connection</primary><secondary>inside abstractions</secondary>
+    <para role="indent"><indexterm type="general"><primary>abstractions</primary><secondary>grouping of connectives in</secondary>
+      </indexterm><indexterm type="general"><primary>grouping</primary><secondary>of connection in abstractions</secondary>
+      </indexterm><indexterm type="general"><primary>abstractions</primary><secondary>forethought connection in</secondary>
+      </indexterm><indexterm type="general"><primary>forethought connection</primary><secondary>in abstractions</secondary>
+      </indexterm>As with tenses and modals, there is no forethought form, and no way to override the left-grouping rule.</para>
+    <para><indexterm type="general"><primary>logical connection</primary><secondary>inside abstractions</secondary>
         <tertiary>contrasted with outside</tertiary>
-      </indexterm>
-      <indexterm type="general"><primary>logical connection</primary><secondary>in abstractions</secondary>
+      </indexterm><indexterm type="general"><primary>logical connection</primary><secondary>in abstractions</secondary>
         <tertiary>inner bridi contrasted with outer bridi</tertiary>
-      </indexterm>
-      Logical connectives and abstraction are related in another way as well, though. Since an abstraction contains a bridi, the bridi may have a logical connection inside it. Is it legitimate to split the outer bridi into two, joined by the logical connection? Absolutely not. For example:
-    </para>
+      </indexterm>Logical connectives and abstraction are related in another way as well, though. An abstraction contains a bridi, and that bridi may itself have a logical connection inside it. Is it legitimate, then, to split the outer bridi into two, joined by the logical connection? Absolutely not. For example:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-f1uT">
       <title><anchor xml:id="c14e19d3" /><indexterm type="general"><primary>Jupiter life</primary></indexterm></title>
 

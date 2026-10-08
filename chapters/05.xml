@@ -867,10 +867,7 @@
         <description>forethought connection separator</description>
       </cmavo-entry>
     </cmavo-list>
-    <para role="indent">
-      Consider the English phrase
-      <quote>big red dog</quote>. How shall this be rendered as a Lojban tanru? The naive attempt:
-    </para>
+    <para role="indent">Consider the English phrase <quote>big red dog</quote>. How shall we render it as a Lojban tanru? The naive attempt:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-riAq">
       <title>
@@ -886,10 +883,7 @@
         <gloss>(big type-of red) type-of dog</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      will not do, as it means a dog whose redness is big, in whatever way redness might be described as
-      <quote>big</quote>. Nor is
-    </para>
+    <para role="noindent">will not do, since it means a dog whose redness is big, in whatever way redness might be described as <quote>big</quote>. Nor is</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-6MqF">
       <title><anchor xml:id="c5e6d2" /></title>
 
@@ -1004,15 +998,7 @@
       <jbophrase>blanu je zdani</jbophrase>
       is independent of its houseness.
     </para>
-    <para>
-      With the addition of
-      <valsi>je</valsi>,
-      many more versions of
-      <quote>pretty little girls' school</quote>
-      are made possible: see
-      <xref linkend="section-pretty-school-groupings" />
-      for a complete list.
-    </para>
+    <para>With the addition of <valsi>je</valsi>, many more versions of <quote>pretty little girls' school</quote> become possible: see <xref linkend="section-pretty-school-groupings" /> for a complete list.</para>
     <para>
       A subtle point in the semantics of tanru like
       <xref linkend="example-random-id-0UrF" />
@@ -1065,7 +1051,7 @@
 
       <para>That is a school for beautiful things and also for girls.</para>
     </example>
-    <para role="noindent">so while the logical connectives help to resolve the meaning of tanru, they by no means compel a single meaning in and of themselves.</para>
+    <para role="noindent">So while the logical connectives help to resolve the meaning of tanru, they by no means compel a single meaning in and of themselves.</para>
     <para>
       <indexterm type="general"><primary>logical connectives in tanru</primary><secondary>effect on formal logical manipulations</secondary>
       </indexterm>
@@ -1482,12 +1468,7 @@
         <natlang>This is a school, small in volume compared to the typical school, pertaining to five-year-old girls (by American standards), in Brooklyn, teaching poetry to the New York community and operated by the state.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="status-note">
-      The
-      <jbophrase>lo'e ckule</jbophrase>
-      here (<quote>the typical school</quote>) uses a descriptor whose meaning is still unsettled. See the status discussion in
-      <xref linkend="section-typicals" />.
-    </para>
+    <para role="status-note">A word about the <jbophrase>lo'e ckule</jbophrase> here (<quote>the typical school</quote>): the descriptor <valsi>lo'e</valsi> has a meaning that is still unsettled. The status discussion in <xref linkend="section-typicals" /> has the details.</para>
     <para role="indent">
       Here the three places of
       <valsi>cmalu</valsi>,
@@ -2036,16 +2017,7 @@
         <description>terminator for NU</description>
       </cmavo-entry>
     </cmavo-list>
-    <para role="indent">
-      <indexterm type="general"><primary>equivalents to brivla</primary></indexterm>
-      <indexterm type="general"><primary>brivla equivalents</primary></indexterm>
-      So far we have only discussed brivla and tanru built up from brivla as possible selbri. In fact, there are a few other constructions in Lojban which are grammatically equivalent to brivla: they can be used either directly as selbri, or as components in tanru. Some of these types of simple selbri are discussed at length in
-      <xref linkend="chapter-anaphoric-cmavo" />,
-      <xref linkend="chapter-abstractions" />,
-      and
-      <xref linkend="chapter-mekso" />;
-      but for completeness these types are mentioned here with a brief explanation and an example of their use in selbri.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>equivalents to brivla</primary></indexterm><indexterm type="general"><primary>brivla equivalents</primary></indexterm>So far we have discussed only brivla, and tanru built up from brivla, as possible selbri. In fact, a few other constructions in Lojban are grammatically equivalent to brivla: they can be used either directly as selbri, or as components in tanru. Some of these types of simple selbri are discussed at length in <xref linkend="chapter-anaphoric-cmavo" />, <xref linkend="chapter-abstractions" />, and <xref linkend="chapter-mekso" />; but for completeness, each is mentioned here with a brief explanation and an example of its use in a selbri.</para>
     <para>
       <indexterm type="general"><primary>tanru</primary><secondary>with GOhA</secondary>
       </indexterm>
@@ -2089,14 +2061,7 @@
         <gloss>That-named John is-a-goer ( to-the market ) type-of trier.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      because the whole bridi of
-      <xref linkend="example-random-id-2UvG" />
-      has been packaged up into the single word
-      <valsi>go'i</valsi>
-      and inserted into
-      <xref linkend="example-random-id-EvoD" />.
-    </para>
+    <para role="noindent">This is so because the whole bridi of <xref linkend="example-random-id-2UvG" /> has been packaged up into the single word <valsi>go'i</valsi> and inserted into <xref linkend="example-random-id-EvoD" />.</para>
     <para>
       <indexterm type="general"><primary>du</primary><secondary>as an exception within GOhA selma'o</secondary>
       </indexterm>
@@ -2197,14 +2162,8 @@
         <natlang>Anyi and Asun are two brothers.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="lojban-word"><primary>NU selma'o</primary><secondary>introduction</secondary>
-      </indexterm>
-      Finally, an important type of simple selbri which is not a brivla is the abstraction. Grammatically, abstractions are simple: a cmavo of selma'o NU, followed by a bridi, followed by the elidable terminator
-      <valsi>kei</valsi>
-      of selma'o KEI. Semantically, abstractions are an extremely subtle and powerful feature of Lojban whose full ramifications are documented in
-      <xref linkend="chapter-abstractions" />. A few examples:
-    </para>
+    <para role="indent"><indexterm type="lojban-word"><primary>NU selma'o</primary><secondary>introduction</secondary>
+      </indexterm>Finally, an important type of simple selbri that is not a brivla is the abstraction. Grammatically, abstractions are simple: a cmavo of selma'o NU, followed by a bridi, followed by the elidable terminator <valsi>kei</valsi> of selma'o KEI. Semantically, they are an extremely subtle and powerful feature of Lojban, whose full ramifications are documented in <xref linkend="chapter-abstractions" />. A few examples:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-5szz">
       <title><anchor xml:id="c5e9d8" /></title>
 

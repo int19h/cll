@@ -122,10 +122,7 @@
   </section>
   <section xml:id="section-bridi-negation">
     <title><anchor xml:id="c15s2" />bridi negation</title>
-    <para>      In discussing Lojban negation, we will call the form of logical negation that simply denies the truth of a statement      <quote>bridi negation</quote>. Using bridi negation, we can say the equivalent of      <quote>I haven't stopped beating my wife</quote>      without implying that I ever started, nor even that I have a wife, meaning simply
-      <quote>It isn't true that I have stopped beating my wife.</quote>
-      Since Lojban uses bridi as smaller components of complex sentences, bridi negation is permitted in these components as well at the sentence level.
-    </para>
+    <para>In discussing Lojban negation, we will call the form of logical negation that simply denies the truth of a statement <quote>bridi negation</quote>. Using bridi negation, we can say the equivalent of <quote>I haven't stopped beating my wife</quote> without implying that I ever started, nor even that I have a wife, meaning simply <quote>It isn't true that I have stopped beating my wife.</quote> Since Lojban uses bridi as smaller components of complex sentences, bridi negation is permitted in these components as well as at the sentence level.</para>
     <para>For the bridi negation of a sentence to be true, the sentence being negated must be false. A major use of bridi negation is in making a negative response to a yes/no question; such responses are usually contradictory, denying the truth of the entire sentence. A negative answer to</para>
 
     <example xml:id="example-random-id-sCNE">
@@ -651,10 +648,7 @@
   </section>
   <section xml:id="section-nahe">
     <title><anchor xml:id="c15s4" />selbri and tanru negation</title>
-    <para>      All the scalar negations illustrated in      <xref linkend="section-scalar-negation" />      are expressed in Lojban using the cmavo      <valsi>na'e</valsi>      (of selma'o NAhE). The most common use of
-      <valsi>na'e</valsi>
-      is as a prefix to the selbri:
-    </para>
+    <para>All the scalar negations illustrated in <xref linkend="section-scalar-negation" /> are expressed in Lojban with the cmavo <valsi>na'e</valsi> (of selma'o NAhE). The most common use of <valsi>na'e</valsi> is as a prefix to the selbri:</para>
     <example xml:id="example-random-id-qh42" role="interlinear-gloss-example">
       <title><anchor xml:id="c15e4d1" /></title>
 
@@ -671,21 +665,7 @@
         <gloss>I (other-than go-to) the market.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      Comparing these two, we see that the negation operator being used in
-      <xref linkend="example-random-id-qH4n" />
-      is
-      <valsi>na'e</valsi>. But what exactly does
-      <valsi>na'e</valsi>
-      negate? Does the negation include only the gismu
-      <valsi>klama</valsi>
-      , which is the entire selbri in this case, or does it include the
-      <jbophrase>le zarci</jbophrase>
-      as well? In Lojban, the answer is unambiguously
-      <quote>only the gismu</quote>. The cmavo
-      <valsi>na'e</valsi>
-      always applies only to what follows it.
-    </para>
+    <para role="indent">Comparing these two, we see that the negation operator in <xref linkend="example-random-id-qH4n" /> is <valsi>na'e</valsi>. But what exactly does <valsi>na'e</valsi> negate? Does the negation include only the gismu <valsi>klama</valsi>, which is the entire selbri in this case, or does it take in the <jbophrase>le zarci</jbophrase> as well? In Lojban, the answer is unambiguously <quote>only the gismu</quote>. The cmavo <valsi>na'e</valsi> always applies only to what follows it.</para>
     <para>
       <xref linkend="example-random-id-qH4n" />
       looks as if it were parallel to:
@@ -698,22 +678,8 @@
         <gloss>I [false] go-to the market.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      but in fact there is no real parallelism at all. A negation using
-      <valsi>na</valsi>
-      denies the truth of a relationship, but a selbri negation with
-      <valsi>na'e</valsi>
-      asserts that a relationship exists other than that stated, one which specifically involves the sumti identified in the statement. The grammar allotted to
-      <valsi>na'e</valsi>
-      allows us to unambiguously express scalar negations in terms of scope, scale, and range within the scale. Before we explain the scalar aspects, let us show how the scope of
-      <valsi>na'e</valsi>
-      is determined.
-    </para>
-    <para>
-      In tanru, we may wish to negate an individual element before combining it with another to form the tanru. We in effect need a shorter-than-selbri-scope negation, for which we can use
-      <valsi>na'e</valsi>
-      as well. The positive sentence
-    </para>
+    <para role="noindent">but in fact there is no real parallelism at all. A negation using <valsi>na</valsi> denies the truth of a relationship. A selbri negation with <valsi>na'e</valsi>, on the other hand, asserts that a relationship exists other than the one stated, and one which specifically involves the sumti identified in the statement. The grammar allotted to <valsi>na'e</valsi> lets us express scalar negations unambiguously in terms of scope, scale, and range within the scale. Before we explain the scalar aspects, let us show how the scope of <valsi>na'e</valsi> is determined.</para>
+    <para>In tanru, we may wish to negate an individual element before combining it with another to form the tanru. We in effect need a shorter-than-selbri-scope negation, and we can use <valsi>na'e</valsi> for that as well. The positive sentence</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-ETuV">
       <title><anchor xml:id="c15e4d4" /></title>
 
@@ -739,43 +705,10 @@
         <gloss>I walkingly (other-than go-to) the market.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      These negations show the default scope of
-      <valsi>na'e</valsi>
-      is close-binding on an individual brivla in a tanru.
-      <xref linkend="example-random-id-qh4w" />
-      says that I am going to the market, but in some kind of a non-walking manner. (As with most tanru, there are a few other possible interpretations, but we'll assume this one &ndash; see
-      <xref linkend="chapter-selbri" />
-      for a discussion of tanru meaning).
-    </para>
-    <para>
-      In neither
-      <xref linkend="example-random-id-qh4w" />
-      nor
-      <xref linkend="example-random-id-qH6w" />
-      does the
-      <valsi>na'e</valsi>
-      negate the entire selbri. While both sentences contain negations that deny a particular relationship between the sumti, they also have a component which makes a positive claim about such a relationship. This is clearer in
-      <xref linkend="example-random-id-qh4w" />
-      , which says that I am going, but in a non-walking manner. In
-      <xref linkend="example-random-id-qH6w" />
-      , we have claimed that the relationship between me and the market in some way involves walking, but is not one of
-      <quote>going to</quote>
-      (perhaps we are walking around the market, or walking-in-place while at the market).
-    </para>
-    <para>
-      The
-      <quote>scale</quote>
-      , or actually the
-      <quote>set</quote>
-      , implied in Lojban tanru negations is anything which plausibly can be substituted into the tanru. (Plausibility here is interpreted in the same way that answers to a
-      <valsi>mo</valsi>
-      question must be plausible &ndash; the result must not only have the right number of places and have sumti values appropriate to the place structure, it must also be appropriate or relevant to the context.) This minimal condition allows a speaker to be intentionally vague, while still communicating meaningful information. The speaker who uses selbri negation is denying one relationship, while minimally asserting a different relationship.
-    </para>
-    <para>
-      We also need a scalar negation form that has a scope longer than a single brivla. There exists such a longer-scope selbri negation form, as exemplified by (each Lojban sentence in the next several examples is given twice, with parentheses in the second copy showing the scope of the
-      <valsi>na'e</valsi>):
-    </para>
+    <para role="indent">These negations show that the default scope of <valsi>na'e</valsi> is close-binding on an individual brivla in a tanru. <xref linkend="example-random-id-qh4w" /> says that I am going to the market, but in some kind of a non-walking manner. (As with most tanru, there are a few other possible interpretations, but we'll assume this one – see <xref linkend="chapter-selbri" /> for a discussion of tanru meaning).</para>
+    <para>In neither <xref linkend="example-random-id-qh4w" /> nor <xref linkend="example-random-id-qH6w" /> does the <valsi>na'e</valsi> negate the entire selbri. Both sentences contain negations that deny a particular relationship between the sumti, but both also have a component which makes a positive claim about such a relationship. This is clearer in <xref linkend="example-random-id-qh4w" />, which says that I am going, but in a non-walking manner. In <xref linkend="example-random-id-qH6w" />, we have claimed that the relationship between me and the market in some way involves walking, but is not one of <quote>going to</quote> (perhaps we are walking around the market, or walking-in-place while at the market).</para>
+    <para>The <quote>scale</quote>, or actually the <quote>set</quote>, implied in Lojban tanru negations is anything which plausibly can be substituted into the tanru. (Plausibility here is interpreted in the same way that answers to a <valsi>mo</valsi> question must be plausible – the result must not only have the right number of places and have sumti values appropriate to the place structure, it must also be appropriate or relevant to the context.) This minimal condition allows a speaker to be intentionally vague, while still communicating meaningful information. The speaker who uses selbri negation is denying one relationship, while minimally asserting a different one.</para>
+    <para>We also need a scalar negation form with a scope longer than a single brivla. Such a longer-scope selbri negation does exist, as the following shows (each Lojban sentence in the next several examples is given twice, with parentheses in the second copy showing the scope of the <valsi>na'e</valsi>):</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-t20b">
       <title><anchor xml:id="c15e4d7" /></title>
 
@@ -785,18 +718,7 @@
         <gloss>I other-than ( walkingly go-to ) the market.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      This negation uses the same
-      <valsi>ke</valsi>
-      and
-      <valsi>ke'e</valsi>
-      delimiters (the
-      <valsi>ke'e</valsi>
-      is always elidable at the end of a selbri) that are used in tanru. The sentence clearly negates the entire selbri. The
-      <valsi>ke'e</valsi>
-      , whether elided or not, reminds us that the negation does not include the trailing sumti. While the trailing-sumti place-structure is defined as that of the final brivla, the trailing sumti themselves are not part of the selbri and are thus not negated by
-      <valsi>na'e</valsi>.
-    </para>
+    <para role="indent">This negation uses the same <valsi>ke</valsi> and <valsi>ke'e</valsi> delimiters that are used in tanru (the <valsi>ke'e</valsi> is always elidable at the end of a selbri). The sentence clearly negates the entire selbri. The <valsi>ke'e</valsi>, whether elided or not, reminds us that the negation does not include the trailing sumti. The place structure of the trailing sumti is defined as that of the final brivla, but the trailing sumti themselves are not part of the selbri, and so <valsi>na'e</valsi> does not negate them.</para>
     <para>Negations of just part of the selbri are also permitted:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-PVct">
       <title><anchor xml:id="c15e4d8" /></title>
@@ -861,46 +783,11 @@
         <gloss>I other-than ( quickly walk on my arms ).</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      The translations show that the negation in
-      <xref linkend="example-random-id-qh7T" />
-      is more restricted in scope; i.e. less of the sentence is negated with respect to x<subscript>1</subscript> (
-      <valsi>mi</valsi>).
-    </para>
-    <para>
-      Logical scope being an important factor in Lojban's claims to be unambiguous, let us indicate the relative precedence of
-      <valsi>na'e</valsi>
-      as an operator. Grouping with
-      <valsi>ke</valsi>
-      and
-      <valsi>ke'e</valsi>
-      , of course, has an overt scope, which is its advantage.
-      <valsi>na'e</valsi>
-      is very close binding to its brivla. Internal binding of tanru, with
-      <valsi>bo</valsi>
-      , is not as tightly bound as
-      <valsi>na'e</valsi>.
-      <valsi>co</valsi>
-      , the tanru inversion operator has a scope that is longer than all other tanru constructs.
-    </para>
+    <para role="indent">The translations show that the negation in <xref linkend="example-random-id-qh7T" /> has the more restricted scope; i.e. less of the sentence is negated with respect to x<subscript>1</subscript> (<valsi>mi</valsi>).</para>
+    <para>Logical scope is an important factor in Lojban's claim to be unambiguous, so let us indicate the relative precedence of <valsi>na'e</valsi> as an operator. Grouping with <valsi>ke</valsi> and <valsi>ke'e</valsi>, of course, has an overt scope, which is its advantage. <valsi>na'e</valsi> is very close binding to its brivla. Internal binding of tanru with <valsi>bo</valsi> is not as tightly bound as <valsi>na'e</valsi>. <valsi>co</valsi>, the tanru inversion operator, has a scope that is longer than all other tanru constructs.</para>
 
-    <para>
-      In short,
-      <valsi>na'e</valsi>
-      and
-      <jbophrase>na'eke</jbophrase>
-      define a type of negation, which is shorter in scope than bridi negation, and which affects all or part of a selbri. The result of
-      <valsi>na'e</valsi>
-      negation remains an assertion of some specific truth and not merely a denial of another claim.
-    </para>
-    <para>
-      The similarity becomes striking when it is noticed that the rafsi
-      <rafsi>-nal-</rafsi>
-      , representing
-      <valsi>na'e</valsi>
-      when a tanru is condensed into a lujvo, forms an exact parallel to the English usage of
-      <jbophrase>non-</jbophrase>. Turning a series of related negations into lujvo gives:
-    </para>
+    <para>In short, <valsi>na'e</valsi> and <jbophrase>na'eke</jbophrase> define a type of negation which is shorter in scope than bridi negation, and which affects all or part of a selbri. The result of <valsi>na'e</valsi> negation remains an assertion of some specific truth, and not merely a denial of another claim.</para>
+    <para>The similarity becomes striking when we notice that the rafsi <rafsi>-nal-</rafsi>, which represents <valsi>na'e</valsi> when a tanru is condensed into a lujvo, forms an exact parallel to the English usage of <jbophrase>non-</jbophrase>. Turning a series of related negations into lujvo gives:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-2buq">
       <title><anchor xml:id="c15e4d12" /></title>
 
@@ -936,25 +823,7 @@
       <valsi>ke'e</valsi>
       meaningful in the tanru expressed in this lujvo.
     </para>
-    <para>
-      In a lujvo, it is probably clearest to translate
-      <rafsi>-nal-</rafsi>
-      as
-      <quote>non-</quote>
-      , to match the English combining forms, except when the
-      <valsi>na'e</valsi>
-      has single word scope and English uses
-      <quote>un-</quote>
-      or
-      <quote>im-</quote>
-      to negate that single word. Translation style should determine the use of
-      <quote>other than</quote>
-      ,
-      <quote>non-</quote>
-      , or another negator for
-      <valsi>na'e</valsi>
-      in tanru; the translator must render the Lojban into English so it is clear in context. Let's go back to our simplest example:
-    </para>
+    <para>In a lujvo, it is probably clearest to translate <rafsi>-nal-</rafsi> as <quote>non-</quote>, to match the English combining forms, except when the <valsi>na'e</valsi> has single word scope and English uses <quote>un-</quote> or <quote>im-</quote> to negate that single word. Translation style should determine the use of <quote>other than</quote>, <quote>non-</quote>, or another negator for <valsi>na'e</valsi> in tanru; the translator must render the Lojban into English so that it is clear in context. Let's go back to our simplest example:</para>
     <example xml:id="example-random-id-qh9c" role="interlinear-gloss-example">
       <title><anchor xml:id="c15e4d13" /></title>
 
@@ -972,13 +841,7 @@
         <gloss>I am-a-non-go-er-to the market.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      Note that to compare with the English translation form using
-      <quote>non-</quote>
-      , we've translated the Lojban as if the selbri were a noun. Since Lojban
-      <valsi>klama</valsi>
-      is indifferently a noun, verb, or adjective, the difference is purely a translation change, not a true change in meaning. The English difference seems significant, though, due to the strongly different English grammatical forms and the ambiguity of English negation.
-    </para>
+    <para role="indent">Note that to compare with the English translation form using <quote>non-</quote>, we've translated the Lojban as if the selbri were a noun. Since Lojban <valsi>klama</valsi> is indifferently a noun, verb, or adjective, the difference is purely a translation change, not a true change in meaning. The English difference seems significant, though, because of the strongly different English grammatical forms and the ambiguity of English negation.</para>
     <para>Consider the following highly problematic sentence:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-GFFo">
       <title><anchor xml:id="c15e4d15" /></title>
@@ -1039,23 +902,13 @@
     </para>
 
 
-    <para>
-      There is no current King of France, so the description
-      <jbophrase>lo ca nolraitru be le fasygu'e</jbophrase>
-      has nothing to refer to. The word
-      <valsi>lo</valsi>
-      is veridical, so whatever it picks out must really be a current King of France, and nothing is (see
-      <xref linkend="section-basic-descriptors" />). As a result, the claim fails: there is nothing for it to be about.
-    </para>
+    <para>There is no current King of France, so the description <jbophrase>lo ca nolraitru be le fasygu'e</jbophrase> has nothing to refer to. The word <valsi>lo</valsi> is veridical: whatever it picks out must really be a current King of France, and nothing is (see <xref linkend="section-basic-descriptors" />). The claim therefore fails, since there is nothing for it to be about.</para>
     <para role="status-note">
       <indexterm type="general"><primary>descriptions</primary><secondary>reference failure under negation</secondary>
       </indexterm>
       The official definitions do not settle what truth value such a failed claim gets. This book follows a convention: an affirmative claim about a failed description counts as false, and its contradictory negation counts as true.
     </para>
-    <para>
-      Under that convention, it is false to say that the King is bald, or non-bald, or anything else affirmative. Any sentence about the current King of France containing only a selbri negation is as false as the sentence without the negation. The reason is that selbri negations still make affirmative claims. No amount of selbri negations have any effect on the truth value of the sentence, which is invariably
-      <quote>false</quote>. On the other hand, bridi negation does produce a truth:
-    </para>
+    <para>Under that convention, it is false to say that the King is bald, or non-bald, or anything else affirmative. Any sentence about the current King of France containing only a selbri negation is as false as the sentence without the negation, because selbri negations still make affirmative claims. No amount of selbri negations have any effect on the truth value of the sentence, which is invariably <quote>false</quote>. On the other hand, bridi negation does produce a truth:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-Bwdy">
       <title><anchor xml:id="c15e4d18" /></title>
 
@@ -1069,27 +922,8 @@
         <natlang>It is false that the current King of France is bald.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      Note:
-      <valsi>lo</valsi>
-      is used in these sentences because negation relates to truth conditions. To meaningfully talk about truth conditions in sentences carrying a description, it must be clear that the description truly applies to whatever it refers to. Only
-      <valsi>lo</valsi>
-      guarantees that.
-    </para>
-    <para>
-      A sentence using
-      <valsi>le</valsi>
-      instead of
-      <valsi>lo</valsi>
-      can be true even if there is no current king of France. The referents of a
-      <valsi>le</valsi>
-      description are whatever the speaker has in mind. To call them
-      <quote>the current king of France</quote>
-      is only a description, and it does not have to be true. (See the explanations of
-      <valsi>le</valsi>
-      in
-      <xref linkend="section-basic-descriptors" />.)
-    </para>
+    <para role="indent">Note: <valsi>lo</valsi> is used in these sentences because negation relates to truth conditions. To talk meaningfully about truth conditions in sentences carrying a description, it must be clear that the description truly applies to whatever it refers to. Only <valsi>lo</valsi> guarantees that.</para>
+    <para>A sentence using <valsi>le</valsi> instead of <valsi>lo</valsi> can be true even if there is no current king of France. The referents of a <valsi>le</valsi> description are whatever the speaker has in mind, and calling them <quote>the current king of France</quote> is only a description, which does not have to be true. (See the explanations of <valsi>le</valsi> in <xref linkend="section-basic-descriptors" />.)</para>
   </section>
   <section xml:id="section-scales-negation">
     <title><anchor xml:id="c15s5" />Expressing scales in selbri negation</title>
@@ -1336,24 +1170,9 @@
         <natlang>No current king of France is bald.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      Is
-      <xref linkend="example-random-id-PL1E" />
-      true? <indexterm type="general"><primary>outer quantifier</primary><secondary>zero, over description referents</secondary>
-      </indexterm>When France has kings, the sentence is at least straightforward. The word
-      <valsi>no</valsi>
-      counts the referents of the description (see
-      <xref linkend="section-quantified-descriptions" />). So the sentence denies baldness of every one of them, and it is true exactly when none of those kings is in fact bald. But when there are no current Kings of France at all, the description has nothing to refer to. Then the sentence inherits the reference problem that
-      <xref linkend="section-nahe" />
-      discusses.
-    </para>
-    <para>
-      To make the plainly true claim directly, quantify over a variable. Then no description has to refer to nonexistent kings:
-      <jbophrase>no da poi ca nolraitru be le fasygu'e cu krecau</jbophrase>. That is, nothing that is a current King of France lacks hair. This sentence is true precisely because nothing satisfies the restriction. (Older texts read descriptions like the one in
-      <xref linkend="example-random-id-PL1E" />
-      quite differently: see
-      <xref linkend="appendix-changes" />.)
-    </para>
+    <para role="indent">Is <xref linkend="example-random-id-PL1E" /> true?<indexterm type="general"><primary>outer quantifier</primary><secondary>zero, over description referents</secondary>
+      </indexterm> When France has kings, the sentence is at least straightforward. The word <valsi>no</valsi> counts the referents of the description (see <xref linkend="section-quantified-descriptions" />), so the sentence denies baldness of every one of them, and it is true exactly when none of those kings is in fact bald. But when there are no current Kings of France at all, the description has nothing to refer to, and the sentence inherits the reference problem that <xref linkend="section-nahe" /> discusses.</para>
+    <para>To make the plainly true claim directly, we quantify over a variable instead. Then no description has to refer to nonexistent kings: <jbophrase>no da poi ca nolraitru be le fasygu'e cu krecau</jbophrase>. That is, nothing that is a current King of France lacks hair. This sentence is true precisely because nothing satisfies the restriction. (Older texts read descriptions like the one in <xref linkend="example-random-id-PL1E" /> quite differently: see <xref linkend="appendix-changes" />.)</para>
     <para>
       Now let us look at the same sentence using
       <jbophrase>na'ebo</jbophrase>
@@ -1636,25 +1455,8 @@
         <natlang>There will be a future occasion on which John is not going to both Paris and Rome.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      As
-      <xref linkend="section-bridi-negation" />
-      explains, sentences like
-      <xref linkend="example-random-id-Fn2c" />
-      and
-      <xref linkend="example-random-id-2SK0" />
-      differ. In
-      <xref linkend="example-random-id-Fn2c" />,
-      <valsi>na</valsi>
-      comes before the tense, so the sentence denies the whole future claim. It is not the case that John will go to both Paris and Rome.
-    </para>
-    <para>
-      In
-      <xref linkend="example-random-id-2SK0" />,
-      <valsi>na</valsi>
-      comes after the tense, so the negation lies within the scope of the tense. The sentence places in the future an occasion on which John does not go to both cities. That is a far weaker statement, and probably not what a negative answer to the question intends. So the straightforward negative answer about the future is
-      <xref linkend="example-random-id-rii2" />.
-    </para>
+    <para role="indent">As <xref linkend="section-bridi-negation" /> explains, sentences like <xref linkend="example-random-id-Fn2c" /> and <xref linkend="example-random-id-2SK0" /> differ. In <xref linkend="example-random-id-Fn2c" />, the <valsi>na</valsi> comes before the tense, so the sentence denies the whole future claim: it is not the case that John will go to both Paris and Rome.</para>
+    <para>In <xref linkend="example-random-id-2SK0" />, the <valsi>na</valsi> comes after the tense, so the negation lies within the scope of the tense. The sentence places in the future an occasion on which John does not go to both cities. That is a far weaker statement, and probably not what a negative answer to the question intends. So the straightforward negative answer about the future is <xref linkend="example-random-id-rii2" />.</para>
     <para>
       You can also use a scalar negation with
       <valsi>na'e</valsi>

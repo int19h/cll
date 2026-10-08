@@ -1,20 +1,7 @@
 <article xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="volume-chrestomathy">
   <title><anchor xml:id="a01" />Chrestomathy</title>
-  <para>
-    <indexterm type="general"><primary>chrestomathy</primary><secondary>editorial principles of</secondary></indexterm>
-    This chrestomathy reprints its texts in the form in which their authors and translators
-    published them, as closely as the surviving copies permit. The note at the start of each text records
-    who wrote it, who translated it, and any editorial departure from the source. We did not try to
-    normalize them to a single style.
-  </para>
-  <para>
-    The texts range from classical Lojban (the Terry story, from the first edition of this book, and
-    the Alice extract), through the anonymous fable translation, to contemporary usage (the poem). So
-    they differ in article usage and in orthography. Read them as what they are:
-    genuine Lojban text from different hands and different eras. As everywhere in this book, the older
-    usage is not an error (see
-    <xref linkend="appendix-changes" />).
-  </para>
+  <para><indexterm type="general"><primary>chrestomathy</primary><secondary>editorial principles of</secondary></indexterm>This chrestomathy reprints its texts in the form in which their authors and translators published them, as closely as the surviving copies permit. The note at the start of each text records who wrote it, who translated it, and any editorial departure from the source. We didn't try to bend them all into a single style.</para>
+  <para>The texts range from classical Lojban (the Terry story, from the first edition of this book, and the Alice extract), through the anonymous fable translation, to contemporary usage (the poem). So they differ in article usage and in orthography. Read them for what they are: genuine Lojban text from different hands and different eras. As everywhere in this book, the older usage is not an error (see <xref linkend="appendix-changes" />).</para>
   <section xml:id="section-north-wind">
     <title><anchor xml:id="a01-north-wind" />The North Wind and the Sun</title>
     <para role="display-none">
@@ -779,11 +766,7 @@
   </section>
   <section xml:id="section-alice01">
     <title><anchor xml:id="a0102" />Alice in Wonderland</title>
-    <para>This is an extract from the novel by Lewis Carroll. The Lojban translation is the early community
-    translation. Its credit goes collectively to <jbophrase>la .lojbangirz.</jbophrase> (the Logical Language
-    Group), and its contributors explicitly placed it in the public domain. The community's own index of
-    texts records that <jbophrase>la .xorxes.</jbophrase> (Jorge Llambias) did the vast majority of it.
-    This book reprints it as published, in the classical orthography of its era.</para>
+    <para>What follows is an extract from the novel by Lewis Carroll. The Lojban translation is the early community translation. Credit for it goes collectively to <jbophrase>la .lojbangirz.</jbophrase> (the Logical Language Group), and its contributors explicitly placed it in the public domain. The community's own index of texts records that <jbophrase>la .xorxes.</jbophrase> (Jorge Llambias) did the vast majority of it. This book reprints it as published, in the classical orthography of its era.</para>
     <informaltable>
       <thead>
         <tr>

@@ -527,19 +527,10 @@
       The cmavo and compound cmavo of this type will be called
       <quote>shift words</quote>.
     </para>
-    <para>
-      <indexterm type="general"><primary>shift word</primary><secondary>scope</secondary>
-      </indexterm>
-      How long does a shift word last? A letteral string is the unbroken sequence of lerfu words in which the shift occurs. A shift affects every later letteral in the same letteral string, and only those letterals. The shift expires when the string ends, that is, when a word other than a lerfu word arrives. It expires earlier if a later shift word of the same category replaces it within the string. A new letteral string starts with no shifts in effect.
-    </para>
-    <para role="status-note">
-      <indexterm type="general"><primary>shift word</primary><secondary>scope, status of</secondary>
-      </indexterm>
-      This rule, with a scope bounded by the string, is checkpointed. So is the way
-      <valsi>ce'a</valsi>
-      replaces shifts per category. Older accounts read shifts more broadly (see
-      <xref linkend="appendix-changes" />).
-    </para>
+    <para><indexterm type="general"><primary>shift word</primary><secondary>scope</secondary>
+      </indexterm>How long does a shift word last? That depends on the letteral string, which is the unbroken sequence of lerfu words in which the shift occurs. A shift affects every later letteral in the same letteral string, and only those letterals. It expires when the string ends, that is, when a word other than a lerfu word arrives; it expires earlier if a later shift word of the same category replaces it within the string. A new letteral string starts with no shifts in effect.</para>
+    <para role="status-note"><indexterm type="general"><primary>shift word</primary><secondary>scope, status of</secondary>
+      </indexterm>This rule, with its scope bounded by the string, is checkpointed, and so is the way <valsi>ce'a</valsi> replaces shifts per category. Older accounts read shifts more broadly (see <xref linkend="appendix-changes" />).</para>
     <para>
       <indexterm type="general"><primary>shift</primary><secondary>single-letter</secondary>
         <tertiary>grammar of</tertiary>
@@ -1948,26 +1939,10 @@
       <xref linkend="example-random-id-736i" />
       , the last consonant of the lerfu string has been replicated into final position.
     </para>
-    <para>
-      <indexterm type="lojban-word"><primary>bu</primary><secondary>omitting in acronyms names based on lerfu words</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>acronyms names based on lerfu words</primary><secondary>omitting &quot;bu&quot;</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>.ybu</primary><secondary>recognized before word-level processing</secondary>
-      </indexterm>
-      Some compression can be done by leaving out
-      <valsi>bu</valsi>
-      after vowel lerfu words (except for
-      <valsi>.ybu</valsi>
-      , wherein the
-      <valsi>bu</valsi>
-      cannot be omitted without ambiguity). The reason is that
-      <valsi>y</valsi>
-      by itself is the hesitation noise, not a letteral. So
-      <valsi>.ybu</valsi>
-      counts as a single fused word before any other word-level processing happens (see
-      <xref linkend="section-cmavo-interactions" />). Compression is moderately important because it's hard to say long cmevla without introducing an involuntary (and illegal) pause:
-    </para>
+    <para><indexterm type="lojban-word"><primary>bu</primary><secondary>omitting in acronyms names based on lerfu words</secondary>
+      </indexterm><indexterm type="general"><primary>acronyms names based on lerfu words</primary><secondary>omitting &quot;bu&quot;</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>.ybu</primary><secondary>recognized before word-level processing</secondary>
+      </indexterm>Some compression can be done by leaving out <valsi>bu</valsi> after vowel lerfu words (except for <valsi>.ybu</valsi>, wherein the <valsi>bu</valsi> cannot be omitted without ambiguity). The reason is that <valsi>y</valsi> by itself is the hesitation noise, not a letteral, so <valsi>.ybu</valsi> counts as a single fused word before any other word-level processing happens (see <xref linkend="section-cmavo-interactions" />). Compression is moderately important because it's hard to say long cmevla without introducing an involuntary (and illegal) pause:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-0sin">
       <title>
         <anchor xml:id="c17e12d2" />
@@ -2078,19 +2053,10 @@
   </section>
   <section xml:id="section-character-codes">
     <title><anchor xml:id="c17s13" />Computerized character codes</title>
-    <para>      <indexterm type="general"><primary>letter encoding schemes</primary><secondary>application to lerfu words</secondary>      </indexterm>      <indexterm type="general"><primary>character encoding schemes</primary><secondary>application to lerfu words</secondary>      </indexterm>
-      <indexterm type="general"><primary>lerfu words</primary><secondary>using computer encoding schemes with &quot;se'e&quot;</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>characters</primary><secondary>definition</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>character codes</primary><secondary>definition</secondary>
-      </indexterm>
-      Since the first application of computers to non-numerical information, character sets have existed, mapping numbers (called
-      <quote>character codes</quote>) into selected lerfu, digits, and punctuation marks (collectively called
-      <quote>characters</quote>). Historically, each of these character sets has only covered a particular writing system. International efforts have now created Unicode, a unified character set that can represent essentially all the characters in essentially all the world's writing systems. Lojban can take advantage of these encoding schemes by using the cmavo
-      <valsi>se'e</valsi>
-      (of selma'o BY). This cmavo is conventionally followed by digit cmavo of selma'o PA representing the character code, and the whole string indicates a single character in some computerized character set:
-    </para>
+    <para>Ever since computers were<indexterm type="general"><primary>letter encoding schemes</primary><secondary>application to lerfu words</secondary>      </indexterm><indexterm type="general"><primary>character encoding schemes</primary><secondary>application to lerfu words</secondary>      </indexterm><indexterm type="general"><primary>lerfu words</primary><secondary>using computer encoding schemes with &quot;se'e&quot;</secondary>
+      </indexterm><indexterm type="general"><primary>characters</primary><secondary>definition</secondary>
+      </indexterm><indexterm type="general"><primary>character codes</primary><secondary>definition</secondary>
+      </indexterm> first applied to non-numerical information, there have been character sets, which map numbers (called <quote>character codes</quote>) onto selected lerfu, digits, and punctuation marks (collectively called <quote>characters</quote>). Historically, each of these character sets covered only a particular writing system. International efforts have now produced Unicode, a unified character set that can represent essentially all the characters in essentially all the world's writing systems. Lojban can take advantage of these encoding schemes through the cmavo <valsi>se'e</valsi> (of selma'o BY). This cmavo is conventionally followed by digit cmavo of selma'o PA representing the character code, and the whole string indicates a single character in some computerized character set:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-r2jv">
       <title>
@@ -2112,23 +2078,10 @@
         </natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="general"><primary>ASCII</primary><secondary>application to lerfu words</secondary>
-      </indexterm>
-      Understanding
-      <xref linkend="example-random-id-r2jv" />
-      depends on knowing the value in the ASCII character set (one of the simplest and oldest) of the
-      <quote>$</quote>
-      character. Therefore, the
-      <valsi>se'e</valsi>
-      convention is only intelligible to those who know the underlying character set. For precisely specifying a particular character, however, it has the advantages of unambiguity and (relative) cultural neutrality, and therefore Lojban provides a means for those with access to descriptions of such character sets to take advantage of them.
-    </para>
+    <para role="indent"><indexterm type="general"><primary>ASCII</primary><secondary>application to lerfu words</secondary>
+      </indexterm>Understanding <xref linkend="example-random-id-r2jv" /> depends on knowing what value the <quote>$</quote> character has in the ASCII character set (one of the simplest and oldest). Therefore, the <valsi>se'e</valsi> convention is intelligible only to those who know the underlying character set. For precisely specifying a particular character, however, it has the advantages of unambiguity and (relative) cultural neutrality, and so Lojban provides a means for those with access to descriptions of such character sets to take advantage of them.</para>
 
-    <para>
-      <indexterm type="general"><primary>peace symbol</primary></indexterm>
-      <indexterm type="general"><primary>Unicode</primary></indexterm>
-      As another example, the Unicode character set (also known as ISO 10646) represents the international symbol of peace, an inverted trident in a circle, using the base-16 value 262E. In a suitable context, a Lojbanist may say:
-    </para>
+    <para><indexterm type="general"><primary>peace symbol</primary></indexterm><indexterm type="general"><primary>Unicode</primary></indexterm>As another example, the Unicode character set (also known as ISO 10646) represents the international symbol of peace, an inverted trident in a circle, with the base-16 value 262E. In a suitable context, a Lojbanist may say:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-MXET">
       <title><anchor xml:id="c17e13d2" /></title>

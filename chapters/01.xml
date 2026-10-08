@@ -12,36 +12,12 @@
       Lojban (pronounced
       <quote>LOZH-bahn</quote>) is a constructed language. It is the younger of two languages that came out of the Loglan Project. Dr. James Cooke Brown founded the project, and in 1955 he started work on its first language, Loglan. His aim was to test the hypothesis that the language that we speak shapes the thoughts that we can think.
     </para>
-    <para>
-      The goals for the language were first described in the open literature in the article
-      <citetitle pubwork="article">Loglan</citetitle>, published in
-      <citetitle pubwork="journal">Scientific American</citetitle>, June, 1960. That article made the project well known. So did occasional references in science fiction (most notably in Robert Heinlein's novel
-      <citetitle pubwork="book">The Moon Is A Harsh Mistress</citetitle>) and in computer publications. Over the following decades, the project drew dozens of workers and hundreds of supporters.
-    </para>
-    <para>
-      <indexterm type="general"><primary>Logical Language Group</primary><secondary>relation to Lojban</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>Loglan Institute</primary></indexterm>
-      In 1987 the project divided over a question that every constructed language meets sooner or later: who owns it? Earlier, Brown founded The Loglan Institute to develop Loglan. Brown and the Institute claimed the language as their intellectual property. Their claims also covered its individual words. A large group of the project's volunteers wanted the language to be free for anyone to use. The two sides did not reach an agreement, so those volunteers formed The Logical Language Group, which later published the first edition of this book.
-    </para>
-    <para>
-      The volunteers rebuilt the vocabulary of the language from the ground up, but they kept its grammatical design. They made an entirely new stock of root words from the six most widely spoken languages of the world. To do this, they used the same method that gave Loglan its root words. The result is Lojban.
-    </para>
-    <para>
-      The dispute over the name
-      <quote>Loglan</quote>
-      itself went to court, and the case ended in 1992. The ruling was on narrow grounds:
-      <quote>Loglan</quote>
-      is the generic name of a language, so nobody can keep it as a registered trademark. Later, usage settled the names more amicably than the court case did. Today the name
-      <quote>Loglan</quote>
-      usually refers to the language of the Institute. People still use and develop that language, and its materials are at
-      <link xlink:href="https://www.loglan.org/">loglan.org</link>. The name
-      <quote>Lojban</quote>
-      refers to the language of the Group.
-    </para>
-    <para>
-      The two are sibling languages. Their grammatical structure is alike: you can often translate a simple sentence of one language word by word into the other. But almost all of their words are different. Of the two, Lojban is now much more widely used. It is the language that this book describes.
-    </para>
+    <para>The goals for the language were first described in the open literature in the article <citetitle pubwork="article">Loglan</citetitle>, published in <citetitle pubwork="journal">Scientific American</citetitle>, June, 1960. That article made the project well known, and so did occasional references in science fiction (most notably in Robert Heinlein's novel <citetitle pubwork="book">The Moon Is A Harsh Mistress</citetitle>) and in computer publications. Over the following decades, the project drew dozens of workers and hundreds of supporters.</para>
+    <para><indexterm type="general"><primary>Logical Language Group</primary><secondary>relation to Lojban</secondary>
+      </indexterm><indexterm type="general"><primary>Loglan Institute</primary></indexterm>In 1987 the project divided over a question that every constructed language meets sooner or later: who owns it? Earlier, Brown had founded The Loglan Institute to develop Loglan. Brown and the Institute claimed the language as their intellectual property, and their claims reached even its individual words. A large group of the project's volunteers wanted the language to be free for anyone to use. The two sides did not reach an agreement, so those volunteers formed The Logical Language Group, which later published the first edition of this book.</para>
+    <para>The volunteers rebuilt the vocabulary of the language from the ground up, but kept its grammatical design. They made an entirely new stock of root words from the six most widely spoken languages of the world, using the same method that had given Loglan its root words. The result is Lojban.</para>
+    <para>The dispute over the name <quote>Loglan</quote> itself went to court, and the case ended in 1992. The ruling was on narrow grounds: <quote>Loglan</quote> is the generic name of a language, so nobody can keep it as a registered trademark. Later, usage settled the names more amicably than the court case did. Today the name <quote>Loglan</quote> usually refers to the Institute's language. People still use and develop that language, and its materials are at <link xlink:href="https://www.loglan.org/">loglan.org</link>. The name <quote>Lojban</quote> refers to the language of the Group.</para>
+    <para>The two are sibling languages. Their grammatical structure is alike, so you can often take a simple sentence of one language and translate it word by word into the other. But almost all of their words are different. Of the two, Lojban is now much more widely used, and it is the language that this book describes.</para>
     <para>
       <indexterm type="general"><primary>Lojban</primary><secondary>features of</secondary>
       </indexterm>
@@ -132,13 +108,9 @@
     <para>
       This edition teaches the language with these changes. Where it teaches a changed rule, a note tells you who adopted the rule, when, and how firmly. With these notes, you can always tell settled rules from community practice that is still in motion.
     </para>
-    <para>
-      <indexterm type="general"><primary>Logical Language Group</primary><secondary>status of</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>Lojban</primary><secondary>governance of</secondary>
-      </indexterm>
-      Later, deliberate change stopped. This time it stopped without a proclamation. The Logical Language Group is now effectively inactive. Its last recorded meeting was the 2022 Annual Meeting, which ended in 2023. No later activity is on record. The BPFK left its remaining open questions deferred, and they now stay deferred indefinitely.
-    </para>
+    <para><indexterm type="general"><primary>Logical Language Group</primary><secondary>status of</secondary>
+      </indexterm><indexterm type="general"><primary>Lojban</primary><secondary>governance of</secondary>
+      </indexterm>Later, deliberate change stopped, and this time it stopped without a proclamation. The Logical Language Group is now effectively inactive. Its last recorded meeting was the 2022 Annual Meeting, which ended in 2023; no later activity is on record. The BPFK left its remaining open questions deferred, and they now stay deferred indefinitely.</para>
     <para>
       In practice, the established core of the language is frozen. This core is the old baseline plus the later decisions that this book describes, each at its own level of authority. The language itself is not frozen.
     </para>
@@ -312,40 +284,18 @@
     </para>
 
     <bridgehead renderas="sect3">After the first edition</bridgehead>
-    <para>
-      <indexterm type="general"><primary>this book</primary><secondary>contributors since 1997</secondary>
-      </indexterm>
-      John Cowan wrote the credits above for the first edition, in 1997. After that, many other people shaped this book. The history of the project records some of them only under a nickname, so this section uses that name. Some contributions came under anonymous names, and this section cannot credit them by name.
-    </para>
-    <para>
-      From 2008 to 2016, volunteers converted the book into DocBook, the format of its source files, and prepared its release as version 1.1. Robin Lee Powell led that work, with much help from Zort. Chris Done, Elmo Todurov, Sarefo, Twey, Dag Odenhall, Eitan Postavsky, Pierre Abbat, Matthew Walton, and dundas selzar contributed to it. So did James Royston, Frank D. Martinez, Ali Sajid Imami, Marica Odagaki, Judson, Alex Burka, Ilmen, selpahi, la mukti, Dan Rosén, Riley Martinez-Lynch, danmo rozgu, Bruno Panasiewicz, maltys, and Andrew Toskin.
-    </para>
-    <para>
-      From 2017 on, Gleki Arxokuna (lagleki) kept a community version of the book, known as UnCLL. It corrected errata and added new material, such as the tables of the zbalermorna script. This edition starts from that version. Ilmen, la-ninpre, mezohe, Corbin, Vexatos, and Gregorio Guidi also contributed to it.
-    </para>
-    <para>
-      The formal grammar of word forms in
-      <xref linkend="section-peg-grammar" />
-      is the work of Jorge Llambias. It comes from camxes, the parser that he and Robin Lee Powell first wrote. Masato Hagiwara ported camxes to JavaScript, and the ilmentufa project of Ilmen, Gleki Arxokuna, and others maintains the current version. The translators of the texts in
-      <xref linkend="volume-chrestomathy" />
-      appear with each text.
-    </para>
-    <para>
-      The changes to the language after 1997 come from the BPFK, the Logical Language Group, and the wider Lojban community.
-      <xref linkend="appendix-changes" />
-      lists them, and this book names the source of each change where it teaches it.
-    </para>
-    <para>
-      Pavel Minaev started this edition in 2026 and made its editorial decisions. Claude, an AI model made by Anthropic, wrote the new and changed text with him, under his direction. AI models from OpenAI, xAI, Moonshot AI, Alibaba, and Google reviewed that text. The camxes parser tests every Lojban example in the book. jbotci, a Lojban toolkit, helped to test the new examples.
-    </para>
+    <para>The credits above were written by<indexterm type="general"><primary>this book</primary><secondary>contributors since 1997</secondary>
+      </indexterm> John Cowan for the first edition, in 1997. Since then, a good many other people have had a hand in this book. The history of the project records some of them only under a nickname, so that is the name used here; and some contributions came in under anonymous names, which means this section cannot credit those contributors by name.</para>
+    <para>From 2008 to 2016, volunteers converted the book into DocBook (the format of its source files) and prepared its release as version 1.1. Robin Lee Powell led that work, with much help from Zort. Chris Done, Elmo Todurov, Sarefo, Twey, Dag Odenhall, Eitan Postavsky, Pierre Abbat, Matthew Walton, and dundas selzar contributed to it, and so did James Royston, Frank D. Martinez, Ali Sajid Imami, Marica Odagaki, Judson, Alex Burka, Ilmen, selpahi, la mukti, Dan Rosén, Riley Martinez-Lynch, danmo rozgu, Bruno Panasiewicz, maltys, and Andrew Toskin.</para>
+    <para>From 2017 on, Gleki Arxokuna (lagleki) kept up a community version of the book, known as UnCLL. It corrected errata and added new material, such as the tables of the zbalermorna script. This edition starts from that version. Ilmen, la-ninpre, mezohe, Corbin, Vexatos, and Gregorio Guidi also contributed to it.</para>
+    <para>The formal grammar of word forms in <xref linkend="section-peg-grammar" /> is the work of Jorge Llambias. It comes from camxes, the parser that he and Robin Lee Powell first wrote. Masato Hagiwara ported camxes to JavaScript, and the ilmentufa project of Ilmen, Gleki Arxokuna, and others maintains the current version. The translators of the texts in <xref linkend="volume-chrestomathy" /> are credited with each text.</para>
+    <para>The changes to the language after 1997 come from the BPFK, the Logical Language Group, and the wider Lojban community. <xref linkend="appendix-changes" /> lists them, and wherever this book teaches one of these changes, it names the source.</para>
+    <para>Pavel Minaev started this edition in 2026 and made its editorial decisions. Claude, an AI model made by Anthropic, wrote the new and changed text with him, under his direction. AI models from OpenAI, xAI, Moonshot AI, Alibaba, and Google then reviewed that text. The camxes parser tests every Lojban example in the book, and jbotci, a Lojban toolkit, helped to test the new examples.</para>
 
   </section>
   <section xml:id="section-bibliography">
     <title><anchor xml:id="c1s6" />Informal bibliography</title>
-    <para>      <indexterm type="general"><primary>Loglan</primary></indexterm>      <indexterm type="general"><primary>bibliography</primary></indexterm>      The founding document for the Loglan Project is      <citetitle pubwork="book">Loglan 1: A Logical Language</citetitle>      by James Cooke Brown (4th ed. 1989, The Loglan Institute, Gainesville, Florida, U.S.A.). The language in that book is not Lojban. It is the sibling language whose grammatical design Lojban shares (see
-      <xref linkend="section-what-is-lojban" />). The Loglan Institute continues to maintain and develop it, and it makes current materials available at
-      <link xlink:href="https://www.loglan.org/">loglan.org</link>.
-    </para>
+    <para><indexterm type="general"><primary>Loglan</primary></indexterm><indexterm type="general"><primary>bibliography</primary></indexterm>The founding document for the Loglan Project is <citetitle pubwork="book">Loglan 1: A Logical Language</citetitle> by James Cooke Brown (4th ed. 1989, The Loglan Institute, Gainesville, Florida, U.S.A.). The language in that book is not Lojban; it is the sibling language whose grammatical design Lojban shares (see <xref linkend="section-what-is-lojban" />). The Loglan Institute continues to maintain and develop it, and makes current materials available at <link xlink:href="https://www.loglan.org/">loglan.org</link>.</para>
 
     <para>
       The logic of Lojban, such as it is, owes a good deal to the American philosopher W. v.O. Quine, especially
@@ -361,13 +311,8 @@
     </para>
     <para>Of course, neither Brown nor Quine nor Horn is in any way responsible for the uses or misuses I have made of their works.</para>
 
-    <para>
-      <indexterm type="general"><primary>books about Lojban</primary></indexterm>
-      At this point in its text, the first edition promised three future books: a textbook, a Lojban/English dictionary, and a book of general information. What arrived instead suited the internet age better. The community built its own dictionary collection,
-      <indexterm type="general"><primary>jbovlaste</primary><secondary>community dictionary, read-only status</secondary>
-      </indexterm>
-      jbovlaste, which is now read-only, but the current dictionary tools carry its content forward. Free online courses and textbooks also appeared, with a steady stream of translated and original Lojban text. Any web search for Lojban finds the current versions of all of these. Because they are online, they stay more current than any printed list can.
-    </para>
+    <para><indexterm type="general"><primary>books about Lojban</primary></indexterm>At this point in its text, the first edition promised three future books: a textbook, a Lojban/English dictionary, and a book of general information. What arrived instead suited the internet age better. The community built its own dictionary collection,<indexterm type="general"><primary>jbovlaste</primary><secondary>community dictionary, read-only status</secondary>
+      </indexterm> jbovlaste, which is now read-only, but the current dictionary tools carry its content forward. Free online courses and textbooks also appeared, along with a steady stream of translated and original Lojban text. Any web search for Lojban will turn up the current versions of all of these, and because they are online, they stay more current than any printed list can.</para>
 
   </section>
   <section xml:id="section-captions">

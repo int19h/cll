@@ -1124,23 +1124,7 @@
         <description>non-veridical relative clause introducer</description>
       </cmavo-entry>
     </cmavo-list>
-    <para role="indent">
-      There is another member of selma'o NOI which serves to introduce a third kind of relative clause:
-      <valsi>voi</valsi>. Relative clauses introduced by
-      <valsi>voi</valsi>
-      are restrictive, like those introduced by
-      <valsi>poi</valsi>. However, there is a fundamental difference between
-      <valsi>poi</valsi>
-      and
-      <valsi>voi</valsi>
-      relative clauses. A
-      <valsi>poi</valsi>
-      relative clause is said to be veridical, in the same sense that a description using
-      <valsi>lo</valsi>
-      or
-      <valsi>loi</valsi>
-      is: it is essential to the interpretation that the bridi actually be true. For example:
-    </para>
+    <para role="indent">There is one more member of selma'o NOI, and it introduces a third kind of relative clause: <valsi>voi</valsi>. Relative clauses introduced by <valsi>voi</valsi> are restrictive, just like those introduced by <valsi>poi</valsi>. There is, however, a fundamental difference between the two. A <valsi>poi</valsi> relative clause is said to be veridical, in the same sense that a description using <valsi>lo</valsi> or <valsi>loi</valsi> is: it is essential to the interpretation that the bridi actually be true. For example:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-pcvP">
       <title><anchor xml:id="c8e5d1" /></title>
 
@@ -1149,11 +1133,7 @@
         <gloss>The dog which is-white -- goes.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      it must actually be true that the dog is white, or the sentence constitutes a miscommunication. If there is a white dog and a brown dog, and the speaker uses
-      <jbophrase>le gerku poi blabi</jbophrase>
-      to refer to the brown dog, then the listener will not understand correctly. However,
-    </para>
+    <para role="noindent">here it must actually be true that the dog is white, or the sentence constitutes a miscommunication. If there is a white dog and a brown dog, and the speaker uses <jbophrase>le gerku poi blabi</jbophrase> to refer to the brown dog, then the listener will not understand correctly. However,</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-BDgn">
       <title><anchor xml:id="c8e5d2" /></title>
 
@@ -1191,19 +1171,11 @@
         <gloss>This-thing which-I-describe-as a-cat -- is-a-dog.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      mean essentially the same thing (except that
-      <xref linkend="example-random-id-qmcE" />
-      involves pointing thanks to the use of
-      <valsi>ti</valsi>
-      , whereas
-      <xref linkend="example-random-id-qMCc" />
-      doesn't), and neither one is self-contradictory: it is perfectly all right to describe something as a cat (although perhaps confusing to the listener) even if it actually is a dog.
-    </para>
+    <para role="noindent">mean essentially the same thing (except that <xref linkend="example-random-id-qmcE" /> involves pointing, thanks to the use of <valsi>ti</valsi>, whereas <xref linkend="example-random-id-qMCc" /> doesn't). Neither one is self-contradictory: it is perfectly all right to describe something as a cat (although perhaps confusing to the listener) even if it actually is a dog.</para>
   </section>
   <section xml:id="section-descriptors">
     <title><anchor xml:id="c8s6" />Relative clauses and descriptors</title>
-    <para>So far, this chapter has described the various kinds of relative clauses (including relative phrases). The list is now complete, and the rest of the chapter will be concerned with the syntax of sumti that include relative clauses. So far, all relative clauses have appeared directly after the sumti to which they are attached. This is the most common position (and originally the only one), but a variety of other placements are also possible which produce a variety of semantic effects.</para>    <para>      There are actually three places where a relative clause can be attached to a description sumti: after the descriptor (      <valsi>le</valsi>      ,      <valsi>lo</valsi>
+    <para>So far, this chapter has described the various kinds of relative clauses (including relative phrases). The list is now complete, and the rest of the chapter will be concerned with the syntax of sumti that include relative clauses. Up to now, every relative clause has appeared directly after the sumti to which it is attached. This is the most common position (and originally the only one), but a variety of other placements are also possible, and they produce a variety of semantic effects.</para>    <para>      There are actually three places where a relative clause can be attached to a description sumti: after the descriptor (      <valsi>le</valsi>      ,      <valsi>lo</valsi>
       , or whatever), after the embedded selbri but before the elidable terminator (which is
       <valsi>ku</valsi>), and after the
       <valsi>ku</valsi>. The relative clauses attached to descriptors that we have seen have occupied the second position. Thus
@@ -1258,20 +1230,7 @@
         <gloss>The (dog ) which is-white -- goes.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <xref linkend="example-random-id-UmLX" />
-      will seem most natural to speakers of languages like English, which always puts relative clauses after the noun phrases they are attached to;
-      <xref linkend="example-random-id-qmCQ" />
-      , on the other hand, may seem more natural to Finnish or Chinese speakers, who put the relative clause first. Note that in
-      <xref linkend="example-random-id-qmCQ" />
-      , the elidable terminator
-      <valsi>ku'o</valsi>
-      must appear, or the selbri of the relative clause (
-      <valsi>blabi</valsi>) will merge with the selbri of the description (
-      <valsi>gerku</valsi>), resulting in an ungrammatical sentence. The purpose of the form appearing in
-      <xref linkend="example-random-id-qMct" />
-      will be apparent shortly.
-    </para>
+    <para role="indent"><xref linkend="example-random-id-UmLX" /> will seem most natural to speakers of languages like English, which always puts relative clauses after the noun phrases they are attached to. <xref linkend="example-random-id-qmCQ" />, on the other hand, may seem more natural to Finnish or Chinese speakers, who put the relative clause first. Note that in <xref linkend="example-random-id-qmCQ" />, the elidable terminator <valsi>ku'o</valsi> must appear, or the selbri of the relative clause (<valsi>blabi</valsi>) will merge with the selbri of the description (<valsi>gerku</valsi>), resulting in an ungrammatical sentence. The purpose of the form appearing in <xref linkend="example-random-id-qMct" /> will be apparent shortly.</para>
     <para>
       As is explained in detail in
       <xref linkend="section-quantified-descriptions" />
@@ -1389,16 +1348,7 @@
         <natlang>The people, who by the way are white, go to the market.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      Both
-      <xref linkend="example-random-id-qmDS" />
-      and
-      <xref linkend="example-random-id-qmdX" />
-      say the same thing. Some people go to the market, and, incidentally, they are white. These people are whichever people the context supplies as the referents of
-      <jbophrase>lo prenu</jbophrase>. With no outer quantifier, there is no selection step for the two positions to straddle. So the place of the
-      <valsi>ku</valsi>
-      makes no difference here.
-    </para>
+    <para role="indent">Both <xref linkend="example-random-id-qmDS" /> and <xref linkend="example-random-id-qmdX" /> say the same thing. Some people go to the market, and, incidentally, they are white. These people are whichever people the context supplies as the referents of <jbophrase>lo prenu</jbophrase>. With no outer quantifier, there is no selection step for the two positions to straddle, so the place of the <valsi>ku</valsi> makes no difference here.</para>
     <para role="status-note">
       <indexterm type="general"><primary>relative clauses</primary><secondary>on lo, older analysis</secondary>
       </indexterm>
@@ -1426,15 +1376,7 @@
         <natlang>At least one of the people &ndash; who are, all of them, white &ndash; goes to the market.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      In
-      <xref linkend="example-random-id-sQn1" />, the relative clause qualifies the quantified sumti. It describes the selected people who go. In
-      <xref linkend="example-random-id-sQn2" />, it describes the referents of
-      <jbophrase>lo prenu</jbophrase>
-      before the selection. So the sentence claims the incidental whiteness of every one of the people in question. That is not all humanity, because
-      <jbophrase>lo prenu</jbophrase>
-      refers only to the people that the context supplies. But it is still perhaps more people than the speaker intends.
-    </para>
+    <para role="indent">In <xref linkend="example-random-id-sQn1" />, the relative clause qualifies the quantified sumti: it describes the selected people who go. In <xref linkend="example-random-id-sQn2" />, it describes the referents of <jbophrase>lo prenu</jbophrase> before the selection is made, so the sentence claims the incidental whiteness of every one of the people in question. That is not all humanity, because <jbophrase>lo prenu</jbophrase> refers only to the people that the context supplies. But it is still perhaps more people than the speaker intends.</para>
     <para>
       <indexterm type="general"><primary>relative clauses on &quot;lo&quot;</primary><secondary>syntax suggestion</secondary>
       </indexterm>
@@ -1495,25 +1437,9 @@
       <quote>Man</quote>
       , namely the one(s) who are afraid of their horses.
     </para>
-    <para>
-      <indexterm type="general"><primary>relative clauses and indefinite sumti</primary><secondary>placement considerations</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>relative clauses</primary><secondary>impact of indefinite sumti on placement</secondary>
-      </indexterm>
-      Finally, so-called indefinite sumti like
-      <jbophrase>re karce</jbophrase>
-      can have relative clauses attached; these are taken to be of the outside-the-
-      <valsi>ku</valsi>
-      variety. Under the current rules, a bare number on a selbri is genuinely quantificational. So
-      <jbophrase>re karce</jbophrase>
-      means
-      <jbophrase>re da poi karce</jbophrase>,
-      <quote>two things that are cars</quote>. It is <emphasis>not</emphasis> an abbreviation of
-      <jbophrase>re lo karce</jbophrase>. That form instead selects two from the referents of the constant
-      <jbophrase>lo karce</jbophrase>
-      (see
-      <xref linkend="section-quantified-descriptions" />). Here is an example:
-    </para>
+    <para><indexterm type="general"><primary>relative clauses and indefinite sumti</primary><secondary>placement considerations</secondary>
+      </indexterm><indexterm type="general"><primary>relative clauses</primary><secondary>impact of indefinite sumti on placement</secondary>
+      </indexterm>Finally, so-called indefinite sumti like <jbophrase>re karce</jbophrase> can have relative clauses attached; these are taken to be of the outside-the- <valsi>ku</valsi> variety. Under the current rules, a bare number on a selbri is genuinely quantificational. So <jbophrase>re karce</jbophrase> means <jbophrase>re da poi karce</jbophrase>, <quote>two things that are cars</quote>. It is <emphasis>not</emphasis> an abbreviation of <jbophrase>re lo karce</jbophrase>, which instead selects two from the referents of the constant <jbophrase>lo karce</jbophrase> (see <xref linkend="section-quantified-descriptions" />). Here is an example:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-J11I">
       <title><anchor xml:id="c8e6d12" /></title>
 
@@ -1732,7 +1658,7 @@
         <description>relative clause attacher</description>
       </cmavo-entry>
     </cmavo-list>
-    <para role="indent">Normally, relative clauses attach only to simple sumti or parts of sumti: pro-sumti, names and descriptions, pure numbers, and quotations. An example of a relative clause attached to a pure number is:</para>
+    <para role="indent">Normally, relative clauses attach only to simple sumti or to parts of sumti: pro-sumti, names and descriptions, pure numbers, and quotations. An example of a relative clause attached to a pure number is:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-sfHA">
       <title><anchor xml:id="c8e8d1" /><indexterm type="general"><primary>irrational number</primary></indexterm></title>
@@ -1770,7 +1696,7 @@
         </natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">which may serve to identify the author of the quotation or some other relevant, but subsidiary, fact about it. All such relative clauses appear only after the simple sumti, never before it.</para>
+    <para role="noindent">Such a clause may serve to identify the author of the quotation, or to give some other relevant but subsidiary fact about it. All such relative clauses appear only after the simple sumti, never before it.</para>
 
     <para>
       <indexterm type="lojban-word"><primary>NAhE selma'o</primary><secondary>effect of relative clause placement with</secondary>
@@ -1808,25 +1734,7 @@
         </natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-
-
-      <xref linkend="example-random-id-4sqi" />
-      is a bit complex, and may need some picking apart. The quotation
-      <jbophrase>lu le xunre cmaxirma li'u</jbophrase>
-      means the string of words
-      <quote>The Red Pony</quote>. If the
-      <valsi>la'e</valsi>
-      at the beginning of the sentence were omitted,
-      <xref linkend="example-random-id-4sqi" />
-      would claim that a certain string of words is in a room distant from the speaker. But obviously a string of words can't be in a room! The effect of the
-      <valsi>la'e</valsi>
-      is to modify the sumti so that it refers not to the words themselves, but to the referent of those words, a novel by John Steinbeck (presumably in Lojban translation). The particular copy of
-      <quote>The Red Pony</quote>
-      is identified by the restrictive relative clause.
-      <xref linkend="example-random-id-4sqi" />
-      means exactly the same as:
-    </para>
+    <para role="indent"><xref linkend="example-random-id-4sqi" /> is a bit complex, and may need some picking apart. The quotation <jbophrase>lu le xunre cmaxirma li'u</jbophrase> means the string of words <quote>The Red Pony</quote>. Leave out the <valsi>la'e</valsi> at the beginning of the sentence, and <xref linkend="example-random-id-4sqi" /> would claim that a certain string of words is in a room distant from the speaker. But obviously a string of words can't be in a room! The <valsi>la'e</valsi> modifies the sumti so that it refers not to the words themselves but to the referent of those words, a novel by John Steinbeck (presumably in Lojban translation). Which particular copy of <quote>The Red Pony</quote> is meant gets settled by the restrictive relative clause. <xref linkend="example-random-id-4sqi" /> means exactly the same as:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-yX24">
       <title>
         <indexterm type="general"><primary>red pony</primary></indexterm>
@@ -1842,11 +1750,7 @@
         <gloss>… which is-old - is-at the [far-distance] room.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">
-      and the two sentences can be considered stylistic variants. Note the required
-      <valsi>lu'u</valsi>
-      terminator, which prevents the relative clause from attaching to the quotation itself: we do not wish to refer to an old quotation!
-    </para>
+    <para role="noindent">and the two sentences can be considered stylistic variants. Note the required <valsi>lu'u</valsi> terminator, which keeps the relative clause from attaching to the quotation itself: we do not wish to refer to an old quotation!</para>
 
     <para>
       <indexterm type="general"><primary>relative clauses</primary><secondary>on connected sumti</secondary>
@@ -1875,17 +1779,9 @@
       , the immediately preceding simple sumti.
     </para>
 
-    <para>
-      <indexterm type="general"><primary>relative clause scope</primary><secondary>extending to preceding sumti with &quot;vu'o&quot;</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>relative clause scope</primary><secondary>extending to preceding sumti with &quot;vu'o&quot;</secondary>
-      </indexterm>
-      To make a relative clause attach to both parts of the logically connected sumti in
-      <xref linkend="example-random-id-EYgE" />
-      , a new cmavo is needed,
-      <valsi>vu'o</valsi>
-      (of selma'o VUhO). It is placed between the sumti and the relative clause, and extends the sphere of influence of that relative clause to the entire preceding sumti, including however many logical or non-logical connectives there may be.
-    </para>
+    <para><indexterm type="general"><primary>relative clause scope</primary><secondary>extending to preceding sumti with &quot;vu'o&quot;</secondary>
+      </indexterm><indexterm type="general"><primary>relative clause scope</primary><secondary>extending to preceding sumti with &quot;vu'o&quot;</secondary>
+      </indexterm>To make a relative clause attach to both parts of the logically connected sumti in <xref linkend="example-random-id-EYgE" />, we need a new cmavo, <valsi>vu'o</valsi> (of selma'o VUhO). It goes between the sumti and the relative clause, and it stretches the sphere of influence of that relative clause over the entire preceding sumti, however many logical or non-logical connectives that sumti may contain.</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-9XPz">
       <title><anchor xml:id="c8e8d6" /></title>
 
@@ -1908,30 +1804,8 @@
       <jbophrase>la .frank. .e la .djordj.</jbophrase>
       ; in other words, both Frank and George are claimed to be men, as the colloquial translation shows.
     </para>
-    <para>
-      <indexterm type="general"><primary>relative clauses on complex sumti</primary><secondary>Lojban contrasted with English</secondary>
-      </indexterm>
-      English is able to resolve the distinction correctly in the case of
-      <xref linkend="example-random-id-EYgE" />
-      and
-      <xref linkend="example-random-id-9XPz" />
-      by making use of number:
-      <quote>who is</quote>
-      rather than
-      <quote>who are</quote>. Lojban doesn't distinguish between singular and plural verbs:
-      <valsi>nanmu</valsi>
-      can mean
-      <quote>is a man</quote>
-      or
-      <quote>are men</quote>
-      , so another means is required. Furthermore, Lojban's mechanism works correctly in general: if
-      <valsi>nanmu</valsi>
-      (meaning
-      <quote>is-a-man</quote>) were replaced with
-      <jbophrase>pu bajra</jbophrase>
-      (
-      <quote>ran</quote>), English would have to make the distinction some other way:
-    </para>
+    <para><indexterm type="general"><primary>relative clauses on complex sumti</primary><secondary>Lojban contrasted with English</secondary>
+      </indexterm>English manages to keep <xref linkend="example-random-id-EYgE" /> and <xref linkend="example-random-id-9XPz" /> apart by making use of number: <quote>who is</quote> rather than <quote>who are</quote>. Lojban doesn't distinguish between singular and plural verbs (<valsi>nanmu</valsi> can mean <quote>is a man</quote> or <quote>are men</quote>), so it needs another means. Furthermore, Lojban's mechanism works correctly in general: if <valsi>nanmu</valsi> (meaning <quote>is-a-man</quote>) were replaced with <jbophrase>pu bajra</jbophrase> (<quote>ran</quote>), English would have to make the distinction some other way:</para>
     <example xml:id="example-random-id-qmeb" role="interlinear-gloss-example">
       <title><anchor xml:id="c8e8d7" /></title>
 

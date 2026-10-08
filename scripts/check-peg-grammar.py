@@ -80,7 +80,7 @@ APPROVED_ARROW_CONTEXTS = [
     ("./para[2]/quote[1]", "←"),
     ("./para[2]/quote[2]", "<-"),
     ("./itemizedlist[1]/listitem[1]/para[1]",
-     "A rule has the form name ← expression: that expression parses "
+     "A rule has the form name ← expression, which means that the expression parses "
      "the construct called name."),
 ]
 
@@ -89,7 +89,7 @@ APPROVED_ARROW_CONTEXTS = [
 # without it, an approved context can be removed and a rule-like impostor put
 # in its place, preserving the count and the pinned path. Editing the
 # introduction means updating this constant in the same commit.
-INTRO_SHA256 = "6db18bfb8c7ab2ab44ae27195238107898659eff5c9a382b9c17f96dfcf35161"
+INTRO_SHA256 = "1229e5aa2ca33f06c27a59bfb0d288fbf1d2c9e25c05f4100720d3950ed4ad90"
 
 PREDEFINED = {"amp": "&", "lt": "<", "gt": ">", "quot": '"', "apos": "'"}
 

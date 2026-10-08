@@ -248,19 +248,9 @@
 
       </listitem>
     </itemizedlist>
-    <para role="indent">
-      <indexterm type="general"><primary>pro-sumti for speaker/listener/others</primary><secondary>as groups</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>pro-sumti for speaker/listener/others</primary><secondary>relation to &quot;joi&quot;</secondary>
-      </indexterm>
-      All of these pro-sumti refer to the relevant combinations of people. They have several referents at once. As with any plural reference, the context decides whether the referents act one by one or together (see
-      <xref linkend="section-masses" />). So
-      <valsi>mi'o</valsi>
-      is me and you taken together, like
-      <jbophrase>mi jo'u do</jbophrase>. When we act jointly as one body, that is the group reading,
-      <jbophrase>mi joi do</jbophrase>. (Older texts treat these pro-sumti differently: see
-      <xref linkend="appendix-changes" />.)
-    </para>
+    <para role="indent"><indexterm type="general"><primary>pro-sumti for speaker/listener/others</primary><secondary>as groups</secondary>
+      </indexterm><indexterm type="general"><primary>pro-sumti for speaker/listener/others</primary><secondary>relation to &quot;joi&quot;</secondary>
+      </indexterm>All of these pro-sumti refer to the relevant combinations of people, and they have several referents at once. As with any plural reference, the context decides whether those referents act one by one or together (see <xref linkend="section-masses" />). So <valsi>mi'o</valsi> is me and you taken together, like <jbophrase>mi jo'u do</jbophrase>. When we act jointly as one body, that is the group reading, <jbophrase>mi joi do</jbophrase>. (Older texts treat these pro-sumti differently: see <xref linkend="appendix-changes" />.)</para>
     <para>
       <indexterm type="general"><primary>pro-sumti for &quot;we&quot;</primary><secondary>contrasted with English &quot;we&quot;</secondary>
       </indexterm>
@@ -609,36 +599,16 @@
         <description>some utterance</description>
       </cmavo-entry>
     </cmavo-list>
-    <para role="indent">
-      <indexterm type="general"><primary>pro-sumti</primary><secondary>di'u-series</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>this</primary><secondary>as utterance reference in English</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>di'u-series</primary></indexterm>
-      <indexterm type="general"><primary>utterance pro-sumti</primary></indexterm>
-      <indexterm type="general"><primary>pro-sumti for utterances</primary></indexterm>
-      The cmavo of the di'u-series enable us to talk about things that have been, are being, or will be said. In English, it is normal to use
-      <quote>this</quote>
-      and
-      <quote>that</quote>
-      for this (indeed, the immediately preceding
-      <quote>this</quote>
-      is an example of such a usage):
-    </para>
+    <para role="indent"><indexterm type="general"><primary>pro-sumti</primary><secondary>di'u-series</secondary>
+      </indexterm><indexterm type="general"><primary>this</primary><secondary>as utterance reference in English</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>di'u-series</primary></indexterm><indexterm type="general"><primary>utterance pro-sumti</primary></indexterm><indexterm type="general"><primary>pro-sumti for utterances</primary></indexterm>The cmavo of the di'u-series let us talk about things that have been said, are being said, or will be said. English normally uses <quote>this</quote> and <quote>that</quote> for this (indeed, the immediately preceding <quote>this</quote> is an example of such a usage):</para>
     <example xml:id="example-random-id-KNih">
       <title><anchor xml:id="c7e4d1" /></title>
 
       <para>You don't like cats.</para>
       <para>That is untrue.</para>
     </example>
-    <para role="indent">
-      Here
-      <quote>that</quote>
-      does not refer to something that can be pointed to, but to the preceding sentence
-      <quote>You don't like cats</quote>. In Lojban, therefore,
-      <xref linkend="example-random-id-KNih" />
-      is rendered:
-    </para>
+    <para role="indent">Here <quote>that</quote> does not refer to something that can be pointed to. It refers to the preceding sentence, <quote>You don't like cats</quote>. In Lojban, therefore, <xref linkend="example-random-id-KNih" /> is rendered:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-nTou">
       <title><anchor xml:id="c7e4d2" /></title>
 
@@ -651,41 +621,11 @@
         <gloss>. The-previous-utterance is-a-false sentence.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="lojban-word"><primary>ti-series</primary><secondary>contrasted with di'u-series pro-sumti</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>di'u</primary><secondary>contrasted with &quot;ta&quot;</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>ta</primary><secondary>contrasted with &quot;di'u&quot;</secondary>
-      </indexterm>
-      Using
-      <valsi>ta</valsi>
-      instead of
-      <valsi>di'u</valsi>
-      would cause the listener to look around to see what the speaker of the second sentence was physically pointing to.
-    </para>
-    <para>
-      As with
-      <valsi>ti</valsi>,
-      <valsi>ta</valsi>,
-      and
-      <valsi>tu</valsi>,
-      the cmavo of the di'u-series come in threes: a close utterance, a medium-distance utterance, and a distant utterance, either in the past or in the future. It turned out to be impossible to use the
-      <letteral>i</letteral>
-      /
-      <letteral>a</letteral>
-      /
-      <letteral>u</letteral>
-      vowel convention of the demonstratives in
-      <xref linkend="section-ti-series" />
-      without causing collisions with other cmavo, and so the di'u-series has a unique
-      <letteral>i</letteral>
-      /
-      <letteral>e</letteral>
-      /
-      <letteral>a</letteral>
-      convention in the first vowel of the cmavo.
-    </para>
+    <para role="indent"><indexterm type="lojban-word"><primary>ti-series</primary><secondary>contrasted with di'u-series pro-sumti</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>di'u</primary><secondary>contrasted with &quot;ta&quot;</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>ta</primary><secondary>contrasted with &quot;di'u&quot;</secondary>
+      </indexterm>Using <valsi>ta</valsi> instead of <valsi>di'u</valsi> would send the listener looking around to see what the speaker of the second sentence was physically pointing at.</para>
+    <para>Like <valsi>ti</valsi>, <valsi>ta</valsi>, and <valsi>tu</valsi>, the cmavo of the di'u-series come in threes: a close utterance, a medium-distance utterance, and a distant utterance, either in the past or in the future. The <letteral>i</letteral> / <letteral>a</letteral> / <letteral>u</letteral> vowel convention of the demonstratives in <xref linkend="section-ti-series" /> turned out to be unusable here, since it would have caused collisions with other cmavo, and so the di'u-series has a unique <letteral>i</letteral> / <letteral>e</letteral> / <letteral>a</letteral> convention in the first vowel of the cmavo.</para>
     <para>
       Most references in speech are to the past (what has already been said), so
       <valsi>di'e</valsi>,
@@ -713,14 +653,7 @@
 
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <xref linkend="example-random-id-erEL" />
-      would typically be followed by a quotation. Note that although presumably the quotation is of something Simon has said in the past, the quotation utterance itself would appear after
-      <xref linkend="example-random-id-erEL" />,
-      and so
-      <valsi>di'e</valsi>
-      is appropriate.
-    </para>
+    <para role="indent"><xref linkend="example-random-id-erEL" /> would typically be followed by a quotation. Presumably the quotation is of something Simon has said in the past, but the quotation utterance itself appears after <xref linkend="example-random-id-erEL" />, and so <valsi>di'e</valsi> is appropriate.</para>
 
     <para>
       The remaining two cmavo,
@@ -751,26 +684,8 @@
         </natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      The cmavo of the di'u-series have a meaning that is relative to the context. The referent of
-      <valsi>dei</valsi>
-      in the current utterance is the same as the referent of
-      <valsi>di'u</valsi>
-      in the next utterance. The term
-      <quote>utterance</quote>
-      is used rather than
-      <quote>sentence</quote>
-      because the amount of speech or written text referred to by any of these words is vague. Often, a single bridi is intended, but longer utterances may be thus referred to.
-    </para>
-    <para>
-      Note one very common construction with
-      <valsi>di'u</valsi>
-      and the cmavo
-      <valsi>la'e</valsi>
-      (of selma'o LAhE; see
-      <xref linkend="section-sumti-qualifiers" />) which precedes a sumti and means
-      <quote>the thing referred to by (the sumti)</quote>:
-    </para>
+    <para role="indent">The cmavo of the di'u-series have a meaning that is relative to the context. The referent of <valsi>dei</valsi> in the current utterance is the same as the referent of <valsi>di'u</valsi> in the next utterance. We say <quote>utterance</quote> rather than <quote>sentence</quote> because the amount of speech or written text referred to by any of these words is vague. Often a single bridi is intended, but longer utterances may be referred to as well.</para>
+    <para>One very common construction combines <valsi>di'u</valsi> with the cmavo <valsi>la'e</valsi> (of selma'o LAhE; see <xref linkend="section-sumti-qualifiers" />), which precedes a sumti and means <quote>the thing referred to by (the sumti)</quote>:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-MsUd">
       <title><anchor xml:id="c7e4d6" /></title>
 
@@ -780,22 +695,9 @@
         <natlang>I love Jane, and I like that.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="lojban-word"><primary>la'edi'u</primary><secondary>contrasted with &quot;di'u&quot;</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>di'u</primary><secondary>contrasted with &quot;la'edi'u&quot;</secondary>
-      </indexterm>
-      The effect of
-      <jbophrase>la'e di'u</jbophrase>
-      in
-      <xref linkend="example-random-id-MsUd" />
-      is that the speaker likes, not the previous sentence, but rather the state of affairs referred to by the previous sentence, namely his loving Jane. This cmavo compound is often written as a single word:
-      <valsi>la'edi'u</valsi>. It is important not to mix up
-      <valsi>di'u</valsi>
-      and
-      <valsi>la'edi'u</valsi>,
-      or the wrong meaning will generally result:
-    </para>
+    <para role="indent"><indexterm type="lojban-word"><primary>la'edi'u</primary><secondary>contrasted with &quot;di'u&quot;</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>di'u</primary><secondary>contrasted with &quot;la'edi'u&quot;</secondary>
+      </indexterm>The effect of <jbophrase>la'e di'u</jbophrase> in <xref linkend="example-random-id-MsUd" /> is that the speaker likes the state of affairs referred to by the previous sentence, namely his loving Jane, and not the previous sentence itself. This cmavo compound is often written as a single word: <valsi>la'edi'u</valsi>. Mixing up <valsi>di'u</valsi> and <valsi>la'edi'u</valsi> will generally produce the wrong meaning:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-68ru">
       <title><anchor xml:id="c7e4d7" /></title>
@@ -1968,17 +1870,7 @@
       represents an elliptical value for this sumti place; it is the optional spoken place holder when a sumti is skipped without being specified. Note that the elliptical value is not always the typical value. The properties of ellipsis lead to an elliptical sumti being defined as
       <quote>whatever I want it to mean but haven't bothered to figure out, or figure out how to express</quote>.
     </para>
-    <para>
-      The word
-      <valsi>zo'e</valsi>
-      looks like a mere convenience, but it is foundational. It is a constant that refers to whatever things the context supplies, one or many. The definitions of the descriptors build on it: the definition of
-      <jbophrase>lo broda</jbophrase>
-      is
-      <jbophrase>zo'e noi ke'a broda</jbophrase>,
-      <quote>the contextually-supplied things, which broda</quote>. The traditional gloss
-      <quote>whatever I want it to mean</quote>
-      is loose, but the looseness concerns how the context supplies the referents, or how the speaker politely leaves them unspoken. It does not concern the reference itself. There is no hidden quantifier, and after the context supplies the referents, they stay fixed.
-    </para>
+    <para>The word <valsi>zo'e</valsi> looks like a mere convenience, but it is foundational. It is a constant that refers to whatever things the context supplies, one or many. The definitions of the descriptors build on it: the definition of <jbophrase>lo broda</jbophrase> is <jbophrase>zo'e noi ke'a broda</jbophrase>, <quote>the contextually-supplied things, which broda</quote>. The traditional gloss <quote>whatever I want it to mean</quote> is loose, but the looseness concerns how the context supplies the referents, or how the speaker politely leaves them unspoken. It does not concern the reference itself. There is no hidden quantifier, and once the context has supplied the referents, they stay fixed.</para>
     <para role="status-note">
       <indexterm type="lojban-word"><primary>zo'e</primary><secondary>as constant in gadri expansion</secondary>
       </indexterm>
@@ -2534,16 +2426,10 @@
 
       </cmavo-entry>
     </cmavo-list>
-    <para role="indent">
-      <indexterm type="general"><primary>relative clauses</primary><secondary>use of &quot;ke'a&quot; for referral to relativized sumti in</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>ke'a</primary><secondary>for relativized sumti in relative clauses</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>pro-sumti</primary><secondary>for relativized sumti in relative clauses</secondary>
-      </indexterm>
-      This pro-sumti is used in relative clauses (explained in
-      <xref linkend="chapter-relative-clauses" />) to indicate how the sumti being relativized fits within the clause. For example:
-    </para>
+    <para role="indent"><indexterm type="general"><primary>relative clauses</primary><secondary>use of &quot;ke'a&quot; for referral to relativized sumti in</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>ke'a</primary><secondary>for relativized sumti in relative clauses</secondary>
+      </indexterm><indexterm type="general"><primary>pro-sumti</primary><secondary>for relativized sumti in relative clauses</secondary>
+      </indexterm>This pro-sumti is used in relative clauses (explained in <xref linkend="chapter-relative-clauses" />) to show how the sumti being relativized fits within the clause. For example:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-UNBb">
       <title>
 
@@ -2563,15 +2449,8 @@
         <natlang>I see a cat made of plastic.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="lojban-word"><primary>ke'a</primary><secondary>ambiguity when omitted</secondary>
-      </indexterm>
-      If
-      <valsi>ke'a</valsi>
-      were omitted from
-      <xref linkend="example-random-id-UNBb" />,
-      it might be confused with:
-    </para>
+    <para role="indent"><indexterm type="lojban-word"><primary>ke'a</primary><secondary>ambiguity when omitted</secondary>
+      </indexterm>If <valsi>ke'a</valsi> were left out of <xref linkend="example-random-id-UNBb" />, the result might be confused with:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-0EWp">
       <title><anchor xml:id="c7e10d2" /></title>
 
@@ -2585,23 +2464,9 @@
         <natlang>I see a cat that makes plastic.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="lojban-word"><primary>ri</primary><secondary>contrasted with &quot;ke'a&quot; in relative clauses</secondary>
-      </indexterm>
-      <indexterm type="lojban-word"><primary>ke'a</primary><secondary>contrasted with &quot;ri&quot; in relative clauses</secondary>
-      </indexterm>
-      The anaphora cmavo
-      <valsi>ri</valsi>
-      cannot be used in place of
-      <valsi>ke'a</valsi>
-      in
-      <xref linkend="example-random-id-UNBb" />
-      and
-      <xref linkend="example-random-id-0EWp" />,
-      because the relativized sumti is not yet complete when the
-      <valsi>ke'a</valsi>
-      appears.
-    </para>
+    <para role="indent"><indexterm type="lojban-word"><primary>ri</primary><secondary>contrasted with &quot;ke'a&quot; in relative clauses</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>ke'a</primary><secondary>contrasted with &quot;ri&quot; in relative clauses</secondary>
+      </indexterm>The anaphora cmavo <valsi>ri</valsi> can't be used in place of <valsi>ke'a</valsi> in <xref linkend="example-random-id-UNBb" /> and <xref linkend="example-random-id-0EWp" />, because the relativized sumti is not yet complete when the <valsi>ke'a</valsi> appears.</para>
     <para>
       <indexterm type="general"><primary>subscripts</primary><secondary>on &quot;ke'a&quot; for nested relative clauses</secondary>
       </indexterm>

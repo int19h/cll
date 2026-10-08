@@ -199,13 +199,13 @@ def m_reused_quote(a, f):
 
 
 def m_duplicate_context(a, f):
-    return sub_once(a, "      <quote>&#8592;</quote>",
-                    "      <quote>&#8592;</quote><quote>&#8592;</quote>",
+    return sub_once(a, "<quote>&#8592;</quote>",
+                    "<quote>&#8592;</quote><quote>&#8592;</quote>",
                     "approved context duplicated"), f
 
 
 def m_remove_context(a, f):
-    return sub_once(a, "      <quote>&lt;-</quote>", "      <quote>the ASCII form</quote>",
+    return sub_once(a, "<quote>&lt;-</quote>", "<quote>the ASCII form</quote>",
                     "approved context removed"), f
 
 
@@ -242,9 +242,9 @@ def m_compensating_relocation(a, f):
     impostor in its slot, preserving the owner count and the pinned path."""
     a = sub_once(a, "<quote>&#8592;</quote>", "<quote>the left arrow</quote>",
                  "relocation: neutralize the real context")
-    return sub_once(a, "    <para>\n      The grammar is the one that",
+    return sub_once(a, "    <para>The grammar is the one the",
                     "    <para>FAKE\n      <quote>&#8592;</quote>\n      wrong</para>\n"
-                    "    <para>\n      The grammar is the one that",
+                    "    <para>The grammar is the one the",
                     "relocation: insert the impostor"), f
 
 
@@ -255,7 +255,7 @@ def m_relocate_notation(a, f):
                  "notation relocation: neutralize")
     return sub_once(a, "    <section xml:id=\"peg-classes\">",
                     "    <itemizedlist><listitem><para>A rule has the form "
-                    "<emphasis>name</emphasis> &#8592; expression: that expression parses "
+                    "<emphasis>name</emphasis> &#8592; expression, which means that the expression parses "
                     "the construct called name.</para></listitem></itemizedlist>\n"
                     "    <section xml:id=\"peg-classes\">",
                     "notation relocation: insert"), f
@@ -310,7 +310,7 @@ def m_intro_attribute_only(a, f):
 def m_inline_boundary_space(a, f):
     """Removing the spaces around an approved quote changes what prints
     without changing any word."""
-    return sub_once(a, "definition is\n      <quote>&#8592;</quote>\n      here",
+    return sub_once(a, "definition is <quote>&#8592;</quote> here",
                     "definition is<quote>&#8592;</quote>here",
                     "inline boundary spaces removed"), f
 

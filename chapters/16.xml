@@ -1149,7 +1149,7 @@
     <para role="noindent">
       means that each of the dogs specified bites each of the men specified, for six acts of biting altogether.
     </para>
-    <para>You must actually say both <valsi>ro</valsi> quantifiers. The explicit <valsi>ro</valsi> asserts the distribution one by one, every dog with every man. The unquantified <jbophrase>le ci gerku cu batci le re nanmu</jbophrase> says only of the dogs and the men that biting goes on between them, and does not formally spell out the six pairs. In practice this often comes to the same thing, but the two are not synonyms. (Older texts follow a different convention here: see <xref linkend="appendix-changes" /> .)</para>
+    <para>You must actually say both <valsi>ro</valsi> quantifiers. The explicit <valsi>ro</valsi> asserts the distribution one by one, every dog with every man. The unquantified <jbophrase>le ci gerku cu batci le re nanmu</jbophrase> says only of the dogs and the men that biting goes on between them, and does not formally spell out the six pairs. In practice this often comes to the same thing, but the two are not synonyms. (Older texts follow a different convention here: see <xref linkend="appendix-changes" />.)</para>
     <para>
       With explicit quantifiers other than
       <valsi>ro</valsi>, the scope problems of this section reappear.
@@ -1407,7 +1407,7 @@
         <natlang>I don't go to the store.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">The other form of bridi negation uses the compound cmavo <jbophrase>naku</jbophrase> in the prenex. The lexer identifies and compounds naku before it looks at the sentence grammar, and in Lojban grammar <jbophrase>naku</jbophrase> is then treated like a sumti. In a prenex, <jbophrase>naku</jbophrase> means precisely the same thing as the logician's <quote>it is not the case that</quote> in a similar English context. (Outside of a prenex, <jbophrase>naku</jbophrase> is also grammatically treated as a single entity – the equivalent of a sumti – but does not have this exact meaning; we'll discuss these other situations in <xref linkend="section-na-outside-prenex" /> .)</para>
+    <para role="indent">The other form of bridi negation uses the compound cmavo <jbophrase>naku</jbophrase> in the prenex. The lexer identifies and compounds <jbophrase>naku</jbophrase> before it looks at the sentence grammar, and in Lojban grammar <jbophrase>naku</jbophrase> is then treated like a sumti. In a prenex, <jbophrase>naku</jbophrase> means precisely the same thing as the logician's <quote>it is not the case that</quote> in a similar English context. (Outside of a prenex, <jbophrase>naku</jbophrase> is also grammatically treated as a single entity – the equivalent of a sumti – but does not have this exact meaning; we'll discuss these other situations in <xref linkend="section-na-outside-prenex" />.)</para>
     <para>
       <indexterm type="general"><primary>external bridi negation</primary><secondary>compared to internal bridi negation</secondary>
       </indexterm>

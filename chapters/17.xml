@@ -2079,7 +2079,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent"><indexterm type="general"><primary>ASCII</primary><secondary>application to lerfu words</secondary>
-      </indexterm>Understanding <xref linkend="example-random-id-r2jv" /> depends on knowing what value the “$” character has in the ASCII character set (one of the simplest and oldest). Therefore, the <valsi>se'e</valsi> convention is intelligible only to those who know the underlying character set. For precisely specifying a particular character, however, it has the advantages of unambiguity and (relative) cultural neutrality, and so Lojban provides a means for those with access to descriptions of such character sets to take advantage of them.</para>
+      </indexterm>Understanding <xref linkend="example-random-id-r2jv" /> depends on knowing what value the <quote>$</quote> character has in the ASCII character set (one of the simplest and oldest). Therefore, the <valsi>se'e</valsi> convention is intelligible only to those who know the underlying character set. For precisely specifying a particular character, however, it has the advantages of unambiguity and (relative) cultural neutrality, and so Lojban provides a means for those with access to descriptions of such character sets to take advantage of them.</para>
 
     <para><indexterm type="general"><primary>peace symbol</primary></indexterm><indexterm type="general"><primary>Unicode</primary></indexterm>As another example, the Unicode character set (also known as ISO 10646) represents the international symbol of peace, an inverted trident in a circle, with the base-16 value 262E. In a suitable context, a Lojbanist may say:</para>
 

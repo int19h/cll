@@ -583,7 +583,7 @@
     <para>Or perhaps, since pianos are heavy, person 1 lifted one end, person 2 the other, and person 3 supported the middle. Then none of them carried the piano alone; only all three together did. This is the <quote>collective</quote> reading.</para>
     <para><xref linkend="example-random-id-mwhq" /> is neutral between the two readings. A plain description leaves this choice open, just as it leaves number open, and the context usually settles it. (For a piano, the collective reading is the likely guess. If the x<subscript>2</subscript> is a suitcase, the distributive reading is more likely.)</para>
     <para><indexterm type="general"><primary>groups</primary></indexterm><indexterm type="general"><primary>masses</primary><secondary>now called groups</secondary>
-      </indexterm>But Lojban can also make the collective reading explicit. That is the job of the descriptors <valsi>loi</valsi>, <valsi>lei</valsi>, and <valsi>lai</valsi>, which refer to <quote>groups</quote> (in Lojban, <valsi>gunma</valsi>). (Older texts say <quote>masses</quote>, and they mean something rather different by it: see <xref linkend="appendix-changes" /> .)</para>
+      </indexterm>But Lojban can also make the collective reading explicit. That is the job of the descriptors <valsi>loi</valsi>, <valsi>lei</valsi>, and <valsi>lai</valsi>, which refer to <quote>groups</quote> (in Lojban, <valsi>gunma</valsi>). (Older texts say <quote>masses</quote>, and they mean something rather different by it: see <xref linkend="appendix-changes" />.)</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x6Ba">
       <title><anchor xml:id="c6e3d7" /></title>
 
@@ -1681,7 +1681,7 @@
         <natlang>I like hot food, and you like cold food, and Jane likes lukewarm food.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">(In <xref linkend="example-random-id-JwCb" />, the sumti <valsi>ra</valsi> refers to some previously mentioned sumti other than the one <valsi>ri</valsi> refers to. We cannot use <valsi>ri</valsi> here, because it would signify <jbophrase>la .djein.</jbophrase>, that being the most recent sumti available to <valsi>ri</valsi>. See more detailed explanations in <xref linkend="section-ri-gohi-series" /> .)</para>
+    <para role="noindent">(In <xref linkend="example-random-id-JwCb" />, the sumti <valsi>ra</valsi> refers to some previously mentioned sumti other than the one <valsi>ri</valsi> refers to. We cannot use <valsi>ri</valsi> here, because it would signify <jbophrase>la .djein.</jbophrase>, that being the most recent sumti available to <valsi>ri</valsi>. See more detailed explanations in <xref linkend="section-ri-gohi-series" />.)</para>
   </section>
   <section xml:id="section-vocative-syntax">
     <title><anchor xml:id="c6s11" />The syntax of vocative phrases</title>

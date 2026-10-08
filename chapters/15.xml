@@ -923,7 +923,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent">Note: <valsi>lo</valsi> is used in these sentences because negation relates to truth conditions. To talk meaningfully about truth conditions in sentences carrying a description, it must be clear that the description truly applies to whatever it refers to. Only <valsi>lo</valsi> guarantees that.</para>
-    <para>A sentence using <valsi>le</valsi> instead of <valsi>lo</valsi> can be true even if there is no current king of France. The referents of a <valsi>le</valsi> description are whatever the speaker has in mind, and calling them <quote>the current king of France</quote> is only a description, which does not have to be true. (See the explanations of <valsi>le</valsi> in <xref linkend="section-basic-descriptors" /> .)</para>
+    <para>A sentence using <valsi>le</valsi> instead of <valsi>lo</valsi> can be true even if there is no current king of France. The referents of a <valsi>le</valsi> description are whatever the speaker has in mind, and calling them <quote>the current king of France</quote> is only a description, which does not have to be true. (See the explanations of <valsi>le</valsi> in <xref linkend="section-basic-descriptors" />.)</para>
   </section>
   <section xml:id="section-scales-negation">
     <title><anchor xml:id="c15s5" />Expressing scales in selbri negation</title>
@@ -1172,7 +1172,7 @@
     </example>
     <para role="indent">Is <xref linkend="example-random-id-PL1E" /> true?<indexterm type="general"><primary>outer quantifier</primary><secondary>zero, over description referents</secondary>
       </indexterm> When France has kings, the sentence is at least straightforward. The word <valsi>no</valsi> counts the referents of the description (see <xref linkend="section-quantified-descriptions" />), so the sentence denies baldness of every one of them, and it is true exactly when none of those kings is in fact bald. But when there are no current Kings of France at all, the description has nothing to refer to, and the sentence inherits the reference problem that <xref linkend="section-nahe" /> discusses.</para>
-    <para>To make the plainly true claim directly, we quantify over a variable instead. Then no description has to refer to nonexistent kings: <jbophrase>no da poi ca nolraitru be le fasygu'e cu krecau</jbophrase>. That is, nothing that is a current King of France lacks hair. This sentence is true precisely because nothing satisfies the restriction. (Older texts read descriptions like the one in <xref linkend="example-random-id-PL1E" /> quite differently: see <xref linkend="appendix-changes" /> .)</para>
+    <para>To make the plainly true claim directly, we quantify over a variable instead. Then no description has to refer to nonexistent kings: <jbophrase>no da poi ca nolraitru be le fasygu'e cu krecau</jbophrase>. That is, nothing that is a current King of France lacks hair. This sentence is true precisely because nothing satisfies the restriction. (Older texts read descriptions like the one in <xref linkend="example-random-id-PL1E" /> quite differently: see <xref linkend="appendix-changes" />.)</para>
     <para>
       Now let us look at the same sentence using
       <jbophrase>na'ebo</jbophrase>

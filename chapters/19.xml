@@ -2452,7 +2452,7 @@
       <valsi>.y.</valsi>
       has no grammatical significance: it can appear anywhere at all in a Lojban sentence except in the middle of a word.
     </para>
-    <para>Even the word-level machinery of this chapter treats .y. as if it were silence. A hesitation between a word and an erasing <valsi>si</valsi>, for example, changes nothing. The single exception is the letteral <valsi>.ybu</valsi> (the name of the letter <letteral>y</letteral>), which that machinery recognizes as a unit before anything else happens (see <xref linkend="chapter-letterals" />).</para>
+    <para>Even the word-level machinery of this chapter treats <valsi>.y.</valsi> as if it were silence. A hesitation between a word and an erasing <valsi>si</valsi>, for example, changes nothing. The single exception is the letteral <valsi>.ybu</valsi> (the name of the letter <letteral>y</letteral>), which that machinery recognizes as a unit before anything else happens (see <xref linkend="chapter-letterals" />).</para>
     <para role="status-note">This<indexterm type="general"><primary>y</primary><secondary>word-level invisibility, status</secondary>
       </indexterm> invisibility of <valsi>.y.</valsi> to the word-level machinery is checkpointed, and so is the <valsi>.ybu</valsi> exception. The checkpoint includes even one consequence: <valsi>zo</valsi> cannot quote <valsi>.y.</valsi> at all.</para>
   </section>

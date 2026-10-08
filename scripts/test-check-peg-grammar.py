@@ -255,7 +255,7 @@ def m_relocate_notation(a, f):
                  "notation relocation: neutralize")
     return sub_once(a, "    <section xml:id=\"peg-classes\">",
                     "    <itemizedlist><listitem><para>A rule has the form "
-                    "<emphasis>name</emphasis> &#8592; expression: that expression parses "
+                    "<emphasis>name</emphasis> &#8592; expression, which means that the expression parses "
                     "the construct called name.</para></listitem></itemizedlist>\n"
                     "    <section xml:id=\"peg-classes\">",
                     "notation relocation: insert"), f

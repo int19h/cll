@@ -950,11 +950,26 @@
       The four true diphthongs (<diphthong>ai</diphthong>,
       <diphthong>ei</diphthong>,
       <diphthong>oi</diphthong>, and
-      <diphthong>au</diphthong>) appear freely in most types of Lojban words. The glide-initial syllables are more restricted. Because the glide begins its syllable, it acts like a consonant, and <emphasis>nothing like a consonant can come immediately before it</emphasis>. So a glide-initial syllable occurs only at the beginning of a word, or directly after a vowel or a diphthong. Not even an apostrophe can come before a glide. Also, a glide cannot follow a diphthong that ends in the same letter as the glide:
+      <diphthong>au</diphthong>) appear freely in most types of Lojban words. The glide-initial syllables are more restricted. Because the glide begins its syllable, it acts like a consonant, and <emphasis>nothing like a consonant can come immediately before it</emphasis>. So a glide-initial syllable occurs only at the beginning of a word, or directly after a vowel or a diphthong. Not even an apostrophe can come before a glide. Also, a diphthong never forms when the next letter is the same as its final letter.
+      This does not rule out the letter sequences
       <morphology>aii</morphology>
       and
-      <morphology>auu</morphology>
-      do not occur.
+      <morphology>auu</morphology>; it only decides how they are grouped. In
+      <morphology>aii</morphology>, the
+      <letteral>a</letteral>
+      is a vowel on its own, followed by the glide-initial syllable
+      <morphology>ii</morphology>; in
+      <morphology>auu</morphology>, it is followed by
+      <morphology>uu</morphology>. So the Lojbanized name
+      <cmevla>.aiis.</cmevla>
+      is pronounced
+      <phrase role="IPA">[ʔa jisʔ]</phrase>, not
+      <phrase role="IPA">[ʔaj isʔ]</phrase>, and
+      <cmevla>.auus.</cmevla>
+      is pronounced
+      <phrase role="IPA">[ʔa wusʔ]</phrase>.
+      (<xref linkend="example-random-id-RxtI" /> shows the same grouping after
+      <letteral>e</letteral>.)
     </para>
     <para>As a result, the cmavo <valsi>ia</valsi> and names like <cmevla>.iolandas.</cmevla> are fine. But a form like <quote>kuarka</quote> is not a possible Lojban word. To borrow such a word, change the glide into a true vowel in its own syllable by putting an apostrophe at the transition. The result is <jbophrase>ku'arka</jbophrase>, with three syllables and no glide. (See <xref linkend="chapter-morphology" /> for how to form borrowings.)</para>
     <para>The combinations <morphology>iy</morphology> and <morphology>uy</morphology> (a glide before the vowel <letteral>y</letteral>) occur in practice only in Lojbanized names. As pure word forms, the formal definition also counts them among the unassigned cmavo forms (see <xref linkend="chapter-morphology" />), but no standard word uses them.</para>

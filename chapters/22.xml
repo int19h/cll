@@ -12,7 +12,7 @@
       </indexterm>The boundary between experimental and adopted has moved in the past, too. This book writes every cmevla with a dot at the start and at the end. That rule began as a deliberately partisan dialect, and its name, <quote>the dot side</quote>, was a joke. It is now committee-approved (see <xref linkend="appendix-changes" /> for the details).</para>
     <para>The established corpus itself grew out of once-experimental proposals, adopted at various levels. The difference now is that the bodies with the power to promote such proposals no longer meet. In that sense, the features in this chapter are proposals with no one left to propose them to. Their standing rises and falls with usage alone.</para>
     <para><indexterm type="general"><primary>parsers</primary><secondary>dialect support in</secondary>
-      </indexterm>A feature needs two things to earn a place in this chapter, and each section states both. The first is <emphasis>usage evidence</emphasis>: the feature appears in genuine text or in established community writing, and not only in a dictionary entry. The second is <emphasis>machine support</emphasis>: at least one maintained parser accepts it. The parsers matter because the community actually uses them to delimit its dialects.</para>
+      </indexterm>A feature needs two things to earn a place in this chapter, and each section states both. The first is <emphasis>usage evidence</emphasis>: the feature appears in genuine text or in established community writing, and not only in a dictionary entry. The second is <emphasis>machine support</emphasis>: at least one maintained parser accepts it.</para>
     <para>The standard camxes grammar accepts only standard Lojban. Its <quote>beta</quote> variant adds the popular experimental cmavo that are backward-compatible, and further variants add the genuine grammar changes described at the end of this chapter. Other tools go the opposite way: they accept the popular experimental cmavo by default, and keep explicit dialect switches for the true grammar changes. We made sure that at least one such parser accepts every example in this chapter, and each section says which.</para>
     <para role="status-note"><indexterm type="general"><primary>experimental cmavo</primary><secondary>status of</secondary>
       </indexterm>All of these features are unofficial. None is ratified, committee-approved, or checkpointed. Where a section cites usage frequency, the evidence is a community survey of six corpora from 2015. Its counts give too much weight to chat logs and to individual authors, so treat it as a rough rank order, not as an endorsement.</para>
@@ -42,7 +42,7 @@
         <description>ad-hoc brivla from next word</description>
       </cmavo-entry>
     </cmavo-list>
-    <para role="indent"><indexterm type="lojban-word"><primary>zo'oi</primary></indexterm>Standard Lojban quotes non-Lojban material with <jbophrase>zoi ...</jbophrase>, which requires a delimiting word, said twice (see <xref linkend="section-more-quotations" />). For a single foreign word that ceremony is a heavy one, and some of the best-attested experimental cmavo exist to shorten it. The word <valsi>zo'oi</valsi> quotes exactly one following word, just as <valsi>zo</valsi> does for a single Lojban word. In speech, pauses delimit the quoted word; in writing, whitespace (spaces, tabs, or line breaks) does the job:</para>
+    <para role="indent"><indexterm type="lojban-word"><primary>zo'oi</primary></indexterm>Standard Lojban quotes non-Lojban material with <jbophrase>zoi ...</jbophrase>, which requires a delimiting word, said twice (see <xref linkend="section-more-quotations" />). For a single foreign word that ceremony is a heavy one, and a family of experimental cmavo exists to shorten it. The word <valsi>zo'oi</valsi> quotes exactly one following word, just as <valsi>zo</valsi> does for a single Lojban word. In speech, pauses delimit the quoted word; in writing, whitespace (spaces, tabs, or line breaks) does the job:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x22a">
       <title><anchor xml:id="c22e2d1" /></title>
       <interlinear-gloss>
@@ -121,7 +121,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent">Here the <valsi>da</valsi> stands for the gatherers jointly. Each member of the pair can be defined from the other by the usual duality: <jbophrase>su'oi da</jbophrase> is <jbophrase>na ku ro'oi da na ku</jbophrase>. This parallels the singular rules of <xref linkend="chapter-quantifiers" /> exactly.</para>
-    <para>The standard camxes grammar rejects these quantifiers, though the camxes beta family and jbotci accept them. The rigorous writing that uses them is the work of a small circle of theorists, not everyday text, and the logic chapters of this book use only the official singular quantifiers.</para>
+    <para>The standard camxes grammar rejects these quantifiers, though the camxes beta family and jbotci accept them. The logic chapters of this book use only the official singular quantifiers.</para>
     <para role="status-note">
       The ratified part is the number-neutral constant semantics of the modern
       <valsi>lo</valsi>. To read that semantics as the constant half of a formal system of plural logic is an unofficial analysis. These quantifiers, the other half of that system, remain unadopted proposals (see
@@ -218,13 +218,13 @@
       </interlinear-gloss>
     </example>
     <para role="indent">The merger <emphasis>reinterprets</emphasis> existing forms; it does not merely add new ones. It is therefore not backward-compatible: the same string of standard Lojban can parse differently under CBM. The two tested implementations are the camxes <quote>cbm</quote> grammars and the <quote>cbm</quote> dialect switch of jbotci. They differ in some corners in how aggressively they reinterpret <valsi>la</valsi> phrases. They do agree on the new permission itself: a cmevla can predicate.</para>
-    <para role="status-note">CBM is a real dialect, parsers implement it, and it has an established design literature. But people discuss it more than they write it, and running text wholly in CBM is scarce. In the tested tools, it requires an explicit dialect grammar or switch.</para>
+    <para role="status-note">CBM is a real dialect, parsers implement it, and it has an established design literature. In the tested tools, it requires an explicit dialect grammar or switch.</para>
   </section>
   <section xml:id="section-dialects-ckt">
     <title><anchor xml:id="c22s6" />Short words for common meanings: ce-ki-tau-jau</title>
     <para><indexterm type="general"><primary>ce-ki-tau-jau</primary></indexterm>The last dialect is a family of <emphasis>cmavo swaps</emphasis>, and its label is <emphasis>ce-ki-tau-jau</emphasis>. It starts from a simple diagnosis. Some of the busiest cmavo in the language have two syllables: <valsi>ce'u</valsi>, <valsi>ke'a</valsi>, <valsi>tu'a</valsi>, <valsi>jo'u</valsi>, and <valsi>du'u</valsi>. Meanwhile some one-syllable forms sit nearly idle: <valsi>ce</valsi>, <valsi>ki</valsi>, <valsi>tau</valsi>, <valsi>jau</valsi>, and <valsi>du</valsi>.</para>
-    <para>The dialect swaps each pair. In ce-ki-tau-jau text, <valsi>ce</valsi> means what <valsi>ce'u</valsi> means in this book, and the reverse. In principle each swap works in both directions, and speakers can adopt each one separately. (In practice, as the community's own record notes, the swaps mostly run one way: the short forms get the busy meanings as synonyms, and the long forms also keep their old senses.)</para>
-    <para>Here is the trap. Most of the short forms also have meanings in standard Lojban, so a swapped sentence often parses in <emphasis>both</emphasis> grammars, with different meanings. Take <jbophrase>lo broda poi ki broda</jbophrase>. To a standard parser it is a sticky-tense construction; to a ce-ki-tau parser it is a relative clause with <valsi>ke'a</valsi>. Text in this dialect is therefore unintelligible to a standard reader in a peculiarly silent way: nothing fails, but the text means something else. Well-behaved text in the dialect announces itself first, with a header like <jbophrase valid="iffy">jo'au tcekitaujau</jbophrase> (the community convention).</para>
+    <para>The dialect swaps each pair. In ce-ki-tau-jau text, <valsi>ce</valsi> means what <valsi>ce'u</valsi> means in this book, and the reverse. In principle each swap works in both directions, and speakers can adopt each one separately.</para>
+    <para>Here is the trap. Most of the short forms also have meanings in standard Lojban, so a swapped sentence often parses in <emphasis>both</emphasis> grammars, with different meanings. Take <jbophrase>lo broda poi ki broda</jbophrase>. To a standard parser it is a sticky-tense construction; to a ce-ki-tau parser it is a relative clause with <valsi>ke'a</valsi>. Text in this dialect is therefore unintelligible to a standard reader in a peculiarly silent way: nothing fails, but the text means something else. A writer can avoid the trap by announcing the dialect first, with a header like <jbophrase valid="iffy">jo'au tcekitaujau</jbophrase>.</para>
     <para>
       Neither tested implementation matches the primary proposal of five pairs exactly. The camxes
       <quote>ckt</quote>
@@ -252,7 +252,7 @@
       <valsi>du</valsi>. It also prints back the standard equivalents.
     </para>
     <para role="status-note">
-      By the community's own assessment, people use the dialect very little. This book includes it as the clearest worked example of what a dialect <emphasis>is</emphasis>. The text of this book uses none of the swaps.
+      This book includes it as the clearest worked example of what a dialect <emphasis>is</emphasis>. The text of this book uses none of the swaps.
     </para>
   </section>
 </chapter>

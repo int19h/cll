@@ -1008,12 +1008,12 @@
       were unfinished.
     </para>
     <para>
-      They are still unfinished, and the reading with a number never became established. Where speakers use
+      They are still unfinished, so a
       <valsi>jei</valsi>
-      at all, the usual practice treats it as a plain truth value: whether or not. For degrees, the usual practice uses
+      abstraction can be read in either of two ways: as a plain truth value (whether or not), or as a number between 0 and 1. Expect either reading in real text. When degree matters, prefer the unambiguous alternatives:
       <valsi>ni</valsi>, or a
       <valsi>ka</valsi>
-      property with an explicit scale. Expect either reading in real text. When degree matters, prefer the unambiguous alternatives.
+      property with an explicit scale.
     </para>
     <para role="status-note">
       <indexterm type="lojban-word"><primary>jei</primary><secondary>status of fuzzy interpretation</secondary>

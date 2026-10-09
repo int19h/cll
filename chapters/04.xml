@@ -2268,9 +2268,9 @@
       <indexterm type="lojban-word"><primary>zi'evla</primary></indexterm>
       <indexterm type="general"><primary>zi'evla</primary><secondary>as term for Stage 4 fu'ivla</secondary>
       </indexterm>
-      Finally, Stage 4 fu'ivla do not have any rafsi classifier, and are used where a fu'ivla has become so common or so important that it must be made as short as possible. In the community, people widely call these free-form borrowings
+      Finally, Stage 4 fu'ivla do not have any rafsi classifier, and are used where a fu'ivla has become so common or so important that it must be made as short as possible. This book also calls these free-form borrowings
       <jbophrase>zi'evla</jbophrase>
-      (<quote>free words</quote>). This book also uses that term at times. (See
+      (<quote>free words</quote>). (See
       <xref linkend="section-rafsi-fuhivla" />
       for how fu'ivla of every stage take part in lujvo.)
     </para>
@@ -3154,7 +3154,7 @@
       <listitem>
         <para><indexterm type="general"><primary>cmevla</primary><secondary>consonant clusters permitted in</secondary>
           </indexterm><indexterm type="general"><primary>cmevla</primary><secondary>dot side</secondary>
-          </indexterm>They must end in one or more consonants. There are no rules about how many consonants may appear in a cluster in cmevla, provided that each consonant pair (whether standing by itself, or as part of a larger cluster) is a permissible pair. The working grammar of word forms also lets a cmevla contain decimal digits, which stand for their spoken digit words. For example, the grammar reads <cmevla>.mig15s.</cmevla> as if it were <cmevla>.migypamus.</cmevla> in full. This works only if the expanded word still obeys the rules for cmevla. It is a convenience for designations and codes, and it sees little use in running text.</para>
+          </indexterm>They must end in one or more consonants. There are no rules about how many consonants may appear in a cluster in cmevla, provided that each consonant pair (whether standing by itself, or as part of a larger cluster) is a permissible pair. The working grammar of word forms also lets a cmevla contain decimal digits, which stand for their spoken digit words. For example, the grammar reads <cmevla>.mig15s.</cmevla> as if it were <cmevla>.migypamus.</cmevla> in full. This works only if the expanded word still obeys the rules for cmevla. It is a convenience for designations and codes.</para>
       </listitem>
       <listitem>
         <para><indexterm type="general"><primary>glide-initial syllables</primary><secondary>with y, in cmevla</secondary>

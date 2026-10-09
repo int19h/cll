@@ -208,7 +208,7 @@
     <title><anchor xml:id="a03-meanings" />Word meanings</title>
     <itemizedlist>
       <listitem>
-        <para><indexterm type="general"><primary>e-series attitudinals</primary><secondary>change summary</secondary></indexterm>This change is <emphasis>editorial</emphasis>, and it follows usage. The senses taught here come from the language-definition committee's rework of these cmavo. The committee drafted and discussed that rework, but it never completed it or put it to a vote. Modern use attests the new senses, though, and the community's own contributions follow them. Coinages like <jbophrase>e'ende</jbophrase> (<quote>exhorts</quote>) and <jbophrase>e'inde</jbophrase> (<quote>instructs</quote>) show this.</para>
+        <para><indexterm type="general"><primary>e-series attitudinals</primary><secondary>change summary</secondary></indexterm>This change is <emphasis>editorial</emphasis>. The senses taught here come from the language-definition committee's rework of these cmavo. The committee drafted and discussed that rework, but it never completed or adopted it. Coinages like <jbophrase>e'ende</jbophrase> (<quote>exhorts</quote>) and <jbophrase>e'inde</jbophrase> (<quote>instructs</quote>) build on the new senses.</para>
         <para>In detail, <valsi>.e'e</valsi> is exhortation (in the first edition, competence), and <valsi>.e'i</valsi> is command (in the first edition, constraint). The opposite on the <valsi>.e'o</valsi> scale is now offer, and <jbophrase>.ai nai</jbophrase> is unintentionality, not refusal. The frozen official word lists keep the old senses, so expect to meet them in older text (see <xref linkend="chapter-attitudinals" />).</para>
       </listitem>
       <listitem>
@@ -249,7 +249,7 @@
       <listitem>
         <para>
           <indexterm type="general"><primary>terminology</primary><secondary>changes of, in this edition</secondary></indexterm>
-          These changes are <emphasis>editorial</emphasis>. This edition makes three changes of terminology. It says <emphasis>group</emphasis> where the first edition said <emphasis>mass</emphasis>. It adopts the community term <jbophrase>zi'evla</jbophrase> for free-form borrowings. And it uses <emphasis>cmevla</emphasis> for the class of name words throughout.
+          These changes are <emphasis>editorial</emphasis>. This edition makes three changes of terminology. It says <emphasis>group</emphasis> where the first edition said <emphasis>mass</emphasis>. It adopts the term <jbophrase>zi'evla</jbophrase> (<quote>free words</quote>) for free-form borrowings. And it uses <emphasis>cmevla</emphasis> for the class of name words throughout.
         </para>
       </listitem>
     </itemizedlist>

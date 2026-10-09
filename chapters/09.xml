@@ -2156,7 +2156,7 @@
     </para>
     <para>Modal connectives<indexterm type="general"><primary>modal connectives</primary><secondary>with fi'o</secondary>
       </indexterm><indexterm type="lojban-word"><primary>fi'o</primary><secondary>restriction on use</secondary>
-      </indexterm> can be formed with the <jbophrase>fi'o-</jbophrase> plus-selbri form of modal too. The current grammar accepts a form like <jbophrase>.i fi'o bapli fe'u bo</jbophrase> (older grammars differ here: see <xref linkend="appendix-changes" />). Such connectives are still rare in practice, though, and the BAI forms of <xref linkend="section-causals" /> and <xref linkend="section-modal-connectives" /> are the usual choice.</para>
+      </indexterm> can be formed with the <jbophrase>fi'o-</jbophrase> plus-selbri form of modal too. The current grammar accepts a form like <jbophrase>.i fi'o bapli fe'u bo</jbophrase> (older grammars differ here: see <xref linkend="appendix-changes" />).</para>
   </section>
   <section xml:id="section-modal-selbri">
     <title><anchor xml:id="c9s9" />Modal selbri</title>

@@ -8,8 +8,8 @@ cukta); nothing presentational is baked into the XML.
 
 ## Status levels
 
-Six **authority levels** (the taxonomy of research/CHANGES.md §0, mirrored in
-CLAUDE.md) plus two **note kinds** specific to this edition's apparatus:
+Six **authority levels** defined in [AGENTS.md](../AGENTS.md), plus two **note kinds** specific
+to this edition's apparatus:
 
 | token | kind | meaning |
 |---|---|---|

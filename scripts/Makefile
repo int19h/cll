@@ -79,6 +79,19 @@ ifdef copydir
 endif
 
 #*******
+# ConTeXt PDF (opt-in; the default PDF and release targets still use Prince)
+#*******
+.PHONY: pdf_context
+pdf_context: $(builddir)/cll-context.pdf
+ifdef copydir
+	mkdir -p "$(copydir)"
+	cp "$(builddir)/cll-context.pdf" "$(copydir)/cll-context.pdf"
+endif
+
+$(builddir)/cll-context.pdf: $(builddir)/cll_processed_xhtml.xml scripts/docbook_to_context.rb scripts/build_context.sh scripts/context_assets.py assets/context/cll-layout.tex $(shell find assets/fonts assets/media -type f)
+	bash scripts/build_context.sh "$(builddir)"
+
+#*******
 # Prince PDF
 #*******
 .PHONY: pdf

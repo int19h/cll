@@ -110,6 +110,18 @@ jobs:
           python3 scripts/test-build-version.py
           PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-weasyprint.py
 
+  context-converter:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
+        with:
+          ruby-version: '3.2'
+      - run: gem install --no-document nokogiri:1.18.8
+      - run: ruby scripts/test-docbook-to-context.rb
+      - run: sudo apt-get update && sudo apt-get install -y python3-pil
+      - run: /usr/bin/python3 scripts/test-context-assets.py
+
   parser-probes:
     runs-on: ubuntu-latest
     steps:

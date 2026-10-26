@@ -1,0 +1,31 @@
+FROM ubuntu:24.04
+
+# Independent of the Prince image. The LMTX installer supplies LuaMetaTeX,
+# ConTeXt, and the mathematical fonts. engine-version.txt records its version.
+ENV DEBIAN_FRONTEND=noninteractive LANG=en_US.UTF-8
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      bash make curl ca-certificates unzip locales ruby \
+      nodejs npm python3 python3-pil libxml2-utils \
+      fonts-dejavu-core \
+    && locale-gen en_US.UTF-8 \
+    && rm -rf /var/lib/apt/lists/*
+RUN gem install --no-document nokogiri:1.18.8 optimist:3.2.0 htmlentities:4.3.4 \
+    && npm install -g regenerator@0.14.12
+
+ARG CONTEXT_INSTALLER_BASE=https://lmtx.pragma-ade.nl/install-lmtx
+RUN mkdir -p /opt/context && cd /opt/context \
+    && case "$(uname -m)" in \
+         x86_64) platform=linux-64 ;; \
+         aarch64) platform=linux-aarch64 ;; \
+         *) exit 1 ;; \
+       esac \
+    && curl -fL --retry 3 "$CONTEXT_INSTALLER_BASE/context-$platform.zip" -o installer.zip \
+    && unzip -q installer.zip && rm installer.zip \
+    && sh install.sh \
+    && test -x "tex/texmf-$platform/bin/context" \
+    && ln -s "/opt/context/tex/texmf-$platform/bin" /opt/context/platform-bin
+
+ENV PATH="/opt/context/platform-bin:${PATH}"
+RUN context --version | grep 'current version:'
+
+WORKDIR /srv/cll

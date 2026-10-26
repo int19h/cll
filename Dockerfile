@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM ubuntu:24.04 AS build-base
 
 # Modern build environment for the book (replaces the old Fedora 30 /
 # Ruby 2.6 / Prince 12.5 image). The DocBook XSL stylesheets that drive
@@ -46,6 +46,14 @@ RUN npm config set fetch-retries 5 \
     && npm config set fetch-retry-maxtimeout 120000 \
     && npm i -g regenerator@0.14.12 --unsafe-perm=true
 
+WORKDIR /srv/cll
+
+# Optional native PDF image. The default final stage still installs Prince.
+FROM build-base AS typst
+COPY scripts/install_typst.sh /usr/local/src/install_typst.sh
+RUN bash /usr/local/src/install_typst.sh /usr/local/bin
+
+FROM build-base AS prince
 # Prince XML (PDF target). Arch-aware Ubuntu 24.04 build.
 RUN arch="$(dpkg --print-architecture)" \
     && cd /usr/src \

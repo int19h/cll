@@ -100,6 +100,31 @@ ifdef copydir
 endif
 
 #*******
+# Optional WeasyPrint PDF, with static MathJax CommonHTML
+#*******
+WEASYPRINT_PYTHON = $(if $(CLL_WEASYPRINT_PYTHON),$(CLL_WEASYPRINT_PYTHON),$(builddir)/weasyprint-tools/venv/bin/python)
+WEASYPRINT_ASSETS = $(wildcard assets/fonts/* assets/fonts/linux-libertine/* assets/media/*.png assets/media/*.gif assets/media/*.svg)
+.PHONY: pdf_weasyprint
+pdf_weasyprint: $(builddir)/cll-weasyprint.pdf
+ifdef copydir
+	mkdir -p $(copydir)
+	cp $(builddir)/cll-weasyprint.pdf $(copydir)/cll-weasyprint.pdf
+endif
+
+$(builddir)/weasyprint/cll_processed_xhtml_pdf.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl scripts/xml_prince_postprocess.rb scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb assets/css/master.css $(WEASYPRINT_ASSETS)
+	mkdir -p $(builddir)/weasyprint
+	cp -pr $(PWD)/assets $(PWD)/dtd $(builddir)/weasyprint/
+	cp assets/css/master.css $(builddir)/weasyprint/final.css
+	xmlto -m xml/docbook2html_config_prince.xsl -o $(builddir)/weasyprint/ -x $(xsl_base)/xhtml/docbook.xsl xhtml-nochunks $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
+	scripts/xhtml_postprocess_cleanup.sh $(builddir)/weasyprint/
+	ruby scripts/xml_prince_postprocess.rb $(builddir)/weasyprint/cll_processed_xhtml.html >$@.tmp
+	mv $@.tmp $@
+
+$(builddir)/cll-weasyprint.pdf: $(builddir)/weasyprint/cll_processed_xhtml_pdf.html assets/css/weasyprint.css scripts/weasyprint/render.py scripts/weasyprint/mathjax.cjs scripts/weasyprint/package-lock.json scripts/weasyprint/requirements.txt
+	cp assets/css/weasyprint.css $(builddir)/weasyprint/weasyprint.css
+	PYTHONDONTWRITEBYTECODE=1 CLL_MATHJAX_DIR="$${CLL_MATHJAX_DIR:-$(abspath $(builddir))/weasyprint-tools}" $(WEASYPRINT_PYTHON) scripts/weasyprint/render.py $< $@
+
+#*******
 # EPUB ; also generates .MOBI
 #*******
 .PHONY: epub

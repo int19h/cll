@@ -103,6 +103,15 @@ ruby scripts/test-docbook-to-context.rb
 python3 scripts/test-context-assets.py
 ```
 
+After a full build, test the printed indexes:
+
+```sh
+python3 scripts/test-context-indexes.py build/cll-context.pdf
+```
+
+This rendering test requires PyMuPDF in the selected Python environment.
+It detects split headwords, case-ordering errors, and misplaced entries with leading spaces.
+
 The container installs the current LMTX distribution from upstream.
 Upstream updates can change layout, even when the source XML stays the same.
 Preserve the built container image and its ID when freezing an output for comparison.

@@ -100,14 +100,31 @@ class ContextBookTest < Minitest::Test
         First two words <indexterm type="general"><primary>middle</primary></indexterm> stay apart.
       </para></listitem></orderedlist>
     XML
-    assert_match(/\\CLLgeneral\{first\}\\reference\[[^\]]+\]\{[^}]*\}First two words /, output)
-    assert_includes output, 'words \\CLLgeneral{middle} stay apart.'
+    assert_match(/\\CLLgeneral\[\{first\}\]\{first\}\\reference\[[^\]]+\]\{[^}]*\}First two words /, output)
+    assert_includes output, 'words \\CLLgeneral[{middle}]{middle} stay apart.'
   end
 
   def test_index_hierarchy_and_literal_plus
     output = book('<para><indexterm type="general"><primary>a+b</primary><secondary>detail</secondary></indexterm>Body</para>').to_tex
-    assert_includes output, '\\CLLgeneral{a\\char43{}b+detail}'
+    assert_includes output, '\\CLLgeneral[{a\\char43{}b+detail}]{a\\char43{}b+detail}'
     assert_includes output, 'Body'
+  end
+
+  def test_index_keys_preserve_apostrophes_and_ignore_case_and_outer_spaces
+    output = book(<<~XML).to_tex
+      <para>
+        <indexterm type="lojban-word"><primary>bei</primary></indexterm>
+        <indexterm type="lojban-word"><primary>be'i</primary></indexterm>
+        <indexterm type="lojban-word"><primary>be’i</primary></indexterm>
+        <indexterm type="general"><primary>  Avon </primary><secondary> Two   Words </secondary></indexterm>
+        <indexterm type="general"><primary>be!ai</primary></indexterm>
+      </para>
+    XML
+    assert_includes output, '\\CLLlojban[{bei}]{bei}'
+    assert_includes output, "\\CLLlojban[{be!ai}]{be'i}"
+    assert_includes output, '\\CLLlojban[{be!ai}]{be’i}'
+    assert_includes output, '\\CLLgeneral[{avon+two words}]{Avon+Two Words}'
+    assert_includes output, '\\CLLgeneral[{be!!ai}]{be!ai}'
   end
 
   def test_simplelist_column_order

@@ -160,11 +160,18 @@ class ContextBook
   def indexterm(node)
     register = { 'general' => 'CLLgeneral', 'lojban-word' => 'CLLlojban' }[node['type']]
     return '' unless register
-    terms = node.xpath('./primary|./secondary|./tertiary').map do |term|
+    levels = node.xpath('./primary|./secondary|./tertiary')
+    terms = levels.map do |term|
       # A literal plus must not become a register hierarchy separator.
-      children(term).gsub('+', '\\char43{}')
+      children(term).strip.gsub('+', '\\char43{}')
     end
-    "\\#{register}{#{terms.join('+')}}"
+    keys = levels.map do |term|
+      # ConTeXt strips apostrophes before sorting. An escaped sentinel keeps
+      # them distinct and before letters with the register's Unicode sorter.
+      value = term.text.gsub(/\s+/, ' ').strip.downcase.gsub('!', '!!').gsub(/['’]/, '!a')
+      esc(value).gsub('+', '\\char43{}')
+    end
+    "\\#{register}[{#{keys.join('+')}}]{#{terms.join('+')}}"
   end
 
   def math(node)

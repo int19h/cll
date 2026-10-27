@@ -355,7 +355,13 @@ class ContextBook
     info = @document.root.at_xpath('./info')
     book_title = plain(info&.at_xpath('./title'))
     body = children(@document.root, except: ['info'])
-    credit = info ? info.xpath('./othercredit|./releaseinfo').map { |node| "#{esc(plain(node))}\\par" }.join("\n") : ''
+    credit = info ? info.xpath('./othercredit[not(orgname[@role="publication-notice"])]').map { |node| "#{esc(plain(node))}\\par" }.join("\n") : ''
+    notice = info&.at_xpath('./othercredit/orgname[@role="publication-notice"]')
+    notice_text = notice ? notice.children.map do |child|
+      child.element? && child['role'] == 'publication-disclaimer' ? "\\crlf #{children(child)}" : render(child)
+    end.join.strip : ''
+    version = plain(info&.at_xpath('./releaseinfo/phrase[@role="release-version"]'))
+    date = plain(info&.at_xpath('./releaseinfo/phrase[@role="release-date"]'))
     author = info ? info.xpath('./author/personname/*').map { |node| plain(node) }.join(' ') : ''
     subtitle = plain(info&.at_xpath('./subtitle'))
     urls = @urls.map { |name, url| "\\useURL[#{name}][{#{esc(url)}}][][]" }.join("\n")
@@ -366,7 +372,10 @@ class ContextBook
       \\def\\CLLBookTitle{#{esc(book_title)}}
       #{urls}
       \\starttext
-      \\startstandardmakeup
+      \\begingroup
+      \\setupfooter[style={\\switchtobodyfont[8bp]},color=CLLmuted]
+      \\setupfootertexts[{#{esc(version)}}][{#{esc(date)}}]
+      \\startstandardmakeup[footerstate=start]
       \\vfill
       {\\switchtobodyfont[52bp]\\setupalign[middle]#{esc(book_title)}\\par}
       \\blank[2cm]
@@ -375,9 +384,11 @@ class ContextBook
       \\startalignment[middle]
       #{esc(subtitle)}\\par
       #{credit}
+      {\\switchtobodyfont[12bp]\\tf #{notice_text}\\par}
       \\stopalignment
       \\vfill
       \\stopstandardmakeup
+      \\endgroup
       \\starttitle[title={Contents}]
       \\placecontent[criterium=all]
       \\stoptitle

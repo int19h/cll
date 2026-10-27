@@ -32,11 +32,13 @@ for ((i=0; i<${#args[@]}; i++)); do
   esac
 done
 # The image ID and unnamed disposable container avoid shared tags and names.
+build_version=$(cd "$repo" && scripts/build-version.sh)
 "$container" build --iidfile "$build/context-image.id" -f "$repo/Dockerfile.context" "$repo"
 user_args=(--user "$(id -u):$(id -g)")
 if [[ $(basename "$container") == podman ]]; then
   user_args=(--userns=keep-id)
 fi
 "$container" run --rm "${user_args[@]}" "${mounts[@]}" \
+  -e CLL_BUILD_VERSION="$build_version" \
   -w "$repo" "$(cat "$build/context-image.id")" \
   ./cll_build -n -T pdf_context "${args[@]}"

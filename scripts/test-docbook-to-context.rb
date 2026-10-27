@@ -7,6 +7,21 @@ class ContextBookTest < Minitest::Test
     ContextBook.new(Nokogiri::XML("<book xmlns:xml='http://www.w3.org/XML/1998/namespace'>#{content}</book>") { |c| c.strict })
   end
 
+  def test_title_metadata_uses_separate_notice_and_footer_labels
+    output = book(<<~XML).to_tex
+      <info><title>Test Book</title>
+        <othercredit><orgname>revised by Test Authors</orgname></othercredit>
+        <releaseinfo><phrase role="release-version">test-1.0+abc1234</phrase><phrase role="release-separator"> | </phrase><phrase role="release-date">2026-10-27</phrase></releaseinfo>
+        <othercredit><orgname role="publication-notice">(not a Test Publisher publication)<phrase role="publication-disclaimer">Optional disclaimer.</phrase></orgname></othercredit>
+      </info>
+    XML
+    assert_includes output, '\\setupfootertexts[{test-1.0+abc1234}][{2026-10-27}]'
+    assert_includes output, '\\switchtobodyfont[12bp]\\tf (not a Test Publisher publication)\\crlf Optional disclaimer.'
+    assert_includes output, 'revised by Test Authors\\par'
+    assert_equal 1, output.scan('test-1.0+abc1234').length
+    assert_equal 1, output.scan('(not a Test Publisher publication)').length
+  end
+
   def test_numbering_and_references_preserve_source_identity
     input = book(<<~XML)
       <chapter xml:id="first"><title>First</title>

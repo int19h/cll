@@ -69,7 +69,7 @@ do
   sed -i "s/href=\"$base\"/href=\"$base#$id\"/" $epubbuilddir/toc.xhtml
 done
 
-version="$(grep '^Version ' build/epub/index.html)"
+version="$(xmllint --nonet --loaddtd --xpath 'normalize-space(/*[local-name()="book"]/*[local-name()="info"]/*[local-name()="releaseinfo"])' "$builddir/cll.xml")"
 $brand fill <$srcdir/content.opf.s1 | sed "s/REPLACEDATE/$(date -u +%Y-%m-%dT%H:%M:%SZ)/" | \
   sed "s/REPLACEVERSION/$version/" >$epubbuilddir/content.opf
 

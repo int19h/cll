@@ -79,6 +79,9 @@ The glossary and both indexes use two columns.
 Indexes combine duplicate page references and consecutive page ranges.
 Cross-references include clickable page numbers.
 The PDF includes bookmarks for chapter, section, and bridgehead headings.
+The title page uses the shared publication notice in regular twelve-point type.
+The version appears at bottom left and the generation date appears at bottom right, both in gray eight-point type.
+The container launcher reads the source version on the host and passes it into the build.
 
 The compiler loads the bundled fonts and its embedded fonts with system-font discovery disabled.
 Mathematics uses New Computer Modern Math, which the pinned compiler embeds.

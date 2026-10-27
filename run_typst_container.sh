@@ -37,6 +37,7 @@ while getopts ':nstSha:' opt; do
 done
 shift "$((OPTIND - 1))"
 args+=("$@")
+build_version=$(scripts/build-version.sh)
 # Podman/Docker assigns a fresh container ID. No shared container is stopped.
 "$container_bin" build --target typst -t "$image" -f Dockerfile .
 user_args=(--user "$(id -u):$(id -g)")
@@ -44,4 +45,4 @@ if [[ $(basename "$container_bin") == podman ]]; then user_args=(--userns=keep-i
 terminal=()
 if [[ -t 0 && -t 1 ]]; then terminal=(-it); fi
 exec "$container_bin" run --rm "${terminal[@]}" "${user_args[@]}" "${volumes[@]}" --workdir "$repo" \
-  "$image" ./cll_build -n -T pdf_typst "${args[@]}"
+  -e CLL_BUILD_VERSION="$build_version" "$image" ./cll_build -n -T pdf_typst "${args[@]}"

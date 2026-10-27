@@ -14,12 +14,27 @@ class DocBookTypstTest < Minitest::Test
     XML
   end
 
-  def convert(body, **options)
+  def convert(body, info: nil, **options)
     Dir.mktmpdir('convert-', TMP) do |dir|
       path = File.join(dir, 'input.xml')
-      File.write(path, book(body))
+      xml = book(body)
+      xml = xml.sub(/<info>.*?<\/info>/m, info) if info
+      File.write(path, xml)
       return DocBookTypst.new(path, **options).convert
     end
+  end
+
+  def test_title_page_keeps_notice_and_corner_labels_separate
+    info = <<~XML
+      <info><title>Title</title><subtitle>Subtitle</subtitle>
+      <author><personname><firstname>Ada</firstname></personname></author>
+      <othercredit><orgname>revised by the community</orgname></othercredit>
+      <releaseinfo><phrase role="release-version">edition-1.2.3+abc1234</phrase><phrase role="release-separator"> │ </phrase><phrase role="release-date">2026-10-27</phrase></releaseinfo>
+      <othercredit><orgname role="publication-notice">(not an official publication)<phrase role="publication-disclaimer">A separate disclaimer.</phrase></orgname></othercredit></info>
+    XML
+    source = convert('<chapter><title>Chapter</title></chapter>', info: info)
+    assert_includes source, '#cll-title("Title", "Subtitle", "Ada", ("revised by the community",), version: "edition-1.2.3+abc1234", date: "2026-10-27", notice: "(not an official publication)", disclaimer: "A separate disclaimer.")'
+    refute_includes source, ' │ '
   end
 
   def test_text_is_escaped_and_entities_keep_their_meaning

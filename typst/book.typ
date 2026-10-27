@@ -29,8 +29,12 @@
   body
 }
 
-#let cll-title(title, subtitle, author, credits, release) = {
+#let cll-title(title, subtitle, author, credits, version: "", date: "", notice: "", disclaimer: "") = {
   set par(justify: false)
+  set page(footer: [
+    #set text(size: 8pt, weight: "regular", style: "normal", fill: rgb("#555"))
+    #grid(columns: (1fr, 1fr), align: (left, right), [#version], [#date])
+  ])
   align(center)[
     #v(10pt)
     #text(size: 52pt, weight: "bold", title)
@@ -39,8 +43,9 @@
     #text(size: 16pt, author)
     #if credits.len() > 0 { block(above: 9pt)[#emph(credits.first())] }
     #v(1fr)
-    #for credit in credits.slice(calc.min(1, credits.len())) { block[#text(size: 14pt, weight: "bold", credit)] }
-    #block(above: 10pt)[#text(release)]
+    #for credit in credits.slice(calc.min(1, credits.len())) { block[#text(size: 12pt, credit)] }
+    #if notice != "" { block[#text(size: 12pt, weight: "regular", style: "normal", notice)] }
+    #if disclaimer != "" { block[#text(size: 12pt, weight: "regular", style: "normal", disclaimer)] }
     #v(15pt)
   ]
   pagebreak()

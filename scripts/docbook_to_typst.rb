@@ -362,10 +362,15 @@ class DocBookTypst
     raise 'Missing book info' unless info
     title = plain(info.at_xpath('title'))
     author = info.xpath('author/personname/*').map { |n| plain(n) }.join(' ')
-    credits = info.xpath('othercredit/orgname').map { |n| plain(n) }
+    credits = info.xpath('othercredit/orgname[not(@role="publication-notice")]').map { |n| plain(n) }
+    notice = info.at_xpath('othercredit/orgname[@role="publication-notice"]')&.dup
+    disclaimer = plain(notice&.at_xpath('phrase[@role="publication-disclaimer"]'))
+    notice&.xpath('phrase[@role="publication-disclaimer"]')&.remove
+    version = plain(info.at_xpath('releaseinfo/phrase[@role="release-version"]'))
+    date = plain(info.at_xpath('releaseinfo/phrase[@role="release-date"]'))
     "// Generated from preprocessed DocBook. Do not edit.\n#import \"book.typ\": *\n" \
       "#show: cll-book.with(title: #{q(title)}, author: #{q(author)})\n" \
-      "#cll-title(#{q(title)}, #{q(plain(info.at_xpath('subtitle')))}, #{q(author)}, #{tuple(credits)}, #{q(plain(info.at_xpath('releaseinfo')))})\n" \
+      "#cll-title(#{q(title)}, #{q(plain(info.at_xpath('subtitle')))}, #{q(author)}, #{tuple(credits)}, version: #{q(version)}, date: #{q(date)}, notice: #{q(plain(notice))}, disclaimer: #{q(disclaimer)})\n" \
       "#outline(title: [Contents], depth: 2)\n" + render(@document.root)
   end
 end

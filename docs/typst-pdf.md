@@ -82,6 +82,9 @@ The PDF includes bookmarks for chapter, section, and bridgehead headings.
 
 The compiler loads the bundled fonts and its embedded fonts with system-font discovery disabled.
 Mathematics uses New Computer Modern Math, which the pinned compiler embeds.
+The converter emits numbers and single Latin-letter variables as native math symbols, so adjacent factors use mathematical spacing.
+Connecting words such as “Iff” and “then” use upright lettering within the formula.
+The comma before a connecting phrase stays beside the preceding formula, followed by a clause gap.
 The line breaks, page breaks, and total page count can differ from Prince.
 
 The new files have these roles:
@@ -99,6 +102,9 @@ A failed compilation leaves the previous successful `build/cll-typst.pdf` intact
 Unsupported XML elements or mathematical structures cause an error instead of silent content loss.
 The converter targets the current CLL vocabulary, rather than all possible DocBook constructs.
 For example, it rejects table row spans and CALS tables until they receive explicit support.
+MathML numbers currently support unsigned integers and decimals.
+MathML identifiers currently support single Latin letters.
+Other number and identifier forms cause an error until they receive explicit support.
 
 ## Tests
 

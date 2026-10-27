@@ -37,8 +37,38 @@ class DocBookTypstTest < Minitest::Test
 
   def test_fraction_powers_and_radicals_use_native_math
     source = convert('<chapter><title>Math</title><para><inlineequation><math><mfrac><msup><mi>x</mi><mn>2</mn></msup><msqrt><mn>7</mn></msqrt></mfrac></math></inlineequation></para></chapter>')
-    assert_includes source, '$frac(attach(italic("x"), t: "2"), sqrt("7"))$'
+    assert_includes source, '$frac(attach(x, t: 2), sqrt(7))$'
     assert_raises(RuntimeError) { convert('<chapter><title>Bad</title><para><math><unsupported/></math></para></chapter>') }
+  end
+
+  def test_math_factors_and_connecting_words
+    source = convert('<chapter><title>Math</title><para><math><mo>Iff </mo><mn>4</mn><mo>&#x2062;</mo><mi>a</mi><mo>&#x2062;</mo><mi>c</mi><mo>=</mo><mn>0</mn><mo>, then </mo><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></math></para></chapter>')
+    assert_includes source, '$upright("Iff") 4 a c = 0 \\, quad upright("then") x = frac(1, 2 a)$'
+    refute_includes source, 'italic("a")'
+    refute_includes source, '"4"'
+    assert_raises(RuntimeError) { convert('<chapter><title>Math</title><para><math><mi>eval</mi></math></para></chapter>') }
+    assert_raises(RuntimeError) { convert('<chapter><title>Math</title><para><math><mn>#eval</mn></math></para></chapter>') }
+  end
+
+  def test_native_math_spacing_matches_handwritten_math
+    executable = ENV['TYPST']
+    skip 'Set TYPST to run the native math spacing test.' unless executable
+    source = convert('<chapter><title>Math</title><para><math><mn>4</mn><mi>a</mi><mi>c</mi></math></para></chapter>')
+    generated = source[/\$([^$]+)\$/, 1]
+    Dir.mktmpdir('math-spacing-', TMP) do |dir|
+      path = File.join(dir, 'spacing.typ')
+      File.write(path, <<~TYPST)
+        #show math.equation: set text(font: "New Computer Modern Math")
+        #context {
+          let expected = measure($4 a c$).width
+          assert(calc.abs(measure($#{generated}$).width - expected) < 0.001pt)
+          assert(measure($"4" italic("a") italic("c")$).width > expected + 1pt)
+        }
+      TYPST
+      _, err, status = Open3.capture3(executable, 'compile', '--ignore-system-fonts', path, File.join(dir, 'spacing.pdf'))
+      assert status.success?, err
+      assert_empty err
+    end
   end
 
   def test_zero_span_uses_actual_table_width

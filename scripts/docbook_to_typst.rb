@@ -146,13 +146,32 @@ class DocBookTypst
   def math(node)
     elements = node.element_children
     case node.name
-    when 'math', 'mrow' then elements.map { |e| math(e) }.join(' ')
-    when 'mn' then q(node.text.strip)
-    when 'mi' then "italic(#{q(node.text.strip)})"
+    when 'math', 'mrow' then elements.map { |e| math(e) }.reject(&:empty?).join(' ')
+    when 'mn'
+      value = node.text.strip
+      raise "Unsupported MathML number: #{value.inspect}" unless value.match?(/\A[0-9]+(?:\.[0-9]+)?\z/)
+      value
+    when 'mi'
+      value = node.text.strip
+      # Quoted strings retain surrounding spaces in Typst math. Emit native
+      # letters. Reject unsupported identifiers rather than treating them as
+      # text or executable Typst syntax.
+      raise "Unsupported MathML identifier: #{value.inspect}" unless value.match?(/\A[A-Za-z]\z/)
+      value
     when 'mo'
       value = node.text.strip
       return '' if value == "\u2062"
-      {'−' => '-', '-' => '-', '+' => '+', '=' => '=', '±' => 'plus.minus', '×' => 'times', '÷' => 'div'}.fetch(value) { q(node.text) }
+      {'−' => '-', '-' => '-', '+' => '+', '=' => '=', '±' => 'plus.minus', '×' => 'times', '÷' => 'div'}.fetch(value) do
+        # The source uses mo for connecting words too. Keep them upright,
+        # with a clause gap after a leading comma and no gap before it.
+        if value.start_with?(',') && value[1..].strip.match?(/\A[[:alpha:]]/)
+          "\\, quad upright(#{q(value[1..].strip)})"
+        elsif value.empty?
+          ''
+        else
+          "upright(#{q(value)})"
+        end
+      end
     when 'mfrac'
       raise 'mfrac requires two children' unless elements.size == 2
       "frac(#{math(elements[0])}, #{math(elements[1])})"

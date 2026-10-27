@@ -7,41 +7,6 @@ h6 { font-size: 8pt; margin: 21pt 0; }
 pre, code, tt { font-family: "DejaVu Sans Mono", monospace; }
 
 @media print {
-  .book > .titlepage .releaseinfo {
-    margin: 0;
-    height: 0;
-    font-size: 0;
-    line-height: 0;
-  }
-  .book > .titlepage .release-version,
-  .book > .titlepage .release-date {
-    font-size: 8pt;
-    line-height: normal;
-    font-weight: normal;
-    color: #555;
-    letter-spacing: normal;
-  }
-  .book > .titlepage .release-version {
-    position: running(title-version);
-    text-align: left;
-  }
-  .book > .titlepage .release-date {
-    position: running(title-date);
-    text-align: right;
-  }
-  .book > .titlepage .release-separator { display: none; }
-  @page:first {
-    @bottom-left {
-      content: element(title-version);
-      vertical-align: top;
-      margin-bottom: 13mm;
-    }
-    @bottom-right {
-      content: element(title-date);
-      vertical-align: top;
-      margin-bottom: 13mm;
-    }
-  }
   p { font-variant: normal; font-feature-settings: "ccmp" 1, "liga" 0, "clig" 0; }
   @page chapter:left { @top-left { width: 100%; } }
   @page chapter:right { @top-right { width: 100%; } }

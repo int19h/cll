@@ -4049,9 +4049,11 @@
       </indexterm>
       <indexterm type="general"><primary>eks</primary><secondary>connecting operands</secondary>
       </indexterm>
-      Operands are connected in afterthought with eks and in forethought with geks, just like sumti. Operators, on the other hand, are connected in afterthought with jeks and in forethought with guheks, just like tanru components. (However, jeks and joiks with
+      Operands are connected in afterthought with eks and in forethought with geks, just like sumti. Operators, on the other hand, are connected in afterthought with jeks and in forethought with guheks, just like tanru components. As with tanru components, a jek or joik followed by
       <valsi>bo</valsi>
-      are not allowed for operators.) This parallelism is no accident.
+      can also connect operators, and it binds more closely than one without
+      <valsi>bo</valsi>, as in
+      <jbophrase>li pa su'i je bo pi'i re</jbophrase>. This parallelism is no accident.
     </para>
     <para>
       <indexterm type="general"><primary>operators</primary><secondary>analogue of tanru in</secondary>

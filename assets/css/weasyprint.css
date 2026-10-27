@@ -8,18 +8,36 @@ pre, code, tt { font-family: "DejaVu Sans Mono", monospace; }
 
 @media print {
   .book > .titlepage .releaseinfo {
-    position: running(title-release);
     margin: 0;
-    font-family: "DejaVu Sans Mono", monospace;
+    height: 0;
+    font-size: 0;
+    line-height: 0;
+  }
+  .book > .titlepage .release-version,
+  .book > .titlepage .release-date {
     font-size: 7pt;
+    line-height: normal;
     font-weight: normal;
     color: #555;
-    letter-spacing: 0.2pt;
-    text-align: center;
+    letter-spacing: normal;
   }
+  .book > .titlepage .release-version {
+    position: running(title-version);
+    text-align: left;
+  }
+  .book > .titlepage .release-date {
+    position: running(title-date);
+    text-align: right;
+  }
+  .book > .titlepage .release-separator { display: none; }
   @page:first {
-    @bottom-center {
-      content: element(title-release);
+    @bottom-left {
+      content: element(title-version);
+      vertical-align: top;
+      margin-bottom: 13mm;
+    }
+    @bottom-right {
+      content: element(title-date);
       vertical-align: top;
       margin-bottom: 13mm;
     }

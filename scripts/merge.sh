@@ -80,10 +80,10 @@ revised by $reviser
 </orgname>
 </othercredit>
 <releaseinfo>
-$version | $datestamp
+<phrase role=\"release-version\">$version</phrase><phrase role=\"release-separator\"> │ </phrase><phrase role=\"release-date\">$datestamp</phrase>
 </releaseinfo>
 <othercredit>
-<orgname>
+<orgname role=\"publication-notice\">
 $publisher
 $publisher_disclaimer_elem
 </orgname>

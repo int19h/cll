@@ -5,6 +5,18 @@
   version="1.0">
 
   <xsl:param name="use.id.as.filename" select="'1'"/>
+  <xsl:template match="releaseinfo/phrase[@role='release-version']">
+    <span xmlns="http://www.w3.org/1999/xhtml" class="release-version"><xsl:apply-templates/></span>
+  </xsl:template>
+  <xsl:template match="releaseinfo/phrase[@role='release-date']">
+    <span xmlns="http://www.w3.org/1999/xhtml" class="release-date"><xsl:apply-templates/></span>
+  </xsl:template>
+  <xsl:template match="releaseinfo/phrase[@role='release-separator']">
+    <span xmlns="http://www.w3.org/1999/xhtml" class="release-separator"><xsl:apply-templates/></span>
+  </xsl:template>
+  <xsl:template match="orgname[@role='publication-notice']">
+    <span xmlns="http://www.w3.org/1999/xhtml" class="orgname publication-notice"><xsl:apply-templates/></span>
+  </xsl:template>
   <!-- Keep the publication disclaimer on a separate line in every HTML output. -->
   <xsl:template match="phrase[@role='publication-disclaimer']">
     <br xmlns="http://www.w3.org/1999/xhtml"/>

@@ -221,6 +221,10 @@ special glyphs
   src: url("./assets/fonts/linux-libertine/LinLibertine_R.otf");
 }
 @font-face {
+  font-family: "Linux Libertine Mono";
+  src: url("./assets/fonts/linux-libertine/LinLibertine_M.otf");
+}
+@font-face {
   font-family: "Linux Libertine";
   src: url("./assets/fonts/linux-libertine/LinLibertine_RI.otf");
   font-style: italic;
@@ -733,6 +737,18 @@ hr {
 
 .book > .titlepage hr {
   display: none;
+}
+
+.book > .titlepage .publication-notice {
+  font-size: 12pt;
+  font-weight: normal;
+}
+.book > .titlepage .release-version {
+  font-family: "Linux Libertine Mono", monospace;
+}
+.book > .titlepage .release-date,
+.book > .titlepage .release-separator {
+  font-family: "Linux Libertine", serif;
 }
 
 /* See https://sourceforge.net/p/docbook/bugs/1366/ for why the + is

@@ -61,6 +61,29 @@
   parbreak()
 }
 
+// Match master.css list margins. Markers sit outside the text column, so
+// wider numbers must not move that column or its wrapped lines.
+#let cll-list(kind: "plain", in-example: false, ..items) = context {
+  let numbered = kind == "numbered"
+  let bulleted = kind == "bullets"
+  let children = items.pos()
+  let text-indent = if in-example { 0em } else if numbered { 1.75em } else if bulleted { 3em } else { 1em }
+  let gap = if numbered or bulleted { 8pt } else { 0pt }
+  let marker-width = if numbered {
+    range(1, children.len() + 1).fold(0pt, (width, n) => calc.max(width, measure(str(n) + ".").width))
+  } else if bulleted { measure([•]).width } else { 0pt }
+  block(above: if in-example or numbered { 0pt } else { 1em },
+    below: if in-example { 0pt } else if numbered { 0.4em } else { 1em })[
+    #set par(first-line-indent: 0pt, spacing: 0.1em)
+    #if numbered {
+      enum(indent: text-indent - marker-width - gap, body-indent: gap, tight: true, spacing: 0.24em, ..children)
+    } else {
+      list(marker: if bulleted { [•] } else { none }, indent: text-indent - marker-width - gap,
+        body-indent: gap, tight: true, spacing: 0.24em, ..children)
+    }
+  ]
+}
+
 #let cll-status(body) = block(inset: (left: 0.75em), outset: (left: -0.75em), stroke: (left: 1.5pt + gray), above: 4.5pt, below: 4.5pt)[
   #set text(size: 0.92em)
   #text(fill: gray)[◆] #body

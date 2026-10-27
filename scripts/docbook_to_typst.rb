@@ -89,6 +89,24 @@ class DocBookTypst
     "[#{text}]"
   end
 
+  # XML indentation at a paragraph boundary is not visible in HTML. Keep
+  # index and anchor nodes in place while trimming the surrounding text.
+  def trim_list_paragraph_edge(node, trailing: false)
+    nodes = node.children.to_a
+    nodes.reverse! if trailing
+    nodes.each do |child|
+      if child.text?
+        child.content = trailing ? child.text.rstrip : child.text.lstrip
+        return true unless child.text.empty?
+      elsif child.element?
+        next if %w[indexterm anchor guibutton].include?(child.name) || child['role'] == 'display-none'
+        return true if child.children.empty?
+        return true if trim_list_paragraph_edge(child, trailing: trailing)
+      end
+    end
+    false
+  end
+
   def styled(node, body)
     role = node['role'].to_s
     lang = node['lang'].to_s
@@ -206,6 +224,10 @@ class DocBookTypst
       prefix = node.name == 'chapter' ? "Chapter #{number}" : (node.name == 'section' ? number : '')
       "#cll-heading(#{level}, #{q(prefix)}, #{q(plain(title))}, marks: [#{marks}])[#{clean_title ? children(clean_title) : ''}]\n#{children(node, except: ['title'])}"
     when 'para', 'simpara'
+      if node.ancestors.any? { |parent| %w[itemizedlist orderedlist].include?(parent.name) }
+        trim_list_paragraph_edge(node)
+        trim_list_paragraph_edge(node, trailing: true)
+      end
       if %w[allowbreaks twocolumn].include?(node['role']) && plain(node).empty?
         ''
       else
@@ -277,9 +299,9 @@ class DocBookTypst
       "#cll-gloss[#{anchor(node)}#{children(node.at_xpath('glossterm'))}][#{children(node.at_xpath('glossdef'))}]\n"
     when 'itemizedlist', 'orderedlist'
       items = node.xpath('./listitem').map { |li| content(anchor(li) + styled(li, children(li))) }
-      kind = node.name == 'orderedlist' ? 'enum' : 'list'
-      marker = kind == 'list' && node['role'] != 'bullets' ? 'marker: none,' : ''
-      "##{kind}(#{marker} tight: true, #{items.join(',')})\n"
+      kind = node.name == 'orderedlist' ? 'numbered' : (node['role'] == 'bullets' ? 'bullets' : 'plain')
+      in_example = node.ancestors.any? { |parent| parent.name == 'example' }
+      "#cll-list(kind: #{q(kind)}, in-example: #{in_example}, #{items.join(',')})\n"
     when 'simplelist' then simplelist(node)
     when 'variablelist' then children(node)
     when 'varlistentry'

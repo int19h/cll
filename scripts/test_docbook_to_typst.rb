@@ -69,6 +69,18 @@ class DocBookTypstTest < Minitest::Test
     assert_includes err, 'Reference outside this excerpt: absent'
   end
 
+  def test_list_paragraph_whitespace_keeps_inline_spaces_and_anchors
+    source = convert('<chapter id="c"><title>Lists</title><itemizedlist role="bullets"><listitem><para>  <anchor id="item"/><indexterm type="general"><primary>entry</primary></indexterm>  <emphasis> First </emphasis> second <xref linkend="c"/> </para></listitem></itemizedlist><orderedlist><listitem><para> Numbered </para></listitem></orderedlist><example><title/><itemizedlist><listitem><para> Plain </para></listitem></itemizedlist></example></chapter>')
+    assert_includes source, '#cll-list(kind: "bullets", in-example: false,'
+    assert_includes source, '#cll-list(kind: "numbered", in-example: false,'
+    assert_includes source, '#cll-list(kind: "plain", in-example: true,'
+    assert_includes source, '#emph[#text("First ")]#text(" second ")#cll-ref("c", "Chapter 1")'
+    assert_includes source, '#label("item")'
+    assert_includes source, '#text("Numbered")'
+    assert_includes source, '#text("Plain")'
+    refute_includes source, '#text("  ")'
+  end
+
   def test_native_compilation_with_outline_links_and_indexes
     executable = ENV['TYPST']
     skip 'Set TYPST to run the native compilation test.' unless executable

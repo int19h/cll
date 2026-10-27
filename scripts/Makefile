@@ -131,6 +131,20 @@ $(builddir)/cll-weasyprint.pdf: $(builddir)/weasyprint/cll_processed_xhtml_pdf.h
 	PYTHONDONTWRITEBYTECODE=1 CLL_MATHJAX_DIR="$${CLL_MATHJAX_DIR:-$(abspath $(builddir))/weasyprint-tools}" $(WEASYPRINT_PYTHON) scripts/weasyprint/render.py $< $@
 
 #*******
+# Typst PDF (optional; the default PDF target remains Prince)
+#*******
+.PHONY: pdf_typst typst
+pdf_typst: $(builddir)/cll-typst.pdf
+ifdef copydir
+	mkdir -p "$(copydir)"
+	cp "$(builddir)/cll-typst.pdf" "$(copydir)/cll-typst.pdf"
+endif
+typst: pdf_typst
+
+$(builddir)/cll-typst.pdf: $(builddir)/cll_processed_xhtml.xml scripts/docbook_to_typst.rb scripts/build_pdf_typst.sh typst/book.typ $(wildcard assets/fonts/*.otf assets/fonts/linux-libertine/*.otf assets/media/*.png assets/media/*.gif assets/media/*.svg)
+	TYPST_ALLOW_MISSING_REFS=$(if $(test),1,0) scripts/build_pdf_typst.sh "$(builddir)"
+
+#*******
 # EPUB ; also generates .MOBI
 #*******
 .PHONY: epub

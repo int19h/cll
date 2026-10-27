@@ -62,3 +62,14 @@ with -T, such as:
 You can get a complete list of targets via:
 
   ./run_container.sh -h
+
+Optional Typst PDF
+------------------
+
+To build a separate PDF with Typst:
+
+  ./run_typst_container.sh
+
+This produces build/cll-typst.pdf. The existing Prince target and default
+build remain unchanged. See docs/typst-pdf.md for local builds, chapter
+excerpts, and isolated build directories for concurrent worktrees.

@@ -90,8 +90,17 @@ class ContextBook
     id ? "\\reference[#{key(id)}]{#{esc(@labels[id])}}" : ''
   end
 
-  def children(node, except: [])
-    node.children.reject { |child| child.element? && except.include?(child.name) }.map { |child| render(child) }.join
+  def children(node, except: [], trim_leading: false)
+    leading = trim_leading
+    node.children.reject { |child| child.element? && except.include?(child.name) }.map do |child|
+      part = render(child)
+      if leading
+        part = part.lstrip if child.text?
+        invisible = child.element? && %w[indexterm anchor].include?(child.name)
+        leading = false unless part.empty? || invisible
+      end
+      part
+    end.join
   end
 
   def title(node)
@@ -245,7 +254,8 @@ class ContextBook
     when 'anchor' then ''
     when 'indexterm' then indexterm(node)
     when 'para'
-      body = styled(node, children(node))
+      in_list = node.ancestors.any? { |ancestor| ancestor.name == 'listitem' }
+      body = styled(node, children(node, trim_leading: in_list))
       if node['role'] == 'status-note'
         "\n\\startCLLstatus ◇ #{body}\\stopCLLstatus\n"
       elsif node.ancestors.any? { |ancestor| %w[td th].include?(ancestor.name) }
@@ -283,8 +293,13 @@ class ContextBook
       "\\mathematics{#{math(node)}}"
     when 'itemizedlist', 'orderedlist'
       option = node.name == 'orderedlist' ? 'n' : (node['role'] == 'bullets' ? '1' : 'none')
-      "\n\\startitemize[#{option},packed]\n#{children(node)}\n\\stopitemize\n"
-    when 'listitem' then "\\startitem #{children(node)}\\stopitem\n"
+      layout = if node.name == 'orderedlist'
+                 'CLLordered'
+               else
+                 node['role'] == 'bullets' ? 'CLLbulleted' : 'CLLunmarked'
+               end
+      "\n\\start#{layout}[#{option},packed]\n#{children(node)}\n\\stop#{layout}\n"
+    when 'listitem' then "\\startitem #{children(node).strip}\\stopitem\n"
     when 'simplelist' then simplelist(node)
     when 'member' then children(node)
     when 'variablelist' then children(node)

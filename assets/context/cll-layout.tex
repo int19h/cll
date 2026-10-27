@@ -27,6 +27,16 @@
 \setupindenting[yes,1em]
 \setupwhitespace[0.1em]
 \setupnarrower[left=2em,right=0pt]
+% Match master.css list offsets and Prince's default 8pt marker gap.
+% ConTeXt adds distance to width to obtain the text's left offset.
+\defineitemgroup[CLLordered]
+\defineitemgroup[CLLbulleted]
+\defineitemgroup[CLLunmarked]
+\setupitemgroup[CLLordered][each][width={\dimexpr1.75em-8bp\relax},distance=8bp,
+  symalign=flushright,indenting=no]
+\setupitemgroup[CLLbulleted][each][width={\dimexpr3em-8bp\relax},distance=8bp,
+  symalign=flushright,indenting=no]
+\setupitemgroup[CLLunmarked][each][width=1em,distance=0pt,indenting=no]
 \setuphead[chapter][style=\bfb,align=middle,page=right,
   before={\blank[10bp]},after={\blank[10bp]},number=no]
 \setuphead[section][style=\bfa,before={\blank[10bp]},after={\blank[small]},number=no]

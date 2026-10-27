@@ -57,6 +57,26 @@ class ContextBookTest < Minitest::Test
     assert_includes output, '\\letterampersand{}'
   end
 
+  def test_list_item_indentation_does_not_depend_on_xml_whitespace
+    compact = book('<orderedlist><listitem><para>First <emphasis>two words</emphasis>.</para></listitem></orderedlist>').to_tex
+    formatted = book("<orderedlist>\n  <listitem>\n    <para>    First <emphasis>two words</emphasis>.</para>\n  </listitem>\n</orderedlist>").to_tex
+    item = /\\startitem (.*?)\\stopitem/m
+    assert_equal compact.match(item)[1], formatted.match(item)[1]
+    assert_match(/\AFirst \{\\it two words\}\./, formatted.match(item)[1])
+  end
+
+  def test_leading_index_entries_do_not_add_space_to_list_text
+    output = book(<<~XML).to_tex
+      <orderedlist><listitem><para>
+        <indexterm type="general"><primary>first</primary></indexterm>
+        <anchor xml:id="list-anchor"/>
+        First two words <indexterm type="general"><primary>middle</primary></indexterm> stay apart.
+      </para></listitem></orderedlist>
+    XML
+    assert_match(/\\CLLgeneral\{first\}\\reference\[[^\]]+\]\{[^}]*\}First two words /, output)
+    assert_includes output, 'words \\CLLgeneral{middle} stay apart.'
+  end
+
   def test_index_hierarchy_and_literal_plus
     output = book('<para><indexterm type="general"><primary>a+b</primary><secondary>detail</secondary></indexterm>Body</para>').to_tex
     assert_includes output, '\\CLLgeneral{a\\char43{}b+detail}'

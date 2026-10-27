@@ -1,0 +1,66 @@
+% CLL's print design, expressed in ConTeXt rather than CSS.
+% bp is 1/72 inch, the physical size of a CSS pt.
+\definepapersize[CLL][width=159mm,height=240mm]
+\setuppapersize[CLL][CLL]
+\setuplayout[backspace=13mm,width=133mm,
+  header=4mm,headerdistance=2mm,footer=4mm,footerdistance=2mm,
+  topspace=11mm,height=218mm]
+\setuppagenumbering[alternative=doublesided,location={footer,right}]
+\setupheader[style=\tf]
+\setupfooter[style={\switchtobodyfont[10bp]}]
+\setupheadertexts[][\getmarking[section]][\CLLBookTitle][]
+
+\definefontfeature[clltext][default][liga=no,clig=no,dlig=no]
+\definefontfamily[cll][rm][Linux Libertine O][
+  tf=file:LinLibertine_R.otf,it=file:LinLibertine_RI.otf,
+  bf=file:LinLibertine_RB.otf,bi=file:LinLibertine_RBI.otf,
+  features=clltext]
+\definefontfamily[cll][ss][Linux Biolinum O]
+\definefontfamily[cll][tt][DejaVu Sans Mono]
+\definetypeface[cll][mm][math][libertinus][default]
+\setupbodyfont[cll,9bp]
+\definefont[CLLcrisa][file:crisa-regular.otf at 9.9bp]
+\definefont[CLLkorean][file:noto-cjk-korean-serif.otf at 9bp]
+\definefont[CLLchinese][file:noto-cjk-simplified-chinese-serif.otf at 9bp]
+\setupinterlinespace[line=10.8bp]
+\setupalign[normal,verytolerant]
+\setupindenting[yes,1em]
+\setupwhitespace[0.1em]
+\setupnarrower[left=2em,right=0pt]
+% Match master.css list offsets and Prince's default 8pt marker gap.
+% ConTeXt adds distance to width to obtain the text's left offset.
+\defineitemgroup[CLLordered]
+\defineitemgroup[CLLbulleted]
+\defineitemgroup[CLLunmarked]
+\setupitemgroup[CLLordered][each][width={\dimexpr1.75em-8bp\relax},distance=8bp,
+  symalign=flushright,indenting=no]
+\setupitemgroup[CLLbulleted][each][width={\dimexpr3em-8bp\relax},distance=8bp,
+  symalign=flushright,indenting=no]
+\setupitemgroup[CLLunmarked][each][width=1em,distance=0pt,indenting=no]
+\setuphead[chapter][style=\bfb,align=middle,page=right,
+  before={\blank[10bp]},after={\blank[10bp]},number=no]
+\setuphead[section][style=\bfa,before={\blank[10bp]},after={\blank[small]},number=no]
+\setuphead[subsection,subsubsection][style=\bf,number=no]
+\setuphead[subsubject][style=\bf,incrementnumber=list]
+\setuphead[chapter][style={\switchtobodyfont[14bp]\bf}]
+\setuphead[section][style={\switchtobodyfont[11bp]\bf}]
+\setuplist[chapter][style=bold,width=0pt]
+\setuplist[section][margin=1em,width=0pt]
+\setupcombinedlist[content][list={chapter,section},alternative=c]
+\setupinteraction[state=start,style=normal]
+\enabletrackers[fonts.missing]
+\placebookmarks[chapter,section,subsection,subsubject][chapter]
+\definecolor[CLLrule][s=.6]
+\definecolor[CLLmuted][h=555555]
+\definecolor[CLLstatusbackground][s=.96]
+\defineframedtext[CLLstatus][width=broad,frame=off,leftframe=on,
+  rulethickness=1bp,framecolor=CLLrule,background=color,
+  backgroundcolor=CLLstatusbackground,offset=.5em,
+  style={\switchtobodyfont[8.28bp]},before={\blank[small]},after={\blank[small]}]
+\defineregister[CLLgeneral]
+\defineregister[CLLlojban]
+\setupregister[CLLgeneral,CLLlojban][n=2,style={\switchtobodyfont[8.1bp]},
+  indicator=yes,compress=yes,pagestyle=normal,distance=.5em,method=uc]
+\setupexternalfigures[location=local]
+\widowpenalty=10000
+\clubpenalty=10000

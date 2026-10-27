@@ -18,6 +18,10 @@ depending on what you have available.
 Usage
 -----
 
+An optional WeasyPrint and MathJax PDF backend is documented in
+README-weasyprint.md. It runs beside the existing Prince backend and
+writes build/cll-weasyprint.pdf.
+
 To make all the versions do:
 
   ./run_container.sh

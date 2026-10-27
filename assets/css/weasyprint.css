@@ -1,0 +1,50 @@
+/* Overrides for the optional WeasyPrint PDF backend. */
+body { margin: 0; }
+h3 { font-size: 14pt; margin: 14pt 0; }
+h4 { font-size: 12pt; margin: 16pt 0; }
+h5 { font-size: 10pt; margin: 16.5pt 0; }
+h6 { font-size: 8pt; margin: 21pt 0; }
+pre, code, tt { font-family: "DejaVu Sans Mono", monospace; }
+
+@media print {
+  .book > .titlepage .releaseinfo {
+    position: running(title-release);
+    margin: 0;
+    font-family: "DejaVu Sans Mono", monospace;
+    font-size: 7pt;
+    font-weight: normal;
+    color: #555;
+    letter-spacing: 0.2pt;
+    text-align: center;
+  }
+  @page:first {
+    @bottom-center {
+      content: element(title-release);
+      vertical-align: top;
+      margin-bottom: 13mm;
+    }
+  }
+  p { font-variant: normal; font-feature-settings: "ccmp" 1, "liga" 0, "clig" 0; }
+  @page chapter:left { @top-left { width: 100%; } }
+  @page chapter:right { @top-right { width: 100%; } }
+}
+
+/* Apply column spanning to the wrapper, rather than all nested descendants. */
+.whole-index .titlepage *, .glossary .titlepage * { column-span: none; }
+.whole-index > .titlepage, .glossary > .titlepage { column-span: all; }
+
+/* The Python pagination pass writes actual linked page ranges. */
+.whole-index .index-pages a { content: normal; }
+.index-pages { white-space: normal; }
+.index-markers {
+  height: 0;
+  line-height: 0;
+  font-size: 0;
+  margin: 0;
+  padding: 0;
+  break-after: avoid;
+}
+
+/* MathJax provides the layout inside the existing translation cells. */
+mjx-container { text-indent: 0; font-feature-settings: normal; }
+mjx-container[display="true"] { margin: 0.35em 0 !important; text-align: left !important; }

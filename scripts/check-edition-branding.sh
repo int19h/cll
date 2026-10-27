@@ -28,6 +28,8 @@ read_var() {
 }
 export TITLE="$(read_var TITLE)"
 export PUBLISHER="$(read_var PUBLISHER)"
+export PUBLISHER_DISCLAIMER="$(read_var PUBLISHER_DISCLAIMER)"
+export RELEASEINFO='colojban-test+1234567 | 2000-01-01'
 export REVISER="$(read_var REVISER)"
 export AUTHOR="John Woldemar Cowan"
 [ -n "$TITLE" ] || bad ".env has no TITLE"
@@ -38,13 +40,34 @@ tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 for t in content.opf.s1 toc.xhtml.s1 cover.html; do
   ruby scripts/epub_branding.rb fill <"epub/$t" >"$tmp/$t"
-  if grep -n 'REPLACETITLE\|REPLACEFILEAS\|REPLACEPUBLISHER\|REPLACEREVISER' "$tmp/$t"; then
+  if grep -n 'REPLACETITLE\|REPLACEFILEAS\|REPLACEPUBLISHER\|REPLACEREVISER\|REPLACEVERSION' "$tmp/$t"; then
     bad "epub/$t keeps a placeholder after filling"
   fi
   grep -qF "$TITLE" "$tmp/$t" || bad "epub/$t does not name the title from .env"
 done
-grep -qF "<dc:publisher>$PUBLISHER</dc:publisher>" "$tmp/content.opf.s1" ||
+grep -qF "<dc:publisher>$PUBLISHER${PUBLISHER_DISCLAIMER:+ $PUBLISHER_DISCLAIMER}</dc:publisher>" "$tmp/content.opf.s1" ||
   bad "content.opf.s1 does not name the publisher from .env"
+grep -qF "<dc:description>$RELEASEINFO</dc:description>" "$tmp/content.opf.s1" ||
+  bad "content.opf.s1 does not contain the release information"
+# Keep XML escaping independent of shell and sed replacement syntax.
+python3 - <<'PY'
+import os
+import subprocess
+import xml.etree.ElementTree as ET
+
+for disclaimer in ('', '(not a Logical Language Group publication)'):
+    publisher = 'An unofficial publication & community edition'
+    release = r'colojban-test+branch/name&proof<1>\& | 2000-01-01'
+    env = {**os.environ, 'PUBLISHER': publisher,
+           'PUBLISHER_DISCLAIMER': disclaimer, 'RELEASEINFO': release}
+    result = subprocess.run(['ruby', 'scripts/epub_branding.rb', 'fill'],
+                            input='<metadata><publisher>REPLACEPUBLISHER</publisher>'
+                                  '<description>REPLACEVERSION</description></metadata>',
+                            text=True, capture_output=True, check=True, env=env)
+    tree = ET.fromstring(result.stdout)
+    assert tree.findtext('publisher') == ' '.join(filter(None, (publisher, disclaimer)))
+    assert tree.findtext('description') == release
+PY
 grep -qF "<dc:contributor id=\"reviser\">$REVISER</dc:contributor>" "$tmp/content.opf.s1" ||
   bad "content.opf.s1 does not name the reviser from .env"
 if grep -n 'urn:isbn:' "$tmp/content.opf.s1"; then

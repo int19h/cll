@@ -40,19 +40,24 @@ trap 'rm -f "$ofile"' EXIT
 cp scripts/header.xml "$ofile"
 
 read_var() {
-    VAR=$(grep $1 $2 | xargs)
+    VAR=$(grep "^$1=" "$2" | xargs)
     IFS="=" read -ra VAR <<< "$VAR"
     echo ${VAR[1]}
 }
 
-version=$(read_var VERSION .env)
+version=$(scripts/build-version.sh) || exit 1
 publisher=$(read_var PUBLISHER .env)
+publisher_disclaimer=$(read_var PUBLISHER_DISCLAIMER .env)
 title=$(read_var TITLE .env)
 reviser=$(read_var REVISER .env)
 subtitle=$(read_var SUBTITL .env)
 datestamp=$(date +%Y-%m-%d)
 
 subtitle_elem=""
+publisher_disclaimer_elem=""
+if [ -n "$publisher_disclaimer" ]; then
+    publisher_disclaimer_elem="<phrase role=\"publication-disclaimer\">$publisher_disclaimer</phrase>"
+fi
 if [ -n "$subtitle" ]; then
     subtitle_elem="<subtitle>$subtitle</subtitle>"
 fi
@@ -75,11 +80,12 @@ revised by $reviser
 </orgname>
 </othercredit>
 <releaseinfo>
-Version $version, Generated $datestamp
+$version | $datestamp
 </releaseinfo>
 <othercredit>
 <orgname>
 $publisher
+$publisher_disclaimer_elem
 </orgname>
 </othercredit>
 </info>

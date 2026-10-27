@@ -83,8 +83,9 @@ when "fill"
   out = STDIN.read
   out = out.gsub("REPLACETITLE", xml_escape(title))
            .gsub("REPLACEFILEAS", xml_escape(file_as(title)))
-           .gsub("REPLACEPUBLISHER", xml_escape(need("PUBLISHER")))
+           .gsub("REPLACEPUBLISHER") { xml_escape([need("PUBLISHER"), ENV["PUBLISHER_DISCLAIMER"].to_s.strip].reject(&:empty?).join(" ")) }
            .gsub("REPLACEREVISER", xml_escape(need("REVISER")))
+           .gsub("REPLACEVERSION") { xml_escape(need("RELEASEINFO")) }
   print out
 when "cover"
   title = wrap(need("TITLE"), 12)

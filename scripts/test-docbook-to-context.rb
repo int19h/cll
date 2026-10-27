@@ -32,6 +32,18 @@ class ContextBookTest < Minitest::Test
     assert_raises(RuntimeError) { book('<math><unsupported/></math>').to_tex }
   end
 
+  def test_math_connectives_keep_punctuation_and_explicit_spacing
+    variants = ['<mo>Iff </mo><mi>a</mi><mo>=</mo><mn>0</mn><mo>, then </mo><mi>x</mi>',
+                '<mo>Iff</mo><mi>a</mi><mo>=</mo><mn>0</mn><mo>, then</mo><mi>x</mi>']
+    variants.each do |content|
+      output = book("<para><math><mrow>#{content}</mrow></math></para>").to_tex
+      assert_includes output, '\\mathupright{Iff}\\quad a=0,\\quad \\mathupright{then}\\quad x'
+      refute_includes output, '\\mathtext{Iff}'
+    end
+    output = book('<math><mi>a</mi><mo>iff</mo><mi>b</mi></math>').to_tex
+    assert_includes output, 'a\\quad \\mathupright{iff}\\quad b'
+  end
+
   def test_nested_tables_and_full_width_translation
     input = book(<<~XML)
       <informaltable><tr><td>

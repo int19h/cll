@@ -177,6 +177,13 @@ class ContextBook
     when 'mo'
       value = node.text.strip
       return '' if value == "\u2062"
+      if (connective = value.match(/\A([,;:]?)\s*(iff|then)\z/i))
+        punctuation, word = connective.captures
+        # These words connect formulas. Keep punctuation on the preceding formula,
+        # and use explicit math spacing because ordinary TeX spaces disappear.
+        before = punctuation.empty? ? (node.previous_element ? '\\quad ' : '') : "#{esc(punctuation)}\\quad "
+        return "#{before}\\mathupright{#{esc(word)}}\\quad "
+      end
       return "\\mathtext{#{esc(value)}}" if value.match?(/[A-Za-z]/)
       esc(value)
     when 'mfrac'

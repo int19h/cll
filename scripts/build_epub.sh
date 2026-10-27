@@ -19,6 +19,7 @@ read_var() {
 }
 export TITLE="$(read_var TITLE)"
 export PUBLISHER="$(read_var PUBLISHER)"
+export PUBLISHER_DISCLAIMER="$(read_var PUBLISHER_DISCLAIMER)"
 export REVISER="$(read_var REVISER)"
 export AUTHOR="John Woldemar Cowan"
 brand="ruby $basedir/scripts/epub_branding.rb"
@@ -70,8 +71,8 @@ do
 done
 
 version="$(xmllint --nonet --loaddtd --xpath 'normalize-space(/*[local-name()="book"]/*[local-name()="info"]/*[local-name()="releaseinfo"])' "$builddir/cll.xml")"
-$brand fill <$srcdir/content.opf.s1 | sed "s/REPLACEDATE/$(date -u +%Y-%m-%dT%H:%M:%SZ)/" | \
-  sed "s/REPLACEVERSION/$version/" >$epubbuilddir/content.opf
+RELEASEINFO="$version" $brand fill <$srcdir/content.opf.s1 | \
+  sed "s/REPLACEDATE/$(date -u +%Y-%m-%dT%H:%M:%SZ)/" >$epubbuilddir/content.opf
 
 cd $epubbuilddir/
 

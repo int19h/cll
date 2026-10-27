@@ -4,6 +4,8 @@ This optional backend produces `build/cll-weasyprint.pdf` with WeasyPrint and Ma
 The existing `pdf` target and default build still use Prince.
 The title-page footer shows the edition, source commit, and build date.
 A matching version tag at the current commit removes the commit suffix.
+An untagged draft keeps the hash, even when `.env` uses a release version without `+dev`.
+To produce a stamp without a hash, create the matching version tag before building the release assets.
 The footer uses small, gray, monospaced text at the center of the bottom margin.
 The new target reuses the book's print XHTML transformation and base stylesheet.
 The transformation files retain their existing Prince names because both backends use their formatting rules.
@@ -54,6 +56,8 @@ Then install the backend dependencies:
 ```
 
 The installer places Python and Node dependencies under `build/weasyprint-tools`.
+The `clean` target preserves these dependencies.
+After `realclean`, run the installer again before a local build.
 It uses the pinned Python requirements and npm lockfile.
 `CLL_WEASYPRINT_PYTHON` and `CLL_MATHJAX_DIR` select existing installations.
 The container sets both variables to its packaged dependencies.

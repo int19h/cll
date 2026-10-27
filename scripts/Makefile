@@ -9,7 +9,7 @@ all: xhtml_chapters xhtml_sections xhtml_nochunks pdf epub mobi
 
 .PHONY: clean
 clean:
-	find $(PWD)/build/ $(PWD)/coverage/build/ $(builddir)/ \! -name 'jbovlaste*.xml' -type f | xargs -n 1 rm -f
+	find $(PWD)/build/ $(PWD)/coverage/build/ $(builddir)/ -type d -name weasyprint-tools -prune -o \! -name 'jbovlaste*.xml' -type f -print0 | xargs -0 -r rm -f
 
 .PHONY: realclean
 realclean: clean

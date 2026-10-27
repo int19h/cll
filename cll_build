@@ -189,7 +189,6 @@ then
   echo -e "\n\nI don't see valid unpacked xsl in xml/docbook-xsl-1.78.1; bailing.\n\n"
   exit 1
 fi
-fi
 
 else
   # The legacy diff command compares HTML, which this target does not build.

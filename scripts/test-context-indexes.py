@@ -26,7 +26,7 @@ class ContextIndexTest(unittest.TestCase):
 
     def test_general_index_ignores_case_when_ordering_headwords(self):
         def position(term):
-            match = re.search(r'^' + re.escape(term) + r'\s+\d', self.general, re.MULTILINE)
+            match = re.search(r'^' + re.escape(term) + r'(?:\s+\d[^\n]*)?$', self.general, re.MULTILINE)
             self.assertIsNotNone(match, term)
             return match.start()
         self.assertLess(position('abbreviated lujvo and plausibility'), position('Avon'))
@@ -36,6 +36,10 @@ class ContextIndexTest(unittest.TestCase):
         entry = re.search(r'^name equivalent for ["“]typical', self.general, re.MULTILINE)
         self.assertIsNotNone(entry)
         self.assertGreater(entry.start(), self.general.index('Avon'))
+
+    def test_sort_key_sentinel_does_not_appear_as_a_heading(self):
+        self.assertNotRegex(self.general, r'(?m)^!$')
+        self.assertNotRegex(self.lojban, r'(?m)^!$')
 
 
 if __name__ == '__main__':

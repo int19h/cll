@@ -168,7 +168,8 @@ class ContextBook
     keys = levels.map do |term|
       # ConTeXt strips apostrophes before sorting. An escaped sentinel keeps
       # them distinct and before letters with the register's Unicode sorter.
-      value = term.text.gsub(/\s+/, ' ').strip.downcase.gsub('!', '!!').gsub(/['’]/, '!a')
+      # Keep an initial quote raw so a lone apostrophe retains its group heading.
+      value = term.text.gsub(/\s+/, ' ').strip.downcase.tr('’', "'").gsub('!', '!!').gsub(/(?<!\A)'/, '!a')
       esc(value).gsub('+', '\\char43{}')
     end
     "\\#{register}[{#{keys.join('+')}}]{#{terms.join('+')}}"

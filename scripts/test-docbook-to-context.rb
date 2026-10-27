@@ -118,6 +118,7 @@ class ContextBookTest < Minitest::Test
         <indexterm type="lojban-word"><primary>be’i</primary></indexterm>
         <indexterm type="general"><primary>  Avon </primary><secondary> Two   Words </secondary></indexterm>
         <indexterm type="general"><primary>be!ai</primary></indexterm>
+        <indexterm type="general"><primary>'</primary></indexterm>
       </para>
     XML
     assert_includes output, '\\CLLlojban[{bei}]{bei}'
@@ -125,6 +126,7 @@ class ContextBookTest < Minitest::Test
     assert_includes output, '\\CLLlojban[{be!ai}]{be’i}'
     assert_includes output, '\\CLLgeneral[{avon+two words}]{Avon+Two Words}'
     assert_includes output, '\\CLLgeneral[{be!!ai}]{be!ai}'
+    assert_includes output, "\\CLLgeneral[{'}]{'}"
   end
 
   def test_simplelist_column_order

@@ -371,7 +371,7 @@ class DocBookTypst
     "// Generated from preprocessed DocBook. Do not edit.\n#import \"book.typ\": *\n" \
       "#show: cll-book.with(title: #{q(title)}, author: #{q(author)})\n" \
       "#cll-title(#{q(title)}, #{q(plain(info.at_xpath('subtitle')))}, #{q(author)}, #{tuple(credits)}, version: #{q(version)}, date: #{q(date)}, notice: #{q(plain(notice))}, disclaimer: #{q(disclaimer)})\n" \
-      "#outline(title: [Contents], depth: 2)\n" + render(@document.root)
+      "#outline(title: [Table of Contents], depth: 2)\n" + render(@document.root)
   end
 end
 

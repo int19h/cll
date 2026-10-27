@@ -40,8 +40,8 @@
     #text(size: 52pt, weight: "bold", title)
     #if subtitle != "" { block(above: 12pt)[#text(size: 16pt, subtitle)] }
     #v(60pt)
-    #text(size: 16pt, author)
-    #if credits.len() > 0 { block(above: 9pt)[#emph(credits.first())] }
+    #text(size: 16pt, weight: "bold", author)
+    #if credits.len() > 0 { block(above: 9pt)[#text(size: 1.1em, style: "italic", credits.first())] }
     #v(1fr)
     #for credit in credits.slice(calc.min(1, credits.len())) { block[#text(size: 12pt, credit)] }
     #if notice != "" { block[#text(size: 12pt, weight: "regular", style: "normal", notice)] }

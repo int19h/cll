@@ -3018,13 +3018,21 @@
       and
       <jbophrase>me'u moi</jbophrase>. The elidable terminator
       <valsi>me'u</valsi>
-      is required here in order to keep the
+      keeps the
       <valsi>pa</valsi>
       and the
       <valsi>moi</valsi>
-      separate; otherwise, the parser will combine them into the compound
+      visibly apart. Without it, a reader sees
       <valsi>pamoi</valsi>
-      and reject the sentence as ungrammatical.
+      . The reader then has to work out two things: that the
+      <valsi>pa</valsi>
+      ends the mekso, and that the
+      <valsi>moi</valsi>
+      applies to the whole
+      <valsi>me</valsi>
+      phrase. The grammar gives the sentence that structure, because no other structure fits the whole text (see <xref linkend="ebnf-parses" />). The parser of the first edition combined the two words and rejected the sentence. Write the
+      <valsi>me'u</valsi>
+      .
     </para>
     <para>
       <indexterm type="general"><primary>numerical selbri</primary><secondary>based on non-numerical sumti</secondary>
@@ -3834,13 +3842,15 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      Omitting the
+      Without the
       <valsi>lo'o</valsi>
-      would cause the parser to assume that another operand followed the
+      , a reader expects another operand after the
       <valsi>.onai</valsi>
-      and reject
+      . The
       <valsi>lo</valsi>
-      as an invalid operand.
+      then forces the reader to back up. The grammar still gives the sentence its intended structure, because no other structure fits the whole text (see <xref linkend="ebnf-parses" />). The parser of the first edition rejected it. Write the
+      <valsi>lo'o</valsi>
+      .
     </para>
     <para>Simple examples of logical connection between operators are hard to come by. A contrived example is:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-YoFg">

@@ -2949,13 +2949,13 @@
       <valsi>ku</valsi>
       is the elidable terminator for
       <valsi>le</valsi>
-      , which can almost always be elided, but not in this case. If the first
+      , which can almost always be elided. Here it is needed for clarity. Without the first
       <valsi>ku</valsi>
-      were elided here, Lojban's parsing rules would see
+      , a reader meets
       <jbophrase>le nanmu joi</jbophrase>
-      and assume that another tanru component is to follow; since the second
+      and expects another tanru component to follow, and only the second
       <valsi>le</valsi>
-      cannot be part of a tanru, a parsing error results. No such problem can occur with logical connectives, because an ek signals a following sumti and a jek a following tanru component unambiguously.
+      shows that the connection is between sumti. The grammar still gives the sentence its intended structure, because no other structure fits the whole text (see <xref linkend="ebnf-parses" />). The parser of the first edition, which read one word ahead, rejected the sentence. No such problem arises with logical connectives, because an ek signals a following sumti and a jek a following tanru component unambiguously.
     </para>
     <para>
       <indexterm type="general"><primary>joik</primary><secondary>definition</secondary>

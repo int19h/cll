@@ -15,7 +15,7 @@ pre, code, tt { font-family: "DejaVu Sans Mono", monospace; }
   }
   .book > .titlepage .release-version,
   .book > .titlepage .release-date {
-    font-size: 7pt;
+    font-size: 8pt;
     line-height: normal;
     font-weight: normal;
     color: #555;

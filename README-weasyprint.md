@@ -6,7 +6,7 @@ The title-page footer shows the edition, source commit, and build date.
 A matching version tag at the current commit removes the commit suffix.
 An untagged draft keeps the hash, even when `.env` uses a release version without `+dev`.
 To produce a stamp without a hash, create the matching version tag before building the release assets.
-The footer places the version at bottom left and the date at bottom right.
+Both PDF backends place the version at bottom left and the date at bottom right.
 Both labels use regular Linux Libertine in small, gray, eight-point text.
 The publication notice is centered in twelve-point regular text.
 Inline output separates the labels with `│`.

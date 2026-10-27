@@ -129,6 +129,43 @@ print display
     string-set: header content(), booktitle content();
   }
 
+  .book > .titlepage .releaseinfo {
+    margin: 0;
+    height: 0;
+    font-size: 0;
+    line-height: 0;
+  }
+  .book > .titlepage .release-version,
+  .book > .titlepage .release-date {
+    display: block;
+    font-size: 8pt;
+    line-height: normal;
+    font-weight: normal;
+    color: #555;
+    letter-spacing: normal;
+  }
+  .book > .titlepage .release-version {
+    position: running(title-version);
+    text-align: left;
+  }
+  .book > .titlepage .release-date {
+    position: running(title-date);
+    text-align: right;
+  }
+  .book > .titlepage .release-separator { display: none; }
+  @page:first {
+    @bottom-left {
+      content: element(title-version);
+      vertical-align: top;
+      margin-bottom: 13mm;
+    }
+    @bottom-right {
+      content: element(title-date);
+      vertical-align: top;
+      margin-bottom: 13mm;
+    }
+  }
+
   @page chapter :left {
     @top-left {
       font-size: 9pt;

@@ -6,9 +6,9 @@ The title-page footer shows the edition, source commit, and build date.
 A matching version tag at the current commit removes the commit suffix.
 An untagged draft keeps the hash, even when `.env` uses a release version without `+dev`.
 To produce a stamp without a hash, create the matching version tag before building the release assets.
-The footer places the version at bottom left in Linux Libertine Mono.
-It places the date at bottom right in regular Linux Libertine.
-Both labels use small, gray, seven-point text.
+The footer places the version at bottom left and the date at bottom right.
+Both labels use regular Linux Libertine in small, gray, seven-point text.
+The publication notice is centered in twelve-point regular text.
 Inline output separates the labels with `│`.
 The new target reuses the book's print XHTML transformation and base stylesheet.
 The transformation files retain their existing Prince names because both backends use their formatting rules.

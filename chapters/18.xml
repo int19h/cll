@@ -3030,7 +3030,7 @@
       <valsi>moi</valsi>
       applies to the whole
       <valsi>me</valsi>
-      phrase. The grammar gives the sentence that structure, because no other structure fits the whole text (see <xref linkend="ebnf-parses" />). The parser of the first edition combined the two words and rejected the sentence. Write the
+      phrase. The grammar gives the sentence that structure, because no other structure fits the whole text (see <xref linkend="ebnf-parses" />). The parser of the first edition combined the two words and did not produce the intended reading. Write the
       <valsi>me'u</valsi>
       .
     </para>

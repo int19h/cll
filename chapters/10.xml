@@ -551,7 +551,7 @@
       </indexterm>
       <indexterm type="general"><primary>temporal tenses</primary><secondary>compared with spatial tenses</secondary>
       </indexterm>
-      Now that the reader understands spatial tenses, there are only two main facts to understand about temporal tenses: they work exactly like the spatial tenses, with selma'o PU and ZI standing in for FAhA and VA; and when both spatial and temporal tense cmavo are given in a single tense construct, the temporal tense is usually expressed first. (The grammar also accepts space before time, as <jbophrase>mi va pu klama</jbophrase>, with the single tense <jbophrase>va pu</jbophrase>. <xref linkend="ebnf-tenses" /> says how the words of a tense are divided where more than one division is possible.)
+      Now that the reader understands spatial tenses, only two main facts remain about temporal tenses. They work exactly like the spatial tenses, with selma'o PU and ZI standing in for FAhA and VA. When both spatial and temporal tense cmavo are given in a single tense construct, the temporal tense is usually expressed first. (The grammar also accepts space before time, as <jbophrase>mi va pu klama</jbophrase>, with the single tense <jbophrase>va pu</jbophrase>. <xref linkend="ebnf-tenses" /> says how the words of a tense are divided where more than one division is possible.)
     </para>
 
 

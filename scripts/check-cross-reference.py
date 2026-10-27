@@ -87,7 +87,7 @@ def main(path, out=print):
 
     # ---- parse the EBNF rules ----
     rules = []           # (name, number-or-None, normalized body)
-    toks = {}            # name -> body token list
+    toks = {}            # (name, number) -> body token list
     anchor_rule = {}     # anchor number N -> rule name it marks
     for e in re.findall(r'<varlistentry\b[^>]*>(.*?)</varlistentry>', ebnf, re.S):
         raw_term = re.search(r'<term>(.*?)</term>', e, re.S).group(1)
@@ -122,8 +122,11 @@ def main(path, out=print):
             for n, _ in x_anchors:
                 anchor_rule[int(n)] = name
         body = normalize_body(raw_body)
+        if (name, num) in toks:
+            out(f'FAIL rule {name} ({num}) is printed twice')
+            bad += 1
         rules.append((name, num, body))
-        toks[name] = re.findall(r"[A-Za-z][A-Za-z0-9'-]*", strip_markup(raw_body))
+        toks[(name, num)] = re.findall(r"[A-Za-z][A-Za-z0-9'-]*", strip_markup(raw_body))
     if not rules:
         out('FAIL the EBNF section has no rules')
         return 1
@@ -142,7 +145,7 @@ def main(path, out=print):
     for name, num, _ in rules:
         if num is None:
             continue
-        for tok in sorted(set(toks[name])):
+        for tok in sorted(set(toks[(name, num)])):
             refs.setdefault(tok, []).append((name, num))
     linekey = lambda n: n + '='
     expected = {t: [num for _, num in sorted(lst, key=lambda x: linekey(x[0]))]

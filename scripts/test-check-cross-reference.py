@@ -73,9 +73,19 @@ def main():
                   mutate(moved, 'sentence', '<para>',
                          '<para><anchor xreflabel="BNF rule #40" xml:id="cll_bnf-40" />')))
     cases.append(('anchor number mismatched',
-                  mutate(mutate(s, 'sentence', 'xml:id="b40"', 'xml:id="b41"'),
+                  mutate(mutate(s, 'sentence', 'xml:id="b40"', 'xml:id="b4000"'),
                          'sentence', 'xreflabel="BNF rule #40" xml:id="cll_bnf-40"',
-                         'xreflabel="BNF rule #41" xml:id="cll_bnf-41"')))
+                         'xreflabel="BNF rule #4000" xml:id="cll_bnf-4000"')))
+    # E2: delete only the table entries, keeping every rule.
+    cases.append(('E2 every table entry deleted', s[:b] + xr))
+    # A rule printed twice.
+    a2, b2 = ebnf_span(s)
+    sec2 = s[a2:b2]
+    m2 = re.search(r'<varlistentry\b[^>]*>\s*<term>(?:(?!</varlistentry>).)*?\n\s*prenex\n(?:(?!</varlistentry>).)*?</varlistentry>', sec2, re.S)
+    cases.append(('a rule printed twice',
+                  s[:a2] + sec2[:m2.end()] + m2.group(0).replace('xml:id="b30"', 'xml:id="b3000"')
+                  .replace('xreflabel="BNF rule #30" xml:id="cll_bnf-30"', 'xreflabel="BNF rule #3000" xml:id="cll_bnf-3000"')
+                  .replace('<subscript>30</subscript>', '<subscript>3000</subscript>') + sec2[m2.end():] + s[b2:]))
     # A silent rewording of a rule body that keeps every name.
     cases.append(('rule body reordered',
                   mutate(s, 'prenex', 'terms ZOhU #', 'ZOhU terms #')))

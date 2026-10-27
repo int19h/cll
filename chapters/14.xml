@@ -2930,7 +2930,7 @@
       </indexterm>
       Grammatically,
       <valsi>joi</valsi>
-      can appear between two sumti (like an ek) or between two tanru components (like a jek). This flexibility must be paid for in the form of occasional terminators that cannot be elided:
+      can appear between two sumti (like an ek) or between two tanru components (like a jek). This flexibility has a price: a terminator that a careful writer does not elide, although the grammar allows it:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-NN93">
       <title>
@@ -2953,9 +2953,9 @@
       <valsi>ku</valsi>
       , a reader meets
       <jbophrase>le nanmu joi</jbophrase>
-      and expects another tanru component to follow, and only the second
+      and expects another tanru component. Only the second
       <valsi>le</valsi>
-      shows that the connection is between sumti. The grammar still gives the sentence its intended structure, because no other structure fits the whole text (see <xref linkend="ebnf-parses" />). The parser of the first edition, which read one word ahead, rejected the sentence. No such problem arises with logical connectives, because an ek signals a following sumti and a jek a following tanru component unambiguously.
+      shows that the connection is between sumti. The grammar still gives the sentence its intended structure, because no other structure fits the whole text (see <xref linkend="ebnf-parses" />). The parser of the first edition, which read only one unit ahead (see <xref linkend="ebnf-parses" />), rejected the sentence. No such problem arises with logical connectives, because an ek signals a following sumti and a jek a following tanru component unambiguously.
     </para>
     <para>
       <indexterm type="general"><primary>joik</primary><secondary>definition</secondary>

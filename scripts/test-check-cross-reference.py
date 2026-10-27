@@ -84,8 +84,8 @@ def main():
     m2 = re.search(r'<varlistentry\b[^>]*>\s*<term>(?:(?!</varlistentry>).)*?\n\s*prenex\n(?:(?!</varlistentry>).)*?</varlistentry>', sec2, re.S)
     cases.append(('a rule printed twice',
                   s[:a2] + sec2[:m2.end()] + m2.group(0).replace('xml:id="b30"', 'xml:id="b3000"')
-                  .replace('xreflabel="BNF rule #30" xml:id="cll_bnf-30"', 'xreflabel="BNF rule #3000" xml:id="cll_bnf-3000"')
-                  .replace('<subscript>30</subscript>', '<subscript>3000</subscript>') + sec2[m2.end():] + s[b2:]))
+                  .replace('xreflabel="BNF rule #30" xml:id="cll_bnf-30"', 'xreflabel="BNF rule #30" xml:id="cll_bnf-3000"')
+                  + sec2[m2.end():] + s[b2:], 'printed twice'))
     # A silent rewording of a rule body that keeps every name.
     cases.append(('rule body reordered',
                   mutate(s, 'prenex', 'terms ZOhU #', 'ZOhU terms #')))
@@ -93,13 +93,17 @@ def main():
     cases.append(('duplicate xml:id in the chapter',
                   s.replace('xml:id="ebnf-terms"', 'xml:id="ebnf-sumti"', 1)))
 
-    for label, text in cases:
+    for case in cases:
+        label, text = case[0], case[1]
+        expect = case[2] if len(case) > 2 else None
         if text == s:
             problems.append(f'{label}: the mutation did not change the text')
             continue
         rc, msg = run(text)
         if rc == 0:
             problems.append(f'{label}: the checker passed a defective chapter')
+        elif expect and expect not in msg:
+            problems.append(f'{label}: the failure does not mention {expect!r}')
 
     if problems:
         print('test-check-cross-reference: FAIL')

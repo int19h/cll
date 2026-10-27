@@ -13,21 +13,15 @@
     <para><indexterm type="general"><primary>formal grammar</primary><secondary>status of versions</secondary>
       </indexterm><indexterm type="general"><primary>EBNF grammar</primary><secondary>status of</secondary>
       </indexterm><indexterm type="general"><primary>YACC grammar</primary><secondary>removed from print, 2014</secondary>
-      </indexterm><indexterm type="general"><primary>third baseline</primary></indexterm>The syntax grammar printed here, in EBNF notation, is the <emphasis>official</emphasis> one. It corresponds to the third baselined machine grammar, the one the Logical Language Group adopted. The first edition of this book also printed the equivalent YACC grammar, which is the source of the EBNF, and declared the YACC version authoritative in case of a discrepancy. This edition no longer prints the YACC listing. You can still find it in the electronic supplements to this book, and <xref linkend="appendix-changes" /> gives the history of that decision.</para>
+      </indexterm><indexterm type="general"><primary>third baseline</primary></indexterm>The official grammar of Lojban syntax is the YACC grammar of the third baseline, which is the one the Logical Language Group adopted. The first edition of this book printed that grammar in full, alongside an EBNF form of the same grammar, and declared the YACC version authoritative should the two ever disagree. In 2014, however, an informal majority at the annual meeting of the LLG chose to print only the EBNF, in order to save pages. The YACC listing can still be found in the electronic supplements to this book, and the history of that decision is told in <xref linkend="appendix-changes" />.</para>
+    <para role="status-note" condition="status:editorial"><indexterm type="general"><primary>EBNF grammar</primary><secondary>as the grammar of this edition</secondary></indexterm>The EBNF printed in this chapter is the grammar of the language that this book describes. It is the EBNF of the third baseline, with a small number of changes, each of which is marked where it is made and listed in <xref linkend="ebnf-changes" />. Some of the changes correct misprints of the first edition. Some state what this book teaches and the baseline grammar did not express, such as the committee's decision on tag binding. Wherever this grammar departs from the official grammar, the mark says so. A reader who wants the exact behavior of the official parser should consult the YACC grammar and the parser itself.</para>
     <para><indexterm type="general"><primary>camxes</primary><secondary>as de facto compatibility target</secondary>
       </indexterm>Meanwhile, the working grammars of the community use a different formal system: parsing expression grammars (PEG). These cover morphology and syntax together, and they include the amendments that the language-definition committee adopted, which this book describes throughout. The standard camxes PEG is the principal de facto target for compatibility across the tools this edition surveyed. Some of those tools implement it directly, and others reimplement its behavior. All of this is de facto, not official.</para>
-    <para>Of the camxes PEG, this chapter prints only the part that defines word forms (see <xref linkend="section-peg-grammar" />). That part is a precise, formal definition of how a stream of sounds breaks into words. For syntax we print the official EBNF grammar instead, so the camxes PEG for syntax is not in this book.</para>
-    <para role="status-note">Sometimes the text of this book or the EBNF below disagrees with the amendments. When that happens, the amendments prevail, and the book flags each one where it teaches it. The EBNF itself appears here as baselined.</para>
+    <para>Of the camxes PEG, this chapter prints only the part that defines word forms (see <xref linkend="section-peg-grammar" />). That part is a precise, formal definition of how a stream of sounds breaks into words. For syntax we print the EBNF grammar instead, so the camxes PEG for syntax is not in this book.</para>
+    <para role="status-note" condition="status:editorial">Sometimes the text of this book disagrees with the amendments. When that happens, the amendments prevail, and the book flags each one where it teaches it. The EBNF below already includes the amendments that change syntax, with their marks.</para>
     <para><indexterm type="general"><primary>tags</primary><secondary>binding to selbri, in the EBNF grammar</secondary>
       </indexterm><indexterm type="general"><primary>tenses</primary><secondary>before forethought connectives, in the EBNF grammar</secondary>
-      </indexterm>There are three known seams between this EBNF and current practice. First, the rules below represent the <quote>magic words</quote> (quotation, erasure, and their kin) only by placeholders. Their real behavior is word-level, and <xref linkend="chapter-structure" /> specifies it rule by rule. That specification also covers the genuinely unsettled <valsi>sa</valsi>.</para>
-    <para>Second, where a tag stands directly before a selbri, the EBNF permits more than one grouping. The BPFK, whose story <xref linkend="chapter-about" /> tells, is the language-definition committee, and it approved a decision on tag binding that picks one grouping. The parsers this edition surveyed implement that choice (see <xref linkend="section-tenses-introduction" />).</para>
-    <para>Third, the baseline parser did not accept a bare tense before a forethought connective construction at all. The de facto grammars accept it, and they read the tense as a term with scope over the whole construction (see <xref linkend="chapter-connectives" />).</para>
-    <para role="status-note">
-      The three seams have three different statuses: genuinely unsettled, committee-approved, and de facto, respectively.
-      <xref linkend="appendix-changes" />
-      has the full catalog.
-    </para>
+      </indexterm>The rules below stand in for the <quote>magic words</quote> (quotation, erasure, and their kin) with nothing but placeholders, since the real behavior of those words is a matter of the word level, and <xref linkend="chapter-structure" /> specifies it rule by rule. That chapter also covers the genuinely unsettled <valsi>sa</valsi>. How the words of a text become the input of the EBNF is explained in <xref linkend="ebnf-words" />. Two further points that the first edition's grammar left open, namely the binding of a tag to a following selbri and a bare tense before a forethought connective, are settled in <xref linkend="ebnf-parses" />, each with its status.</para>
   </section>
   <section xml:id="section-peg-grammar">
     <title><anchor xml:id="c21-peg" />PEG word-form grammar</title>
@@ -1576,11 +1570,13 @@
   </section>
   <section xml:id="section-EBNF">
     <title><anchor xml:id="c21s2" />EBNF grammar of Lojban</title>
-
+    <section xml:id="ebnf-about">
+      <title>About this grammar</title>
     <para>Lojban Machine Grammar, EBNF Version, third baseline (the first edition called this
       <quote>Final Baseline</quote>: see the note on the governance of the language in
       <xref linkend="chapter-about" />)</para>
     <para>This EBNF document is explicitly dedicated to the public domain by its author, The Logical Language Group, Inc. Contact that organization at: 2904 Beau Lane, Fairfax VA 22031 USA 703-385-0273 (intl: +1 703 385 0273)</para>
+    <para role="status-note" condition="status:editorial"><indexterm type="general"><primary>EBNF grammar</primary><secondary>relation to the official grammar</secondary></indexterm>This section prints the EBNF grammar of the language that this book describes, which is the EBNF of the third baseline plus the changes listed in <xref linkend="ebnf-changes" />. Each change is marked where it is made, along with its status. The official grammar of Lojban syntax is the YACC grammar of the third baseline, as <xref linkend="section-grammars-introduction" /> explains; wherever this grammar departs from it, the departure belongs to this edition, and the mark says so.</para>
     <para>Explanation of notation: All rules have the form:</para>
     <para>
       name
@@ -1591,7 +1587,7 @@
       which means that the grammatical construct
       <quote>name</quote>
       is defined by
-      <quote>bnf-expression</quote>.
+      <quote>bnf-expression</quote>. The number cross-references this grammar with the rule numbers in the YACC grammar. The names are the same as those in the YACC grammar, except that subrules are labeled with A, B, C, ... in the YACC grammar and with 1, 2, 3, ... in this grammar. In addition, rule 971 is <quote>simple_tag</quote> in the YACC grammar but <quote>stag</quote> in this grammar, because of its frequent appearance.
     </para>
 
     <orderedlist>
@@ -1644,7 +1640,31 @@
       <listitem>
         <para>// encloses an elidable terminator, which may be omitted (without change of meaning) if no grammatical ambiguity results.</para>
       </listitem>
+      <listitem>
+        <para>Juxtaposition binds closer than &amp;, so <quote>A B &amp; C D</quote> is <quote>(A B) &amp; (C D)</quote>. Any rule that needs the other reading uses parentheses.</para>
+      </listitem>
+      <listitem>
+        <para><quote>x ...</quote> means one x, optionally followed by more. <quote>[x ...]</quote> and <quote>[x] ...</quote> both mean any number of x, including none.</para>
+      </listitem>
+      <listitem>
+        <para><quote>/X#/</quote> is an elidable terminator together with its free-modifier slot. When X is elided, the slot goes with it, so a free modifier cannot follow an elided X. <quote>/X/ #</quote> keeps the slot whether or not X is written.</para>
+      </listitem>
     </orderedlist>
+    <para role="status-note" condition="status:editorial">Points 11 to 13 are additions of this edition. The first edition's notation never said how juxtaposition binds, and its point 6 read <quote>A &amp; B</quote> as <quote>A | B | A B</quote>, without the restriction on order. That restriction and the three added points simply state how this grammar reads its own rules; they change no rule.</para>
+    <para>The terminals of the grammar are the selma'o of <xref linkend="peg-selmaho" />, together with two more classes: BRIVLA, which is the class of every gismu, lujvo and fu'ivla, and CMEVLA, which is the class of every name word. <xref linkend="ebnf-words" /> says how a text becomes the stream of such words that the rules read. The rules refer to each other by name, and <xref linkend="section-cross-reference" /> lists, for each name, every rule that refers to it.</para>
+    <para>Because terminators can be elided, some texts fit the rules in more than one way. <xref linkend="ebnf-parses" /> gives the rules by which this grammar chooses a single reading, and the prose of each subsection points there wherever a rule needs it.</para>
+    </section>
+    <section xml:id="ebnf-text">
+      <title>The text and its paragraphs</title>
+    <para>A text is what one speaker or writer produces, from the first word to the last. A text can open with any of these forms:</para>
+    <itemizedlist>
+      <listitem><para><valsi>nai</valsi>, a vague negation at the start of a text (see <xref linkend="section-questions-and-answers" />).</para></listitem>
+      <listitem><para>A run of names, which serves as a form of address without a vocative.</para></listitem>
+      <listitem><para>Indicators or free modifiers that belong to the whole text.</para></listitem>
+      <listitem><para>A connective, <quote>joik-jek</quote>, that joins this text to a previous one in afterthought (afterthought being the style in which a connective is placed between its operands).</para></listitem>
+    </itemizedlist>
+    <para>After that come the paragraphs. Rule 2, <quote>text-1</quote>, permits initial <valsi>.i</valsi> sentence separators, then <valsi>ni'o</valsi> topic markers, or either of them alone. Each <valsi>.i</valsi> can carry an afterthought connective and a tense grouped with <valsi>bo</valsi>, and a speaker can use this to continue another speaker's text (see <xref linkend="section-i" />). <valsi>ni'o</valsi> marks a change of topic, and repeated <valsi>ni'o</valsi> markers indicate larger breaks (see <xref linkend="section-niho" />). A paragraph, in turn, contains statements or fragments separated by <valsi>.i</valsi>.</para>
+    <para role="status-note" condition="status:editorial"><indexterm type="general"><primary>EBNF grammar</primary><secondary>corrections, text-1</secondary></indexterm>Rule 2 is corrected here. The first edition printed its two parts as alternatives, so that a text began either with <valsi>.i</valsi> forms or with <valsi>ni'o</valsi> markers, but not with both in that order. The YACC grammar, however, lets any number of <valsi>.i</valsi> forms precede a run of <valsi>ni'o</valsi>, and <jbophrase>.i ni'o mi klama</jbophrase> is a text. This edition prints that form.</para>
     <variablelist>
       <varlistentry>
         <term>
@@ -1656,1306 +1676,1288 @@
           =
         </term>
         <listitem>
-          <para>
-            [NAI ...] [CMEVLA ... # | (indicators &amp; free ...)] [joik-jek] text-1
-            <anchor xml:id="b2" />
-            <anchor xreflabel="BNF rule #2" xml:id="cll_bnf-2" />
-            <!-- <xref linkend="cll_yacc-2"/> -->
-          </para>
+          <para>[NAI ...] [CMEVLA ... # | (indicators &amp; free ...)] [joik-jek] text-1</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b2" />
+          <anchor xreflabel="BNF rule #2" xml:id="cll_bnf-2" />
+          <!-- <xref linkend="cll_yacc-2"/> -->
           text-1
           <subscript>2</subscript>
           =
         </term>
         <listitem>
-          <para>
-            [(I [jek | joik] [[stag] BO] #) ... | NIhO ... #] [paragraphs]
-            <anchor xml:id="b4" />
-            <anchor xreflabel="BNF rule #4" xml:id="cll_bnf-4" />
-            <!-- <xref linkend="cll_yacc-4"/> -->
-          </para>
+          <para>[(I [jek | joik] [[stag] BO] #) ...] [NIhO ... #] [paragraphs]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b4" />
+          <anchor xreflabel="BNF rule #4" xml:id="cll_bnf-4" />
+          <!-- <xref linkend="cll_yacc-4"/> -->
           paragraphs
           <subscript>4</subscript>
           =
         </term>
         <listitem>
-          <para>
-            paragraph [NIhO ... # paragraphs]
-            <anchor xml:id="b10" />
-            <anchor xreflabel="BNF rule #10" xml:id="cll_bnf-10" />
-            <!-- <xref linkend="cll_yacc-10"/> -->
-          </para>
+          <para>paragraph [NIhO ... # paragraphs]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b10" />
+          <anchor xreflabel="BNF rule #10" xml:id="cll_bnf-10" />
+          <!-- <xref linkend="cll_yacc-10"/> -->
           paragraph
           <subscript>10</subscript>
           =
         </term>
         <listitem>
-          <para>
-            (statement | fragment) [I # [statement | fragment]] ...
-            <anchor xml:id="b11" />
-            <anchor xreflabel="BNF rule #11" xml:id="cll_bnf-11" />
-            <!-- <xref linkend="cll_yacc-11"/> -->
-          </para>
+          <para>(statement | fragment) [I # [statement | fragment]] ...</para>
         </listitem>
       </varlistentry>
+    </variablelist>
+    </section>
+    <section xml:id="ebnf-statements">
+      <title>Statements and fragments</title>
+    <para>A statement is a sentence, a sentence with a prenex before it, or several sentences joined by afterthought connectives (see <xref linkend="section-bridi-connection" />). A prenex is a clause prefix, <quote>terms zo'u</quote>, which binds variables or sets topics for the sentence that follows (see <xref linkend="section-da-and-zohu" />). The grouping of the connectives is settled by the four levels of the statement rules.</para>
+    <para>Rule 11, <quote>statement</quote>, takes any number of prenexes. Rule 12, <quote>statement-1</quote>, joins statements with <valsi>.i</valsi> followed by a jek or a joik: <jbophrase>.i je</jbophrase>, <jbophrase>.i ja nai</jbophrase>, <jbophrase>.i joi</jbophrase>. These group to the left, by the left-grouping rule of logical connectives (see <xref linkend="section-more-propositions" /> and <xref linkend="section-afterthought-connectives-grouping" />), so <jbophrase>A .i je B .i ja C</jbophrase> means <quote>(A and B) or C</quote>. The statement after each connective is optional, which is why a bare <jbophrase>.i je</jbophrase> can end a text.</para>
+    <para>Rule 13, <quote>statement-2</quote>, is the right-grouping form. An <valsi>.i</valsi> with an optional connective and an optional tense, followed by <valsi>bo</valsi>, binds the sentence after it more tightly than a plain <jbophrase>.i je</jbophrase> does. The rule refers to itself on its right, and so a series of <jbophrase>.i bo</jbophrase> connections groups to the right. Rule 14, <quote>statement-3</quote>, is either a sentence or a <jbophrase>tu'e ... tu'u</jbophrase> block. The block makes a whole <quote>text-1</quote> act as a single sentence, both for connection and for a tense placed before it. Its <valsi>tu'u</valsi> is elidable, and carries its own free-modifier slot.</para>
+    <para>A prenex can stand only at the start of a statement. After <valsi>.i</valsi> with a connective, and after <jbophrase>.i bo</jbophrase>, the rules allow no separate prenex, though a <jbophrase>tu'e ... tu'u</jbophrase> block can hold one. A fragment can stand beside a bare <valsi>.i</valsi> only. The third baseline removed fragments as operands of sentence connectives on purpose, so <jbophrase>.i je</jbophrase> joins statements and nothing smaller.</para>
+    <para>An utterance that is not a sentence is a fragment, under rule 20 (see <xref linkend="section-questions-and-answers" /> and <xref linkend="section-truth-and-connective-questions" />). A fragment is one of these:</para>
+    <itemizedlist>
+      <listitem><para>A bare connective, as the answer to a <valsi>ji</valsi> or <valsi>gi'i</valsi> question.</para></listitem>
+      <listitem><para>A bare quantifier, as the answer to <valsi>xo</valsi>.</para></listitem>
+      <listitem><para><valsi>na</valsi> alone.</para></listitem>
+      <listitem><para>A list of terms, with an optional <valsi>vau</valsi>.</para></listitem>
+      <listitem><para>A bare prenex.</para></listitem>
+      <listitem><para>A relative clause.</para></listitem>
+      <listitem><para>A <valsi>be</valsi> or <valsi>bei</valsi> phrase that supplies arguments after the fact.</para></listitem>
+    </itemizedlist>
+    <para>Since a list of terms is a fragment, <jbophrase>le sutra tavla</jbophrase> fits the rules in two ways. It is a fragment, the single description <quote>the fast talker</quote>. It is also a sentence, <quote>the fast one talks</quote>, with <valsi>ku</valsi> elided. <xref linkend="ebnf-parses" /> explains how this grammar chooses between the two.</para>
+    <variablelist>
       <varlistentry>
         <term>
+          <anchor xml:id="b11" />
+          <anchor xreflabel="BNF rule #11" xml:id="cll_bnf-11" />
+          <!-- <xref linkend="cll_yacc-11"/> -->
           statement
           <subscript>11</subscript>
           =
         </term>
         <listitem>
-          <para>
-            statement-1 | prenex statement
-            <anchor xml:id="b12" />
-            <anchor xreflabel="BNF rule #12" xml:id="cll_bnf-12" />
-            <!-- <xref linkend="cll_yacc-12"/> -->
-          </para>
+          <para>statement-1 | prenex statement</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b12" />
+          <anchor xreflabel="BNF rule #12" xml:id="cll_bnf-12" />
+          <!-- <xref linkend="cll_yacc-12"/> -->
           statement-1
           <subscript>12</subscript>
           =
         </term>
         <listitem>
-          <para>
-            statement-2 [I joik-jek [statement-2]] ...
-            <anchor xml:id="b13" />
-            <anchor xreflabel="BNF rule #13" xml:id="cll_bnf-13" />
-            <!-- <xref linkend="cll_yacc-13"/> -->
-          </para>
+          <para>statement-2 [I joik-jek [statement-2]] ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b13" />
+          <anchor xreflabel="BNF rule #13" xml:id="cll_bnf-13" />
+          <!-- <xref linkend="cll_yacc-13"/> -->
           statement-2
           <subscript>13</subscript>
           =
         </term>
         <listitem>
-          <para>
-            statement-3 [I [jek | joik] [stag] BO # [statement-2]]
-            <anchor xml:id="b14" />
-            <anchor xreflabel="BNF rule #14" xml:id="cll_bnf-14" />
-            <!-- <xref linkend="cll_yacc-14"/> -->
-          </para>
+          <para>statement-3 [I [jek | joik] [stag] BO # [statement-2]]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b14" />
+          <anchor xreflabel="BNF rule #14" xml:id="cll_bnf-14" />
+          <!-- <xref linkend="cll_yacc-14"/> -->
           statement-3
           <subscript>14</subscript>
           =
         </term>
         <listitem>
-          <para>
-            sentence | [tag] TUhE # text-1 /TUhU#/
-            <anchor xml:id="b20" />
-            <anchor xreflabel="BNF rule #20" xml:id="cll_bnf-20" />
-            <!-- <xref linkend="cll_yacc-20"/> -->
-          </para>
+          <para>sentence | [tag] TUhE # text-1 /TUhU#/</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b20" />
+          <anchor xreflabel="BNF rule #20" xml:id="cll_bnf-20" />
+          <!-- <xref linkend="cll_yacc-20"/> -->
           fragment
           <subscript>20</subscript>
           =
         </term>
         <listitem>
-          <para>
-            ek # | gihek # | quantifier | NA # | terms /VAU#/ | prenex | relative-clauses | links | linkargs
-            <anchor xml:id="b30" />
-            <anchor xreflabel="BNF rule #30" xml:id="cll_bnf-30" />
-            <!-- <xref linkend="cll_yacc-30"/> -->
-          </para>
+          <para>ek # | gihek # | quantifier | NA # | terms /VAU#/ | prenex | relative-clauses | links | linkargs</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b30" />
+          <anchor xreflabel="BNF rule #30" xml:id="cll_bnf-30" />
+          <!-- <xref linkend="cll_yacc-30"/> -->
           prenex
           <subscript>30</subscript>
           =
         </term>
         <listitem>
-          <para>
-            terms ZOhU #
-            <anchor xml:id="b40" />
-            <anchor xreflabel="BNF rule #40" xml:id="cll_bnf-40" />
-            <!-- <xref linkend="cll_yacc-40"/> -->
-          </para>
+          <para>terms ZOhU #</para>
         </listitem>
       </varlistentry>
+    </variablelist>
+    </section>
+    <section xml:id="ebnf-sentences">
+      <title>Sentences and bridi-tails</title>
+    <para>A sentence, rule 40, is a bridi: some terms, then optionally <valsi>cu</valsi>, then the bridi-tail, which holds the selbri and any terms that follow it (see <xref linkend="section-cu" />). The terms before the selbri are called the head, and <valsi>cu</valsi> marks where the head ends. It lets a description close without its <valsi>ku</valsi>, since <valsi>cu</valsi> cannot continue the selbri of the description. The terms are optional, so a sentence may begin with its selbri, as <valsi>klama</valsi> alone does.</para>
+    <para>A subsentence, rule 41, is either a sentence or a prenex followed by a subsentence. Abstractions and relative clauses contain subsentences, and the prenex of a subsentence is local to it (see <xref linkend="section-any" />).</para>
+    <para>The bridi-tail rules state how sentences come to share a head under a gihek, the connective family of <valsi>gi'e</valsi>, <valsi>gi'a</valsi> and the rest of GIhA (see <xref linkend="section-compound-bridi" />). Rule 53, <quote>bridi-tail-3</quote>, is a single selbri with its tail terms, or else a forethought gek-sentence. Rule 52 binds two tails with <quote>gihek [stag] bo</quote>, and groups to the right. Rule 51 joins tails with a plain gihek, and groups to the left (see <xref linkend="section-multiple-compound-bridi" />). Each tail after a gihek has its own tail terms. Four tails, for instance, group as <quote>((A gi'e B) gi'a C) gi'u D</quote>.</para>
+    <para>Rule 50, <quote>bridi-tail</quote>, lets a gihek be followed by <jbophrase>ke ... ke'e</jbophrase>, with an optional tense or modal on the connective before the <valsi>ke</valsi>. The brackets group the tails inside them against the tail to the left. The tail terms after the whole connection apply to both sides of it, just as they do after a plain gihek (see <xref linkend="example-random-id-DYBN" />). So in <jbophrase>mi broda gi'e ke brode ke'e le zarci</jbophrase>, <jbophrase>le zarci</jbophrase> applies to <valsi>broda</valsi> and to the group alike. The tail terms after each selbri belong to that selbri, and <valsi>vau</valsi> closes them; it is almost always elided.</para>
+    <para>After a gihek, <valsi>ke</valsi> can begin either a group of tails or a tanru unit of the next tail. Where both readings fit the text, this grammar takes the group (see <xref linkend="ebnf-parses" />). A tense between the gihek and the <valsi>ke</valsi> then belongs to the connective. In <jbophrase>mi klama gi'e pu ke cadzu ke'e</jbophrase>, <valsi>pu</valsi> sits on the connective, as <xref linkend="section-sumtcita" /> teaches. Where only the plain reading fits, it stands: in <jbophrase>mi broda gi'e ke brode ke'e brodi</jbophrase>, the tail goes on after <valsi>ke'e</valsi>, so the group cannot read it.</para>
+    <para>A gek-sentence, rule 54, joins two subsentences in forethought (see <xref linkend="section-multiple-compound-bridi" />). Forethought introduces a connection before its first operand, and the gek itself can contain a tense, as in <jbophrase>pu gi A gi B</jbophrase>. The tail terms after the whole connection apply to both sides. A gek-sentence can also stand inside <jbophrase>ke ... ke'e</jbophrase>, with a tense or modal before the <valsi>ke</valsi>, or after <valsi>na</valsi>.</para>
+    <para role="status-note" condition="status:editorial"><indexterm type="general"><primary>EBNF grammar</primary><secondary>corrections, gek-sentence</secondary></indexterm>Rule 54 is corrected here. The first edition printed the tense or modal before <valsi>ke</valsi> as optional, but both versions of that rule in the YACC grammar require it, and nothing in this book uses the bare form. This edition prints <quote>tag KE</quote>. The example <xref linkend="example-random-id-vCzL" /> in <xref linkend="section-modal-selbri" />, <jbophrase>mi bai ke ge klama le zarci gi cadzu le bisli</jbophrase>, has its tag.</para>
+    <para role="status-note" condition="status:editorial">A bare tense can stand before a forethought connection, as in <jbophrase>mi pu ge klama le zarci gi tervecnu lo cidja</jbophrase> (see <xref linkend="example-random-id-DxuA" />). That text fits these rules with <valsi>pu</valsi> as a term and its <valsi>ku</valsi> elided, so the tense has scope over the whole connection. <xref linkend="ebnf-parses" /> says why the elided <valsi>ku</valsi> is allowed there. The official parser, however, requires the written <jbophrase>pu ku</jbophrase>, and so would any reader who wants to see at once that the tense covers both connected bridi.</para>
+    <variablelist>
       <varlistentry>
         <term>
+          <anchor xml:id="b40" />
+          <anchor xreflabel="BNF rule #40" xml:id="cll_bnf-40" />
+          <!-- <xref linkend="cll_yacc-40"/> -->
           sentence
           <subscript>40</subscript>
           =
         </term>
         <listitem>
-          <para>
-            [terms [CU #]] bridi-tail
-            <anchor xml:id="b41" />
-            <anchor xreflabel="BNF rule #41" xml:id="cll_bnf-41" />
-            <!-- <xref linkend="cll_yacc-41"/> -->
-          </para>
+          <para>[terms [CU #]] bridi-tail</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b41" />
+          <anchor xreflabel="BNF rule #41" xml:id="cll_bnf-41" />
+          <!-- <xref linkend="cll_yacc-41"/> -->
           subsentence
           <subscript>41</subscript>
           =
         </term>
         <listitem>
-          <para>
-            sentence | prenex subsentence
-            <anchor xml:id="b50" />
-            <anchor xreflabel="BNF rule #50" xml:id="cll_bnf-50" />
-            <!-- <xref linkend="cll_yacc-50"/> -->
-          </para>
+          <para>sentence | prenex subsentence</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b50" />
+          <anchor xreflabel="BNF rule #50" xml:id="cll_bnf-50" />
+          <!-- <xref linkend="cll_yacc-50"/> -->
           bridi-tail
           <subscript>50</subscript>
           =
         </term>
         <listitem>
-          <para>
-            bridi-tail-1 [gihek [stag] KE # bridi-tail /KEhE#/ tail-terms]
-            <anchor xml:id="b51" />
-            <anchor xreflabel="BNF rule #51" xml:id="cll_bnf-51" />
-            <!-- <xref linkend="cll_yacc-51"/> -->
-          </para>
+          <para>bridi-tail-1 [gihek [stag] KE # bridi-tail /KEhE#/ tail-terms]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b51" />
+          <anchor xreflabel="BNF rule #51" xml:id="cll_bnf-51" />
+          <!-- <xref linkend="cll_yacc-51"/> -->
           bridi-tail-1
           <subscript>51</subscript>
           =
         </term>
         <listitem>
-          <para>
-            bridi-tail-2 [gihek # bridi-tail-2 tail-terms] ...
-            <anchor xml:id="b52" />
-            <anchor xreflabel="BNF rule #52" xml:id="cll_bnf-52" />
-            <!-- <xref linkend="cll_yacc-52"/> -->
-          </para>
+          <para>bridi-tail-2 [gihek # bridi-tail-2 tail-terms] ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b52" />
+          <anchor xreflabel="BNF rule #52" xml:id="cll_bnf-52" />
+          <!-- <xref linkend="cll_yacc-52"/> -->
           bridi-tail-2
           <subscript>52</subscript>
           =
         </term>
         <listitem>
-          <para>
-            bridi-tail-3 [gihek [stag] BO # bridi-tail-2 tail-terms]
-            <anchor xml:id="b53" />
-            <anchor xreflabel="BNF rule #53" xml:id="cll_bnf-53" />
-            <!-- <xref linkend="cll_yacc-53"/> -->
-          </para>
+          <para>bridi-tail-3 [gihek [stag] BO # bridi-tail-2 tail-terms]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b53" />
+          <anchor xreflabel="BNF rule #53" xml:id="cll_bnf-53" />
+          <!-- <xref linkend="cll_yacc-53"/> -->
           bridi-tail-3
           <subscript>53</subscript>
           =
         </term>
         <listitem>
-          <para>
-            selbri tail-terms | gek-sentence
-            <anchor xml:id="b54" />
-            <anchor xreflabel="BNF rule #54" xml:id="cll_bnf-54" />
-            <!-- <xref linkend="cll_yacc-54"/> -->
-          </para>
+          <para>selbri tail-terms | gek-sentence</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b54" />
+          <anchor xreflabel="BNF rule #54" xml:id="cll_bnf-54" />
+          <!-- <xref linkend="cll_yacc-54"/> -->
           gek-sentence
           <subscript>54</subscript>
           =
         </term>
         <listitem>
-          <para>
-            gek subsentence gik subsentence tail-terms | [tag] KE # gek-sentence /KEhE#/ | NA # gek-sentence
-            <anchor xml:id="b71" />
-            <anchor xreflabel="BNF rule #71" xml:id="cll_bnf-71" />
-            <!-- <xref linkend="cll_yacc-71"/> -->
-          </para>
+          <para>gek subsentence gik subsentence tail-terms | tag KE # gek-sentence /KEhE#/ | NA # gek-sentence</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b71" />
+          <anchor xreflabel="BNF rule #71" xml:id="cll_bnf-71" />
+          <!-- <xref linkend="cll_yacc-71"/> -->
           tail-terms
           <subscript>71</subscript>
           =
         </term>
         <listitem>
-          <para>
-            [terms] /VAU#/
-            <anchor xml:id="b80" />
-            <anchor xreflabel="BNF rule #80" xml:id="cll_bnf-80" />
-            <!-- <xref linkend="cll_yacc-80"/> -->
-          </para>
+          <para>[terms] /VAU#/</para>
         </listitem>
       </varlistentry>
+    </variablelist>
+    </section>
+    <section xml:id="ebnf-terms">
+      <title>Terms</title>
+    <para>A term, rule 83, is one argument of a bridi, or else one tense or modal standing on its own (see <xref linkend="section-FA" />, <xref linkend="section-sticky-tenses" /> and <xref linkend="section-na-outside-prenex" />). It is any one of these:</para>
+    <itemizedlist>
+      <listitem><para>A sumti.</para></listitem>
+      <listitem><para>A sumti, or <valsi>ku</valsi> written or elided, after a tense, a modal or a place marker <valsi>fa</valsi>, <valsi>fe</valsi>, and the rest: <jbophrase>ca lo nu broda</jbophrase>, <jbophrase>fi mi</jbophrase>, <jbophrase>pu ku</jbophrase>.</para></listitem>
+      <listitem><para>A termset.</para></listitem>
+      <listitem><para>A termset after a tense or modal.</para></listitem>
+      <listitem><para><jbophrase>na ku</jbophrase>, the sentence-level negation written as a term.</para></listitem>
+    </itemizedlist>
+    <para>A tense or modal with nothing after it takes <valsi>ku</valsi>, so that it won't swallow the next sumti. When what follows cannot be a sumti, the <valsi>ku</valsi> may be elided. When what follows can be a sumti, <xref linkend="ebnf-parses" /> says which reading wins. A tense or modal placed directly before a selbri binds to that selbri, as <xref linkend="section-tenses-introduction" /> teaches, and that same subsection states the rule.</para>
+    <para>The three levels of <quote>terms</quote> state the termset connectives (see <xref linkend="section-termsets" /> and <xref linkend="section-quantifier-grouping" />). A termset is simply a set of terms. Rule 82 joins terms into a termset with <valsi>ce'e</valsi>, as in <jbophrase>mi ce'e do</jbophrase>. Rule 81 joins termsets with <valsi>pe'e</valsi> followed by a jek or a joik, the afterthought form that connects two sets of arguments at once. Those connections group from the left, as afterthought logical connectives do; the <valsi>ce'e</valsi> of a termset, however, groups nothing. A termset in forethought is <quote>nu'i gek terms nu'u gik terms nu'u</quote>. And <jbophrase>nu'i terms nu'u</jbophrase> by itself brackets several terms into one, so that a connective applies to all of them.</para>
+    <para>A tense or modal before a termset governs the whole termset, as in <jbophrase>zu'a nu'i la .djordj. la'u lo mitre be li mu nu'u</jbophrase> (see <xref linkend="section-explicit-magnitudes" />). If a <valsi>ku</valsi> is written, it ends the tag as a separate term.</para>
+    <para role="status-note" condition="status:editorial"><indexterm type="general"><primary>termsets</primary><secondary>with a preceding tag, in the EBNF grammar</secondary></indexterm>The form <quote>tag termset</quote> in rule 83 is an addition of this edition. The third baseline has no such form, either in the EBNF or in the YACC grammar; its parser reads the tag and the termset as two separate terms. <xref linkend="section-explicit-magnitudes" /> teaches the structure with the tag over the termset, and its examples show it. The errata of the first edition recorded the conflict but offered no fix. This edition follows the text of the book.</para>
+    <variablelist>
       <varlistentry>
         <term>
+          <anchor xml:id="b80" />
+          <anchor xreflabel="BNF rule #80" xml:id="cll_bnf-80" />
+          <!-- <xref linkend="cll_yacc-80"/> -->
           terms
           <subscript>80</subscript>
           =
         </term>
         <listitem>
-          <para>
-            terms-1 ...
-            <anchor xml:id="b81" />
-            <anchor xreflabel="BNF rule #81" xml:id="cll_bnf-81" />
-            <!-- <xref linkend="cll_yacc-81"/> -->
-          </para>
+          <para>terms-1 ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b81" />
+          <anchor xreflabel="BNF rule #81" xml:id="cll_bnf-81" />
+          <!-- <xref linkend="cll_yacc-81"/> -->
           terms-1
           <subscript>81</subscript>
           =
         </term>
         <listitem>
-          <para>
-            terms-2 [PEhE # joik-jek terms-2] ...
-            <anchor xml:id="b82" />
-            <anchor xreflabel="BNF rule #82" xml:id="cll_bnf-82" />
-            <!-- <xref linkend="cll_yacc-82"/> -->
-          </para>
+          <para>terms-2 [PEhE # joik-jek terms-2] ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b82" />
+          <anchor xreflabel="BNF rule #82" xml:id="cll_bnf-82" />
+          <!-- <xref linkend="cll_yacc-82"/> -->
           terms-2
           <subscript>82</subscript>
           =
         </term>
         <listitem>
-          <para>
-            term [CEhE # term] ...
-            <anchor xml:id="b83" />
-            <anchor xreflabel="BNF rule #83" xml:id="cll_bnf-83" />
-            <!-- <xref linkend="cll_yacc-83"/> -->
-          </para>
+          <para>term [CEhE # term] ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b83" />
+          <anchor xreflabel="BNF rule #83" xml:id="cll_bnf-83" />
+          <!-- <xref linkend="cll_yacc-83"/> -->
           term
           <subscript>83</subscript>
           =
         </term>
         <listitem>
-          <para>
-            sumti | (tag | FA #) (sumti | /KU#/) | termset | NA KU #
-            <anchor xml:id="b85" />
-            <anchor xreflabel="BNF rule #85" xml:id="cll_bnf-85" />
-            <!-- <xref linkend="cll_yacc-85"/> -->
-          </para>
+          <para>sumti | (tag | FA #) (sumti | /KU#/) | termset | tag termset | NA KU #</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b85" />
+          <anchor xreflabel="BNF rule #85" xml:id="cll_bnf-85" />
+          <!-- <xref linkend="cll_yacc-85"/> -->
           termset
           <subscript>85</subscript>
           =
         </term>
         <listitem>
-          <para>
-            NUhI # gek terms /NUhU#/ gik terms /NUhU#/ | NUhI # terms /NUhU#/
-            <anchor xml:id="b90" />
-            <anchor xreflabel="BNF rule #90" xml:id="cll_bnf-90" />
-            <!-- <xref linkend="cll_yacc-90"/> -->
-          </para>
+          <para>NUhI # gek terms /NUhU#/ gik terms /NUhU#/ | NUhI # terms /NUhU#/</para>
         </listitem>
       </varlistentry>
+    </variablelist>
+    </section>
+    <section xml:id="ebnf-sumti">
+      <title>Sumti</title>
+    <para>A sumti is an argument: a description, a name, a pronoun, a quotation, a number, or a connection of these (see <xref linkend="chapter-sumti" />). The levels from <quote>sumti</quote> down to <quote>sumti-4</quote> state the connectives and their grouping, in the same shape as for statements and bridi-tails.</para>
+    <para>Rule 91 is a sumti with a <jbophrase>ke ... ke'e</jbophrase> grouped connection after it. Rule 92 is a sequence joined in afterthought by an ek or a joik, as in <jbophrase>mi .e do</jbophrase> or <jbophrase>mi joi do</jbophrase>, and it groups from the left (see <xref linkend="section-more-propositions" />). Rule 93 is the <valsi>bo</valsi> form, which groups from the right (see <xref linkend="section-afterthought-connectives-grouping" />). Rule 94 is either a simple sumti or a forethought connection, <jbophrase>ge mi gi do</jbophrase>. The top rule adds <valsi>vu'o</valsi> followed by relative clauses, which attach to the whole connected sumti rather than to its last member (see <xref linkend="section-vuho" />).</para>
+    <para>Rule 95 places the outer quantifier. A number before a simple sumti counts its referents, as in <jbophrase>re lo gerku</jbophrase>. A quantifier directly before a selbri also makes a sumti, <jbophrase>re gerku</jbophrase>, and the <valsi>ku</valsi> of that form is elidable. <xref linkend="section-indefinite-descriptions" /> explains it as <jbophrase>re da poi gerku</jbophrase>, which is not the same as <jbophrase>re lo gerku</jbophrase>. Relative clauses can follow either one.</para>
+    <para>Rule 97, <quote>sumti-6</quote>, is the closed list of simple sumti. A LAhE word such as <valsi>la'e</valsi>, or a NAhE word with <valsi>bo</valsi> such as <jbophrase>na'e bo</jbophrase>, qualifies another sumti, and <valsi>lu'u</valsi> closes the result. KOhA is a pronoun. A lerfu string such as <valsi>.abu</valsi> or <valsi>xy.</valsi> is a sumti, and <valsi>boi</valsi> closes it and separates it from a following number or lerfu string. <valsi>la</valsi> before names makes a name. <valsi>la</valsi> or <valsi>le</valsi>, that is, any member of LA or LE, before a <quote>sumti-tail</quote> makes a description closed by <valsi>ku</valsi>. <valsi>li</valsi> opens a mekso, a mathematical expression, closed by <valsi>lo'o</valsi>. Four forms quote (see <xref linkend="section-quotations" /> and <xref linkend="section-more-quotations" />):</para>
+    <itemizedlist>
+      <listitem><para><valsi>zo</valsi> quotes the single next word.</para></listitem>
+      <listitem><para><jbophrase>lu ... li'u</jbophrase> quotes a Lojban text.</para></listitem>
+      <listitem><para><jbophrase>lo'u ... le'u</jbophrase> quotes a run of Lojban words that need not be grammatical, possibly none.</para></listitem>
+      <listitem><para><valsi>zoi</valsi> quotes any text between two copies of a delimiter word.</para></listitem>
+    </itemizedlist>
+    <para>The word-level rules of <xref linkend="chapter-structure" /> delimit each <valsi>zo</valsi>, <valsi>lo'u</valsi> and <valsi>zoi</valsi> quote before the grammar ever sees the text (see <xref linkend="ebnf-words" />), and the <quote>any-word</quote> and <quote>anything</quote> in rule 97 are a picture of that work. A <jbophrase>lu ... li'u</jbophrase> quote is different: it holds a whole text, which the grammar reads with the rules of this section. Its free-modifier slot follows the quote whether or not <valsi>li'u</valsi> is written.</para>
+    <para role="status-note" condition="status:editorial"><indexterm type="general"><primary>EBNF grammar</primary><secondary>corrections, sumti-6</secondary></indexterm>Rule 97 is corrected in two places. First, the first edition printed <quote>LOhU any-word ... LEhU</quote>, which requires at least one word between the delimiters. The YACC grammar reads the quoted words as one unit that can be empty, so <jbophrase>lo'u le'u</jbophrase> is a sumti. Second, the first edition printed <quote>LU text /LIhU#/</quote>, which drops the free-modifier slot together with an elided <valsi>li'u</valsi>. The YACC grammar attaches free modifiers to the whole quote, so <jbophrase>lu cy. to toi</jbophrase> is a quote followed by a parenthesis. This edition prints <quote>LU text /LIhU/ #</quote>.</para>
+    <para>Rule 111, <quote>sumti-tail</quote>, is what follows a descriptor (see <xref linkend="section-basic-descriptors" />). It begins with an optional inner sumti that possesses or restricts, as in <jbophrase>le mi zdani</jbophrase> (see <xref linkend="section-possessive-sumti" />). Then come the inner quantifier and the selbri, <jbophrase>le ci gerku</jbophrase>, or else a quantifier and a sumti, <jbophrase>lo re lo gerku</jbophrase>. Relative clauses can come after the inner sumti, and they can also replace it (see <xref linkend="section-descriptors" />).</para>
+    <variablelist>
       <varlistentry>
         <term>
+          <anchor xml:id="b90" />
+          <anchor xreflabel="BNF rule #90" xml:id="cll_bnf-90" />
+          <!-- <xref linkend="cll_yacc-90"/> -->
           sumti
           <subscript>90</subscript>
           =
         </term>
         <listitem>
-          <para>
-            sumti-1 [VUhO # relative-clauses]
-            <anchor xml:id="b91" />
-            <anchor xreflabel="BNF rule #91" xml:id="cll_bnf-91" />
-            <!-- <xref linkend="cll_yacc-91"/> -->
-          </para>
+          <para>sumti-1 [VUhO # relative-clauses]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b91" />
+          <anchor xreflabel="BNF rule #91" xml:id="cll_bnf-91" />
+          <!-- <xref linkend="cll_yacc-91"/> -->
           sumti-1
           <subscript>91</subscript>
           =
         </term>
         <listitem>
-          <para>
-            sumti-2 [(ek | joik) [stag] KE # sumti /KEhE#/]
-            <anchor xml:id="b92" />
-            <anchor xreflabel="BNF rule #92" xml:id="cll_bnf-92" />
-            <!-- <xref linkend="cll_yacc-92"/> -->
-          </para>
+          <para>sumti-2 [(ek | joik) [stag] KE # sumti /KEhE#/]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b92" />
+          <anchor xreflabel="BNF rule #92" xml:id="cll_bnf-92" />
+          <!-- <xref linkend="cll_yacc-92"/> -->
           sumti-2
           <subscript>92</subscript>
           =
         </term>
         <listitem>
-          <para>
-            sumti-3 [joik-ek sumti-3] ...
-            <anchor xml:id="b93" />
-            <anchor xreflabel="BNF rule #93" xml:id="cll_bnf-93" />
-            <!-- <xref linkend="cll_yacc-93"/> -->
-          </para>
+          <para>sumti-3 [joik-ek sumti-3] ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b93" />
+          <anchor xreflabel="BNF rule #93" xml:id="cll_bnf-93" />
+          <!-- <xref linkend="cll_yacc-93"/> -->
           sumti-3
           <subscript>93</subscript>
           =
         </term>
         <listitem>
-          <para>
-            sumti-4 [(ek | joik) [stag] BO # sumti-3]
-            <anchor xml:id="b94" />
-            <anchor xreflabel="BNF rule #94" xml:id="cll_bnf-94" />
-            <!-- <xref linkend="cll_yacc-94"/> -->
-          </para>
+          <para>sumti-4 [(ek | joik) [stag] BO # sumti-3]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b94" />
+          <anchor xreflabel="BNF rule #94" xml:id="cll_bnf-94" />
+          <!-- <xref linkend="cll_yacc-94"/> -->
           sumti-4
           <subscript>94</subscript>
           =
         </term>
         <listitem>
-          <para>
-            sumti-5 | gek sumti gik sumti-4
-            <anchor xml:id="b95" />
-            <anchor xreflabel="BNF rule #95" xml:id="cll_bnf-95" />
-            <!-- <xref linkend="cll_yacc-95"/> -->
-          </para>
+          <para>sumti-5 | gek sumti gik sumti-4</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b95" />
+          <anchor xreflabel="BNF rule #95" xml:id="cll_bnf-95" />
+          <!-- <xref linkend="cll_yacc-95"/> -->
           sumti-5
           <subscript>95</subscript>
           =
         </term>
         <listitem>
-          <para>
-            [quantifier] sumti-6 [relative-clauses] | quantifier selbri /KU#/ [relative-clauses]
-            <anchor xml:id="b97" />
-            <anchor xreflabel="BNF rule #97" xml:id="cll_bnf-97" />
-            <!-- <xref linkend="cll_yacc-97"/> -->
-          </para>
+          <para>[quantifier] sumti-6 [relative-clauses] | quantifier selbri /KU#/ [relative-clauses]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b97" />
+          <anchor xreflabel="BNF rule #97" xml:id="cll_bnf-97" />
+          <!-- <xref linkend="cll_yacc-97"/> -->
           sumti-6
           <subscript>97</subscript>
           =
         </term>
         <listitem>
-          <para>
-            (LAhE # | NAhE BO #) [relative-clauses] sumti /LUhU#/ | KOhA # | lerfu-string /BOI#/ | LA # [relative-clauses] CMEVLA ... # | (LA | LE) # sumti-tail /KU#/ | LI # mex /LOhO#/ | ZO any-word # | LU text /LIhU#/ | LOhU any-word ... LEhU # | ZOI any-word anything any-word #
-            <anchor xml:id="b111" />
-            <anchor xreflabel="BNF rule #111" xml:id="cll_bnf-111" />
-            <!-- <xref linkend="cll_yacc-111"/> -->
-          </para>
+          <para>(LAhE # | NAhE BO #) [relative-clauses] sumti /LUhU#/ | KOhA # | lerfu-string /BOI#/ | LA # [relative-clauses] CMEVLA ... # | (LA | LE) # sumti-tail /KU#/ | LI # mex /LOhO#/ | ZO any-word # | LU text /LIhU/ # | LOhU [any-word ...] LEhU # | ZOI any-word anything any-word #</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b111" />
+          <anchor xreflabel="BNF rule #111" xml:id="cll_bnf-111" />
+          <!-- <xref linkend="cll_yacc-111"/> -->
           sumti-tail
           <subscript>111</subscript>
           =
         </term>
         <listitem>
-          <para>
-            [sumti-6 [relative-clauses]] sumti-tail-1 | relative-clauses sumti-tail-1
-            <anchor xml:id="b112" />
-            <anchor xreflabel="BNF rule #112" xml:id="cll_bnf-112" />
-            <!-- <xref linkend="cll_yacc-112"/> -->
-          </para>
+          <para>[sumti-6 [relative-clauses]] sumti-tail-1 | relative-clauses sumti-tail-1</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b112" />
+          <anchor xreflabel="BNF rule #112" xml:id="cll_bnf-112" />
+          <!-- <xref linkend="cll_yacc-112"/> -->
           sumti-tail-1
           <subscript>112</subscript>
           =
         </term>
         <listitem>
-          <para>
-            [quantifier] selbri [relative-clauses] | quantifier sumti
-            <anchor xml:id="b121" />
-            <anchor xreflabel="BNF rule #121" xml:id="cll_bnf-121" />
-            <!-- <xref linkend="cll_yacc-121"/> -->
-          </para>
+          <para>[quantifier] selbri [relative-clauses] | quantifier sumti</para>
         </listitem>
       </varlistentry>
+    </variablelist>
+    </section>
+    <section xml:id="ebnf-relative-clauses">
+      <title>Relative clauses</title>
+    <para>A relative clause attaches to a sumti and either restricts it or comments on it (see <xref linkend="chapter-relative-clauses" />). <valsi>goi</valsi> and the other members of GOI take a term, as in <jbophrase>mi goi ko'a</jbophrase> or <jbophrase>le zdani pe mi</jbophrase>, and <valsi>ge'u</valsi> closes the clause. <valsi>poi</valsi>, <valsi>noi</valsi> and <valsi>voi</valsi> take a subsentence in which <valsi>ke'a</valsi> refers back to the sumti, and <valsi>ku'o</valsi> closes the clause. <valsi>zi'e</valsi> joins several relative clauses on one sumti, and it groups nothing (see <xref linkend="section-zihe" />).</para>
+    <variablelist>
       <varlistentry>
         <term>
+          <anchor xml:id="b121" />
+          <anchor xreflabel="BNF rule #121" xml:id="cll_bnf-121" />
+          <!-- <xref linkend="cll_yacc-121"/> -->
           relative-clauses
           <subscript>121</subscript>
           =
         </term>
         <listitem>
-          <para>
-            relative-clause [ZIhE # relative-clause] ...
-            <anchor xml:id="b122" />
-            <anchor xreflabel="BNF rule #122" xml:id="cll_bnf-122" />
-            <!-- <xref linkend="cll_yacc-122"/> -->
-          </para>
+          <para>relative-clause [ZIhE # relative-clause] ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b122" />
+          <anchor xreflabel="BNF rule #122" xml:id="cll_bnf-122" />
+          <!-- <xref linkend="cll_yacc-122"/> -->
           relative-clause
           <subscript>122</subscript>
           =
         </term>
         <listitem>
-          <para>
-            GOI # term /GEhU#/ | NOI # subsentence /KUhO#/
-            <anchor xml:id="b130" />
-            <anchor xreflabel="BNF rule #130" xml:id="cll_bnf-130" />
-            <!-- <xref linkend="cll_yacc-130"/> -->
-          </para>
+          <para>GOI # term /GEhU#/ | NOI # subsentence /KUhO#/</para>
         </listitem>
       </varlistentry>
+    </variablelist>
+    </section>
+    <section xml:id="ebnf-selbri">
+      <title>Selbri and tanru</title>
+    <para>A selbri is the predicate of a bridi (see <xref linkend="chapter-selbri" />), and a tense or modal can come before it. When a tense or modal is not written as a term, that is how it attaches to the whole bridi, as in <jbophrase>mi pu klama</jbophrase>. The levels below state the tanru grouping. Rule 131 allows <valsi>na</valsi> before a selbri, which is the contradictory negation (see <xref linkend="section-bridi-negation" />).</para>
+    <para>Rule 132 is the <valsi>co</valsi> inversion, <jbophrase>sutra co tavla</jbophrase>. It swaps the order of modifier and modified, so that the part after <valsi>co</valsi> is the modifier (see <xref linkend="section-co-inversion" />). The whole selbri keeps the place structure of the part before <valsi>co</valsi>, and <valsi>co</valsi> groups to the right.</para>
+    <para>Rule 133 is a plain tanru: a sequence of units with no connective between them. It groups to the left, by the left-grouping rule of tanru (see <xref linkend="section-three-part-tanru" />), so <jbophrase>barda gerku zdani</jbophrase> is <jbophrase>(barda gerku) zdani</jbophrase>.</para>
+    <para>Rule 134 joins units by a jek or a joik in afterthought, as in <jbophrase>barda je melbi</jbophrase>, or by a joik followed by <jbophrase>ke ... ke'e</jbophrase>, with an optional tense or modal on the connective. These connections group from the left (see <xref linkend="section-tanru" />). A joik directly before <valsi>ke</valsi> can often be read in two ways: as the <valsi>ke</valsi> group, or as a plain connection to a unit that happens to begin with <valsi>ke</valsi>. Where both fit the text, this grammar takes the group (see <xref linkend="ebnf-parses" />). A jek has no such form, so <jbophrase>mi broda je ke brode ke'e</jbophrase> is a plain connection.</para>
+    <para>Rule 135 joins units by a jek or a joik with <valsi>bo</valsi>, as in <jbophrase>melbi je bo cmalu nixli</jbophrase>. Such a connection binds more tightly than plain juxtaposition, and a run of <valsi>bo</valsi> groups from the right (see <xref linkend="section-complex-grouping" />). Rule 136 is a tanru unit, optionally followed by <valsi>bo</valsi> and a further unit of the same rule, as in <jbophrase>melbi cmalu bo nixli</jbophrase>. A run of tanru <valsi>bo</valsi> groups from the right too, so <jbophrase>cmalu bo nixli bo ckule</jbophrase> (see <xref linkend="example-random-id-snKn" />) is <jbophrase>cmalu bo (nixli bo ckule)</jbophrase>. Rule 136 can also be a forethought connection with a guhek, as in <jbophrase>gu'e barda gi melbi</jbophrase>, optionally negated by <valsi>na'e</valsi> (see <xref linkend="section-logical-connection" />).</para>
+    <para>A tanru unit is one brick of the selbri. Rule 150 allows <valsi>cei</valsi> to assign the unit to a pro-bridi, a predicate pronoun such as <valsi>broda</valsi>: <jbophrase>klama cei broda</jbophrase> (see <xref linkend="section-koha-broda-series" />). Rule 151 attaches linked arguments, <jbophrase>be ... bei ... be'o</jbophrase>, which fill the places of that one unit and not those of the whole bridi (see <xref linkend="section-be-sumti" />). Rule 152 lists the simple units:</para>
+    <itemizedlist>
+      <listitem><para>A brivla.</para></listitem>
+      <listitem><para>A pro-bridi of GOhA, with optional <valsi>ra'o</valsi>.</para></listitem>
+      <listitem><para>A <jbophrase>ke ... ke'e</jbophrase> grouped selbri.</para></listitem>
+      <listitem><para><jbophrase>me sumti me'u</jbophrase>, which turns a sumti into a selbri, optionally with a following MOI word.</para></listitem>
+      <listitem><para>A number or lerfu string with <valsi>moi</valsi>, <valsi>mei</valsi> or another word of MOI.</para></listitem>
+      <listitem><para><valsi>nu'a</valsi> before a mekso operator.</para></listitem>
+      <listitem><para>A conversion: <valsi>se</valsi>, <valsi>te</valsi>, <valsi>ve</valsi> or <valsi>xe</valsi>.</para></listitem>
+      <listitem><para><valsi>jai</valsi> with an optional tense or modal.</para></listitem>
+      <listitem><para>A <valsi>zei</valsi> compound, which the word-level rules of <xref linkend="chapter-structure" /> have already made into one brivla (see <xref linkend="ebnf-words" />).</para></listitem>
+      <listitem><para>A scalar negation <valsi>na'e</valsi>.</para></listitem>
+      <listitem><para>An abstraction: <valsi>nu</valsi>, <valsi>ka</valsi>, <valsi>du'u</valsi> or another word of NU before a subsentence, closed by <valsi>kei</valsi>. A jek or a joik can connect several abstraction words, as in <jbophrase>nu je ka</jbophrase>, and the connection groups from the left (see <xref linkend="section-abstractors" />).</para></listitem>
+    </itemizedlist>
+    <para>The SE, JAI and NAhE forms refer back to rule 152 itself, so <jbophrase>se se broda</jbophrase> and <jbophrase>na'e se broda</jbophrase> are single units.</para>
+    <para role="status-note" condition="status:editorial"><indexterm type="general"><primary>EBNF grammar</primary><secondary>corrections, tanru-unit-2</secondary></indexterm>Rule 152 is corrected in one place. The first edition printed the <valsi>zei</valsi> compound without a free-modifier slot, although every other unit has one. The YACC grammar merges a compound into one brivla before parsing, and then allows a free modifier after it, as after any brivla. So <jbophrase>mi broda zei brode to do toi</jbophrase> is a sentence, and this edition prints the slot.</para>
+    <variablelist>
       <varlistentry>
         <term>
+          <anchor xml:id="b130" />
+          <anchor xreflabel="BNF rule #130" xml:id="cll_bnf-130" />
+          <!-- <xref linkend="cll_yacc-130"/> -->
           selbri
           <subscript>130</subscript>
           =
         </term>
         <listitem>
-          <para>
-            [tag] selbri-1
-            <anchor xml:id="b131" />
-            <anchor xreflabel="BNF rule #131" xml:id="cll_bnf-131" />
-            <!-- <xref linkend="cll_yacc-131"/> -->
-          </para>
+          <para>[tag] selbri-1</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b131" />
+          <anchor xreflabel="BNF rule #131" xml:id="cll_bnf-131" />
+          <!-- <xref linkend="cll_yacc-131"/> -->
           selbri-1
           <subscript>131</subscript>
           =
         </term>
         <listitem>
-          <para>
-            selbri-2 | NA # selbri
-            <anchor xml:id="b132" />
-            <anchor xreflabel="BNF rule #132" xml:id="cll_bnf-132" />
-            <!-- <xref linkend="cll_yacc-132"/> -->
-          </para>
+          <para>selbri-2 | NA # selbri</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b132" />
+          <anchor xreflabel="BNF rule #132" xml:id="cll_bnf-132" />
+          <!-- <xref linkend="cll_yacc-132"/> -->
           selbri-2
           <subscript>132</subscript>
           =
         </term>
         <listitem>
-          <para>
-            selbri-3 [CO # selbri-2]
-            <anchor xml:id="b133" />
-            <anchor xreflabel="BNF rule #133" xml:id="cll_bnf-133" />
-            <!-- <xref linkend="cll_yacc-133"/> -->
-          </para>
+          <para>selbri-3 [CO # selbri-2]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b133" />
+          <anchor xreflabel="BNF rule #133" xml:id="cll_bnf-133" />
+          <!-- <xref linkend="cll_yacc-133"/> -->
           selbri-3
           <subscript>133</subscript>
           =
         </term>
         <listitem>
-          <para>
-            selbri-4 ...
-            <anchor xml:id="b134" />
-            <anchor xreflabel="BNF rule #134" xml:id="cll_bnf-134" />
-            <!-- <xref linkend="cll_yacc-134"/> -->
-          </para>
+          <para>selbri-4 ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b134" />
+          <anchor xreflabel="BNF rule #134" xml:id="cll_bnf-134" />
+          <!-- <xref linkend="cll_yacc-134"/> -->
           selbri-4
           <subscript>134</subscript>
           =
         </term>
         <listitem>
-          <para>
-            selbri-5 [joik-jek selbri-5 | joik [stag] KE # selbri-3 /KEhE#/] ...
-            <anchor xml:id="b135" />
-            <anchor xreflabel="BNF rule #135" xml:id="cll_bnf-135" />
-            <!-- <xref linkend="cll_yacc-135"/> -->
-          </para>
+          <para>selbri-5 [joik-jek selbri-5 | joik [stag] KE # selbri-3 /KEhE#/] ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b135" />
+          <anchor xreflabel="BNF rule #135" xml:id="cll_bnf-135" />
+          <!-- <xref linkend="cll_yacc-135"/> -->
           selbri-5
           <subscript>135</subscript>
           =
         </term>
         <listitem>
-          <para>
-            selbri-6 [(jek | joik) [stag] BO # selbri-5]
-            <anchor xml:id="b136" />
-            <anchor xreflabel="BNF rule #136" xml:id="cll_bnf-136" />
-            <!-- <xref linkend="cll_yacc-136"/> -->
-          </para>
+          <para>selbri-6 [(jek | joik) [stag] BO # selbri-5]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b136" />
+          <anchor xreflabel="BNF rule #136" xml:id="cll_bnf-136" />
+          <!-- <xref linkend="cll_yacc-136"/> -->
           selbri-6
           <subscript>136</subscript>
           =
         </term>
         <listitem>
-          <para>
-            tanru-unit [BO # selbri-6] | [NAhE #] guhek selbri gik selbri-6
-            <anchor xml:id="b150" />
-            <anchor xreflabel="BNF rule #150" xml:id="cll_bnf-150" />
-            <!-- <xref linkend="cll_yacc-150"/> -->
-          </para>
+          <para>tanru-unit [BO # selbri-6] | [NAhE #] guhek selbri gik selbri-6</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b150" />
+          <anchor xreflabel="BNF rule #150" xml:id="cll_bnf-150" />
+          <!-- <xref linkend="cll_yacc-150"/> -->
           tanru-unit
           <subscript>150</subscript>
           =
         </term>
         <listitem>
-          <para>
-            tanru-unit-1 [CEI # tanru-unit-1] ...
-            <anchor xml:id="b151" />
-            <anchor xreflabel="BNF rule #151" xml:id="cll_bnf-151" />
-            <!-- <xref linkend="cll_yacc-151"/> -->
-          </para>
+          <para>tanru-unit-1 [CEI # tanru-unit-1] ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b151" />
+          <anchor xreflabel="BNF rule #151" xml:id="cll_bnf-151" />
+          <!-- <xref linkend="cll_yacc-151"/> -->
           tanru-unit-1
           <subscript>151</subscript>
           =
         </term>
         <listitem>
-          <para>
-            tanru-unit-2 [linkargs]
-            <anchor xml:id="b152" />
-            <anchor xreflabel="BNF rule #152" xml:id="cll_bnf-152" />
-            <!-- <xref linkend="cll_yacc-152"/> -->
-          </para>
+          <para>tanru-unit-2 [linkargs]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b152" />
+          <anchor xreflabel="BNF rule #152" xml:id="cll_bnf-152" />
+          <!-- <xref linkend="cll_yacc-152"/> -->
           tanru-unit-2
           <subscript>152</subscript>
           =
         </term>
         <listitem>
-          <para>
-            BRIVLA # | GOhA [RAhO] # | KE # selbri-3 /KEhE#/ | ME # sumti /MEhU#/ [MOI #] | (number | lerfu-string) MOI # | NUhA # mex-operator | SE # tanru-unit-2 | JAI # [tag] tanru-unit-2 | any-word (ZEI any-word) ... | NAhE # tanru-unit-2 | NU [NAI] # [joik-jek NU [NAI] #] ... subsentence /KEI#/
-            <anchor xml:id="b160" />
-            <anchor xreflabel="BNF rule #160" xml:id="cll_bnf-160" />
-            <!-- <xref linkend="cll_yacc-160"/> -->
-          </para>
+          <para>BRIVLA # | GOhA [RAhO] # | KE # selbri-3 /KEhE#/ | ME # sumti /MEhU#/ [MOI #] | (number | lerfu-string) MOI # | NUhA # mex-operator | SE # tanru-unit-2 | JAI # [tag] tanru-unit-2 | any-word (ZEI any-word) ... # | NAhE # tanru-unit-2 | NU [NAI] # [joik-jek NU [NAI] #] ... subsentence /KEI#/</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b160" />
+          <anchor xreflabel="BNF rule #160" xml:id="cll_bnf-160" />
+          <!-- <xref linkend="cll_yacc-160"/> -->
           linkargs
           <subscript>160</subscript>
           =
         </term>
         <listitem>
-          <para>
-            BE # term [links] /BEhO#/
-            <anchor xml:id="b161" />
-            <anchor xreflabel="BNF rule #161" xml:id="cll_bnf-161" />
-            <!-- <xref linkend="cll_yacc-161"/> -->
-          </para>
+          <para>BE # term [links] /BEhO#/</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b161" />
+          <anchor xreflabel="BNF rule #161" xml:id="cll_bnf-161" />
+          <!-- <xref linkend="cll_yacc-161"/> -->
           links
           <subscript>161</subscript>
           =
         </term>
         <listitem>
-          <para>
-            BEI # term [links]
-            <anchor xml:id="b300" />
-            <anchor xreflabel="BNF rule #300" xml:id="cll_bnf-300" />
-            <!-- <xref linkend="cll_yacc-300"/> -->
-          </para>
+          <para>BEI # term [links]</para>
         </listitem>
       </varlistentry>
+    </variablelist>
+    </section>
+    <section xml:id="ebnf-mekso">
+      <title>Numbers, lerfu strings and mekso</title>
+    <para>A number, rule 812, is a string of PA words, such as the digits <valsi>pa</valsi> and <valsi>re</valsi> and the decimal point <valsi>pi</valsi> (see <xref linkend="section-mekso-numbers" />). Either PA words or lerfu words may follow its first word: <jbophrase>pa re ci</jbophrase>, <jbophrase>pa xy.</jbophrase>. A lerfu string, rule 817, starts with a lerfu word instead (see <xref linkend="section-chinese-characters" />). A lerfu word, rule 987, is a BY word, a <valsi>lau</valsi> shift before a lerfu word, or a <jbophrase>tei ... foi</jbophrase> compound (see <xref linkend="section-accents" /> and <xref linkend="section-lerfu-cmavo-summary" />). The word-level rules of <xref linkend="chapter-structure" /> turn each word with <valsi>bu</valsi> into a single BY word before the grammar ever sees it, and the <quote>any-word BU</quote> of rule 987 is a picture of that (see <xref linkend="ebnf-words" />).</para>
+    <para>A number or lerfu string cannot end before another number word or lerfu word. A written <valsi>boi</valsi> is what ends the run. So <jbophrase>pa xy. cu barda</jbophrase> is not a sentence, and <jbophrase>pa boi xy. cu barda</jbophrase> is one (see <xref linkend="section-lerfu-pro-sumti" /> and <xref linkend="section-forethought" />). This holds even where dividing the run is the only way to make the rest of the text fit. The notation has no way of writing that rule, so it is stated here, and <xref linkend="ebnf-parses" /> lists it among the rules on which readings count.</para>
+    <para>A quantifier, rule 300, is a number closed by <valsi>boi</valsi>, or a mekso in <jbophrase>vei ... ve'o</jbophrase> brackets (see <xref linkend="section-math" />). Rule 310 permits afterthought infix expressions, such as <jbophrase>li pa su'i re</jbophrase>, and reverse Polish expressions introduced by <valsi>fu'a</valsi>. In reverse Polish notation, an expression is two operands followed by an operator, and each operand can itself be such an expression (see <xref linkend="section-reverse-polish-notation" />). Infix operators group to the left, so <jbophrase>ci su'i vo pi'i mu</jbophrase> is <jbophrase>(ci su'i vo) pi'i mu</jbophrase> (see <xref linkend="section-simple-infix" />). Rule 311 is the <valsi>bi'e</valsi> form, which binds an operator more tightly than its neighbors; a run of <valsi>bi'e</valsi> groups from the right. Rule 312 is an operand, or a forethought operator followed by its operands. An optional <valsi>pe'o</valsi> comes before the operator, and an optional <valsi>ku'e</valsi> after the last operand.</para>
+    <para>Operators have their own connectives and grouping, shaped just like those of selbri (see <xref linkend="section-mekso-connections" />). Rule 370 joins operators by a jek or a joik, or by a joik and a <valsi>ke</valsi> group, and these connections group from the left. Where a joik stands directly before <valsi>ke</valsi>, this grammar takes the group where both readings fit (see <xref linkend="ebnf-parses" />). Rule 371 supplies the guhek forethought and the <valsi>bo</valsi> forms. Rule 372 is a simple operator or a <jbophrase>ke ... ke'e</jbophrase> group. A simple operator, rule 374, is a VUhU word, possibly converted by <valsi>se</valsi> or negated by <valsi>na'e</valsi>. It can also be an operator made from a mekso through <valsi>ma'o</valsi>, or a selbri used as an operator through <valsi>na'u</valsi>; <valsi>te'u</valsi> closes these last two.</para>
+    <para>Operands connect in the same way. Rule 381 takes a <valsi>ke</valsi> group, rule 382 the afterthought connectives, and rule 383 the <valsi>bo</valsi> form, with the same grouping as for sumti. Rule 385 lists the simple operands: a quantifier, a lerfu string, a selbri through <valsi>ni'e</valsi>, a sumti through <valsi>mo'e</valsi>, and an array through <valsi>jo'i</valsi>. A forethought connection counts as a simple operand too, and so does a qualifier such as <valsi>la'e</valsi> or <jbophrase>na'e bo</jbophrase> before an operand.</para>
+    <variablelist>
       <varlistentry>
         <term>
+          <anchor xml:id="b300" />
+          <anchor xreflabel="BNF rule #300" xml:id="cll_bnf-300" />
+          <!-- <xref linkend="cll_yacc-300"/> -->
           quantifier
           <subscript>300</subscript>
           =
         </term>
         <listitem>
-          <para>
-            number /BOI#/ | VEI # mex /VEhO#/
-            <anchor xml:id="b310" />
-            <anchor xreflabel="BNF rule #310" xml:id="cll_bnf-310" />
-            <!-- <xref linkend="cll_yacc-310"/> -->
-          </para>
+          <para>number /BOI#/ | VEI # mex /VEhO#/</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b310" />
+          <anchor xreflabel="BNF rule #310" xml:id="cll_bnf-310" />
+          <!-- <xref linkend="cll_yacc-310"/> -->
           mex
           <subscript>310</subscript>
           =
         </term>
         <listitem>
-          <para>
-            mex-1 [operator mex-1] ... | FUhA # rp-expression
-            <anchor xml:id="b311" />
-            <anchor xreflabel="BNF rule #311" xml:id="cll_bnf-311" />
-            <!-- <xref linkend="cll_yacc-311"/> -->
-          </para>
+          <para>mex-1 [operator mex-1] ... | FUhA # rp-expression</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b311" />
+          <anchor xreflabel="BNF rule #311" xml:id="cll_bnf-311" />
+          <!-- <xref linkend="cll_yacc-311"/> -->
           mex-1
           <subscript>311</subscript>
           =
         </term>
         <listitem>
-          <para>
-            mex-2 [BIhE # operator mex-1]
-            <anchor xml:id="b312" />
-            <anchor xreflabel="BNF rule #312" xml:id="cll_bnf-312" />
-            <!-- <xref linkend="cll_yacc-312"/> -->
-          </para>
+          <para>mex-2 [BIhE # operator mex-1]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b312" />
+          <anchor xreflabel="BNF rule #312" xml:id="cll_bnf-312" />
+          <!-- <xref linkend="cll_yacc-312"/> -->
           mex-2
           <subscript>312</subscript>
           =
         </term>
         <listitem>
-          <para>
-            operand | [PEhO #] operator mex-2 ... /KUhE#/
-            <anchor xml:id="b330" />
-            <anchor xreflabel="BNF rule #330" xml:id="cll_bnf-330" />
-            <!-- <xref linkend="cll_yacc-330"/> -->
-          </para>
+          <para>operand | [PEhO #] operator mex-2 ... /KUhE#/</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b330" />
+          <anchor xreflabel="BNF rule #330" xml:id="cll_bnf-330" />
+          <!-- <xref linkend="cll_yacc-330"/> -->
           rp-expression
           <subscript>330</subscript>
           =
         </term>
         <listitem>
-          <para>
-            rp-operand rp-operand operator
-            <anchor xml:id="b332" />
-            <anchor xreflabel="BNF rule #332" xml:id="cll_bnf-332" />
-            <!-- <xref linkend="cll_yacc-332"/> -->
-          </para>
+          <para>rp-operand rp-operand operator</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b332" />
+          <anchor xreflabel="BNF rule #332" xml:id="cll_bnf-332" />
+          <!-- <xref linkend="cll_yacc-332"/> -->
           rp-operand
           <subscript>332</subscript>
           =
         </term>
         <listitem>
-          <para>
-            operand | rp-expression
-            <anchor xml:id="b370" />
-            <anchor xreflabel="BNF rule #370" xml:id="cll_bnf-370" />
-            <!-- <xref linkend="cll_yacc-370"/> -->
-          </para>
+          <para>operand | rp-expression</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b370" />
+          <anchor xreflabel="BNF rule #370" xml:id="cll_bnf-370" />
+          <!-- <xref linkend="cll_yacc-370"/> -->
           operator
           <subscript>370</subscript>
           =
         </term>
         <listitem>
-          <para>
-            operator-1 [joik-jek operator-1 | joik [stag] KE # operator /KEhE#/] ...
-            <anchor xml:id="b371" />
-            <anchor xreflabel="BNF rule #371" xml:id="cll_bnf-371" />
-            <!-- <xref linkend="cll_yacc-371"/> -->
-          </para>
+          <para>operator-1 [joik-jek operator-1 | joik [stag] KE # operator /KEhE#/] ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b371" />
+          <anchor xreflabel="BNF rule #371" xml:id="cll_bnf-371" />
+          <!-- <xref linkend="cll_yacc-371"/> -->
           operator-1
           <subscript>371</subscript>
           =
         </term>
         <listitem>
-          <para>
-            operator-2 | guhek operator-1 gik operator-2 | operator-2 (jek | joik) [stag] BO # operator-1
-            <anchor xml:id="b372" />
-            <anchor xreflabel="BNF rule #372" xml:id="cll_bnf-372" />
-            <!-- <xref linkend="cll_yacc-372"/> -->
-          </para>
+          <para>operator-2 | guhek operator-1 gik operator-2 | operator-2 (jek | joik) [stag] BO # operator-1</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b372" />
+          <anchor xreflabel="BNF rule #372" xml:id="cll_bnf-372" />
+          <!-- <xref linkend="cll_yacc-372"/> -->
           operator-2
           <subscript>372</subscript>
           =
         </term>
         <listitem>
-          <para>
-            mex-operator | KE # operator /KEhE#/
-            <anchor xml:id="b374" />
-            <anchor xreflabel="BNF rule #374" xml:id="cll_bnf-374" />
-            <!-- <xref linkend="cll_yacc-374"/> -->
-          </para>
+          <para>mex-operator | KE # operator /KEhE#/</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b374" />
+          <anchor xreflabel="BNF rule #374" xml:id="cll_bnf-374" />
+          <!-- <xref linkend="cll_yacc-374"/> -->
           mex-operator
           <subscript>374</subscript>
           =
         </term>
         <listitem>
-          <para>
-            SE # mex-operator | NAhE # mex-operator | MAhO # mex /TEhU#/ | NAhU # selbri /TEhU#/ | VUhU #
-            <anchor xml:id="b381" />
-            <anchor xreflabel="BNF rule #381" xml:id="cll_bnf-381" />
-            <!-- <xref linkend="cll_yacc-381"/> -->
-          </para>
+          <para>SE # mex-operator | NAhE # mex-operator | MAhO # mex /TEhU#/ | NAhU # selbri /TEhU#/ | VUhU #</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b381" />
+          <anchor xreflabel="BNF rule #381" xml:id="cll_bnf-381" />
+          <!-- <xref linkend="cll_yacc-381"/> -->
           operand
           <subscript>381</subscript>
           =
         </term>
         <listitem>
-          <para>
-            operand-1 [(ek | joik) [stag] KE # operand /KEhE#/]
-            <anchor xml:id="b382" />
-            <anchor xreflabel="BNF rule #382" xml:id="cll_bnf-382" />
-            <!-- <xref linkend="cll_yacc-382"/> -->
-          </para>
+          <para>operand-1 [(ek | joik) [stag] KE # operand /KEhE#/]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b382" />
+          <anchor xreflabel="BNF rule #382" xml:id="cll_bnf-382" />
+          <!-- <xref linkend="cll_yacc-382"/> -->
           operand-1
           <subscript>382</subscript>
           =
         </term>
         <listitem>
-          <para>
-            operand-2 [joik-ek operand-2] ...
-            <anchor xml:id="b383" />
-            <anchor xreflabel="BNF rule #383" xml:id="cll_bnf-383" />
-            <!-- <xref linkend="cll_yacc-383"/> -->
-          </para>
+          <para>operand-2 [joik-ek operand-2] ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b383" />
+          <anchor xreflabel="BNF rule #383" xml:id="cll_bnf-383" />
+          <!-- <xref linkend="cll_yacc-383"/> -->
           operand-2
           <subscript>383</subscript>
           =
         </term>
         <listitem>
-          <para>
-            operand-3 [(ek | joik) [stag] BO # operand-2]
-            <anchor xml:id="b385" />
-            <anchor xreflabel="BNF rule #385" xml:id="cll_bnf-385" />
-            <!-- <xref linkend="cll_yacc-385"/> -->
-          </para>
+          <para>operand-3 [(ek | joik) [stag] BO # operand-2]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b385" />
+          <anchor xreflabel="BNF rule #385" xml:id="cll_bnf-385" />
+          <!-- <xref linkend="cll_yacc-385"/> -->
           operand-3
           <subscript>385</subscript>
           =
         </term>
         <listitem>
-          <para>
-            quantifier | lerfu-string /BOI#/ | NIhE # selbri /TEhU#/ | MOhE # sumti /TEhU#/ | JOhI # mex-2 ... /TEhU#/ | gek operand gik operand-3 | (LAhE # | NAhE BO #) operand /LUhU#/
-            <anchor xml:id="b812" />
-            <anchor xreflabel="BNF rule #812" xml:id="cll_bnf-812" />
-            <!-- <xref linkend="cll_yacc-812"/> -->
-          </para>
+          <para>quantifier | lerfu-string /BOI#/ | NIhE # selbri /TEhU#/ | MOhE # sumti /TEhU#/ | JOhI # mex-2 ... /TEhU#/ | gek operand gik operand-3 | (LAhE # | NAhE BO #) operand /LUhU#/</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b812" />
+          <anchor xreflabel="BNF rule #812" xml:id="cll_bnf-812" />
+          <!-- <xref linkend="cll_yacc-812"/> -->
           number
           <subscript>812</subscript>
           =
         </term>
         <listitem>
-          <para>
-            PA [PA | lerfu-word] ...
-            <anchor xml:id="b817" />
-            <anchor xreflabel="BNF rule #817" xml:id="cll_bnf-817" />
-            <!-- <xref linkend="cll_yacc-817"/> -->
-          </para>
+          <para>PA [PA | lerfu-word] ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b817" />
+          <anchor xreflabel="BNF rule #817" xml:id="cll_bnf-817" />
+          <!-- <xref linkend="cll_yacc-817"/> -->
           lerfu-string
           <subscript>817</subscript>
           =
         </term>
         <listitem>
-          <para>
-            lerfu-word [PA | lerfu-word] ...
-            <anchor xml:id="b987" />
-            <anchor xreflabel="BNF rule #987" xml:id="cll_bnf-987" />
-            <!-- <xref linkend="cll_yacc-987"/> -->
-          </para>
+          <para>lerfu-word [PA | lerfu-word] ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b987" />
+          <anchor xreflabel="BNF rule #987" xml:id="cll_bnf-987" />
+          <!-- <xref linkend="cll_yacc-987"/> -->
           lerfu-word
           <subscript>987</subscript>
           =
         </term>
         <listitem>
-          <para>
-            BY | any-word BU | LAU lerfu-word | TEI lerfu-string FOI
-            <anchor xml:id="b802" />
-            <anchor xreflabel="BNF rule #802" xml:id="cll_bnf-802" />
-            <!-- <xref linkend="cll_yacc-802"/> -->
-          </para>
+          <para>BY | any-word BU | LAU lerfu-word | TEI lerfu-string FOI</para>
         </listitem>
       </varlistentry>
+    </variablelist>
+    </section>
+    <section xml:id="ebnf-connectives">
+      <title>Logical and non-logical connectives</title>
+    <para>Lojban has just one set of logical connectives, though it spells them differently at each level of the grammar (see <xref linkend="section-six-types" />). An ek joins sumti, as in <valsi>.e</valsi> and <valsi>.a</valsi>. A gihek joins bridi-tails, as in <valsi>gi'e</valsi>. A jek joins tanru units and, when preceded by <valsi>.i</valsi>, sentences, as in <valsi>je</valsi>. A gek is the forethought form, <jbophrase>ga ... gi</jbophrase>. Every afterthought connective can be negated on either side, with <valsi>na</valsi> before it and <valsi>nai</valsi> after it, and can be converted by <valsi>se</valsi>.</para>
+    <para>A joik is a non-logical connective: <valsi>joi</valsi>, <valsi>ce</valsi>, <valsi>jo'u</valsi> and the rest of JOI, or else an interval connective, <valsi>bi'i</valsi> or <valsi>bi'o</valsi>. An interval has <valsi>ga'o</valsi> or <valsi>ke'i</valsi> on both sides or on neither (see <xref linkend="section-non-logical-connectives" /> and <xref linkend="section-non-logical-continued-continued" />). Rules 421 and 422, <quote>joik-ek</quote> and <quote>joik-jek</quote>, are the pairs that stand in the same position, each with a slot for a free modifier.</para>
+    <para>A gek, rule 807, is a forethought logical connective. It can also be a joik used in forethought with <valsi>gi</valsi>, or a tense with <valsi>gi</valsi>, as in <jbophrase>pu gi ... gi</jbophrase>. A gik, rule 816, separates the two halves, and is just <valsi>gi</valsi>, optionally negated. A guhek, rule 808, is the forethought connective for tanru units and for operators.</para>
+    <para><indexterm type="general"><primary>ke</primary><secondary>after a connective, in the EBNF grammar</secondary></indexterm>Several rules let a connective take a <jbophrase>ke ... ke'e</jbophrase> group: rule 50 for a gihek, rules 91 and 381 for an ek or a joik, and rules 134 and 370 for a joik. In each of them an optional tense or modal may stand between the connective and the <valsi>ke</valsi>, and it belongs to the connective (see <xref linkend="section-sumtcita" />). <xref linkend="example-random-id-nydK" /> has <jbophrase>.e pu ke</jbophrase>, and <xref linkend="example-random-id-A0yC" /> has <jbophrase>gi'e ca ke</jbophrase>. A connective, an optional tense or modal, and <valsi>ke</valsi> often turn up together, and the same words then also fit a plain connection to a unit that happens to begin with <valsi>ke</valsi>. Where both readings fit, this grammar takes the group. A free modifier that is still a word of its own, such as a parenthesis, breaks the pattern: <jbophrase>mi broda gi'e to do toi ke brode ke'e</jbophrase> has a plain <valsi>gi'e</valsi>. Where only the plain reading fits, the plain reading stands, so these three are all sentences: <jbophrase>mi broda joi ke brode ke'e bo brodi</jbophrase>, <jbophrase>mi broda gi'e ke brode ke'e brodi</jbophrase> and <jbophrase>mi broda gi'e ke brode ke'e vau do</jbophrase>.</para>
+    <para role="status-note" condition="status:editorial">The official parser reads a connective directly before <valsi>ke</valsi> as one unit before it applies the rules, and so it rejects the three sentences above. This grammar follows the printed rules, which accept them. Where both readings fit, the two agree.</para>
+    <variablelist>
       <varlistentry>
         <term>
+          <anchor xml:id="b802" />
+          <anchor xreflabel="BNF rule #802" xml:id="cll_bnf-802" />
+          <!-- <xref linkend="cll_yacc-802"/> -->
           ek
           <subscript>802</subscript>
           =
         </term>
         <listitem>
-          <para>
-            [NA] [SE] A [NAI]
-            <anchor xml:id="b818" />
-            <anchor xreflabel="BNF rule #818" xml:id="cll_bnf-818" />
-            <!-- <xref linkend="cll_yacc-818"/> -->
-          </para>
+          <para>[NA] [SE] A [NAI]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b818" />
+          <anchor xreflabel="BNF rule #818" xml:id="cll_bnf-818" />
+          <!-- <xref linkend="cll_yacc-818"/> -->
           gihek
           <subscript>818</subscript>
           =
         </term>
         <listitem>
-          <para>
-            [NA] [SE] GIhA [NAI]
-            <anchor xml:id="b805" />
-            <anchor xreflabel="BNF rule #805" xml:id="cll_bnf-805" />
-            <!-- <xref linkend="cll_yacc-805"/> -->
-          </para>
+          <para>[NA] [SE] GIhA [NAI]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b805" />
+          <anchor xreflabel="BNF rule #805" xml:id="cll_bnf-805" />
+          <!-- <xref linkend="cll_yacc-805"/> -->
           jek
           <subscript>805</subscript>
           =
         </term>
         <listitem>
-          <para>
-            [NA] [SE] JA [NAI]
-            <anchor xml:id="b806" />
-            <anchor xreflabel="BNF rule #806" xml:id="cll_bnf-806" />
-            <!-- <xref linkend="cll_yacc-806"/> -->
-          </para>
+          <para>[NA] [SE] JA [NAI]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b806" />
+          <anchor xreflabel="BNF rule #806" xml:id="cll_bnf-806" />
+          <!-- <xref linkend="cll_yacc-806"/> -->
           joik
           <subscript>806</subscript>
           =
         </term>
         <listitem>
-          <para>
-            [SE] JOI [NAI] | interval | GAhO interval GAhO
-            <anchor xml:id="b932" />
-            <anchor xreflabel="BNF rule #932" xml:id="cll_bnf-932" />
-            <!-- <xref linkend="cll_yacc-932"/> -->
-          </para>
+          <para>[SE] JOI [NAI] | interval | GAhO interval GAhO</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b932" />
+          <anchor xreflabel="BNF rule #932" xml:id="cll_bnf-932" />
+          <!-- <xref linkend="cll_yacc-932"/> -->
           interval
           <subscript>932</subscript>
           =
         </term>
         <listitem>
-          <para>
-            [SE] BIhI [NAI]
-            <anchor xml:id="b421" />
-            <anchor xreflabel="BNF rule #421" xml:id="cll_bnf-421" />
-            <!-- <xref linkend="cll_yacc-421"/> -->
-          </para>
+          <para>[SE] BIhI [NAI]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b421" />
+          <anchor xreflabel="BNF rule #421" xml:id="cll_bnf-421" />
+          <!-- <xref linkend="cll_yacc-421"/> -->
           joik-ek
           <subscript>421</subscript>
           =
         </term>
         <listitem>
-          <para>
-            joik # | ek #
-            <anchor xml:id="b422" />
-            <anchor xreflabel="BNF rule #422" xml:id="cll_bnf-422" />
-            <!-- <xref linkend="cll_yacc-422"/> -->
-          </para>
+          <para>joik # | ek #</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b422" />
+          <anchor xreflabel="BNF rule #422" xml:id="cll_bnf-422" />
+          <!-- <xref linkend="cll_yacc-422"/> -->
           joik-jek
           <subscript>422</subscript>
           =
         </term>
         <listitem>
-          <para>
-            joik # | jek #
-            <anchor xml:id="b807" />
-            <anchor xreflabel="BNF rule #807" xml:id="cll_bnf-807" />
-            <!-- <xref linkend="cll_yacc-807"/> -->
-          </para>
+          <para>joik # | jek #</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b807" />
+          <anchor xreflabel="BNF rule #807" xml:id="cll_bnf-807" />
+          <!-- <xref linkend="cll_yacc-807"/> -->
           gek
           <subscript>807</subscript>
           =
         </term>
         <listitem>
-          <para>
-            [SE] GA [NAI] # | joik GI # | stag gik
-            <anchor xml:id="b808" />
-            <anchor xreflabel="BNF rule #808" xml:id="cll_bnf-808" />
-            <!-- <xref linkend="cll_yacc-808"/> -->
-          </para>
+          <para>[SE] GA [NAI] # | joik GI # | stag gik</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b808" />
+          <anchor xreflabel="BNF rule #808" xml:id="cll_bnf-808" />
+          <!-- <xref linkend="cll_yacc-808"/> -->
           guhek
           <subscript>808</subscript>
           =
         </term>
         <listitem>
-          <para>
-            [SE] GUhA [NAI] #
-            <anchor xml:id="b816" />
-            <anchor xreflabel="BNF rule #816" xml:id="cll_bnf-816" />
-            <!-- <xref linkend="cll_yacc-816"/> -->
-          </para>
+          <para>[SE] GUhA [NAI] #</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b816" />
+          <anchor xreflabel="BNF rule #816" xml:id="cll_bnf-816" />
+          <!-- <xref linkend="cll_yacc-816"/> -->
           gik
           <subscript>816</subscript>
           =
         </term>
         <listitem>
-          <para>
-            GI [NAI] #
-            <anchor xml:id="b491" />
-            <anchor xreflabel="BNF rule #491" xml:id="cll_bnf-491" />
-            <!-- <xref linkend="cll_yacc-491"/> -->
-          </para>
+          <para>GI [NAI] #</para>
         </listitem>
       </varlistentry>
+    </variablelist>
+    </section>
+    <section xml:id="ebnf-tenses">
+      <title>Tenses and modals</title>
+    <para>A tense or modal, rule 491 <quote>tag</quote>, turns a sumti into a modal or tense term (see <xref linkend="chapter-sumti-tcita" /> and <xref linkend="chapter-tenses" />), and it can also mark a selbri or a whole sentence with a tense. A tag is one or more tense-modals joined by a jek or a joik, as in <jbophrase>pu je ca</jbophrase>, and such connections group from the left (see <xref linkend="section-connected-tenses" /> and <xref linkend="section-sumtcita" />). Rule 971, <quote>stag</quote>, is the restricted form that is allowed inside connectives before <valsi>bo</valsi> and <valsi>ke</valsi>, and in a gek. It has no free-modifier slot, because a slot there would make the grammar ambiguous.</para>
+    <para>A tense-modal, rule 815, is either a simple tense-modal with a free-modifier slot, or <jbophrase>fi'o selbri fe'u</jbophrase>, which makes a modal out of any selbri (see <xref linkend="section-selbri-modals" />). A simple tense-modal, rule 972, has one of these forms:</para>
+    <itemizedlist>
+      <listitem><para>A BAI modal, optionally converted by <valsi>se</valsi>.</para></listitem>
+      <listitem><para>A time tense, a space tense, or both in either order, followed by an optional CAhA word such as <valsi>ka'e</valsi>. A CAhA word can also stand alone.</para></listitem>
+      <listitem><para>The sticky tense <valsi>ki</valsi> alone (see <xref linkend="section-sticky-tenses" />).</para></listitem>
+      <listitem><para>The question word <valsi>cu'e</valsi>.</para></listitem>
+    </itemizedlist>
+    <para><valsi>na'e</valsi> can negate either a BAI modal or a tense, and <valsi>ki</valsi> can follow either one. So <jbophrase>ba za ki</jbophrase>, <jbophrase>na'e ka'e</jbophrase> and <jbophrase>pu ki</jbophrase> are each a single simple tense-modal.</para>
+    <para role="status-note" condition="status:editorial"><indexterm type="general"><primary>EBNF grammar</primary><secondary>corrections, simple-tense-modal</secondary></indexterm>Rule 972 is corrected here. The first edition printed its second alternative as <quote>[NAhE] (time [space] | space [time]) &amp; CAhA [KI]</quote>. Under the precedence of point 11 of the notation, that attaches <valsi>na'e</valsi> to the tense alone and <valsi>ki</valsi> to the CAhA word alone. The YACC grammar puts both around the whole combination, and this edition adds the parentheses that say so.</para>
+    <para>A time tense, rule 1030, contains these parts in this order (see <xref linkend="section-temporal-tenses" /> and <xref linkend="section-interval-properties" />): a <valsi>zi</valsi> distance, offsets <valsi>pu</valsi>, <valsi>ca</valsi>, <valsi>ba</valsi> each with an optional distance, an interval <valsi>ze'a</valsi> with an optional direction, and interval properties. A space tense, rule 1040, is likewise built from a <valsi>va</valsi> distance, offsets of FAhA, a space interval, and a <valsi>mo'i</valsi> movement. A space interval is <valsi>ve'a</valsi> or <valsi>vi'a</valsi> or both, with an optional direction, and then interval properties, each flagged by <valsi>fe'e</valsi> (see <xref linkend="section-fehe" />). An interval property, rule 1051, is <valsi>roi</valsi> with a number, a word of TAhE such as <valsi>ta'e</valsi>, or a ZAhO event contour, and each of these can take <valsi>nai</valsi>. A tense can hold a whole string of them, as in <xref linkend="example-random-id-qetE" /> (see <xref linkend="section-sub-events" />).</para>
+    <para>Time usually comes before space, as <xref linkend="section-temporal-tenses" /> advises, but the rule allows both orders, so <jbophrase>mi va pu klama</jbophrase> has the one tense <jbophrase>va pu</jbophrase>. Sometimes the words of a tense can be divided in more than one way. When that happens, this grammar takes the earliest tense, and then the longest. A longer tense counts only where a reading of the whole text remains with it (see <xref linkend="ebnf-parses" />). That matters before <valsi>gi</valsi>. In <jbophrase>mi viska pu ca gi do gi la .djan.</jbophrase> the connective is <jbophrase>pu ca gi</jbophrase>. In <jbophrase>mi viska pu va ca gi do gi la .djan.</jbophrase>, though, two divisions begin at <valsi>pu</valsi>: the tense <jbophrase>pu va</jbophrase> and then the connective <jbophrase>ca gi</jbophrase>, or the tense <valsi>pu</valsi> and then the connective <jbophrase>va ca gi</jbophrase>. <jbophrase>pu va</jbophrase> is the longer tense, so the first division wins. (<jbophrase>pu va ca</jbophrase> is not one tense, because a tense does not return to time after its space part.)</para>
+    <para role="status-note" condition="status:editorial">The limit on the longest tense is this edition's. A longer tense is taken only where a reading of the whole text remains with it. The lexer of the official grammar forms the longest tense in every case, even where no reading remains. No known text shows the difference.</para>
+    <variablelist>
       <varlistentry>
         <term>
+          <anchor xml:id="b491" />
+          <anchor xreflabel="BNF rule #491" xml:id="cll_bnf-491" />
+          <!-- <xref linkend="cll_yacc-491"/> -->
           tag
           <subscript>491</subscript>
           =
         </term>
         <listitem>
-          <para>
-            tense-modal [joik-jek tense-modal] ...
-            <anchor xml:id="b971" />
-            <anchor xreflabel="BNF rule #971" xml:id="cll_bnf-971" />
-            <!-- <xref linkend="cll_yacc-971"/> -->
-          </para>
+          <para>tense-modal [joik-jek tense-modal] ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b971" />
+          <anchor xreflabel="BNF rule #971" xml:id="cll_bnf-971" />
+          <!-- <xref linkend="cll_yacc-971"/> -->
           stag
           <subscript>971</subscript>
           =
         </term>
         <listitem>
-          <para>
-            simple-tense-modal [(jek | joik) simple-tense-modal] ...
-            <anchor xml:id="b815" />
-            <anchor xreflabel="BNF rule #815" xml:id="cll_bnf-815" />
-            <!-- <xref linkend="cll_yacc-815"/> -->
-          </para>
+          <para>simple-tense-modal [(jek | joik) simple-tense-modal] ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b815" />
+          <anchor xreflabel="BNF rule #815" xml:id="cll_bnf-815" />
+          <!-- <xref linkend="cll_yacc-815"/> -->
           tense-modal
           <subscript>815</subscript>
           =
         </term>
         <listitem>
-          <para>
-            simple-tense-modal # | FIhO # selbri /FEhU#/
-            <anchor xml:id="b972" />
-            <anchor xreflabel="BNF rule #972" xml:id="cll_bnf-972" />
-            <!-- <xref linkend="cll_yacc-972"/> -->
-          </para>
+          <para>simple-tense-modal # | FIhO # selbri /FEhU#/</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b972" />
+          <anchor xreflabel="BNF rule #972" xml:id="cll_bnf-972" />
+          <!-- <xref linkend="cll_yacc-972"/> -->
           simple-tense-modal
           <subscript>972</subscript>
           =
         </term>
         <listitem>
-          <para>
-            [NAhE] [SE] BAI [NAI] [KI] | [NAhE] (time [space] | space [time]) &amp; CAhA [KI] | KI | CUhE
-            <anchor xml:id="b1030" />
-            <anchor xreflabel="BNF rule #1030" xml:id="cll_bnf-1030" />
-            <!-- <xref linkend="cll_yacc-1030"/> -->
-          </para>
+          <para>[NAhE] [SE] BAI [NAI] [KI] | [NAhE] ((time [space] | space [time]) &amp; CAhA) [KI] | KI | CUhE</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b1030" />
+          <anchor xreflabel="BNF rule #1030" xml:id="cll_bnf-1030" />
+          <!-- <xref linkend="cll_yacc-1030"/> -->
           time
           <subscript>1030</subscript>
           =
         </term>
         <listitem>
-          <para>
-            ZI &amp; time-offset ... &amp; (ZEhA [PU [NAI]]) &amp; interval-property ...
-            <anchor xml:id="b1033" />
-            <anchor xreflabel="BNF rule #1033" xml:id="cll_bnf-1033" />
-            <!-- <xref linkend="cll_yacc-1033"/> -->
-          </para>
+          <para>ZI &amp; time-offset ... &amp; (ZEhA [PU [NAI]]) &amp; interval-property ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b1033" />
+          <anchor xreflabel="BNF rule #1033" xml:id="cll_bnf-1033" />
+          <!-- <xref linkend="cll_yacc-1033"/> -->
           time-offset
           <subscript>1033</subscript>
           =
         </term>
         <listitem>
-          <para>
-            PU [NAI] [ZI]
-            <anchor xml:id="b1040" />
-            <anchor xreflabel="BNF rule #1040" xml:id="cll_bnf-1040" />
-            <!-- <xref linkend="cll_yacc-1040"/> -->
-          </para>
+          <para>PU [NAI] [ZI]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b1040" />
+          <anchor xreflabel="BNF rule #1040" xml:id="cll_bnf-1040" />
+          <!-- <xref linkend="cll_yacc-1040"/> -->
           space
           <subscript>1040</subscript>
           =
         </term>
         <listitem>
-          <para>
-            VA &amp; space-offset ... &amp; space-interval &amp; (MOhI space-offset)
-            <anchor xml:id="b1045" />
-            <anchor xreflabel="BNF rule #1045" xml:id="cll_bnf-1045" />
-            <!-- <xref linkend="cll_yacc-1045"/> -->
-          </para>
+          <para>VA &amp; space-offset ... &amp; space-interval &amp; (MOhI space-offset)</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b1045" />
+          <anchor xreflabel="BNF rule #1045" xml:id="cll_bnf-1045" />
+          <!-- <xref linkend="cll_yacc-1045"/> -->
           space-offset
           <subscript>1045</subscript>
           =
         </term>
         <listitem>
-          <para>
-            FAhA [NAI] [VA]
-            <anchor xml:id="b1046" />
-            <anchor xreflabel="BNF rule #1046" xml:id="cll_bnf-1046" />
-            <!-- <xref linkend="cll_yacc-1046"/> -->
-          </para>
+          <para>FAhA [NAI] [VA]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b1046" />
+          <anchor xreflabel="BNF rule #1046" xml:id="cll_bnf-1046" />
+          <!-- <xref linkend="cll_yacc-1046"/> -->
           space-interval
           <subscript>1046</subscript>
           =
         </term>
         <listitem>
-          <para>
-            ((VEhA &amp; VIhA) [FAhA [NAI]]) &amp; space-int-props
-            <anchor xml:id="b1049" />
-            <anchor xreflabel="BNF rule #1049" xml:id="cll_bnf-1049" />
-            <!-- <xref linkend="cll_yacc-1049"/> -->
-          </para>
+          <para>((VEhA &amp; VIhA) [FAhA [NAI]]) &amp; space-int-props</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b1049" />
+          <anchor xreflabel="BNF rule #1049" xml:id="cll_bnf-1049" />
+          <!-- <xref linkend="cll_yacc-1049"/> -->
           space-int-props
           <subscript>1049</subscript>
           =
         </term>
         <listitem>
-          <para>
-            (FEhE interval-property) ...
-            <anchor xml:id="b1051" />
-            <anchor xreflabel="BNF rule #1051" xml:id="cll_bnf-1051" />
-            <!-- <xref linkend="cll_yacc-1051"/> -->
-          </para>
+          <para>(FEhE interval-property) ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b1051" />
+          <anchor xreflabel="BNF rule #1051" xml:id="cll_bnf-1051" />
+          <!-- <xref linkend="cll_yacc-1051"/> -->
           interval-property
           <subscript>1051</subscript>
           =
         </term>
         <listitem>
-          <para>
-            number ROI [NAI] | TAhE [NAI] | ZAhO [NAI]
-            <anchor xml:id="b32" />
-            <anchor xreflabel="BNF rule #32" xml:id="cll_bnf-32" />
-            <!-- <xref linkend="cll_yacc-32"/> -->
-          </para>
+          <para>number ROI [NAI] | TAhE [NAI] | ZAhO [NAI]</para>
         </listitem>
       </varlistentry>
+    </variablelist>
+    </section>
+    <section xml:id="ebnf-free">
+      <title>Free modifiers, vocatives and indicators</title>
+    <para>A free modifier, rule 32, can occupy any <quote>#</quote> slot, and <xref linkend="section-vocative-syntax" /> permits free modifiers after many constructions. The forms are these:</para>
+    <itemizedlist>
+      <listitem><para>A <jbophrase>sei ... se'u</jbophrase> discursive bridi, <jbophrase>sei mi cusku</jbophrase>.</para></listitem>
+      <listitem><para>A <jbophrase>soi ... se'u</jbophrase> reciprocity marker.</para></listitem>
+      <listitem><para>A vocative phrase: <valsi>coi</valsi> or <valsi>doi</valsi> and their kin, alone or followed by a selbri, by names, or by a sumti. Relative clauses can surround the selbri or the names, and the whole phrase is closed by <valsi>do'u</valsi>.</para></listitem>
+      <listitem><para>An utterance ordinal, <jbophrase>pa mai</jbophrase>.</para></listitem>
+      <listitem><para>A parenthetical text, <jbophrase>to ... toi</jbophrase>.</para></listitem>
+      <listitem><para>A subscript <valsi>xi</valsi> with a number, a lerfu string or a bracketed mekso.</para></listitem>
+    </itemizedlist>
+    <para>The <valsi>se'u</valsi>, <valsi>do'u</valsi>, <valsi>toi</valsi>, <valsi>boi</valsi> and <valsi>ve'o</valsi> of rule 32 are all elidable, but the rule writes them without <quote>#</quote>. The slot that follows a free modifier is the one that the modifier itself sits in. So a subscript after a lerfu string needs a written <valsi>boi</valsi> to attach to: <jbophrase>xy. boi xi ky.</jbophrase>. The rules do not accept <jbophrase>xy. xi ky.</jbophrase>, even though <xref linkend="example-random-id-oTgS" /> prints exactly that form. That example is one of the known conflicts between the first edition's examples and its own grammar, and this chapter does not resolve it.</para>
+    <para>A vocative, rule 415, is a run of COI words, each with an optional <valsi>nai</valsi>, or else <valsi>doi</valsi>, or both in that order. Indicators, rule 411, are a run of indicator words, optionally opened by <valsi>fu'e</valsi>. An indicator word is an attitudinal or discursive of UI or CAI with an optional <valsi>nai</valsi>, or the cancel <valsi>da'o</valsi>, or <valsi>fu'o</valsi>. The <valsi>fu'o</valsi> closes a scope that <valsi>fu'e</valsi> opened (see <xref linkend="section-attitudinal-scope" />).</para>
+    <para>The grammar reads indicators as separate words only at the start of a text. Everywhere else the word-level rules attach them to the word before them, so the rules of this section never see them (see <xref linkend="ebnf-words" />).</para>
+    <para role="status-note" condition="status:historical">Rule 413 lists Y, the hesitation sound <valsi>.y.</valsi>, among the indicators. Under the rules of <xref linkend="section-hesitation" />, ordinary hesitation is invisible to the grammar, so this alternative never applies. It stays in the rule because that is how the first edition printed it.</para>
+    <variablelist>
       <varlistentry>
         <term>
+          <anchor xml:id="b32" />
+          <anchor xreflabel="BNF rule #32" xml:id="cll_bnf-32" />
+          <!-- <xref linkend="cll_yacc-32"/> -->
           free
           <subscript>32</subscript>
           =
         </term>
         <listitem>
-          <para>
-            SEI # [terms [CU #]] selbri /SEhU/ | SOI # sumti [sumti] /SEhU/ | vocative [relative-clauses] selbri [relative-clauses] /DOhU/ | vocative [relative-clauses] CMEVLA ... # [relative-clauses] /DOhU/ | vocative [sumti] /DOhU/ | (number | lerfu-string) MAI | TO text /TOI/ | XI # (number | lerfu-string) /BOI/ | XI # VEI # mex /VEhO/
-            <anchor xml:id="b415" />
-            <anchor xreflabel="BNF rule #415" xml:id="cll_bnf-415" />
-            <!-- <xref linkend="cll_yacc-415"/> -->
-          </para>
+          <para>SEI # [terms [CU #]] selbri /SEhU/ | SOI # sumti [sumti] /SEhU/ | vocative [relative-clauses] selbri [relative-clauses] /DOhU/ | vocative [relative-clauses] CMEVLA ... # [relative-clauses] /DOhU/ | vocative [sumti] /DOhU/ | (number | lerfu-string) MAI | TO text /TOI/ | XI # (number | lerfu-string) /BOI/ | XI # VEI # mex /VEhO/</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b415" />
+          <anchor xreflabel="BNF rule #415" xml:id="cll_bnf-415" />
+          <!-- <xref linkend="cll_yacc-415"/> -->
           vocative
           <subscript>415</subscript>
           =
         </term>
         <listitem>
-          <para>
-            (COI [NAI]) ... &amp; DOI
-            <anchor xml:id="b411" />
-            <anchor xreflabel="BNF rule #411" xml:id="cll_bnf-411" />
-            <!-- <xref linkend="cll_yacc-411"/> -->
-          </para>
+          <para>(COI [NAI]) ... &amp; DOI</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b411" />
+          <anchor xreflabel="BNF rule #411" xml:id="cll_bnf-411" />
+          <!-- <xref linkend="cll_yacc-411"/> -->
           indicators
           <subscript>411</subscript>
           =
         </term>
         <listitem>
-          <para>
-            [FUhE] indicator ...
-            <anchor xml:id="b413" />
-            <anchor xreflabel="BNF rule #413" xml:id="cll_bnf-413" />
-            <!-- <xref linkend="cll_yacc-413"/> -->
-          </para>
+          <para>[FUhE] indicator ...</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b413" />
+          <anchor xreflabel="BNF rule #413" xml:id="cll_bnf-413" />
+          <!-- <xref linkend="cll_yacc-413"/> -->
           indicator
           <subscript>413</subscript>
           =
@@ -2965,7 +2967,26 @@
         </listitem>
       </varlistentry>
     </variablelist>
-    <para>The following rules are non-formal:</para>
+    </section>
+    <section xml:id="ebnf-words">
+      <title>From words to the grammar</title>
+    <para><indexterm type="general"><primary>EBNF grammar</primary><secondary>input of</secondary></indexterm>The rules of this section read a stream of words, each of which carries a class. <xref linkend="section-peg-grammar" /> explains how a text is divided into words. Every cmavo belongs to a selma'o, and <xref linkend="peg-selmaho" /> lists them all; every gismu, lujvo and fu'ivla has the class BRIVLA, and every name word has the class CMEVLA. The word-form grammar adds three things that the lists of the first edition lacked: a digit is a PA word, <valsi>.ybu</valsi> is a BY word, and a run of <valsi>.y.</valsi> counts as one hesitation.</para>
+    <para>Between the word forms and the grammar stand the magic words: the quotations, <valsi>zei</valsi>, <valsi>bu</valsi>, the erasers <valsi>si</valsi>, <valsi>sa</valsi> and <valsi>su</valsi>, hesitation, and <valsi>fa'o</valsi>. <xref linkend="section-cmavo-interactions" /> specifies them, rule by rule and with the status of each. They do their work before the grammar ever sees the text. (The parser of the first edition prepared the words in its own older sequence of steps, which the YACC supplement gives.)</para>
+    <para>Some rules of this section mention ZEI, BU, SI, SA and SU. These rules picture work that the magic words have already done. The grammar proper sees a single BRIVLA for a <valsi>zei</valsi> compound and a single BY for a word with <valsi>bu</valsi>, and an eraser and whatever it erased never reach the grammar at all. A reader applies each of these once, at the word level, and the rules then see every compound as one word.</para>
+    <para><indexterm type="general"><primary>indicators</primary><secondary>attachment, in the EBNF grammar</secondary></indexterm>Indicators and <valsi>ba'e</valsi> attach to words before the grammar reads them, by the rules of <xref linkend="section-scope" /> and <xref linkend="chapter-structure" />:</para>
+    <itemizedlist>
+      <listitem><para>Indicators at the start of a text stay in the stream. They modify everything that follows, and rule 0 reads them.</para></listitem>
+      <listitem><para>A quoted text starts just as a whole text does, so indicators right after <valsi>lu</valsi> begin the quoted text. The parser of the first edition attached them to <valsi>lu</valsi> instead, which its author called an error.</para></listitem>
+      <listitem><para>Indicators right after <valsi>tu'e</valsi> attach to <valsi>tu'e</valsi>, because its rule reads <quote>text-1</quote>, and that has no place for indicators at its start.</para></listitem>
+      <listitem><para>Indicators right after <valsi>to</valsi> and <valsi>to'i</valsi> attach to the opener and mark the whole parenthetical remark, as <xref linkend="section-parentheses" /> shows with <jbophrase>to'i sa'a</jbophrase>.</para></listitem>
+      <listitem><para>Every other run of indicators attaches to the word before it, including a name and a closing word such as <valsi>li'u</valsi> or <valsi>toi</valsi>. After a completed <valsi>zo</valsi>, <jbophrase>lo'u ... le'u</jbophrase> or <valsi>zoi</valsi> quotation, the indicators comment on the whole quotation, as <xref linkend="section-cmavo-interactions" /> says.</para></listitem>
+      <listitem><para><valsi>ba'e</valsi> marks the word after it, so <jbophrase>ba'e zo coi</jbophrase> marks <valsi>zo</valsi>.</para></listitem>
+      <listitem><para>A <valsi>nai</valsi> joins a UI or CAI word directly before it; any other <valsi>nai</valsi> stays a word for the grammar. So in <jbophrase>mi .e ui da'o nai do klama</jbophrase>, the <valsi>ui</valsi> and <valsi>da'o</valsi> attach to <valsi>.e</valsi>, and the <valsi>nai</valsi> negates the <valsi>.e</valsi>.</para></listitem>
+    </itemizedlist>
+    <para role="status-note" condition="status:editorial">The rule for <valsi>to</valsi> and <valsi>to'i</valsi> is a choice of this edition. Rule 32 reads a parenthesis as <quote>TO text</quote>, and a text can begin with indicators, so the rules alone would treat <valsi>to</valsi> just as they treat <valsi>lu</valsi>. But a parenthetical remark does not begin the way a quoted text does. <xref linkend="section-parentheses" /> puts the indicator on the opener, and so does the committee's definition of <valsi>to'i</valsi> as <jbophrase>to sa'a</jbophrase>.</para>
+    <para>Ordinary hesitation, <valsi>.y.</valsi>, does not reach the grammar (see <xref linkend="section-hesitation" />). The Y of rule 413 is a historical alternative, as <xref linkend="ebnf-free" /> says.</para>
+    <para>Three rules that the notation cannot write also belong to the reading of a text. A number or lerfu string cannot be divided before another number word or lerfu word (see <xref linkend="ebnf-mekso" />). Where both readings fit, a connective, an optional tense or modal, and <valsi>ke</valsi> form the <valsi>ke</valsi> group. The words of a tense are divided at the earliest and then the longest tense. <xref linkend="ebnf-parses" /> states the last two.</para>
+    <para>The following rules are non-formal. They describe the stream of words rather than its grammar:</para>
     <variablelist>
       <varlistentry>
         <term>
@@ -2977,30 +2998,26 @@
           =
         </term>
         <listitem>
-          <para>[BAhE] any-word [indicators]</para>
+          <para>[BAhE ...] any-word [indicators]</para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>any-word =</term>
         <listitem>
-          <para>
-            <quote>any single word (no compound cmavo)</quote>
-          </para>
+          <para><quote>any single word (no compound cmavo)</quote></para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>anything =</term>
         <listitem>
-          <para>
-            <quote>any text at all, whether Lojban or not</quote>
-            <anchor xml:id="b1101" />
-            <anchor xreflabel="BNF rule #1101" xml:id="cll_bnf-1101" />
-            <!-- <xref linkend="cll_yacc-1101"/> -->
-          </para>
+          <para><quote>any text at all, whether Lojban or not</quote></para>
         </listitem>
       </varlistentry>
       <varlistentry>
         <term>
+          <anchor xml:id="b1101" />
+          <anchor xreflabel="BNF rule #1101" xml:id="cll_bnf-1101" />
+          <!-- <xref linkend="cll_yacc-1101"/> -->
           null
           <subscript>1101</subscript>
           =
@@ -3010,7 +3027,69 @@
         </listitem>
       </varlistentry>
     </variablelist>
+    <para>Rule 1100 says what a word is, for the purposes of the rules above: an optional run of emphasis words, the word itself, and any indicators attached to it. The whole run of <valsi>ba'e</valsi> words goes with the next word that is not itself <valsi>ba'e</valsi>, and a <valsi>ba'e</valsi> at the end of a text is an error. For an eraser, however, <xref linkend="section-bahe" /> still counts each <valsi>ba'e</valsi> as a word of its own: <jbophrase>broda ba'e da si da</jbophrase> erases only the <valsi>da</valsi>.</para>
+    <para role="status-note" condition="status:editorial"><indexterm type="general"><primary>EBNF grammar</primary><secondary>corrections, word</secondary></indexterm>Rule 1100 is corrected. The first edition printed <quote>[BAhE]</quote>, which allows one emphasis word at most. The YACC grammar absorbs every <valsi>ba'e</valsi> into the word after it, so several can stand before a single word. This edition prints <quote>[BAhE ...]</quote>.</para>
+    <para><quote>any-word</quote> is any single word, and <quote>anything</quote> is any text at all, Lojban or not. Rule 1101, <quote>null</quote>, pictures the erasers: <valsi>si</valsi> erases the word before it, <valsi>sa</valsi> erases back to the start of an utterance, and <valsi>su</valsi> erases a whole text. <xref linkend="section-erasure" /> gives their rules and the status of each. (The first edition never defined the <quote>utterance</quote> that <valsi>sa</valsi> erases, by the way.)</para>
     <para>FAhO is a universal terminator and signals the end of parsable input.</para>
+    </section>
+    <section xml:id="ebnf-parses">
+      <title>Choosing among readings</title>
+    <para><indexterm type="general"><primary>elidable terminators</primary><secondary>choosing among readings, in the EBNF grammar</secondary></indexterm>Point 10 of the notation allows an elidable terminator to be omitted wherever no grammatical ambiguity results, but it never says how to decide that none does. As the rules stand, several texts are left with more than one reading, a reading being one way in which the words of a whole text can be made to fit the rules. This subsection gives the rules by which this grammar chooses a single reading, so that every text has at most one structure.</para>
+    <para role="status-note" condition="status:editorial"><indexterm type="general"><primary>elidable terminators</primary><secondary>rule of this edition</secondary></indexterm>The rule for elided terminators is this edition's own; point 10 of the notation does not require it. It is one way of keeping the promise of point 10, and it proceeds in the steps below.</para>
+    <orderedlist>
+      <listitem><para>A terminator can be elided wherever a reading of the whole text needs it.</para></listitem>
+      <listitem><para>Where a text has several readings, the four rules of the list that follows this one are applied first.</para></listitem>
+      <listitem><para>For each reading that remains, count the terminators it elides at each position, working from the start of the text. At the first position where the counts differ, the reading with fewer elided terminators there wins. Two readings with the same counts at every position are tied, whatever the terminators happen to be called, and a tie is an error.</para></listitem>
+      <listitem><para>Where the count chooses one reading among several, write the elided terminators of that reading back into the text, and read the text again. In this second reading every elidable place holds either a written or a restored terminator, and several terminators restored at one place keep their order.</para></listitem>
+      <listitem><para>The second reading applies the four rules again, but it judges them by the original words and not by the restored terminators, since a restored terminator is not a word the speaker wrote. So a restored <valsi>ku</valsi> does not count as the written <valsi>ku</valsi> that keeps a tag a term. The count, however, is not applied a second time.</para></listitem>
+      <listitem><para>A restored terminator can stand where the words after it cannot complete the rest of its construct. One with nothing after it inside its construct makes one reading, not two. A restored <quote>/X#/</quote> restores X alone, with no free modifier. Another reading can still take a restored terminator as an ordinary word and start a longer construct there.</para></listitem>
+      <listitem><para>The chosen reading must be the only reading left. If two remain, the text is an error, because its ambiguity is not about terminators. A text with just one reading needs no second reading.</para></listitem>
+    </orderedlist>
+    <para>The second reading keeps the rules of the list below in force. <jbophrase>mi viska pu ca gi do gi la .djan. vau</jbophrase>, with its <valsi>vau</valsi> written, still has two divisions of <jbophrase>pu ca gi</jbophrase>, and the tense rule still chooses the connective <jbophrase>pu ca gi</jbophrase>.</para>
+    <para>These four rules apply before the count, and in this order:</para>
+    <orderedlist>
+      <listitem><para>A number or lerfu string cannot be divided before another number word or lerfu word (see <xref linkend="ebnf-mekso" />). A reading that divides such a run is not a reading at all.</para></listitem>
+      <listitem><para>Where the words of a tense can be divided in more than one way, the earliest tense is taken, and then the longest (see <xref linkend="ebnf-tenses" />). A longer tense counts only where a reading remains. This fixes the span of each tense before the next rule looks at it.</para></listitem>
+      <listitem><para>A tense or modal that stands directly before a selbri, with no <valsi>ku</valsi> between them, binds to that selbri. A reading that makes such a tag a term with its <valsi>ku</valsi> elided is not a reading. A written <valsi>ku</valsi> keeps the tag a term. A tense or modal inside a connective, as in <jbophrase>gi'e pu ke</jbophrase>, is not a term, so this rule says nothing about it.</para></listitem>
+      <listitem><para>A connective, an optional tense or modal, and <valsi>ke</valsi> stand together. Where both the <valsi>ke</valsi> group and a plain connection fit the text, the group is taken, and the tense or modal then belongs to the connective (see <xref linkend="ebnf-connectives" />).</para></listitem>
+    </orderedlist>
+    <para role="status-note" condition="status:bpfk-approved;date:2016-03-15"><indexterm type="general"><primary>tags</primary><secondary>binding to selbri, in the EBNF grammar</secondary></indexterm>The third rule is the decision on tag binding of the BPFK, the language-definition committee. Seven of its eight members approved it on 15 March 2016, and the LLG never separately ratified it. The decision reads: a tense or tag attaches tightly to a following selbri unless explicitly terminated by <valsi>ku</valsi>. So <jbophrase>lo nu broda ba brode</jbophrase> is a complete bridi, whose abstraction closes before <valsi>ba</valsi> (see <xref linkend="section-tenses-introduction" /> and <xref linkend="chapter-abstractions" />). Without this rule, the count alone would keep <valsi>ba</valsi> inside the abstraction, as the grammar of the first edition did. The rule is a requirement, not a preference: <jbophrase>lo nu broda ba brode cu brodi</jbophrase> is an error, because <valsi>ba</valsi> must bind to <valsi>brode</valsi> and then nothing can take <jbophrase>cu brodi</jbophrase>, whereas <jbophrase>lo nu broda ba ku brode cu brodi</jbophrase> is a sentence. In <jbophrase>lo nu broda va pu brode</jbophrase>, the second rule makes <jbophrase>va pu</jbophrase> one tense, and the whole of it belongs to <valsi>brode</valsi>. A tag followed by a sumti, as in <jbophrase>lo nu klama ba le nu tavla cu xamgu</jbophrase>, stays a term inside the abstraction.</para>
+    <para>Here are some texts and their readings under these rules:</para>
+    <itemizedlist>
+      <listitem><para><jbophrase>le sutra tavla</jbophrase> is a fragment, the one description <quote>the fast talker</quote>. The sentence reading would elide a <valsi>ku</valsi> after <valsi>sutra</valsi>, while the fragment reading elides its <valsi>ku</valsi> only at the end. A speaker who means the sentence says <jbophrase>le sutra cu tavla</jbophrase>.</para></listitem>
+      <listitem><para><jbophrase>le lojbo se farvi le loglo gi'enai mintu ja dunli le logla</jbophrase> is a sentence. The description <jbophrase>le lojbo</jbophrase> ends before <jbophrase>se farvi</jbophrase>, because no other reading fits the whole text.</para></listitem>
+      <listitem><para><jbophrase>le nanmu joi le ninmu cu klama</jbophrase> is a sentence with two connected sumti, since no reading of the whole text keeps <valsi>joi</valsi> inside the description.</para></listitem>
+      <listitem><para><jbophrase>mi pu ge klama le zarci gi tervecnu lo cidja</jbophrase> is a sentence, with <valsi>pu</valsi> a term and its <valsi>ku</valsi> elided before the forethought connection.</para></listitem>
+    </itemizedlist>
+    <para role="status-note" condition="status:editorial"><indexterm type="general"><primary>elidable terminators</primary><secondary>the official parser and</secondary></indexterm>The official parser applies point 10 differently. It reads one unit ahead and never goes back, a unit being a word, or a run of words that the parser has already joined. A tense is one unit, and so is a connective together with its <valsi>ke</valsi>. The parser therefore elides a terminator only where the next unit cannot continue what it is reading, and so it rejects some texts that this grammar accepts. Two of them are <jbophrase>le nanmu joi le ninmu cu klama</jbophrase> and the bare tense before a forethought connection. Several passages of the first edition described that behavior as a rule of the language, and this edition corrects them where they occur. In each of these cases the written terminator remains the clear way to write the text. Without it, a reader cannot easily see where a construct ends: where one selbri ends and the next begins, or that one tense covers both connected bridi.</para>
+    </section>
+    <section xml:id="ebnf-changes">
+      <title>Changes from the third baseline</title>
+    <para><indexterm type="general"><primary>EBNF grammar</primary><secondary>changes from the third baseline</secondary></indexterm>This grammar departs from the EBNF of the third baseline in the places listed here, and each departure is marked at the spot where it is made. <xref linkend="appendix-changes" /> lists them again among the changes from the first edition.</para>
+    <para>First come the corrections: places where the first edition's EBNF misprinted what the grammar meant, and where the YACC grammar shows the intended form (all editorial):</para>
+    <itemizedlist>
+      <listitem><para>Rule 2: a text can begin with <valsi>.i</valsi> forms and then <valsi>ni'o</valsi> markers (<xref linkend="ebnf-text" />).</para></listitem>
+      <listitem><para>Rule 54: a gek-sentence wrapped in <valsi>ke</valsi> requires the tense or modal before the <valsi>ke</valsi> (<xref linkend="ebnf-sentences" />).</para></listitem>
+      <listitem><para>Rule 97: <jbophrase>lo'u le'u</jbophrase> can be empty, and the free-modifier slot after <jbophrase>lu ... li'u</jbophrase> follows the whole quote (<xref linkend="ebnf-sumti" />).</para></listitem>
+      <listitem><para>Rule 152: a <valsi>zei</valsi> compound has a free-modifier slot (<xref linkend="ebnf-selbri" />).</para></listitem>
+      <listitem><para>Rule 972: <valsi>na'e</valsi> and <valsi>ki</valsi> cover the whole tense (<xref linkend="ebnf-tenses" />).</para></listitem>
+      <listitem><para>Rule 1100: several <valsi>ba'e</valsi> can stand before a single word (<xref linkend="ebnf-words" />).</para></listitem>
+    </itemizedlist>
+    <para>The notation itself gains points 11 to 13 and the restriction in point 6 (editorial, <xref linkend="ebnf-about" />). They change no rule.</para>
+    <para>Next, the changes that the text of this book requires:</para>
+    <itemizedlist>
+      <listitem><para>Rule 83: a tense or modal before a termset governs the whole termset (editorial, <xref linkend="ebnf-terms" />).</para></listitem>
+      <listitem><para>A tense or modal placed directly before a selbri binds to that selbri (committee-approved in 2016, <xref linkend="ebnf-parses" />).</para></listitem>
+    </itemizedlist>
+    <para>Then come the departures from the official parser, which follow from this edition's reading of the rules (all editorial):</para>
+    <itemizedlist>
+      <listitem><para>The rule for elided terminators, and the choice among readings (<xref linkend="ebnf-parses" />).</para></listitem>
+      <listitem><para>Texts that fit only the plain reading of a connective before <valsi>ke</valsi> are grammatical (<xref linkend="ebnf-connectives" />).</para></listitem>
+      <listitem><para>A bare tense before a forethought connection is grammatical (<xref linkend="ebnf-sentences" />).</para></listitem>
+      <listitem><para>When a tense is divided, the division takes a longer tense only where a reading remains, whereas the lexer of the official grammar forms the longest tense in every case; no known text shows the difference (<xref linkend="ebnf-tenses" />).</para></listitem>
+    </itemizedlist>
+    <para>Two further choices of this edition carry their marks where they are made. Indicators after <valsi>to</valsi> and <valsi>to'i</valsi> attach to the opener (editorial, <xref linkend="ebnf-words" />), and the Y of rule 413 stays as a historical alternative (<xref linkend="ebnf-free" />).</para>
+    </section>
   </section>
   <section xml:id="section-cross-reference">
     <title><anchor xml:id="c21s3"/>EBNF cross-reference</title>

@@ -1230,7 +1230,7 @@
         <gloss>The (dog ) which is-white -- goes.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent"><xref linkend="example-random-id-UmLX" /> will seem most natural to speakers of languages like English, which always puts relative clauses after the noun phrases they are attached to. <xref linkend="example-random-id-qmCQ" />, on the other hand, may seem more natural to Finnish or Chinese speakers, who put the relative clause first. Note that in <xref linkend="example-random-id-qmCQ" />, the elidable terminator <valsi>ku'o</valsi> must appear, or the selbri of the relative clause (<valsi>blabi</valsi>) will merge with the selbri of the description (<valsi>gerku</valsi>), resulting in an ungrammatical sentence. The purpose of the form appearing in <xref linkend="example-random-id-qMct" /> will be apparent shortly.</para>
+    <para role="indent"><xref linkend="example-random-id-UmLX" /> will seem most natural to speakers of languages like English, which always puts relative clauses after the noun phrases they are attached to; <xref linkend="example-random-id-qmCQ" />, on the other hand, may seem more natural to Finnish or Chinese speakers, who put the relative clause first. Note the elidable terminator <valsi>ku'o</valsi> in <xref linkend="example-random-id-qmCQ" />. Without it, the selbri of the relative clause (<valsi>blabi</valsi>) and the selbri of the description (<valsi>gerku</valsi>) run together on the page, and a reader cannot easily see where one ends and the other begins. The grammar will still give the sentence its intended structure, because no other structure fits the whole text (see <xref linkend="ebnf-parses" />), but the parser of the first edition did not look that far ahead and rejected the sentence. So write the <valsi>ku'o</valsi>. The purpose of the form appearing in <xref linkend="example-random-id-qMct" /> will be apparent shortly.</para>
     <para>
       As is explained in detail in
       <xref linkend="section-quantified-descriptions" />
@@ -1581,9 +1581,9 @@
       </indexterm>
       Note the explicit
       <valsi>ku</valsi>
-      at the end of the possessor sumti, which prevents the selbri of the possessor sumti from merging with the selbri of the main description sumti. Because of the need for this
+      at the end of the possessor sumti, which keeps the selbri of the possessor sumti from merging with the selbri of the main description sumti. Without it the two selbri simply run together on the page, and a reader has a hard time seeing where one ends and the other begins. The grammar still assigns the sentence its intended structure, since no other structure fits the text as a whole (see <xref linkend="ebnf-parses" />), but the parser of the first edition rejected the sentence outright. Because this
       <valsi>ku</valsi>
-      , the most common kind of possessor sumti are pro-sumti, especially personal pro-sumti, which require no elidable terminator. Descriptions are more likely to be attached with relative phrases.
+      is needed for clarity, the most common kind of possessor sumti are pro-sumti, especially personal pro-sumti, which require no elidable terminator. Descriptions are more likely to be attached with relative phrases.
     </para>
 
     <para>And here is a number used as a possessor sumti:</para>

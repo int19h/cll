@@ -5,6 +5,11 @@
   version="1.0">
 
   <xsl:param name="use.id.as.filename" select="'1'"/>
+  <!-- Keep the publication disclaimer on a separate line in every HTML output. -->
+  <xsl:template match="phrase[@role='publication-disclaimer']">
+    <br xmlns="http://www.w3.org/1999/xhtml"/>
+    <span xmlns="http://www.w3.org/1999/xhtml" class="publication-disclaimer"><xsl:apply-templates/></span>
+  </xsl:template>
   <xsl:param name="html.stylesheet" select="'final.css'"/>
   <xsl:param name="index.on.type" select="1"/>
   <xsl:param name="index.on.role" select="1"/>

@@ -92,7 +92,9 @@ jobs:
       - name: Install the pinned WeasyPrint and MathJax dependencies
         run: ./scripts/install-weasyprint.sh
       - name: Render math and linked index fixtures
-        run: PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-weasyprint.py
+        run: |
+          python3 scripts/test-build-version.py
+          PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-weasyprint.py
 
   parser-probes:
     runs-on: ubuntu-latest

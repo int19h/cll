@@ -20,7 +20,13 @@ realclean: clean
 # Basic prep
 #*******
 
-$(builddir)/cll.xml: $(chapters) xml/iso-pub.ent xml/identity.xsl xml/docbook2html_config_common.xsl scripts/update_jbovlaste_xml.sh scripts/generate_glossary.rb scripts/merge.sh .env
+.PHONY: build_metadata_force
+$(builddir)/build-metadata: build_metadata_force
+	@mkdir -p $(builddir)
+	@{ scripts/build-version.sh && date +%Y-%m-%d; } >$@.tmp || { rm -f $@.tmp; exit 1; }
+	@cmp -s $@.tmp $@ && rm $@.tmp || mv $@.tmp $@
+
+$(builddir)/cll.xml: $(chapters) xml/iso-pub.ent xml/identity.xsl xml/docbook2html_config_common.xsl scripts/update_jbovlaste_xml.sh scripts/generate_glossary.rb scripts/merge.sh .env $(builddir)/build-metadata
 	regenerator --include-runtime $(PWD)/assets/scripts/sance-next.js > $(builddir)/sance.js
 	rm -rf $(builddir)/xml $(builddir)/dtd
 	cp -pr $(PWD)/xml $(builddir)/

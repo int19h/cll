@@ -13,6 +13,7 @@ for arg in "$@"; do
     -*) echo "Unsupported option: $arg" >&2; exit 2 ;;
   esac
 done
+build_version=$(scripts/build-version.sh)
 container_bin=${CONTAINER_BIN:-}
 if [ -z "$container_bin" ]; then
   container_bin=$(command -v podman || command -v docker)
@@ -36,4 +37,5 @@ if [ -L build ]; then
 fi
 "$container_bin" run --rm "${user_args[@]}" "${mount_args[@]}" \
   -e TMPDIR=/srv/cll/build/tmp -e XDG_CACHE_HOME=/srv/cll/build/cache \
+  -e CLL_BUILD_VERSION="$build_version" \
   "$image" ./cll_build -n -T pdf_weasyprint "$@"

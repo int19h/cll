@@ -40,6 +40,7 @@ $CONTAINER_BIN kill cll_build >/dev/null 2>&1
 $CONTAINER_BIN rm cll_build >/dev/null 2>&1
 
 dir=$(readlink -f $(dirname $0))
+build_version=$("$dir/scripts/build-version.sh") || exit 1
 
 # FOR TESTING; forces complete container rebuild
 # $CONTAINER_BIN build --no-cache -t lojban/cll_build -f Dockerfile .
@@ -62,5 +63,6 @@ $CONTAINER_BIN build -t lojban/cll_build -f Dockerfile . >/tmp/rc.$$ 2>&1 || {
 rm -f /tmp/rc.$$
 
 $CONTAINER_BIN run --name cll_build \
-  --userns=keep-id -v $dir:/srv/cll "${extra_vols[@]}" -it lojban/cll_build \
+  --userns=keep-id -v $dir:/srv/cll "${extra_vols[@]}" \
+  -e CLL_BUILD_VERSION="$build_version" -it lojban/cll_build \
   /bin/bash -c "cd /srv/cll ; ./cll_build ${args[*]}"

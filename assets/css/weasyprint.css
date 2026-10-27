@@ -7,6 +7,23 @@ h6 { font-size: 8pt; margin: 21pt 0; }
 pre, code, tt { font-family: "DejaVu Sans Mono", monospace; }
 
 @media print {
+  .book > .titlepage .releaseinfo {
+    position: running(title-release);
+    margin: 0;
+    font-family: "DejaVu Sans Mono", monospace;
+    font-size: 7pt;
+    font-weight: normal;
+    color: #555;
+    letter-spacing: 0.2pt;
+    text-align: center;
+  }
+  @page:first {
+    @bottom-center {
+      content: element(title-release);
+      vertical-align: top;
+      margin-bottom: 13mm;
+    }
+  }
   p { font-variant: normal; font-feature-settings: "ccmp" 1, "liga" 0, "clig" 0; }
   @page chapter:left { @top-left { width: 100%; } }
   @page chapter:right { @top-right { width: 100%; } }

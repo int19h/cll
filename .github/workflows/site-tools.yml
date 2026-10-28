@@ -1,0 +1,21 @@
+name: site-tools
+
+# Tests of the site scripts. They need no build tools and no GitHub
+# access, and they change nothing: see scripts/test-site-versions.sh.
+
+on:
+  pull_request:
+    branches: [pages]
+
+permissions:
+  contents: read
+
+jobs:
+  test-site-versions:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Check script syntax
+        run: bash -n scripts/site-versions.sh scripts/build-versions.sh scripts/build-site.sh scripts/gen-site-index.sh scripts/test-site-versions.sh
+      - name: Formats, version order, releases and landing pages
+        run: bash scripts/test-site-versions.sh

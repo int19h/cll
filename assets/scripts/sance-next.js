@@ -2,56 +2,88 @@ function encodeValsiForWeb(v) {
 	return encodeURIComponent(v).replace(/'/g, 'h')
 }
 
+const AUDIO_LOAD_TIMEOUT_MS = 10000;
+
 async function processNode(urli, Node, text, func) {
-	await new Promise(resolve => {
-		fetch(urli, { method: 'HEAD' }).then(res => {
-			if (res.status == 200) {
-				var sance = new Audio(urli)
-				sance.id = "sance_" + encodeValsiForWeb(text)
-				sance.addEventListener('canplaythrough', function (event) {
-					Node = func(Node, sance, text)
-					resolve()
-				})
-			} else {
-				resolve()
+	return new Promise(resolve => {
+		const controller = new AbortController();
+		let sance;
+		let settled = false;
+		const timer = setTimeout(finish, AUDIO_LOAD_TIMEOUT_MS);
+
+		function finish() {
+			if (settled) return;
+			settled = true;
+			clearTimeout(timer);
+			controller.abort();
+			if (sance) {
+				sance.removeEventListener('canplaythrough', ready);
+				sance.removeEventListener('error', finish);
+				sance.removeEventListener('abort', finish);
 			}
-		}).catch(() => { resolve() })
-	})
+			resolve();
+		}
+
+		function ready() {
+			if (settled) return;
+			try {
+				func(Node, sance, text);
+			} finally {
+				finish();
+			}
+		}
+
+		fetch(urli, { method: 'HEAD', signal: controller.signal }).then(res => {
+			if (settled) return;
+			if (res.status !== 200) {
+				finish();
+				return;
+			}
+			sance = new Audio();
+			sance.id = 'sance_' + encodeValsiForWeb(text);
+			sance.addEventListener('canplaythrough', ready);
+			sance.addEventListener('error', finish);
+			sance.addEventListener('abort', finish);
+			sance.src = urli;
+		}).catch(finish);
+	});
+}
+
+function appendAudioControl(parent, sance, className) {
+	const button = document.createElement('button');
+	button.type = 'button';
+	button.className = className;
+	button.textContent = '▶';
+	button.addEventListener('click', () => sance.play());
+	parent.appendChild(sance);
+	parent.appendChild(button);
 }
 
 function funcContentGloss(Node, sance, text) {
-	Node.parentNode.parentNode.appendChild(sance);
-	Node.parentNode.parentNode.innerHTML +=
-		"<button class='tutci' onclick=\"document.getElementById('sance_" +
-		encodeValsiForWeb(text) +
-		"').play()\">▶</button>";
-	return Node
+	appendAudioControl(Node.parentNode.parentNode, sance, 'tutci');
+	return Node;
 }
 
 function funcExample(Node, sance, text) {
-	Node.parentNode.appendChild(sance);
-	Node.parentNode.innerHTML +=
-		"<button class='tutci tutci-mupli' onclick=\"document.getElementById('sance_" +
-		encodeValsiForWeb(text) +
-		"').play()\">▶</button>";
-
-	return Node
+	appendAudioControl(Node.parentNode, sance, 'tutci tutci-mupli');
+	return Node;
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
+	const loads = [];
 	var words = document.querySelectorAll("em.glossterm");
 	words = Array.from(words)
 	for (var i = 0; i < words.length; i++) {
 		var Node = words[i]
 		var text = Node.innerText;
-		await processNode(document.location.href.replace(/\/[^\/]+$/, '/') + "assets/media/vreji/" + encodeValsiForWeb(text) + ".mp3", Node, text, funcContentGloss)
+		loads.push(processNode(document.location.href.replace(/\/[^\/]+$/, '/') + "assets/media/vreji/" + encodeValsiForWeb(text) + ".mp3", Node, text, funcContentGloss));
 	}
 
 	var examples = Array.from(document.querySelectorAll(".example > .title > strong"));
 	for (var i = 0; i < examples.length; i++) {
 		var Node = examples[i]
 		var text = Node.innerText.trim().replace(/ *Example (.*?)\. *$/, '$1');
-		await processNode(document.location.href.replace(/\/[^\/]+$/, '/') + "assets/media/examples/" + text + ".ogg", Node, text, funcExample)
+		loads.push(processNode(document.location.href.replace(/\/[^\/]+$/, '/') + "assets/media/examples/" + text + ".ogg", Node, text, funcExample));
 	}
 
 	var terms = Array.from(document.querySelectorAll(".guibutton"));
@@ -62,4 +94,5 @@ document.addEventListener("DOMContentLoaded", async function () {
 		Node.parentNode.insertAdjacentHTML('beforeend', li)
 		Node.remove()
 	}
+	await Promise.all(loads);
 });

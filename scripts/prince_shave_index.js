@@ -38,6 +38,8 @@ function index_term()
   for(var i=0; i<arguments.length; i++)
   {
     var arg = arguments[i];
+    // Preserve the existing omission of unresolved initial page references.
+    if( last === null && Number(arg) === 0 ) continue;
     if( last != arg ) {
       if( last !== null && Number(arg) == (Number(last) + 1) ) {
         range = true;

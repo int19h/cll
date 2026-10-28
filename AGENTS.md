@@ -142,6 +142,8 @@ Follow this release order:
 4. Make sure that the draft contains the correct files and notes.
 5. Publish the release when the current task authorizes publication.
 
+While a Pages deploy runs, do not publish a release. Wait until that deploy finishes before publishing. The pipeline reads the draft state before each group of release changes. That read does not lock the release.
+
 Do not change a published release's book files. The site serves those files directly from its release assets. Only comparison pages and the landing page use current tooling. If a published release has missing or extra files, stop the deployment. Keep its format column unchanged after publication.
 
 Do not move an `edition/X.Y.Z` branch after publication. The deployment uses that branch to compute comparisons. Moving it makes the comparisons disagree with the published book. Publish a new version for a correction.

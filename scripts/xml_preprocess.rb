@@ -395,8 +395,24 @@ end
 $document.css('jbophrase').each do |node|
   # Don't insert links in titles, please.  Or index references.
   if ! [ 'title', 'term', 'primary', 'secondary' ].include? node.parent.name
-    # For now, jbophrase makes an *index* but not a *glossary*
+    # A jbophrase makes an *index* entry.  A frame such as "ke ... ke'e"
+    # also links each of its words to the glossary, as a valsi does.
+    frame = jbophrase_frame( node.text ) unless [ 'false', 'maybe' ].include? node[:valid]
+    if frame
+      linked = frame.each_with_index.map do |part, i|
+        if i.even?
+          %Q{<indexterm type="lojban-word"><primary role="valsi">#{part}</primary></indexterm><glossterm role="valsi" linkend="valsi-#{slugify(part)}">#{part}</glossterm>}
+        else
+          part
+        end
+      end
+    end
     indexify!( node: node, indextype: 'lojban-phrase' )
+    if frame
+      # Keep the phrase's index entry, which indexify! put first.
+      node.children.drop(1).each(&:remove)
+      node.add_child linked.join
+    end
   end
 
   convert!( node: node, newname: 'foreignphrase', lang: 'jbo' )

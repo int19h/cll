@@ -115,23 +115,38 @@ The `.env` file defines the edition's branding. `TITLE` gives the title, and `VE
 
 Keep `main` at `colojban-<last release>+dev`. Before creating an `edition/X.Y.Z` branch, make sure that all branding values describe the intended release. Set that branch's `VERSION` to the release version. Do not retain an upstream title or a stale subtitle.
 
-A release uses tag `vX.Y.Z` at the exact published commit on `edition/X.Y.Z`. The `pages` branch lists it in `pages/versions.tsv`. Each release contains `cll.pdf`, `cll.epub`, and `cll-X.Y.Z-html.tar.gz`. The archive contains the complete HTML site for that version.
+A release uses tag `vX.Y.Z` at the exact published commit on `edition/X.Y.Z`. The `pages` branch lists it in `pages/versions.tsv`. Its optional third column lists formats, separated by commas. An empty or missing column means `html,epub,pdf`.
+
+The formats select these release files:
+
+- `html` selects the online book, comparison pages, and `cll-<version>-html.tar.gz`.
+- `epub` selects `cll.epub`.
+- `pdf` selects Prince's `cll.pdf`.
+- `pdf-weasyprint` selects `cll-weasyprint.pdf`.
+- `pdf-typst` selects `cll-typst.pdf`.
+- `pdf-context` selects `cll-context.pdf`.
+
+Any combination works. Comparison pages require `html` because they use the online book's assets. Each release must contain exactly the files that its formats select. Version 1.3.6 will list `html,epub,pdf,pdf-weasyprint`. Only WeasyPrint is ready for that release. Typst and ConTeXt need more work before publication.
+
+A prerelease is a version before its final release. For example, version `1.3.6-rc1` uses tag `v1.3.6-rc1` and its own branch, `edition/1.3.6-rc1`. Mark its GitHub release as a prerelease. Keep its branding consistent with that version. Never reuse an edition branch for the final release.
+
+The site lists release candidates before their final version in ascending version order. It shows the newest versions first. If a final release exists, `/latest/` selects the newest final release. Otherwise, it selects the newest prerelease.
 
 Follow this release order:
 
 1. Create the release as a draft with its notes.
 2. Add the version entry to `pages/versions.tsv` on `pages`.
-3. Wait for the deployment to attach the three book files to the draft.
+3. Wait for the deployment to attach the files that the format column selects.
 4. Make sure that the draft contains the correct files and notes.
 5. Publish the release when the current task authorizes publication.
 
-Do not change a published release's book files. The site serves those files directly from its release assets. Only comparison pages and the landing page use current tooling. If a published release lacks a required book file, stop the deployment.
+Do not change a published release's book files. The site serves those files directly from its release assets. Only comparison pages and the landing page use current tooling. If a published release has missing or extra files, stop the deployment. Keep its format column unchanged after publication.
 
 Do not move an `edition/X.Y.Z` branch after publication. The deployment uses that branch to compute comparisons. Moving it makes the comparisons disagree with the published book. Publish a new version for a correction.
 
 Keep build caches in the draft release `site-build-cache`. Do not publish that release. The workflow input `force_rebuild` bypasses the cache.
 
-Compare release notes with this fork's previous release. The first release, 1.3.2, instead compares with upstream `geklojban-1.2.16`, frozen as `baseline/uncll-1.2.16`. Do not claim changes that unCLL already made. Dotside and classical hyphen rules are examples of that risk.
+Compare release notes with this fork's previous final release. Skip prereleases when choosing that release. The first release, 1.3.2, instead compares with upstream `geklojban-1.2.16`, frozen as `baseline/uncll-1.2.16`. Do not claim changes that unCLL already made. Dotside and classical hyphen rules are examples of that risk.
 
 The changes appendix compares with the first edition. Release notes summarize what readers gain from the current release. Link the relevant visual comparisons instead of repeating the appendix.
 
@@ -139,6 +154,6 @@ The site provides these comparisons:
 
 - `diff_from_official/` compares with official CLL 1.1. Its source is tag `v1.1-2016-08-26-html`, commit `6c0556c7`, which matches the build published by lojban.org.
 - `diff_from_uncll/` compares with the unCLL 1.2.16 baseline.
-- `diff_from_previous/` compares with this fork's previous release. The site builds versions from oldest to newest. The oldest release uses the unCLL comparison here.
+- `diff_from_previous/` compares with this fork's previous final release. It skips prereleases for every version, including release candidates. The site builds versions from oldest to newest. The oldest release uses the unCLL comparison here.
 
 The comparison pages show the whole book with changes marked in place. The deployment computes those changes from DocBook sources. Keep each comparison consistent with the exact published text.

@@ -23,19 +23,27 @@ NOT yet implemented (tracked in the example-validation issue #8): an
 annotation/allowlist scheme for intentionally-ill-formed examples; those
 currently appear as ordinary rows and show up as FAILs in the report.
 """
-import html, os, re, sys
+import os, re, sys
+import xml.etree.ElementTree as ET
+from pathlib import Path
 
-EXAMPLE = re.compile(r'<example[^>]*?xml:id="([^"]+)"[^>]*>(.*?)</example>', re.S)
-JBO = re.compile(r"<jbo>(.*?)</jbo>", re.S)
-PHRASE = re.compile(r"<jbophrase[^>]*>(.*?)</jbophrase>", re.S)
-TAG = re.compile(r"<[^>]+>")
-SECTION = re.compile(r'<section xml:id="([^"]+)"\s*>(.*?)</section>', re.S)
-ROW = re.compile(r"<tr[^>]*>(.*?)</tr>", re.S)
-CELL = re.compile(r"<t[dh][^>]*>(.*?)</t[dh]>", re.S)
+XML_ID = '{http://www.w3.org/XML/1998/namespace}id'
+ROOT = Path(__file__).resolve().parent.parent
+ENTITY_FILES = sorted(ROOT.glob('dtd/*.ent')) + sorted(ROOT.glob('xml/*.ent'))
+ENTITIES = '\n'.join(match.group(0) for path in ENTITY_FILES
+                     for match in re.finditer(r'<!ENTITY\s+([A-Za-z][\w.-]*)\s+"([^"]*)"\s*>',
+                                              path.read_text(encoding='utf-8')))
+
+
+
+def read_chapter(path):
+    # Chapters have no document type of their own. Supply the book's local
+    # publishing entities without loading an external DTD or network resource.
+    text = Path(path).read_text(encoding='utf-8')
+    return ET.fromstring('<!DOCTYPE chapter [\n' + ENTITIES + '\n]>\n' + text)
+
 
 def clean(s):
-    s = TAG.sub("", s)
-    s = html.unescape(s)
     s = s.replace("[", " ").replace("]", " ")
     s = re.sub(r"(?<=\s)-+(?=\s)", " ", " " + s + " ")
     if not re.search(r"\bzoi\b|\bla'o\b", s):
@@ -43,36 +51,42 @@ def clean(s):
         s = s.replace("\u2013", " ").replace("\u2014", " ")
     return " ".join(s.split())
 
-for p in sys.argv[1:]:
-    text = open(p, encoding="utf-8").read()
-    if os.path.basename(p) == "a01.xml":
-        # chrestomathy: one continuous text per section (see module docstring)
-        for sm in SECTION.finditer(text):
+def extract(path):
+    root = read_chapter(path)
+    if os.path.basename(path) == 'a01.xml':
+        for section in root.iter('section'):
             pieces = []
-            for tr in ROW.finditer(sm.group(2)):
-                cells = CELL.findall(tr.group(1))
+            for row in section.iter('tr'):
+                cells = [cell for cell in row if cell.tag in ('td', 'th')]
                 if cells:
-                    c = clean(cells[0])
-                    if c:
-                        pieces.append(c)
+                    text = clean(''.join(cells[0].itertext()))
+                    if text:
+                        pieces.append(text)
             if pieces:
-                print(f"{p}\t{sm.group(1)}\t{' '.join(pieces)}")
-        continue
+                yield section.get(XML_ID), ' '.join(pieces)
+        return
     consumed = set()
-    for em in EXAMPLE.finditer(text):
-        exid, body = em.group(1), em.group(2)
-        for j, m in enumerate(JBO.finditer(body)):
-            consumed.add(em.start(2) + m.start())
-            t = clean(m.group(1))
-            if t:
-                print(f"{p}\t{exid}#{j}\t{t}")
-    for i, m in enumerate(JBO.finditer(text)):
-        if m.start() in consumed:
+    for example in root.iter('example'):
+        example_id = example.get(XML_ID)
+        if example_id is None:
             continue
-        t = clean(m.group(1))
-        if t:
-            print(f"{p}\tjbo-{i}\t{t}")
-    for i, m in enumerate(PHRASE.finditer(text)):
-        t = clean(m.group(1))
-        if t:
-            print(f"{p}\tphrase-{i}\t{t}")
+        for index, element in enumerate(example.iter('jbo')):
+            consumed.add(element)
+            text = clean(''.join(element.itertext()))
+            if text:
+                yield f'{example_id}#{index}', text
+    for index, element in enumerate(root.iter('jbo')):
+        if element not in consumed:
+            text = clean(''.join(element.itertext()))
+            if text:
+                yield f'jbo-{index}', text
+    for index, element in enumerate(root.iter('jbophrase')):
+        text = clean(''.join(element.itertext()))
+        if text:
+            yield f'phrase-{index}', text
+
+
+if __name__ == '__main__':
+    for path in sys.argv[1:]:
+        for identifier, text in extract(path):
+            print(f'{path}\t{identifier}\t{text}')

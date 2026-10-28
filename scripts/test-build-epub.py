@@ -27,10 +27,10 @@ class EpubAssets(unittest.TestCase):
                 shutil.copy2(SOURCE / relative, target)
             build = root / 'build'
             xhtml = build / 'epub-xhtml'
-            (xhtml / 'assets/media').mkdir(parents=True)
-            (xhtml / 'assets/context').mkdir()
-            (xhtml / 'assets/context/cll-layout.tex').write_text('renderer source')
-            (xhtml / 'assets/media/fixture.png').write_bytes(b'fixture image')
+            shutil.copytree(SOURCE / 'assets', xhtml / 'assets')
+            # Use the same producer exclusions as scripts/Makefile's ePub target.
+            for excluded in ('css', 'scripts', 'media/examples', 'media/vreji'):
+                shutil.rmtree(xhtml / 'assets' / excluded, ignore_errors=True)
             (xhtml / 'final.css').write_text('body { color: black; }')
             (xhtml / 'index.html').write_text('''<html><head><title>Fixture</title></head><body>
 <dl>
@@ -57,11 +57,13 @@ class EpubAssets(unittest.TestCase):
             with zipfile.ZipFile(build / 'cll.epub') as archive:
                 names = set(archive.namelist())
                 self.assertIn('chapter.html', names)
-                self.assertIn('assets/media/fixture.png', names)
+                self.assertIn('assets/media/logo.png', names)
+                self.assertEqual(archive.read('assets/media/logo.png'),
+                                 (SOURCE / 'assets/media/logo.png').read_bytes())
                 self.assertFalse(any(n.startswith('assets/context/') for n in names))
                 manifest = ET.fromstring(archive.read('content.opf'))
                 items = manifest.findall('{*}manifest/{*}item')
-                self.assertTrue(any(i.get('href') == 'assets/media/fixture.png' for i in items))
+                self.assertTrue(any(i.get('href') == 'assets/media/logo.png' for i in items))
                 self.assertFalse(any('context/' in i.get('href', '') for i in items))
 
             # Unknown reader assets must still fail instead of disappearing.

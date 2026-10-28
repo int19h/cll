@@ -113,7 +113,7 @@ The full book build uses `Dockerfile` and `run_container.sh`. Prince produces th
 
 The `.env` file defines the edition's branding. `TITLE` gives the title, and `VERSION` gives the version. Optional `SUBTITL` gives the subtitle. `scripts/merge.sh` puts these values on the title page. An empty `SUBTITL` produces no subtitle element.
 
-Keep `main` at `colojban-<last release>+dev`. Before creating an `edition/X.Y.Z` branch, make sure that all branding values describe the intended release. Set that branch's `VERSION` to the release version. Do not retain an upstream title or a stale subtitle.
+Keep `main` at `colojban-<last release>+dev`. The last release includes prereleases. After `1.3.6-rc1`, keep `main` at `colojban-1.3.6-rc1+dev`. Before creating an `edition/X.Y.Z` branch, make sure that all branding values describe the intended release. Set that branch's `VERSION` to the release version. Do not retain an upstream title or a stale subtitle.
 
 A release uses tag `vX.Y.Z` at the exact published commit on `edition/X.Y.Z`. The `pages` branch lists it in `pages/versions.tsv`. Its optional third column lists formats, separated by commas. An empty or missing column means `html,epub,pdf`.
 

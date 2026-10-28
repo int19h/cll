@@ -155,6 +155,8 @@ jobs:
           git checkout -q FETCH_HEAD
       - name: Test parser invocation failures
         run: node tests/test-run-probes.js
+      - name: Test audio loading failures
+        run: node tests/test-audio-loading.js
       - name: Run magic-word probes
         run: ILMENTUFA_DIR=../ilmentufa node tests/run-probes.js
 

@@ -35,13 +35,12 @@ concurrency:
   group: pages
   cancel-in-progress: true
 
-permissions:
-  contents: write          # upload the per-version archives to the releases
-  pages: write
-  id-token: write
+permissions: {}
 
 jobs:
   build:
+    permissions:
+      contents: write      # upload the per-version archives to the releases
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout pages branch (workflow + build scripts)
@@ -131,11 +130,14 @@ jobs:
         run: bash scripts/gen-site-index.sh _site
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: _site
 
   deploy:
+    permissions:
+      pages: write
+      id-token: write
     needs: build
     runs-on: ubuntu-24.04
     environment:
@@ -144,4 +146,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5

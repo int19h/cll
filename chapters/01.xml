@@ -89,7 +89,7 @@
       Nevertheless, the publication of the first edition of this book in 1997 was, in one sense, the completion of a long period of language evolution. The Logical Language Group declared the language baselined: its official definition became a fixed reference point. Even the consideration of a revision had to wait for five years. Later events roughly followed that plan, but not its spirit of finality.
     </para>
     <para>
-      A baseline statement in 2002 started the plan. In 2003 the Logical Language Group, which was then responsible for the language, chartered a language-definition committee. Its Lojban name is
+      A baseline statement in 2002 started the plan. In 2003 the Logical Language Group, the organization responsible for the language, chartered a language-definition committee. Its Lojban name is
       <indexterm type="general"><primary>BPFK</primary><secondary>language-definition committee</secondary>
       </indexterm>
       <jbophrase>baupla fuzykamni</jbophrase>, or BPFK for short. Its task was to produce a definitive specification of the language. Along the way, the BPFK and the Group adopted a small number of deliberate changes to the language that this book describes. The changes with the largest consequences are these:
@@ -110,7 +110,7 @@
     </para>
     <para><indexterm type="general"><primary>Logical Language Group</primary><secondary>status of</secondary>
       </indexterm><indexterm type="general"><primary>Lojban</primary><secondary>governance of</secondary>
-      </indexterm>Later, deliberate change stopped, and this time it stopped without a proclamation. The Logical Language Group is now effectively inactive. Its last recorded meeting was the 2022 Annual Meeting, which ended in 2023; no later activity is on record. The BPFK left its remaining open questions deferred, and they now stay deferred indefinitely.</para>
+      </indexterm>Later, deliberate change stopped, and this time it stopped without a proclamation. The Logical Language Group still exists, but it is mostly dormant; its main remaining work is to keep the printed edition of version 1.1 of this book available. As of October 2026, its most recent published record is that of the 2022 Annual Meeting, which ended in 2023. The BPFK made its last decision in 2016 and left its remaining open questions deferred, and nobody has taken them up since.</para>
     <para>
       In practice, the established core of the language is frozen. This core is the old baseline plus the later decisions that this book describes, each at its own level of authority. The language itself is not frozen.
     </para>
@@ -120,7 +120,7 @@
       describes, and it submitted them to the community dictionaries. All of this growth is fully decentralized. (Teach your children Lojban!)
     </para>
     <para>
-      You can learn the language that this book describes with reasonable assurance that its core will not change under you. Nobody forbids further changes, but it is now nobody's job to make them.
+      You can learn the language that this book describes with reasonable assurance that its core will not change under you. Nobody forbids further changes, but any official change would have to come from the Logical Language Group, deliberately and on the record.
     </para>
     <para>
       <indexterm type="general"><primary>this book</primary><secondary>structure of</secondary>

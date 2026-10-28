@@ -32,14 +32,14 @@ Prince.addScriptFunc( "index_term", index_term );
 function index_term()
 {
   var text='';
-  var last=0;
+  var last=null;
   var range=false;
   // console.log('it: ' + arguments)
   for(var i=0; i<arguments.length; i++)
   {
     var arg = arguments[i];
     if( last != arg ) {
-      if( Number(arg) == (Number(last) + 1) ) {
+      if( last !== null && Number(arg) == (Number(last) + 1) ) {
         range = true;
         last = arg;
       } else {

@@ -24,7 +24,8 @@
 #   with the current tooling (build-site.sh with DIFFS_ONLY=1).
 # - A version without a published release is built from source. A draft
 #   release gets the files of its formats from each run, and loses the
-#   files of formats that its row no longer lists. So create the release
+#   files of registered formats that its row no longer lists. Other draft
+#   assets stay in place with warnings. So create the release
 #   as a draft with its notes before adding the version to
 #   pages/versions.tsv, then check the draft and publish it.
 # - While a Pages deploy runs, do not publish a release. Wait for the whole
@@ -265,8 +266,9 @@ while IFS=$'\t' read -r ver ref formats; do
     store_cache=yes
   fi
 
-  # A draft release gets exactly the files of this run's formats. A
-  # published one is fixed.
+  # Attach the requested files to a draft. Clean up only known format
+  # files, and preserve other assets with warnings. Published releases
+  # still require exactly the selected files.
   if [ "$(release_field "$tag" draft)" = "true" ]; then
     files=()
     for f in "${want_files[@]}"; do
@@ -282,11 +284,15 @@ while IFS=$'\t' read -r ver ref formats; do
     live_release="$(draft_release "$tag")"
     gh release upload "$tag" -R "$repo" --clobber "${files[@]}"
     echo "==> [$ver] attached ${want_files[*]} to the draft $tag"
-    # Remove every unlisted draft asset, including unknown or retired formats.
+    # Remove unlisted format files, including archives of other versions.
     while IFS= read -r f; do
       case " ${want_files[*]} " in *" $f "*) continue ;; esac
-      gh release delete-asset "$tag" "$f" -R "$repo" --yes
-      echo "==> [$ver] removed $f from the draft $tag: its format is not listed"
+      if site_is_format_file "$f"; then
+        gh release delete-asset "$tag" "$f" -R "$repo" --yes
+        echo "==> [$ver] removed $f from the draft $tag: its format is not listed"
+      else
+        echo "::warning::draft release $tag has unlisted asset '$f'. The deploy leaves it unchanged." >&2
+      fi
     done < <(jq -r '.assets[].name' <<< "$live_release")
   elif [ -z "$(release_field "$tag" id)" ]; then
     echo "::warning::release $tag does not exist; create it as a draft to receive the files of $ver"

@@ -34,6 +34,14 @@ eq "release files" "cll-1.3.6-html.tar.gz cll.epub cll.pdf cll-weasyprint.pdf" \
 eq "download files" "cll-typst.pdf cll-context.pdf" \
   "$(site_download_files "html,pdf-typst,pdf-context" 1.3.6 | paste -sd' ')"
 
+# Cleanup recognizes exact registry files and archives of any valid version.
+for file in cll.pdf cll.epub cll-typst.pdf cll-1.0-html.tar.gz cll-1.4-rc2-html.tar.gz; do
+  eq "registered format file $file" yes "$(site_is_format_file "$file" && echo yes || echo no)"
+done
+for file in notes.txt sample.pdf cll-notes-html.tar.gz cll-unregistered.pdf cll-1.4-html.tar.gz.backup; do
+  eq "manual asset $file stays outside cleanup" no "$(site_is_format_file "$file" && echo yes || echo no)"
+done
+
 # --- versions
 eq "prerelease detection" "yes no" \
   "$(site_is_prerelease 1.3.6-rc1 && echo yes || echo no) $(site_is_prerelease 1.3.6 && echo yes || echo no)"
@@ -87,6 +95,7 @@ if [ -n "${PUBLISH_DURING_BUILD:-}" ]; then
   mv "$REL/next.json" "$REL/$PUBLISH_DURING_BUILD.json"
 fi
 if [ -n "${ADD_DURING_BUILD:-}" ]; then
+  echo added > "$REL/$ADD_DURING_BUILD/cll-0.9-rc1-html.tar.gz"
   echo added > "$REL/$ADD_DURING_BUILD/late-asset.txt"
 fi
 EOF
@@ -145,7 +154,7 @@ mkdir -p "$t/arch/1.3.5/xhtml_section_chunks"; echo released > "$t/arch/1.3.5/xh
 tar -C "$t/arch" -czf "$w/rel/v1.3.5/cll-1.3.5-html.tar.gz" 1.3.5
 rel v1.3.6-rc1 false true cll-weasyprint.pdf
 rel v1.3.6-rc2 true true
-rel v1.3.6 true false cll-typst.pdf notes.txt
+rel v1.3.6 true false cll-typst.pdf cll-1.0-html.tar.gz notes.txt
 printf '1.3.7\tedition/1.3.7\thtml\n1.3.6\tedition/1.3.6\thtml,epub,pdf,pdf-weasyprint\n1.3.6-rc2\tedition/1.3.6-rc2\thtml,pdf-weasyprint\n1.3.6-rc1\tedition/1.3.6-rc1\tpdf-weasyprint\n1.3.5\tedition/1.3.5\n' > "$w/versions.tsv"
 run_bv() {
   ( cd "$w" && PATH="$w/bin:$PATH" REL="$w/rel" LOG="$w/log" GITHUB_REPOSITORY=o/r BASELINE_COMMIT=b \
@@ -159,7 +168,10 @@ eq "published 1.3.5 serves its released PDF" "released cll.pdf" "$(cat "$w/out/1
 eq "published 1.3.5 serves its released HTML" "released" "$(cat "$w/out/1.3.5/xhtml_no_chunks/index.html")"
 eq "published PDF-only prerelease has only its PDF" "BUILD-INFO cll-weasyprint.pdf index.html" "$(ls "$w/out/1.3.6-rc1" | paste -sd' ')"
 eq "draft rc2 gets exactly its files" "cll-1.3.6-rc2-html.tar.gz cll-weasyprint.pdf" "$(ls "$w/rel/v1.3.6-rc2" | paste -sd' ')"
-eq "draft 1.3.6 gets its files and loses the stale one" "cll-1.3.6-html.tar.gz cll-weasyprint.pdf cll.epub cll.pdf" "$(ls "$w/rel/v1.3.6" | paste -sd' ')"
+eq "draft 1.3.6 removes known stale files and preserves manual assets" "cll-1.3.6-html.tar.gz cll-weasyprint.pdf cll.epub cll.pdf notes.txt" "$(ls "$w/rel/v1.3.6" | paste -sd' ')"
+eq "manual asset content stays unchanged" "released notes.txt" "$(cat "$w/rel/v1.3.6/notes.txt")"
+eq "manual asset gets a warning" 1 "$(grep -c "::warning::draft release v1.3.6 has unlisted asset 'notes.txt'" "$w/log/run")"
+eq "another version's archive is removed" 1 "$(grep -c '^delete v1.3.6 cll-1.0-html.tar.gz$' "$w/log/gh")"
 eq "published releases did not change" "" "$(grep -E ' v1\.3\.(5|6-rc1) ' "$w/log/gh" || true)"
 eq "a release without a draft gets a warning" "1" "$(grep -c 'release v1.3.7 does not exist' "$w/log/run")"
 eq "BUILD-INFO records the formats" "formats=pdf-weasyprint" "$(grep '^formats=' "$w/out/1.3.6-rc1/BUILD-INFO")"
@@ -209,7 +221,9 @@ race_case() { # <case> <publication target> <failed-read target> <late-asset tar
       eq "$name writes no cache before refusal" "" "$(cat "$w/log/gh" 2>/dev/null || true)"
     fi
   else
-    eq "late assets are removed using live state" "cll-weasyprint.pdf" "$(ls "$w/rel/v1.4" | paste -sd' ')"
+    eq "late known files are removed and manual assets stay" "cll-weasyprint.pdf late-asset.txt" "$(ls "$w/rel/v1.4" | paste -sd' ')"
+    eq "late manual asset gets a warning" 1 "$(grep -c "::warning::draft release v1.4 has unlisted asset 'late-asset.txt'" "$w/log/run")"
+    eq "late archive from another version is removed" 1 "$(grep -c '^delete v1.4 cll-0.9-rc1-html.tar.gz$' "$w/log/gh")"
     eq "all version writes stay together after one fresh read" \
       $'view v1.4\nupload v1.4\ndelete v1.4\ndelete v1.4\nview site-build-cache\nupload site-build-cache' \
       "$(cat "$w/log/events")"
@@ -379,6 +393,8 @@ EOF
 bs text
 eq "new non-PDF format uses generic dispatch" text "$(cat "$b/log")"
 eq "new non-PDF format gets a landing link" 1 "$(grep -c 'href="cll.txt">Download text' "$b/out/1.4-rc1/index.html")"
+eq "new non-PDF registry entry also controls cleanup" yes \
+  "$(bash -c '. "$1"; site_is_format_file cll.txt && echo yes || echo no' _ "$b/tools/site-versions.sh")"
 # A PDF-only version needs no comparison commits.
 echo -e '#!/bin/bash\nexit 1' > "$b/bin/git"
 : > "$b/log"

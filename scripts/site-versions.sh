@@ -93,6 +93,26 @@ site_format_file() { # <format> <version>
   echo "${file//\{version\}/$2}"
 }
 
+# True for a registered format's release filename, for any valid version.
+# Use the registry templates so new formats need no separate filename list.
+site_is_format_file() { # <filename>
+  local file="$1" f template prefix suffix version
+  for f in "${SITE_FORMATS[@]}"; do
+    template="$(site_format_field "$f" 2)"
+    if [[ "$template" == *'{version}'* ]]; then
+      prefix="${template%%\{version\}*}"
+      suffix="${template#*\{version\}}"
+      [[ "$file" == "$prefix"*"$suffix" ]] || continue
+      version="${file#"$prefix"}"
+      version="${version%"$suffix"}"
+      if site_is_version "$version"; then return 0; fi
+    elif [ "$file" = "$template" ]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
 # The release files of a canonical format list, one per line.
 site_release_files() { # <formats> <version>
   local f IFS=,

@@ -22,12 +22,41 @@
 # prerelease suffix, such as 1.3.6-rc1. A prerelease sorts before its
 # final release: 1.3.6-rc1 < 1.3.6-rc2 < 1.3.6.
 
-# All formats, in the order in which they are built and listed.
-SITE_FORMATS=(html epub pdf pdf-weasyprint pdf-typst pdf-context)
-SITE_ALL_FORMATS="html,epub,pdf,pdf-weasyprint,pdf-typst,pdf-context"
-# The formats of a row without a third column: the set before formats
-# could be chosen.
-SITE_DEFAULT_FORMATS="html,pdf,epub"
+# Add a format here. Fields: name | release file | link label | build
+# target (or container launcher) | toolchain. {version} is substituted.
+# Existing native targets use cll_build. A new toolchain also needs its
+# installer in build-site.sh and its runner dependencies in pages.yml.
+SITE_FORMAT_REGISTRY=(
+  'html|cll-{version}-html.tar.gz|Read online|xhtml_sections xhtml_nochunks|base'
+  'epub|cll.epub|Download ePub|epub|java'
+  'pdf|cll.pdf|Download PDF|pdf|prince'
+  'pdf-weasyprint|cll-weasyprint.pdf|Download PDF (WeasyPrint)|pdf_weasyprint|weasyprint'
+  'pdf-typst|cll-typst.pdf|Download PDF (Typst)|pdf_typst|typst'
+  'pdf-context|cll-context.pdf|Download PDF (ConTeXt)|run_context_container.sh|container'
+)
+SITE_FORMATS=()
+for site_entry in "${SITE_FORMAT_REGISTRY[@]}"; do
+  SITE_FORMATS+=("${site_entry%%|*}")
+done
+unset site_entry
+SITE_ALL_FORMATS="$(IFS=,; echo "${SITE_FORMATS[*]}")"
+SITE_DEFAULT_FORMATS="html,epub,pdf"
+
+site_format_field() { # <format> <field-number, starting at 1>
+  local entry
+  for entry in "${SITE_FORMAT_REGISTRY[@]}"; do
+    if [ "${entry%%|*}" = "$1" ]; then
+      cut -d'|' -f"$2" <<< "$entry"
+      return
+    fi
+  done
+  echo "unknown format '$1'" >&2; return 1
+}
+
+site_toolchains() { # <canonical formats>
+  local f IFS=,
+  for f in $1; do site_format_field "$f" 5; done | sort -u
+}
 
 # Print the formats of a list in the canonical order, comma-separated.
 # An empty list gives the default set. An unknown format is an error.
@@ -59,15 +88,9 @@ site_has_format() { # <formats> <format>
 # The file name of a format inside <out-dir>/<version>/ and on the release.
 # html has no single file here; its release file is the archive.
 site_format_file() { # <format> <version>
-  case "$1" in
-    html)           echo "cll-$2-html.tar.gz" ;;
-    epub)           echo "cll.epub" ;;
-    pdf)            echo "cll.pdf" ;;
-    pdf-weasyprint) echo "cll-weasyprint.pdf" ;;
-    pdf-typst)      echo "cll-typst.pdf" ;;
-    pdf-context)    echo "cll-context.pdf" ;;
-    *) echo "unknown format '$1'" >&2; return 1 ;;
-  esac
+  local file
+  file="$(site_format_field "$1" 2)" || return 1
+  echo "${file//\{version\}/$2}"
 }
 
 # The release files of a canonical format list, one per line.
@@ -80,17 +103,31 @@ site_release_files() { # <formats> <version>
 site_download_files() { # <formats> <version>
   local f IFS=,
   for f in $1; do [ "$f" = html ] || site_format_file "$f" "$2"; done
+  return 0
 }
 
-# The label of a downloadable file on a landing page.
-site_download_label() { # <file>
-  case "$1" in
-    cll.pdf)            echo "Download PDF" ;;
-    cll.epub)           echo "Download ePub" ;;
-    cll-weasyprint.pdf) echo "Download PDF (WeasyPrint)" ;;
-    cll-typst.pdf)      echo "Download PDF (Typst)" ;;
-    cll-context.pdf)    echo "Download PDF (ConTeXt)" ;;
-  esac
+# The label of a format on a landing page.
+site_download_label() { site_format_field "$1" 3; }
+
+# Print links only for the formats present on disk. Both landing pages
+# use this function. The prefix is relative to the page being written.
+site_format_links() { # <version-dir> <version> <URL-prefix>
+  local f file label
+  if [ -s "$1/xhtml_section_chunks/index.html" ]; then
+    printf '<a href="%sxhtml_section_chunks/">Read online (section by section)</a> ' "$3"
+  fi
+  if [ -s "$1/xhtml_no_chunks/index.html" ]; then
+    printf '<a href="%sxhtml_no_chunks/">Read online (single page)</a> ' "$3"
+  fi
+  for f in "${SITE_FORMATS[@]}"; do
+    [ "$f" != html ] || continue
+    file="$(site_format_file "$f" "$2")"
+    label="$(site_download_label "$f")"
+    if [ -s "$1/$file" ]; then
+      printf '<a href="%s%s">%s</a> ' "$3" "$file" "$label"
+    fi
+  done
+  return 0
 }
 
 SITE_VERSION_RE='^[0-9]+(\.[0-9]+)*(-[a-z]+[0-9]*)?$'
@@ -121,14 +158,25 @@ site_sort_versions() {
 # "<version> TAB <ref> TAB <canonical formats>". Comments and empty lines
 # are skipped. A malformed row is an error.
 site_rows() { # <versions.tsv>
-  local ver ref formats rest rows="" n=0
-  while IFS=$'\t' read -r ver ref formats rest; do
-    case "$ver" in ''|'#'*) continue ;; esac
+  local line ver ref formats rest rows="" n=0
+  while IFS= read -r line || [ -n "$line" ]; do
+    case "$line" in ''|'#'*) continue ;; esac
+    ver="${line%%$'\t'*}"
+    ref=""; formats=""
+    if [[ "$line" == *$'\t'* ]]; then
+      rest="${line#*$'\t'}"
+      ref="${rest%%$'\t'*}"
+      if [[ "$rest" == *$'\t'* ]]; then
+        formats="${rest#*$'\t'}"
+        if [[ "$formats" == *$'\t'* ]]; then
+          echo "versions.tsv: $ver has more than three columns" >&2; return 1
+        fi
+      fi
+    fi
     if ! site_is_version "$ver"; then
       echo "versions.tsv: '$ver' is not a version number" >&2; return 1
     fi
     [ -n "$ref" ] || { echo "versions.tsv: $ver has no git ref" >&2; return 1; }
-    [ -z "$rest" ] || { echo "versions.tsv: $ver has more than three columns" >&2; return 1; }
     formats="$(site_formats "$formats")" || { echo "versions.tsv: bad formats for $ver" >&2; return 1; }
     rows+="$ver"$'\t'"$ref"$'\t'"$formats"$'\n'
     n=$((n + 1))
@@ -139,6 +187,6 @@ site_rows() { # <versions.tsv>
   [ -z "$dup" ] || { echo "versions.tsv: listed twice: $dup" >&2; return 1; }
   local v
   for v in $(printf '%s' "$rows" | cut -f1 | site_sort_versions); do
-    printf '%s' "$rows" | awk -F'\t' -v v="$v" '$1 == v'
+    printf '%s' "$rows" | awk -F'\t' -v v="$v" '("x" $1) == ("x" v)'
   done
 }

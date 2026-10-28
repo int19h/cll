@@ -23,11 +23,16 @@ mapfile -t versions < <(
     | grep -E "$SITE_VERSION_RE" | site_sort_versions | tac)
 
 [ "${#versions[@]}" -gt 0 ] || { echo "no version dirs under $site" >&2; exit 1; }
-if [ -z "$latest" ]; then
-  for v in "${versions[@]}"; do
-    site_is_prerelease "$v" || { latest="$v"; break; }
-  done
-  [ -n "$latest" ] || latest="${versions[0]}"
+newest_final=""
+for v in "${versions[@]}"; do
+  site_is_prerelease "$v" || { newest_final="$v"; break; }
+done
+if [ -z "$latest" ]; then latest="${newest_final:-${versions[0]}}"; fi
+if ! site_is_version "$latest" || [ ! -d "$site/$latest" ]; then
+  echo "unknown latest version: $latest" >&2; exit 1
+fi
+if [ -n "$newest_final" ] && site_is_prerelease "$latest"; then
+  echo "latest must be a final release when one exists" >&2; exit 1
 fi
 
 # /latest/ meta-refresh redirect (GitHub Pages has no symlinks)
@@ -60,8 +65,11 @@ HTML
     tag=""
     site_is_prerelease "$v" && tag=" <span class=\"muted\">($(site_prerelease_label "$v"))</span>"
     [ "$v" = "$latest" ] && tag="$tag <span class=\"muted\">(latest)</span>"
-    printf '<li class="%s"><a href="%s/">%s</a>%s</li>\n' \
+    printf '<li class="%s"><a href="%s/">%s</a>%s' \
       "$([ "$v" = "$latest" ] && echo latest)" "$v" "$v" "$tag"
+    echo '<div>'
+    site_format_links "$site/$v" "$v" "$v/"
+    echo '</div></li>'
   done
   cat <<HTML
 </ul>

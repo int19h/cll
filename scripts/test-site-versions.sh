@@ -71,7 +71,7 @@ formats="$(site_formats "${FORMATS:-}")"
 echo "$ver formats=$formats prev=$prev label=$label diffs_only=${DIFFS_ONLY:-}" >> "$LOG/build-site"
 d="$out/$ver"; mkdir -p "$d"
 if [ -z "${DIFFS_ONLY:-}" ]; then
-  if site_has_format "$formats" html; then mkdir -p "$d/xhtml_no_chunks"; echo built > "$d/xhtml_no_chunks/index.html"; fi
+  if site_has_format "$formats" html; then mkdir -p "$d/xhtml_no_chunks" "$d/xhtml_section_chunks"; echo built > "$d/xhtml_no_chunks/index.html"; echo built > "$d/xhtml_section_chunks/index.html"; fi
   for f in $(site_download_files "$formats" "$ver"); do echo "built $ver" > "$d/$f"; done
 fi
 echo index > "$d/index.html"
@@ -118,10 +118,11 @@ rel() { # <tag> <draft> <prerelease> <assets...>
 # draft final with a stale cll-typst.pdf. 1.3.7: no release.
 rel v1.3.5 false false cll-1.3.5-html.tar.gz cll.pdf cll.epub
 mkdir -p "$t/arch/1.3.5/xhtml_no_chunks"; echo released > "$t/arch/1.3.5/xhtml_no_chunks/index.html"
+mkdir -p "$t/arch/1.3.5/xhtml_section_chunks"; echo released > "$t/arch/1.3.5/xhtml_section_chunks/index.html"
 tar -C "$t/arch" -czf "$w/rel/v1.3.5/cll-1.3.5-html.tar.gz" 1.3.5
 rel v1.3.6-rc1 false true cll-weasyprint.pdf
 rel v1.3.6-rc2 true true
-rel v1.3.6 true false cll-typst.pdf
+rel v1.3.6 true false cll-typst.pdf notes.txt
 printf '1.3.7\tedition/1.3.7\thtml\n1.3.6\tedition/1.3.6\thtml,epub,pdf,pdf-weasyprint\n1.3.6-rc2\tedition/1.3.6-rc2\thtml,pdf-weasyprint\n1.3.6-rc1\tedition/1.3.6-rc1\tpdf-weasyprint\n1.3.5\tedition/1.3.5\n' > "$w/versions.tsv"
 run_bv() {
   ( cd "$w" && PATH="$w/bin:$PATH" REL="$w/rel" LOG="$w/log" GITHUB_REPOSITORY=o/r BASELINE_COMMIT=b \
@@ -150,7 +151,7 @@ eq "a changed format list rebuilds that version" "1.3.7 formats=html,pdf-typst p
 # A published release that lacks a file of its formats stops the run.
 rm "$w/rel/v1.3.6-rc1/cll-weasyprint.pdf"
 if run_bv; then echo "FAIL a published release without its file must stop the run"; fails=$((fails + 1)); else
-  eq "a published release without its file stops the run" "1" "$(grep -c 'published release v1.3.6-rc1 has no cll-weasyprint.pdf' "$w/log/run")"; fi
+  eq "a published release without its file stops the run" "1" "$(grep -c 'published release v1.3.6-rc1 has a different asset set' "$w/log/run")"; fi
 rel v1.3.6-rc1 false false cll-weasyprint.pdf
 run_bv
 eq "a prerelease release not marked as prerelease gets a warning" "1" "$(grep -c 'release v1.3.6-rc1 is for a prerelease version but is not marked' "$w/log/run")"
@@ -160,7 +161,7 @@ s="$t/site"; mkdir -p "$s"/{1.3.5,1.3.6-rc1,1.3.6-rc2,1.3.6,notaversion}
 bash "$here/gen-site-index.sh" "$s" >/dev/null
 eq "landing page order and marks" \
   '1.3.6</a> <span class="muted">(latest)</span>|1.3.6-rc2</a> <span class="muted">(release candidate)</span>|1.3.6-rc1</a> <span class="muted">(release candidate)</span>|1.3.5</a>' \
-  "$(grep -o '[0-9.rc-]*</a>.*</li>' "$s/index.html" | sed 's|</li>$||' | paste -sd'|')"
+  "$(grep -o '[0-9][0-9.rc-]*</a>.*'  "$s/index.html" | sed 's|<div>$||' | paste -sd'|')"
 eq "latest is the final release" 'url=../1.3.6/' "$(grep -o 'url=[^"]*' "$s/latest/index.html")"
 rm -rf "$s/1.3.6"
 bash "$here/gen-site-index.sh" "$s" >/dev/null
@@ -168,6 +169,134 @@ eq "latest skips prereleases" 'url=../1.3.5/' "$(grep -o 'url=[^"]*' "$s/latest/
 rm -rf "$s/1.3.5"
 bash "$here/gen-site-index.sh" "$s" >/dev/null
 eq "latest is a prerelease when no final exists" 'url=../1.3.6-rc2/' "$(grep -o 'url=[^"]*' "$s/latest/index.html")"
+
+# Empty fields must not shift later columns. The final row can omit LF.
+printf '1.4\tedition/1.4\t\n1.5\tedition/1.5' > "$t/empty.tsv"
+eq "empty and missing format columns" $'1.4\tedition/1.4\thtml,epub,pdf\n1.5\tedition/1.5\thtml,epub,pdf' "$(site_rows "$t/empty.tsv")"
+printf '1.4\t\thtml\n' > "$t/empty-ref.tsv"
+fails_with "empty ref does not consume formats" site_rows "$t/empty-ref.tsv"
+printf '1.4\tedition/1.4\t\thtml\n' > "$t/extra.tsv"
+fails_with "empty third field still rejects fourth column" site_rows "$t/extra.tsv"
+eq "default toolchains omit optional engines" "base java prince" "$(site_toolchains "$(site_formats '')" | paste -sd' ')"
+eq "one engine selects only its toolchain" weasyprint "$(site_toolchains pdf-weasyprint)"
+
+# Both missing and extra assets on published releases fail before writes.
+echo extra > "$w/rel/v1.3.6-rc1/extra.txt"
+: > "$w/log/gh"
+fails_with "extra published asset fails" run_bv
+eq "published mismatch writes nothing, including cache" "" "$(cat "$w/log/gh")"
+rm "$w/rel/v1.3.6-rc1/extra.txt"
+
+mkdir -p "$s/1.3.5"
+fails_with "explicit latest cannot select RC when final exists" bash "$here/gen-site-index.sh" "$s" 1.3.6-rc2
+fails_with "explicit latest must exist" bash "$here/gen-site-index.sh" "$s" 9.9
+mkdir -p "$s/1.3.5/xhtml_no_chunks"
+echo html > "$s/1.3.5/xhtml_no_chunks/index.html"
+echo pdf > "$s/1.3.6-rc1/cll-weasyprint.pdf"
+bash "$here/gen-site-index.sh" "$s" >/dev/null
+eq "top page links available HTML" 1 "$(grep -c 'href="1.3.5/xhtml_no_chunks/"' "$s/index.html")"
+eq "top page links available WeasyPrint" 1 "$(grep -c 'href="1.3.6-rc1/cll-weasyprint.pdf"' "$s/index.html")"
+eq "top page omits unavailable Prince" 0 "$(grep -c 'href="[^"]*/cll.pdf"' "$s/index.html" || true)"
+
+# Run the real build-site script with stub renderers. This tests dispatch,
+# removal of old output, native installers, fresh Prince markers, and links.
+b="$t/bs"; mkdir -p "$b/src/scripts" "$b/src/xml" "$b/bin" "$b/tools"
+cp "$here/build-site.sh" "$here/site-versions.sh" "$b/tools/"
+cat > "$b/bin/git" <<'EOF'
+#!/bin/bash
+exit 0
+EOF
+cat > "$b/bin/prince" <<'EOF'
+#!/bin/bash
+exit 0
+EOF
+cp "$b/bin/prince" "$b/bin/java"
+cat > "$b/src/cll_build" <<'EOF'
+#!/bin/bash
+set -euo pipefail
+[ "$1 $2" = '-n -T' ]
+echo "$3" >> "$BS_LOG"
+mkdir -p build
+case "$3" in
+  xhtml_sections) mkdir -p build/xhtml_section_chunks; echo html > build/xhtml_section_chunks/index.html ;;
+  xhtml_nochunks) mkdir -p build/xhtml_no_chunks; echo html > build/xhtml_no_chunks/index.html ;;
+  pdf) [ ! -e build/pdf.done ]; echo prince > build/cll.pdf; touch build/pdf.done ;;
+  epub) echo epub > build/cll.epub ;;
+  pdf_weasyprint) echo weasy > build/cll-weasyprint.pdf ;;
+  pdf_typst) echo typst > build/cll-typst.pdf ;;
+  *) exit 1 ;;
+esac
+EOF
+cat > "$b/src/scripts/install-weasyprint.sh" <<'EOF'
+#!/bin/bash
+echo install-weasyprint >> "$BS_LOG"
+EOF
+cat > "$b/src/scripts/install_typst.sh" <<'EOF'
+#!/bin/bash
+echo install-typst >> "$BS_LOG"
+EOF
+cat > "$b/src/run_context_container.sh" <<'EOF'
+#!/bin/bash
+echo context >> "$BS_LOG"
+echo context > build/cll-context.pdf
+EOF
+# The diff helper copies HTML for this orchestration test.
+cat > "$b/tools/docbook-diff.py" <<'EOF'
+import pathlib, sys
+if sys.argv[1] == 'finish':
+    out = pathlib.Path(sys.argv[3]); out.mkdir(parents=True)
+    (out / 'difference.html').write_text('diff')
+    (out / 'difference_prefixed.html').write_text('diff')
+EOF
+echo stylesheet > "$b/tools/docbook-diff.xsl"
+echo 'xhtml_nochunks: xsl_file = original' > "$b/src/scripts/Makefile"
+chmod +x "$b/bin/"* "$b/src/cll_build" "$b/src/scripts/"*.sh "$b/src/run_context_container.sh"
+bs() {
+  PATH="$b/bin:$PATH" BS_LOG="$b/log" FORMATS="$1" bash "$b/tools/build-site.sh" "$b/src" 1.4-rc1 '' "$b/out" > "$b/run.log" 2>&1
+}
+for selection in html epub pdf pdf-weasyprint pdf-typst pdf-context "$SITE_ALL_FORMATS" ''; do
+  : > "$b/log"
+  if bs "$selection"; then echo "ok   build-site dispatch '$selection'"; else
+    echo "FAIL build-site dispatch '$selection'"; cat "$b/run.log"; fails=$((fails + 1))
+  fi
+  canonical="$(site_formats "$selection")"
+  for f in "${SITE_FORMATS[@]}"; do
+    if [ "$f" = html ]; then file=xhtml_no_chunks/index.html; else file="$(site_format_file "$f" 1.4-rc1)"; fi
+    if site_has_format "$canonical" "$f"; then
+      eq "requested $f exists for '$selection'" yes "$([ -s "$b/out/1.4-rc1/$file" ] && echo yes || echo no)"
+    else
+      eq "unrequested $f absent for '$selection'" no "$([ -e "$b/out/1.4-rc1/$file" ] && echo yes || echo no)"
+    fi
+  done
+  eq "RC label for '$selection'" 1 "$(grep -c 'version 1.4-rc1 (release candidate)' "$b/out/1.4-rc1/index.html")"
+done
+bs pdf-weasyprint
+eq "PDF-only runs no HTML targets or other installers" $'install-weasyprint\npdf_weasyprint' "$(tail -n2 "$b/log")"
+eq "PDF-only landing omits HTML links" 0 "$(grep -c 'href="xhtml_' "$b/out/1.4-rc1/index.html" || true)"
+eq "PDF-only landing links its PDF" 1 "$(grep -c 'href="cll-weasyprint.pdf"' "$b/out/1.4-rc1/index.html")"
+
+# A future non-PDF format needs one registry entry, with no new dispatch,
+# asset-name, or landing-page cases.
+python3 - "$b/tools/site-versions.sh" "$b/src/cll_build" <<'EOF'
+from pathlib import Path
+import sys
+p = Path(sys.argv[1])
+s = p.read_text().replace('SITE_FORMATS=()', "SITE_FORMAT_REGISTRY+=('text|cll.txt|Download text|text|base')\nSITE_FORMATS=()")
+p.write_text(s)
+p = Path(sys.argv[2])
+s = p.read_text().replace('  *) exit 1 ;;', '  text) echo text > build/cll.txt ;;\n  *) exit 1 ;;')
+p.write_text(s)
+EOF
+: > "$b/log"
+bs text
+eq "new non-PDF format uses generic dispatch" text "$(cat "$b/log")"
+eq "new non-PDF format gets a landing link" 1 "$(grep -c 'href="cll.txt">Download text' "$b/out/1.4-rc1/index.html")"
+# A PDF-only version needs no comparison commits.
+echo -e '#!/bin/bash\nexit 1' > "$b/bin/git"
+: > "$b/log"
+bs pdf-weasyprint
+eq "PDF-only needs no git comparison commits" $'install-weasyprint\npdf_weasyprint' "$(cat "$b/log")"
+fails_with "HTML requires its comparison commit" bs html
 
 if [ "$fails" -gt 0 ]; then echo "test-site-versions: $fails failures"; exit 1; fi
 echo "test-site-versions: all tests pass"

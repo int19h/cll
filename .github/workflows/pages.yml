@@ -15,8 +15,8 @@ name: pages
 #
 # Each version lists its formats in the third column of versions.tsv
 # (scripts/site-versions.sh). A tool is installed only when some version
-# lists a format that needs it; the WeasyPrint, Typst and ConTeXt PDFs
-# build in each version's own container, with Docker.
+# lists a format that needs it. WeasyPrint and Typst build natively.
+# ConTeXt uses the version's own container launcher.
 #
 # Trigger manually (workflow_dispatch) after updating a version's content
 # branch, or automatically when the pages branch (workflow/scripts) changes.
@@ -58,9 +58,8 @@ jobs:
           . scripts/site-versions.sh
           all="$(site_rows pages/versions.tsv | cut -f3 | paste -sd, -)"
           echo "versions.tsv lists: $all"
-          for f in "${SITE_FORMATS[@]}"; do
-            if site_has_format "$all" "$f"; then v=true; else v=false; fi
-            echo "${f//-/_}=$v" >> "$GITHUB_OUTPUT"
+          for toolchain in $(site_toolchains "$(site_formats "$all")"); do
+            echo "$toolchain=true" >> "$GITHUB_OUTPUT"
           done
 
       - name: Install build toolchain
@@ -79,18 +78,26 @@ jobs:
           sudo npm install -g regenerator@0.14.12
 
       - name: Install a JRE (ePub check)
-        if: steps.formats.outputs.epub == 'true'
+        if: steps.formats.outputs.java == 'true'
         run: sudo apt-get install -y --no-install-recommends default-jre-headless
 
-      - name: Make sure that Docker works (container PDF engines)
-        if: >-
-          steps.formats.outputs.pdf_weasyprint == 'true' ||
-          steps.formats.outputs.pdf_typst == 'true' ||
-          steps.formats.outputs.pdf_context == 'true'
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        if: steps.formats.outputs.weasyprint == 'true'
+        with: { node-version: '24.22.1' }
+
+      - name: Install WeasyPrint runtime libraries
+        if: steps.formats.outputs.weasyprint == 'true'
+        run: |
+          sudo apt-get install -y --no-install-recommends python3-venv \
+            libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 \
+            fonts-dejavu-core fonts-linuxlibertine
+
+      - name: Make sure that Docker works (container toolchain)
+        if: steps.formats.outputs.container == 'true'
         run: docker info >/dev/null
 
       - name: Install Prince (PDF renderer)
-        if: steps.formats.outputs.pdf == 'true'
+        if: steps.formats.outputs.prince == 'true'
         run: |
           # same version as the reviewed build container (Dockerfile)
           wget -q "https://www.princexml.com/download/prince_16.2-1_ubuntu24.04_amd64.deb"

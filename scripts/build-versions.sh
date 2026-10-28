@@ -10,7 +10,7 @@
 #
 # Each row of <versions.tsv> names a version, its git ref, and optionally
 # its formats (scripts/site-versions.sh). A row without formats has
-# html,pdf,epub. The release files of a version are exactly the files of
+# html,epub,pdf. The release files of a version are exactly the files of
 # its formats: cll-<version>-html.tar.gz for html, and cll.pdf, cll.epub,
 # cll-weasyprint.pdf, cll-typst.pdf, cll-context.pdf for the others.
 #
@@ -92,19 +92,6 @@ has_asset() { # <tag> <name>
     'map(select(.tag_name == $t)) | .[0].assets // [] | any(.name == $n)' "$releases" >/dev/null
 }
 
-# The cache must stay a draft, or the uploads below would change a
-# published release.
-if [ -n "$(release_field "$cache_tag" id)" ] && [ "$(release_field "$cache_tag" draft)" != "true" ]; then
-  echo "the release $cache_tag is published; make it a draft again before deploying" >&2
-  exit 1
-fi
-if [ -z "$(release_field "$cache_tag" id)" ]; then
-  gh api -X POST "repos/$repo/releases" -f tag_name="$cache_tag" \
-    -f name="Site build cache (do not publish)" \
-    -f body="The Pages deploy keeps the site output of each version here (scripts/build-versions.sh). Never publish this draft." \
-    -F draft=true >/dev/null
-  echo "==> created the draft release $cache_tag"
-fi
 
 info() { # <file> <key>
   sed -n "s/^$2=//p" "$1" | head -n 1
@@ -145,8 +132,10 @@ expect() { # <ver> <commit> <prev-commit> <released-digests> <formats>
 matches() { # <ver> <expected-fields> <formats>
   local bi="$outdir/$1/BUILD-INFO" key val f
   [ -f "$bi" ] || return 1
+  [ -s "$outdir/$1/index.html" ] || return 1
   if site_has_format "$3" html; then
     [ -s "$outdir/$1/xhtml_no_chunks/index.html" ] || return 1
+    [ -s "$outdir/$1/xhtml_section_chunks/index.html" ] || return 1
   fi
   for f in $(site_download_files "$3" "$1"); do
     [ -s "$outdir/$1/$f" ] || return 1
@@ -155,6 +144,35 @@ matches() { # <ver> <expected-fields> <formats>
     [ "$(info "$bi" "$key")" = "$val" ] || return 1
   done <<< "$2"
 }
+
+# Refuse every published asset mismatch before any upload or deletion,
+# including cache writes. A published release cannot be repaired here.
+while IFS=$'\t' read -r ver ref formats; do
+  tag="v$ver"
+  if [ -n "$(release_field "$tag" id)" ] && [ "$(release_field "$tag" draft)" != true ]; then
+    expected="$(site_release_files "$formats" "$ver" | sort)"
+    actual="$(jq -r --arg t "$tag" '.[] | select(.tag_name == $t) | .assets[].name' "$releases" | sort)"
+    if [ "$actual" != "$expected" ]; then
+      echo "::error::published release $tag has a different asset set; leave the release unchanged" >&2
+      printf 'Expected:\n%s\nFound:\n%s\n' "$expected" "$actual" >&2
+      exit 1
+    fi
+  fi
+done <<< "$rows"
+
+# The cache must stay a draft, or the uploads below would change a
+# published release.
+if [ -n "$(release_field "$cache_tag" id)" ] && [ "$(release_field "$cache_tag" draft)" != "true" ]; then
+  echo "the release $cache_tag is published; make it a draft again before deploying" >&2
+  exit 1
+fi
+if [ -z "$(release_field "$cache_tag" id)" ]; then
+  gh api -X POST "repos/$repo/releases" -f tag_name="$cache_tag" \
+    -f name="Site build cache (do not publish)" \
+    -f body="The Pages deploy keeps the site output of each version here (scripts/build-versions.sh). Never publish this draft." \
+    -F draft=true >/dev/null
+  echo "==> created the draft release $cache_tag"
+fi
 
 prev=""; prevlabel=""; prev_commit=""
 # oldest first, so each final release's ref serves as the "previous
@@ -183,7 +201,7 @@ while IFS=$'\t' read -r ver ref formats; do
     published=yes
     for f in "${want_files[@]}"; do
       if ! has_asset "$tag" "$f"; then
-        echo "::error::published release $tag has no $f; attach it to the release, then deploy again"
+        echo "::error::published release $tag has no $f; leave the release unchanged"
         exit 1
       fi
       released="${released:+$released,}$f:$(asset_digest "$tag" "$f")"
@@ -247,14 +265,12 @@ while IFS=$'\t' read -r ver ref formats; do
     done
     gh release upload "$tag" -R "$repo" --clobber "${files[@]}"
     echo "==> [$ver] attached ${want_files[*]} to the draft $tag"
-    # Remove the files of formats that the row no longer lists.
-    for f in $(site_release_files "$SITE_ALL_FORMATS" "$ver"); do
+    # Remove every unlisted draft asset, including unknown or retired formats.
+    while IFS= read -r f; do
       case " ${want_files[*]} " in *" $f "*) continue ;; esac
-      if has_asset "$tag" "$f"; then
-        gh release delete-asset "$tag" "$f" -R "$repo" --yes
-        echo "==> [$ver] removed $f from the draft $tag: its format is not listed"
-      fi
-    done
+      gh release delete-asset "$tag" "$f" -R "$repo" --yes
+      echo "==> [$ver] removed $f from the draft $tag: its format is not listed"
+    done < <(jq -r --arg t "$tag" '.[] | select(.tag_name == $t) | .assets[].name' "$releases")
   elif [ -z "$(release_field "$tag" id)" ]; then
     echo "::warning::release $tag does not exist; create it as a draft to receive the files of $ver"
   fi

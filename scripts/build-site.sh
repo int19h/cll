@@ -24,7 +24,7 @@
 # Git revisions are resolved in the repository of <src-tree>.
 #
 # FORMATS in the environment lists the formats to build, comma-separated
-# (see scripts/site-versions.sh). It defaults to html,pdf,epub.
+# (see scripts/site-versions.sh). It defaults to html,epub,pdf.
 #
 # Produces under <out-dir>/<version>/, for the listed formats only:
 #   xhtml_section_chunks/   per-section browsable HTML        (html)
@@ -56,13 +56,9 @@
 # around DocBook XSL's xhtml/changebars.xsl. The diff pages load their
 # images and CSS from the version's own xhtml_no_chunks/.
 #
-# Toolchain: xmlto, xsltproc, ruby (+ nokogiri optimist htmlentities),
-# node (+ regenerator), tidy, python3; prince for pdf; a JRE (epubcheck)
-# for epub. pdf-weasyprint, pdf-typst and pdf-context run the version's
-# own container launcher (run_weasyprint_container.sh,
-# run_typst_container.sh, run_context_container.sh), so they need podman
-# or Docker (CONTAINER_BIN selects one) and a version that has the
-# launcher.
+# Toolchain: the base XML/HTML build tools, Prince for pdf, and Java for
+# epub. WeasyPrint and Typst use their native cll_build targets and the
+# version's pinned installers. ConTeXt uses its isolated container launcher.
 
 # The source of "the official CLL 1.1" for diff_from_official: the tag
 # v1.1-2016-08-26-html (commit 6c0556c7), the sources of "Version 1.1,
@@ -104,14 +100,15 @@ need_rev() { # <rev> <what>
     exit 1
   }
 }
-[ -z "$previous" ] || need_rev "$previous" "previous release"
-[ -z "$baseline" ] || need_rev "$baseline" "baseline"
-# The official diff is required for every version with html, so a missing
-# CLL 1.1 source commit must fail here, before any building, rather than
-# deploy dead links.
-need_rev "$CLL11_SOURCE" "CLL 1.1 source (CLL11_SOURCE)"
+if has html; then
+  [ -z "$previous" ] || need_rev "$previous" "previous release"
+  [ -z "$baseline" ] || need_rev "$baseline" "baseline"
+  # An HTML version requires the official comparison commit.
+  need_rev "$CLL11_SOURCE" "CLL 1.1 source (CLL11_SOURCE)"
+fi
 
 dest="$outdir/$version"
+if [ -z "${DIFFS_ONLY:-}" ]; then rm -rf "$dest"; fi
 mkdir -p "$dest"
 cd "$src"
 
@@ -126,14 +123,14 @@ if [ -n "${DIFFS_ONLY:-}" ]; then
   echo "==> [$version] keeping the released book files; rebuilding the diffs only"
 else
 echo "==> [$version] formats: $formats"
-for f in $(site_download_files "$formats" "$version"); do rm -f "$dest/$f"; done
 if has html; then
   echo "==> [$version] building xhtml_section_chunks + xhtml_no_chunks in $src"
   rm -rf build/xhtml_section_chunks build/xhtml_section_chunks.done \
          build/xhtml_no_chunks build/xhtml_no_chunks.done \
          build/cll.xml build/cll_processed_xhtml.xml
-  ./cll_build -n -T xhtml_sections
-  ./cll_build -n -T xhtml_nochunks
+  for target in $(site_format_field html 4); do
+    ./cll_build -n -T "$target"
+  done
   [ -s build/xhtml_section_chunks/index.html ] || { echo "no section-chunks output" >&2; exit 1; }
   [ -s build/xhtml_no_chunks/index.html ]      || { echo "no no-chunks output" >&2; exit 1; }
 
@@ -159,26 +156,37 @@ need_tool() { # <format> <command>
 need_launcher() { # <format> <launcher>
   [ -x "$src/$2" ] || { echo "build-site.sh: $1 needs $2, which version $version does not have" >&2; exit 1; }
 }
-if has pdf; then
-  need_tool pdf prince
-  download pdf cll.pdf ./cll_build -n -T pdf
-fi
-if has epub; then
-  need_tool epub java
-  download epub cll.epub ./cll_build -n -T epub
-fi
-if has pdf-weasyprint; then
-  need_launcher pdf-weasyprint run_weasyprint_container.sh
-  download pdf-weasyprint cll-weasyprint.pdf ./run_weasyprint_container.sh
-fi
-if has pdf-typst; then
-  need_launcher pdf-typst run_typst_container.sh
-  download pdf-typst cll-typst.pdf ./run_typst_container.sh
-fi
-if has pdf-context; then
-  need_launcher pdf-context run_context_container.sh
-  download pdf-context cll-context.pdf ./run_context_container.sh
-fi
+# Install optional native dependencies only for the requested formats.
+# Each version supplies its own pinned installer and build target.
+for toolchain in $(site_toolchains "$formats"); do
+  case "$toolchain" in
+    prince) need_tool pdf prince ;;
+    java) need_tool epub java ;;
+    weasyprint)
+      need_launcher pdf-weasyprint scripts/install-weasyprint.sh
+      ./scripts/install-weasyprint.sh ;;
+    typst)
+      need_launcher pdf-typst scripts/install_typst.sh
+      ./scripts/install_typst.sh build/typst-tools
+      export TYPST="$src/build/typst-tools/typst" ;;
+    base|container) ;;
+    *) echo "unsupported toolchain: $toolchain" >&2; exit 1 ;;
+  esac
+done
+for f in ${formats//,/ }; do
+  [ "$f" != html ] || continue
+  file="$(site_format_file "$f" "$version")"
+  target="$(site_format_field "$f" 4)"
+  # Prince's make target uses a completion marker rather than the PDF.
+  # Remove that marker as well as the file before a fresh build.
+  rm -f "build/$target.done"
+  if [ "$(site_format_field "$f" 5)" = container ]; then
+    need_launcher "$f" "$target"
+    download "$f" "$file" "./$target"
+  else
+    download "$f" "$file" ./cll_build -n -T "$target"
+  fi
+done
 fi  # DIFFS_ONLY
 
 # Produce one visual diff: the book of <src-tree> with the changes since
@@ -251,15 +259,9 @@ h1{font-size:1.5rem}a{color:#0b6}li{margin:.4rem 0}.muted{color:#666;font-size:.
 <p class="muted">An unofficial publication, community edition (not by the LLG).</p>
 <ul>
 HTML
-if [ -s "$dest/xhtml_section_chunks/index.html" ]; then
-  echo '<li><a href="xhtml_section_chunks/">Read online (section by section)</a></li>'
-fi
-if [ -s "$dest/xhtml_no_chunks/index.html" ]; then
-  echo '<li><a href="xhtml_no_chunks/">Read online (single page)</a></li>'
-fi
-for f in $(site_download_files "$formats" "$version"); do
-  [ -s "$dest/$f" ] && echo "<li><a href=\"$f\">$(site_download_label "$f")</a></li>"
-done
+echo '<li>'
+site_format_links "$dest" "$version" ""
+echo '</li>'
 if [ -s "$dest/diff_from_official/difference.html" ]; then
   echo '<li><a href="diff_from_official/difference.html">Changes marked vs CLL&nbsp;1.1 (the official book)</a>
     &middot; <a href="diff_from_official/difference_prefixed.html">(with text markers)</a></li>'

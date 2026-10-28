@@ -31,6 +31,8 @@ mkdir $epubbuilddir/
 cp -pr $srcdir/META-INF $srcdir/mimetype $epubbuilddir/
 cp -pr $builddir/epub-xhtml/* $epubbuilddir/
 rm -rf $epubbuilddir/dtd
+# Keep the ConTeXt renderer's source files out of the reader package.
+rm -rf "$epubbuilddir/assets/context"
 # Kindle doesn't like svg
 rm -f $basedir/build/epub/media/chapter-2-diagram.svg
 

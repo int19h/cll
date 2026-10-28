@@ -54,6 +54,10 @@ jobs:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - name: Running head and ePub name the edition from .env
         run: scripts/check-edition-branding.sh
+      - name: Install ePub packaging tools
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils zip
+      - name: Package ePub assets without renderer sources
+        run: python3 scripts/test-build-epub.py
 
   # scripts/xml_prince_postprocess.rb is the last thing to touch the XHTML
   # before Prince renders the PDF, and it works by regex over serialized

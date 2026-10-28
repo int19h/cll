@@ -51,6 +51,18 @@ def main():
         problems.append(f'the real chapter fails:\n{msg}')
 
     cases = []
+    # A whole rule or table row inside a comment is absent from the book.
+    a, b = ebnf_span(s)
+    entry = next(m for m in re.finditer(r'<varlistentry\b[^>]*>.*?</varlistentry>', s[a:b], re.S)
+                 if '<anchor xml:id="b40"' in m.group(0))
+    hidden = re.sub(r'<!--.*?-->', '', entry.group(0), flags=re.S)
+    cases.append(('whole sentence rule commented out',
+                  s[:a + entry.start()] + '<!--' + hidden + '-->' + s[a + entry.end():]))
+    xr_entry = re.search(r'<varlistentry\b[^>]*>.*?</varlistentry>', s[b:], re.S)
+    cases.append(('whole cross-reference row commented out',
+                  s[:b + xr_entry.start()] + '<!--' + xr_entry.group(0) + '-->' + s[b + xr_entry.end():]))
+    cases.append(('whole EBNF section hidden in CDATA',
+                  s[:a] + '<![CDATA[' + s[a:b] + ']]>' + s[b:]))
     # D1: delete the alternation bar from rule text (0): same names, other language.
     cases.append(('D1 alternation bar removed from text',
                   mutate(s, 'text', '# | (indicators', '# (indicators')))

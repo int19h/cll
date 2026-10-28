@@ -36,6 +36,7 @@ Usage: check-cross-reference.py chapters/21.xml   (exit 1 on failure)
 scripts/test-check-cross-reference.py plants defects and requires failures.
 """
 import hashlib, re, sys
+import xml.etree.ElementTree as ET
 
 # Digest of the normalized rule triples. Update it in the same commit as a
 # deliberate change to a printed rule (see the module docstring).
@@ -64,22 +65,22 @@ def digest(rules):
 
 
 def main(path, out=print):
-    s = open(path, encoding='utf-8').read()
-    cut = s.find('<section xml:id="section-cross-reference">')
-    if cut < 0:
-        out('cross-reference section not found')
+    try:
+        root = ET.parse(path).getroot()
+    except ET.ParseError as exc:
+        out(f'FAIL invalid XML: {exc}')
         return 1
-    # The chapter also prints the PEG word-form grammar, whose rule lists
-    # precede the EBNF. Only the EBNF section feeds the cross-reference.
-    start = s.find('<section xml:id="section-EBNF">')
-    if start < 0 or start > cut:
-        out('EBNF section not found before the cross-reference')
+    xml_id = '{http://www.w3.org/XML/1998/namespace}id'
+    sections = list(root.iter('section'))
+    ebnf = next((el for el in sections if el.get(xml_id) == 'section-EBNF'), None)
+    xr = next((el for el in sections if el.get(xml_id) == 'section-cross-reference'), None)
+    if ebnf is None or xr is None or sections.index(ebnf) >= sections.index(xr):
+        out('FAIL EBNF section not found before the cross-reference')
         return 1
-    ebnf, xr = s[start:cut], s[cut:]
     bad = 0
 
     # ---- xml:id uniqueness across the chapter ----
-    ids = re.findall(r'xml:id="([^"]+)"', re.sub(r'<!--.*?-->', ' ', s, flags=re.S))
+    ids = [el.get(xml_id) for el in root.iter() if el.get(xml_id)]
     dupes = sorted({i for i in ids if ids.count(i) > 1})
     if dupes:
         out(f'FAIL duplicate xml:id values: {dupes}')
@@ -89,24 +90,29 @@ def main(path, out=print):
     rules = []           # (name, number-or-None, normalized body)
     toks = {}            # (name, number) -> body token list
     anchor_rule = {}     # anchor number N -> rule name it marks
-    for e in re.findall(r'<varlistentry\b[^>]*>(.*?)</varlistentry>', ebnf, re.S):
-        raw_term = re.search(r'<term>(.*?)</term>', e, re.S).group(1)
-        term_clean = re.sub(r'<!--.*?-->', ' ', raw_term, flags=re.S)
-        term = strip_markup(raw_term)
+    for entry in ebnf.iter('varlistentry'):
+        term_el = entry.find('term')
+        body_el = entry.find('listitem')
+        if term_el is None or body_el is None:
+            out('FAIL rule entry needs a term and listitem')
+            return 1
+        term = strip_markup(ET.tostring(term_el, encoding='unicode'))
         m = re.match(r"^([\w'-]+)\s*(\d+)?\s*=$", term)
         if not m:
             out(f'FAIL cannot parse rule term: {term!r}')
             return 1
         name, num = m.group(1), (int(m.group(2)) if m.group(2) else None)
-        raw_body = re.search(r'<listitem>(.*?)$', e, re.S).group(1)
-        body_clean = re.sub(r'<!--.*?-->', ' ', raw_body, flags=re.S)
-        if re.search(r'<anchor\b', body_clean):
+        raw_body = ET.tostring(body_el, encoding='unicode')
+        if list(body_el.iter('anchor')):
             out(f'FAIL rule {name}: an anchor sits in the body; anchors belong in the term')
             bad += 1
-        b_anchors = [int(x) for x in re.findall(r'<anchor\s+xml:id="b(\d+)"\s*/>', term_clean)]
-        x_anchors = re.findall(r'<anchor\s+xreflabel="BNF rule #(\d+)"\s+xml:id="cll_bnf-(\d+)"\s*/>',
-                               term_clean)
-        n_anchors = len(re.findall(r'<anchor\b', term_clean))
+        anchors = list(term_el.iter('anchor'))
+        b_anchors = [int(a.get(xml_id)[1:]) for a in anchors
+                     if re.fullmatch(r'b\d+', a.get(xml_id, ''))]
+        x_anchors = [(a.get('xreflabel', '').removeprefix('BNF rule #'),
+                      a.get(xml_id)[8:]) for a in anchors
+                     if re.fullmatch(r'cll_bnf-\d+', a.get(xml_id, ''))]
+        n_anchors = len(anchors)
         if num is None:
             if n_anchors:
                 out(f'FAIL rule {name}: an unnumbered rule carries an anchor')
@@ -119,7 +125,7 @@ def main(path, out=print):
                     f'cll_bnf-{num} (xreflabel "BNF rule #{num}") in its term; found '
                     f'b={b_anchors} cll_bnf={x_anchors} total={n_anchors}')
                 bad += 1
-            for n, _ in x_anchors:
+            for _, n in x_anchors:
                 anchor_rule[int(n)] = name
         body = normalize_body(raw_body)
         if (name, num) in toks:
@@ -153,12 +159,26 @@ def main(path, out=print):
 
     # ---- parse the printed table ----
     printed, order = {}, []
-    for m in re.finditer(r'<varlistentry\b[^>]*>\s*<term>(.*?)</term>\s*<listitem>\s*'
-                         r'<para>(.*?)</para>\s*</listitem>\s*</varlistentry>', xr, re.S):
-        term = m.group(1).strip()
-        pairs = re.findall(r'<xref linkend="cll_bnf-(\d+)"/>\s*<subscript>(\d+)</subscript>',
-                           m.group(2))
-        nxrefs = len(re.findall(r'<xref', m.group(2)))
+    for entry in xr.iter('varlistentry'):
+        term_el = entry.find('term')
+        para = entry.find('./listitem/para')
+        if term_el is None or para is None:
+            out('FAIL cross-reference entry needs a term and paragraph')
+            bad += 1
+            continue
+        term = ''.join(term_el.itertext()).strip()
+        children = list(para)
+        pairs = []
+        for i, child in enumerate(children):
+            if child.tag != 'xref':
+                continue
+            target = re.fullmatch(r'cll_bnf-(\d+)', child.get('linkend', ''))
+            sub = children[i + 1] if i + 1 < len(children) else None
+            if target and sub is not None and sub.tag == 'subscript':
+                number = ''.join(sub.itertext()).strip()
+                if number.isdigit():
+                    pairs.append((target.group(1), number))
+        nxrefs = len(list(para.iter('xref')))
         if nxrefs != len(pairs):
             out(f'FAIL {term}: {nxrefs} xrefs but only {len(pairs)} '
                 f'well-formed xref/subscript pairs')
@@ -174,8 +194,7 @@ def main(path, out=print):
         return 1
 
     # every <varlistentry> in the table must have parsed as exactly one row
-    n_entries = len(re.findall(r'<varlistentry\b',
-                               re.sub(r'<!--.*?-->', ' ', xr, flags=re.S)))
+    n_entries = len(list(xr.iter('varlistentry')))
     if n_entries != len(order):
         out(f'FAIL {n_entries} <varlistentry> elements in the table but '
             f'{len(order)} parsed entries')

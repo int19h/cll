@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Deleted material in DocBook comparisons
+        run: python3 scripts/test-docbook-diff-deletions.py
       - name: Check script syntax
         run: bash -n scripts/site-versions.sh scripts/build-versions.sh scripts/build-site.sh scripts/gen-site-index.sh scripts/test-site-versions.sh
       - name: Pages action pins and job permissions

@@ -52,7 +52,7 @@ def lojban_elements(text):
         for _, _, parts in active:
             parts.append(' ')
         depth += 1
-        if name in ('jbo', 'jbophrase', 'valsi'):
+        if not active and name in ('jbo', 'jbophrase', 'valsi'):
             line = parser.CurrentLineNumber - prefix.count('\n')
             active.append((depth, line, []))
 

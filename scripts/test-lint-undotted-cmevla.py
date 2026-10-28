@@ -27,6 +27,10 @@ class DotsideTests(unittest.TestCase):
             self.assertEqual(result.returncode, 1, result.stderr)
             self.assertIn(':2: undotted cmevla? «la djan»', result.stdout)
 
+    def test_nested_elements_count_once(self):
+        result = self.lint('<chapter><jbo><jbophrase>la djan</jbophrase></jbo></chapter>', '11.xml')
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_dotted_names_and_entities(self):
         result = self.lint('<chapter><jbo>la .djan. klama &ndash; la cribe</jbo></chapter>')
         self.assertEqual(result.returncode, 0, result.stderr)

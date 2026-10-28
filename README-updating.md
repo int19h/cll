@@ -2,7 +2,6 @@
 
 This guide describes releases from the `int19h/cll` fork.
 [AGENTS.md](AGENTS.md#releases) defines the release rules.
-The format selection and prerelease rules require PRs #157 and #158 before use.
 A prerelease is a version before its final release.
 
 A release needs separate authorization to publish.

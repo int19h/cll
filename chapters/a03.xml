@@ -3,7 +3,7 @@
   <section xml:id="section-changes-how-to-read">
     <title><anchor xml:id="a03-how" />How to read this appendix</title>
     <para><indexterm type="general"><primary>changes from the first edition</primary></indexterm>This appendix collects, in one place, every rule of Lojban that this edition teaches differently from the first edition. The first edition appeared in 1997, and its revisions up to version 1.1 corrected it; those corrections were errata, not rule changes. Where this book teaches a changed rule, a status note marks it, and this appendix is the index of those notes.</para>
-    <para>The story of the governance behind these changes is told in <xref linkend="chapter-about" />. In brief, a language-definition committee (the BPFK) and its parent organization (the LLG) adopted a small number of deliberate amendments between 2004 and 2016. Both bodies are now effectively inactive; the last recorded meeting of the LLG began in 2022 and ended in 2023. So the official language is frozen as amended.</para>
+    <para>The story of the governance behind these changes is told in <xref linkend="chapter-about" />. In brief, a language-definition committee (the BPFK) and its parent organization (the LLG) adopted a small number of deliberate amendments between 2004 and 2020. The BPFK made its last decision in 2016, and in 2019 the LLG replaced it with a successor committee, which adopted no rule changes before its work stopped in 2020. The LLG still exists but is mostly dormant; as of October 2026, its most recent published meeting minutes are those of its 2022 Annual Meeting, which ended in 2023. So the official language stands as amended.</para>
     <para>
       Every entry below carries one of these authority labels:
     </para>

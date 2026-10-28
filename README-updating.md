@@ -25,6 +25,8 @@ Create `edition/<version>` at the intended release commit.
 Set its `.env` value for `VERSION` to `colojban-<version>`.
 Commit that change on the edition branch.
 Keep `main` at `colojban-<last release>+dev`.
+The last release includes prereleases.
+After `1.3.6-rc1`, use `colojban-1.3.6-rc1+dev` on `main`.
 
 For example, `1.3.6-rc1` uses branch `edition/1.3.6-rc1` and tag `v1.3.6-rc1`.
 The final `1.3.6` release uses its own `edition/1.3.6` branch and `v1.3.6` tag.

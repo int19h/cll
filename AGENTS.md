@@ -126,11 +126,13 @@ The formats select these release files:
 - `pdf-typst` selects `cll-typst.pdf`.
 - `pdf-context` selects `cll-context.pdf`.
 
-Any combination works. Comparison pages require `html` because they use the online book's assets. Each release must contain exactly the files that its formats select. Version 1.3.6 will list `html,epub,pdf,pdf-weasyprint`. Only WeasyPrint is ready for that release. Typst and ConTeXt need more work before publication.
+Any combination works. Comparison pages require `html` because they use the online book's assets. Each release must contain exactly the files that its formats select. Version 1.3.6 will list `html,epub,pdf,pdf-weasyprint`. Among the additional PDF engines, only WeasyPrint is ready for that release. Typst and ConTeXt need more work before publication.
 
 A prerelease is a version before its final release. For example, version `1.3.6-rc1` uses tag `v1.3.6-rc1` and its own branch, `edition/1.3.6-rc1`. Mark its GitHub release as a prerelease. Keep its branding consistent with that version. Never reuse an edition branch for the final release.
 
-The site lists release candidates before their final version in ascending version order. It shows the newest versions first. If a final release exists, `/latest/` selects the newest final release. Otherwise, it selects the newest prerelease.
+The first release in the 1.3.6 series will be `1.3.6-rc1`. Use `html,epub,pdf,pdf-weasyprint` for that candidate and the final 1.3.6 release.
+
+The site builds prereleases but omits them from the top-level landing page. Readers reach each prerelease through its GitHub release links. `/latest/` selects the newest final release. If no final release exists, the site has no `/latest/` redirect.
 
 Follow this release order:
 

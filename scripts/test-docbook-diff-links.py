@@ -119,6 +119,58 @@ class LinkTests(unittest.TestCase):
         self.assertEqual(len(root.findall('.//link')), 2)
         self.assertEqual(result['stats'].get('changed_blocks'), 1)
 
+    def test_nested_xref_target_changes(self):
+        root, result = self.compare(
+            '<link xlink:href="https://example.org"><xref linkend="first"/></link>',
+            '<link xlink:href="https://example.org"><xref linkend="second"/></link>',
+            '<para xml:id="first">First target.</para>'
+            '<para xml:id="second">Second target.</para>')
+        self.assertEqual(result['stats'].get('changed_blocks'), 1)
+        self.assertNotIn('changed_blocks_ws_only', result['stats'])
+        self.assertTrue(any(el.get('revisionflag') == 'deleted'
+                            and el.find('.//xref[@linkend="first"]') is not None
+                            for el in root.iter()))
+        self.assertIsNotNone(root.find('.//link[@revisionflag="added"]/xref[@linkend="second"]'))
+
+    def test_nested_xref_alias_is_unchanged(self):
+        root, result = self.compare(
+            '<link xlink:href="https://example.org"><xref linkend="target"/></link>',
+            '<link xlink:href="https://example.org"><xref linkend="alias"/></link>',
+            '<para xml:id="target"><anchor xml:id="alias"/>Target.</para>')
+        self.assertFalse(any(el.get('revisionflag') for el in root.iter()))
+        self.assertEqual(result['stats'], {})
+
+    def test_nested_xref_endterm_changes(self):
+        root, result = self.compare(
+            '<link xlink:href="https://example.org"><xref linkend="target" endterm="first"/></link>',
+            '<link xlink:href="https://example.org"><xref linkend="target" endterm="second"/></link>',
+            '<para xml:id="target">Target.</para>'
+            '<para xml:id="first">First label.</para>'
+            '<para xml:id="second">Second label.</para>')
+        self.assertEqual(result['stats'].get('changed_blocks'), 1)
+        self.assertNotIn('changed_blocks_ws_only', result['stats'])
+        self.assertIsNotNone(root.find('.//xref[@endterm="first"]'))
+        self.assertIsNotNone(root.find('.//xref[@endterm="second"]'))
+
+    def test_nested_xref_style_changes(self):
+        root, result = self.compare(
+            '<link xlink:href="https://example.org"><xref linkend="target" xrefstyle="title"/></link>',
+            '<link xlink:href="https://example.org"><xref linkend="target" xrefstyle="number"/></link>',
+            '<para xml:id="target">Target.</para>')
+        self.assertEqual(result['stats'].get('changed_blocks'), 1)
+        self.assertIsNotNone(root.find('.//xref[@xrefstyle="title"]'))
+        self.assertIsNotNone(root.find('.//xref[@xrefstyle="number"]'))
+
+    def test_nested_footnote_reference_changes(self):
+        root, result = self.compare(
+            '<link xlink:href="https://example.org"><footnoteref linkend="first"/></link>',
+            '<link xlink:href="https://example.org"><footnoteref linkend="second"/></link>',
+            '<para>Notes<footnote xml:id="first"><para>First note.</para></footnote>'
+            '<footnote xml:id="second"><para>Second note.</para></footnote></para>')
+        self.assertEqual(result['stats'].get('changed_blocks'), 1)
+        self.assertIsNotNone(root.find('.//footnoteref[@linkend="first"]'))
+        self.assertIsNotNone(root.find('.//footnoteref[@linkend="second"]'))
+
     def test_removed_internal_target_has_no_dangling_link(self):
         root, result = self.compare('<link linkend="gone">the guide</link>',
                                     '<link linkend="target">the guide</link>',

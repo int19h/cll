@@ -236,6 +236,22 @@ def link_target(el):
     return 'external', href
 
 
+def reference_text(el):
+    """Reference attributes that supply an empty inline element's label."""
+    parts = [local(el.tag)]
+    for attr in ('linkend', 'endterm', 'otherterm'):
+        if el.get(attr) is not None:
+            parts.append('%s:\x01%s\x02' % (attr, el.get(attr)))
+    for attr in ('xrefstyle', 'xreflabel', 'label'):
+        if el.get(attr) is not None:
+            parts.append('%s:%s' % (attr, el.get(attr)))
+    return ' '.join(parts)
+
+
+def inline_key(text, idkey):
+    return ws(re.sub('\x01([^\x02]*)\x02', lambda m: idkey(m.group(1)), text))
+
+
 def inline_text(el, out, nested):
     if el.text:
         out.append(el.text)
@@ -246,8 +262,8 @@ def inline_text(el, out, nested):
         elif t in BLOCK:
             nested.append(ch)
             out.append(' ')
-        elif t == 'xref':
-            out.append(' \x01%s\x02 ' % ch.get('linkend', '?'))
+        elif t in ('xref', 'footnoteref'):
+            out.append(' ' + reference_text(ch) + ' ')
         elif t == 'link':
             inline_text(ch, out, nested)
             kind, target = link_target(ch)
@@ -564,13 +580,15 @@ class Flat:
                 tk.kind, tk.el, tk.prev_seg = 'a', ch, len(self.segs) - 1
                 tk.seg = tk.prev_seg
                 tk.s = atom_text(ch)
-                if t == 'xref':
-                    tk.key = 'xref:' + self.idkey(ch.get('linkend', ''))
+                if t in ('xref', 'footnoteref'):
+                    tk.key = inline_key(reference_text(ch), self.idkey)
                 elif t == 'link':
                     kind, target = link_target(ch)
                     if kind == 'internal':
                         target = self.idkey(target)
-                    tk.key = ('link', kind, target, ws(''.join(ch.itertext())))
+                    label, nested = [], []
+                    inline_text(ch, label, nested)
+                    tk.key = ('link', kind, target, inline_key(''.join(label), self.idkey))
                 else:
                     tk.key = t + ':' + ws(''.join(ch.itertext()))
                 tk.next_seg = len(self.segs)       # the tail seg added next
@@ -1029,7 +1047,7 @@ class Differ:
                     title = self.old_title(t.el.get('linkend', ''))
                     out.append('\u201c%s\u201d' % title if title else '(removed)')
                 else:
-                    out.append(ET.Element('xref', {'linkend': m}))
+                    out.append(self.sanitize(t.el))
                 continue
             c = self.sanitize(t.el)
             c.tail = None

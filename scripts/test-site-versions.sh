@@ -56,6 +56,12 @@ printf '1.3.5\n' > "$t/bad3.tsv"
 fails_with "row without a ref" site_rows "$t/bad3.tsv"
 eq "the real versions.tsv parses" "0" "$(site_rows "$here/../pages/versions.tsv" >/dev/null; echo $?)"
 
+eq "dotted prerelease identifiers" "1.3.6-alpha.1 1.3.6-rc.2 1.3.6-rc.10 1.3.6" \
+  "$(printf '%s\n' 1.3.6 1.3.6-rc.10 1.3.6-alpha.1 1.3.6-rc.2 | site_sort_versions | paste -sd' ')"
+for candidate in 1.3.6-alpha.1 1.3.6-rc.2 1.3.6-1; do
+  eq "prerelease syntax $candidate" yes "$(site_is_version "$candidate" && echo yes || echo no)"
+done
+
 # --- build-versions.sh with stubs
 # A copy of the pages tooling, where build-site.sh records its arguments
 # and makes the files of its formats, and gh and git are stubs that work

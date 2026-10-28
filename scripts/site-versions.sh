@@ -130,7 +130,7 @@ site_format_links() { # <version-dir> <version> <URL-prefix>
   return 0
 }
 
-SITE_VERSION_RE='^[0-9]+(\.[0-9]+)*(-[a-z]+[0-9]*)?$'
+SITE_VERSION_RE='^[0-9]+(\.[0-9]+)*(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$'
 
 site_is_version() { # <string>
   [[ "$1" =~ $SITE_VERSION_RE ]]

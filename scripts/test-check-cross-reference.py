@@ -88,6 +88,8 @@ def main():
                   mutate(mutate(s, 'sentence', 'xml:id="b40"', 'xml:id="b4000"'),
                          'sentence', 'xreflabel="BNF rule #40" xml:id="cll_bnf-40"',
                          'xreflabel="BNF rule #4000" xml:id="cll_bnf-4000"')))
+    cases.append(('anchor label missing its prefix',
+                  mutate(s, 'sentence', 'xreflabel="BNF rule #40"', 'xreflabel="40"')))
     # E2: delete only the table entries, keeping every rule.
     cases.append(('E2 every table entry deleted', s[:b] + xr))
     # A rule printed twice.

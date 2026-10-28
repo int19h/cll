@@ -109,7 +109,7 @@ def main(path, out=print):
         anchors = list(term_el.iter('anchor'))
         b_anchors = [int(a.get(xml_id)[1:]) for a in anchors
                      if re.fullmatch(r'b\d+', a.get(xml_id, ''))]
-        x_anchors = [(a.get('xreflabel', '').removeprefix('BNF rule #'),
+        x_anchors = [(a.get('xreflabel', ''),
                       a.get(xml_id)[8:]) for a in anchors
                      if re.fullmatch(r'cll_bnf-\d+', a.get(xml_id, ''))]
         n_anchors = len(anchors)
@@ -119,7 +119,7 @@ def main(path, out=print):
                 bad += 1
         else:
             ok_b = b_anchors == [num]
-            ok_x = x_anchors == [(str(num), str(num))]
+            ok_x = x_anchors == [(f'BNF rule #{num}', str(num))]
             if not (ok_b and ok_x and n_anchors == 2):
                 out(f'FAIL rule {name} ({num}): expected exactly the anchors b{num} and '
                     f'cll_bnf-{num} (xreflabel "BNF rule #{num}") in its term; found '

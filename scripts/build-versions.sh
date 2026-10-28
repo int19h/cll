@@ -27,7 +27,12 @@
 #   files of formats that its row no longer lists. So create the release
 #   as a draft with its notes before adding the version to
 #   pages/versions.tsv, then check the draft and publish it.
-# - The deploy never changes a published release.
+# - While a Pages deploy runs, do not publish a release. Wait for the whole
+#   deploy to finish. A fresh read does not lock the release. Publication
+#   can still race with the following asset requests.
+# - Prepare files before changing releases. At each version's end, read
+#   the live draft state and keep that release's uploads and deletions
+#   together. Guard cache uploads with their own fresh draft read too.
 #
 # Versions are built oldest first, prereleases (such as 1.3.6-rc1) before
 # their final release. diff_from_previous of every version compares with
@@ -78,7 +83,8 @@ cache_tag="site-build-cache"
 dl="$(mktemp -d)"
 trap 'rm -rf "$dl"' EXIT
 
-# All releases, drafts included, read once. The tag endpoint does not
+# The initial snapshot selects build inputs. Before any asset changes,
+# read that release again. The tag endpoint does not
 # return drafts, and an error here must stop the run rather than look
 # like a missing release.
 releases="$dl/releases.json"
@@ -92,6 +98,20 @@ has_asset() { # <tag> <name>
     'map(select(.tag_name == $t)) | .[0].assets // [] | any(.name == $n)' "$releases" >/dev/null
 }
 
+# Refuse API failures and every state other than an explicit live draft.
+# Return the live assets too, so cleanup does not use the old snapshot.
+draft_release() { # <tag>
+  local release
+  release="$(gh release view "$1" -R "$repo" --json isDraft,assets)" || {
+    echo "::error::cannot read live release $1; refusing asset changes" >&2
+    return 1
+  }
+  if ! jq -e '.isDraft == true' <<< "$release" >/dev/null; then
+    echo "::error::release $1 is not a draft; refusing asset changes" >&2
+    return 1
+  fi
+  printf '%s\n' "$release"
+}
 
 info() { # <file> <key>
   sed -n "s/^$2=//p" "$1" | head -n 1
@@ -166,14 +186,8 @@ if [ -n "$(release_field "$cache_tag" id)" ] && [ "$(release_field "$cache_tag" 
   echo "the release $cache_tag is published; make it a draft again before deploying" >&2
   exit 1
 fi
-if [ -z "$(release_field "$cache_tag" id)" ]; then
-  gh api -X POST "repos/$repo/releases" -f tag_name="$cache_tag" \
-    -f name="Site build cache (do not publish)" \
-    -f body="The Pages deploy keeps the site output of each version here (scripts/build-versions.sh). Never publish this draft." \
-    -F draft=true >/dev/null
-  echo "==> created the draft release $cache_tag"
-fi
 
+cache_exists="$(release_field "$cache_tag" id)"
 prev=""; prevlabel=""; prev_commit=""
 # oldest first, so each final release's ref serves as the "previous
 # release" side of the diff_from_previous of the versions after it
@@ -210,6 +224,7 @@ while IFS=$'\t' read -r ver ref formats; do
   want="$(expect "$ver" "$commit" "$prev_commit" "$released" "$formats")"
 
   from=""
+  store_cache=""
   if [ "$force" != "true" ] && has_asset "$cache_tag" "$archive"; then
     fetch "$cache_tag" "$archive" "$dl"
     if unpack "$dl/$archive" "$ver" && matches "$ver" "$want" "$formats"; then
@@ -247,8 +262,7 @@ while IFS=$'\t' read -r ver ref formats; do
     { echo "version=$ver"; echo "ref=$ref"; echo "$want";
       echo "pages_commit=$(git rev-parse HEAD)"; echo "workflow_run=${GITHUB_RUN_ID:-local}"; } > "$outdir/$ver/BUILD-INFO"
     tar -C "$outdir" -czf "$dl/$archive" "$ver"
-    gh release upload "$cache_tag" -R "$repo" --clobber "$dl/$archive"
-    echo "==> [$ver] stored in $cache_tag"
+    store_cache=yes
   fi
 
   # A draft release gets exactly the files of this run's formats. A
@@ -263,6 +277,9 @@ while IFS=$'\t' read -r ver ref formats; do
         files+=("$outdir/$ver/$f")
       fi
     done
+    # All local preparation is complete. Keep the live read and this
+    # release's changes together, without another build or cache upload.
+    live_release="$(draft_release "$tag")"
     gh release upload "$tag" -R "$repo" --clobber "${files[@]}"
     echo "==> [$ver] attached ${want_files[*]} to the draft $tag"
     # Remove every unlisted draft asset, including unknown or retired formats.
@@ -270,9 +287,24 @@ while IFS=$'\t' read -r ver ref formats; do
       case " ${want_files[*]} " in *" $f "*) continue ;; esac
       gh release delete-asset "$tag" "$f" -R "$repo" --yes
       echo "==> [$ver] removed $f from the draft $tag: its format is not listed"
-    done < <(jq -r --arg t "$tag" '.[] | select(.tag_name == $t) | .assets[].name' "$releases")
+    done < <(jq -r '.assets[].name' <<< "$live_release")
   elif [ -z "$(release_field "$tag" id)" ]; then
     echo "::warning::release $tag does not exist; create it as a draft to receive the files of $ver"
+  fi
+  # Cache writes also wait until this version is ready. A new cache is
+  # created as a draft here, then read again before its first upload.
+  if [ -n "$store_cache" ]; then
+    if [ -z "$cache_exists" ]; then
+      gh api -X POST "repos/$repo/releases" -f tag_name="$cache_tag" \
+        -f name="Site build cache (do not publish)" \
+        -f body="The Pages deploy keeps the site output of each version here (scripts/build-versions.sh). Never publish this draft." \
+        -F draft=true >/dev/null
+      echo "==> created the draft release $cache_tag"
+      cache_exists=yes
+    fi
+    draft_release "$cache_tag" >/dev/null
+    gh release upload "$cache_tag" -R "$repo" --clobber "$dl/$archive"
+    echo "==> [$ver] stored in $cache_tag"
   fi
   rm -f "$dl/$archive"
 

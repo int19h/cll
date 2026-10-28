@@ -81,6 +81,14 @@ if [ -z "${DIFFS_ONLY:-}" ]; then
   for f in $(site_download_files "$formats" "$ver"); do echo "built $ver" > "$d/$f"; done
 fi
 echo index > "$d/index.html"
+# Simulate another actor publishing a release while the build runs.
+if [ -n "${PUBLISH_DURING_BUILD:-}" ]; then
+  jq '.draft = false' "$REL/$PUBLISH_DURING_BUILD.json" > "$REL/next.json"
+  mv "$REL/next.json" "$REL/$PUBLISH_DURING_BUILD.json"
+fi
+if [ -n "${ADD_DURING_BUILD:-}" ]; then
+  echo added > "$REL/$ADD_DURING_BUILD/late-asset.txt"
+fi
 EOF
 cat > "$w/bin/git" <<'EOF'
 #!/bin/bash
@@ -102,14 +110,23 @@ case "$1 $2" in
       assets="$(cd "$REL/$tag" 2>/dev/null && for a in *; do [ -e "$a" ] && printf '{"name":"%s","digest":"sha256:%s"},' "$a" "$(sha256sum "$a" | cut -c1-8)"; done || true)"
       jq -c --arg t "$tag" --argjson a "[${assets%,}]" '. + {tag_name: $t, assets: $a}' "$j"
     done ;;
-  "api -X") echo "gh $*" >> "$LOG/gh"; t="$(printf '%s\n' "$@" | sed -n 's/^tag_name=//p')"; mkdir -p "$REL/$t"; echo '{"id":9,"draft":true,"prerelease":false}' > "$REL/$t.json" ;;
+  "api -X") echo "create site-build-cache" >> "$LOG/events"; echo "gh $*" >> "$LOG/gh"; t="$(printf '%s\n' "$@" | sed -n 's/^tag_name=//p')"; mkdir -p "$REL/$t"; echo '{"id":9,"draft":true,"prerelease":false}' > "$REL/$t.json" ;;
+  "release view") tag="$3"
+    echo "view $tag" >> "$LOG/events"
+    if [ "${FAIL_VIEW_TAG:-}" = "$tag" ]; then exit 7; fi
+    assets="$(cd "$REL/$tag" && for a in *; do [ ! -e "$a" ] || printf '{"name":"%s"},' "$a"; done)"
+    jq -c --argjson a "[${assets%,}]" '{isDraft:.draft,assets:$a}' "$REL/$tag.json" ;;
   "release download") tag="$3"; shift 3; pat="" dir=""
     while [ $# -gt 0 ]; do case "$1" in -p) pat="$2"; shift 2 ;; -D) dir="$2"; shift 2 ;; *) shift ;; esac; done
-    cp "$REL/$tag/$pat" "$dir/" ;;
-  "release upload") tag="$3"; shift 3
+    cp "$REL/$tag/$pat" "$dir/"
+    if [ "$tag" = site-build-cache ] && [ -n "${PUBLISH_DURING_DOWNLOAD:-}" ]; then
+      jq '.draft = false' "$REL/$PUBLISH_DURING_DOWNLOAD.json" > "$REL/next.json"
+      mv "$REL/next.json" "$REL/$PUBLISH_DURING_DOWNLOAD.json"
+    fi ;;
+  "release upload") tag="$3"; echo "upload $tag" >> "$LOG/events"; shift 3
     while [ $# -gt 0 ]; do case "$1" in -R) shift 2 ;; --clobber) shift ;;
       *) cp "$1" "$REL/$tag/"; echo "upload $tag $(basename "$1")" >> "$LOG/gh"; shift ;; esac; done ;;
-  "release delete-asset") rm -f "$REL/$3/$4"; echo "delete $3 $4" >> "$LOG/gh" ;;
+  "release delete-asset") echo "delete $3" >> "$LOG/events"; rm -f "$REL/$3/$4"; echo "delete $3 $4" >> "$LOG/gh" ;;
   *) echo "unexpected gh $*" >&2; exit 1 ;;
 esac
 EOF
@@ -161,6 +178,62 @@ if run_bv; then echo "FAIL a published release without its file must stop the ru
 rel v1.3.6-rc1 false false cll-weasyprint.pdf
 run_bv
 eq "a prerelease release not marked as prerelease gets a warning" "1" "$(grep -c 'release v1.3.6-rc1 is for a prerelease version but is not marked' "$w/log/run")"
+
+# Each release's fresh read and mutations form one uninterrupted group.
+# The cache gets a separate live read after that version's asset changes.
+for target in v1.3.6-rc2 v1.3.6; do
+  eq "fresh view directly precedes upload for $target" "view $target" \
+    "$(awk -v target="$target" '$0 == "upload " target {print previous; exit} {previous=$0}' "$w/log/events")"
+done
+
+# Isolated race fixtures use the real orchestrator and fake API state.
+race_case() { # <case> <publication target> <failed-read target> <late-asset target>
+  local name="$1" publish="$2" failed_read="$3" late="$4"
+  local original="$w" w="$t/race-$1"
+  mkdir -p "$w/scripts" "$w/bin" "$w/rel" "$w/log"
+  cp "$original/scripts/"* "$w/scripts/"
+  cp "$original/bin/"* "$w/bin/"
+  rel v1.4 true false cll-typst.pdf
+  rel site-build-cache true false
+  printf '1.4\tedition/1.4\tpdf-weasyprint\n' > "$w/versions.tsv"
+  if PUBLISH_DURING_BUILD="$publish" FAIL_VIEW_TAG="$failed_read" ADD_DURING_BUILD="$late" run_bv true; then
+    eq "$name succeeds" yes "$([ -z "$publish$failed_read" ] && echo yes || echo no)"
+  else
+    eq "$name refuses unsafe writes" yes "$([ -n "$publish$failed_read" ] && echo yes || echo no)"
+  fi
+  if [ -n "$publish$failed_read" ]; then
+    local blocked="${publish:-$failed_read}"
+    eq "$name leaves $blocked assets unchanged" "" "$(grep -E "^(upload|delete) $blocked( |$)" "$w/log/gh" 2>/dev/null || true)"
+    eq "$name reports the refusal" 1 "$(grep -c 'refusing asset changes' "$w/log/run")"
+    if [ "$blocked" = v1.4 ]; then
+      eq "$name writes no cache before refusal" "" "$(cat "$w/log/gh" 2>/dev/null || true)"
+    fi
+  else
+    eq "late assets are removed using live state" "cll-weasyprint.pdf" "$(ls "$w/rel/v1.4" | paste -sd' ')"
+    eq "all version writes stay together after one fresh read" \
+      $'view v1.4\nupload v1.4\ndelete v1.4\ndelete v1.4\nview site-build-cache\nupload site-build-cache' \
+      "$(cat "$w/log/events")"
+  fi
+}
+race_case "publish version during build" v1.4 '' ''
+race_case "publish cache during build" site-build-cache '' ''
+race_case "version read failure" '' v1.4 ''
+race_case "cache read failure" '' site-build-cache ''
+race_case "fresh asset cleanup" '' '' v1.4
+
+# A cache hit still needs a new decision before uploading to a draft.
+cached_race() {
+  local w="$t/race-fresh asset cleanup"
+  : > "$w/log/gh"; : > "$w/log/build-site"
+  if PUBLISH_DURING_DOWNLOAD=v1.4 run_bv; then
+    echo "FAIL publication during cache restore must refuse writes"; fails=$((fails + 1))
+  else
+    echo "ok   publication during cache restore refuses writes"
+  fi
+  eq "cached publication race runs no build" "" "$(cat "$w/log/build-site")"
+  eq "cached publication race changes no release" "" "$(cat "$w/log/gh")"
+}
+cached_race
 
 # --- gen-site-index.sh
 s="$t/site"; mkdir -p "$s"/{1.3.5,1.3.6-rc1,1.3.6-rc2,1.3.6,notaversion}

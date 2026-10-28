@@ -1802,7 +1802,7 @@
       </indexterm>
       <indexterm type="general"><primary>negation between sentences</primary><secondary>compared with bridi negation</secondary>
       </indexterm>
-      The mystery is easily solved. A negation in a logical expression is identical to the corresponding bridi negation, with the negator placed at the beginning of the prenex. Thus:
+      The mystery is easily solved. A negation in a logical expression is identical to the corresponding bridi negation, with the negator placed at the beginning of the negated bridi. Thus:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-pLiB">
       <title><anchor xml:id="c16e10d3" /></title>
@@ -1822,7 +1822,7 @@
         <gloss>I love everything, and-not, you love everything.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">and then into prenex form as:</para>
+    <para role="noindent">But beware of moving the quantifier into a prenex in front of both sentences. That changes the meaning:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-JxDJ">
       <title><anchor xml:id="c16e10d5" /></title>
 
@@ -1836,6 +1836,12 @@
         <natlang>For each thing: I love it, and it is false that you love (the same) it.</natlang>
       </interlinear-gloss>
     </example>
+    <para role="noindent">
+      <xref linkend="example-random-id-h6Wz" />
+      says only that you do not love everything, whereas
+      <xref linkend="example-random-id-JxDJ" />
+      says that there is nothing at all that you love.
+    </para>
     <para role="indent">
       <indexterm type="general"><primary>quantifier scope</primary><secondary>in multiple connected sentences</secondary>
       </indexterm>
@@ -1859,8 +1865,8 @@
         <gloss>For-at-least-one-thing : I love that-thing.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .ije naku zo'u do prami da</jbo>
-        <gloss>… And it-is-false-that : you love that-(same)-thing.</gloss>
+        <jbo>… .ije naku do prami da</jbo>
+        <gloss>… And it-is-false-that you love that-(same)-thing.</gloss>
         <natlang>There is something that I love that you don't.</natlang>
       </interlinear-gloss>
     </example>

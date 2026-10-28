@@ -141,6 +141,8 @@ jobs:
           git remote add origin https://github.com/lojban/ilmentufa
           git fetch -q --depth 1 origin 778ea138f7d150121ca722db7536ce3b123943ac
           git checkout -q FETCH_HEAD
+      - name: Test parser invocation failures
+        run: node tests/test-run-probes.js
       - name: Run magic-word probes
         run: ILMENTUFA_DIR=../ilmentufa node tests/run-probes.js
 

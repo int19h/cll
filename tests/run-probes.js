@@ -4,13 +4,14 @@
 // Exit codes: 0 = all ilmentufa expectations match; 1 = expectation mismatch;
 // 2 = configuration/invocation failure (bad ILMENTUFA_DIR, wrong pin, empty
 // parser output, malformed fixture). jbotci rows never affect the exit code.
-const { execFileSync, spawnSync } = require('child_process');
+const { spawnSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
 const PINNED_ILMENTUFA = '778ea138f7d150121ca722db7536ce3b123943ac';
 // camxes-std reports syntax errors as '@<offset> "…": Expected …' lines.
 const CAMXES_ERROR = /(^|\n)@\d+\s/;
+const EXCEPTION_SHAPE = /^\s*\w*Error\b|^\s+at /m;
 
 function die(msg) { console.error(`CONFIG ERROR: ${msg}`); process.exit(2); }
 
@@ -32,8 +33,11 @@ const JBOTCI = process.env.JBOTCI_BIN || null; // invoked as: $JBOTCI_BIN gentuf
 function classifyIlmentufa(input) {
   const res = spawnSync('node', [runner, input], { encoding: 'utf8', timeout: 30000 });
   if (res.error) die(`failed to invoke ${runner}: ${res.error.message}`);
+  if (res.signal) die(`${runner} killed by ${res.signal} for: ${input}`);
+  if (res.status !== 0) die(`${runner} exited ${res.status} for: ${input}\n${(res.stderr || '').slice(0, 300)}`);
   const out = (res.stdout || '') + (res.stderr || '');
   if (!out.trim()) die(`empty output from ${runner} for input: ${input}`);
+  if (EXCEPTION_SHAPE.test(out)) die(`exception-shaped output from ${runner} for: ${input}\n${out.slice(0, 300)}`);
   return CAMXES_ERROR.test(out) ? 'R' : 'A';
 }
 
@@ -65,5 +69,6 @@ lines.forEach((line, i) => {
     if (gotJbo && gotJbo !== expJbo) console.log(`INFO ${id}: jbotci expected ${expJbo}, got ${gotJbo}  [${input}]`);
   }
 });
+if (!ran) die(`${tsvPath}: no probe rows`);
 console.log(`${ran} probes, ${fail} ilmentufa mismatches`);
 process.exit(fail ? 1 : 0);

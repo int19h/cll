@@ -73,3 +73,15 @@ To build a separate PDF with Typst:
 This produces build/cll-typst.pdf. The existing Prince target and default
 build remain unchanged. See docs/typst-pdf.md for local builds, chapter
 excerpts, and isolated build directories for concurrent worktrees.
+
+HTML mathematics uses MathJax 3.2.2 from jsDelivr.
+The shared HTML stylesheet fixes the version and its SHA-384 integrity hash.
+Browsers require a network connection to load that script and its fonts.
+The script derives its versioned font and component paths from its own URL.
+The HTML archive does not include MathJax.
+The separate WeasyPrint backend uses its own local dependencies.
+
+To make sure that downloaded script bytes match the HTML integrity hash, run:
+
+    curl -fL https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js -o /tmp/cll-mathjax.js
+    python3 scripts/test-html-mathjax.py /tmp/cll-mathjax.js

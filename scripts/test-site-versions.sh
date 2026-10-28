@@ -221,6 +221,7 @@ cat > "$b/src/cll_build" <<'EOF'
 #!/bin/bash
 set -euo pipefail
 [ "$1 $2" = '-n -T' ]
+[ "${CLL_BUILD_VERSION:-}" = source-version ]
 echo "$3" >> "$BS_LOG"
 mkdir -p build
 case "$3" in
@@ -245,6 +246,10 @@ cat > "$b/src/run_context_container.sh" <<'EOF'
 #!/bin/bash
 echo context >> "$BS_LOG"
 echo context > build/cll-context.pdf
+EOF
+cat > "$b/src/scripts/build-version.sh" <<'EOF'
+#!/bin/bash
+echo source-version
 EOF
 # The diff helper copies HTML for this orchestration test.
 cat > "$b/tools/docbook-diff.py" <<'EOF'

@@ -111,6 +111,12 @@ dest="$outdir/$version"
 if [ -z "${DIFFS_ONLY:-}" ]; then rm -rf "$dest"; fi
 mkdir -p "$dest"
 cd "$src"
+# Annotated comparison trees have no Git metadata. Resolve the edition's
+# version here and pass it to those copies and any container launcher.
+if [ -x scripts/build-version.sh ]; then
+  CLL_BUILD_VERSION="$(scripts/build-version.sh)"
+  export CLL_BUILD_VERSION
+fi
 
 if [ -n "${DIFFS_ONLY:-}" ]; then
   # A published version keeps the book files of its release (restored into

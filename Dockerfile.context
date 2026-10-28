@@ -1,31 +1,34 @@
-FROM ubuntu:24.04
+FROM ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55
 
-# Independent of the Prince image. The LMTX installer supplies LuaMetaTeX,
-# ConTeXt, and the mathematical fonts. engine-version.txt records its version.
+# Build LuaMetaTeX and ConTeXt from the same fixed source archive.
 ENV DEBIAN_FRONTEND=noninteractive LANG=en_US.UTF-8
-RUN apt-get update && apt-get install -y --no-install-recommends \
-      bash make curl ca-certificates unzip locales ruby \
+# Bootstrap HTTPS before APT installs the snapshot's ca-certificates package.
+ADD https://curl.se/ca/cacert-2026-10-20.pem /etc/ssl/certs/ca-certificates.crt
+RUN chmod 644 /etc/ssl/certs/ca-certificates.crt \
+    && echo '796f1389bfea13c0ed78f663b765baaff54a508e5483786bd6ece73c5e3e3cbe  /etc/ssl/certs/ca-certificates.crt' | sha256sum -c - \
+    && printf '%s\n' 'Types: deb' \
+      'URIs: https://snapshot.ubuntu.com/ubuntu/20261027T000000Z/' \
+      'Suites: noble noble-updates noble-security' 'Components: main universe' \
+      'Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg' \
+      'Check-Valid-Until: no' > /etc/apt/sources.list.d/ubuntu.sources
+RUN apt-get update -o APT::Update::Error-Mode=any && apt-get install -y --no-install-recommends \
+      bash make curl ca-certificates locales ruby cmake build-essential \
       nodejs npm python3 python3-pil libxml2-utils \
-      fonts-dejavu-core \
+      fontconfig fonts-dejavu-core \
     && locale-gen en_US.UTF-8 \
     && rm -rf /var/lib/apt/lists/*
 RUN gem install --no-document nokogiri:1.18.8 optimist:3.2.0 htmlentities:4.3.4 \
     && npm install -g regenerator@0.14.12
 
-ARG CONTEXT_INSTALLER_BASE=https://lmtx.pragma-ade.nl/install-lmtx
-RUN mkdir -p /opt/context && cd /opt/context \
-    && case "$(uname -m)" in \
-         x86_64) platform=linux-64 ;; \
-         aarch64) platform=linux-aarch64 ;; \
-         *) exit 1 ;; \
-       esac \
-    && curl -fL --retry 3 "$CONTEXT_INSTALLER_BASE/context-$platform.zip" -o installer.zip \
-    && unzip -q installer.zip && rm installer.zip \
-    && sh install.sh \
-    && test -x "tex/texmf-$platform/bin/context" \
-    && ln -s "/opt/context/tex/texmf-$platform/bin" /opt/context/platform-bin
+COPY scripts/install-context.sh /usr/local/src/install-context.sh
+ARG CLL_CONTEXT_ARCHIVES=
+RUN if [ -n "$CLL_CONTEXT_ARCHIVES" ]; then \
+      bash /usr/local/src/install-context.sh /opt/context "$CLL_CONTEXT_ARCHIVES"; \
+    else \
+      bash /usr/local/src/install-context.sh /opt/context; \
+    fi
 
 ENV PATH="/opt/context/platform-bin:${PATH}"
-RUN context --version | grep 'current version:'
+RUN context --version | grep -F 'current version: 2026.10.25 20:06'
 
 WORKDIR /srv/cll

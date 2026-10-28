@@ -1,12 +1,10 @@
-FROM ubuntu:24.04 AS build-base
+FROM ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55 AS build-base
 
 # Modern build environment for the book (replaces the old Fedora 30 /
 # Ruby 2.6 / Prince 12.5 image). The DocBook XSL stylesheets that drive
-# the layout are pinned in-tree (xml/docbook-xsl-1.78.1.zip), so the
-# structure/layout of the output does not depend on the OS here; the
-# actual bytes still pass through xsltproc/libxslt, the Ruby cleanup, and
-# xmllint, so the pinned gem/tool versions below matter for stable
-# output. Prince (PDF only) is versioned separately.
+# the layout are pinned in-tree (xml/docbook-xsl-1.78.1.zip). The
+# output also depends on xsltproc/libxslt, Ruby, xmllint, and fonts.
+# Fix the base image and signed APT archive below. Prince is pinned separately.
 ENV DEBIAN_FRONTEND=noninteractive LANG=en_US.UTF-8
 
 # Core toolchain:
@@ -15,14 +13,23 @@ ENV DEBIAN_FRONTEND=noninteractive LANG=en_US.UTF-8
 #  - nodejs/npm for regenerator and the diff tooling
 #  - tidy, zip/unzip, wget, git, make
 #  - fonts + default-jre are for the PDF and EPUB targets
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Bootstrap HTTPS before APT installs the snapshot's ca-certificates package.
+ADD https://curl.se/ca/cacert-2026-10-20.pem /etc/ssl/certs/ca-certificates.crt
+RUN chmod 644 /etc/ssl/certs/ca-certificates.crt \
+    && echo '796f1389bfea13c0ed78f663b765baaff54a508e5483786bd6ece73c5e3e3cbe  /etc/ssl/certs/ca-certificates.crt' | sha256sum -c - \
+    && printf '%s\n' 'Types: deb' \
+      'URIs: https://snapshot.ubuntu.com/ubuntu/20261027T000000Z/' \
+      'Suites: noble noble-updates noble-security' 'Components: main universe' \
+      'Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg' \
+      'Check-Valid-Until: no' > /etc/apt/sources.list.d/ubuntu.sources
+RUN apt-get update -o APT::Update::Error-Mode=any && apt-get install -y --no-install-recommends \
       make bash wget curl git ca-certificates locales \
       xmlto xsltproc libxml2-utils tidy zip unzip \
       ruby ruby-dev build-essential pkg-config \
       libxml2-dev libxslt1-dev zlib1g-dev \
       nodejs npm \
       default-jre-headless \
-      fonts-dejavu fonts-dejavu-core fonts-linuxlibertine \
+      fonts-dejavu fontconfig fonts-dejavu-core fonts-linuxlibertine \
     && rm -rf /var/lib/apt/lists/*
 
 # The build scripts hardcode the en_US.UTF-8 locale (glossary collation).
@@ -56,9 +63,17 @@ RUN bash /usr/local/src/install_typst.sh /usr/local/bin
 FROM build-base AS prince
 # Prince XML (PDF target). Arch-aware Ubuntu 24.04 build.
 RUN arch="$(dpkg --print-architecture)" \
+    && case "$arch" in \
+      amd64) prince_sha256=305d755ff6437e855c151920d1363970d8cc7bff1ea4006290c36ad5d8e06c69 ;; \
+      arm64) prince_sha256=c8f411c0a06fef8522ae17cdcabfb1992379f017dcd213812154ca6e3cb762bc ;; \
+      *) exit 1 ;; \
+    esac \
     && cd /usr/src \
     && wget -q "https://www.princexml.com/download/prince_16.2-1_ubuntu24.04_${arch}.deb" \
-    && (apt-get update && apt-get install -y ./prince_16.2-1_ubuntu24.04_${arch}.deb; rm -rf /var/lib/apt/lists/*) \
+    && echo "$prince_sha256  prince_16.2-1_ubuntu24.04_${arch}.deb" | sha256sum -c - \
+    && apt-get update -o APT::Update::Error-Mode=any \
+    && apt-get install -y ./prince_16.2-1_ubuntu24.04_${arch}.deb \
+    && rm -rf /var/lib/apt/lists/* \
     && rm -f "prince_16.2-1_ubuntu24.04_${arch}.deb" \
     && prince --version
 

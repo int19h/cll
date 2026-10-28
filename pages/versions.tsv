@@ -1,4 +1,20 @@
-# version	git-ref  (newest first in this file; the site builds them oldest-first so each version can diff against its predecessor; UnCLL 1.2.16 baseline = baseline/uncll-1.2.16)
+# The versions of the site, newest first. Columns, separated by tabs:
+#   version   a dotted number such as 1.3.5, or a prerelease such as
+#             1.3.6-rc1. Its release tag is v<version>.
+#   git-ref   the branch that holds its content, such as edition/1.3.5.
+#             A prerelease has its own branch, such as edition/1.3.6-rc1,
+#             because an edition branch never moves after publication.
+#   formats   optional: the formats to build and publish, comma-separated.
+#             Empty means html,pdf,epub. Formats: html (the book online,
+#             the visual diffs, and cll-<version>-html.tar.gz), epub
+#             (cll.epub), pdf (Prince, cll.pdf), pdf-weasyprint
+#             (cll-weasyprint.pdf), pdf-typst (cll-typst.pdf), pdf-context
+#             (cll-context.pdf). Any combination works. The visual diffs
+#             need html. Version 1.3.6 will list html,epub,pdf,pdf-weasyprint.
+# The site builds the versions oldest first. A prerelease comes before its
+# final release, and diff_from_previous always compares with the previous
+# final release. UnCLL 1.2.16 baseline = baseline/uncll-1.2.16.
+# See scripts/site-versions.sh and scripts/build-versions.sh.
 1.3.5	edition/1.3.5
 1.3.4	edition/1.3.4
 1.3.3	edition/1.3.3

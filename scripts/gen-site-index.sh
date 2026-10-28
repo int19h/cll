@@ -6,20 +6,29 @@
 #   scripts/gen-site-index.sh <site-dir> [latest-version]
 #
 # Version dirs are any immediate subdirectories matching a version number
-# (e.g. 1.3, 1.4, 1.10). If latest-version is omitted, the highest
-# version number present is used.
+# (e.g. 1.3, 1.4, 1.10), with an optional prerelease suffix (e.g.
+# 1.3.6-rc1; see scripts/site-versions.sh). A prerelease is listed below
+# its final release and marked as such. If latest-version is omitted, the
+# highest final version present is used, or the highest prerelease when
+# there is no final version.
 set -euo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/site-versions.sh"
 
 site="${1:?usage: gen-site-index.sh <site-dir> [latest-version]}"
 latest="${2-}"
 
-# collect version dirs (numeric, dotted), sorted newest first
+# collect version dirs, sorted newest first
 mapfile -t versions < <(
   find "$site" -maxdepth 1 -mindepth 1 -type d -printf '%f\n' \
-    | grep -E '^[0-9]+(\.[0-9]+)*$' | sort -rV)
+    | grep -E "$SITE_VERSION_RE" | site_sort_versions | tac)
 
 [ "${#versions[@]}" -gt 0 ] || { echo "no version dirs under $site" >&2; exit 1; }
-[ -n "$latest" ] || latest="${versions[0]}"
+if [ -z "$latest" ]; then
+  for v in "${versions[@]}"; do
+    site_is_prerelease "$v" || { latest="$v"; break; }
+  done
+  [ -n "$latest" ] || latest="${versions[0]}"
+fi
 
 # /latest/ meta-refresh redirect (GitHub Pages has no symlinks)
 mkdir -p "$site/latest"
@@ -48,16 +57,18 @@ publication &mdash; not by the LLG.</p>
 <ul>
 HTML
   for v in "${versions[@]}"; do
-    tag=""; [ "$v" = "$latest" ] && tag=' <span class="muted">(latest)</span>'
+    tag=""
+    site_is_prerelease "$v" && tag=" <span class=\"muted\">($(site_prerelease_label "$v"))</span>"
+    [ "$v" = "$latest" ] && tag="$tag <span class=\"muted\">(latest)</span>"
     printf '<li class="%s"><a href="%s/">%s</a>%s</li>\n' \
       "$([ "$v" = "$latest" ] && echo latest)" "$v" "$v" "$tag"
   done
   cat <<HTML
 </ul>
-<p class="muted">Each version offers the book online (section-by-section and
-single-page), as a downloadable PDF and ePub, and with visual diffs against
-the official CLL&nbsp;1.1, against UnCLL&nbsp;1.2.16, and against the previous
-release.
+<p class="muted">Each version offers the book in some of these formats: online
+(section-by-section and single-page) with visual diffs against the official
+CLL&nbsp;1.1, against UnCLL&nbsp;1.2.16, and against the previous release, and
+as a downloadable PDF or ePub. The page of each version lists its formats.
 Source: <a href="https://github.com/int19h/cll">github.com/int19h/cll</a>.</p>
 </body></html>
 HTML

@@ -13,6 +13,11 @@ name: pages
 # official CLL 1.1, of UnCLL 1.2.16 (baseline/uncll-1.2.16), and of the
 # previous release; they need only those refs, not their builds.
 #
+# Each version lists its formats in the third column of versions.tsv
+# (scripts/site-versions.sh). A tool is installed only when some version
+# lists a format that needs it; the WeasyPrint, Typst and ConTeXt PDFs
+# build in each version's own container, with Docker.
+#
 # Trigger manually (workflow_dispatch) after updating a version's content
 # branch, or automatically when the pages branch (workflow/scripts) changes.
 
@@ -47,13 +52,23 @@ jobs:
       - name: Make all content refs available
         run: git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*'
 
+      - name: Read the formats of the versions
+        id: formats
+        run: |
+          . scripts/site-versions.sh
+          all="$(site_rows pages/versions.tsv | cut -f3 | paste -sd, -)"
+          echo "versions.tsv lists: $all"
+          for f in "${SITE_FORMATS[@]}"; do
+            if site_has_format "$all" "$f"; then v=true; else v=false; fi
+            echo "${f//-/_}=$v" >> "$GITHUB_OUTPUT"
+          done
+
       - name: Install build toolchain
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             xmlto xsltproc libxml2-utils tidy zip unzip locales \
-            build-essential pkg-config libxml2-dev libxslt1-dev zlib1g-dev \
-            default-jre-headless
+            build-essential pkg-config libxml2-dev libxslt1-dev zlib1g-dev
           sudo locale-gen en_US.UTF-8
           sudo ln -sf /bin/bash /bin/sh          # build scripts assume sh == bash
           # pinned to the same versions as the reviewed build container
@@ -63,7 +78,19 @@ jobs:
           npm config set fetch-retry-maxtimeout 120000
           sudo npm install -g regenerator@0.14.12
 
+      - name: Install a JRE (ePub check)
+        if: steps.formats.outputs.epub == 'true'
+        run: sudo apt-get install -y --no-install-recommends default-jre-headless
+
+      - name: Make sure that Docker works (container PDF engines)
+        if: >-
+          steps.formats.outputs.pdf_weasyprint == 'true' ||
+          steps.formats.outputs.pdf_typst == 'true' ||
+          steps.formats.outputs.pdf_context == 'true'
+        run: docker info >/dev/null
+
       - name: Install Prince (PDF renderer)
+        if: steps.formats.outputs.pdf == 'true'
         run: |
           # same version as the reviewed build container (Dockerfile)
           wget -q "https://www.princexml.com/download/prince_16.2-1_ubuntu24.04_amd64.deb"
@@ -79,11 +106,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           FORCE_REBUILD: ${{ inputs.force_rebuild || 'false' }}
           BASELINE_COMMIT: ${{ steps.baseline.outputs.sha }}
+          CONTAINER_BIN: docker
         # A published version serves the book files of its release and
         # rebuilds only its diffs; other versions build from source. Each
         # result is cached in the site-build-cache draft release and restored
-        # when it still matches. Draft releases get the PDF, the ePub, and the
-        # archive; published releases never change (issue #128).
+        # when it still matches. Draft releases get the files of the
+        # version's formats; published releases never change (issue #128).
         # See scripts/build-versions.sh.
         run: bash scripts/build-versions.sh pages/versions.tsv origin/baseline/uncll-1.2.16 "$PWD/_site_versions"
 

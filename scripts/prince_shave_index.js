@@ -82,55 +82,68 @@ function index_term()
  *
  * to:
  *
- * <dt>little: <span style="content: prince-script(index_term, target-counter(url(#idm217009053168), page), target-counter(url(#idm217009048368), page), target-counter(url(#idm217009044128), page))"></span></dt>
+ * <dt>little: <span class="index-pages" style="content: prince-script(index_term, target-counter(url(#idm217009053168), page), target-counter(url(#idm217009048368), page), target-counter(url(#idm217009044128), page))"></span></dt>
  *
  * and then the actual index collapsing happens in index_term above.
  */
+function hidden_index_target(link)
+{
+  var href = link.getAttribute('href');
+  if (!href || href.charAt(0) !== '#') return false;
+  var target = document.getElementById(href.slice(1));
+  while (target) {
+    if (target.getAttribute && (' ' + (target.getAttribute('class') || '').replace(/\s+/g, ' ') + ' ')
+        .indexOf(' display-none ') !== -1) return true;
+    target = target.parentNode;
+  }
+  return false;
+}
+
 function prep_index()
 {
-  ix = document.getElementsByClassName("indexdiv");
-  for(var i=0; i<ix.length; i++)
-  {
-    // dts = ix[i].getElementsByTagName("dl")[0].getElementsByTagName("dt")
-    dts = ix[i].getElementsByTagName("dt")
-    for(var j=0; j<dts.length; j++)
-    {
-      // console.log(dts[j].textContent);
-      var parent = dts[j];
-      // console.log(dts[j].firstChild.nodeValue);
-      links = dts[j].getElementsByTagName("a")
-      var text = '';
-      var first = true;
-      // console.log('ll: ' + links.length );
-      for(var k=0; k<links.length; k++) {
-        if( text == '' ) {
-          text = '<span style="content: prince-script(index_term, ';
+  var indexes = document.getElementsByClassName('indexdiv');
+  for (var i = 0; i < indexes.length; i++) {
+    // Entries can disappear, so do not iterate the live collection.
+    var entries = Array.prototype.slice.call(indexes[i].getElementsByTagName('dt'));
+    for (var j = entries.length - 1; j >= 0; j--) {
+      var entry = entries[j];
+      var allLinks = entry.getElementsByTagName('a');
+      var following = entry.nextElementSibling;
+      var hasDetails = following && following.nodeName.toLowerCase() === 'dd';
+      if (!allLinks.length) {
+        if (hasDetails && !following.textContent.trim()) {
+          entry.parentNode.removeChild(following);
+          entry.parentNode.removeChild(entry);
         }
-        var child = links[k];
-        // console.log('child: ' + child.textContent);
-        var hrefHash = links[k].getAttribute("href");
-        // console.log('hh: ' + hrefHash);
-
-        if( first ) {
-          first = false;
+        continue;
+      }
+      var links = [];
+      for (var k = 0; k < allLinks.length; k++) {
+        if (!hidden_index_target(allLinks[k])) links.push(allLinks[k]);
+      }
+      var firstText = '';
+      for (var n = 0; n < entry.childNodes.length; n++) {
+        if (entry.childNodes[n].nodeName === '#text') {
+          firstText = entry.childNodes[n].nodeValue;
+          break;
+        }
+      }
+      if (!links.length) {
+        // Retain a heading when its subentries still have page references.
+        if (hasDetails && following.textContent.trim()) {
+          entry.textContent = firstText.replace(/,\s*$/, '');
         } else {
-          text = text + ", ";
+          if (hasDetails) entry.parentNode.removeChild(following);
+          entry.parentNode.removeChild(entry);
         }
-        text = text + "target-counter(url(" + hrefHash + "), page)";
+        continue;
       }
-      if( text != '' ) {
-        text = text + ' )"></span>'
-        var firstText = "";
-        for (var i = 0; i < parent.childNodes.length; i++) {
-          var curNode = parent.childNodes[i];
-          if (curNode.nodeName === "#text") {
-            firstText = curNode.nodeValue;
-            break;
-          }
-        }
-        parent.innerHTML = firstText + text;
+      var text = '<span class="index-pages" style="content: prince-script(index_term, ';
+      for (var k = 0; k < links.length; k++) {
+        if (k) text += ', ';
+        text += 'target-counter(url(' + links[k].getAttribute('href') + '), page)';
       }
-      // console.log(text);
+      entry.innerHTML = firstText + text + ')"></span>';
     }
   }
 }

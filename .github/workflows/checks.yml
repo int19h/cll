@@ -157,6 +157,8 @@ jobs:
         run: node tests/test-run-probes.js
       - name: Test audio loading failures
         run: node tests/test-audio-loading.js
+      - name: Test Prince index page ranges
+        run: node tests/test-prince-index.js
       - name: Run magic-word probes
         run: ILMENTUFA_DIR=../ilmentufa node tests/run-probes.js
 

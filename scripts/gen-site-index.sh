@@ -5,44 +5,46 @@
 #
 #   scripts/gen-site-index.sh <site-dir> [latest-version]
 #
-# Version dirs are any immediate subdirectories matching a version number
-# (e.g. 1.3, 1.4, 1.10), with an optional prerelease suffix (e.g.
-# 1.3.6-rc1; see scripts/site-versions.sh). A prerelease is listed below
-# its final release and marked as such. If latest-version is omitted, the
-# highest final version present is used, or the highest prerelease when
-# there is no final version.
+# Prerelease directories are deployed but omitted from this index.
+# /latest/ selects a final release only. If no final release exists, the
+# generator writes the index without a /latest/ redirect.
 set -euo pipefail
 . "$(dirname "${BASH_SOURCE[0]}")/site-versions.sh"
 
 site="${1:?usage: gen-site-index.sh <site-dir> [latest-version]}"
 latest="${2-}"
 
-# collect version dirs, sorted newest first
-mapfile -t versions < <(
+# Collect valid directories, then keep final releases for the index.
+mapfile -t all_versions < <(
   find "$site" -maxdepth 1 -mindepth 1 -type d -printf '%f\n' \
     | grep -E "$SITE_VERSION_RE" | site_sort_versions | tac)
-
-[ "${#versions[@]}" -gt 0 ] || { echo "no version dirs under $site" >&2; exit 1; }
-newest_final=""
-for v in "${versions[@]}"; do
-  site_is_prerelease "$v" || { newest_final="$v"; break; }
+[ "${#all_versions[@]}" -gt 0 ] || { echo "no version dirs under $site" >&2; exit 1; }
+versions=()
+for v in "${all_versions[@]}"; do
+  if ! site_is_prerelease "$v"; then versions+=("$v"); fi
 done
-if [ -z "$latest" ]; then latest="${newest_final:-${versions[0]}}"; fi
-if ! site_is_version "$latest" || [ ! -d "$site/$latest" ]; then
-  echo "unknown latest version: $latest" >&2; exit 1
-fi
-if [ -n "$newest_final" ] && site_is_prerelease "$latest"; then
-  echo "latest must be a final release when one exists" >&2; exit 1
+if [ -z "$latest" ] && [ "${#versions[@]}" -gt 0 ]; then latest="${versions[0]}"; fi
+if [ -n "$latest" ]; then
+  if ! site_is_version "$latest" || [ ! -d "$site/$latest" ]; then
+    echo "unknown latest version: $latest" >&2; exit 1
+  fi
+  if site_is_prerelease "$latest"; then
+    echo "latest must be a final release" >&2; exit 1
+  fi
 fi
 
-# /latest/ meta-refresh redirect (GitHub Pages has no symlinks)
-mkdir -p "$site/latest"
-cat > "$site/latest/index.html" <<HTML
+# Remove an earlier redirect when the site contains only prereleases.
+rm -rf "$site/latest"
+if [ -n "$latest" ]; then
+  # GitHub Pages has no symlinks, so use a meta-refresh redirect.
+  mkdir -p "$site/latest"
+  cat > "$site/latest/index.html" <<HTML
 <!doctype html><meta charset="utf-8">
 <meta http-equiv="refresh" content="0; url=../$latest/">
 <link rel="canonical" href="../$latest/">
 <p>Redirecting to <a href="../$latest/">version $latest</a>&hellip;</p>
 HTML
+fi
 
 # top-level landing page
 {
@@ -61,9 +63,11 @@ publication &mdash; not by the LLG.</p>
 <h2>Versions</h2>
 <ul>
 HTML
+  if [ "${#versions[@]}" -eq 0 ]; then
+    echo '<li>No final releases are available.</li>'
+  fi
   for v in "${versions[@]}"; do
     tag=""
-    site_is_prerelease "$v" && tag=" <span class=\"muted\">($(site_prerelease_label "$v"))</span>"
     [ "$v" = "$latest" ] && tag="$tag <span class=\"muted\">(latest)</span>"
     printf '<li class="%s"><a href="%s/">%s</a>%s' \
       "$([ "$v" = "$latest" ] && echo latest)" "$v" "$v" "$tag"
@@ -77,9 +81,10 @@ HTML
 (section-by-section and single-page) with visual diffs against the official
 CLL&nbsp;1.1, against UnCLL&nbsp;1.2.16, and against the previous release, and
 as a downloadable PDF or ePub. The page of each version lists its formats.
+Prereleases are available through their GitHub release pages.
 Source: <a href="https://github.com/int19h/cll">github.com/int19h/cll</a>.</p>
 </body></html>
 HTML
 } > "$site/index.html"
 
-echo "wrote $site/index.html and $site/latest/ (latest=$latest, versions: ${versions[*]})"
+echo "wrote $site/index.html (latest=${latest:-none}, final versions: ${versions[*]})"

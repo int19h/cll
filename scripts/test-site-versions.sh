@@ -165,8 +165,8 @@ eq "a prerelease release not marked as prerelease gets a warning" "1" "$(grep -c
 # --- gen-site-index.sh
 s="$t/site"; mkdir -p "$s"/{1.3.5,1.3.6-rc1,1.3.6-rc2,1.3.6,notaversion}
 bash "$here/gen-site-index.sh" "$s" >/dev/null
-eq "landing page order and marks" \
-  '1.3.6</a> <span class="muted">(latest)</span>|1.3.6-rc2</a> <span class="muted">(release candidate)</span>|1.3.6-rc1</a> <span class="muted">(release candidate)</span>|1.3.5</a>' \
+eq "landing page lists only final releases" \
+  '1.3.6</a> <span class="muted">(latest)</span>|1.3.5</a>' \
   "$(grep -o '[0-9][0-9.rc-]*</a>.*'  "$s/index.html" | sed 's|<div>$||' | paste -sd'|')"
 eq "latest is the final release" 'url=../1.3.6/' "$(grep -o 'url=[^"]*' "$s/latest/index.html")"
 rm -rf "$s/1.3.6"
@@ -174,7 +174,9 @@ bash "$here/gen-site-index.sh" "$s" >/dev/null
 eq "latest skips prereleases" 'url=../1.3.5/' "$(grep -o 'url=[^"]*' "$s/latest/index.html")"
 rm -rf "$s/1.3.5"
 bash "$here/gen-site-index.sh" "$s" >/dev/null
-eq "latest is a prerelease when no final exists" 'url=../1.3.6-rc2/' "$(grep -o 'url=[^"]*' "$s/latest/index.html")"
+eq "no latest redirect when no final exists" no "$([ -e "$s/latest" ] && echo yes || echo no)"
+eq "only prereleases gives an empty final index" 1 "$(grep -c 'No final releases are available' "$s/index.html")"
+fails_with "explicit latest rejects RC without a final" bash "$here/gen-site-index.sh" "$s" 1.3.6-rc2
 
 # Empty fields must not shift later columns. The final row can omit LF.
 printf '1.4\tedition/1.4\t\n1.5\tedition/1.5' > "$t/empty.tsv"
@@ -199,9 +201,11 @@ fails_with "explicit latest must exist" bash "$here/gen-site-index.sh" "$s" 9.9
 mkdir -p "$s/1.3.5/xhtml_no_chunks"
 echo html > "$s/1.3.5/xhtml_no_chunks/index.html"
 echo pdf > "$s/1.3.6-rc1/cll-weasyprint.pdf"
+echo pdf > "$s/1.3.5/cll-weasyprint.pdf"
 bash "$here/gen-site-index.sh" "$s" >/dev/null
 eq "top page links available HTML" 1 "$(grep -c 'href="1.3.5/xhtml_no_chunks/"' "$s/index.html")"
-eq "top page links available WeasyPrint" 1 "$(grep -c 'href="1.3.6-rc1/cll-weasyprint.pdf"' "$s/index.html")"
+eq "top page links available WeasyPrint" 1 "$(grep -c 'href="1.3.5/cll-weasyprint.pdf"' "$s/index.html")"
+eq "top page omits prerelease links" 0 "$(grep -c 'href="1.3.6-rc' "$s/index.html" || true)"
 eq "top page omits unavailable Prince" 0 "$(grep -c 'href="[^"]*/cll.pdf"' "$s/index.html" || true)"
 
 # Run the real build-site script with stub renderers. This tests dispatch,

@@ -16,6 +16,8 @@ burn-down in the dotside sweep issue; do not add entries for new text.
 """
 import os, re, sys
 from collections import Counter
+from pathlib import Path
+from xml.parsers import expat
 
 ALLOW_FILE = os.path.join(os.path.dirname(__file__), "lint-undotted-cmevla.allow")
 ALLOW = {}
@@ -30,8 +32,49 @@ if os.path.exists(ALLOW_FILE):
         base, snippet, maxn = parts[0], ":".join(parts[1:-1]), parts[-1]
         ALLOW[(base, snippet)] = int(maxn)
 
-JBO_ELEM = re.compile(r"<(jbo|jbophrase|valsi)\b[^>]*>(.*?)</\1>", re.S)
-TAG = re.compile(r"<[^>]+>")
+ROOT = Path(__file__).resolve().parent.parent
+ENTITY_FILES = sorted(ROOT.glob('dtd/*.ent')) + sorted(ROOT.glob('xml/*.ent'))
+ENTITIES = '\n'.join(match.group(0) for path in ENTITY_FILES
+                     for match in re.finditer(r'<!ENTITY\s+([A-Za-z][\w.-]*)\s+"([^"]*)"\s*>',
+                                              path.read_text(encoding='utf-8')))
+
+
+def lojban_elements(text):
+    # Expat reports source lines and excludes comments from character data.
+    prefix = '<!DOCTYPE chapter [\n' + ENTITIES + '\n]>\n'
+    parser = expat.ParserCreate()
+    active = []
+    elements = []
+    depth = 0
+
+    def start(name, attributes):
+        nonlocal depth
+        for _, _, parts in active:
+            parts.append(' ')
+        depth += 1
+        if not active and name in ('jbo', 'jbophrase', 'valsi'):
+            line = parser.CurrentLineNumber - prefix.count('\n')
+            active.append((depth, line, []))
+
+    def data(value):
+        for _, _, parts in active:
+            parts.append(value)
+
+    def end(name):
+        nonlocal depth
+        if active and active[-1][0] == depth:
+            _, line, parts = active.pop()
+            elements.append((line, ''.join(parts)))
+        for _, _, parts in active:
+            parts.append(' ')
+        depth -= 1
+
+    parser.StartElementHandler = start
+    parser.EndElementHandler = end
+    parser.CharacterDataHandler = data
+    parser.Parse(prefix + text, True)
+    return sorted(elements, key=lambda item: item[0])
+
 VOWELS = set("aeiou")
 # word after a name particle: letters (any case), apostrophe, comma, dot
 PARTICLE = re.compile(r"(?<![a-zA-Z'.])(la'i|lai|la|doi)\s+([a-zA-Z',.]+)")
@@ -55,15 +98,13 @@ for path in sys.argv[1:]:
     base = os.path.basename(path)
     text = open(path, encoding="utf-8").read()
     counts = Counter()
-    for m in JBO_ELEM.finditer(text):
-        content = TAG.sub(" ", m.group(2))
+    for line, content in lojban_elements(text):
         for w in PARTICLE.finditer(content):
             word = w.group(2)
             if not offending(word):
                 continue
             snippet = f"{w.group(1)} {word}"
             counts[snippet] += 1
-            line = text.count("\n", 0, m.start()) + 1
             allowed = ALLOW.get((base, snippet), 0)
             if counts[snippet] > allowed:
                 extra = f" (allowlisted x{allowed}, found more)" if allowed else ""

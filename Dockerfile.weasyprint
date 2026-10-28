@@ -1,15 +1,24 @@
 # Build with scripts/weasyprint as the context. The launcher handles this.
 FROM node:24-bookworm-slim@sha256:55fb5f5a527ea2c5c4a95f963e48ef90aa38c7b346054fdc8ee9957a2b55d205 AS node
-FROM ubuntu:24.04
+FROM ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55
 COPY --from=node /usr/local/ /usr/local/
 ENV DEBIAN_FRONTEND=noninteractive LANG=en_US.UTF-8
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Bootstrap HTTPS before APT installs the snapshot's ca-certificates package.
+ADD https://curl.se/ca/cacert-2026-10-20.pem /etc/ssl/certs/ca-certificates.crt
+RUN chmod 644 /etc/ssl/certs/ca-certificates.crt \
+    && echo '796f1389bfea13c0ed78f663b765baaff54a508e5483786bd6ece73c5e3e3cbe  /etc/ssl/certs/ca-certificates.crt' | sha256sum -c - \
+    && printf '%s\n' 'Types: deb' \
+      'URIs: https://snapshot.ubuntu.com/ubuntu/20261027T000000Z/' \
+      'Suites: noble noble-updates noble-security' 'Components: main universe' \
+      'Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg' \
+      'Check-Valid-Until: no' > /etc/apt/sources.list.d/ubuntu.sources
+RUN apt-get update -o APT::Update::Error-Mode=any && apt-get install -y --no-install-recommends \
       make bash wget ca-certificates locales unzip \
       xmlto xsltproc libxml2-utils tidy \
       ruby ruby-dev build-essential pkg-config libxml2-dev libxslt1-dev zlib1g-dev \
       python3 python3-venv \
       libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 \
-      fonts-dejavu-core fonts-linuxlibertine \
+      fontconfig fonts-dejavu-core fonts-linuxlibertine \
     && rm -rf /var/lib/apt/lists/* \
     && locale-gen en_US.UTF-8
 RUN gem install --no-document nokogiri:1.18.8 optimist:3.2.0 htmlentities:4.3.4 \

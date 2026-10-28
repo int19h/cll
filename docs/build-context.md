@@ -112,7 +112,13 @@ python3 scripts/test-context-indexes.py build/cll-context.pdf
 This rendering test requires PyMuPDF in the selected Python environment.
 It detects split headwords, case-ordering errors, and misplaced entries with leading spaces.
 
-The container installs the current LMTX distribution from upstream.
-Upstream updates can change layout, even when the source XML stays the same.
-Preserve the built container image and its ID when freezing an output for comparison.
-The version log alone does not pin the complete distribution.
+The container uses ConTeXt `2026.10.25 20:06` from a fixed commit of the official source repository.
+It compiles the bundled LuaMetaTeX source with the fixed Ubuntu toolchain.
+It also uses a fixed commit of the official font repository.
+The installer requires SHA-256 hashes for both archives before extraction.
+It does not run the upstream installer or download further distribution files.
+See [the dependency pins](build-pins.md) for the exact inputs and update procedure.
+
+Every build records system packages, tools, and fonts under `build/toolchain/`.
+ConTeXt builds also copy the distribution identifiers into that directory.
+The existing `build/context/engine-version.txt` records the running engine version.

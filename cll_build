@@ -201,6 +201,7 @@ echo "target: $target"
 
 # See if we need to delete the cll.xml before we run make
 mkdir -p $builddir
+scripts/record-build-toolchain.sh "$builddir/toolchain" || exit 1
 echo "$optlist $chapters" >$builddir/chapter-list.new
 if [ ! -f $builddir/chapter-list ]
 then

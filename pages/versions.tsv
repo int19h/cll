@@ -20,6 +20,7 @@
 # Readers reach them through their GitHub release links.
 # UnCLL 1.2.16 baseline = baseline/uncll-1.2.16.
 # See scripts/site-versions.sh and scripts/build-versions.sh.
+1.3.6-rc1	edition/1.3.6-rc1	html,epub,pdf,pdf-weasyprint
 1.3.5	edition/1.3.5
 1.3.4	edition/1.3.4
 1.3.3	edition/1.3.3

@@ -70,7 +70,8 @@ else
   # a truncated glossary that later runs treat as a valid cache
   File.open(glossfile + ".tmp", 'w') do |gfh|
     tree=Nokogiri::XML(open "#{builddir}/cll_preglossary.xml")
-    find_lojban_words( tree ).select { |x| x.attributes['valid'].to_s != 'maybe' }.sort { |a,b| slugify(a.text.to_s).downcase <=> slugify(b.text.to_s).downcase }.map { |x| x.text.to_s }.uniq.each do |word|
+    words = find_lojban_words( tree ).select { |x| x.attributes['valid'].to_s != 'maybe' }.map { |x| x.text.to_s } + find_frame_words( tree )
+    words.sort { |a,b| slugify(a).downcase <=> slugify(b).downcase }.uniq.each do |word|
       $stderr.print "#{word} "
       if ! initial_letter
         gfh.puts %q{

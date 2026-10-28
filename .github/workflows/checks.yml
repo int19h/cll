@@ -80,6 +80,8 @@ jobs:
         run: |
           ruby -rnokogiri -e 'puts "Nokogiri #{Nokogiri::VERSION}"; abort "expected Nokogiri 1.18.8" unless Nokogiri::VERSION == "1.18.8"'
           python3 scripts/test-xml-prince-postprocess.py
+      - name: Glossary links in jbophrase frames
+        run: ruby scripts/test-jbophrase-frames.rb
 
   typst-smoke:
     runs-on: ubuntu-24.04

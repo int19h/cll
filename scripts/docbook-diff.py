@@ -76,8 +76,8 @@ VERBATIM = {'programlisting', 'literallayout', 'screen'}
 SKIP = {'indexterm', 'anchor', 'imagedata', 'colgroup', 'col'}
 CELL = {'td', 'th', 'entry'}
 # Inline elements diffed as one token (never descended into): their text is
-# used by the build (glossary keys, index entries) or they have no text.
-ATOM = {'xref', 'valsi', 'glossterm', 'footnoteref', 'inlinemediaobject',
+# used by the build, they have no text, or their destination is meaningful.
+ATOM = {'xref', 'link', 'valsi', 'glossterm', 'footnoteref', 'inlinemediaobject',
         'mmlinlinemath', 'inlineequation', 'imageobject'}
 # Structural elements whose own text is only indentation: no phrase may be
 # put directly in them.
@@ -225,6 +225,33 @@ class Block:
         self.status, self.partner, self.seq = None, None, 0
 
 
+def link_target(el):
+    if el.get('linkend') is not None:
+        return 'internal', el.get('linkend')
+    href = el.get('{%s}href' % XLINK_NS)
+    if href is None:
+        return 'none', ''
+    if href.startswith('#'):
+        return 'internal', href[1:]
+    return 'external', href
+
+
+def reference_text(el):
+    """Reference attributes that supply an empty inline element's label."""
+    parts = [local(el.tag)]
+    for attr in ('linkend', 'endterm', 'otherterm'):
+        if el.get(attr) is not None:
+            parts.append('%s:\x01%s\x02' % (attr, el.get(attr)))
+    for attr in ('xrefstyle', 'xreflabel', 'label'):
+        if el.get(attr) is not None:
+            parts.append('%s:%s' % (attr, el.get(attr)))
+    return ' '.join(parts)
+
+
+def inline_key(text, idkey):
+    return ws(re.sub('\x01([^\x02]*)\x02', lambda m: idkey(m.group(1)), text))
+
+
 def inline_text(el, out, nested):
     if el.text:
         out.append(el.text)
@@ -235,11 +262,15 @@ def inline_text(el, out, nested):
         elif t in BLOCK:
             nested.append(ch)
             out.append(' ')
-        elif t == 'xref':
-            out.append(' \x01%s\x02 ' % ch.get('linkend', '?'))
+        elif t in ('xref', 'footnoteref'):
+            out.append(' ' + reference_text(ch) + ' ')
         elif t == 'link':
             inline_text(ch, out, nested)
-            out.append(' \x01%s\x02 ' % (ch.get('linkend') or ch.get('{%s}href' % XLINK_NS) or '?'))
+            kind, target = link_target(ch)
+            if kind == 'internal':
+                out.append(' link-internal:\x01%s\x02 ' % target)
+            else:
+                out.append(' link-%s:%s ' % (kind, target))
         elif t == 'quote':
             out.append('“')
             inline_text(ch, out, nested)
@@ -549,8 +580,15 @@ class Flat:
                 tk.kind, tk.el, tk.prev_seg = 'a', ch, len(self.segs) - 1
                 tk.seg = tk.prev_seg
                 tk.s = atom_text(ch)
-                if t == 'xref':
-                    tk.key = 'xref:' + self.idkey(ch.get('linkend', ''))
+                if t in ('xref', 'footnoteref'):
+                    tk.key = inline_key(reference_text(ch), self.idkey)
+                elif t == 'link':
+                    kind, target = link_target(ch)
+                    if kind == 'internal':
+                        target = self.idkey(target)
+                    label, nested = [], []
+                    inline_text(ch, label, nested)
+                    tk.key = ('link', kind, target, inline_key(''.join(label), self.idkey))
                 else:
                     tk.key = t + ':' + ws(''.join(ch.itertext()))
                 tk.next_seg = len(self.segs)       # the tail seg added next
@@ -966,6 +1004,14 @@ class Differ:
                     del ch.attrib[attr]
                 else:
                     del ch.attrib[attr]
+            href = ch.get('{%s}href' % XLINK_NS)
+            if t == 'link' and href is not None and href.startswith('#'):
+                mapped = self.map_old_id(href[1:])
+                if mapped is None:
+                    ch.tag = 'phrase'
+                    del ch.attrib['{%s}href' % XLINK_NS]
+                else:
+                    ch.set('{%s}href' % XLINK_NS, '#' + mapped)
             if repl is not None:
                 new_children.extend(repl)
                 if ch.tail:
@@ -988,7 +1034,7 @@ class Differ:
                 el.append(n)
                 last = n
 
-    def old_nodes(self, toks):
+    def old_nodes(self, toks, show_targets=False):
         """Deleted content (old tokens) as strings and sanitized copies."""
         out = []
         for t in toks:
@@ -1001,11 +1047,13 @@ class Differ:
                     title = self.old_title(t.el.get('linkend', ''))
                     out.append('\u201c%s\u201d' % title if title else '(removed)')
                 else:
-                    out.append(ET.Element('xref', {'linkend': m}))
+                    out.append(self.sanitize(t.el))
                 continue
             c = self.sanitize(t.el)
             c.tail = None
             out.append(c)
+            if show_targets and local(t.el.tag) == 'link':
+                out.append(self.target_note(t.el))
         # merge adjacent strings
         merged = []
         for n in out:
@@ -1014,6 +1062,13 @@ class Differ:
             else:
                 merged.append(n)
         return merged
+
+    def target_note(self, el):
+        kind, target = link_target(el)
+        label = ('#' + target) if kind == 'internal' else target
+        note = ET.Element('phrase', {'role': 'diff-link-destination'})
+        note.text = ' [destination: %s]' % (label if kind != 'none' else '(none)')
+        return note
 
     # --- step 1: low-similarity pairs become a deletion plus an insertion
     def split_low_similarity(self):
@@ -1123,17 +1178,23 @@ class Differ:
             ops = [('replace', 0, len(ko), 0, len(kn))]
         ops = coalesce(ops, fo.toks, fn.toks, words=not verb and fn.row_el is None)
         changed = False
+        target_notes = []
         for op, i1, i2, j1, j2 in ops:
             if op == 'equal':
                 continue
             otoks, ntoks = fo.toks[i1:i2], fn.toks[j1:j2]
+            old_links = [t for t in otoks if t.kind == 'a' and local(t.el.tag) == 'link']
+            new_links = [t for t in ntoks if t.kind == 'a' and local(t.el.tag) == 'link']
+            show_targets = [t.key[1:3] for t in old_links] != [t.key[1:3] for t in new_links]
             if all(t.kind == 't' and t.s.isspace() for t in otoks + ntoks):
                 continue
             if j2 > j1 and not all(t.kind == 't' and t.s.isspace() for t in ntoks):
                 ed.mark_added(j1, j2)
+                if show_targets:
+                    target_notes.extend(t.el for t in new_links)
                 changed = True
             if i2 > i1 and not all(t.kind == 't' and t.s.isspace() for t in otoks):
-                nodes = strip_nodes(self.old_nodes(otoks))
+                nodes = strip_nodes(self.old_nodes(otoks, show_targets))
                 if j2 == j1 and j1 < len(fn.toks) and not verb:
                     nodes.append(' ')     # pure deletion before a word
                 if not ed.mark_deleted(nodes, j1):
@@ -1141,6 +1202,13 @@ class Differ:
                     self.dropped_words.append(o.el)
                 changed = True
         ed.apply()
+        for el in target_notes:
+            note = self.target_note(el)
+            note.set('revisionflag', 'added')
+            note.tail, el.tail = el.tail, None
+            parent = self.parent_of[el]
+            parent.insert(list(parent).index(el) + 1, note)
+            self.parent_of[note] = parent
         self.count('changed_blocks' if changed else 'changed_blocks_ws_only')
 
     def _old_key(self, i):

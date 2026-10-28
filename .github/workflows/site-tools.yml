@@ -23,3 +23,5 @@ jobs:
         run: ruby scripts/test-pages-workflow.rb
       - name: Formats, version order, releases and landing pages
         run: bash scripts/test-site-versions.sh
+      - name: Link destinations in DocBook comparisons
+        run: python3 scripts/test-docbook-diff-links.py

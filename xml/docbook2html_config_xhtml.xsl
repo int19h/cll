@@ -2,7 +2,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:docbook="http://docbook.org/ns/docbook" version="1.0">
 
   <xsl:template name="user.head.content">
-    <script id="MathJax-script" async='async' src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script type="text/javascript">
     MathJax = {
       tex: {
@@ -10,9 +9,10 @@
       }
     };
     </script>
-    <!-- <script id="MathJax-script" async='async'
-      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-    </script> -->
+    <script id="MathJax-script" async="async"
+      src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
+      integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei"
+      crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </xsl:template>
 

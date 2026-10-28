@@ -31,6 +31,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Test dotside lint input
+        run: python3 scripts/test-lint-undotted-cmevla.py
       - name: Flag undotted cmevla after la/lai/la'i/doi in Lojban text
         run: python3 scripts/lint-undotted-cmevla.py chapters/*.xml
       - name: EBNF cross-reference check

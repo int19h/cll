@@ -883,6 +883,7 @@ class Differ:
         self.new_ids = set(new.ids)
         self.stats = {}
         self.unplaced = []
+        self.dropped_words = []
         self.parent_of = dict(new.parent)          # live parent map of the output
         self.id_rep_old = rep(old.groups)
         self.id_rep_new = rep(new.groups)
@@ -1137,6 +1138,7 @@ class Differ:
                     nodes.append(' ')     # pure deletion before a word
                 if not ed.mark_deleted(nodes, j1):
                     self.count('deleted_words_dropped')
+                    self.dropped_words.append(o.el)
                 changed = True
         ed.apply()
         self.count('changed_blocks' if changed else 'changed_blocks_ws_only')
@@ -1428,7 +1430,80 @@ class Differ:
                 Pn.append(n)
                 self.parent_of[n] = Pn
             return True
+        return self.place_in_container(O, nodes)
+
+    def place_in_container(self, O, nodes):
+        """Place deleted paragraphs in the nearest surviving container.
+
+        Wrapper changes invalidate depth-based sibling matches. Infer the
+        container from stable IDs or surviving descendants instead. Other
+        deleted structures need their original placement rules.
+        """
+        if not all(local(n.tag) in ('para', 'simpara') for n in nodes):
+            return False
+        blocks = self.so.blocks_under(O)
+        first, last = blocks[0].seq, blocks[-1].seq
+        ancestor = self.old.parent.get(O)
+        while ancestor is not None:
+            if local(ancestor.tag) in PARA_OK:
+                target = None
+                mapped = self.map_old_id(ancestor.get(XML_ID, ''))
+                if mapped:
+                    candidate = self.new.ids[mapped]
+                    if local(candidate.tag) == local(ancestor.tag):
+                        target = candidate
+                survivors = [b for b in self.so.blocks_under(ancestor) if b.status in SURV]
+                if target is None:
+                    candidates = set()
+                    for b in survivors:
+                        candidate = b.partner.el
+                        while candidate is not None and local(candidate.tag) != local(ancestor.tag):
+                            candidate = self.new.parent.get(candidate)
+                        if candidate is not None:
+                            candidates.add(candidate)
+                    if len(candidates) == 1:
+                        target = candidates.pop()
+                if target is not None:
+                    def child_at(b):
+                        child = b.partner.el
+                        while child is not None and self.new.parent.get(child) is not target:
+                            child = self.new.parent.get(child)
+                        return child
+                    before = [b for b in survivors if b.seq < first]
+                    after = [b for b in survivors if b.seq > last]
+                    for b in reversed(before):
+                        child = child_at(b)
+                        if child is not None:
+                            self.insert_after(child, nodes)
+                            return True
+                    for b in after:
+                        child = child_at(b)
+                        if child is not None:
+                            self.insert_before(child, nodes)
+                            return True
+                    for n in nodes:
+                        n.tail = '\n'
+                        target.append(n)
+                        self.parent_of[n] = target
+                    return True
+            ancestor = self.old.parent.get(ancestor)
         return False
+
+    def require_complete(self):
+        """Refuse output when a deleted block or word could not be placed."""
+        problems = [('unplaced deleted element', el) for el in self.unplaced]
+        problems += [('unplaced deleted words', el) for el in self.dropped_words]
+        if not problems:
+            return
+        lines = ['docbook-diff: incomplete comparison; no output written']
+        for reason, el in problems:
+            blocks = self.so.blocks_under(el)
+            name = blocks[0].file if blocks else '?'
+            identity = el.get(XML_ID, '')
+            excerpt = ws(''.join(el.itertext()))[:200]
+            lines.append('%s: chapters/%s <%s> id=%s: %s' %
+                         (reason, name, local(el.tag), identity or '(none)', excerpt))
+        sys.exit('\n'.join(lines))
 
     def counterpart(self, X, S):
         k = self.old.depth(S.el) - self.old.depth(X)
@@ -1557,6 +1632,7 @@ def main():
     t2 = time.perf_counter()
     d.annotate_new()
     deleted_files = d.insert_old()
+    d.require_complete()
     outdir = Path(a.out) / 'chapters'
     new_names = {n for n, _ in new.files}
     roots = [r for _, r in new.files]

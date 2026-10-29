@@ -209,9 +209,9 @@
       <jbophrase>da zo'u</jbophrase>
       , called the prenex, and the part
       <jbophrase>da viska mi</jbophrase>
-      , the main bridi. Almost any Lojban bridi can be preceded by a prenex, which syntactically is any number of sumti followed by the cmavo
+      , the main bridi. Almost any Lojban bridi can be preceded by a prenex, which syntactically is one or more terms followed by the cmavo
       <valsi>zo'u</valsi>
-      (of selma'o ZOhU). For the moment, the sumti will consist of one or more of the cmavo
+      (of selma'o ZOhU). Terms include sumti, tense or modal phrases, termsets, and <jbophrase>na ku</jbophrase> (see <xref linkend="ebnf-terms" />). For the moment, the terms will be sumti consisting of one or more of the cmavo
       <valsi>da</valsi>
       ,
       <valsi>de</valsi>

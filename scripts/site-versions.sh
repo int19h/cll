@@ -42,6 +42,22 @@ unset site_entry
 SITE_ALL_FORMATS="$(IFS=,; echo "${SITE_FORMATS[*]}")"
 SITE_DEFAULT_FORMATS="html,epub,pdf"
 
+site_edition_version() { # <version> <ref> <commit>
+  local version="$1" ref="$2" commit="$3" value
+  # Other refs keep the source tree's development-version resolver.
+  case "$ref" in edition/*) ;; *) return 0 ;; esac
+  if [ "$ref" != "edition/$version" ]; then
+    echo "site: ref '$ref' does not match row $version; expected edition/$version" >&2
+    return 1
+  fi
+  value="$(git show "$commit:.env" | sed -n 's/^VERSION=//p' | tr -d '"')" || return 1
+  if [ "$value" != "colojban-$version" ]; then
+    echo "site: $ref .env VERSION='$value'; expected colojban-$version" >&2
+    return 1
+  fi
+  printf '%s\n' "$value"
+}
+
 site_format_field() { # <format> <field-number, starting at 1>
   local entry
   for entry in "${SITE_FORMAT_REGISTRY[@]}"; do

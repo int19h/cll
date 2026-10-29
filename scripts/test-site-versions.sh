@@ -83,10 +83,11 @@ set -euo pipefail
 src="$1" ver="$2" out="$4" prev="${5-}" label="${6-}"
 formats="$(site_formats "${FORMATS:-}")"
 echo "$ver formats=$formats prev=$prev label=$label diffs_only=${DIFFS_ONLY:-}" >> "$LOG/build-site"
+echo "$ver=${CLL_BUILD_VERSION:-}" >> "$LOG/build-version"
 d="$out/$ver"; mkdir -p "$d"
 if [ -z "${DIFFS_ONLY:-}" ]; then
-  if site_has_format "$formats" html; then mkdir -p "$d/xhtml_no_chunks" "$d/xhtml_section_chunks"; echo built > "$d/xhtml_no_chunks/index.html"; echo built > "$d/xhtml_section_chunks/index.html"; fi
-  for f in $(site_download_files "$formats" "$ver"); do echo "built $ver" > "$d/$f"; done
+  if site_has_format "$formats" html; then mkdir -p "$d/xhtml_no_chunks" "$d/xhtml_section_chunks"; echo "built $CLL_BUILD_VERSION" > "$d/xhtml_no_chunks/index.html"; echo "built $CLL_BUILD_VERSION" > "$d/xhtml_section_chunks/index.html"; fi
+  for f in $(site_download_files "$formats" "$ver"); do echo "built $ver $CLL_BUILD_VERSION" > "$d/$f"; done
 fi
 echo index > "$d/index.html"
 # Simulate another actor publishing a release while the build runs.
@@ -104,6 +105,9 @@ cat > "$w/bin/git" <<'EOF'
 case "$1 $2" in
   "rev-parse HEAD") echo pagescommit ;;
   "rev-parse "*) echo "commit-of-${2#origin/}" ;;
+  "show commit-of-edition/"*)
+    ver="${2#commit-of-edition/}"; ver="${ver%:.env}"
+    printf 'VERSION="%s"\n' "${BAD_EDITION_VERSION:-colojban-$ver}" ;;
   "worktree add") echo "git $*" >> "$LOG/git" ;;
   *) echo "unexpected git $*" >&2; exit 1 ;;
 esac
@@ -175,10 +179,60 @@ eq "another version's archive is removed" 1 "$(grep -c '^delete v1.3.6 cll-1.0-h
 eq "published releases did not change" "" "$(grep -E ' v1\.3\.(5|6-rc1) ' "$w/log/gh" || true)"
 eq "a release without a draft gets a warning" "1" "$(grep -c 'release v1.3.7 does not exist' "$w/log/run")"
 eq "BUILD-INFO records the formats" "formats=pdf-weasyprint" "$(grep '^formats=' "$w/out/1.3.6-rc1/BUILD-INFO")"
+eq "published 1.3.5 serves its released ePub" 'released cll.epub' "$(cat "$w/out/1.3.5/cll.epub")"
+for file in xhtml_no_chunks/index.html xhtml_section_chunks/index.html cll.pdf cll-weasyprint.pdf cll.epub; do
+  eq "draft final uses its declared version in $file" 1 "$(grep -c 'colojban-1.3.6$' "$w/out/1.3.6/$file")"
+done
+eq "HTML archive carries the declared version" 'built colojban-1.3.6' \
+  "$(tar -xOzf "$w/rel/v1.3.6/cll-1.3.6-html.tar.gz" 1.3.6/xhtml_no_chunks/index.html)"
 # A second run restores every version from the cache.
 : > "$w/log/build-site"
 run_bv
 eq "second run restores everything from the cache" "" "$(cat "$w/log/build-site")"
+# Edition labels do not depend on publication tags. Reject bad metadata
+# even when a cache entry exists, before any release or cache write.
+eq "edition rows pass their exact versions to every build" \
+  $'1.3.5=colojban-1.3.5\n1.3.6-rc1=colojban-1.3.6-rc1\n1.3.6-rc2=colojban-1.3.6-rc2\n1.3.6=colojban-1.3.6\n1.3.7=colojban-1.3.7' "$(cat "$w/log/build-version")"
+: > "$w/log/gh"
+if BAD_EDITION_VERSION=colojban-9.9 run_bv; then
+  echo "FAIL mismatched edition VERSION must stop the run"; fails=$((fails + 1))
+else
+  eq "mismatched edition VERSION names the expected version" 1 "$(grep -c 'expected colojban-1.3.5' "$w/log/run")"
+fi
+eq "mismatched edition VERSION writes no release or cache" "" "$(cat "$w/log/gh")"
+if BAD_EDITION_VERSION=colojban-1.3.5+dev run_bv; then
+  echo "FAIL development VERSION on an edition must stop the run"; fails=$((fails + 1))
+else
+  echo "ok   development VERSION on an edition stops the run"
+fi
+cp "$w/versions.tsv" "$w/versions.saved"
+sed -i 's|edition/1.3.5|edition/9.9|' "$w/versions.tsv"
+if run_bv; then
+  echo "FAIL edition ref must match its row version"; fails=$((fails + 1))
+else
+  eq "mismatched edition ref names the expected ref" 1 "$(grep -c 'expected edition/1.3.5' "$w/log/run")"
+fi
+mv "$w/versions.saved" "$w/versions.tsv"
+# Old tooling cannot supply a cache hit after the version policy changes.
+mkdir -p "$t/stale-cache"
+tar -xzf "$w/rel/site-build-cache/cll-1.3.6-rc2-html.tar.gz" -C "$t/stale-cache"
+sed -i 's/^tools_sha256=.*/tools_sha256=before-release-version-fix/' "$t/stale-cache/1.3.6-rc2/BUILD-INFO"
+tar -C "$t/stale-cache" -czf "$w/rel/site-build-cache/cll-1.3.6-rc2-html.tar.gz" 1.3.6-rc2
+: > "$w/log/build-site"; : > "$w/log/build-version"
+run_bv
+eq "old tooling rebuilds the draft without FORCE_REBUILD" \
+  "1.3.6-rc2 formats=html,pdf-weasyprint prev=origin/edition/1.3.5 label=v1.3.5 diffs_only=" "$(cat "$w/log/build-site")"
+eq "rebuilt draft gets its plain edition version" "1.3.6-rc2=colojban-1.3.6-rc2" "$(cat "$w/log/build-version")"
+: > "$w/log/build-site"
+# A development row receives no release override.
+cp "$w/versions.tsv" "$w/versions.saved"
+sed -i 's|edition/1.3.7|main|' "$w/versions.tsv"
+: > "$w/log/build-site"; : > "$w/log/build-version"
+CLL_BUILD_VERSION=ambient-override run_bv
+eq "a main row keeps source version resolution" '1.3.7=' "$(cat "$w/log/build-version")"
+mv "$w/versions.saved" "$w/versions.tsv"
+run_bv
+: > "$w/log/build-site"
 # A changed format list misses the cache for that version only.
 sed -i 's/^1.3.7\tedition\/1.3.7\thtml$/1.3.7\tedition\/1.3.7\thtml,pdf-typst/' "$w/versions.tsv"
 run_bv
@@ -312,16 +366,16 @@ cat > "$b/src/cll_build" <<'EOF'
 #!/bin/bash
 set -euo pipefail
 [ "$1 $2" = '-n -T' ]
-[ "${CLL_BUILD_VERSION:-}" = source-version ]
+[ "${CLL_BUILD_VERSION:-}" = "${BS_EXPECT_VERSION:-source-version}" ]
 echo "$3" >> "$BS_LOG"
 mkdir -p build
 case "$3" in
-  xhtml_sections) mkdir -p build/xhtml_section_chunks; echo html > build/xhtml_section_chunks/index.html ;;
-  xhtml_nochunks) mkdir -p build/xhtml_no_chunks; echo html > build/xhtml_no_chunks/index.html ;;
-  pdf) [ ! -e build/pdf.done ]; echo prince > build/cll.pdf; touch build/pdf.done ;;
-  epub) echo epub > build/cll.epub ;;
-  pdf_weasyprint) echo weasy > build/cll-weasyprint.pdf ;;
-  pdf_typst) echo typst > build/cll-typst.pdf ;;
+  xhtml_sections) mkdir -p build/xhtml_section_chunks; echo "html $CLL_BUILD_VERSION" > build/xhtml_section_chunks/index.html ;;
+  xhtml_nochunks) mkdir -p build/xhtml_no_chunks; echo "html $CLL_BUILD_VERSION" > build/xhtml_no_chunks/index.html ;;
+  pdf) [ ! -e build/pdf.done ]; echo "prince $CLL_BUILD_VERSION" > build/cll.pdf; touch build/pdf.done ;;
+  epub) echo "epub $CLL_BUILD_VERSION" > build/cll.epub ;;
+  pdf_weasyprint) echo "weasy $CLL_BUILD_VERSION" > build/cll-weasyprint.pdf ;;
+  pdf_typst) echo "typst $CLL_BUILD_VERSION" > build/cll-typst.pdf ;;
   *) exit 1 ;;
 esac
 EOF
@@ -336,11 +390,12 @@ EOF
 cat > "$b/src/run_context_container.sh" <<'EOF'
 #!/bin/bash
 echo context >> "$BS_LOG"
-echo context > build/cll-context.pdf
+[ "${CLL_BUILD_VERSION:-}" = "${BS_EXPECT_VERSION:-source-version}" ]
+echo "context $CLL_BUILD_VERSION" > build/cll-context.pdf
 EOF
 cat > "$b/src/scripts/build-version.sh" <<'EOF'
 #!/bin/bash
-echo source-version
+echo "${CLL_BUILD_VERSION:-source-version}"
 EOF
 # The diff helper copies HTML for this orchestration test.
 cat > "$b/tools/docbook-diff.py" <<'EOF'
@@ -372,6 +427,15 @@ for selection in html epub pdf pdf-weasyprint pdf-typst pdf-context "$SITE_ALL_F
   done
   eq "RC label for '$selection'" 1 "$(grep -c 'version 1.4-rc1 (release candidate)' "$b/out/1.4-rc1/index.html")"
 done
+# One override reaches every native target, the container launcher, and
+# annotated source copies that lack Git metadata.
+CLL_BUILD_VERSION=colojban-1.4-rc1 BS_EXPECT_VERSION=colojban-1.4-rc1 bs "$SITE_ALL_FORMATS"
+for file in xhtml_section_chunks/index.html xhtml_no_chunks/index.html cll.pdf cll-weasyprint.pdf cll.epub cll-typst.pdf cll-context.pdf; do
+  eq "plain release version reaches $file" 1 "$(grep -c 'colojban-1.4-rc1$' "$b/out/1.4-rc1/$file")"
+done
+# Without an override, the source resolver still controls development builds.
+bs pdf
+eq "source resolver still controls builds without an override" 'prince source-version' "$(cat "$b/out/1.4-rc1/cll.pdf")"
 bs pdf-weasyprint
 eq "PDF-only runs no HTML targets or other installers" $'install-weasyprint\npdf_weasyprint' "$(tail -n2 "$b/log")"
 eq "PDF-only landing omits HTML links" 0 "$(grep -c 'href="xhtml_' "$b/out/1.4-rc1/index.html" || true)"

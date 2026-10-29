@@ -195,6 +195,9 @@ prev=""; prevlabel=""; prev_commit=""
 while IFS=$'\t' read -r ver ref formats; do
   echo "::group::$ver from $ref ($formats)"
   commit="$(git rev-parse "origin/$ref")"
+  # Edition rows use their declared version before publication creates a
+  # tag. Validate even cache hits, and pass one label to every format.
+  build_version="$(site_edition_version "$ver" "$ref" "$commit")"
   tag="v$ver"
   archive="cll-$ver-html.tar.gz"
   mapfile -t want_files < <(site_release_files "$formats" "$ver")
@@ -255,10 +258,10 @@ while IFS=$'\t' read -r ver ref formats; do
       for f in "${downloads[@]}"; do
         fetch "$tag" "$f" "$outdir/$ver"
       done
-      FORMATS="$formats" DIFFS_ONLY=1 bash scripts/build-site.sh "_v_$ver" "$ver" "$baseline" "$outdir" "$prev" "$prevlabel"
+      CLL_BUILD_VERSION="$build_version" FORMATS="$formats" DIFFS_ONLY=1 bash scripts/build-site.sh "_v_$ver" "$ver" "$baseline" "$outdir" "$prev" "$prevlabel"
       echo "==> [$ver] served the book files of $tag, rebuilt its diffs"
     else
-      FORMATS="$formats" bash scripts/build-site.sh "_v_$ver" "$ver" "$baseline" "$outdir" "$prev" "$prevlabel"
+      CLL_BUILD_VERSION="$build_version" FORMATS="$formats" bash scripts/build-site.sh "_v_$ver" "$ver" "$baseline" "$outdir" "$prev" "$prevlabel"
     fi
     { echo "version=$ver"; echo "ref=$ref"; echo "$want";
       echo "pages_commit=$(git rev-parse HEAD)"; echo "workflow_run=${GITHUB_RUN_ID:-local}"; } > "$outdir/$ver/BUILD-INFO"

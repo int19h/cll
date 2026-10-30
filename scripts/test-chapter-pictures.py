@@ -30,6 +30,13 @@ class ChapterPictures(unittest.TestCase):
         self.assertIn('fileref="assets/media/chapter-2-diagram.svg.png"',
                       (ROOT / 'chapters/02.xml').read_text())
 
+    def test_diagram_resolution_and_size(self):
+        data = (ROOT / 'assets/media/chapter-2-diagram.svg.png').read_bytes()
+        self.assertEqual(struct.unpack('>IIBB', data[16:26]), (1200, 800, 8, 6))
+        css = (ROOT / 'assets/css/master.css').read_text()
+        self.assertRegex(css, re.escape('img[src$="/chapter-2-diagram.svg.png"]')
+                         + r'\s*\{\s*width:\s*299\.625px;')
+
     def test_cropped_picture_limits(self):
         css = (ROOT / 'assets/css/master.css').read_text()
         # These drawings had large margins. A 200px crop would enlarge them.

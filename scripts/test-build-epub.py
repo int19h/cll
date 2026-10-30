@@ -60,6 +60,18 @@ class EpubAssets(unittest.TestCase):
                 self.assertIn('assets/media/logo.png', names)
                 self.assertEqual(archive.read('assets/media/logo.png'),
                                  (SOURCE / 'assets/media/logo.png').read_bytes())
+                pictures = list((SOURCE / 'assets/media').glob('chapter-*.png'))
+                self.assertEqual(len(pictures), 22)  # 21 pictures and the diagram
+                for picture in pictures:
+                    name = 'assets/media/' + picture.name
+                    self.assertIn(name, names)
+                    self.assertEqual(archive.read(name), picture.read_bytes())
+                self.assertFalse(any(n.startswith('assets/media/chapter-')
+                                     and n.endswith(('.gif', '.svg')) for n in names))
+                self.assertFalse(any(n.startswith('assets/media/chapter-')
+                                     and n.endswith('.svg.png')
+                                     and n != 'assets/media/chapter-2-diagram.svg.png'
+                                     for n in names))
                 self.assertFalse(any(n.startswith('assets/context/') for n in names))
                 manifest = ET.fromstring(archive.read('content.opf'))
                 items = manifest.findall('{*}manifest/{*}item')

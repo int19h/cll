@@ -1,7 +1,7 @@
-# npm install svgexport -g
-
-for file in orig/chapter-letterals.svg orig/chapter-structure.svg orig/chapter-abstractions.svg orig/chapter-connectives.svg orig/chapter-relative-clauses.svg orig/chapter-2-diagram.svg orig/chapter-anaphoric-cmavo.svg orig/chapter-grammars.svg orig/chapter-selbri.svg orig/chapter-about.svg orig/chapter-catalogue.svg orig/chapter-lujvo.svg orig/chapter-tour.svg
-do
-echo "converting "$PWD/$file
-svgexport $PWD/$file $PWD/$file.png 400:
-done
+#!/bin/bash
+# Only the chapter 2 diagram still uses an SVG source.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+# librsvg uses fontconfig; Liberation Serif and Sans match the original fonts.
+rsvg-convert --width 1200 --output assets/media/chapter-2-diagram.svg.png \
+  orig/chapter-2-diagram.svg

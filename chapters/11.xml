@@ -2,7 +2,7 @@
   <title><anchor xml:id="c11" />Events, qualities, quantities, and other vague words: on Lojban abstraction</title>
   <mediaobject xml:id="chapter-abstractions-picture">    <textobject>      <phrase>The picture for chapter 11</phrase>    </textobject>
     <imageobject>
-      <imagedata fileref="assets/media/chapter-abstractions.svg.png" />
+      <imagedata fileref="assets/media/chapter-abstractions.png" />
     </imageobject>
   </mediaobject>
   <section xml:id="section-syntax">

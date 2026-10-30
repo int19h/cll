@@ -698,6 +698,19 @@ img {
   max-height: 200px;
 }
 
+/* Chapter artwork keeps the previous drawing's bounds after its white
+ * margins are cropped. The shared 200px limit covers the other pictures.
+ * Pixel limits also fix the print size at 96 CSS pixels per inch. */
+img[src$="/chapter-attitudinals.png"] { max-height: 128px; }
+img[src$="/chapter-letterals.png"] { max-height: 85px; }
+img[src$="/chapter-mekso.png"] { max-height: 146px; }
+img[src$="/chapter-negation.png"] { max-height: 172px; }
+img[src$="/chapter-phonology.png"] { max-height: 176px; }
+img[src$="/chapter-quantifiers.png"] { max-height: 145px; }
+img[src$="/chapter-sumti-tcita.png"] { max-height: 136px; }
+img[src$="/chapter-sumti.png"] { max-height: 153px; }
+img[src$="/chapter-tenses.png"] { max-height: 155px; }
+
 dl p,
 dl span,
 ul.dl p,

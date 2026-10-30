@@ -33,8 +33,6 @@ cp -pr $builddir/epub-xhtml/* $epubbuilddir/
 rm -rf $epubbuilddir/dtd
 # Keep the ConTeXt renderer's source files out of the reader package.
 rm -rf "$epubbuilddir/assets/context"
-# Kindle doesn't like svg
-rm -f $basedir/build/epub/media/chapter-2-diagram.svg
 
 # Clean up HTML headers and crap to make epubchek happy
 for file in $(find $epubbuilddir/ -name '*.html')

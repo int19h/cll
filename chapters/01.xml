@@ -2,7 +2,7 @@
   <title><anchor xml:id="c1" />Lojban as we mangle it in Lojbanistan: about this book</title>
   <mediaobject xml:id="chapter-about-picture">    <textobject>      <phrase>The picture for chapter 1</phrase>    </textobject>
     <imageobject>
-      <imagedata fileref="assets/media/chapter-about.svg.png" />
+      <imagedata fileref="assets/media/chapter-about.png" />
     </imageobject>
   </mediaobject>
 

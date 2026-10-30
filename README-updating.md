@@ -25,12 +25,12 @@ Set its `.env` value for `VERSION` to `colojban-<version>`.
 Commit that change on the edition branch.
 Keep `main` at `colojban-<last release>+dev`.
 The last release includes prereleases.
-After `1.3.6-rc1`, use `colojban-1.3.6-rc1+dev` on `main`.
+After `1.3.6`, use `colojban-1.3.6+dev` on `main`.
 
 For example, `1.3.6-rc1` uses branch `edition/1.3.6-rc1` and tag `v1.3.6-rc1`.
 The final `1.3.6` release uses its own `edition/1.3.6` branch and `v1.3.6` tag.
 Never reuse a prerelease branch for the final release.
-The first release in the 1.3.6 series is `1.3.6-rc1`.
+Version 1.3.6 was published directly, without a release candidate.
 
 ## Write the release notes
 
@@ -77,13 +77,13 @@ The formats select these files:
 
 Any combination works.
 Comparison pages require `html` because they use the online book's assets.
-Use `html,epub,pdf,pdf-weasyprint` for both `1.3.6-rc1` and the final `1.3.6` release.
+Version `1.3.6` uses `html,epub,pdf,pdf-weasyprint`.
 Typst and ConTeXt need more work before publication.
 
 This example row contains tab characters between columns:
 
 ```text
-1.3.6-rc1	edition/1.3.6-rc1	html,epub,pdf,pdf-weasyprint
+1.3.6	edition/1.3.6	html,epub,pdf,pdf-weasyprint
 ```
 
 Commit the version entry on `pages`.

@@ -113,7 +113,7 @@ The full book build uses `Dockerfile` and `run_container.sh`. Prince produces th
 
 The `.env` file defines the edition's branding. `TITLE` gives the title, and `VERSION` gives the version. Optional `SUBTITL` gives the subtitle. `scripts/merge.sh` puts these values on the title page. An empty `SUBTITL` produces no subtitle element.
 
-Keep `main` at `colojban-<last release>+dev`. The last release includes prereleases. After `1.3.6-rc1`, keep `main` at `colojban-1.3.6-rc1+dev`. Before creating an `edition/X.Y.Z` branch, make sure that all branding values describe the intended release. Set that branch's `VERSION` to the release version. Do not retain an upstream title or a stale subtitle.
+Keep `main` at `colojban-<last release>+dev`. The last release includes prereleases. After `1.3.6`, keep `main` at `colojban-1.3.6+dev`. Before creating an `edition/X.Y.Z` branch, make sure that all branding values describe the intended release. Set that branch's `VERSION` to the release version. Do not retain an upstream title or a stale subtitle.
 
 A release uses tag `vX.Y.Z` at the exact published commit on `edition/X.Y.Z`. The `pages` branch lists it in `pages/versions.tsv`. Its optional third column lists formats, separated by commas. An empty or missing column means `html,epub,pdf`.
 
@@ -130,7 +130,7 @@ Any combination works. Comparison pages require `html` because they use the onli
 
 A prerelease is a version before its final release. For example, version `1.3.6-rc1` uses tag `v1.3.6-rc1` and its own branch, `edition/1.3.6-rc1`. Mark its GitHub release as a prerelease. Keep its branding consistent with that version. Never reuse an edition branch for the final release.
 
-The first release in the 1.3.6 series will be `1.3.6-rc1`. Use `html,epub,pdf,pdf-weasyprint` for that candidate and the final 1.3.6 release.
+Version 1.3.6 was published directly, without a release candidate. It uses `html,epub,pdf,pdf-weasyprint`.
 
 The site builds prereleases but omits them from the top-level landing page. Readers reach each prerelease through its GitHub release links. `/latest/` selects the newest final release. If no final release exists, the site has no `/latest/` redirect.
 

@@ -33,7 +33,7 @@ $(builddir)/cll.xml: $(chapters) xml/iso-pub.ent xml/identity.xsl xml/docbook2ht
 	cp -pr $(PWD)/dtd $(builddir)/
 	scripts/merge.sh -b "$(builddir)" $(test) $(chapters)
 
-$(builddir)/cll_processed_xhtml.xml: $(builddir)/cll.xml scripts/xml_preprocess.rb
+$(builddir)/cll_processed_xhtml.xml: $(builddir)/cll.xml scripts/xml_preprocess.rb scripts/gloss-cells.rb
 	ruby scripts/xml_preprocess.rb $(builddir)/cll.xml >$(builddir)/cll_processed_xhtml.xml 2>$(builddir)/xml_preprocess.out || (tail $(builddir)/xml_preprocess.out && false)
 
 #*******

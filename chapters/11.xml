@@ -33,7 +33,7 @@
 
       <interlinear-gloss>
         <jbo>nu mi klama le zarci [kei]</jbo>
-        <gloss>an-event-of my going-to the store</gloss>
+        <gloss>an-event-of my going-to the store -</gloss>
       </interlinear-gloss>
     </example>
     <para role="indent">
@@ -100,7 +100,7 @@
 
       <interlinear-gloss>
         <jbo>la .djan. cu djica le nu sonci [kei]</jbo>
-        <gloss>That-named John -- desires the event-of being-a-soldier.</gloss>
+        <gloss>That-named John -- desires the event-of being-a-soldier. -</gloss>
       </interlinear-gloss>
     </example>
     <para role="indent"><indexterm type="general"><primary>abstractions</primary><secondary>le contrasted with lo before</secondary>
@@ -303,11 +303,11 @@
 
       <interlinear-gloss>
         <jbo>la .lojban. cu frili mi</jbo>
-        <gloss>That-named Lojban is-easy-for me</gloss>
+        <gloss>That-named Lojban - is-easy-for me</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>le nu mi tadni [kei]</jbo>
-        <gloss>under-conditions the event-of I study</gloss>
+        <gloss>under-conditions--the event-of I study -</gloss>
         <natlang>Lojban is easy for me when I study.</natlang>
       </interlinear-gloss>
     </example>
@@ -622,7 +622,7 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>le ka se--risna [zo'e] [kei]</jbo>
-        <gloss>the property-of having-as-heart something.</gloss>
+        <gloss>the property-of having-as-heart something. -</gloss>
         <natlang>John has the property of having a heart.</natlang>
       </interlinear-gloss>
     </example>
@@ -645,7 +645,7 @@
 
       <interlinear-gloss>
         <jbo>do cnino mi le ka xunre [kei]</jbo>
-        <gloss>You are-new to-me in-the-quality-of-the property-of being-red.</gloss>
+        <gloss>You are-new to-me in-the-quality-of-the property-of being-red. -</gloss>
         <natlang>You are new to me in redness.</natlang>
       </interlinear-gloss>
     </example>
@@ -682,7 +682,7 @@
 
       <interlinear-gloss>
         <jbo>ka mi prami [zo'e] [kei]</jbo>
-        <gloss>a-property-of me loving something-unspecified</gloss>
+        <gloss>a-property-of me loving something-unspecified -</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent"> is quite different from</para>
@@ -691,7 +691,7 @@
 
       <interlinear-gloss>
         <jbo>ka [zo'e] prami mi [kei]</jbo>
-        <gloss>a-property-of something-unspecified loving me</gloss>
+        <gloss>a-property-of something-unspecified loving me -</gloss>
       </interlinear-gloss>
     </example>
     <para role="indent">
@@ -784,7 +784,7 @@
 
       <interlinear-gloss>
         <jbo>le ka [zo'e] dunda le xirma [zo'e] [kei]</jbo>
-        <gloss>the property-of -- giving the horse</gloss>
+        <gloss>the property-of -- giving the horse - -</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent"> into</para>
@@ -940,7 +940,7 @@
 
       <interlinear-gloss>
         <jbo>le jei li re su'i re du li vo [kei]</jbo>
-        <gloss>the truth-value-of the-number 2 + 2 = the-number 4</gloss>
+        <gloss>the truth-value-of the-number 2 + 2 = the-number 4 -</gloss>
         <natlang>the truth of 2 + 2 being 4</natlang>
       </interlinear-gloss>
     </example>
@@ -954,7 +954,7 @@
 
       <interlinear-gloss>
         <jbo>le jei li re su'i re du li mu [kei]</jbo>
-        <gloss>the truth-value-of the-number 2 + 2 = the-number 5</gloss>
+        <gloss>the truth-value-of the-number 2 + 2 = the-number 5 -</gloss>
         <natlang>the truth of 2 + 2 being 5</natlang>
       </interlinear-gloss>
     </example>

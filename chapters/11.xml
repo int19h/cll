@@ -1196,7 +1196,8 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>la .djordj. klama le zarci li'u</jbo>
-        <gloss>that-named George goes to-the store, unquote.</gloss>
+        <!-- gloss-lint: li'u = unquote.. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">that-named George goes to-the store, unquote.</gloss>
         <natlang>
           John says
           <quote>George goes to the store</quote>.
@@ -1667,7 +1668,8 @@
       <interlinear-gloss>
         <jbo>tu'a le vorme lu'u ki'a</jbo>
 
-        <gloss>something-to-do-with the door [terminator] [confusion!]</gloss>
+        <!-- gloss-lint: lu'u = [terminator]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">something-to-do-with the door [terminator] [confusion!]</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent">

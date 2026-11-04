@@ -1686,7 +1686,8 @@
 
       <interlinear-gloss>
         <jbo>lu mi klama le zarci li'u</jbo>
-        <gloss>[quote] I go-to the market [unquote]</gloss>
+        <!-- gloss-lint: li'u = [unquote]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">[quote] I go-to the market [unquote]</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… noi mi cusku ke'a cu jufra</jbo>
@@ -1727,7 +1728,8 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… cmaxirma li'u cu zvati le vu kumfa</jbo>
-        <gloss>… Small-horse [unquote] - is-at the [far-distance] room.</gloss>
+        <!-- gloss-lint: li'u = [unquote]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">… Small-horse [unquote] - is-at the [far-distance] room.</gloss>
         <natlang>
           An old
           <quote>The Red Pony</quote>
@@ -1744,7 +1746,8 @@
 
       <interlinear-gloss>
         <jbo>la'e lu le xunre cmaxirma li'u lu'u</jbo>
-        <gloss>A-referent-of ([quote] The Red Small-horse [unquote] )</gloss>
+        <!-- gloss-lint: li'u = [unquote]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">A-referent-of ([quote] The Red Small-horse [unquote] )</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… poi to'ercitno cu zvati le vu kumfa</jbo>

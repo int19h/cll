@@ -22,7 +22,7 @@ class GlossColumnsTest < Minitest::Test
   end
 
   def test_structural_words
-    %w[cu ku ku'o kei vau be'o ke'e].each do |word|
+    (['cu'] + GlossColumns::TERMINATORS).each do |word|
       [word, "[#{word}]"].each do |spelling|
         refute_empty lint_failures("mi #{spelling} klama", 'I goes -')
         assert_empty lint_failures("mi #{spelling} klama", 'I - goes')
@@ -59,6 +59,21 @@ class GlossColumnsTest < Minitest::Test
       file.flush
       assert_raises(Nokogiri::XML::SyntaxError) { ChapterLint.read(file.path) }
     end
+  end
+
+  def test_labeled_terminator_marker
+    body = %q{<jbo>lu mi li'u</jbo><!-- gloss-lint: The end label distinguishes the quotation boundary. --><gloss role="gloss-lint-labeled-terminators">[quote] I [unquote]</gloss>}
+    doc = Nokogiri::XML("<chapter><interlinear-gloss>#{body}</interlinear-gloss></chapter>")
+    assert_empty GlossColumns.failures(doc, '19.xml')
+    doc.xpath('//comment()').remove
+    assert_includes GlossColumns.failures(doc, '19.xml').join, 'reason comment'
+    doc.at('gloss').content = '[quote] I store'
+    assert_includes GlossColumns.failures(doc, '19.xml').join, 'cannot gloss'
+    doc.at('gloss').content = '[quote] I'
+    assert_includes GlossColumns.failures(doc, '19.xml').join, '2 gloss cells for 3'
+    doc.at('jbo').content = 'mi cu'
+    doc.at('gloss').content = 'I goes'
+    assert_includes GlossColumns.failures(doc, '19.xml').join, 'cannot gloss'
   end
 
   def test_multiline

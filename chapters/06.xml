@@ -127,7 +127,8 @@
 
       <interlinear-gloss>
         <jbo>mi cusku lu e'osai li'u lo tcidu</jbo>
-        <gloss>I express [quote] [request]--[!] [unquote] to-the reader.</gloss>
+        <!-- gloss-lint: li'u = [unquote]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">I express [quote] [request]--[!] [unquote] to-the reader.</gloss>
         <natlang>
           I express
           <quote>Please!</quote>
@@ -1480,7 +1481,8 @@
 
       <interlinear-gloss>
         <jbo>mi viska lu lo xunre cmaxirma li'u</jbo>
-        <gloss>I see [quote] the red small-horse [unquote].</gloss>
+        <!-- gloss-lint: li'u = [unquote].. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">I see [quote] the red small-horse [unquote].</gloss>
       </interlinear-gloss>
     </example>
     <para role="indent">
@@ -1503,7 +1505,8 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… be lu lo xunre cmaxirma li'u</jbo>
-        <gloss>… - [quote] the red small-horse [unquote].</gloss>
+        <!-- gloss-lint: li'u = [unquote].. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">… - [quote] the red small-horse [unquote].</gloss>
       </interlinear-gloss>
     </example>
     <para role="indent">The x<subscript>2</subscript> place of <jbophrase>selsinxa</jbophrase> (the x<subscript>1</subscript> place of <valsi>sinxa</valsi>) is a sign or symbol, and the x<subscript>1</subscript> place of <jbophrase>selsinxa</jbophrase> (the x<subscript>2</subscript> place of <valsi>sinxa</valsi>) is the thing represented by the sign. <xref linkend="example-random-id-MSVK" /> lets us use a symbol (namely the title of a book) to stand for the thing it is a symbol of (namely the book itself).</para>
@@ -1515,7 +1518,8 @@
         <jbo>mi viska la'e lu lo xunre cmaxirma li'u [lu'u]</jbo>
 
 
-        <gloss>I see the-referent-of [quote] the red small-horse [unquote] -.</gloss>
+        <!-- gloss-lint: li'u = [unquote]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">I see the-referent-of [quote] the red small-horse [unquote] -.</gloss>
       </interlinear-gloss>
     </example>
     <para role="indent"><indexterm type="general"><primary>referent</primary><secondary>referring to with &quot;la'e&quot;</secondary>
@@ -2278,7 +2282,8 @@
 
       <interlinear-gloss>
         <jbo>mi cusku lu mi'e .djan. li'u</jbo>
-        <gloss>I say the-text--[quote] I-am John [unquote].</gloss>
+        <!-- gloss-lint: li'u = [unquote].. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">I say the-text--[quote] I-am John [unquote].</gloss>
         <natlang>
           I say
           <quote>I'm John</quote>.

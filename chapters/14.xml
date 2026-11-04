@@ -2259,7 +2259,8 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… nu'u gi le zdani le ckule [nu'u]</jbo>
-        <gloss>… [joint] and to-the house from-the school [end-termset].</gloss>
+        <!-- gloss-lint: nu'u = [joint], [nu'u] = [end-termset].. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">… [joint] and to-the house from-the school [end-termset].</gloss>
       </interlinear-gloss>
     </example>
     <para role="indent">
@@ -3512,7 +3513,8 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… nu'u gi bai</jbo>
-        <gloss>… [joint] and under-compulsion-by</gloss>
+        <!-- gloss-lint: nu'u = [joint]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">… [joint] and under-compulsion-by</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>tu'a la .djordj. [nu'u]</jbo>

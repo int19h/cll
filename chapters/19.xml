@@ -1042,11 +1042,12 @@
       <interlinear-gloss>
         <jbo>la .djan. xipa cusku lu mi'enai do li'u la .djan. xire</jbo>
 
-        <gloss>
+        <!-- gloss-lint: li'u = [unquote]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">
           - John
-          <subscript>1</subscript>
+          <phrase><subscript>1</subscript></phrase>
           expresses [quote] I-am-not you [unquote] to - John
-          <subscript>2</subscript>.
+          <phrase><subscript>2</subscript></phrase>.
         </gloss>
       </interlinear-gloss>
     </example>
@@ -1326,7 +1327,8 @@
 
       <interlinear-gloss>
         <jbo>mi pu cusku lu mi'e .djan. [li'u]</jbo>
-        <gloss>I [past] express [quote] I-am John [unquote]</gloss>
+        <!-- gloss-lint: [li'u] = [unquote]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">I [past] express [quote] I-am John [unquote]</gloss>
         <natlang>
           I said,
           <quote>I'm John</quote>.
@@ -1384,7 +1386,8 @@
 
       <interlinear-gloss>
         <jbo>lu le--mlatu--cu--viska--le--finpe li'u zo'u</jbo>
-        <gloss>[quote] le--mlatu--cu--viska--le--finpe [unquote] :</gloss>
+        <!-- gloss-lint: li'u = [unquote]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">[quote] le--mlatu--cu--viska--le--finpe [unquote] :</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… lo'u viska--le le'u cu selbasti</jbo>
@@ -1428,7 +1431,8 @@
 
       <interlinear-gloss>
         <jbo>la .tcarlis. cusku lu le ninmu cu morsi li'u</jbo>
-        <gloss>- Charlie says [quote] the woman - is-dead [unquote].</gloss>
+        <!-- gloss-lint: li'u = [unquote].. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">- Charlie says [quote] the woman - is-dead [unquote].</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… .iku'i ri jmive</jbo>
@@ -2045,7 +2049,8 @@
 
       <interlinear-gloss>
         <jbo>la .djan. cusku lu mi klama le zarci li'u</jbo>
-        <gloss>- John expresses [quote] I go-to the store [unquote].</gloss>
+        <!-- gloss-lint: li'u = [unquote].. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">- John expresses [quote] I go-to the store [unquote].</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent">
@@ -2065,7 +2070,8 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… la .djan. cusku be dei li'u</jbo>
-        <gloss>… - John expresses - this-sentence )[unquote] </gloss>
+        <!-- gloss-lint: li'u = )[unquote]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <gloss role="gloss-lint-labeled-terminators">… - John expresses - this-sentence )[unquote] </gloss>
         <natlang>
           <quote>I go to the store</quote>
           , said John.

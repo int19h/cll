@@ -6,9 +6,31 @@ require_relative 'gloss-cells'
 module GlossColumns
   # Aligned examples give cu 295 empty and ten punctuation cells; [cu] is empty.
   # Terminators close structures: aligned glosses use empty cells or punctuation.
-  TERMINATORS = %w[ku ku'o kei vau be'o ke'e]
+  TERMINATORS = %w[be'o boi do'u fe'u ge'u ke'e kei ku ku'e ku'o
+                   li'u lo'o lu'u me'u nu'u se'u te'u toi tu'u vau ve'o]
   # Aligned .i cells are empty (66), a period (10), or "And" (2).
   # Keep "And" as a sentence-link gloss, including its lowercase form.
+  # Explicit teaching labels need source annotations: punctuation cannot retain
+  # the distinction between quote, number, reference, and operator boundaries.
+  LABELED_ROLE = 'gloss-lint-labeled-terminators'
+  LABELS = {
+    "li'u" => /\A(?:[[:punct:]]*\[(?:unquote|end-quote)\][[:punct:]]*|unquote\.)\z/,
+    "lu'u" => /\A\[(?:terminator|end-ref)\][[:punct:]]*\z/,
+    "nu'u" => /\A\[(?:end|end-termset|joint)\][[:punct:]]*\z/,
+    "tu'u" => /\A\[end\][[:punct:]]*\z/,
+    "se'u" => /\A\[end-comment\][[:punct:]]*\z/,
+    "te'u" => /\A\[end-(?:operator|sumti-to-mex)\][[:punct:]]*\z/,
+    "do'u" => /\A\[terminator\][[:punct:]]*\z/,
+    "ku'e" => /\A\[end\][[:punct:]]*\z/,
+    "lo'o" => /\A\[end-number\][[:punct:]]*\z/,
+    'boi' => /\Aof\z/,
+    "ve'o" => /\A\)-number-of\z/
+  }.freeze
+
+  def self.labeled?(word, gloss)
+    LABELS[word.downcase.delete('[]')]&.match?(gloss)
+  end
+
   def self.allowed?(word, gloss)
     word = word.downcase.delete('[]')
     punctuation = gloss.empty? || gloss.match?(/\A[[:punct:]…[:space:]]+\z/)
@@ -33,9 +55,21 @@ module GlossColumns
         next unless jbo.name == 'jbo' && gloss.name == 'gloss'
         a, b = cells(jbo), cells(gloss)
         reasons = []
+        marked = gloss['role'].to_s.split.include?(LABELED_ROLE)
+        if marked
+          comment = gloss.previous_sibling
+          comment = comment.previous_sibling while comment&.text? && comment.text.strip.empty?
+          unless comment&.comment? && comment.text.match?(/gloss-lint:\s+\S/)
+            reasons << 'a labeled-terminator marker needs a preceding gloss-lint reason comment'
+          end
+          unless a.zip(b).any? { |word, value| value && labeled?(word, value) }
+            reasons << 'a labeled-terminator marker has no explicit teaching label'
+          end
+        end
         reasons << "#{b.size} gloss cells for #{a.size} Lojban cells" if b.size < a.size
         a.zip(b).each_with_index do |(word, value), index|
           next if value.nil? || allowed?(word, value)
+          next if marked && labeled?(word, value)
           reasons << "cell #{index + 1}: #{word.inspect} cannot gloss as #{value.inspect}"
         end
         next if reasons.empty?

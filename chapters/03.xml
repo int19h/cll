@@ -125,7 +125,7 @@
         <td>
           <phrase role="X-SAMPA">[h]</phrase>
         </td>
-        <td>an unvoiced glottal spirant</td>
+        <td>a voiceless glottal spirant</td>
       </tr>
       <tr>
         <td>
@@ -233,7 +233,7 @@
           ,
           <phrase role="X-SAMPA">[p\]</phrase>
         </td>
-        <td>an unvoiced labial fricative</td>
+        <td>a voiceless labial fricative</td>
       </tr>
       <tr>
         <td>
@@ -285,7 +285,7 @@
         <td>
           <phrase role="X-SAMPA">[k]</phrase>
         </td>
-        <td>an unvoiced velar stop</td>
+        <td>a voiceless velar stop</td>
       </tr>
       <tr>
         <td>
@@ -369,7 +369,7 @@
         <td>
           <phrase role="X-SAMPA">[p]</phrase>
         </td>
-        <td>an unvoiced bilabial stop</td>
+        <td>a voiceless bilabial stop</td>
       </tr>
       <tr>
         <td>
@@ -417,7 +417,7 @@
         <td>
           <phrase role="X-SAMPA">[s]</phrase>
         </td>
-        <td>an unvoiced alveolar sibilant</td>
+        <td>a voiceless alveolar sibilant</td>
       </tr>
       <tr>
         <td>
@@ -429,7 +429,7 @@
         <td>
           <phrase role="X-SAMPA">[t]</phrase>
         </td>
-        <td>an unvoiced dental/alveolar stop</td>
+        <td>a voiceless dental/alveolar stop</td>
       </tr>
       <tr>
         <td>
@@ -469,7 +469,7 @@
         <td>
           <phrase role="X-SAMPA">[x]</phrase>
         </td>
-        <td>an unvoiced velar fricative</td>
+        <td>a voiceless velar fricative</td>
       </tr>
       <tr>
         <td>
@@ -621,17 +621,17 @@
       <xref linkend="chapter-morphology" />. In addition, the apostrophe visually parallels the comma and the period, which are also used (in different ways) to separate syllables.
     </para>
     <para>
-      <indexterm type="general"><primary>unvoiced vowel glide</primary><secondary>apostrophe as</secondary>
+      <indexterm type="general"><primary>voiceless vowel glide</primary><secondary>apostrophe as</secondary>
       </indexterm>
       <indexterm type="general"><primary>apostrophe</primary><secondary>purpose of</secondary>
       </indexterm>
-      The apostrophe is included in Lojban only to enable a smooth transition between vowels, while joining the vowels within a single word. In fact, one way to think of the apostrophe is as representing an unvoiced vowel glide.
+      The apostrophe is included in Lojban only to enable a smooth transition between vowels, while joining the vowels within a single word. In fact, one way to think of the apostrophe is as representing a voiceless vowel glide.
     </para>
 
     <para>
       <indexterm type="general"><primary>apostrophe</primary><secondary>variant of</secondary>
       </indexterm>
-      As a permitted variant, any unvoiced fricative other than those already used in Lojban may be used to render the apostrophe: IPA
+      As a permitted variant, any voiceless fricative other than those already used in Lojban may be used to render the apostrophe: IPA
       <phrase role="IPA">[θ]</phrase>
       is one possibility. The convenience of the listener should be regarded as paramount in deciding to use a substitute for
       <phrase role="IPA">[h]</phrase>.
@@ -1241,15 +1241,15 @@
     <para>
       <indexterm type="general"><primary>consonants</primary><secondary>voicing of</secondary>
       </indexterm>
-      <indexterm type="general"><primary>consonants</primary><secondary>voiced/unvoiced equivalents</secondary>
+      <indexterm type="general"><primary>consonants</primary><secondary>voiced/voiceless equivalents</secondary>
       </indexterm>
-      An important distinction dividing Lojban consonants is that of voicing. The following table shows the unvoiced consonants and the corresponding voiced ones:
+      An important distinction dividing Lojban consonants is that of voicing. The following table shows the voiceless consonants and the corresponding voiced ones:
     </para>
 
     <informaltable class="vertsep">
       <thead>
         <tr>
-          <td>UNVOICED</td>
+          <td>VOICELESS</td>
           <td>VOICED</td>
         </tr>
       </thead>
@@ -1319,7 +1319,7 @@
       <letteral>n</letteral>
       , and
       <letteral>r</letteral>
-      , are typically pronounced with voice, but can be pronounced unvoiced.
+      , are typically pronounced with voice, but can be pronounced voiceless.
     </para>
     <para>
       <indexterm type="general"><primary>consonant clusters</primary><secondary>contrasted with single consonants</secondary>
@@ -1372,9 +1372,9 @@
       </listitem>
       <listitem>
         <para>
-          <indexterm type="general"><primary>voiced/unvoiced consonants</primary><secondary>restrictions on</secondary>
+          <indexterm type="general"><primary>voiced/voiceless consonants</primary><secondary>restrictions on</secondary>
           </indexterm>
-          It is forbidden for one consonant to be voiced and the other unvoiced. The consonants
+          It is forbidden for one consonant to be voiced and the other voiceless. The consonants
           <letteral>l</letteral>
           ,
           <letteral>m</letteral>
@@ -1645,7 +1645,7 @@
         </td>
       </tr>
     </informaltable>
-    <para>Lest this list seem almost random, a pairing of voiced and unvoiced equivalent consonants will show significant patterns which may help in learning:</para>
+    <para>Lest this list seem almost random, a pairing of voiced and voiceless equivalent consonants will show significant patterns which may help in learning:</para>
     <informaltable class="noborder">
       <tr>
         <td>
@@ -1882,11 +1882,11 @@
       </tr>
     </informaltable>
     <para>
-      <indexterm type="general"><primary>unvoiced consonants</primary><secondary>contrasted with voiced in allowable consonant pairs</secondary>
+      <indexterm type="general"><primary>voiceless consonants</primary><secondary>contrasted with voiced in allowable consonant pairs</secondary>
       </indexterm>
-      <indexterm type="general"><primary>voiced consonants</primary><secondary>contrasted with unvoiced in allowable consonant pairs</secondary>
+      <indexterm type="general"><primary>voiced consonants</primary><secondary>contrasted with voiceless in allowable consonant pairs</secondary>
       </indexterm>
-      Note that if both consonants of an initial pair are voiced, the unvoiced equivalent is also permissible, and the voiced pair can be pronounced simply by voicing the unvoiced pair. (The converse is not true:
+      Note that if both consonants of an initial pair are voiced, the voiceless equivalent is also permissible, and the voiced pair can be pronounced simply by voicing the voiceless pair. (The converse is not true:
       <morphology>cn</morphology>
       is a permissible initial pair, but
       <morphology>jn</morphology>

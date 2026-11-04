@@ -53,7 +53,9 @@ module WordSpellings
   end
 
   def self.words(node, state = {})
-    tokens = text(node).gsub('--', ' ').delete('[]').scan(/\.?[a-zA-Z][a-zA-Z',.]*/)
+    # Periods mark pauses between words, including beside zoi delimiters.
+    # Keep optional boundary dots for diagnostics, but never join across one.
+    tokens = text(node).gsub('--', ' ').delete('[]').scan(/\.?[a-zA-Z][a-zA-Z',]*\.?/)
     tokens.filter_map do |word|
       core = word.downcase.sub(/\A\.+/, '').sub(/\.+\z/, '')
       if state[:delimiter_next]
@@ -94,7 +96,7 @@ module WordSpellings
       words(node, state).flat_map do |word|
         messages = sequences(word).map { |kind, sequence| "#{kind} #{sequence.inspect} after comma removal" }
         canonical = word.downcase.sub(/\A\.+/, '').sub(/\.+\z/, '')
-        if canonical.match?(/[aeiouy],[aeiouy]/) && !reviewed.include?(canonical)
+        if canonical.match?(/[aeiouy],+[aeiouy]/) && !reviewed.include?(canonical)
           messages << 'unreviewed comma between vowels'
         end
         messages.map do |message|

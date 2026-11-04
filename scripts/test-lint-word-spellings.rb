@@ -45,6 +45,15 @@ class WordSpellingsTest < Minitest::Test
     assert_equal 2, lint('<jbo>lo\'u zoi liudies le\'u</jbo>').size
   end
 
+  def test_period_pause_boundaries
+    out = lint('<jbo>zoi gy. English .gy.cu klama la .kuot.</jbo>')
+    assert_equal 1, out.size
+    assert_includes out.first, 'CGV "kuo"'
+    assert_empty lint('<jbo>zoi.gy. liudies .gy.</jbo>')
+    assert_equal 2, lint('<jbo>zoi.kuot. liudies .kuot.cu klama</jbo>').size
+    assert_empty lint(%q{<jbo>la'o.gy. liudies .gy.cu klama</jbo>})
+  end
+
   def test_foreign_quote_across_rows
     assert_empty lint('<example><interlinear-gloss><jbo>zoi gy. English</jbo><gloss>text</gloss><jbo>liudies .gy.</jbo></interlinear-gloss></example>')
     assert_equal 1, lint('<example><jbo>zoi gy. text</jbo></example><example><jbo>.kuot.</jbo></example>').size
@@ -65,5 +74,9 @@ class WordSpellingsTest < Minitest::Test
     assert_includes out, '<jbophrase> ".ai,in."'
     assert_includes out, 'unreviewed comma between vowels'
     refute_empty lint('<valsi>.nu,io,rk.</valsi>')
+    repeated = lint('<valsi>.ai,,in.</valsi>')
+    assert_equal 1, repeated.size
+    assert_includes repeated.first, 'unreviewed comma between vowels'
+    refute_empty lint('<valsi>.nu,,iork.</valsi>')
   end
 end

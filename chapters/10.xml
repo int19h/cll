@@ -156,7 +156,7 @@
 
       <interlinear-gloss>
         <jbo>mi klama le zarci pu [ku]</jbo>
-        <gloss>I go-to the market in-the-past.</gloss>
+        <gloss>I go-to the market in-the-past. -</gloss>
         <natlang>I went to the market earlier.</natlang>
       </interlinear-gloss>
     </example>
@@ -2376,7 +2376,7 @@
 
       <interlinear-gloss>
         <jbo>la .berger. cu cliva le kumfa ba'o lo nu la .klark. cu tavla</jbo>
-        <gloss>Berger leaves the room [retrospective] the event-of Clark speaks.</gloss>
+        <gloss>- Berger - leaves the room [retrospective] the event-of - Clark - speaks.</gloss>
         <natlang>Berger had already left the room by the time Clark spoke.</natlang>
       </interlinear-gloss>
     </example>
@@ -2390,7 +2390,7 @@
 
       <interlinear-gloss>
         <jbo>la .berger. cu cliva le kumfa ba le nu la .klark. cu tavla</jbo>
-        <gloss>Berger leaves the room [future] the event-of Clark speaks.</gloss>
+        <gloss>- Berger - leaves the room [future] the event-of - Clark - speaks.</gloss>
         <natlang>Berger left the room after Clark spoke.</natlang>
       </interlinear-gloss>
     </example>

@@ -73,7 +73,7 @@
       <title><anchor xml:id="c22e2d3" /></title>
       <interlinear-gloss>
         <jbo valid="iffy">lo xirma ca me'oi gallop</jbo>
-        <gloss>The horse [present] is-a-<quote>gallop</quote>-er.</gloss>
+        <gloss>The horse [present] is-a <quote>gallop</quote>-er.</gloss>
         <natlang>The horse is galloping.</natlang>
       </interlinear-gloss>
     </example>
@@ -136,7 +136,7 @@
       <title><anchor xml:id="c22e4d1" /></title>
       <interlinear-gloss>
         <jbo valid="iffy">mi klama lo zarci .i lo'ai zarci sa'ai zdani le'ai</jbo>
-        <gloss>I go-to a market. [wrong:] <quote>market</quote> [replace-with:] <quote>house</quote> [correction-end]</gloss>
+        <gloss>I go-to a market. - [wrong:] <quote>market</quote> [replace-with:] <quote>house</quote> [correction-end]</gloss>
         <natlang>I went to the market &ndash; I mean, the house.</natlang>
       </interlinear-gloss>
     </example>

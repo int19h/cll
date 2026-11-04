@@ -1,0 +1,105 @@
+#!/usr/bin/env ruby
+require 'minitest/autorun'
+require 'tempfile'
+require_relative 'lint-gloss-columns'
+
+class GlossColumnsTest < Minitest::Test
+  def lint_failures(jbo, gloss)
+    doc = Nokogiri::XML(<<~XML)
+      <chapter><example id="first"><title/></example>
+      <example id="target"><title/><interlinear-gloss>
+      <jbo>#{jbo}</jbo><gloss>#{gloss}</gloss>
+      </interlinear-gloss></example></chapter>
+    XML
+    GlossColumns.failures(doc, 'chapters/06.xml')
+  end
+
+  def test_short_gloss_and_location
+    out = lint_failures('mi klama', 'I').join
+    assert_includes out, 'example 6.2 (target)'
+    assert_includes out, '1 gloss cells for 2 Lojban cells'
+    assert_match(/klama\s+\| \(missing\)/, out)
+  end
+
+  def test_structural_words
+    (['cu'] + GlossColumns::TERMINATORS).each do |word|
+      [word, "[#{word}]"].each do |spelling|
+        refute_empty lint_failures("mi #{spelling} klama", 'I goes -')
+        assert_empty lint_failures("mi #{spelling} klama", 'I - goes')
+        assert_empty lint_failures("mi #{spelling} klama", 'I ) goes')
+      end
+    end
+  end
+
+  def test_sentence_link
+    assert_empty lint_failures('.i mi klama', 'And I go')
+    refute_empty lint_failures('.i mi klama', '[wrong:] I go')
+  end
+
+  def test_build_cells
+    doc = Nokogiri::XML('<root><gloss>- -- two--words <quote>a b</quote> x<subscript>1</subscript>=2</gloss></root>')
+    assert_equal ['', "\u00a0", "two\u00a0words", 'a b', 'x1=2'], GlossColumns.cells(doc.at('gloss'))
+    assert_empty lint_failures('mi cu <quote>two words</quote>', 'I -- <quote>two words</quote>')
+  end
+
+  def test_extra_cells_and_comments
+    assert_empty lint_failures('mi klama', 'I go (somewhere)')
+    assert_empty lint_failures('mi <!-- cu --> klama', 'I go')
+    assert_empty lint_failures('mi cu klama', 'I -- go')
+  end
+
+  def test_chapter_entities_and_errors
+    Tempfile.create(['chapter', '.xml']) do |file|
+      file.write('<chapter><interlinear-gloss><jbo>mi cu</jbo><gloss>I &ndash;</gloss></interlinear-gloss></chapter>')
+      file.flush
+      assert_empty GlossColumns.failures(ChapterLint.read(file.path), file.path)
+      file.rewind
+      file.truncate(0)
+      file.write('<chapter><jbo>mi</chapter>')
+      file.flush
+      assert_raises(Nokogiri::XML::SyntaxError) { ChapterLint.read(file.path) }
+    end
+  end
+
+  def test_bracketed_terminator_labels
+    GlossColumns::TERMINATORS.each do |word|
+      [word, "[#{word}]"].each do |spelling|
+        ['[end]', '[unquote].', ')[unquote]'].each do |label|
+          assert_empty lint_failures("mi #{spelling}", "I #{label}")
+        end
+      end
+    end
+    %w[cu [cu]].each do |word|
+      refute_empty lint_failures("mi #{word}", 'I [end]')
+    end
+    refute_empty lint_failures('mi kei', 'I word[end]')
+    refute_empty lint_failures('mi kei', 'I [end]word')
+  end
+
+  def test_quoted_si_cells
+    doc = ChapterLint.read(File.join(ChapterLint::ROOT, 'chapters/19.xml'))
+    example = doc.at_xpath('//example[@id="example-random-id-zSQi"]')
+    assert_equal ['The-word', 'Bob', '', 'is-the-name-of', 'the-word-', 'si,', 'er,', '', 'Bob.'],
+                 GlossColumns.cells(example.at_xpath('.//gloss'))
+  end
+
+  def test_labeled_terminator_marker
+    body = %q{<jbo>lu mi li'u</jbo><!-- gloss-lint: The end label distinguishes the quotation boundary. --><gloss role="gloss-lint-labeled-terminators">[quote] I unquote.</gloss>}
+    doc = Nokogiri::XML("<chapter><interlinear-gloss>#{body}</interlinear-gloss></chapter>")
+    assert_empty GlossColumns.failures(doc, '19.xml')
+    doc.xpath('//comment()').remove
+    assert_includes GlossColumns.failures(doc, '19.xml').join, 'reason comment'
+    doc.at('gloss').content = '[quote] I store'
+    assert_includes GlossColumns.failures(doc, '19.xml').join, 'cannot gloss'
+    doc.at('gloss').content = '[quote] I'
+    assert_includes GlossColumns.failures(doc, '19.xml').join, '2 gloss cells for 3'
+    doc.at('jbo').content = 'mi cu'
+    doc.at('gloss').content = 'I goes'
+    assert_includes GlossColumns.failures(doc, '19.xml').join, 'cannot gloss'
+  end
+
+  def test_multiline
+    doc = Nokogiri::XML('<chapter><example id="two"><interlinear-gloss><jbo>mi cu</jbo><gloss>I -</gloss><jbo>klama [vau]</jbo><gloss>go</gloss></interlinear-gloss></example></chapter>')
+    assert_equal 1, GlossColumns.failures(doc, '11.xml').size
+  end
+end

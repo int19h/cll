@@ -2505,7 +2505,7 @@
 
       <interlinear-gloss>
         <jbo>pa pi'e no ju'u reno</jbo>
-        <gloss>1;0 base 20</gloss>
+        <gloss>1 ; 0 base 20</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent">which is equal to twenty.</para>
@@ -4203,7 +4203,7 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… cu du li mo'e vo danlu</jbo>
-        <gloss>… equals the-number - four animals.</gloss>
+        <gloss>… - equals the-number - four animals.</gloss>
         <dbmath>2 rats + 2 rabbits = 4 animals.</dbmath>
       </interlinear-gloss>
     </example>
@@ -4225,7 +4225,8 @@
       <interlinear-gloss>
         <jbo>mi viska vei mo'e lo'e lanzu ve'o cinfo</jbo>
 
-        <gloss>I see ( - the-typical family )-number-of lions.</gloss>
+        <!-- gloss-lint: Retain the English quantifier reading, number of. -->
+        <gloss role="gloss-lint-labeled-terminators">I see ( - the-typical family )-number-of lions.</gloss>
         <natlang>I see a pride of lions.</natlang>
 
       </interlinear-gloss>

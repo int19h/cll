@@ -1740,7 +1740,8 @@
 
       <interlinear-gloss>
         <jbo>li .ybu du li ma'o fy. boi xy.</jbo>
-        <gloss>the-number y equals the-number the-function f of x</gloss>
+        <!-- gloss-lint: Retain the English function reading, f of x. -->
+        <gloss role="gloss-lint-labeled-terminators">the-number y equals the-number the-function f of x</gloss>
 
         <dbmath>y = f(x)</dbmath>
       </interlinear-gloss>

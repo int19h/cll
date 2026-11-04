@@ -377,7 +377,7 @@
 
       <interlinear-gloss>
         <jbo>loi jdini zo'u tu'e - do ponse .inaja do djica [tu'u]</jbo>
-        <gloss>Money : ( [if] you possess, then you want )</gloss>
+        <gloss>- Money : ( [if] you possess, then you want )</gloss>
         <natlang>Money: if you have it, you want it.</natlang>
       </interlinear-gloss>
     </example>
@@ -1044,9 +1044,9 @@
 
         <gloss>
           - John
-          <subscript>1</subscript>
-          expresses [quote] I-am-not you [unquote] to - John
-          <subscript>2</subscript>.
+          <phrase><subscript>1</subscript></phrase>
+          expresses [quote] I-am-not you [unquote] to John
+          <phrase><subscript>2</subscript>.</phrase>
         </gloss>
       </interlinear-gloss>
     </example>
@@ -1452,8 +1452,8 @@
       <title><anchor xml:id="c19e9d5" /></title>
 
       <interlinear-gloss>
-        <jbo>la .tcarlis. cusku lo'u le ninmu cu morsi le'u</jbo>
-        <gloss>- Charlie says [quote] le ninmu cu morsi [unquote].</gloss>
+        <jbo>la .tcarlis. cusku lo'u <phrase>le ninmu cu morsi</phrase> le'u</jbo>
+        <gloss>- Charlie says [quote] <phrase>le ninmu cu morsi</phrase> [unquote].</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… .iku'i ri jmive</jbo>
@@ -2190,9 +2190,8 @@
         <gloss>
           The-word
           <quote>Bob</quote>
-          is-the-name-of the-word-
-          <valsi>si</valsi>
-          , er, Bob.
+          - is-the-name-of the-word-
+          <phrase><valsi>si</valsi>,</phrase> er, - Bob.
         </gloss>
       </interlinear-gloss>
     </example>

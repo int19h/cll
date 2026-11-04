@@ -98,6 +98,10 @@ jobs:
         run: ruby scripts/test-lint-gloss-columns.rb
       - name: Interlinear gloss columns
         run: ruby scripts/lint-gloss-columns.rb chapters/*.xml
+      - name: Word spelling lint self-test
+        run: ruby scripts/test-lint-word-spellings.rb
+      - name: CGV and comma spellings
+        run: ruby scripts/lint-word-spellings.rb chapters/*.xml
       - name: Glossary links in jbophrase frames
         run: ruby scripts/test-jbophrase-frames.rb
 
@@ -159,6 +163,8 @@ jobs:
           git remote add origin https://github.com/lojban/ilmentufa
           git fetch -q --depth 1 origin 778ea138f7d150121ca722db7536ce3b123943ac
           git checkout -q FETCH_HEAD
+      - name: Reviewed comma syllables
+        run: ILMENTUFA_DIR=../ilmentufa node scripts/check-comma-syllables.js
       - name: Test parser invocation failures
         run: node tests/test-run-probes.js
       - name: Test audio loading failures

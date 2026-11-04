@@ -874,7 +874,7 @@
       <xref linkend="LUhU" />.
     </para>
     <interlinear-gloss>
-      <jbo>mi viska la'e zoi .kuot. A--Tale--of--Two--Cities .kuot</jbo>
+      <jbo>mi viska la'e zoi .kuuot. A--Tale--of--Two--Cities .kuuot</jbo>
       <gloss>I see that-represented-by the-text “ A--Tale--of--Two--Cities ”.</gloss>
       <natlang>I see the book “A Tale of Two Cities”.</natlang>
     </interlinear-gloss>
@@ -1860,7 +1860,7 @@
 
     <para>Non-Lojban quotation: quotes any text using a delimiting word (which can be any single Lojban word) placed before and after the text. The delimiting word must not appear in the text, and must be separated from the text by pauses.</para>
     <interlinear-gloss>
-      <jbo>zoi .kuot. Socrates--is--mortal .kuot. cu glico jufra</jbo>
+      <jbo>zoi .kuuot. Socrates--is--mortal .kuuot. cu glico jufra</jbo>
       <gloss>The-text “ Socrates--is--mortal ” -- is-an-English sentence.</gloss>
     </interlinear-gloss>
     <bridgehead>

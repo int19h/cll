@@ -2417,7 +2417,7 @@
         <anchor xml:id="c9e10d1" /></title>
 
       <interlinear-gloss>
-        <jbo>la .apasionatas. poi se--cusku</jbo>
+        <jbo>la .apasiionatas. poi se--cusku</jbo>
         <gloss>The Appassionata which is-expressed-by</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -2432,7 +2432,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>la .apasionatas. noi se--finti</jbo>
+        <jbo>la .apasiionatas. noi se--finti</jbo>
         <gloss>The Appassionata, which is-created-by</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -2440,12 +2440,12 @@
         <gloss>… that-named Beethoven, - is-liked-by me.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">In <xref linkend="example-random-id-qmPP" />, <jbophrase>la .apasionatas.</jbophrase> refers to a particular performance of the sonata, namely the one performed by Rubinstein. The relative clause <jbophrase>poi se cusku</jbophrase> therefore uses the cmavo <valsi>poi</valsi> (of selma'o NOI) to restrict the meaning of <jbophrase>la .apasionatas</jbophrase> to the performance in question.</para>
+    <para role="indent">In <xref linkend="example-random-id-qmPP" />, <jbophrase>la .apasiionatas.</jbophrase> refers to a particular performance of the sonata, namely the one performed by Rubinstein. The relative clause <jbophrase>poi se cusku</jbophrase> therefore uses the cmavo <valsi>poi</valsi> (of selma'o NOI) to restrict the meaning of <jbophrase>la .apasiionatas</jbophrase> to the performance in question.</para>
     <para>
       In
       <xref linkend="example-random-id-qmPr" />
       , however,
-      <jbophrase>la .apasionatas.</jbophrase>
+      <jbophrase>la .apasiionatas.</jbophrase>
       refers to the sonata as a whole, and the information that it was composed by Beethoven is merely incidental. The cmavo
       <valsi>noi</valsi>
       (also of selma'o NOI) expresses the incidental nature of this relationship.
@@ -2473,7 +2473,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>la .apasionatas. pe la .artr. .rubnstain. se--nelci mi</jbo>
+        <jbo>la .apasiionatas. pe la .artr. .rubnstain. se--nelci mi</jbo>
         <gloss>The Appassionata of that-named Arthur Rubinstein is-liked-by me.</gloss>
       </interlinear-gloss>
     </example>
@@ -2485,7 +2485,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>la .apasionatas. ne la .betovn. se--nelci mi</jbo>
+        <jbo>la .apasiionatas. ne la .betovn. se--nelci mi</jbo>
         <gloss>The Appassionata, which-is-of that-named Beethoven, is-liked-by me.</gloss>
       </interlinear-gloss>
     </example>
@@ -2513,7 +2513,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>la .apasionatas pe--cu'u</jbo>
+        <jbo>la .apasiionatas pe--cu'u</jbo>
         <gloss>The Appassionata expressed-by</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -2529,7 +2529,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>la .apasionatas ne--fi'e</jbo>
+        <jbo>la .apasiionatas ne--fi'e</jbo>
         <gloss>The Appassionata, invented-by</gloss>
       </interlinear-gloss>
       <interlinear-gloss>

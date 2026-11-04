@@ -1,0 +1,10 @@
+{
+  "parser": "lojban/ilmentufa camxes.js at 778ea138f7d150121ca722db7536ce3b123943ac",
+  "rule": "Each comma falls on a syllable boundary. The syllables stay the same after comma removal.",
+  "words": {
+    "me,iin": ["me", "iin"],
+    "nu,iork": ["nu", "iork"],
+    "va,uensas": ["va", "uen", "sas"],
+    "xali,uyd": ["xa", "li", "uyd"]
+  }
+}

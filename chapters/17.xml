@@ -1480,7 +1480,7 @@
         <gloss>that-named Steven Mark Jones - is-American.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .i la .aleksandr. .pavlovitc. .kuznietsof. cu rusko</jbo>
+        <jbo>… .i la .aleksandr. .pavlovitc. .kuzniietsof. cu rusko</jbo>
         <gloss>… - that-named Alexander Pavlovich Kuznetsov - is-Russian.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -2477,7 +2477,7 @@
       <tr>
         <td>rough breathing</td>
         <td>
-          <jbophrase>.dasei,as. bu</jbophrase>
+          <jbophrase>.daseias. bu</jbophrase>
         </td>
         <td>
           <valsi>.y'y.</valsi>
@@ -2574,7 +2574,7 @@
       <tr>
         <td>з</td>
         <td>
-          <jbophrase>.zemlias. bu</jbophrase>
+          <jbophrase>.zemliias. bu</jbophrase>
         </td>
         <td>
           <valsi>zy.</valsi>
@@ -2583,7 +2583,7 @@
       <tr>
         <td>и</td>
         <td>
-          <jbophrase>.ije,is. bu</jbophrase>
+          <jbophrase>.ijeiis. bu</jbophrase>
         </td>
         <td>
           <valsi>.ibu</valsi>
@@ -2610,7 +2610,7 @@
       <tr>
         <td>л</td>
         <td>
-          <jbophrase>.liudi,ies. bu</jbophrase>
+          <jbophrase>.liiudiies. bu</jbophrase>
         </td>
         <td>
           <valsi>ly.</valsi>
@@ -2628,7 +2628,7 @@
       <tr>
         <td>н</td>
         <td>
-          <jbophrase>.naciys. bu</jbophrase>
+          <jbophrase>.naciiys. bu</jbophrase>
         </td>
         <td>
           <valsi>ny.</valsi>
@@ -2655,7 +2655,7 @@
       <tr>
         <td>р</td>
         <td>
-          <jbophrase>.riytsis. bu</jbophrase>
+          <jbophrase>.riiytsis. bu</jbophrase>
         </td>
         <td>
           <valsi>ry.</valsi>
@@ -2673,7 +2673,7 @@
       <tr>
         <td>т</td>
         <td>
-          <jbophrase>.tyvriydos. bu</jbophrase>
+          <jbophrase>.tyvriiydos. bu</jbophrase>
         </td>
         <td>
           <valsi>ty.</valsi>
@@ -2691,7 +2691,7 @@
       <tr>
         <td>ф</td>
         <td>
-          <jbophrase>.friytys. bu</jbophrase>
+          <jbophrase>.friiytys. bu</jbophrase>
         </td>
         <td>
           <valsi>fy.</valsi>
@@ -2718,7 +2718,7 @@
       <tr>
         <td>ч</td>
         <td>
-          <jbophrase>.tcriyviys. bu</jbophrase>
+          <jbophrase>.tcriiyviiys. bu</jbophrase>
         </td>
         <td>
           <jbophrase>.tcys. bu</jbophrase>
@@ -2763,7 +2763,7 @@
       <tr>
         <td>ь</td>
         <td>
-          <jbophrase>.ieriys. bu</jbophrase>
+          <jbophrase>.ieriiys. bu</jbophrase>
         </td>
         <td>
           <jbophrase>ranti bu</jbophrase>
@@ -2856,7 +2856,7 @@
       <tr>
         <td>ז</td>
         <td>
-          <jbophrase>.zai,in. bu</jbophrase>
+          <jbophrase>.zaiin. bu</jbophrase>
         </td>
         <td>
           <valsi>zy.</valsi>
@@ -2938,10 +2938,10 @@
       <tr>
         <td>ע</td>
         <td>
-          <jbophrase>.ai,in. bu</jbophrase>
+          <jbophrase>.aiin. bu</jbophrase>
         </td>
         <td>
-          <jbophrase>.ai,in bu</jbophrase>
+          <jbophrase>.aiin bu</jbophrase>
         </td>
       </tr>
       <tr>
@@ -3394,7 +3394,7 @@
         <td>India</td>
         <td>
           <para>
-            <jbophrase>.indias. bu</jbophrase>
+            <jbophrase>.indiias. bu</jbophrase>
           </para>
         </td>
       </tr>
@@ -3402,7 +3402,7 @@
         <td>Juliet</td>
         <td>
           <para>
-            <jbophrase>.juliet. bu</jbophrase>
+            <jbophrase>.juliiet. bu</jbophrase>
           </para>
         </td>
       </tr>
@@ -3466,7 +3466,7 @@
         <td>Romeo</td>
         <td>
           <para>
-            <jbophrase>.romios. bu</jbophrase>
+            <jbophrase>.romiios. bu</jbophrase>
           </para>
         </td>
       </tr>
@@ -3474,7 +3474,7 @@
         <td>Sierra</td>
         <td>
           <para>
-            <jbophrase>.sieras. bu</jbophrase>
+            <jbophrase>.siieras. bu</jbophrase>
           </para>
         </td>
       </tr>

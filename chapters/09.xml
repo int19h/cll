@@ -2049,8 +2049,7 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… mi le cukta la .djan. nu'u dunda</jbo>
-        <!-- gloss-lint: nu'u = [end]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">… I, the book, that-named John [end] gives.</gloss>
+        <gloss>… I, the book, that-named John [end] gives.</gloss>
       </interlinear-gloss>
     </example>
     <para role="indent">Here there are three sumti in each half of the termset, because the two bridi share only their selbri.</para>
@@ -2370,8 +2369,7 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… .i mi cadzu le bisli [tu'u]</jbo>
-        <!-- gloss-lint: [tu'u] = [end].. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">… - I walk on-the ice [end].</gloss>
+        <gloss>… - I walk on-the ice [end].</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent">

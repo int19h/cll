@@ -3956,8 +3956,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .rik. cusku se'u</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named Rick says, [end-comment]</gloss>
+      <gloss>- [Comment] that-named Rick says, [end-comment]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>… ta'a ro zvati be ti</jbo>
@@ -3973,8 +3972,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .djordj. cusku se'u</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named George says, [end-comment]</gloss>
+      <gloss>- [Comment] that-named George says, [end-comment]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>… .a'o ko gleki doi ma</jbo>
@@ -3986,8 +3984,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .pam. cusku se'u pe'u .alis.</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named Pam says, [end-comment] [Please] Alice,</gloss>
+      <gloss>- [Comment] that-named Pam says, [end-comment] [Please] Alice,</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>… xu mi ba terfriti le nunspenybi'o</jbo>
@@ -3999,8 +3996,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .mark. cusku se'u</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named Mark says, [end-comment]</gloss>
+      <gloss>- [Comment] that-named Mark says, [end-comment]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>… coi ba za speni</jbo>
@@ -4016,8 +4012,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .rik. cusku se'u</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named Rick says, [end-comment]</gloss>
+      <gloss>- [Comment] that-named Rick says, [end-comment]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>… mi'e .rik. doi terpreti</jbo>
@@ -4029,8 +4024,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .alis. cusku se'u</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named Alice says, [end-comment]</gloss>
+      <gloss>- [Comment] that-named Alice says, [end-comment]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>… nu'e .pam. .o'e ro'i do ba zvati</jbo>
@@ -4042,8 +4036,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .fred. cusku se'u</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named Fred says, [end-comment]</gloss>
+      <gloss>- [Comment] that-named Fred says, [end-comment]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>… .ui nai cai ro'i mi ji'a</jbo>
@@ -4065,8 +4058,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .rik. cusku se'u</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named Rick says, [end-comment]</gloss>
+      <gloss>- [Comment] that-named Rick says, [end-comment]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>… fi'i ro zvati</jbo>
@@ -4082,8 +4074,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .pam. cusku se'u</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named Pam says, [end-comment]</gloss>
+      <gloss>- [Comment] that-named Pam says, [end-comment]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>be'e selfu</jbo>
@@ -4095,8 +4086,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei le selfu cu cusku se'u re'i</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] the server - says, [end-comment] [Ready-to-receive].</gloss>
+      <gloss>- [Comment] the server - says, [end-comment] [Ready-to-receive].</gloss>
       <natlang>
         The waiter replied,
         <quote>May I help you?</quote>
@@ -4104,8 +4094,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .pam. cusku se'u</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named Pam says, [end-comment]</gloss>
+      <gloss>- [Comment] that-named Pam says, [end-comment]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>… .e'o ko selfu le traji xamgu ckafi</jbo>
@@ -4121,8 +4110,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei le selfu cu cusku se'u vi'o</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] the server - says, [end-comment] [Will-comply]</gloss>
+      <gloss>- [Comment] the server - says, [end-comment] [Will-comply]</gloss>
       <natlang>
         <quote>Gotcha</quote>
         , said the waiter.
@@ -4130,8 +4118,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .rik. cusku se'u ki'e .pam.</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named Rick says, [end-comment] [Thanks] Pam.</gloss>
+      <gloss>- [Comment] that-named Rick says, [end-comment] [Thanks] Pam.</gloss>
       <natlang>
         <quote>Thanks, Pam</quote>
         , said Rick.
@@ -4139,8 +4126,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .pam. cusku se'u je'e</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named Pam says, [end-comment] [Acknowledge].</gloss>
+      <gloss>- [Comment] that-named Pam says, [end-comment] [Acknowledge].</gloss>
       <natlang>
         <quote>Sure</quote>
         , said Pam.
@@ -4148,8 +4134,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .djan. cusku se'u</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named John says, [end-comment]</gloss>
+      <gloss>- [Comment] that-named John says, [end-comment]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>… .y. mi .y. mutce spopa .y. le nu le speni</jbo>
@@ -4165,8 +4150,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .djordj. cusku se'u</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named George says, [end-comment]</gloss>
+      <gloss>- [Comment] that-named George says, [end-comment]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>ke'o .djan. zo'o</jbo>
@@ -4178,8 +4162,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .pam. cusku se'u</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named Pam says, [end-comment]</gloss>
+      <gloss>- [Comment] that-named Pam says, [end-comment]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>… ju'i .djordj. .e'unai le kabri ba zi farlu</jbo>
@@ -4197,8 +4180,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .djan. cusku se'u</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named John says, [end-comment]</gloss>
+      <gloss>- [Comment] that-named John says, [end-comment]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>… e'o doi .djordj. zo'o rapygau</jbo>
@@ -4210,8 +4192,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>.i sei la .djordj. cusku se'u</jbo>
-      <!-- gloss-lint: se'u = [end-comment]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">- [Comment] that-named George says, [end-comment]</gloss>
+      <gloss>- [Comment] that-named George says, [end-comment]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>… co'o ro zvati pe secau la .djan. ga'i</jbo>

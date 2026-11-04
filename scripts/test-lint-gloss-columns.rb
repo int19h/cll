@@ -61,8 +61,30 @@ class GlossColumnsTest < Minitest::Test
     end
   end
 
+  def test_bracketed_terminator_labels
+    GlossColumns::TERMINATORS.each do |word|
+      [word, "[#{word}]"].each do |spelling|
+        ['[end]', '[unquote].', ')[unquote]'].each do |label|
+          assert_empty lint_failures("mi #{spelling}", "I #{label}")
+        end
+      end
+    end
+    %w[cu [cu]].each do |word|
+      refute_empty lint_failures("mi #{word}", 'I [end]')
+    end
+    refute_empty lint_failures('mi kei', 'I word[end]')
+    refute_empty lint_failures('mi kei', 'I [end]word')
+  end
+
+  def test_quoted_si_cells
+    doc = ChapterLint.read(File.join(ChapterLint::ROOT, 'chapters/19.xml'))
+    example = doc.at_xpath('//example[@id="example-random-id-zSQi"]')
+    assert_equal ['The-word', 'Bob', '', 'is-the-name-of', 'the-word-', 'si,', 'er,', '', 'Bob.'],
+                 GlossColumns.cells(example.at_xpath('.//gloss'))
+  end
+
   def test_labeled_terminator_marker
-    body = %q{<jbo>lu mi li'u</jbo><!-- gloss-lint: The end label distinguishes the quotation boundary. --><gloss role="gloss-lint-labeled-terminators">[quote] I [unquote]</gloss>}
+    body = %q{<jbo>lu mi li'u</jbo><!-- gloss-lint: The end label distinguishes the quotation boundary. --><gloss role="gloss-lint-labeled-terminators">[quote] I unquote.</gloss>}
     doc = Nokogiri::XML("<chapter><interlinear-gloss>#{body}</interlinear-gloss></chapter>")
     assert_empty GlossColumns.failures(doc, '19.xml')
     doc.xpath('//comment()').remove

@@ -4738,8 +4738,7 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… la'u lo mitre be li mu [nu'u]</jbo>
-        <!-- gloss-lint: [nu'u] = [end-termset].. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">… [quantity] a thing-measuring-in-meters - the-number 5 [end-termset].</gloss>
+        <gloss>… [quantity] a thing-measuring-in-meters - the-number 5 [end-termset].</gloss>
         <natlang>Frank is standing five meters to the left of George.</natlang>
       </interlinear-gloss>
     </example>

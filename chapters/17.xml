@@ -1658,8 +1658,7 @@
 
       <interlinear-gloss>
         <jbo>lu .abu li'u cu lerfu</jbo>
-        <!-- gloss-lint: li'u = [unquote]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">[quote] .abu [unquote] -- is-a-letteral.</gloss>
+        <gloss>[quote] .abu [unquote] -- is-a-letteral.</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent">
@@ -1691,8 +1690,7 @@
       <interlinear-gloss>
         <jbo>la'e lu .abu li'u cu lerfu</jbo>
 
-        <!-- gloss-lint: li'u = [unquote]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">The-referent-of [quote] .abu [unquote] -- is-a-letteral.</gloss>
+        <gloss>The-referent-of [quote] .abu [unquote] -- is-a-letteral.</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent">which is correct.</para>
@@ -1742,7 +1740,7 @@
 
       <interlinear-gloss>
         <jbo>li .ybu du li ma'o fy. boi xy.</jbo>
-        <!-- gloss-lint: boi = of. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <!-- gloss-lint: Retain the English function reading, f of x. -->
         <gloss role="gloss-lint-labeled-terminators">the-number y equals the-number the-function f of x</gloss>
 
         <dbmath>y = f(x)</dbmath>

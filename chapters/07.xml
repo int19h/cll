@@ -200,8 +200,7 @@
 
       <interlinear-gloss>
         <jbo>mi'e .djan. doi .frank. mi cusku lu mi bajra li'u - do</jbo>
-        <!-- gloss-lint: li'u = [unquote]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">I-am John, O Frank, I express [quote] I run [unquote] to you</gloss>
+        <gloss>I-am John, O Frank, I express [quote] I run [unquote] to you</gloss>
         <natlang>
           I am John, Frank; I tell you
           <quote>I run</quote>.
@@ -1795,13 +1794,11 @@
 
       <interlinear-gloss>
         <jbo>la .djan. cusku lu mi klama le zarci li'u</jbo>
-        <!-- gloss-lint: li'u = [unquote].. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">That-named John says [quote] I go-to the store [unquote].</gloss>
+        <gloss>That-named John says [quote] I go-to the store [unquote].</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… .i la .alis. cusku lu mi go'i li'u</jbo>
-        <!-- gloss-lint: li'u = [unquote].. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">… - That-named Alice says [quote] I [repeat] [unquote].</gloss>
+        <gloss>… - That-named Alice says [quote] I [repeat] [unquote].</gloss>
         <natlang>
           John says,
           <quote>I am going to the store.</quote>

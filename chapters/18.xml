@@ -4144,8 +4144,7 @@
 
       <interlinear-gloss>
         <jbo>li na'u tanjo te'u </jbo>
-        <!-- gloss-lint: te'u = [end-operator]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">The-number the-operator tangent [end-operator]</gloss>
+        <gloss>The-number the-operator tangent [end-operator]</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… vei pai fe'i re [ve'o] du li ci'i</jbo>
@@ -4226,7 +4225,7 @@
       <interlinear-gloss>
         <jbo>mi viska vei mo'e lo'e lanzu ve'o cinfo</jbo>
 
-        <!-- gloss-lint: ve'o = )-number-of. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
+        <!-- gloss-lint: Retain the English quantifier reading, number of. -->
         <gloss role="gloss-lint-labeled-terminators">I see ( - the-typical family )-number-of lions.</gloss>
         <natlang>I see a pride of lions.</natlang>
 
@@ -4855,8 +4854,7 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>te'u su'i ze</jbo>
-        <!-- gloss-lint: te'u = [end-sumti-to-mex]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">[end-sumti-to-mex] plus seven</gloss>
+        <gloss>[end-sumti-to-mex] plus seven</gloss>
       </interlinear-gloss>
     </example>
     <para role="indent">

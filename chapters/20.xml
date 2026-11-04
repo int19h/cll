@@ -342,8 +342,7 @@
     </para>
     <interlinear-gloss>
       <jbo>coi do'u</jbo>
-      <!-- gloss-lint: do'u = [terminator]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">Greetings [terminator]</gloss>
+      <gloss>Greetings [terminator]</gloss>
       <natlang>Greetings, O unspecified one!</natlang>
     </interlinear-gloss>
     <bridgehead>
@@ -813,8 +812,7 @@
     </para>
     <interlinear-gloss>
       <jbo>li pe'o su'i reboi reboi re[boi] ku'e</jbo>
-      <!-- gloss-lint: ku'e = [end]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">The-number [forethought] the-sum-of two two two [end]</gloss>
+      <gloss>The-number [forethought] the-sum-of two two two [end]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>… du li xa</jbo>
@@ -939,8 +937,7 @@
     </para>
     <interlinear-gloss>
       <jbo>mi cusku lu mi klama le zarci li'u</jbo>
-      <!-- gloss-lint: li'u = [end-quote].. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">I express [quote] I go-to the market [end-quote].</gloss>
+      <gloss>I express [quote] I go-to the market [end-quote].</gloss>
     </interlinear-gloss>
     <bridgehead>
       <anchor xml:id="LOhO" xreflabel="LOhO" />
@@ -956,8 +953,7 @@
     </para>
     <interlinear-gloss>
       <jbo>li vo lo'o li ci lo'o cu zmadu</jbo>
-      <!-- gloss-lint: lo'o = [end-number],, lo'o = [end-number],. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">The-number 4 [end-number], the-number 3 [end-number], -- is-greater.</gloss>
+      <gloss>The-number 4 [end-number], the-number 3 [end-number], -- is-greater.</gloss>
       <natlang>4 &gt; 3</natlang>
     </interlinear-gloss>
     <bridgehead>
@@ -987,8 +983,7 @@
     </para>
     <interlinear-gloss>
       <jbo>mi cusku lu mi klama le zarci li'u</jbo>
-      <!-- gloss-lint: li'u = [end-quote].. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">I express [quote] I go-to the market [end-quote].</gloss>
+      <gloss>I express [quote] I go-to the market [end-quote].</gloss>
     </interlinear-gloss>
     <bridgehead>
       <anchor xml:id="LUhU" xreflabel="LUhU" />
@@ -1006,8 +1001,7 @@
     </para>
     <interlinear-gloss>
       <jbo>mi viska la'e lu barda gerku li'u lu'u</jbo>
-      <!-- gloss-lint: li'u = [end-quote], lu'u = [end-ref]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">I see the-referent-of [quote] big dog [end-quote] [end-ref]</gloss>
+      <gloss>I see the-referent-of [quote] big dog [end-quote] [end-ref]</gloss>
       <natlang>I saw “Big Dog” [not the words, but a book or movie].</natlang>
     </interlinear-gloss>
     <bridgehead>
@@ -1276,8 +1270,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>… nu'u gi - le zdani -- le ckule [nu'u]</jbo>
-      <!-- gloss-lint: nu'u = [joint]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">… [joint] and to the house from the school. -</gloss>
+      <gloss>… [joint] and to the house from the school. -</gloss>
     </interlinear-gloss>
     <bridgehead>
       <anchor xml:id="NUhU" xreflabel="NUhU" />
@@ -1295,8 +1288,7 @@
     </interlinear-gloss>
     <interlinear-gloss>
       <jbo>… nu'u gi - le zdani -- le ckule [nu'u]</jbo>
-      <!-- gloss-lint: nu'u = [joint]. These labels teach the boundary or its English reading. Punctuation alone loses that meaning. -->
-        <gloss role="gloss-lint-labeled-terminators">… [joint] and to the house from the school. -</gloss>
+      <gloss>… [joint] and to the house from the school. -</gloss>
     </interlinear-gloss>
     <bridgehead>
       <anchor xml:id="PA" xreflabel="PA" />

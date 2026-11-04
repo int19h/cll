@@ -10,19 +10,11 @@ module GlossColumns
                    li'u lo'o lu'u me'u nu'u se'u te'u toi tu'u vau ve'o]
   # Aligned .i cells are empty (66), a period (10), or "And" (2).
   # Keep "And" as a sentence-link gloss, including its lowercase form.
-  # Explicit teaching labels need source annotations: punctuation cannot retain
-  # the distinction between quote, number, reference, and operator boundaries.
+  # Bracketed labels explain terminators directly. Plain English readings
+  # still need a source annotation, because they can also indicate a shift.
   LABELED_ROLE = 'gloss-lint-labeled-terminators'
   LABELS = {
-    "li'u" => /\A(?:[[:punct:]]*\[(?:unquote|end-quote)\][[:punct:]]*|unquote\.)\z/,
-    "lu'u" => /\A\[(?:terminator|end-ref)\][[:punct:]]*\z/,
-    "nu'u" => /\A\[(?:end|end-termset|joint)\][[:punct:]]*\z/,
-    "tu'u" => /\A\[end\][[:punct:]]*\z/,
-    "se'u" => /\A\[end-comment\][[:punct:]]*\z/,
-    "te'u" => /\A\[end-(?:operator|sumti-to-mex)\][[:punct:]]*\z/,
-    "do'u" => /\A\[terminator\][[:punct:]]*\z/,
-    "ku'e" => /\A\[end\][[:punct:]]*\z/,
-    "lo'o" => /\A\[end-number\][[:punct:]]*\z/,
+    "li'u" => /\Aunquote\.\z/,
     'boi' => /\Aof\z/,
     "ve'o" => /\A\)-number-of\z/
   }.freeze
@@ -34,7 +26,9 @@ module GlossColumns
   def self.allowed?(word, gloss)
     word = word.downcase.delete('[]')
     punctuation = gloss.empty? || gloss.match?(/\A[[:punct:]…[:space:]]+\z/)
-    return punctuation if word == 'cu' || TERMINATORS.include?(word)
+    return punctuation if word == 'cu'
+    bracketed = gloss.match?(/\A[[:punct:]]*\[.*\][[:punct:]]*\z/)
+    return punctuation || bracketed if TERMINATORS.include?(word)
     return punctuation || gloss.match?(/\Aand\z/i) if word == '.i'
     true
   end

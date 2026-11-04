@@ -22,6 +22,6 @@ do
   # It's important here that when we're done, the files still match
   # "<html xmlns=", so the cleanup scripts can be composable
   sed -r -i 's;<html xmlns=([^> ]*);<html xmlns=\1 manifest="cll.appcache";' "$file"
-  xmllint --format "$file" >"$file.tmp"
+  xmllint --format --loaddtd "$file" >"$file.tmp"
   mv "$file.tmp" "$file"
 done

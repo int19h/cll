@@ -500,7 +500,7 @@
           ,
           <letteral>m</letteral>
           ,
-          <letteral>n</letteral>) and an unvoiced consonant, or is one of certain specified forbidden pairs.
+          <letteral>n</letteral>) and a voiceless consonant, or is one of certain specified forbidden pairs.
         </para>
       </listitem>
       <listitem>
@@ -1930,7 +1930,7 @@
       <letteral>d</letteral>
       is voiced and
       <letteral>s</letteral>
-      is unvoiced.)
+      is voiceless.)
     </para>
     <para><indexterm type="general"><primary>tosmabru test</primary><secondary>explained</secondary>
       </indexterm><indexterm type="general"><primary>lujvo</primary><secondary>falling apart of</secondary>

@@ -5,13 +5,13 @@ mydir=File.expand_path(File.dirname(__FILE__))
 require "#{mydir}/util.rb"
 
 $document = Nokogiri::XML(File.open ARGV[0]) do |config|
-  config.default_xml.noblanks
+  config.default_xml
 end
 
 # Put example anchors inside the titles that we want to point at
 $document.css('a[id] + p.title').each do |node|
   # puts node.to_xml
-  node.children[0].previous = node.previous
+  node.prepend_child(node.previous_element)
   # puts node.to_xml
 end
 
@@ -19,7 +19,8 @@ end
 # different levels.
 if $document.css('div.index')
   $document.css('div.index').each do |node|
-    if node.children[0] and node.children[0].name == 'div' and node.children[0][:class] == 'titlepage'
+    first = node.element_children.first
+    if first and first.name == 'div' and first[:class] == 'titlepage'
       node[:class] = 'whole-index'
     end
   end

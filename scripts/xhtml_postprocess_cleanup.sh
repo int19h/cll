@@ -20,6 +20,6 @@ do
   sed -r -i 's; "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">; "dtd/xhtml1-transitional.dtd">;' "$file"
   ruby $cufile "$file" >"$file.tmp"
   mv "$file.tmp" "$file"
-  xmllint --format "$file" >"$file.tmp"
+  xmllint --format --loaddtd "$file" >"$file.tmp"
   mv "$file.tmp" "$file"
 done

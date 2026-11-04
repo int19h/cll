@@ -33,15 +33,13 @@ class EpubAssets(unittest.TestCase):
                 shutil.rmtree(xhtml / 'assets' / excluded, ignore_errors=True)
             (xhtml / 'final.css').write_text('body { color: black; }')
             (xhtml / 'index.html').write_text('''<html><head><title>Fixture</title></head><body>
-<dl>
-<dt>
-<a href="chapter.html">Chapter</a>
-</dt>
+<dl class="toc">
+<dt><span class="chapter"><a href="chapter.html">Chapter</a></span></dt>
 </dl>
 </body></html>''')
             (xhtml / 'chapter.html').write_text('''<html><head><title>Chapter</title></head><body>
-<h1 class="title"><a id="c1"/>Chapter</h1>
-<p>Reader content.</p></body></html>''')
+<h1 class="title"><a id="chapter"/>Chapter <a id="c1"/></h1><p><a id="indexterm"/>Reader text.</p>
+<p>Reader content.</p><dl><dt>First</dt><dd>One</dd></dl><dl><dt>Second</dt><dd>Two</dd></dl></body></html>''')
             (build / 'cll.xml').write_text('''<book xmlns="http://docbook.org/ns/docbook">
 <info><releaseinfo>fixture-version</releaseinfo></info></book>''')
 
@@ -55,6 +53,12 @@ class EpubAssets(unittest.TestCase):
             result = package()
             self.assertEqual(result.returncode, 0, result.stdout)
             with zipfile.ZipFile(build / 'cll.epub') as archive:
+                chapter = ET.fromstring(archive.read('chapter.html'))
+                self.assertEqual(len(chapter.findall('.//{*}ul')), 2)
+                toc = ET.fromstring(archive.read('toc.xhtml'))
+                links = toc.findall('.//{*}nav//{*}a')
+                self.assertEqual([(a.get('href'), a.text) for a in links],
+                                 [('chapter.html#c1', 'Chapter')])
                 names = set(archive.namelist())
                 self.assertIn('chapter.html', names)
                 self.assertIn('assets/media/logo.png', names)

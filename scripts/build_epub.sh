@@ -43,8 +43,8 @@ do
     -e 's;\s+summary="[^"]*";;' "$file"
 
   # Kindle chokes badly on dl/dt/dd nesting, so we just replace it throughout and fake it with CSS
-  sed -i -r -e 's;<dl(( )class="([^"]*)")?>;<ul class="dl\2\3">;' -e 's;</dl>;</ul>;' \
-    -e 's;<d([dt])(( )class="([^"]*)")?>;<li class="d\1\3\4">;' -e 's;</d[dt]>;</li>;' \
+  sed -i -r -e 's;<dl(( )class="([^"]*)")?>;<ul class="dl\2\3">;g' -e 's;</dl>;</ul>;g' \
+    -e 's;<d([dt])(( )class="([^"]*)")?>;<li class="d\1\3\4">;g' -e 's;</d[dt]>;</li>;g' \
     "$file"
 
   grep '<d[ltd]' "$file" && echo "BAD: $file still has dl/dt/dd elements!"
@@ -56,7 +56,9 @@ mv build/epub/index.html.new build/epub/index.html
 rm -f $epubbuilddir/cll.appcache
 
 $brand fill <$srcdir/toc.xhtml.s1 >$epubbuilddir/toc.xhtml
-grep -P '^\s*(<a |(</?dl>|</?dt>)\s*$)' build/epub-xhtml/index.html | \
+# Restore the line layout only for the legacy TOC extractor.
+xmllint --format build/epub-xhtml/index.html | \
+  grep -P '^\s*(<a |(</?dl>|</?dt>)\s*$)' | \
   sed -r -e 's/dt>\s*$/li>/g' -e 's/<dl>\s*$/<ol>/' -e 's;</dl>\s*$;</ol></li>;' | \
   ruby -e 'puts STDIN.read.gsub(%r{</li>\s*<ol>}m, "<ol>")' >>$epubbuilddir/toc.xhtml
 cat $srcdir/toc.xhtml.s2 >>$epubbuilddir/toc.xhtml
@@ -66,7 +68,7 @@ mv $epubbuilddir/toc.xhtml.tmp $epubbuilddir/toc.xhtml
 for file in $(find build/epub-xhtml/ -type f -name '*.html' | xargs grep -l '<h1 class="title"><a')
 do
   base="$(basename $file)"
-  id="$(grep '<h1 class="title"><a' $file | head -n 1 | sed -e 's/.* id="//' -e 's/".*//')"
+  id="$(grep '<h1 class="title"><a' $file | head -n 1 | sed -e 's;</h1>.*;;' -e 's/.* id="//' -e 's/".*//')"
   sed -i "s/href=\"$base\"/href=\"$base#$id\"/" $epubbuilddir/toc.xhtml
 done
 

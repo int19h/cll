@@ -14,6 +14,8 @@ class WordSpellingsTest < Minitest::Test
     end
     assert_equal 2, WordSpellings.sequences('.tcriyviys.').size
     assert_equal 2, WordSpellings.sequences('.liudies.').size
+    assert_equal 1, WordSpellings.sequences('.kiiias.').size
+    assert_equal 1, WordSpellings.sequences('.kuuuus.').size
   end
 
   def test_full_vowel_before_glide

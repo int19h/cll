@@ -9,15 +9,29 @@ module WordSpellings
   CONSONANTS = 'bcdfgjklmnprstvxz'
   REVIEW_FILE = File.join(__dir__, 'reviewed-comma-words.json')
 
+  # A nucleus is a syllable's vowel or diphthong. This small recognizer uses
+  # camxes-std's nucleus, vowel, and diphthong rules, including their lookahead.
+  # A two-letter shortcut fails on longer runs such as kiii and kuuuu.
+  def self.nucleus?(core, index, memo)
+    return memo[index] if memo.key?(index)
+    letter = core[index]
+    return memo[index] = false unless letter && letter.match?(/[aeiouy]/)
+    return memo[index] = true unless nucleus?(core, index + 1, memo)
+    pair = core[index, 2]
+    last = pair[-1]
+    memo[index] = %w[ai au ei oi].include?(pair) && core[index + 2] != last &&
+                  !nucleus?(core, index + 2, memo)
+  end
+
   def self.sequences(word)
     core = word.downcase.delete(',')
-    core.to_enum(:scan, /[#{CONSONANTS}][iu][aeiouy]/).filter_map do
-      match = Regexp.last_match
-      # In slinkuui, ku is followed by ui. The first u is a full vowel.
-      # The same rule permits nu.iork, liiudiies, and xali.uyd.
-      next if match[0][2].match?(/[iu]/) && core[match.end(0)]&.match?(/[aeiouy]/)
+    memo = {}
+    core.chars.each_index.filter_map do |index|
+      next unless CONSONANTS.include?(core[index]) && core[index + 1]&.match?(/[iu]/)
+      next unless nucleus?(core, index + 2, memo)
+      # slinkuui and liiudiies have a full vowel before the glide. In contrast,
       # kii before a consonant is glide i + vowel i, so k fails the ban too.
-      ['CGV', match[0]]
+      ['CGV', core[index, 3]]
     end
   end
 

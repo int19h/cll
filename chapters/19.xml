@@ -1046,8 +1046,8 @@
         <gloss role="gloss-lint-labeled-terminators">
           - John
           <phrase><subscript>1</subscript></phrase>
-          expresses [quote] I-am-not you [unquote] to - John
-          <phrase><subscript>2</subscript></phrase>.
+          expresses [quote] I-am-not you [unquote] to John
+          <phrase><subscript>2</subscript>.</phrase>
         </gloss>
       </interlinear-gloss>
     </example>

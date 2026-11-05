@@ -2511,7 +2511,7 @@
       <tr>
         <td>а</td>
         <td>
-          <jbophrase>.azys. bu</jbophrase>
+          <jbophrase>.az. bu</jbophrase>
         </td>
         <td>
           <valsi>.abu</valsi>
@@ -2520,7 +2520,7 @@
       <tr>
         <td>б</td>
         <td>
-          <jbophrase>.bukys. bu</jbophrase>
+          <jbophrase>.buk. bu</jbophrase>
         </td>
         <td>
           <valsi>by.</valsi>
@@ -2529,7 +2529,7 @@
       <tr>
         <td>в</td>
         <td>
-          <jbophrase>.vedis. bu</jbophrase>
+          <jbophrase>.ved. bu</jbophrase>
         </td>
         <td>
           <valsi>vy.</valsi>
@@ -2538,7 +2538,7 @@
       <tr>
         <td>г</td>
         <td>
-          <jbophrase>.glagolis. bu</jbophrase>
+          <jbophrase>.glagol. bu</jbophrase>
         </td>
         <td>
           <valsi>gy.</valsi>
@@ -2547,7 +2547,7 @@
       <tr>
         <td>д</td>
         <td>
-          <jbophrase>.dobros. bu</jbophrase>
+          <jbophrase>.dobr. bu</jbophrase>
         </td>
         <td>
           <valsi>dy.</valsi>
@@ -2556,7 +2556,7 @@
       <tr>
         <td>е</td>
         <td>
-          <jbophrase>.iestys. bu</jbophrase>
+          <jbophrase>.iest. bu</jbophrase>
         </td>
         <td>
           <valsi>.ebu</valsi>
@@ -2574,7 +2574,7 @@
       <tr>
         <td>з</td>
         <td>
-          <jbophrase>.zemliias. bu</jbophrase>
+          <jbophrase>.zemlis. bu</jbophrase>
         </td>
         <td>
           <valsi>zy.</valsi>
@@ -2583,7 +2583,7 @@
       <tr>
         <td>и</td>
         <td>
-          <jbophrase>.ijeiis. bu</jbophrase>
+          <jbophrase>.ijes. bu</jbophrase>
         </td>
         <td>
           <valsi>.ibu</valsi>
@@ -2601,7 +2601,7 @@
       <tr>
         <td>к</td>
         <td>
-          <jbophrase>.kakos. bu</jbophrase>
+          <jbophrase>.kak. bu</jbophrase>
         </td>
         <td>
           <valsi>ky.</valsi>
@@ -2610,7 +2610,7 @@
       <tr>
         <td>л</td>
         <td>
-          <jbophrase>.liiudiies. bu</jbophrase>
+          <jbophrase>.liiud. bu</jbophrase>
         </td>
         <td>
           <valsi>ly.</valsi>
@@ -2619,7 +2619,7 @@
       <tr>
         <td>м</td>
         <td>
-          <jbophrase>.myslites. bu</jbophrase>
+          <jbophrase>.myslit. bu</jbophrase>
         </td>
         <td>
           <valsi>my.</valsi>
@@ -2628,7 +2628,7 @@
       <tr>
         <td>н</td>
         <td>
-          <jbophrase>.naciiys. bu</jbophrase>
+          <jbophrase>.nac. bu</jbophrase>
         </td>
         <td>
           <valsi>ny.</valsi>
@@ -2637,7 +2637,7 @@
       <tr>
         <td>о</td>
         <td>
-          <jbophrase>.onys. bu</jbophrase>
+          <jbophrase>.on. bu</jbophrase>
         </td>
         <td>
           <valsi>.obu</valsi>
@@ -2655,7 +2655,7 @@
       <tr>
         <td>р</td>
         <td>
-          <jbophrase>.riiytsis. bu</jbophrase>
+          <jbophrase>.rtsis. bu</jbophrase>
         </td>
         <td>
           <valsi>ry.</valsi>
@@ -2664,7 +2664,7 @@
       <tr>
         <td>с</td>
         <td>
-          <jbophrase>.slovos. bu</jbophrase>
+          <jbophrase>.slov. bu</jbophrase>
         </td>
         <td>
           <valsi>sy.</valsi>
@@ -2673,7 +2673,7 @@
       <tr>
         <td>т</td>
         <td>
-          <jbophrase>.tyvriiydos. bu</jbophrase>
+          <jbophrase>.tyverd. bu</jbophrase>
         </td>
         <td>
           <valsi>ty.</valsi>
@@ -2682,7 +2682,7 @@
       <tr>
         <td>у</td>
         <td>
-          <jbophrase>.ukys. bu</jbophrase>
+          <jbophrase>.uk. bu</jbophrase>
         </td>
         <td>
           <valsi>.ubu</valsi>
@@ -2691,7 +2691,7 @@
       <tr>
         <td>ф</td>
         <td>
-          <jbophrase>.friiytys. bu</jbophrase>
+          <jbophrase>.frt. bu</jbophrase>
         </td>
         <td>
           <valsi>fy.</valsi>
@@ -2700,7 +2700,7 @@
       <tr>
         <td>х</td>
         <td>
-          <jbophrase>.xerys. bu</jbophrase>
+          <jbophrase>.xer. bu</jbophrase>
         </td>
         <td>
           <valsi>xy.</valsi>
@@ -2718,7 +2718,7 @@
       <tr>
         <td>ч</td>
         <td>
-          <jbophrase>.tcriiyviiys. bu</jbophrase>
+          <jbophrase>.tcrv. bu</jbophrase>
         </td>
         <td>
           <jbophrase>.tcys. bu</jbophrase>
@@ -2763,7 +2763,7 @@
       <tr>
         <td>ь</td>
         <td>
-          <jbophrase>.ieriiys. bu</jbophrase>
+          <jbophrase>.ierik. bu</jbophrase>
         </td>
         <td>
           <jbophrase>ranti bu</jbophrase>

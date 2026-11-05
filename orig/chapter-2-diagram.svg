@@ -4,9 +4,9 @@
   baseProfile="tiny"
   xmlns="http://www.w3.org/2000/svg"
   xmlns:xlink="http://www.w3.org/1999/xlink"
-  viewBox="0 0 300 200"
+  viewBox="0 0 300 144"
   width="300"
-  height="200"
+  height="144"
   preserveAspectRatio="xMidYMid">
 
   <text x="125" y="20" font-family="Times New Roman" font-style="italic" font-size="20px">bridi</text>

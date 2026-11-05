@@ -5,6 +5,8 @@ import re
 import struct
 import unittest
 
+from PIL import Image
+
 ROOT = Path(__file__).resolve().parent.parent
 
 
@@ -32,10 +34,19 @@ class ChapterPictures(unittest.TestCase):
 
     def test_diagram_resolution_and_size(self):
         data = (ROOT / 'assets/media/chapter-2-diagram.svg.png').read_bytes()
-        self.assertEqual(struct.unpack('>IIBB', data[16:26]), (1200, 800, 8, 6))
+        self.assertEqual(struct.unpack('>IIBB', data[16:26]), (1200, 576, 8, 6))
         css = (ROOT / 'assets/css/master.css').read_text()
         self.assertRegex(css, re.escape('img[src$="/chapter-2-diagram.svg.png"]')
                          + r'\s*\{\s*width:\s*299\.625px;')
+
+    def test_diagram_padding(self):
+        with Image.open(ROOT / 'assets/media/chapter-2-diagram.svg.png') as image:
+            # Ignore nearly transparent antialiasing at the drawing's edges.
+            bounds = image.getchannel('A').point(lambda alpha: 255 if alpha >= 32 else 0).getbbox()
+            self.assertIsNotNone(bounds)
+            top, bottom = bounds[1], image.height - bounds[3]
+            self.assertGreater(top, 0)
+            self.assertLessEqual(abs(top - bottom), 1, (top, bottom))
 
     def test_cropped_picture_limits(self):
         css = (ROOT / 'assets/css/master.css').read_text()

@@ -165,6 +165,14 @@
               <morphology>u'u</morphology>
             </member>
           </simplelist>
+          These are the vowel pairs of the standard word forms. Because V excludes
+          <letteral>y</letteral>, no pair on either list contains it. Pairs with
+          <letteral>y</letteral>, such as
+          <morphology>y'y</morphology>, do exist; see
+          <xref linkend="section-vowel-pairs" />
+          for the full set, and
+          <xref linkend="section-cmavo" />
+          for their place in cmavo.
         </para>
       </listitem>
       <listitem>
@@ -662,6 +670,20 @@
       (remember that
       <letteral>y</letteral>
       is not a V), which must have pauses before and after it.
+    </para>
+    <para>
+      <indexterm type="general"><primary>vowel pairs</primary><secondary>involving y, in cmavo</secondary>
+      </indexterm>
+      <indexterm type="general"><primary>cmavo</primary><secondary>with vowel pairs involving y</secondary>
+      </indexterm>
+      A vowel pair involving
+      <letteral>y</letteral>, with an apostrophe between the two vowels (see
+      <xref linkend="section-vowel-pairs" />), can also form a cmavo. Only one such cmavo is standard:
+      <valsi>.y'y.</valsi>, the name of the apostrophe letter, which belongs to selma'o BY (see
+      <xref linkend="section-lerfu-liste" />). All the others are experimental, like the longer vowel sequences described next; two examples are
+      <jbophrase>.a'y</jbophrase>
+      and
+      <jbophrase>.e'y</jbophrase>.
     </para>
     <para><indexterm type="general"><primary>cmavo</primary><secondary>lack of relation of form to grammatical use</secondary>
       </indexterm><indexterm type="general"><primary>experimental cmavo</primary><secondary>forms for</secondary>

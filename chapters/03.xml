@@ -1198,10 +1198,11 @@
       </indexterm>
       Vowel pairs involving
       <letteral>y</letteral>
-      appear only in Lojbanized names. They could appear in cmavo (structure words), but only
+      appear mostly in Lojbanized names. They can also appear in cmavo (structure words), but among the standard cmavo only
       <valsi>.y'y.</valsi>
-      is so used &ndash; it is the Lojban name of the apostrophe letter (see
-      <xref linkend="section-lerfu-liste" />).
+      contains one &ndash; it is the Lojban name of the apostrophe letter (see
+      <xref linkend="section-lerfu-liste" />). Any other cmavo of this form is experimental (see
+      <xref linkend="section-cmavo" />).
     </para>
     <para><indexterm type="general"><primary>vowel pairs</primary><secondary>grouping of</secondary>
       </indexterm>When more than two vowel letters occur together in Lojban, the rules for word forms decide the grouping, and only one grouping is possible, so the speaker has no choice to make. Consider this Lojbanized name:</para>

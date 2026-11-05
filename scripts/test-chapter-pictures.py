@@ -48,13 +48,13 @@ class ChapterPictures(unittest.TestCase):
             self.assertGreater(top, 0)
             self.assertLessEqual(abs(top - bottom), 1, (top, bottom))
 
-    def test_cropped_picture_limits(self):
+    def test_shared_picture_limits(self):
         css = (ROOT / 'assets/css/master.css').read_text()
-        # These drawings had large margins. A 200px crop would enlarge them.
-        for name, limit in [('letterals', 85), ('attitudinals', 128),
-                            ('sumti-tcita', 136), ('phonology', 176)]:
-            self.assertRegex(css, re.escape(f'img[src$="/chapter-{name}.png"]')
-                             + r'\s*\{\s*max-height:\s*' + str(limit) + r'px;')
+        shared = re.search(r'^img\s*\{([^}]+)\}', css, re.M).group(1)
+        self.assertRegex(shared, r'max-width:\s*60%;')
+        self.assertRegex(shared, r'max-height:\s*350px;')
+        overrides = re.findall(r'img\[src\$="/chapter-[^"]+"\]\s*\{([^}]+)\}', css)
+        self.assertTrue(all('max-height' not in rule for rule in overrides))
 
 
 if __name__ == '__main__':

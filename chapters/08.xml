@@ -151,7 +151,7 @@
       <title><anchor xml:id="c8e1d5" /></title>
 
       <interlinear-gloss>
-        <jbo>tu poi le mlatu pu lacpu ke'a ku'o cu ratcu</jbo>
+        <jbo>tu poi lo mlatu pu lacpu ke'a ku'o cu ratcu</jbo>
         <gloss>That-distant-thing such-that-( the cat [past] drags IT ) -- is-a-rat.</gloss>
         <natlang>That thing which the cat dragged is a rat.</natlang>
         <natlang>What the cat dragged is a rat.</natlang>
@@ -161,7 +161,7 @@
       <title><anchor xml:id="c8e1d6" /></title>
 
       <interlinear-gloss>
-        <jbo>ta poi mi djica le nu</jbo>
+        <jbo>ta poi mi djica lo nu</jbo>
         <gloss>That-thing such-that-( I desire the event-of(</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -209,7 +209,7 @@
       <title><anchor xml:id="c8e1d8" /></title>
 
       <interlinear-gloss>
-        <jbo>tu poi le mlatu pu lacpu cu ratcu</jbo>
+        <jbo>tu poi lo mlatu pu lacpu cu ratcu</jbo>
         <gloss>That-distant-thing which the cat [past] drags -- is-a-rat</gloss>
       </interlinear-gloss>
     </example>
@@ -318,7 +318,7 @@
       <title><anchor xml:id="c8e2d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le gerku poi blanu cu barda</jbo>
+        <jbo>lo gerku poi blanu cu barda</jbo>
         <gloss>The dog which is-blue -- is-large.</gloss>
         <natlang>The dog which is blue is large.</natlang>
       </interlinear-gloss>
@@ -327,7 +327,7 @@
       <title><anchor xml:id="c8e2d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le gerku noi blanu cu barda</jbo>
+        <jbo>lo gerku noi blanu cu barda</jbo>
         <gloss>The dog incidentally-which is-blue -- is-large.</gloss>
         <natlang>The dog, which is blue, is large.</natlang>
       </interlinear-gloss>
@@ -386,7 +386,7 @@
       <title><anchor xml:id="c8e2d4" /></title>
 
       <interlinear-gloss>
-        <jbo>xu do viska le mi karce noi blabi</jbo>
+        <jbo>xu do viska lo mi karce noi blabi</jbo>
         <gloss>[True?] You see -- my car incidentally-which is-white.</gloss>
         <natlang>Do you see my car, which is white?</natlang>
       </interlinear-gloss>
@@ -395,7 +395,7 @@
       In
       <xref linkend="example-random-id-pR53" />
       , the speaker is presumed to have only one car, and is providing incidental information that it is white. (Alternatively, he or she might have more than one car, since
-      <jbophrase>le karce</jbophrase>
+      <jbophrase>lo karce</jbophrase>
       can be plural, in which case the incidental information is that each of them is white.) Contrast
       <xref linkend="example-random-id-0qU1" />
       with a restrictive relative clause:
@@ -405,7 +405,7 @@
       <title><anchor xml:id="c8e2d5" /></title>
 
       <interlinear-gloss>
-        <jbo>xu do viska le mi karce poi blabi</jbo>
+        <jbo>xu do viska lo mi karce poi blabi</jbo>
         <gloss>[True?] You see -- my car which is-white.</gloss>
         <natlang>Do you see my car that is white?</natlang>
         <natlang>Do you see my white car?</natlang>
@@ -415,7 +415,7 @@
       <indexterm type="general"><primary>relative clause</primary><secondary>compared with tanru</secondary>
       </indexterm>
       Here the speaker probably has several cars, and is restricting the referent of the sumti
-      <jbophrase>le mi karce</jbophrase>
+      <jbophrase>lo mi karce</jbophrase>
       (and thereby the listener's attention) to the white one only.
       <xref linkend="example-random-id-0qU1" />
       means much the same as
@@ -426,7 +426,7 @@
       <title><anchor xml:id="c8e2d6" /></title>
 
       <interlinear-gloss>
-        <jbo>xu do viska le mi blabi karce</jbo>
+        <jbo>xu do viska lo mi blabi karce</jbo>
         <gloss>[True?] You see -- my white car.</gloss>
         <natlang>Do you see my car, the white one?</natlang>
       </interlinear-gloss>
@@ -510,7 +510,7 @@
       <title><anchor xml:id="c8e3d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le stizu pe mi cu blanu</jbo>
+        <jbo>lo stizu pe mi cu blanu</jbo>
         <gloss>The chair associated-with me -- is-blue.</gloss>
         <natlang>My chair is blue.</natlang>
       </interlinear-gloss>
@@ -519,7 +519,7 @@
       <title><anchor xml:id="c8e3d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le stizu poi ke'a srana mi cu blanu</jbo>
+        <jbo>lo stizu poi ke'a srana mi cu blanu</jbo>
         <gloss>The chair such-that-( IT is-associated-with me ) is-blue.</gloss>
       </interlinear-gloss>
     </example>
@@ -550,7 +550,7 @@
       <title><anchor xml:id="c8e3d3" /></title>
 
       <interlinear-gloss>
-        <jbo>le stizu po mi cu xunre</jbo>
+        <jbo>lo stizu po mi cu xunre</jbo>
         <gloss>The chair specific-to me -- is-red.</gloss>
       </interlinear-gloss>
     </example>
@@ -558,7 +558,7 @@
       <title><anchor xml:id="c8e3d4" /></title>
 
       <interlinear-gloss>
-        <jbo>le stizu poi ke'a se--steci srana mi cu xunre</jbo>
+        <jbo>lo stizu poi ke'a se--steci srana mi cu xunre</jbo>
         <gloss>The chair such-that-( IT is-specifically associated-with me ) is-red.</gloss>
       </interlinear-gloss>
     </example>
@@ -623,7 +623,7 @@
       <title><anchor xml:id="c8e3d5" /></title>
 
       <interlinear-gloss>
-        <jbo>le birka po'e mi cu spofu</jbo>
+        <jbo>lo birka po'e mi cu spofu</jbo>
 
         <gloss>The arm intrinsically-possessed-by me -- is-broken</gloss>
       </interlinear-gloss>
@@ -635,7 +635,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le birka poi jinzi ke se--steci</jbo>
+        <jbo>lo birka poi jinzi ke se--steci</jbo>
         <gloss>The arm which is-intrinsically ( specifically</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -647,7 +647,7 @@
       <title><anchor xml:id="c8e3d7" /></title>
 
       <interlinear-gloss>
-        <jbo>le botpi po mi cu spofu</jbo>
+        <jbo>lo botpi po mi cu spofu</jbo>
         <gloss>The bottle specific-to me -- is-broken</gloss>
       </interlinear-gloss>
     </example>
@@ -704,7 +704,7 @@
       <title><anchor xml:id="c8e3d8" /></title>
 
       <interlinear-gloss>
-        <jbo>le birka be mi cu spofu</jbo>
+        <jbo>lo birka be mi cu spofu</jbo>
         <gloss>The arm of-body me -- is-broken</gloss>
       </interlinear-gloss>
     </example>
@@ -727,7 +727,7 @@
       <title><anchor xml:id="c8e3d9" /></title>
 
       <interlinear-gloss>
-        <jbo>le gerku po'u le mi pendo cu cinba mi</jbo>
+        <jbo>le gerku po'u lo mi pendo cu cinba mi</jbo>
         <gloss>The dog which-is -- my friend -- kisses me.</gloss>
       </interlinear-gloss>
     </example>
@@ -735,7 +735,7 @@
       <title><anchor xml:id="c8e3d10" /></title>
 
       <interlinear-gloss>
-        <jbo>le gerku poi du le mi pendo cu cinba mi</jbo>
+        <jbo>le gerku poi du lo mi pendo cu cinba mi</jbo>
         <gloss>The dog which = -- my friend -- kisses me.</gloss>
       </interlinear-gloss>
     </example>
@@ -763,7 +763,7 @@
       tells us that
       <jbophrase>le gerku</jbophrase>
       and
-      <jbophrase>le mi pendo</jbophrase>
+      <jbophrase>lo mi pendo</jbophrase>
       represent the same thing. Consider the contrast between
       <xref linkend="example-random-id-qM8u" />
       and:
@@ -772,7 +772,7 @@
       <title><anchor xml:id="c8e3d11" /></title>
 
       <interlinear-gloss>
-        <jbo>le mi pendo po'u le gerku cu cinba mi</jbo>
+        <jbo>lo mi pendo po'u le gerku cu cinba mi</jbo>
         <gloss>-- My friend which-is the dog -- kisses me.</gloss>
       </interlinear-gloss>
     </example>
@@ -825,7 +825,7 @@
       <title><anchor xml:id="c8e3d14" /><indexterm type="general"><primary>friend's cup</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le kabri pe le mi pendo cu cmalu</jbo>
+        <jbo>le kabri pe lo mi pendo cu cmalu</jbo>
         <gloss>The cup associated-with -- my friend -- is-small.</gloss>
         <natlang>My friend's cup is small</natlang>
 
@@ -835,7 +835,7 @@
       <title><anchor xml:id="c8e3d15" /><indexterm type="general"><primary>cup's friend</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le mi pendo pe le kabri cu cmalu</jbo>
+        <jbo>lo mi pendo pe le kabri cu cmalu</jbo>
         <gloss>-- My friend associated-with the cup -- is-small.</gloss>
         <natlang>My friend, the one with the cup, is small.</natlang>
       </interlinear-gloss>
@@ -886,7 +886,7 @@
       <title><anchor xml:id="c8e3d16" /></title>
 
       <interlinear-gloss>
-        <jbo>le blabi gerku ne mi cu batci do</jbo>
+        <jbo>lo blabi gerku ne mi cu batci do</jbo>
         <gloss>The white dog, incidentally-associated-with me , bites you.</gloss>
         <natlang>The white dog, which is mine, bites you.</natlang>
       </interlinear-gloss>
@@ -949,7 +949,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le nanmu cu punji le xance - le daski</jbo>
+        <jbo>lo nanmu cu punji lo xance - lo daski</jbo>
         <gloss>The man -- puts the hand at-locus the pocket.</gloss>
       </interlinear-gloss>
     </example>
@@ -992,7 +992,7 @@
       <title><anchor xml:id="c8e4d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le gerku poi blabi zi'e poi batci le nanmu cu klama</jbo>
+        <jbo>lo gerku poi blabi zi'e poi batci lo nanmu cu klama</jbo>
         <natlang>The dog which is white and which bites the man goes.</natlang>
       </interlinear-gloss>
     </example>
@@ -1028,11 +1028,11 @@
       <title><anchor xml:id="c8e4d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le gerku poi blabi zi'e noi</jbo>
+        <jbo>lo gerku poi blabi zi'e noi</jbo>
         <gloss>The dog that-is (white) and incidentally-such-that</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le mi pendo cu ponse ke'a cu klama</jbo>
+        <jbo>… lo mi pendo cu ponse ke'a cu klama</jbo>
         <gloss>… (- my friend -- owns IT ) goes.</gloss>
         <natlang>The dog that is white, which my friend owns, is going.</natlang>
       </interlinear-gloss>
@@ -1043,7 +1043,7 @@
       , the restrictive clause
       <jbophrase>poi blabi</jbophrase>
       specifies which dog is referred to, but the incidental clause
-      <jbophrase>noi le mi pendo cu ponse</jbophrase>
+      <jbophrase>noi lo mi pendo cu ponse</jbophrase>
       is mere incidental information: the listener is supposed to already have identified the dog from the
       <jbophrase>poi blabi</jbophrase>. Of course, the meaning (though not necessarily the emphasis) is the same if the incidental clause appears first.
     </para>
@@ -1058,7 +1058,7 @@
       <title><anchor xml:id="c8e4d3" /></title>
 
       <interlinear-gloss>
-        <jbo>le botpi po mi zi'e poi blanu cu spofu</jbo>
+        <jbo>lo botpi po mi zi'e poi blanu cu spofu</jbo>
         <gloss>The bottle specific-to me and which-is blue -- is-broken.</gloss>
         <natlang>My blue bottle is broken.</natlang>
       </interlinear-gloss>
@@ -1083,7 +1083,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi ba zutse le stizu pe</jbo>
+        <jbo>mi ba zutse lo stizu pe</jbo>
         <gloss>I [future] sit-in the chair associated-with</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -1108,11 +1108,11 @@
       <title><anchor xml:id="c8e4d5" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ba citka le dembi pe mi zi'e poi cpana</jbo>
+        <jbo>mi ba citka lo dembi pe mi zi'e poi cpana</jbo>
         <gloss>I [future] eat the beans associated-with me and which are-upon</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le mi palta zi'e noi do dunda ke'a - mi</jbo>
+        <jbo>… lo mi palta zi'e noi do dunda ke'a - mi</jbo>
         <gloss>… -- my plate and which-incidentally you gave IT to me.</gloss>
         <natlang>I'll eat my beans that are on my plate, the ones you gave me.</natlang>
       </interlinear-gloss>
@@ -1129,16 +1129,16 @@
       <title><anchor xml:id="c8e5d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le gerku poi blabi cu klama</jbo>
+        <jbo>lo gerku poi blabi cu klama</jbo>
         <gloss>The dog which is-white -- goes.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">here it must actually be true that the dog is white, or the sentence constitutes a miscommunication. If there is a white dog and a brown dog, and the speaker uses <jbophrase>le gerku poi blabi</jbophrase> to refer to the brown dog, then the listener will not understand correctly. However,</para>
+    <para role="noindent">here it must actually be true that the dog is white, or the sentence constitutes a miscommunication. If there is a white dog and a brown dog, and the speaker uses <jbophrase>lo gerku poi blabi</jbophrase> to refer to the brown dog, then the listener will not understand correctly. However,</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-BDgn">
       <title><anchor xml:id="c8e5d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le gerku voi blabi cu klama</jbo>
+        <jbo>lo gerku voi blabi cu klama</jbo>
         <gloss>The dog which-I-describe-as white -- goes.</gloss>
       </interlinear-gloss>
     </example>
@@ -1187,7 +1187,7 @@
       <title><anchor xml:id="c8e6d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le gerku poi blabi ku'o ku cu klama vau</jbo>
+        <jbo>lo gerku poi blabi ku'o ku cu klama vau</jbo>
         <gloss>The (dog which (is-white ) ) -- goes .</gloss>
         <natlang>The dog which is white is going.</natlang>
       </interlinear-gloss>
@@ -1200,16 +1200,16 @@
       and
       <valsi>ku</valsi>
       with
-      <valsi>le</valsi>
+      <valsi>lo</valsi>
       , and
       <valsi>vau</valsi>
       is the terminator of the whole bridi.
     </para>
     <para>
       When a simple descriptor using
-      <valsi>le</valsi>
+      <valsi>lo</valsi>
       , like
-      <jbophrase>le gerku</jbophrase>
+      <jbophrase>lo gerku</jbophrase>
       , has a relative clause attached, it is purely a matter of style and emphasis where the relative clause should go. Therefore, the following examples are all equivalent in meaning to
       <xref linkend="example-random-id-UmLX" />
       :
@@ -1218,7 +1218,7 @@
       <title><anchor xml:id="c8e6d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le poi blabi ku'o gerku cu klama</jbo>
+        <jbo>lo poi blabi ku'o gerku cu klama</jbo>
         <gloss>The such-that-( it-is-white ) dog -- goes.</gloss>
       </interlinear-gloss>
     </example>
@@ -1226,7 +1226,7 @@
       <title><anchor xml:id="c8e6d3" /></title>
 
       <interlinear-gloss>
-        <jbo>le gerku ku poi blabi cu klama</jbo>
+        <jbo>lo gerku ku poi blabi cu klama</jbo>
         <gloss>The (dog ) which is-white -- goes.</gloss>
       </interlinear-gloss>
     </example>
@@ -1243,7 +1243,7 @@
       <title><anchor xml:id="c8e6d4" /></title>
 
       <interlinear-gloss>
-        <jbo>re - le mu prenu cu klama le zarci</jbo>
+        <jbo>re - le mu prenu cu klama lo zarci</jbo>
         <gloss>Two of the five persons -- go-to the market.</gloss>
         <natlang>Two of the five people [that I have in mind] are going to the market.</natlang>
 
@@ -1268,7 +1268,7 @@
         <gloss>Two of the such-that([they] are-women )</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>mu prenu cu klama le zarci</jbo>
+        <jbo>mu prenu cu klama lo zarci</jbo>
         <gloss>five persons -- go-to the market.</gloss>
         <natlang>Two women out of the five persons go to the market.</natlang>
       </interlinear-gloss>
@@ -1277,7 +1277,7 @@
       <title><anchor xml:id="c8e6d6" /></title>
 
       <interlinear-gloss>
-        <jbo>re - le mu prenu poi ninmu [ku] cu klama le zarci</jbo>
+        <jbo>re - le mu prenu poi ninmu [ku] cu klama lo zarci</jbo>
         <gloss>Two of the (five persons which-( are-women) ) -- go-to the market.</gloss>
         <natlang>Two of the five women go to the market.</natlang>
 
@@ -1287,7 +1287,7 @@
       <title><anchor xml:id="c8e6d7" /></title>
 
       <interlinear-gloss>
-        <jbo>re - le mu prenu ku poi ninmu cu klama le zarci</jbo>
+        <jbo>re - le mu prenu ku poi ninmu cu klama lo zarci</jbo>
         <gloss>(Two of the five persons ) which-( are-women ) go-to the market.</gloss>
         <natlang>Two women out of the five persons go to the market.</natlang>
       </interlinear-gloss>
@@ -1334,7 +1334,7 @@
       <title><anchor xml:id="c8e6d8" /></title>
 
       <interlinear-gloss>
-        <jbo>lo prenu ku noi blabi cu klama le zarci</jbo>
+        <jbo>lo prenu ku noi blabi cu klama lo zarci</jbo>
         <gloss>(The persons ) incidentally-which-( are-white ) go-to the market.</gloss>
         <natlang>The people, who are white, go to the market.</natlang>
       </interlinear-gloss>
@@ -1343,7 +1343,7 @@
       <title><anchor xml:id="c8e6d9" /></title>
 
       <interlinear-gloss>
-        <jbo>lo prenu noi blabi [ku] cu klama le zarci</jbo>
+        <jbo>lo prenu noi blabi [ku] cu klama lo zarci</jbo>
         <gloss>(The persons incidentally-which are-white ) -- go to-the market.</gloss>
         <natlang>The people, who by the way are white, go to the market.</natlang>
       </interlinear-gloss>
@@ -1362,7 +1362,7 @@
       <title><anchor xml:id="c8e6d13" /></title>
 
       <interlinear-gloss>
-        <jbo>su'o lo prenu ku noi blabi cu klama le zarci</jbo>
+        <jbo>su'o lo prenu ku noi blabi cu klama lo zarci</jbo>
         <gloss>At-least-one of-(--the persons ) incidentally-which-( are-white ) go-to the market.</gloss>
         <natlang>At least one of the people goes to the market and is, incidentally, white.</natlang>
       </interlinear-gloss>
@@ -1371,7 +1371,7 @@
       <title><anchor xml:id="c8e6d14" /></title>
 
       <interlinear-gloss>
-        <jbo>su'o lo prenu noi blabi [ku] cu klama le zarci</jbo>
+        <jbo>su'o lo prenu noi blabi [ku] cu klama lo zarci</jbo>
         <gloss>At-least-one of-(--the persons incidentally-which-( are-white ) ) go-to the market.</gloss>
         <natlang>At least one of the people &ndash; who are, all of them, white &ndash; goes to the market.</natlang>
       </interlinear-gloss>
@@ -1410,7 +1410,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi viska la nanmu poi terpa le ke'a xirma [ku]</jbo>
+        <jbo>mi viska la nanmu poi terpa lo ke'a xirma [ku]</jbo>
         <gloss>I see that-named-( man which fears the of-IT horse ).</gloss>
         <natlang>I see Man Afraid Of His Horse.</natlang>
       </interlinear-gloss>
@@ -1423,7 +1423,7 @@
       <title><anchor xml:id="c8e6d11" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska la nanmu ku poi terpa le ke'a xirma.</jbo>
+        <jbo>mi viska la nanmu ku poi terpa lo ke'a xirma.</jbo>
         <gloss>I see that-named-( Man ) which fears the of-IT horse.</gloss>
         <natlang>
           I see the person named
@@ -1469,7 +1469,7 @@
       through
       <xref linkend="example-random-id-zsQ6" />
       , the sumti
-      <jbophrase>le mi karce</jbophrase>
+      <jbophrase>lo mi karce</jbophrase>
       appears, glossed as
       <quote>my car</quote>. Although it might not seem so, this sumti actually contains a relative phrase. When a sumti appears between a descriptor and its description selbri, it is actually a
       <valsi>pe</valsi>
@@ -1481,7 +1481,7 @@
         <anchor xml:id="c8e7d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le mi karce cu xunre</jbo>
+        <jbo>lo mi karce cu xunre</jbo>
         <gloss>-- My car -- is-red.</gloss>
       </interlinear-gloss>
     </example>
@@ -1493,7 +1493,7 @@
       <title><anchor xml:id="c8e7d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le pe mi karce cu xunre</jbo>
+        <jbo>lo pe mi karce cu xunre</jbo>
         <gloss>The (associated-with me) car -- is-red.</gloss>
       </interlinear-gloss>
     </example>
@@ -1502,7 +1502,7 @@
       <title><anchor xml:id="c8e7d3" /></title>
 
       <interlinear-gloss>
-        <jbo>le karce pe mi cu xunre</jbo>
+        <jbo>lo karce pe mi cu xunre</jbo>
         <gloss>The car associated-with me -- is-red.</gloss>
       </interlinear-gloss>
     </example>
@@ -1517,11 +1517,11 @@
       <quote>possessive sumti</quote>. Of course, it does not really indicate possession in the sense of ownership, but like
       <valsi>pe</valsi>
       relative phrases, indicates only weak association; you can say
-      <jbophrase>le mi karce</jbophrase>
+      <jbophrase>lo mi karce</jbophrase>
       even if you've only borrowed it for the night. (In English,
       <quote>my car</quote>
       usually means
-      <jbophrase>le karce po mi</jbophrase>
+      <jbophrase>lo karce po mi</jbophrase>
       , but we do not have the same sense of possession in
       <quote>my seat on the bus</quote>
       ; Lojban simply makes the weaker sense the standard one.) The inner sumti,
@@ -1570,7 +1570,7 @@
       <title><anchor xml:id="c8e7d4" /></title>
 
       <interlinear-gloss>
-        <jbo>le - le nanmu ku karce cu blanu</jbo>
+        <jbo>lo - lo nanmu ku karce cu blanu</jbo>
         <gloss>The (associated-with the man ) car -- is-blue.</gloss>
         <natlang>The man's car is blue.</natlang>
       </interlinear-gloss>
@@ -1592,7 +1592,7 @@
       <title><anchor xml:id="c8e7d5" /><indexterm type="general"><primary>juror number 5</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le li mu jdice se--bende</jbo>
+        <jbo>lo li mu jdice se--bende</jbo>
         <gloss>The of-the-number five judging team-member</gloss>
         <natlang>Juror number 5</natlang>
       </interlinear-gloss>
@@ -1620,7 +1620,7 @@
       <title><anchor xml:id="c8e7d6" /></title>
 
       <interlinear-gloss>
-        <jbo>le mi noi sipna vau karce cu na klama</jbo>
+        <jbo>lo mi noi sipna vau karce cu na klama</jbo>
         <gloss>The of-me incidentally-which-( is-sleeping ) car -- isn't going.</gloss>
       </interlinear-gloss>
     </example>
@@ -1633,7 +1633,7 @@
       <title><anchor xml:id="c8e7d7" /></title>
 
       <interlinear-gloss>
-        <jbo>le mi karce poi sipna cu na klama</jbo>
+        <jbo>lo mi karce poi sipna cu na klama</jbo>
         <gloss>The of-me car which sleeps -- isn't going.</gloss>
       </interlinear-gloss>
     </example>
@@ -1685,7 +1685,7 @@
       <title><anchor xml:id="c8e8d2" /></title>
 
       <interlinear-gloss>
-        <jbo>lu mi klama le zarci li'u</jbo>
+        <jbo>lu mi klama lo zarci li'u</jbo>
         <gloss>[quote] I go-to the market [unquote]</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -1722,11 +1722,11 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>la'e poi tolcitno vau lu le xunre</jbo>
+        <jbo>la'e poi tolcitno vau lu lo xunre</jbo>
         <gloss>A-referent-of (which is-old ) [quote] The Red</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… cmaxirma li'u cu zvati le vu kumfa</jbo>
+        <jbo>… cmaxirma li'u cu zvati lo vu kumfa</jbo>
         <gloss>… Small-horse [unquote] - is-at the [far-distance] room.</gloss>
         <natlang>
           An old
@@ -1735,7 +1735,7 @@
         </natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent"><xref linkend="example-random-id-4sqi" /> is a bit complex, and may need some picking apart. The quotation <jbophrase>lu le xunre cmaxirma li'u</jbophrase> means the string of words <quote>The Red Pony</quote>. Leave out the <valsi>la'e</valsi> at the beginning of the sentence, and <xref linkend="example-random-id-4sqi" /> would claim that a certain string of words is in a room distant from the speaker. But obviously a string of words can't be in a room! The <valsi>la'e</valsi> modifies the sumti so that it refers not to the words themselves but to the referent of those words, a novel by John Steinbeck (presumably in Lojban translation). Which particular copy of <quote>The Red Pony</quote> is meant gets settled by the restrictive relative clause. <xref linkend="example-random-id-4sqi" /> means exactly the same as:</para>
+    <para role="indent"><xref linkend="example-random-id-4sqi" /> is a bit complex, and may need some picking apart. The quotation <jbophrase>lu lo xunre cmaxirma li'u</jbophrase> means the string of words <quote>The Red Pony</quote>. Leave out the <valsi>la'e</valsi> at the beginning of the sentence, and <xref linkend="example-random-id-4sqi" /> would claim that a certain string of words is in a room distant from the speaker. But obviously a string of words can't be in a room! The <valsi>la'e</valsi> modifies the sumti so that it refers not to the words themselves but to the referent of those words, a novel by John Steinbeck (presumably in Lojban translation). Which particular copy of <quote>The Red Pony</quote> is meant gets settled by the restrictive relative clause. <xref linkend="example-random-id-4sqi" /> means exactly the same as:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-yX24">
       <title>
         <indexterm type="general"><primary>red pony</primary></indexterm>
@@ -1743,11 +1743,11 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>la'e lu le xunre cmaxirma li'u lu'u</jbo>
+        <jbo>la'e lu lo xunre cmaxirma li'u lu'u</jbo>
         <gloss>A-referent-of ([quote] The Red Small-horse [unquote] )</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… poi to'ercitno cu zvati le vu kumfa</jbo>
+        <jbo>… poi to'ercitno cu zvati lo vu kumfa</jbo>
         <gloss>… which is-old - is-at the [far-distance] room.</gloss>
       </interlinear-gloss>
     </example>
@@ -1767,7 +1767,7 @@
         <gloss>That-named Frank and that-named George incidentally-who</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… nanmu cu klama le zdani</jbo>
+        <jbo>… nanmu cu klama lo zdani</jbo>
         <gloss>… is-a-man - go-to the house.</gloss>
         <natlang>Frank and George, who is a man, go to the house.</natlang>
       </interlinear-gloss>
@@ -1791,7 +1791,7 @@
         <gloss>(That-named Frank and that-named George )</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… noi nanmu cu klama le zdani</jbo>
+        <jbo>… noi nanmu cu klama lo zdani</jbo>
         <gloss>… incidentally-who are-men -- go to-the house.</gloss>
         <natlang>Frank and George, who are men, go to the house.</natlang>
       </interlinear-gloss>
@@ -1815,7 +1815,7 @@
         <gloss>That-named Frank and (that-named George who</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… pu bajra cu klama le zdani</jbo>
+        <jbo>… pu bajra cu klama lo zdani</jbo>
         <gloss>… [past] runs) -- go-to the house.</gloss>
         <natlang>Frank and George, who ran, go to the house.</natlang>
       </interlinear-gloss>
@@ -1828,7 +1828,7 @@
         <gloss>(That-named Frank and that-named George )</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… noi pu bajra cu klama le zdani</jbo>
+        <jbo>… noi pu bajra cu klama lo zdani</jbo>
         <gloss>… who [past] run -- go-to the house.</gloss>
         <natlang>Frank and George, who ran, go to the house.</natlang>
       </interlinear-gloss>
@@ -1966,7 +1966,7 @@
       <title><anchor xml:id="c8e10d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le prenu poi zvati le kumfa poi blanu cu masno</jbo>
+        <jbo>lo prenu poi zvati lo kumfa poi blanu cu masno</jbo>
         <gloss>The person who is-in the room which is-blue -- is-slow.</gloss>
       </interlinear-gloss>
     </example>
@@ -1996,7 +1996,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le prenu poi zvati le kumfa poi ke'axire zbasu ke'a cu masno</jbo>
+        <jbo>lo prenu poi zvati lo kumfa poi ke'axire zbasu ke'a cu masno</jbo>
         <gloss>The person who is-in the room which IT-sub-2 built IT -- is-slow.</gloss>
         <natlang>The person who is in the room which he built is slow.</natlang>
 
@@ -2027,11 +2027,11 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le prenu poi ke'a goi ko'a zo'u</jbo>
+        <jbo>lo prenu poi ke'a goi ko'a zo'u</jbo>
         <gloss>The man who (IT = it1 :</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… ko'a zvati le kumfa poi ke'a goi ko'e zo'u</jbo>
+        <jbo>… ko'a zvati lo kumfa poi ke'a goi ko'e zo'u</jbo>
         <gloss>… it1 is-in the room which (IT = it2 :</gloss>
       </interlinear-gloss>
       <interlinear-gloss>

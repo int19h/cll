@@ -255,7 +255,7 @@
       <title><anchor xml:id="c13e2d1" /></title>
 
       <interlinear-gloss>
-        <jbo>.ua mi facki fi le mi mapku</jbo>
+        <jbo>.ua mi facki fi lo mi mapku</jbo>
         <gloss>[Eureka!] I found-out about the of-me hat.</gloss>
         <natlang>[Eureka!] I found my hat! [emphasizes the discovery of the hat]</natlang>
       </interlinear-gloss>
@@ -264,7 +264,7 @@
       <title><anchor xml:id="c13e2d2" /></title>
 
       <interlinear-gloss>
-        <jbo>.u'a mi facki fi le mi mapku</jbo>
+        <jbo>.u'a mi facki fi lo mi mapku</jbo>
         <gloss>[Gain!] I found-out about the of-me hat.</gloss>
         <natlang>[Gain!] I found my hat! [emphasizes the obtaining of the hat]</natlang>
       </interlinear-gloss>
@@ -273,7 +273,7 @@
       <title><anchor xml:id="c13e2d3" /></title>
 
       <interlinear-gloss>
-        <jbo>.ui mi facki fi le mi mapku</jbo>
+        <jbo>.ui mi facki fi lo mi mapku</jbo>
         <gloss>[Yay!] I found-out about the of-me hat.</gloss>
         <natlang>[Yay!] I found my hat! [emphasizes the feeling of happiness]</natlang>
       </interlinear-gloss>
@@ -282,7 +282,7 @@
       <title><anchor xml:id="c13e2d4" /></title>
 
       <interlinear-gloss>
-        <jbo>.uo mi facki fi le mi mapku</jbo>
+        <jbo>.uo mi facki fi lo mi mapku</jbo>
         <gloss>[At-last!] I found-out about the of-me hat.</gloss>
         <natlang>[At last!] I found my hat! [emphasizes that the finding is complete]</natlang>
       </interlinear-gloss>
@@ -727,7 +727,7 @@
       <title><anchor xml:id="c13e3d1" /><indexterm type="lojban-word"><primary>.a'a</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>.a'a do zgana le veltivni</jbo>
+        <jbo>.a'a do zgana lo veltivni</jbo>
         <gloss>[attentive] you observe the television-receiver.</gloss>
         <natlang>I'm noticing that you are watching the TV.</natlang>
       </interlinear-gloss>
@@ -745,7 +745,7 @@
       <title><anchor xml:id="c13e3d3" /><indexterm type="lojban-word"><primary>.ai</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>.ai mi muvgau do le ckana</jbo>
+        <jbo>.ai mi muvgau do lo ckana</jbo>
         <gloss>[intent] I transfer you to-the bed.</gloss>
         <natlang>I'm putting you to bed.</natlang>
       </interlinear-gloss>
@@ -754,7 +754,7 @@
       <title><anchor xml:id="c13e3d4" /><indexterm type="lojban-word"><primary>.a'i</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>.a'i mi ba gasnu le nu do cikna binxo</jbo>
+        <jbo>.a'i mi ba gasnu lo nu do cikna binxo</jbo>
         <gloss>[effort] I [future] am-the-actor-in the event-of you awake-ly become.</gloss>
         <natlang>It'll be hard for me to wake you up.</natlang>
       </interlinear-gloss>
@@ -763,7 +763,7 @@
       <title><anchor xml:id="c13e3d5" /><indexterm type="lojban-word"><primary>.a'o</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>.a'o mi kanryze'a ca le bavlamdei</jbo>
+        <jbo>.a'o mi kanryze'a ca lo bavlamdei</jbo>
         <gloss>[hope] I am-health-increased at-time the future-adjacent-day.</gloss>
         <natlang>I hope I feel better tomorrow!</natlang>
       </interlinear-gloss>
@@ -853,7 +853,7 @@
       <title><anchor xml:id="c13e3d8" /><indexterm type="lojban-word"><primary>.e'a</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>.e'a do sazri le karce</jbo>
+        <jbo>.e'a do sazri lo karce</jbo>
         <gloss>[permission] you drive the car.</gloss>
         <natlang>Sure, you can drive the car.</natlang>
       </interlinear-gloss>
@@ -871,7 +871,7 @@
       <title><anchor xml:id="c13e3d10" /><indexterm type="lojban-word"><primary>.ei</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>.ei mi tisygau le karce ctilyvau</jbo>
+        <jbo>.ei mi tisygau lo karce ctilyvau</jbo>
         <gloss>[obligation] I fill the car-type-of petroleum-container.</gloss>
         <natlang>I should fill the car's gas tank.</natlang>
       </interlinear-gloss>
@@ -898,7 +898,7 @@
       <title><anchor xml:id="c13e3d12" /><indexterm type="general"><primary>.e'u</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>.e'u do klama le panka</jbo>
+        <jbo>.e'u do klama lo panka</jbo>
         <gloss>[suggestion] you go to-the park.</gloss>
         <natlang>I suggest going to the park.</natlang>
       </interlinear-gloss>
@@ -939,7 +939,7 @@
       <title><anchor xml:id="c13e3d13" /><indexterm type="lojban-word"><primary>.ianai</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>.ianai do pu pensi le nu tcica mi</jbo>
+        <jbo>.ianai do pu pensi lo nu tcica mi</jbo>
         <gloss>[disbelief] you [past] think the event-of deceiving me.</gloss>
         <natlang>I can't believe you thought you could fool me.</natlang>
       </interlinear-gloss>
@@ -948,7 +948,7 @@
       <title><anchor xml:id="c13e3d14" /><indexterm type="lojban-word"><primary>.i'anai</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>do .i'anai na xruti do le zdani</jbo>
+        <jbo>do .i'anai na xruti do lo zdani</jbo>
         <gloss>You [blame] did-not return you to-the house.</gloss>
         <natlang>I blame you for not coming home.</natlang>
       </interlinear-gloss>
@@ -961,7 +961,7 @@
         <gloss>[agreement] I did-not express a-symbol-for</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le tcika be le nu xruti</jbo>
+        <jbo>… lo tcika be lo nu xruti</jbo>
         <gloss>… the time-of-day of the event-of return.</gloss>
         <natlang>It's true I didn't tell you when to come back.</natlang>
       </interlinear-gloss>
@@ -996,7 +996,7 @@
       <title><anchor xml:id="c13e3d17" /><indexterm type="lojban-word"><primary>.e'a</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>do sazri le karce .i .e'a</jbo>
+        <jbo>do sazri lo karce .i .e'a</jbo>
         <gloss>You drive the car. - [Permission].</gloss>
         <natlang>You're driving (or will drive) the car, and that's fine.</natlang>
       </interlinear-gloss>
@@ -1506,7 +1506,7 @@
       <title><anchor xml:id="c13e7d1" /><indexterm type="lojban-word"><primary>ga'inai</primary></indexterm><indexterm type="general"><primary>condescension</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>ko ga'inai nenri klama le mi zdani</jbo>
+        <jbo>ko ga'inai nenri klama lo mi zdani</jbo>
         <gloss>You-imperative [low-rank!] enter-type-of come-to the of-me house.</gloss>
         <natlang>I would be honored if you would enter my residence.</natlang>
       </interlinear-gloss>
@@ -1518,7 +1518,7 @@
       <title><anchor xml:id="c13e7d2" /><indexterm type="lojban-word"><primary>ga'icu'i</primary></indexterm><indexterm type="general"><primary>deference</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>ko ga'icu'i nenri klama le mi zdani</jbo>
+        <jbo>ko ga'icu'i nenri klama lo mi zdani</jbo>
         <gloss>You-imperative [equal-rank!] enter-type-of come-to the of-me house.</gloss>
         <natlang>Come on in to my place.</natlang>
       </interlinear-gloss>
@@ -1527,7 +1527,7 @@
       <title><anchor xml:id="c13e7d3" /><indexterm type="lojban-word"><primary>ga'i</primary></indexterm><indexterm type="general"><primary>inferior</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>ko ga'i nenri klama le mi zdani</jbo>
+        <jbo>ko ga'i nenri klama lo mi zdani</jbo>
         <gloss>You-imperative [high-rank!] enter-type-of come-to the of-me house.</gloss>
         <natlang>You! Get inside!</natlang>
       </interlinear-gloss>
@@ -1543,7 +1543,7 @@
       <title><anchor xml:id="c13e7d4" /><indexterm type="lojban-word"><primary>ga'i</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>ga'i le xarju pu citka</jbo>
+        <jbo>ga'i lo xarju pu citka</jbo>
         <gloss>[High-rank!] the pig [past] eats.</gloss>
         <natlang>The pig ate (which is an event beneath my notice).</natlang>
       </interlinear-gloss>
@@ -1646,7 +1646,7 @@
       <title><anchor xml:id="c13e7d9" /><indexterm type="lojban-word"><primary>be'u</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le cukta be'u cu zvati ma</jbo>
+        <jbo>lo cukta be'u cu zvati ma</jbo>
         <gloss>The book [Needed!] - is-at-location [what-sumti?]</gloss>
         <natlang>Where's the book? &ndash; I need it!</natlang>
       </interlinear-gloss>
@@ -2066,7 +2066,7 @@
       <title><anchor xml:id="c13e10d10" /><indexterm type="general"><primary>ship sank</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le bloti .iidai .uu pu klama le xasloi</jbo>
+        <jbo>lo bloti .iidai .uu pu klama lo xasloi</jbo>
         <gloss>The ship [fear-empathy] [pity!] [past] goes-to the ocean-floor.</gloss>
         <natlang>Fearfully the ship, poor thing, sank.</natlang>
       </interlinear-gloss>
@@ -2143,7 +2143,7 @@
       <title><anchor xml:id="c13e10d13" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ca ba'o prami do ja'e le nu mi badri</jbo>
+        <jbo>mi ca ba'o prami do ja'e lo nu mi badri</jbo>
         <gloss>I [present] [cessitive] love you with-result the event-of (I am-sad).</gloss>
         <natlang>I no longer love you; therefore, I am sad.</natlang>
       </interlinear-gloss>
@@ -2251,7 +2251,7 @@
         <indexterm type="general"><primary>husband and wife</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>ca'e le re do cu simxu speni</jbo>
+        <jbo>ca'e lo re do cu simxu speni</jbo>
         <gloss>[I-define!] the two of-you - are-mutual spouses.</gloss>
       </interlinear-gloss>
     </example>
@@ -2265,7 +2265,7 @@
       <title><anchor xml:id="c13e11d2" /><indexterm type="general"><primary>experienced</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>ba'acu'i le tuple be mi cu se--cortu</jbo>
+        <jbo>ba'acu'i lo tuple be mi cu se--cortu</jbo>
         <gloss>[I-experience!] the leg of me - is-the-locus-of-pain.</gloss>
         <natlang>My leg hurts.</natlang>
       </interlinear-gloss>
@@ -2543,7 +2543,7 @@
         <indexterm type="general"><primary>hit cousin</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi po'o darxi le mi tamne fo le nazbi</jbo>
+        <jbo>mi po'o darxi lo mi tamne fo lo nazbi</jbo>
         <gloss>I [only] hit the of-me cousin at-locus the nose.</gloss>
         <natlang>Only I (nobody else) hit my cousin on his nose.</natlang>
       </interlinear-gloss>
@@ -2557,7 +2557,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi darxi po'o le mi tamne fo le nazbi</jbo>
+        <jbo>mi darxi po'o lo mi tamne fo lo nazbi</jbo>
         <gloss>I hit [only] the of-me cousin at-locus the nose.</gloss>
         <natlang>I only hit my cousin on his nose (I did nothing else to him).</natlang>
       </interlinear-gloss>
@@ -2571,7 +2571,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi darxi le mi tamne ku po'o fo le nazbi</jbo>
+        <jbo>mi darxi lo mi tamne ku po'o fo lo nazbi</jbo>
         <gloss>I hit the of-me cousin - [only] at-locus the nose.</gloss>
         <natlang>I hit only my cousin on his nose (no one else).</natlang>
       </interlinear-gloss>
@@ -2585,7 +2585,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi darxi le mi tamne fo le nazbi ku po'o</jbo>
+        <jbo>mi darxi lo mi tamne fo lo nazbi ku po'o</jbo>
         <gloss>I hit the of-me cousin at-locus the nose - [only].</gloss>
         <natlang>I hit my cousin only on his nose (nowhere else).</natlang>
       </interlinear-gloss>
@@ -3019,11 +3019,11 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>ganai da'i do viska le mi citno mensi</jbo>
+        <jbo>ganai da'i do viska lo mi citno mensi</jbo>
         <gloss>If [hypothetical] you see the of-me young sister,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… gi ju'o do djuno le du'u ri pazvau</jbo>
+        <jbo>… gi ju'o do djuno lo du'u ri pazvau</jbo>
         <gloss>… then [certain] you know the predication-of she is-pregnant.</gloss>
         <natlang>If you were to see my younger sister, you would certainly know she is pregnant.</natlang>
       </interlinear-gloss>
@@ -3046,11 +3046,11 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>ganai da'inai do viska le mi citno mensi</jbo>
+        <jbo>ganai da'inai do viska lo mi citno mensi</jbo>
         <gloss>If [factual] you see the of-me young sister,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… gi ju'o do djuno le du'u ri pazvau</jbo>
+        <jbo>… gi ju'o do djuno lo du'u ri pazvau</jbo>
         <gloss>… then [certainty] you know the predication-of she is-pregnant.</gloss>
         <natlang>If you saw my younger sister, you would certainly know she is pregnant.</natlang>
       </interlinear-gloss>
@@ -3146,18 +3146,18 @@
       <title><anchor xml:id="c13e13d1" /><indexterm type="general"><primary>huh?</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi nelci le ctuca</jbo>
+        <jbo>mi nelci lo ctuca</jbo>
         <gloss>I like the teacher.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>.i le ki'a ctuca</jbo>
+        <jbo>.i lo ki'a ctuca</jbo>
         <gloss>- The which teacher?</gloss>
         <natlang>Which teacher?</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
       Here, the second speaker does not understand the referent of the sumti
-      <jbophrase>le ctuca</jbophrase>
+      <jbophrase>lo ctuca</jbophrase>
       , and so echoes back the sumti with the confusion marker.
     </para>
     <para>
@@ -3288,7 +3288,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi viska le blanu pe'a zdani</jbo>
+        <jbo>mi viska lo blanu pe'a zdani</jbo>
         <gloss>I see the blue [figurative] house.</gloss>
         <natlang>
           I see the
@@ -3419,7 +3419,7 @@
       <title><anchor xml:id="c13e13d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi djuno le du'u dakau klama le zarci</jbo>
+        <jbo>mi djuno lo du'u dakau klama lo zarci</jbo>
         <gloss>I know the predication-of somebody-[indirect?] goes to-the store.</gloss>
         <natlang>I know who goes to the store.</natlang>
       </interlinear-gloss>
@@ -3950,7 +3950,7 @@
       indicate the speaker of each sentence.
     </para>
     <interlinear-gloss>
-      <jbo>la .rik. .e la .alis. nerkla le kafybarja</jbo>
+      <jbo>la .rik. .e la .alis. nerkla lo kafybarja</jbo>
       <gloss>That-name Rick and that-named Alice in-go to-the coffee-bar.</gloss>
       <natlang>Rick and Alice go into the coffee bar.</natlang>
     </interlinear-gloss>
@@ -3987,7 +3987,7 @@
       <gloss>- [Comment] that-named Pam says, [end-comment] [Please] Alice,</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
-      <jbo>… xu mi ba terfriti le nunspenybi'o</jbo>
+      <jbo>… xu mi ba terfriti lo nunspenybi'o</jbo>
       <gloss>… [Is-it-true?] I [future] receive-offer-of the event-of-spouse-becoming?</gloss>
       <natlang>
         Pam said,
@@ -4003,7 +4003,7 @@
       <gloss>… [Greetings] [future] [medium] spouse(s),</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
-      <jbo>… a'o le re do lifri le ka gleki</jbo>
+      <jbo>… a'o lo re do lifri lo ka gleki</jbo>
       <gloss>… [Hope] the two of-you experience the property-of being-happy.</gloss>
       <natlang>
         Mark said,
@@ -4085,7 +4085,7 @@
       </natlang>
     </interlinear-gloss>
     <interlinear-gloss>
-      <jbo>.i sei le selfu cu cusku se'u re'i</jbo>
+      <jbo>.i sei lo selfu cu cusku se'u re'i</jbo>
       <gloss>- [Comment] the server - says, [end-comment] [Ready-to-receive].</gloss>
       <natlang>
         The waiter replied,
@@ -4097,11 +4097,11 @@
       <gloss>- [Comment] that-named Pam says, [end-comment]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
-      <jbo>… .e'o ko selfu le traji xamgu ckafi</jbo>
+      <jbo>… .e'o ko selfu lo traji xamgu ckafi</jbo>
       <gloss>… [Petition] [You-imperative] serve the (superlatively good) coffee</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
-      <jbo>… le ba za speni fi'o pleji mi</jbo>
+      <jbo>… lo ba za speni fi'o pleji mi</jbo>
       <gloss>… to-the [future] [medium] spouse with payer me.</gloss>
       <natlang>
         Pam said,
@@ -4109,7 +4109,7 @@
       </natlang>
     </interlinear-gloss>
     <interlinear-gloss>
-      <jbo>.i sei le selfu cu cusku se'u vi'o</jbo>
+      <jbo>.i sei lo selfu cu cusku se'u vi'o</jbo>
       <gloss>- [Comment] the server - says, [end-comment] [Will-comply]</gloss>
       <natlang>
         <quote>Gotcha</quote>
@@ -4137,7 +4137,7 @@
       <gloss>- [Comment] that-named John says, [end-comment]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
-      <jbo>… .y. mi .y. mutce spopa .y. le nu le speni</jbo>
+      <jbo>… .y. mi .y. mutce spopa .y. lo nu lo speni</jbo>
       <gloss>… [Uh] I [uh] very [nonexistent-gismu] [uh] the event-of the spouse</gloss>
     </interlinear-gloss>
     <interlinear-gloss>

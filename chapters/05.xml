@@ -1068,7 +1068,7 @@
       <title><anchor xml:id="c5e6d13" /></title>
 
       <interlinear-gloss>
-        <jbo>le bajra cu jinga ja te jinga</jbo>
+        <jbo>lo bajra cu jinga ja te jinga</jbo>
         <natlang>the runner(s) is/are winner(s) or loser(s).</natlang>
       </interlinear-gloss>
     </example>
@@ -1435,7 +1435,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>ti cmalu be le ka se canlu</jbo>
+        <jbo>ti cmalu be lo ka se canlu</jbo>
         <gloss>This is-a-small (in-dimension the property-of [swap--x<subscript>1</subscript>--and--x<subscript>2</subscript>] volume</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -1443,7 +1443,7 @@
         <gloss>… by-standard the-typical school) -</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… nixli be le nanca be li mu be'o</jbo>
+        <jbo>… nixli be lo nanca be li mu be'o</jbo>
         <gloss>… (girl (of the years-in-duration of the-number five) -</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -1459,11 +1459,11 @@
         <gloss>with-subject poems</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>le mela .nu,IORK. prenu</jbo>
+        <jbo>lo mela .nu,IORK. prenu</jbo>
         <gloss>for-audience-the among-that-named New-York persons</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>le jecta</jbo>
+        <jbo>lo jecta</jbo>
         <gloss>with-operator-the state.</gloss>
         <natlang>This is a school, small in volume compared to the typical school, pertaining to five-year-old girls (by American standards), in Brooklyn, teaching poetry to the New York community and operated by the state.</natlang>
       </interlinear-gloss>
@@ -1485,7 +1485,7 @@
       <title><anchor xml:id="c5e7d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama be le zarci bei le zdani [be'o]</jbo>
+        <jbo>mi klama be lo zarci bei lo zdani [be'o]</jbo>
         <gloss>I go ( to-the market - from-the house ).</gloss>
       </interlinear-gloss>
     </example>
@@ -1494,7 +1494,7 @@
       <title><anchor xml:id="c5e7d5" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci le zdani</jbo>
+        <jbo>mi klama lo zarci lo zdani</jbo>
         <gloss>I go to-the market from-the house.</gloss>
       </interlinear-gloss>
     </example>
@@ -1624,7 +1624,7 @@
       <title><anchor xml:id="c5e7d11" /></title>
 
       <interlinear-gloss>
-        <jbo>le xamgu be do noi barda cu zdani</jbo>
+        <jbo>lo xamgu be do noi barda cu zdani</jbo>
         <gloss>The good-thing for you (who are-large) - is-a-house.</gloss>
       </interlinear-gloss>
     </example>
@@ -1632,7 +1632,7 @@
       <title><anchor xml:id="c5e7d12" /></title>
 
       <interlinear-gloss>
-        <jbo>le xamgu be do be'o noi barda cu zdani</jbo>
+        <jbo>lo xamgu be do be'o noi barda cu zdani</jbo>
         <gloss>The (good-thing for you ) (which is-large) - is-a-house</gloss>
       </interlinear-gloss>
     </example>
@@ -1655,7 +1655,7 @@
       <title><anchor xml:id="c5e7d13" /></title>
 
       <interlinear-gloss>
-        <jbo>le xamgu be le ctuca [ku] be'o zdani</jbo>
+        <jbo>lo xamgu be lo ctuca [ku] be'o zdani</jbo>
         <gloss>the good (for the teacher) - - house</gloss>
       </interlinear-gloss>
     </example>
@@ -1669,7 +1669,7 @@
       the
       <valsi>be'o</valsi>
       must match it, whereas it may be confusing which occurrence of
-      <valsi>le</valsi>
+      <valsi>lo</valsi>
       the
       <valsi>ku</valsi>
       terminates (in fact the second one is correct).
@@ -1755,7 +1755,7 @@
       <title><anchor xml:id="c5e8d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama be le zarci bei le zdani be'o troci</jbo>
+        <jbo>mi klama be lo zarci bei lo zdani be'o troci</jbo>
         <gloss>I am-a-(goer to the market from the house ) type-of-trier.</gloss>
         <natlang>I try to go to the market from the house.</natlang>
 
@@ -1772,7 +1772,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi troci co klama le zarci le zdani</jbo>
+        <jbo>mi troci co klama lo zarci lo zdani</jbo>
         <gloss>I am-a-trier of-type (goer to-the market from-the house).</gloss>
         <natlang>I try to go to the market from the house.</natlang>
 
@@ -1807,9 +1807,9 @@
       <jbophrase>troci co klama</jbophrase>,
       which is the x<subscript>1</subscript> place of
       <valsi>troci</valsi>. The other places of the selbri remain unfilled. The trailing sumti
-      <jbophrase>le zarci</jbophrase>
+      <jbophrase>lo zarci</jbophrase>
       and
-      <jbophrase>le zdani</jbophrase>
+      <jbophrase>lo zdani</jbophrase>
       do not occupy selbri places, despite appearances.
     </para>
     <para>
@@ -1972,7 +1972,7 @@
       <title><anchor xml:id="c5e8d13" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama be le zarci be'o co sutra</jbo>
+        <jbo>mi klama be lo zarci be'o co sutra</jbo>
         <gloss>I am-a-goer ( to-the store ) of-type quick.</gloss>
         <natlang>I go to the store quickly.</natlang>
       </interlinear-gloss>
@@ -2035,7 +2035,7 @@
       <title><anchor xml:id="c5e9d1" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. klama le zarci</jbo>
+        <jbo>la .djan. klama lo zarci</jbo>
         <gloss>That-named John goes-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -2057,7 +2057,7 @@
       <title><anchor xml:id="c5e9d3" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. klama be le zarci be'o - troci</jbo>
+        <jbo>la .djan. klama be lo zarci be'o - troci</jbo>
         <gloss>That-named John is-a-goer ( to-the market ) type-of trier.</gloss>
       </interlinear-gloss>
     </example>
@@ -2260,7 +2260,7 @@
         <anchor xml:id="c5e10d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le ci nolraitru</jbo>
+        <jbo>lo ci nolraitru</jbo>
         <gloss>the three noblest-governors</gloss>
         <natlang>the three kings</natlang>
       </interlinear-gloss>
@@ -2271,7 +2271,7 @@
       <title><anchor xml:id="c5e10d2" /></title>
 
       <interlinear-gloss>
-        <jbo>la .BALtazar. cu me le--ci--nolraitru</jbo>
+        <jbo>la .BALtazar. cu me lo--ci--nolraitru</jbo>
         <gloss>
           That-named Balthazar - is-among-the-referents-of
           <quote>the three kings.</quote>
@@ -2284,7 +2284,7 @@
       <title><anchor xml:id="c5e10d3" /></title>
 
       <interlinear-gloss>
-        <jbo>la .kaspar. cu me le ci nolraitru</jbo>
+        <jbo>la .kaspar. cu me lo ci nolraitru</jbo>
         <natlang>Caspar is one of the three kings.</natlang>
       </interlinear-gloss>
     </example>
@@ -2293,7 +2293,7 @@
       <title><anchor xml:id="c5e10d4" /></title>
 
       <interlinear-gloss>
-        <jbo>la .melxiior. cu me le ci nolraitru</jbo>
+        <jbo>la .melxiior. cu me lo ci nolraitru</jbo>
         <natlang>Melchior is one of the three kings.</natlang>
       </interlinear-gloss>
     </example>
@@ -2392,7 +2392,7 @@
       <title><anchor xml:id="c5e10d8" /></title>
 
       <interlinear-gloss>
-        <jbo>re me le ci nolraitru .e la .djan. [me'u] cu blabi</jbo>
+        <jbo>re me lo ci nolraitru .e la .djan. [me'u] cu blabi</jbo>
         <natlang>
           Two of the group
           <quote>the three kings and John</quote>
@@ -2404,7 +2404,7 @@
       <title><anchor xml:id="c5e10d9" /></title>
 
       <interlinear-gloss>
-        <jbo>re me le ci nolraitru me'u .e la .djan. cu blabi</jbo>
+        <jbo>re me lo ci nolraitru me'u .e la .djan. cu blabi</jbo>
         <natlang>Two of the three kings, and John, are white.</natlang>
       </interlinear-gloss>
     </example>
@@ -2427,7 +2427,7 @@
       <title><anchor xml:id="c5e10d10" /></title>
 
       <interlinear-gloss>
-        <jbo>ta me--la'e--le--se--cusku--be--do me'u - cukta</jbo>
+        <jbo>ta me--la'e--lo--se--cusku--be--do me'u - cukta</jbo>
         <gloss>That is-a-(what-you-said) - type-of book.</gloss>
         <natlang>That is the kind of book you were talking about.</natlang>
       </interlinear-gloss>
@@ -2441,7 +2441,7 @@
       <title><anchor xml:id="c5e10d11" /></title>
 
       <interlinear-gloss>
-        <jbo>le me--le--ci--nolraitru [ku] me'u nunsalci</jbo>
+        <jbo>lo me--lo--ci--nolraitru [ku] me'u nunsalci</jbo>
         <gloss>the (the--three--kings) - - type-of-event-of-celebrating</gloss>
         <natlang>the Three Kings celebration</natlang>
 
@@ -2510,7 +2510,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>la .alis. cu cadzu klama le zarci</jbo>
+        <jbo>la .alis. cu cadzu klama lo zarci</jbo>
         <gloss>That-named Alice - is-a-walker type-of-goer-to the market.</gloss>
         <gloss>That-named Alice - walkingly goes-to the market.</gloss>
         <natlang>Alice walks to the market.</natlang>
@@ -2518,14 +2518,14 @@
     </example>
     <para role="indent">
       To convert this sentence so that
-      <jbophrase>le zarci</jbophrase>
+      <jbophrase>lo zarci</jbophrase>
       is in the x<subscript>1</subscript> place, one correct way is:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-4mbn">
       <title><anchor xml:id="c5e11d4" /></title>
 
       <interlinear-gloss>
-        <jbo>le zarci cu se</jbo>
+        <jbo>lo zarci cu se</jbo>
         <gloss>The market - is-a-[swap--x<subscript>1</subscript>/x<subscript>2</subscript>]</gloss>
         <gloss>The market - -</gloss>
       </interlinear-gloss>
@@ -2553,7 +2553,7 @@
       <title><anchor xml:id="c5e11d5" /></title>
 
       <interlinear-gloss>
-        <jbo>le zarci cu se cadzu</jbo>
+        <jbo>lo zarci cu se cadzu</jbo>
         <gloss>The market - (is-a-[swap--x<subscript>1</subscript>/x<subscript>2</subscript>] walker)</gloss>
         <gloss>The market - - is-a-walking-surface</gloss>
       </interlinear-gloss>
@@ -2574,7 +2574,7 @@
       <title><anchor xml:id="c5e11d6" /></title>
 
       <interlinear-gloss>
-        <jbo>le zarci cu cadzu se--klama la .alis.</jbo>
+        <jbo>lo zarci cu cadzu se--klama la .alis.</jbo>
         <gloss>The market - walkingly is-gone-to-by that-named Alice.</gloss>
       </interlinear-gloss>
     </example>
@@ -2619,7 +2619,7 @@
       <title><anchor xml:id="c5e12d1" /></title>
 
       <interlinear-gloss>
-        <jbo>la .alis. cu na'e ke cadzu klama [ke'e] le zarci</jbo>
+        <jbo>la .alis. cu na'e ke cadzu klama [ke'e] lo zarci</jbo>
         <gloss>That-named Alice - non- ( walkingly goes-to ) the market.</gloss>
         <natlang>Alice doesn't walk to the market.</natlang>
       </interlinear-gloss>
@@ -2635,7 +2635,7 @@
       <title><anchor xml:id="c5e12d2" /></title>
 
       <interlinear-gloss>
-        <jbo>la .alis. cu na'e cadzu klama le zarci</jbo>
+        <jbo>la .alis. cu na'e cadzu klama lo zarci</jbo>
         <gloss>That-named Alice - non- walkingly goes-to the market.</gloss>
         <natlang>Alice doesn't walk to the market.</natlang>
       </interlinear-gloss>
@@ -2692,7 +2692,7 @@
       <title><anchor xml:id="c5e12d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e sutra bo cadzu be fi le birka be'o klama le zarci</jbo>
+        <jbo>mi na'e sutra bo cadzu be fi lo birka be'o klama lo zarci</jbo>
         <gloss>I ((non- quickly) - (walking - using the arms )) go-to the market.</gloss>
         <natlang>I go to the market, walking using my arms other than quickly.</natlang>
       </interlinear-gloss>
@@ -2709,11 +2709,11 @@
       <title><anchor xml:id="c5e12d5" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e ke sutra cadzu be fi le birka [be'o]</jbo>
+        <jbo>mi na'e ke sutra cadzu be fi lo birka [be'o]</jbo>
         <gloss>I non- ( quickly (walking - using the arms )</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… ke'e klama le zarci</jbo>
+        <jbo>… ke'e klama lo zarci</jbo>
         <gloss>… ) go-to the market.</gloss>
         <natlang>I go to the market, other than by walking quickly on my arms.</natlang>
       </interlinear-gloss>
@@ -2732,11 +2732,11 @@
       <title><anchor xml:id="c5e12d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi sutra bo cadzu be fi le birka be'o</jbo>
+        <jbo>mi sutra bo cadzu be fi lo birka be'o</jbo>
         <gloss>I (quickly - (walking - using the arms )</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… je masno klama le zarci</jbo>
+        <jbo>… je masno klama lo zarci</jbo>
         <gloss>… and slowly) go-to the market.</gloss>
         <natlang>I go to the market, both quickly walking using my arms and slowly.</natlang>
       </interlinear-gloss>
@@ -2745,11 +2745,11 @@
       <title><anchor xml:id="c5e12d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ke sutra cadzu be fi le birka [be'o] ke'e</jbo>
+        <jbo>mi ke sutra cadzu be fi lo birka [be'o] ke'e</jbo>
         <gloss>I ( (quickly (walking - using the arms ) )</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… je masno klama le zarci</jbo>
+        <jbo>… je masno klama lo zarci</jbo>
         <gloss>… and slowly) go-to the market.</gloss>
         <natlang>I go to the market, both quickly walking using my arms and slowly.</natlang>
       </interlinear-gloss>
@@ -2767,11 +2767,11 @@
       <title><anchor xml:id="c5e12d8" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e sutra bo cadzu be fi le birka be'o</jbo>
+        <jbo>mi na'e sutra bo cadzu be fi lo birka be'o</jbo>
         <gloss>I ((non- quickly) - (walking - using the arms )</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… je masno klama le zarci</jbo>
+        <jbo>… je masno klama lo zarci</jbo>
         <gloss>… and slowly) go-to the market.</gloss>
         <natlang>I go to the market, both walking using my arms other than quickly, and also slowly.</natlang>
       </interlinear-gloss>
@@ -2780,11 +2780,11 @@
       <title><anchor xml:id="c5e12d9" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e ke sutra cadzu be fi le birka [be'o] ke'e</jbo>
+        <jbo>mi na'e ke sutra cadzu be fi lo birka [be'o] ke'e</jbo>
         <gloss>I (non ( quickly (walking - using the arms) - )</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… je masno klama le zarci</jbo>
+        <jbo>… je masno klama lo zarci</jbo>
         <gloss>… and slowly) go-to the market.</gloss>
         <natlang>I go to the market, both other than quickly walking using my arms, and also slowly.</natlang>
       </interlinear-gloss>
@@ -2818,11 +2818,11 @@
       <title><anchor xml:id="c5e12d10" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e ke sutra bo cadzu be fi le birka be'o</jbo>
+        <jbo>mi na'e ke sutra bo cadzu be fi lo birka be'o</jbo>
         <gloss>I non- ( quickly - walking [ using the arms ]</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… je masno klama [ke'e] le zarci</jbo>
+        <jbo>… je masno klama [ke'e] lo zarci</jbo>
         <gloss>… and slowly go-to ) the market.</gloss>
         <natlang>I do something other than quickly both going to the market walking using my arms and slowly going to the market.</natlang>
       </interlinear-gloss>
@@ -2838,11 +2838,11 @@
       <title><anchor xml:id="c5e12d11" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e ke sutra bo cadzu be fi le birka je masno</jbo>
+        <jbo>mi na'e ke sutra bo cadzu be fi lo birka je masno</jbo>
         <gloss>I non ( quickly - walk - on-my (the arm-type and slow)</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… klama [be'o] [ke'e] - le zarci</jbo>
+        <jbo>… klama [be'o] [ke'e] - lo zarci</jbo>
         <gloss>… goers - ) on-surface the market.</gloss>
         <natlang>I do something other than quickly walking using the goers, both arm-type and slow, relative-to the market.</natlang>
       </interlinear-gloss>
@@ -2857,7 +2857,7 @@
       whose x<subscript>2</subscript> place is the surface walked upon. It is less than clear what an
       <quote>arm-type goer</quote>
       might be. Furthermore, since the x<subscript>3</subscript> place has been occupied by the linked sumti, the
-      <jbophrase>le zarci</jbophrase>
+      <jbophrase>lo zarci</jbophrase>
       following the selbri falls into the nonexistent x<subscript>4</subscript> place of
       <valsi>cadzu</valsi>. As a result, the whole example, though grammatical, is complete nonsense. (The bracketed Lojban words appear where a fluent Lojbanist would understand them to be implied.)
     </para>
@@ -2877,7 +2877,7 @@
   <section xml:id="section-bridi-negation-tenses">
     <title><anchor xml:id="c5s13" />Tenses and bridi negation</title>
     <para>A bridi can have cmavo associated with it which specify the time, place, or mode of action. For example, in</para>    <example role="interlinear-gloss-example" xml:id="example-random-id-uz13">      <title><anchor xml:id="c5e13d1" /></title>
-      <interlinear-gloss>        <jbo>mi pu klama le zarci</jbo>        <gloss>I [past] go-to the market.</gloss>
+      <interlinear-gloss>        <jbo>mi pu klama lo zarci</jbo>        <gloss>I [past] go-to the market.</gloss>
         <natlang>I went to the market.</natlang>
       </interlinear-gloss>
     </example>
@@ -2924,7 +2924,7 @@
       <title><anchor xml:id="c5e13d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na pu klama le zarci</jbo>
+        <jbo>mi na pu klama lo zarci</jbo>
         <natlang>It is false that I went to the market.</natlang>
         <natlang>I didn't go to the market.</natlang>
       </interlinear-gloss>
@@ -2942,7 +2942,7 @@
       <title><anchor xml:id="c5e13d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na na klama le zarci</jbo>
+        <jbo>mi na na klama lo zarci</jbo>
         <natlang>It is false that it is false that I go to the market.</natlang>
         <natlang>I go to the market.</natlang>
       </interlinear-gloss>
@@ -2961,7 +2961,7 @@
       <title><anchor xml:id="c5e13d5" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na pu na ca klama le zarci</jbo>
+        <jbo>mi na pu na ca klama lo zarci</jbo>
         <gloss>I [not] [past] [not] [present] go-to the market</gloss>
         <natlang>It is not the case that in the past it was not the case that in the present I went to the market.</natlang>
         <natlang>I didn't not go to the market.</natlang>

@@ -69,7 +69,7 @@
       <title><anchor xml:id="c10e1d1" /><indexterm type="general"><primary>go to market</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci</jbo>
+        <jbo>mi klama lo zarci</jbo>
         <gloss>I go-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -114,8 +114,8 @@
       <title><anchor xml:id="c10e1d2" /></title>
 
       <interlinear-gloss>
-        <jbo>mi cu pu klama le zarci</jbo>
-        <jbo>mi - pu klama le zarci</jbo>
+        <jbo>mi cu pu klama lo zarci</jbo>
+        <jbo>mi - pu klama lo zarci</jbo>
         <gloss>I - in-the-past go-to the market.</gloss>
         <natlang>I went to the market.</natlang>
       </interlinear-gloss>
@@ -137,7 +137,7 @@
       <title><anchor xml:id="c10e1d3" /></title>
 
       <interlinear-gloss>
-        <jbo>puku mi klama le zarci</jbo>
+        <jbo>puku mi klama lo zarci</jbo>
         <gloss>In-the-past I go-to the market.</gloss>
         <natlang>Earlier, I went to the market.</natlang>
       </interlinear-gloss>
@@ -146,7 +146,7 @@
       <title><anchor xml:id="c10e1d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama puku le zarci</jbo>
+        <jbo>mi klama puku lo zarci</jbo>
         <gloss>I go-to in-the-past the market.</gloss>
         <natlang>I went earlier to the market.</natlang>
       </interlinear-gloss>
@@ -155,7 +155,7 @@
       <title><anchor xml:id="c10e1d5" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci pu [ku]</jbo>
+        <jbo>mi klama lo zarci pu [ku]</jbo>
         <gloss>I go-to the market in-the-past. -</gloss>
         <natlang>I went to the market earlier.</natlang>
       </interlinear-gloss>
@@ -257,7 +257,7 @@
       <title><anchor xml:id="c10e2d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu va batci le gerku</jbo>
+        <jbo>lo nanmu va batci lo gerku</jbo>
         <gloss>The man [medium-distance] bites the dog.</gloss>
         <natlang>Over there the man is biting the dog.</natlang>
       </interlinear-gloss>
@@ -295,7 +295,7 @@
       <title><anchor xml:id="c10e2d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu zu'a batci le gerku</jbo>
+        <jbo>lo nanmu zu'a batci lo gerku</jbo>
         <gloss>The man [left] bites the dog.</gloss>
       </interlinear-gloss>
     </example>
@@ -354,7 +354,7 @@
       <title><anchor xml:id="c10e2d3" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu zu'avi batci le gerku</jbo>
+        <jbo>lo nanmu zu'avi batci lo gerku</jbo>
         <gloss>The man [left-short-distance] bites the dog.</gloss>
         <natlang>Slightly to my left, the man bites the dog.</natlang>
       </interlinear-gloss>
@@ -370,7 +370,7 @@
       <title><anchor xml:id="c10e2d4" /></title>
 
       <interlinear-gloss>
-        <jbo>zu'aviku le nanmu cu batci le gerku</jbo>
+        <jbo>zu'aviku lo nanmu cu batci lo gerku</jbo>
         <gloss>[Left-short-distance] the man - bites the dog.</gloss>
         <natlang>Slightly to my left, the man bites the dog.</natlang>
       </interlinear-gloss>
@@ -406,7 +406,7 @@
       <title><anchor xml:id="c10e3d1" /><indexterm type="general"><primary>manhole</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu ga'u zu'a batci le gerku</jbo>
+        <jbo>lo nanmu ga'u zu'a batci lo gerku</jbo>
         <gloss>The man [up] [left] bites the dog.</gloss>
       </interlinear-gloss>
     </example>
@@ -442,7 +442,7 @@
       <title><anchor xml:id="c10e3d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu zu'a ga'u batci le gerku</jbo>
+        <jbo>lo nanmu zu'a ga'u batci lo gerku</jbo>
         <gloss>The man [left] [up] bites the dog.</gloss>
         <natlang>Above a place to the left of me, the man bites the dog.</natlang>
       </interlinear-gloss>
@@ -461,7 +461,7 @@
       <title><anchor xml:id="c10e3d3" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu zu'avi ga'u vu batci le gerku</jbo>
+        <jbo>lo nanmu zu'avi ga'u vu batci lo gerku</jbo>
         <gloss>The man [left-short-distance] [up] [long-distance] bites the dog.</gloss>
         <natlang>Far above a place slightly to the left of me, the man bites the dog.</natlang>
       </interlinear-gloss>
@@ -477,7 +477,7 @@
       <title><anchor xml:id="c10e3d4" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu vi zu'a batci le gerku</jbo>
+        <jbo>lo nanmu vi zu'a batci lo gerku</jbo>
         <gloss>The man [short-distance] [left] bites the dog.</gloss>
         <natlang>Left of a place near me, the man bites the dog.</natlang>
       </interlinear-gloss>
@@ -493,9 +493,9 @@
       <title><anchor xml:id="c10e3d5" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu ca'u vi ni'a va ri'u vu</jbo>
+        <jbo>lo nanmu ca'u vi ni'a va ri'u vu</jbo>
         <gloss>The man [front] [short] [down] [medium] [right] [long]</gloss>
-        <jbo>… ne'i batci le gerku</jbo>
+        <jbo>… ne'i batci lo gerku</jbo>
         <gloss>… [within] bites the dog.</gloss>
         <natlang>Within a place a long distance to the right of a place which is a medium distance downward from a place a short distance in front of me, the man bites the dog.</natlang>
       </interlinear-gloss>
@@ -559,7 +559,7 @@
       <title><anchor xml:id="c10e4d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu pu batci le gerku</jbo>
+        <jbo>lo nanmu pu batci lo gerku</jbo>
         <gloss>The man [past] bites the dog.</gloss>
         <natlang>The man bit the dog.</natlang>
       </interlinear-gloss>
@@ -627,7 +627,7 @@
       <title><anchor xml:id="c10e4d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu puzi batci le gerku</jbo>
+        <jbo>lo nanmu puzi batci lo gerku</jbo>
         <gloss>The man [past-short-distance] bites the dog.</gloss>
         <natlang>A short time ago, the man bit the dog.</natlang>
       </interlinear-gloss>
@@ -636,7 +636,7 @@
       <title><anchor xml:id="c10e4d3" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu pu pu batci le gerku</jbo>
+        <jbo>lo nanmu pu pu batci lo gerku</jbo>
         <gloss>The man [past] [past] bites the dog.</gloss>
         <natlang>Earlier than an earlier time than now, the man bit the dog.</natlang>
         <natlang>The man had bitten the dog.</natlang>
@@ -647,7 +647,7 @@
       <title><anchor xml:id="c10e4d4" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu ba puzi batci le gerku</jbo>
+        <jbo>lo nanmu ba puzi batci lo gerku</jbo>
         <gloss>The man [future] [past-short] bites the dog.</gloss>
         <natlang>Shortly earlier than some time later than now, the man will bite the dog.</natlang>
         <natlang>Soon before then, the man will have bitten the dog.</natlang>
@@ -664,7 +664,7 @@
       <title><anchor xml:id="c10e4d5" /><indexterm type="general"><primary>nearby in time</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu zi pu batci le gerku</jbo>
+        <jbo>lo nanmu zi pu batci lo gerku</jbo>
         <gloss>The man [short] [past] bites the dog.</gloss>
         <natlang>Before a short time from or before now, the man bit or will bite the dog.</natlang>
       </interlinear-gloss>
@@ -673,7 +673,7 @@
       <title><anchor xml:id="c10e4d6" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu zu batci le gerku</jbo>
+        <jbo>lo nanmu zu batci lo gerku</jbo>
         <gloss>The man [long] bites the dog.</gloss>
         <natlang>A long time from or before now, the man will bite or bit the dog.</natlang>
       </interlinear-gloss>
@@ -707,7 +707,7 @@
       <title><anchor xml:id="c10e4d7" /><indexterm type="general"><primary>long ago and far away</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu puzu vu batci le gerku</jbo>
+        <jbo>lo nanmu puzu vu batci lo gerku</jbo>
         <gloss>The man [past-long-time] [long-space] bites the dog.</gloss>
         <natlang>Long ago and far away, the man bit the dog.</natlang>
       </interlinear-gloss>
@@ -717,7 +717,7 @@
       <title><anchor xml:id="c10e4d8" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu cu batci le gerku puzuvuku</jbo>
+        <jbo>lo nanmu cu batci lo gerku puzuvuku</jbo>
         <gloss>The man -- bites the dog [past-long-time-long-space].</gloss>
         <natlang>The man bit the dog long ago and far away.</natlang>
 
@@ -777,7 +777,7 @@
       <title><anchor xml:id="c10e5d1" /><indexterm type="general"><primary>child on ice</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le verba ve'i cadzu le bisli</jbo>
+        <jbo>lo verba ve'i cadzu lo bisli</jbo>
         <gloss>The child [small-space-interval] walks-on the ice.</gloss>
         <natlang>In a small space, the child walks on the ice.</natlang>
         <natlang>The child walks about a small area of the ice.</natlang>
@@ -793,7 +793,7 @@
       <title><anchor xml:id="c10e5d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le verba ze'a cadzu le bisli</jbo>
+        <jbo>lo verba ze'a cadzu lo bisli</jbo>
         <gloss>The child [medium-time-interval] walks-on the ice.</gloss>
         <natlang>For a medium time, the child walks/walked/will walk on the ice.</natlang>
       </interlinear-gloss>
@@ -812,7 +812,7 @@
       <title><anchor xml:id="c10e5d3" /></title>
 
       <interlinear-gloss>
-        <jbo>le verba pu ze'a cadzu le bisli</jbo>
+        <jbo>lo verba pu ze'a cadzu lo bisli</jbo>
         <gloss>The child [past] [medium-time-interval] walks-on the ice.</gloss>
         <natlang>For a medium time, the child walked on the ice.</natlang>
         <natlang>The child walked on the ice for a while.</natlang>
@@ -884,7 +884,7 @@
       <title><anchor xml:id="c10e5d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi pu ze'aba citka le mi sanmi</jbo>
+        <jbo>mi pu ze'aba citka lo mi sanmi</jbo>
         <gloss>I [past] [medium-time-interval-future] eat the of-me meal.</gloss>
         <natlang>For a medium time afterward, I ate my meal.</natlang>
         <natlang>I ate my meal for a while.</natlang>
@@ -905,7 +905,7 @@
       <title><anchor xml:id="c10e5d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi pu ze'aca citka le mi sanmi</jbo>
+        <jbo>mi pu ze'aca citka lo mi sanmi</jbo>
         <gloss>I [past] [medium-time-interval-present] eat the of-me meal.</gloss>
         <natlang>For a medium time before and afterward, I ate my meal.</natlang>
         <natlang>I ate my meal for a while.</natlang>
@@ -953,7 +953,7 @@
       <title><anchor xml:id="c10e6d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi pu klama le zarci</jbo>
+        <jbo>mi pu klama lo zarci</jbo>
         <gloss>I [past] go-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -1001,7 +1001,7 @@
       <title><anchor xml:id="c10e6d3" /></title>
 
       <interlinear-gloss>
-        <jbo>le tricu ba crino</jbo>
+        <jbo>lo tricu ba crino</jbo>
         <gloss>The tree [future] is-green.</gloss>
         <natlang>The tree will be green.</natlang>
       </interlinear-gloss>
@@ -1074,7 +1074,7 @@
       <title><anchor xml:id="c10e7d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le verba ve'a vi'a cadzu le bisli</jbo>
+        <jbo>lo verba ve'a vi'a cadzu lo bisli</jbo>
 
         <gloss>The child [medium-space-interval] [2-dimensional] walks-on the ice.</gloss>
         <natlang>In a medium-sized area, the child walks on the ice.</natlang>
@@ -1159,7 +1159,7 @@
         <anchor xml:id="c10e8d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le verba mo'i ri'u cadzu le bisli</jbo>
+        <jbo>lo verba mo'i ri'u cadzu lo bisli</jbo>
         <gloss>The child [movement] [right] walks-on the ice.</gloss>
         <natlang>The child walks toward my right on the ice.</natlang>
 
@@ -1170,7 +1170,7 @@
       <title><anchor xml:id="c10e8d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le verba ri'u cadzu le bisli</jbo>
+        <jbo>lo verba ri'u cadzu lo bisli</jbo>
         <gloss>The child [right] walks-on the ice.</gloss>
         <natlang>To the right of me, the child walks on the ice.</natlang>
       </interlinear-gloss>
@@ -1191,7 +1191,7 @@
       <title><anchor xml:id="c10e8d3" /><indexterm type="general"><primary>toward her right</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le verba mo'i ri'u cadzu le bisli</jbo>
+        <jbo>lo verba mo'i ri'u cadzu lo bisli</jbo>
         <gloss>The child [movement] [right] walks-on the ice</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -1224,7 +1224,7 @@
       <title><anchor xml:id="c10e8d4" /></title>
 
       <interlinear-gloss>
-        <jbo>le verba zu'avu mo'i ri'uvi cadzu le bisli</jbo>
+        <jbo>lo verba zu'avu mo'i ri'uvi cadzu lo bisli</jbo>
         <gloss>The child [left-long] [movement] [right-short] walks-on the ice.</gloss>
         <natlang>Far to the left of me, the child walks a short distance toward my right on the ice.</natlang>
 
@@ -1249,7 +1249,7 @@
       <title><anchor xml:id="c10e8d5" /><indexterm type="general"><primary>eat in airplane</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi mo'i ca'uvu citka le mi sanmi</jbo>
+        <jbo>mi mo'i ca'uvu citka lo mi sanmi</jbo>
         <gloss>I [movement] [front-long] eat the associated-with-me meal.</gloss>
         <natlang>While moving a long way forward, I eat my meal.</natlang>
       </interlinear-gloss>
@@ -1399,7 +1399,7 @@
       <title><anchor xml:id="c10e9d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ba ta'e klama le zarci</jbo>
+        <jbo>mi ba ta'e klama lo zarci</jbo>
 
         <gloss>I [future] [habitually] go-to the market.</gloss>
         <gloss>I will habitually go--to the market.</gloss>
@@ -1411,7 +1411,7 @@
       <title><anchor xml:id="c10e9d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'o klama le zarci</jbo>
+        <jbo>mi na'o klama lo zarci</jbo>
 
         <gloss>I [typically] go-to the market.</gloss>
         <natlang>I typically go/went/will go to the market.</natlang>
@@ -1434,7 +1434,7 @@
       <title><anchor xml:id="c10e9d5" /><indexterm type="general"><primary>intermittently</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le verba ru'inai cadzu le bisli</jbo>
+        <jbo>lo verba ru'inai cadzu lo bisli</jbo>
         <gloss>The child [continuously-not] walks-on the ice.</gloss>
         <natlang>The child intermittently walks on the ice.</natlang>
 
@@ -1483,7 +1483,7 @@
       <title><anchor xml:id="c10e9d6" /><indexterm type="general"><primary>once</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi paroi klama le zarci</jbo>
+        <jbo>mi paroi klama lo zarci</jbo>
         <gloss>I [one-time] go-to the market.</gloss>
         <natlang>I go to the market once.</natlang>
       </interlinear-gloss>
@@ -1492,7 +1492,7 @@
       <title><anchor xml:id="c10e9d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi du'eroi klama le zarci</jbo>
+        <jbo>mi du'eroi klama lo zarci</jbo>
         <gloss>I [too-many-times] go-to the market.</gloss>
         <natlang>I go to the market too often.</natlang>
       </interlinear-gloss>
@@ -1506,7 +1506,7 @@
       <title><anchor xml:id="c10e9d8" /></title>
 
       <interlinear-gloss>
-        <jbo>mi pu reroi klama le zarci</jbo>
+        <jbo>mi pu reroi klama lo zarci</jbo>
         <gloss>I [past] [two-times] go-to the market.</gloss>
         <natlang>I went to the market twice.</natlang>
       </interlinear-gloss>
@@ -1531,7 +1531,7 @@
       <title><anchor xml:id="c10e9d9" /><indexterm type="general"><primary>rat eats cheese</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le ratcu reroinai citka le cirla</jbo>
+        <jbo>lo ratcu reroinai citka lo cirla</jbo>
         <gloss>The rat [twice-not] eats the cheese.</gloss>
         <natlang>The rat eats the cheese other than twice.</natlang>
       </interlinear-gloss>
@@ -1561,7 +1561,7 @@
       <title><anchor xml:id="c10e9d10" /><indexterm type="general"><primary>only once</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi ze'e paroi klama le zarci</jbo>
+        <jbo>mi ze'e paroi klama lo zarci</jbo>
 
         <gloss>I [whole-interval] [once] go-to the market.</gloss>
       </interlinear-gloss>
@@ -1605,7 +1605,7 @@
       <title><anchor xml:id="c10e9d11" /><indexterm type="general"><primary>have never</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi ze'epu noroi klama le zarci</jbo>
+        <jbo>mi ze'epu noroi klama lo zarci</jbo>
 
         <gloss>I [whole-interval-past] [never] go-to the market.</gloss>
         <natlang>I have never gone to the market.</natlang>
@@ -1783,7 +1783,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le verba ba'o cadzu le bisli</jbo>
+        <jbo>lo verba ba'o cadzu lo bisli</jbo>
         <gloss>The child [retrospective] walks-on the ice.</gloss>
         <natlang>The child is no longer walking on the ice.</natlang>
 
@@ -1884,7 +1884,7 @@
       <title><anchor xml:id="c10e10d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ba co'a citka le mi sanmi</jbo>
+        <jbo>mi ba co'a citka lo mi sanmi</jbo>
         <gloss>I [future] [initiative] eat the associated-with-me meal.</gloss>
         <natlang>I will begin to eat my meal.</natlang>
       </interlinear-gloss>
@@ -1893,7 +1893,7 @@
       <title><anchor xml:id="c10e10d5" /></title>
 
       <interlinear-gloss>
-        <jbo>mi pu co'u citka le mi sanmi</jbo>
+        <jbo>mi pu co'u citka lo mi sanmi</jbo>
         <gloss>I [past] [cessitive] eat the associated-with-me meal.</gloss>
         <natlang>I ceased eating my meal.</natlang>
       </interlinear-gloss>
@@ -1937,7 +1937,7 @@
       <title><anchor xml:id="c10e10d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi pu mo'u citka le mi sanmi</jbo>
+        <jbo>mi pu mo'u citka lo mi sanmi</jbo>
         <gloss>I [past] [completitive] eat the associated-with-me meal.</gloss>
         <natlang>I finished eating my meal.</natlang>
 
@@ -1978,7 +1978,7 @@
       <title><anchor xml:id="c10e10d8" /></title>
 
       <interlinear-gloss>
-        <jbo>mi pu de'a citka le mi sanmi</jbo>
+        <jbo>mi pu de'a citka lo mi sanmi</jbo>
 
         <gloss>I [past] [pausative] eat the associated-with-me meal.</gloss>
         <natlang>I stopped eating my meal (with the intention of resuming).</natlang>
@@ -1988,7 +1988,7 @@
       <title><anchor xml:id="c10e10d9" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ba di'a citka le mi sanmi</jbo>
+        <jbo>mi ba di'a citka lo mi sanmi</jbo>
 
         <gloss>I [future] [resumptive] eat the associated-with-me meal.</gloss>
         <natlang>I will resume eating my meal.</natlang>
@@ -2013,11 +2013,11 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le ctuca pu za'o ciksi</jbo>
+        <jbo>lo ctuca pu za'o ciksi</jbo>
         <gloss>The teacher [past] [superfective] explained</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le cmaci seldanfu le tadgri</jbo>
+        <jbo>… lo cmaci seldanfu lo tadgri</jbo>
         <gloss>… the mathematics problem to-the student-group.</gloss>
         <natlang>The teacher kept on explaining the mathematics problem to the class too long.</natlang>
       </interlinear-gloss>
@@ -2054,7 +2054,7 @@
       <title><anchor xml:id="c10e10d12" /></title>
 
       <interlinear-gloss>
-        <jbo>mi pare'u klama le zarci</jbo>
+        <jbo>mi pare'u klama lo zarci</jbo>
         <gloss>I [first-time] go-to the store.</gloss>
         <natlang>I go to the store for the first time (within a vague interval).</natlang>
       </interlinear-gloss>
@@ -2064,7 +2064,7 @@
       <title><anchor xml:id="c10e10d13" /></title>
 
       <interlinear-gloss>
-        <jbo>mi pare'u paroi klama le zarci</jbo>
+        <jbo>mi pare'u paroi klama lo zarci</jbo>
         <gloss>I [first-time] [one-time] go-to the store.</gloss>
         <natlang>For the first time, I go to the store once.</natlang>
       </interlinear-gloss>
@@ -2074,7 +2074,7 @@
       <title><anchor xml:id="c10e10d14" /></title>
 
       <interlinear-gloss>
-        <jbo>mi paroi pare'u klama le zarci</jbo>
+        <jbo>mi paroi pare'u klama lo zarci</jbo>
         <gloss>I [one-time] [first-time] go-to the store.</gloss>
         <natlang>There is one occasion on which I go to the store for the first time.</natlang>
       </interlinear-gloss>
@@ -2104,7 +2104,7 @@
       <title><anchor xml:id="c10e11d1" /><indexterm type="general"><primary>sow grain</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>ko vi'i fe'e di'i sombo le gurni</jbo>
+        <jbo>ko vi'i fe'e di'i sombo lo gurni</jbo>
 
         <gloss>You-imperative [1-dimensional] [space:] [regularly] sow the grain.</gloss>
         <natlang>Sow the grain in a line and evenly!</natlang>
@@ -2234,11 +2234,11 @@
       <title><anchor xml:id="c10e12d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci ca le nu do klama</jbo>
+        <jbo>mi klama lo zarci ca lo nu do klama</jbo>
         <gloss>I go-to the market [present] the event-of you go-to</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le zdani</jbo>
+        <jbo>… lo zdani</jbo>
         <gloss>… the house.</gloss>
         <natlang>I go to the market when you go to the house.</natlang>
       </interlinear-gloss>
@@ -2255,7 +2255,7 @@
       does not appear before the selbri, nor with
       <valsi>ku</valsi>
       ; instead, it governs the following sumti, the
-      <jbophrase>le nu</jbophrase>
+      <jbophrase>lo nu</jbophrase>
       construct. What
       <xref linkend="example-random-id-v761" />
       asserts is that the action of the main bridi is happening at the same time as the event mentioned by that sumti. So
@@ -2274,11 +2274,11 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci pu le nu do pu klama</jbo>
+        <jbo>mi klama lo zarci pu lo nu do pu klama</jbo>
         <gloss>I go-to the market [past] the event-of you [past] go-to</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le zdani</jbo>
+        <jbo>… lo zdani</jbo>
         <gloss>… the house.</gloss>
       </interlinear-gloss>
     </example>
@@ -2312,7 +2312,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le ratcu cu citka le cirla vi le panka</jbo>
+        <jbo>lo ratcu cu citka lo cirla vi lo panka</jbo>
         <gloss>The rat - eats the cheese [short-distance] the park.</gloss>
         <natlang>The rat eats the cheese near the park.</natlang>
 
@@ -2326,7 +2326,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le ratcu cu citka le cirla vi le vu panka</jbo>
+        <jbo>lo ratcu cu citka lo cirla vi lo vu panka</jbo>
         <gloss>The rat - eats the cheese [short-distance] the [long-distance] park</gloss>
         <natlang>The rat eats the cheese near the faraway park.</natlang>
       </interlinear-gloss>
@@ -2339,7 +2339,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le ratcu cu citka le cirla vu le vi panka</jbo>
+        <jbo>lo ratcu cu citka lo cirla vu lo vi panka</jbo>
         <gloss>The rat - eats the cheese [long-distance] the [short-distance] park</gloss>
         <natlang>The rat eats the cheese far away from the nearby park.</natlang>
       </interlinear-gloss>
@@ -2375,7 +2375,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>la .berger. cu cliva le kumfa ba'o lo nu la .klark. cu tavla</jbo>
+        <jbo>la .berger. cu cliva lo kumfa ba'o lo nu la .klark. cu tavla</jbo>
         <gloss>- Berger - leaves the room [retrospective] the event-of - Clark - speaks.</gloss>
         <natlang>Berger had already left the room by the time Clark spoke.</natlang>
       </interlinear-gloss>
@@ -2389,7 +2389,7 @@
       <title><anchor xml:id="c10e12d15" /></title>
 
       <interlinear-gloss>
-        <jbo>la .berger. cu cliva le kumfa ba le nu la .klark. cu tavla</jbo>
+        <jbo>la .berger. cu cliva lo kumfa ba lo nu la .klark. cu tavla</jbo>
         <gloss>- Berger - leaves the room [future] the event-of - Clark - speaks.</gloss>
         <natlang>Berger left the room after Clark spoke.</natlang>
       </interlinear-gloss>
@@ -2408,7 +2408,7 @@
       <title><anchor xml:id="c10e12d8" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci pu'o le nu mi citka</jbo>
+        <jbo>mi klama lo zarci pu'o lo nu mi citka</jbo>
         <gloss>I go-to the store [prospective] the event-of I eat</gloss>
       </interlinear-gloss>
     </example>
@@ -2417,7 +2417,7 @@
       <title><anchor xml:id="c10e12d9" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci ba'o le nu mi citka</jbo>
+        <jbo>mi klama lo zarci ba'o lo nu mi citka</jbo>
         <gloss>I go-to the store [retrospective] the event-of I eat</gloss>
       </interlinear-gloss>
     </example>
@@ -2440,11 +2440,11 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le bloti pu za'o xelklama</jbo>
+        <jbo>lo bloti pu za'o xelklama</jbo>
         <gloss>The boat [past] [superfective] is-a-transport-mechanism</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… fe'e ba'o le lalxu</jbo>
+        <jbo>… fe'e ba'o lo lalxu</jbo>
         <gloss>… [space] [retrospective] the lake.</gloss>
         <natlang>The boat sailed on too long; at the lake's location, its voyage was already over.</natlang>
       </interlinear-gloss>
@@ -2490,7 +2490,7 @@
       <title><anchor xml:id="c10e12d11" /><indexterm type="general"><primary>twice today</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci reroi le ca djedi</jbo>
+        <jbo>mi klama lo zarci reroi lo ca djedi</jbo>
         <gloss>I go-to the market [twice] the [present] day.</gloss>
         <natlang>I go/went/will go to the market twice today.</natlang>
 
@@ -2512,7 +2512,7 @@
         <gloss>Some-of-the-mass-of snow - rains</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>ze'u le ca dunra</jbo>
+        <jbo>ze'u lo ca dunra</jbo>
         <gloss>[long-time-interval] the [present] winter.</gloss>
         <natlang>Snow falls during this winter.</natlang>
       </interlinear-gloss>
@@ -2526,7 +2526,7 @@
       <title><anchor xml:id="c10e12d13" /></title>
 
       <interlinear-gloss>
-        <jbo>loi snime cu carvi ca le ze'u dunra</jbo>
+        <jbo>loi snime cu carvi ca lo ze'u dunra</jbo>
         <gloss>Some-of-the-mass-of snow - rains [present] the [long-time] winter.</gloss>
         <natlang>Snow falls in the long winter.</natlang>
       </interlinear-gloss>
@@ -2565,11 +2565,11 @@
       <title><anchor xml:id="c10e13d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi puki klama le zarci</jbo>
+        <jbo>mi puki klama lo zarci</jbo>
         <gloss>I [past-sticky] go-to the market.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .i le nanmu cu batci le gerku</jbo>
+        <jbo>… .i lo nanmu cu batci lo gerku</jbo>
         <gloss>… - The man - bites the dog.</gloss>
         <natlang>I went to the market. The man bit the dog.</natlang>
       </interlinear-gloss>
@@ -2598,11 +2598,11 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi puki klama le zarci</jbo>
+        <jbo>mi puki klama lo zarci</jbo>
         <gloss>I [past-sticky] go-to the market.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .i le nanmu pu batci le gerku</jbo>
+        <jbo>… .i lo nanmu pu batci lo gerku</jbo>
         <gloss>… - The man [past] bites the dog.</gloss>
       </interlinear-gloss>
     </example>
@@ -2629,11 +2629,11 @@
       <title><anchor xml:id="c10e13d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi pu klama le zarci</jbo>
+        <jbo>mi pu klama lo zarci</jbo>
         <gloss>I [past] go-to the market.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .i le nanmu pupu batci le gerku</jbo>
+        <jbo>… .i lo nanmu pupu batci lo gerku</jbo>
         <gloss>… - The man [past-past] bites the dog.</gloss>
       </interlinear-gloss>
     </example>
@@ -2650,7 +2650,7 @@
       <title><anchor xml:id="c10e13d5" /></title>
 
       <interlinear-gloss>
-        <jbo>puku mi ba klama le zarci</jbo>
+        <jbo>puku mi ba klama lo zarci</jbo>
         <gloss>[past] I [future] go-to the market.</gloss>
         <natlang>Earlier, I was going to go to the market.</natlang>
       </interlinear-gloss>
@@ -2668,7 +2668,7 @@
       <title><anchor xml:id="c10e13d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi puba klama le zarci</jbo>
+        <jbo>mi puba klama lo zarci</jbo>
         <gloss>I [past-future] go-to the market.</gloss>
         <natlang>I was going to go to the market.</natlang>
       </interlinear-gloss>
@@ -2690,7 +2690,7 @@
       <title><anchor xml:id="c10e13d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ba klama le zarci puku</jbo>
+        <jbo>mi ba klama lo zarci puku</jbo>
         <gloss>I [future] go-to the market [past].</gloss>
         <natlang>I will have gone to the market earlier.</natlang>
       </interlinear-gloss>
@@ -2699,7 +2699,7 @@
       <title><anchor xml:id="c10e13d8" /></title>
 
       <interlinear-gloss>
-        <jbo>mi bapu klama le zarci</jbo>
+        <jbo>mi bapu klama lo zarci</jbo>
         <gloss>I [future-past] go-to the market.</gloss>
         <natlang>I will have gone to the market.</natlang>
       </interlinear-gloss>
@@ -2720,11 +2720,11 @@
       <title><anchor xml:id="c10e13d9" /></title>
 
       <interlinear-gloss>
-        <jbo>pu ki ku mi ba klama le zarci</jbo>
+        <jbo>pu ki ku mi ba klama lo zarci</jbo>
         <gloss>[past] [sticky] - I [future] go-to the market.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .i le nanmu cu batci le gerku</jbo>
+        <jbo>… .i lo nanmu cu batci lo gerku</jbo>
         <gloss>… - The man - bites the dog.</gloss>
       </interlinear-gloss>
     </example>
@@ -2758,7 +2758,7 @@
       <title><anchor xml:id="c10e13d10" /><indexterm type="general"><primary>former market</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi pu klama le ba'o zarci</jbo>
+        <jbo>mi pu klama lo ba'o zarci</jbo>
         <gloss>I [past] go-to the [retrospective] market</gloss>
         <natlang>I went to the former market.</natlang>
 
@@ -2783,7 +2783,7 @@
       <title><anchor xml:id="c10e13d11" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ca jinvi le du'u mi ba morsi</jbo>
+        <jbo>mi ca jinvi lo du'u mi ba morsi</jbo>
         <gloss>I now opine the fact-that I will-be dead.</gloss>
         <natlang>I now believe that I will be dead.</natlang>
       </interlinear-gloss>
@@ -2842,11 +2842,11 @@
       <title><anchor xml:id="c10e14d1" /><indexterm type="general"><primary>cave</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>pu zu ki ku ne'i ki le kevna</jbo>
+        <jbo>pu zu ki ku ne'i ki lo kevna</jbo>
         <gloss>[past] [long] [sticky] [,] [inside] [sticky] the cave,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le ninmu goi ko'a zutse le rokci</jbo>
+        <jbo>… lo ninmu goi ko'a zutse lo rokci</jbo>
         <gloss>… the woman defined-as she-1 sat-on the rock</gloss>
         <natlang>Long ago, in a cave, a woman sat on a rock.</natlang>
 
@@ -2865,7 +2865,7 @@
       <title><anchor xml:id="c10e14d3" /><indexterm type="general"><primary>flashbacks in story time</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>.i ko'a pu jukpa ri le mudyfagri</jbo>
+        <jbo>.i ko'a pu jukpa ri lo mudyfagri</jbo>
         <gloss>- She [past] cook the-last-mentioned by-method-the wood-fire.</gloss>
         <natlang>She had cooked the meat over a wood fire.</natlang>
       </interlinear-gloss>
@@ -2874,7 +2874,7 @@
       <title><anchor xml:id="c10e14d4" /></title>
 
       <interlinear-gloss>
-        <jbo>.i lei rectu cu zanglare</jbo>
+        <jbo>.i loi rectu cu zanglare</jbo>
         <gloss>- The-mass-of flesh - is-(favorable)-warm.</gloss>
         <natlang>The meat was pleasantly warm.</natlang>
       </interlinear-gloss>
@@ -2883,11 +2883,11 @@
       <title><anchor xml:id="c10e14d5" /></title>
 
       <interlinear-gloss>
-        <jbo>.i le labno goi ko'e</jbo>
+        <jbo>.i lo labno goi ko'e</jbo>
         <gloss>- The wolf defined-as it-2</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… ba za ki nenri klama le kevna</jbo>
+        <jbo>… ba za ki nenri klama lo kevna</jbo>
         <gloss>… [future] [medium] [sticky] within came to-the cave.</gloss>
         <natlang>A while later, a wolf came into the cave.</natlang>
       </interlinear-gloss>
@@ -2896,7 +2896,7 @@
       <title><anchor xml:id="c10e14d6" /></title>
 
       <interlinear-gloss>
-        <jbo>.i ko'e lebna lei rectu ko'a</jbo>
+        <jbo>.i ko'e lebna loi rectu ko'a</jbo>
         <gloss>- It-2 takes-(tenseless) the-mass-of flesh from-her-1.</gloss>
         <natlang>It took the meat from her.</natlang>
       </interlinear-gloss>
@@ -3062,11 +3062,11 @@
       <title><anchor xml:id="c10e15d5" /><indexterm type="general"><primary>John says that George goes to market</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. ca cusku le se du'u</jbo>
+        <jbo>la .djan. ca cusku lo se du'u</jbo>
         <gloss>That-named John [present] says the - statement-that</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… la .djordj. ca klama le zarci</jbo>
+        <jbo>… la .djordj. ca klama lo zarci</jbo>
         <gloss>… That-named George [present] goes-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -3074,11 +3074,11 @@
       <title><anchor xml:id="c10e15d6" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. ca cusku le se du'u</jbo>
+        <jbo>la .djan. ca cusku lo se du'u</jbo>
         <gloss>That-named John [present] says the - statement-that</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… la .djordj. pu klama le zarci</jbo>
+        <jbo>… la .djordj. pu klama lo zarci</jbo>
         <gloss>… That-named George [past] goes-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -3086,9 +3086,9 @@
       <title><anchor xml:id="c10e15d7" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. pu cusku le se du'u</jbo>
+        <jbo>la .djan. pu cusku lo se du'u</jbo>
         <gloss>That-named John [past] says the - statement-that</gloss>
-        <jbo>… la .djordj. ca klama le zarci</jbo>
+        <jbo>… la .djordj. ca klama lo zarci</jbo>
         <gloss>… That-named George [present] goes-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -3096,11 +3096,11 @@
       <title><anchor xml:id="c10e15d8" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. pu cusku le se du'u</jbo>
+        <jbo>la .djan. pu cusku lo se du'u</jbo>
         <gloss>That-named John [past] says the - statement-that</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… la .djordj. pu klama le zarci</jbo>
+        <jbo>… la .djordj. pu klama lo zarci</jbo>
         <gloss>… That-named George [past] goes-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -3138,19 +3138,19 @@
       <title><anchor xml:id="c10e15d9" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. pu cusku le se du'u</jbo>
+        <jbo>la .djan. pu cusku lo se du'u</jbo>
         <gloss>That-named John [past] says the - statement-that</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… la .alis pu cusku le se du'u</jbo>
+        <jbo>… la .alis pu cusku lo se du'u</jbo>
         <gloss>… That-named Alice [past] says the - statement-that</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… la .djordj. pu cusku le se du'u</jbo>
+        <jbo>… la .djordj. pu cusku lo se du'u</jbo>
         <gloss>… That-named George [past] says the - statement-that</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… la .maris. nau klama le zarci</jbo>
+        <jbo>… la .maris. nau klama lo zarci</jbo>
         <gloss>… That-named Mary [now] goes-to the market.</gloss>
         <natlang>John said that Alice had said that George had earlier said that Mary is now going to the market.</natlang>
       </interlinear-gloss>
@@ -3173,32 +3173,32 @@
       <title><anchor xml:id="c10e16d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le verba cu cadzu le bisli</jbo>
+        <jbo>lo verba cu cadzu lo bisli</jbo>
         <gloss>The child - walks-on the ice</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… zu'a le nu le nanmu cu batci le gerku</jbo>
+        <jbo>… zu'a lo nu lo nanmu cu batci lo gerku</jbo>
         <gloss>… [left] the event-of the man - bites the dog.</gloss>
         <natlang>The child walks on the ice to the left of where the man bites the dog.</natlang>
       </interlinear-gloss>
     </example>
     <para role="noindent"><indexterm type="general"><primary>sentences</primary><secondary>connecting with tense</secondary>
       </indexterm><indexterm type="general"><primary>tense</primary><secondary>connecting sentences in with</secondary>
-      </indexterm>specifies an imaginary journey leftward from the man biting the dog to the child walking on the ice, but it claims only that the child walks on the ice. By the nature of <jbophrase>le nu</jbophrase>, the man's biting the dog is merely referred to, not claimed. If we want to claim both, each event can be expressed as a main sentence bridi, with a special form of <valsi>.i</valsi> connecting them:</para>
+      </indexterm>specifies an imaginary journey leftward from the man biting the dog to the child walking on the ice, but it claims only that the child walks on the ice. By the nature of <jbophrase>lo nu</jbophrase>, the man's biting the dog is merely referred to, not claimed. If we want to claim both, each event can be expressed as a main sentence bridi, with a special form of <valsi>.i</valsi> connecting them:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-9Q0x">
       <title><anchor xml:id="c10e16d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu cu batci le gerku</jbo>
+        <jbo>lo nanmu cu batci lo gerku</jbo>
         <gloss>The man - bites the dog.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .izu'abo le verba cu cadzu le bisli</jbo>
+        <jbo>… .izu'abo lo verba cu cadzu lo bisli</jbo>
         <gloss>… [Left] the child - walks-on the ice.</gloss>
         <natlang>The man bites the dog. To the left, the child walks on the ice.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent"><jbophrase>.izu'abo</jbophrase> is a compound cmavo: the <valsi>.i</valsi> separates the sentences, and the <valsi>zu'a</valsi> is the tense. The <valsi>bo</valsi> is required to keep the <valsi>zu'a</valsi> from gobbling up the following sumti, namely <jbophrase>le verba</jbophrase>.</para>
+    <para role="noindent"><jbophrase>.izu'abo</jbophrase> is a compound cmavo: the <valsi>.i</valsi> separates the sentences, and the <valsi>zu'a</valsi> is the tense. The <valsi>bo</valsi> is required to keep the <valsi>zu'a</valsi> from gobbling up the following sumti, namely <jbophrase>lo verba</jbophrase>.</para>
     <para><indexterm type="general"><primary>tense</primary><secondary>sumtcita form contrasted with connected sentences</secondary>
       </indexterm><indexterm type="general"><primary>tense connection of sentences</primary><secondary>contrasted with sumtcita form</secondary>
       </indexterm><indexterm type="general"><primary>imaginary journey</primary><secondary>origin of in tense-connected sentences</secondary>
@@ -3213,11 +3213,11 @@
       <title><anchor xml:id="c10e16d3" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu cu batci le gerku .i zu'a la'edi'u</jbo>
+        <jbo>lo nanmu cu batci lo gerku .i zu'a la'edi'u</jbo>
         <gloss>The man - bites the dog. - [Left] the-referent-of-the-last-sentence</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le verba cu cadzu le bisli</jbo>
+        <jbo>… lo verba cu cadzu lo bisli</jbo>
         <gloss>… the child - walks-on the ice.</gloss>
         <natlang>The man bites the dog. Left of what I just mentioned, the child walks on the ice.</natlang>
       </interlinear-gloss>
@@ -3228,16 +3228,16 @@
       <title><anchor xml:id="c10e16d4" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu cu batci le gerku</jbo>
+        <jbo>lo nanmu cu batci lo gerku</jbo>
         <gloss>The man - bites the dog.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .i zu'a le verba cu - cadzu le bisli</jbo>
+        <jbo>… .i zu'a lo verba cu - cadzu lo bisli</jbo>
         <gloss>… - [Left] the child - [something] walks-on the ice.</gloss>
         <natlang>The man bites the dog. To the left of the child, something walks on the ice.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">Here the first place of the second sentence is left unspecified, because <valsi>zu'a</valsi> has absorbed the sumti <jbophrase>le verba</jbophrase>.</para>
+    <para role="indent">Here the first place of the second sentence is left unspecified, because <valsi>zu'a</valsi> has absorbed the sumti <jbophrase>lo verba</jbophrase>.</para>
     <para>Don't confuse either <xref linkend="example-random-id-9Q0x" /> or <xref linkend="example-random-id-jThf" /> with the following:<indexterm type="general"><primary>separately tensed sentences</primary><secondary>contrasted with tense connected sentences</secondary>
       </indexterm><indexterm type="general"><primary>tense connected sentences</primary><secondary>contrasted with separately tensed sentences</secondary>
       </indexterm></para>
@@ -3245,11 +3245,11 @@
       <title><anchor xml:id="c10e16d5" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu cu batci le gerku</jbo>
+        <jbo>lo nanmu cu batci lo gerku</jbo>
         <gloss>The man - bites the dog.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .i zu'aku le verba cu cadzu le bisli</jbo>
+        <jbo>… .i zu'aku lo verba cu cadzu lo bisli</jbo>
         <gloss>… - [Left] the child - walks-on the ice.</gloss>
         <natlang>The man bites the dog. Left of me, the child walks on the ice.</natlang>
       </interlinear-gloss>
@@ -3269,7 +3269,7 @@
       <title><anchor xml:id="c10e16d6" /></title>
 
       <interlinear-gloss>
-        <jbo>pugi mi klama le zarci gi mi klama le zdani</jbo>
+        <jbo>pugi mi klama lo zarci gi mi klama lo zdani</jbo>
         <gloss>[past] I go-to the market [,] I go-to the house.</gloss>
         <natlang>Before I go to the market, I go to the house.</natlang>
       </interlinear-gloss>
@@ -3282,7 +3282,7 @@
       <title><anchor xml:id="c10e16d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama pugi le zarci gi le zdani</jbo>
+        <jbo>mi klama pugi lo zarci gi lo zdani</jbo>
         <gloss>I go-to [past] the market [,] the house.</gloss>
       </interlinear-gloss>
     </example>
@@ -3310,7 +3310,7 @@
       <title><anchor xml:id="c10e16d8" /></title>
 
       <interlinear-gloss>
-        <jbo>mi pugi klama le zarci gi klama le zdani</jbo>
+        <jbo>mi pugi klama lo zarci gi klama lo zdani</jbo>
         <gloss>I [past] go-to the market [,] go-to the house.</gloss>
         <natlang>I, before going to the market, go to the house.</natlang>
       </interlinear-gloss>
@@ -3325,9 +3325,9 @@
       and
       <xref linkend="example-random-id-vSCv" />
       , the underlying sentences
-      <jbophrase>mi klama le zarci</jbophrase>
+      <jbophrase>mi klama lo zarci</jbophrase>
       and
-      <jbophrase>mi klama le zdani</jbophrase>
+      <jbophrase>mi klama lo zdani</jbophrase>
       are not claimed; only the relationship in time between them is claimed.
     </para>
     <para>
@@ -3346,7 +3346,7 @@
       <tr>
         <td>subordinate</td>
         <td>
-          <grammar-template>X TENSE le nu Y</grammar-template>
+          <grammar-template>X TENSE lo nu Y</grammar-template>
         </td>
       </tr>
       <tr>
@@ -3369,7 +3369,7 @@
       <tr>
         <td>subordinate</td>
         <td>
-          <grammar-template>X ZAhO le nu Y</grammar-template>
+          <grammar-template>X ZAhO lo nu Y</grammar-template>
         </td>
       </tr>
       <tr>
@@ -3387,9 +3387,9 @@
     </informaltable>
     <para>
       For example,
-      <jbophrase>mi klama le zarci ba'o le nu mi citka</jbophrase>
+      <jbophrase>mi klama lo zarci ba'o lo nu mi citka</jbophrase>
       (my store trip is over by the time of the eating) matches
-      <jbophrase>mi klama le zarci .i ba'o bo mi citka</jbophrase>: the going, and then, in its aftermath, the eating. It does not match the form with swapped sentences that the other tenses use.
+      <jbophrase>mi klama lo zarci .i ba'o bo mi citka</jbophrase>: the going, and then, in its aftermath, the eating. It does not match the form with swapped sentences that the other tenses use.
     </para>
   </section>
   <section xml:id="section-tense-logical-connection">
@@ -3405,7 +3405,7 @@
       <title><anchor xml:id="c10e17d1" /></title>
 
       <interlinear-gloss>
-        <jbo>la .teris. satre le mlatu .ije la .teris. satre le ractu</jbo>
+        <jbo>la .teris. satre lo mlatu .ije la .teris. satre lo ractu</jbo>
         <natlang>Terry strokes the cat. And Terry strokes the rabbit.</natlang>
       </interlinear-gloss>
     </example>
@@ -3413,7 +3413,7 @@
       <title><anchor xml:id="c10e17d2" /></title>
 
       <interlinear-gloss>
-        <jbo>la .teris. satre le mlatu gi'e satre le ractu</jbo>
+        <jbo>la .teris. satre lo mlatu gi'e satre lo ractu</jbo>
         <natlang>Terry strokes the cat and strokes the rabbit.</natlang>
       </interlinear-gloss>
     </example>
@@ -3421,7 +3421,7 @@
       <title><anchor xml:id="c10e17d3" /></title>
 
       <interlinear-gloss>
-        <jbo>la .teris. satre le mlatu .e le ractu</jbo>
+        <jbo>la .teris. satre lo mlatu .e lo ractu</jbo>
         <natlang>Terry strokes the cat and the rabbit.</natlang>
       </interlinear-gloss>
     </example>
@@ -3440,7 +3440,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>la .teris. satre le mlatu .ijebabo la .teris. satre le ractu</jbo>
+        <jbo>la .teris. satre lo mlatu .ijebabo la .teris. satre lo ractu</jbo>
 
         <natlang>Terry strokes the cat. And then Terry strokes the rabbit.</natlang>
       </interlinear-gloss>
@@ -3453,7 +3453,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>la .teris. satre le mlatu gi'ebabo satre le ractu</jbo>
+        <jbo>la .teris. satre lo mlatu gi'ebabo satre lo ractu</jbo>
         <natlang>Terry strokes the cat, and then strokes the rabbit.</natlang>
       </interlinear-gloss>
     </example>
@@ -3465,7 +3465,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>la .teris. satre le mlatu .ebabo le ractu</jbo>
+        <jbo>la .teris. satre lo mlatu .ebabo lo ractu</jbo>
         <natlang>Terry strokes the cat and then the rabbit.</natlang>
       </interlinear-gloss>
     </example>
@@ -3519,11 +3519,11 @@
       <title><anchor xml:id="c10e17d7" /><indexterm type="general"><primary>carry sack and dog</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi bevri le dakli .ije tu'e mi bevri le gerku</jbo>
+        <jbo>mi bevri lo dakli .ije tu'e mi bevri lo gerku</jbo>
         <gloss>I carry the sack. And ( I carry the dog.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .ija mi bevri le mlatu tu'u</jbo>
+        <jbo>… .ija mi bevri lo mlatu tu'u</jbo>
         <gloss>… And/or I carry the cat ).</gloss>
         <natlang>I carry the sack. And I carry the dog, or I carry the cat, or I carry both.</natlang>
       </interlinear-gloss>
@@ -3532,11 +3532,11 @@
       <title><anchor xml:id="c10e17d8" /><indexterm type="general"><primary>carry sack and dog</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi bevri le dakli gi'eke bevri le gerku gi'a bevri</jbo>
+        <jbo>mi bevri lo dakli gi'eke bevri lo gerku gi'a bevri</jbo>
         <gloss>I carry the sack and (carry the dog and/or carry</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le mlatu</jbo>
+        <jbo>… lo mlatu</jbo>
         <gloss>… the cat).</gloss>
         <natlang>I carry the sack, and also carry the dog or carry the cat or carry both.</natlang>
       </interlinear-gloss>
@@ -3545,7 +3545,7 @@
       <title><anchor xml:id="c10e17d9" /><indexterm type="general"><primary>carry sack and dog</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi bevri le dakli .eke le gerku .a le mlatu</jbo>
+        <jbo>mi bevri lo dakli .eke lo gerku .a lo mlatu</jbo>
         <gloss>I carry the sack and (the dog or the cat).</gloss>
         <natlang>I carry the sack and also the dog or the cat or both.</natlang>
       </interlinear-gloss>
@@ -3562,11 +3562,11 @@
       <title><anchor xml:id="c10e17d10" /></title>
 
       <interlinear-gloss>
-        <jbo>mi bevri le dakli .ije ba tu'e mi bevri le gerku</jbo>
+        <jbo>mi bevri lo dakli .ije ba tu'e mi bevri lo gerku</jbo>
         <gloss>I carry the sack. And [future] ( I carry the dog.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .ija cabo mi bevri le mlatu tu'u</jbo>
+        <jbo>… .ija cabo mi bevri lo mlatu tu'u</jbo>
         <gloss>… And/or [present] I carry the cat. )</gloss>
         <natlang>I carry the sack. And then I will carry the dog or I will carry the cat or I will carry both at once.</natlang>
       </interlinear-gloss>
@@ -3575,11 +3575,11 @@
       <title><anchor xml:id="c10e17d11" /></title>
 
       <interlinear-gloss>
-        <jbo>mi bevri le dakli gi'e bake bevri le gerku</jbo>
+        <jbo>mi bevri lo dakli gi'e bake bevri lo gerku</jbo>
         <gloss>I carry the sack and [future] (carry the dog</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… gi'a cabo bevri le mlatu</jbo>
+        <jbo>… gi'a cabo bevri lo mlatu</jbo>
         <gloss>… and/or [present] carry the cat).</gloss>
         <natlang>I carry the sack and then will carry the dog or carry the cat or carry both at once.</natlang>
       </interlinear-gloss>
@@ -3588,11 +3588,11 @@
       <title><anchor xml:id="c10e17d12" /></title>
 
       <interlinear-gloss>
-        <jbo>mi bevri le dakli .e bake le gerku</jbo>
+        <jbo>mi bevri lo dakli .e bake lo gerku</jbo>
         <gloss>I carry the sack and [future] (the dog</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .a cabo le mlatu</jbo>
+        <jbo>… .a cabo lo mlatu</jbo>
         <gloss>… and/or [present] the cat).</gloss>
         <natlang>I carry the sack, and then the dog or the cat or both at once.</natlang>
       </interlinear-gloss>
@@ -3630,7 +3630,7 @@
       <title><anchor xml:id="c10e18d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi punai klama le zarci</jbo>
+        <jbo>mi punai klama lo zarci</jbo>
         <gloss>I [past-not] go-to the market.</gloss>
         <natlang>I didn't go to the market.</natlang>
       </interlinear-gloss>
@@ -3650,11 +3650,11 @@
       <title><anchor xml:id="c10e18d2" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci ca nai</jbo>
+        <jbo>mi klama lo zarci ca nai</jbo>
         <gloss>I go-to the market [present] [not]</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le nu do klama le zdani</jbo>
+        <jbo>… lo nu do klama lo zdani</jbo>
         <gloss>… the event-of you go-to the house.</gloss>
         <natlang>It is not true that I went to the market at the same time that you went to the house.</natlang>
       </interlinear-gloss>
@@ -3663,7 +3663,7 @@
       <title><anchor xml:id="c10e18d3" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu cu batci le gerku ne'inai le kumfa</jbo>
+        <jbo>lo nanmu cu batci lo gerku ne'inai lo kumfa</jbo>
         <gloss>The man -- bites the dog [within-not] the room.</gloss>
         <natlang>The man didn't bite the dog inside the room.</natlang>
       </interlinear-gloss>
@@ -3672,7 +3672,7 @@
       <title><anchor xml:id="c10e18d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi morsi ca'onai le nu mi jmive</jbo>
+        <jbo>mi morsi ca'onai lo nu mi jmive</jbo>
         <gloss>I am-dead [continuitive-negated] the event-of I live.</gloss>
         <natlang>It is false that I am dead during my life.</natlang>
       </interlinear-gloss>
@@ -3698,7 +3698,7 @@
       <title><anchor xml:id="c10e18d5" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e pu klama le zarci</jbo>
+        <jbo>mi na'e pu klama lo zarci</jbo>
         <gloss>I [non-] [past] go-to the market.</gloss>
         <natlang>I go to the market other than in the past.</natlang>
       </interlinear-gloss>
@@ -3707,7 +3707,7 @@
       <title><anchor xml:id="c10e18d6" /></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu cu batci le gerku to'e ne'i le kumfa</jbo>
+        <jbo>lo nanmu cu batci lo gerku to'e ne'i lo kumfa</jbo>
         <gloss>The man -- bites the dog [opposite-of] [within] the room.</gloss>
         <natlang>The man bites the dog outside the room.</natlang>
       </interlinear-gloss>
@@ -3716,11 +3716,11 @@
       <title><anchor xml:id="c10e18d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci na'e ca le nu</jbo>
+        <jbo>mi klama lo zarci na'e ca lo nu</jbo>
         <gloss>I go-to the market [non-] [present] the event-of</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… do klama le zdani</jbo>
+        <jbo>… do klama lo zdani</jbo>
         <gloss>… you go-to the house.</gloss>
         <natlang>I went to the market at a time other than the time at which you went to the house.</natlang>
       </interlinear-gloss>
@@ -3729,7 +3729,7 @@
       <title><anchor xml:id="c10e18d8" /></title>
 
       <interlinear-gloss>
-        <jbo>mi morsi na'e ca'o le nu mi jmive</jbo>
+        <jbo>mi morsi na'e ca'o lo nu mi jmive</jbo>
         <gloss>I am-dead [non-] [continuitive] the event-of I live.</gloss>
         <natlang>I am dead other than during my life.</natlang>
       </interlinear-gloss>
@@ -3743,7 +3743,7 @@
       <title><anchor xml:id="c10e18d9" /></title>
 
       <interlinear-gloss>
-        <jbo>le verba na'e ri'u cadzu le bisli</jbo>
+        <jbo>lo verba na'e ri'u cadzu lo bisli</jbo>
         <gloss>The child [non-] [right] walks-on the ice</gloss>
         <natlang>The child walks on the ice other than to my right.</natlang>
       </interlinear-gloss>
@@ -3903,7 +3903,7 @@
       <title><anchor xml:id="c10e19d6" /></title>
 
       <interlinear-gloss>
-        <jbo>le cukta ka'e viska</jbo>
+        <jbo>lo cukta ka'e viska</jbo>
 
         <gloss>The book [capable] sees.</gloss>
         <natlang>The book can see.</natlang>
@@ -3975,7 +3975,7 @@
       <title><anchor xml:id="c10e19d9" /></title>
 
       <interlinear-gloss>
-        <jbo>mi pu ca'a klama le zarci</jbo>
+        <jbo>mi pu ca'a klama lo zarci</jbo>
 
         <gloss>I [past] [actual] go-to the store.</gloss>
         <natlang>I actually went to the store.</natlang>
@@ -3985,7 +3985,7 @@
       <title><anchor xml:id="c10e19d10" /></title>
 
       <interlinear-gloss>
-        <jbo>la .frank. ba nu'o klama le zarci</jbo>
+        <jbo>la .frank. ba nu'o klama lo zarci</jbo>
 
         <gloss>That-named Frank [future] [can-but-has-not] goes-to the store.</gloss>
         <natlang>Frank could have, but will not have, gone to the store (at some understood moment in the future).</natlang>
@@ -4071,7 +4071,7 @@
       <title><anchor xml:id="c10e20d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi pu je ba klama le zarci</jbo>
+        <jbo>mi pu je ba klama lo zarci</jbo>
         <gloss>I [past] and [future] go-to the market.</gloss>
         <natlang>I went and will go to the market.</natlang>
       </interlinear-gloss>
@@ -4081,11 +4081,11 @@
       <title><anchor xml:id="c10e20d2" /></title>
 
       <interlinear-gloss>
-        <jbo>mi pu klama le zarci</jbo>
+        <jbo>mi pu klama lo zarci</jbo>
         <gloss>I [past] go-to the market.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .ije mi ba klama le zarci</jbo>
+        <jbo>… .ije mi ba klama lo zarci</jbo>
         <gloss>… And I [future] go-to the market.</gloss>
         <natlang>I went to the market, and I will go to the market.</natlang>
       </interlinear-gloss>
@@ -4100,7 +4100,7 @@
       <title><anchor xml:id="c10e20d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi punai je canai je ba klama le zarci</jbo>
+        <jbo>mi punai je canai je ba klama lo zarci</jbo>
         <gloss>I [past-not] and [present-not] and [future] go-to the market.</gloss>
         <natlang>I haven't yet gone to the market, but I will in future.</natlang>
       </interlinear-gloss>
@@ -4113,7 +4113,7 @@
       <title><anchor xml:id="c10e20d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ba klama le zarci</jbo>
+        <jbo>mi ba klama lo zarci</jbo>
         <gloss>I [future] go-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -4202,7 +4202,7 @@
         <gloss>I [twice] [cross-product] [six-times] shoot</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le seldanti</jbo>
+        <jbo>… lo seldanti</jbo>
         <gloss>… the projectile-launcher.</gloss>
         <natlang>On two occasions, I fire the gun six times.</natlang>
       </interlinear-gloss>
@@ -4247,7 +4247,7 @@
       <title><anchor xml:id="c10e21d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi reroi ca'o xaroi darxi le damri</jbo>
+        <jbo>mi reroi ca'o xaroi darxi lo damri</jbo>
         <gloss>I [twice] [continuitive] [six-times] hit the drum.</gloss>
         <natlang>On two occasions, I continue to beat the drum six times.</natlang>
       </interlinear-gloss>
@@ -4275,7 +4275,7 @@
       <title><anchor xml:id="c10e22d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi cu klama le zarci</jbo>
+        <jbo>mi cu klama lo zarci</jbo>
         <gloss>I - go-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -4283,7 +4283,7 @@
       <title><anchor xml:id="c10e22d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le zarci cu se--klama mi</jbo>
+        <jbo>lo zarci cu se--klama mi</jbo>
         <gloss>The market - is-gone-to by-me.</gloss>
       </interlinear-gloss>
     </example>
@@ -4302,7 +4302,7 @@
       <title><anchor xml:id="c10e22d3" /><indexterm type="general"><primary>rat eats cheese in park</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le ratcu cu citka le cirla vi le panka</jbo>
+        <jbo>lo ratcu cu citka lo cirla vi lo panka</jbo>
         <gloss>The rat - eats the cheese [short-distance] the park.</gloss>
         <natlang>The rat eats the cheese in the park.</natlang>
       </interlinear-gloss>
@@ -4311,7 +4311,7 @@
       <title><anchor xml:id="c10e22d4" /><indexterm type="general"><primary>rat eats cheese in park</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le panka cu jai--vi citka le cirla fai le ratcu</jbo>
+        <jbo>lo panka cu jai--vi citka lo cirla fai lo ratcu</jbo>
         <gloss>The park - is-the-place-of eating the cheese by the rat.</gloss>
         <natlang>The park is where the rat eats the cheese.</natlang>
       </interlinear-gloss>
@@ -4329,19 +4329,19 @@
     <example role="interlinear-gloss-example" xml:id="example-random-id-YS3i">
       <title><anchor xml:id="c10e22d5" /></title>
 
-      <jbophrase>fa mi cu klama fe le zarci</jbophrase>
+      <jbophrase>fa mi cu klama fe lo zarci</jbophrase>
     </example>
     <para role="noindent">means the same as</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-4DGL">
       <title><anchor xml:id="c10e22d6" /></title>
 
-      <jbophrase>fe le zarci cu klama fa mi</jbophrase>
+      <jbophrase>fe lo zarci cu klama fa mi</jbophrase>
     </example>
     <para role="noindent">as well as the simple</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-Q6J9">
       <title><anchor xml:id="c10e22d7" /></title>
 
-      <jbophrase>mi cu klama le zarci</jbophrase>
+      <jbophrase>mi cu klama lo zarci</jbophrase>
     </example>
     <para role="noindent">in which the place structure is determined by position.)</para>
     <para>
@@ -4357,7 +4357,7 @@
       <title><anchor xml:id="c10e22d8" /><indexterm type="general"><primary>place of eating</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi viska le jai--vi citka be le cirla</jbo>
+        <jbo>mi viska lo jai--vi citka be lo cirla</jbo>
         <gloss>I saw the place-of eating - the cheese.</gloss>
       </interlinear-gloss>
     </example>
@@ -4376,7 +4376,7 @@
       <title><anchor xml:id="c10e22d9" /></title>
 
       <interlinear-gloss>
-        <jbo>mi djuno fi le jai ca morsi be fai la .djan.</jbo>
+        <jbo>mi djuno fi lo jai ca morsi be fai la .djan.</jbo>
         <gloss>
           I know about the - [present] is-dead - of that-named
           <quote>John</quote>.
@@ -4397,30 +4397,30 @@
       <title><anchor xml:id="c10e23d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi nelci do mu'i le nu do nelci mi</jbo>
+        <jbo>mi nelci do mu'i lo nu do nelci mi</jbo>
 
         <gloss>I like you with-motivation the event-of you like me.</gloss>
         <natlang>I like you because you like me.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">places the <jbophrase>le nu</jbophrase> sumti in the x<subscript>1</subscript> place of the gismu <valsi>mukti</valsi> (which underlies the modal <valsi>mu'i</valsi>), namely the motivating event, whereas the tensed bridi</para>
+    <para role="noindent">places the <jbophrase>lo nu</jbophrase> sumti in the x<subscript>1</subscript> place of the gismu <valsi>mukti</valsi> (which underlies the modal <valsi>mu'i</valsi>), namely the motivating event, whereas the tensed bridi</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-zXi8">
       <title><anchor xml:id="c10e23d2" /></title>
 
       <interlinear-gloss>
-        <jbo>mi nelci do ba le nu do nelci mi</jbo>
+        <jbo>mi nelci do ba lo nu do nelci mi</jbo>
         <gloss>I like you after the event-of you like me.</gloss>
         <natlang>I like you after you like me.</natlang>
       </interlinear-gloss>
     </example>
     <para role="noindent"><indexterm type="general"><primary>tenses</primary><secondary>importance of 2nd sumti place for sumtcita use</secondary>
-      </indexterm>places the <jbophrase>le nu</jbophrase> sumti in the x<subscript>2</subscript> place of the gismu <valsi>balvi</valsi> (which underlies the tense <valsi>ba</valsi>), namely the point of reference for the future tense. Paraphrases of <xref linkend="example-random-id-YLmV" /> and <xref linkend="example-random-id-zXi8" /> that employ the brivla <valsi>mukti</valsi> and <valsi>balvi</valsi> explicitly would be:</para>
+      </indexterm>places the <jbophrase>lo nu</jbophrase> sumti in the x<subscript>2</subscript> place of the gismu <valsi>balvi</valsi> (which underlies the tense <valsi>ba</valsi>), namely the point of reference for the future tense. Paraphrases of <xref linkend="example-random-id-YLmV" /> and <xref linkend="example-random-id-zXi8" /> that employ the brivla <valsi>mukti</valsi> and <valsi>balvi</valsi> explicitly would be:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-JbEU">
       <title><anchor xml:id="c10e23d3" /></title>
 
       <interlinear-gloss>
-        <jbo>le nu do nelci mi cu mukti le nu</jbo>
+        <jbo>lo nu do nelci mi cu mukti lo nu</jbo>
         <gloss>The event-of you like me - motivates the event-of</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -4434,7 +4434,7 @@
       <title><anchor xml:id="c10e23d4" /></title>
 
       <interlinear-gloss>
-        <jbo>le nu mi nelci do cu balvi le nu</jbo>
+        <jbo>lo nu mi nelci do cu balvi lo nu</jbo>
         <gloss>The event-of I like you - is-after the event-of</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -4519,7 +4519,7 @@
       </member>
       <member>
         <grammar-template>
-          X BAI le nu Y
+          X BAI lo nu Y
       </grammar-template>
       </member>
     </simplelist>
@@ -4541,11 +4541,11 @@
       </member>
       <member>
         <grammar-template>
-          Y TENSE le nu X
+          Y TENSE lo nu X
       </grammar-template>
       </member>
     </simplelist>
-    <para>neglecting the question of what is claimed. (ZAhO tenses are again the exception. Because their sumtcita interpretation is reversed, the subordinate mate of the two connective schemata is <grammar-template>X ZAhO le nu Y</grammar-template>, with the sentences in the same order: see <xref linkend="section-tense-connection" />.) In the modal sentence schemata, the modal tag is always followed by Y, the sentence representing the event in the x<subscript>1</subscript> place of the gismu that underlies the BAI. In the tensed sentences, no such simple rule exists.</para>
+    <para>neglecting the question of what is claimed. (ZAhO tenses are again the exception. Because their sumtcita interpretation is reversed, the subordinate mate of the two connective schemata is <grammar-template>X ZAhO lo nu Y</grammar-template>, with the sentences in the same order: see <xref linkend="section-tense-connection" />.) In the modal sentence schemata, the modal tag is always followed by Y, the sentence representing the event in the x<subscript>1</subscript> place of the gismu that underlies the BAI. In the tensed sentences, no such simple rule exists.</para>
   </section>
   <section xml:id="section-tense-questions">
     <title><anchor xml:id="c10s24" />Tense questions: <valsi>cu'e</valsi></title>
@@ -4575,7 +4575,7 @@
       <title><anchor xml:id="c10e24d1" /><indexterm type="general"><primary>when</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>do klama le zdani ca ma</jbo>
+        <jbo>do klama lo zdani ca ma</jbo>
         <gloss>You go-to the house [present] [what-sumti?].</gloss>
         <gloss>You go-to the house at what-time?</gloss>
         <natlang>When do you go to the house?</natlang>
@@ -4585,7 +4585,7 @@
       <title><anchor xml:id="c10e24d2" /><indexterm type="general"><primary>where</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le verba vi ma pu cadzu le bisli</jbo>
+        <jbo>lo verba vi ma pu cadzu lo bisli</jbo>
         <gloss>The child [short-space] [what-sumti?] [past] walks-on the ice.</gloss>
         <gloss>The child at/near what-place - walked-on the ice?</gloss>
         <natlang>Where did the child walk on the ice?</natlang>
@@ -4605,7 +4605,7 @@
       <title><anchor xml:id="c10e24d3" /><indexterm type="general"><primary>when/where/how</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le nanmu cu'e batci le gerku</jbo>
+        <jbo>lo nanmu cu'e batci lo gerku</jbo>
         <gloss>The man [what-tense?] bites the dog.</gloss>
         <natlang>When/Where/How does the man bite the dog?</natlang>
       </interlinear-gloss>
@@ -4641,7 +4641,7 @@
       <title><anchor xml:id="c10e24d6" /></title>
 
       <interlinear-gloss>
-        <jbo>vi le lunra</jbo>
+        <jbo>vi lo lunra</jbo>
         <gloss>[short-space] The moon.</gloss>
         <natlang>On the moon.</natlang>
       </interlinear-gloss>
@@ -4663,7 +4663,7 @@
       <title><anchor xml:id="c10e24d8" /></title>
 
       <interlinear-gloss>
-        <jbo>seka'a le briju</jbo>
+        <jbo>seka'a lo briju</jbo>
         <gloss>With-destination the office.</gloss>
       </interlinear-gloss>
     </example>
@@ -4686,7 +4686,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>do puzi je cu'e sombo le gurni</jbo>
+        <jbo>do puzi je cu'e sombo lo gurni</jbo>
         <gloss>You [past-short] and [when?] sow the grain?</gloss>
         <natlang>You sowed the grain a little while ago; when else do you sow it?</natlang>
 
@@ -4781,7 +4781,7 @@
   <section xml:id="section-exercise">
     <title><anchor xml:id="c10s26" />Finally (an exercise for the much-tried reader)</title>
     <example role="interlinear-gloss-example" xml:id="example-random-id-NxGB">      <title><anchor xml:id="c10e26d1" /></title>
-      <jbophrase>.a'o do pu seju ba roroi ca'o fe'e su'oroi jimpe fi le lojbo temci selsku ciste</jbophrase>    </example>  </section>  <section xml:id="section-tense-selmaho-summary">
+      <jbophrase>.a'o do pu seju ba roroi ca'o fe'e su'oroi jimpe fi lo lojbo temci selsku ciste</jbophrase>    </example>  </section>  <section xml:id="section-tense-selmaho-summary">
     <title><anchor xml:id="c10s27" />      Summary of tense selma'o      <indexterm type="lojban-word"><primary>tense selma'o</primary><secondary>summary of</secondary>
       </indexterm></title>
 

@@ -294,9 +294,9 @@
       In fact, the relationship will almost always be so close that the predicate expressing r will be either the seltau or the tertau predicate itself. This should come as no surprise, given that a word like
       <valsi>zdani</valsi>
       in Lojban is a predicate. Predicates express relations; so when you're looking for a relation to tie together
-      <jbophrase>le zdani</jbophrase>
+      <jbophrase>lo zdani</jbophrase>
       and
-      <jbophrase>le gerku</jbophrase>
+      <jbophrase>lo gerku</jbophrase>
       , the most obvious relation to pick is the very relation named by the tertau,
       <valsi>zdani</valsi>
       : the relation between a home and its dweller. As a result, the object which fills the first place of
@@ -1746,7 +1746,7 @@
       <title><anchor xml:id="c12e12d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi jai rinka le nu do morsi</jbo>
+        <jbo>mi jai rinka lo nu do morsi</jbo>
         <gloss>I am-associated-with causing the event-of your death.</gloss>
         <natlang>I cause your death.</natlang>
       </interlinear-gloss>
@@ -1760,7 +1760,7 @@
       <title><anchor xml:id="c12e12d8" /></title>
 
       <interlinear-gloss>
-        <jbo>mi jaxri'a le nu do morsi</jbo>
+        <jbo>mi jaxri'a lo nu do morsi</jbo>
         <gloss>I am-part-of-the-cause-of the event-of your dying.</gloss>
       </interlinear-gloss>
     </example>
@@ -2748,11 +2748,11 @@
       <valsi>jbena</valsi>
       contains places for time and location, which few other gismu have: normally, the time and place at which something is done is supplied by a tense tag (see
       <xref linkend="chapter-tenses" />). However, providing these places makes
-      <jbophrase>le te jbena</jbophrase>
+      <jbophrase>lo te jbena</jbophrase>
       a simple term for
       <quote>birthday</quote>
       and
-      <jbophrase>le ve jbena</jbophrase>
+      <jbophrase>lo ve jbena</jbophrase>
       for
       <quote>birthplace</quote>
       , so these places were provided despite their lack of metaphysical necessity.

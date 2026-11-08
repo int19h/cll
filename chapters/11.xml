@@ -19,7 +19,7 @@
       <title><anchor xml:id="c11e1d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci</jbo>
+        <jbo>mi klama lo zarci</jbo>
         <gloss>I go-to the store</gloss>
       </interlinear-gloss>
     </example>
@@ -32,7 +32,7 @@
       <title><anchor xml:id="c11e1d2" /></title>
 
       <interlinear-gloss>
-        <jbo>nu mi klama le zarci [kei]</jbo>
+        <jbo>nu mi klama lo zarci [kei]</jbo>
         <gloss>an-event-of my going-to the store -</gloss>
       </interlinear-gloss>
     </example>
@@ -52,7 +52,7 @@
       </indexterm>A tense or modal tag standing directly in front of a selbri binds to that selbri exactly as <valsi>cu</valsi> does. This is the rule for tag binding (see <xref linkend="section-tenses-introduction" /> for its status). So in <jbophrase>lo nu klama ba brode</jbophrase>, the <valsi>ba</valsi> itself ends the abstraction, with no need for <valsi>kei</valsi>, and it opens the main selbri <valsi>brode</valsi>. Older texts and grammars group this differently (see <xref linkend="appendix-changes" />).</para>
     <para>
       If you <emphasis>want</emphasis> the tag inside the abstraction, you have two choices. You can follow the tag with a sumti:
-      <jbophrase>lo nu klama ba le nu tavla cu xamgu</jbophrase>
+      <jbophrase>lo nu klama ba lo nu tavla cu xamgu</jbophrase>
       keeps the
       <valsi>ba</valsi>
       phrase inside, and
@@ -92,19 +92,19 @@
       <indexterm type="general"><primary>descriptions</primary><secondary>and abstractions</secondary>
       </indexterm>
       Abstraction selbri may also be used in descriptions, preceded by
-      <valsi>le</valsi>
+      <valsi>lo</valsi>
       (or any other member of selma'o LE):
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-sQ33">
       <title><anchor xml:id="c11e1d4" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. cu djica le nu sonci [kei]</jbo>
+        <jbo>la .djan. cu djica lo nu sonci [kei]</jbo>
         <gloss>That-named John -- desires the event-of being-a-soldier. -</gloss>
       </interlinear-gloss>
     </example>
     <para role="indent"><indexterm type="general"><primary>abstractions</primary><secondary>le contrasted with lo before</secondary>
-      </indexterm>The choice of descriptor matters for abstractions just as it does for anything else (see <xref linkend="section-basic-descriptors" />). The form <jbophrase>le nu</jbophrase> points to a particular event that the speaker has in mind. The form <jbophrase>lo nu</jbophrase> refers to whatever event really fits the description, and it is the usual choice when the speaker means no particular occasion. The examples in this chapter mostly use <jbophrase>le nu</jbophrase>, which is fine wherever a specific occasion is in view; read them with that distinction in mind.</para>
+      </indexterm>The choice of descriptor matters for abstractions just as it does for anything else (see <xref linkend="section-basic-descriptors" />). The form <jbophrase>le nu</jbophrase> points to a particular event that the speaker has in mind. The form <jbophrase>lo nu</jbophrase> refers to whatever event really fits the description, and it is the usual choice when the speaker means no particular occasion.</para>
     <para role="indent">We will most often use descriptions containing abstraction either at the end of a bridi, or just before the main selbri with its <valsi>cu</valsi>; in either of these circumstances, <valsi>kei</valsi> can normally be elided. The same holds when a <emphasis>bare</emphasis> tense or tag stands directly before the main selbri, in the place of the <valsi>cu</valsi>: by the binding rule above, the tag closes the abstraction exactly as <valsi>cu</valsi> does. A tag that heads a larger construction, however, does not close it. An example is the <jbophrase>ba bo</jbophrase> of a bridi-tail connective.</para>
     <para>
       <indexterm type="general"><primary>abstractions</primary><secondary>place structure</secondary>
@@ -149,18 +149,18 @@
       made use of
       <valsi>nu</valsi>
       as the abstractor, and it is certainly the most common abstractor in Lojban text. Its purpose is to capture the event or state of the bridi considered as a whole. Do not confuse the
-      <valsi>le</valsi>
+      <valsi>lo</valsi>
       description built on a
       <valsi>nu</valsi>
       abstraction with ordinary descriptions based on
-      <valsi>le</valsi>
+      <valsi>lo</valsi>
       alone. The following sumti are quite distinct:
     </para>
     <example xml:id="example-random-id-qF0u" role="interlinear-gloss-example">
       <title><anchor xml:id="c11e2d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le klama</jbo>
+        <jbo>lo klama</jbo>
         <natlang>the comer, that which comes</natlang>
       </interlinear-gloss>
     </example>
@@ -168,7 +168,7 @@
       <title><anchor xml:id="c11e2d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le se klama</jbo>
+        <jbo>lo se klama</jbo>
         <natlang>the destination</natlang>
 
       </interlinear-gloss>
@@ -177,7 +177,7 @@
       <title><anchor xml:id="c11e2d3" /></title>
 
       <interlinear-gloss>
-        <jbo>le te klama</jbo>
+        <jbo>lo te klama</jbo>
         <natlang>the origin</natlang>
       </interlinear-gloss>
     </example>
@@ -185,7 +185,7 @@
       <title><anchor xml:id="c11e2d4" /></title>
 
       <interlinear-gloss>
-        <jbo>le ve klama</jbo>
+        <jbo>lo ve klama</jbo>
 
         <natlang>the route</natlang>
       </interlinear-gloss>
@@ -194,7 +194,7 @@
       <title><anchor xml:id="c11e2d5" /></title>
 
       <interlinear-gloss>
-        <jbo>le xe klama</jbo>
+        <jbo>lo xe klama</jbo>
         <natlang>the means of transportation</natlang>
       </interlinear-gloss>
     </example>
@@ -202,7 +202,7 @@
       <title><anchor xml:id="c11e2d6" /></title>
 
       <interlinear-gloss>
-        <jbo>le nu klama</jbo>
+        <jbo>lo nu klama</jbo>
         <natlang>the event of someone coming to somewhere from somewhere by some route using some means</natlang>
       </interlinear-gloss>
     </example>
@@ -221,7 +221,7 @@
       <title><anchor xml:id="c11e2d7" /></title>
 
       <interlinear-gloss>
-        <jbo>le nu mi vasxu</jbo>
+        <jbo>lo nu mi vasxu</jbo>
         <gloss>the event-of my breathing</gloss>
       </interlinear-gloss>
     </example>
@@ -231,7 +231,7 @@
       <title><anchor xml:id="c11e2d8" /><indexterm type="general"><primary>kissing Jane</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le nu la .djan. cinba la .djein.</jbo>
+        <jbo>lo nu la .djan. cinba la .djein.</jbo>
         <gloss>the event-of that-named John kissing that-named Jane</gloss>
       </interlinear-gloss>
     </example>
@@ -245,7 +245,7 @@
       <title><anchor xml:id="c11e2d9" /></title>
 
       <interlinear-gloss>
-        <jbo>mi nelci le nu limna</jbo>
+        <jbo>mi nelci lo nu limna</jbo>
         <gloss>I like the event-of swimming.</gloss>
         <natlang>I like swimming.</natlang>
       </interlinear-gloss>
@@ -255,7 +255,7 @@
       <title><anchor xml:id="c11e2d10" /></title>
 
       <interlinear-gloss>
-        <jbo>mi nelci le nu mi limna</jbo>
+        <jbo>mi nelci lo nu mi limna</jbo>
         <gloss>I like the event-of I swim.</gloss>
       </interlinear-gloss>
     </example>
@@ -274,7 +274,7 @@
       Note that the lack of an explicit NU cmavo in a sumti can sometimes hide an implicit abstraction. In the context of
       <xref linkend="example-random-id-Ys8w" />
       , the appearance of
-      <jbophrase>le se nelci</jbophrase>
+      <jbophrase>lo se nelci</jbophrase>
       (
       <quote>that which is liked</quote>) is in effect an abstraction:
     </para>
@@ -282,7 +282,7 @@
       <title><anchor xml:id="c11e2d11" /></title>
 
       <interlinear-gloss>
-        <jbo>le se--nelci cu cafne</jbo>
+        <jbo>lo se--nelci cu cafne</jbo>
         <gloss>The liked-thing -- is-frequent.</gloss>
         <natlang>The thing which I like happens often.</natlang>
       </interlinear-gloss>
@@ -293,7 +293,7 @@
     </blockquote>
     <para>
       Event descriptions with
-      <jbophrase>le nu</jbophrase>
+      <jbophrase>lo nu</jbophrase>
       are commonly used to fill the
       <quote>under conditions...</quote>
       places, among others, of gismu and lujvo place structures:
@@ -306,7 +306,7 @@
         <gloss>That-named Lojban - is-easy-for me</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>le nu mi tadni [kei]</jbo>
+        <jbo>lo nu mi tadni [kei]</jbo>
         <gloss>under-conditions--the event-of I study -</gloss>
         <natlang>Lojban is easy for me when I study.</natlang>
       </interlinear-gloss>
@@ -391,7 +391,7 @@
       <title><anchor xml:id="c11e3d1" /><indexterm type="general"><primary>killing Jim</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le mu'e la .djan. catra la .djim. cu zekri</jbo>
+        <jbo>lo mu'e la .djan. catra la .djim. cu zekri</jbo>
         <gloss>The point-event-of (that-named John kills that-named Jim) -- is-a-crime.</gloss>
         <natlang>John's killing Jim (considered as a point in time) is a crime.</natlang>
       </interlinear-gloss>
@@ -414,7 +414,7 @@
       <title><anchor xml:id="c11e3d2" /><indexterm type="general"><primary>Roman Empire</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>ca'o le pu'u le latmo balje'a cu porpi kei</jbo>
+        <jbo>ca'o lo pu'u lo latmo balje'a cu porpi kei</jbo>
         <gloss>[continuitive] the process-of( the Latin great-state - breaking-up )</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -441,7 +441,7 @@
       <title><anchor xml:id="c11e3d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi tatpi ri'a le zu'o mi plipe</jbo>
+        <jbo>mi tatpi ri'a lo zu'o mi plipe</jbo>
 
         <gloss>I am-tired because-of the activity-of (I jump).</gloss>
         <natlang>I am tired because I jump.</natlang>
@@ -464,7 +464,7 @@
       <title><anchor xml:id="c11e3d4" /><indexterm type="general"><primary>being alive</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le za'i mi jmive cu ckape do</jbo>
+        <jbo>lo za'i mi jmive cu ckape do</jbo>
         <gloss>The state-of (I am-alive) -- is-dangerous-to you.</gloss>
         <natlang>My being alive is dangerous to you.</natlang>
       </interlinear-gloss>
@@ -589,7 +589,7 @@
     </cmavo-list>
     <para role="indent">
       The things described by
-      <jbophrase>le nu</jbophrase>
+      <jbophrase>lo nu</jbophrase>
       descriptions (or, to put it another way, the things of which
       <valsi>nu</valsi>
       selbri may correctly be predicated) are only moderately
@@ -621,7 +621,7 @@
         <gloss>That-named John -- has-the-property</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>le ka se--risna [zo'e] [kei]</jbo>
+        <jbo>lo ka se--risna [zo'e] [kei]</jbo>
         <gloss>the property-of having-as-heart something. -</gloss>
         <natlang>John has the property of having a heart.</natlang>
       </interlinear-gloss>
@@ -644,7 +644,7 @@
       <title><anchor xml:id="c11e4d3" /></title>
 
       <interlinear-gloss>
-        <jbo>do cnino mi le ka xunre [kei]</jbo>
+        <jbo>do cnino mi lo ka xunre [kei]</jbo>
         <gloss>You are-new to-me in-the-quality-of-the property-of being-red. -</gloss>
         <natlang>You are new to me in redness.</natlang>
       </interlinear-gloss>
@@ -709,7 +709,7 @@
         <gloss>That-named John -- exceeds that-named George</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>le ka mi prami</jbo>
+        <jbo>lo ka mi prami</jbo>
         <gloss>in-the property-of (I love X)</gloss>
         <natlang>I love John more than I love George.</natlang>
       </interlinear-gloss>
@@ -722,7 +722,7 @@
         <gloss>That-named John -- exceeds that-named George</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>le ka - prami mi</jbo>
+        <jbo>lo ka - prami mi</jbo>
         <gloss>in-the property--of (X loves me).</gloss>
         <natlang>John loves me more than George loves me.</natlang>
       </interlinear-gloss>
@@ -757,7 +757,7 @@
         <gloss>That-named John -- exceeds that-named George</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>le ka mi prami ce'u</jbo>
+        <jbo>lo ka mi prami ce'u</jbo>
         <gloss>in-the property-of (I love X).</gloss>
       </interlinear-gloss>
     </example>
@@ -774,7 +774,7 @@
         <gloss>That-named John -- exceeds that-named George</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>le ka ce'u prami mi</jbo>
+        <jbo>lo ka ce'u prami mi</jbo>
         <gloss>in-the property-of (X loves me).</gloss>
       </interlinear-gloss>
     </example>
@@ -783,7 +783,7 @@
       <title><anchor xml:id="c11e4d11" /><indexterm type="general"><primary>giving the horse</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le ka [zo'e] dunda le xirma [zo'e] [kei]</jbo>
+        <jbo>lo ka [zo'e] dunda lo xirma [zo'e] [kei]</jbo>
         <gloss>the property-of -- giving the horse - -</gloss>
       </interlinear-gloss>
     </example>
@@ -792,7 +792,7 @@
       <title><anchor xml:id="c11e4d12" /></title>
 
       <interlinear-gloss>
-        <jbo>le ka ce'u dunda le xirma - [zo'e] [kei]</jbo>
+        <jbo>lo ka ce'u dunda lo xirma - [zo'e] [kei]</jbo>
         <gloss>the property-of (X is-a-giver-of the horse to someone-unspecified )</gloss>
         <natlang>the property of being a giver of the horse</natlang>
       </interlinear-gloss>
@@ -806,7 +806,7 @@
       <title><anchor xml:id="c11e4d13" /></title>
 
       <interlinear-gloss>
-        <jbo>le ka [zo'e] dunda le xirma - ce'u [kei]</jbo>
+        <jbo>lo ka [zo'e] dunda lo xirma - ce'u [kei]</jbo>
         <gloss>the property-of (someone-unspecified is-a-giver-of the horse to X )</gloss>
         <natlang>the property of being one to whom the horse is given</natlang>
       </interlinear-gloss>
@@ -855,7 +855,7 @@
       <title><anchor xml:id="c11e5d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le ni le pixra cu blanu [kei]</jbo>
+        <jbo>lo ni lo pixra cu blanu [kei]</jbo>
         <gloss>the amount-of (the picture -- being-blue )</gloss>
         <natlang>the amount of blueness in the picture</natlang>
       </interlinear-gloss>
@@ -870,7 +870,7 @@
       <title><anchor xml:id="c11e5d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le ni la .djein. cu mamta [kei]</jbo>
+        <jbo>lo ni la .djein. cu mamta [kei]</jbo>
         <gloss>the amount-of (that-named Jane -- being-a-mother )</gloss>
         <natlang>the amount of Jane's mother-ness (?)</natlang>
         <natlang>the amount of mother-ness in Jane (?)</natlang>
@@ -880,7 +880,7 @@
 
     <para>
       Semantically, a sumti with
-      <jbophrase>le ni</jbophrase>
+      <jbophrase>lo ni</jbophrase>
       is a number; however, it cannot be treated grammatically as a quantifier in Lojban unless prefixed by the mathematical cmavo
       <valsi>mo'e</valsi>
       :
@@ -890,11 +890,11 @@
       <title><anchor xml:id="c11e5d3" /></title>
 
       <interlinear-gloss>
-        <jbo>li pa vu'u mo'e le ni --</jbo>
+        <jbo>li pa vu'u mo'e lo ni --</jbo>
         <gloss>the-number 1 minus the-operand the amount-of (</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le pixra cu blanu [kei]</jbo>
+        <jbo>… lo pixra cu blanu [kei]</jbo>
         <gloss>… the picture -- being-blue )</gloss>
         <natlang>
           <dbinlinemath>1 - B</dbinlinemath>
@@ -919,7 +919,7 @@
     </definition>
     <para>
       Note: the best way to express the x<subscript>2</subscript> places of abstract sumti is to use something like
-      <jbophrase>le ni ... kei be</jbophrase>. See
+      <jbophrase>lo ni ... kei be</jbophrase>. See
       <xref linkend="example-random-id-zvfX" />
       for the use of this construction.
     </para>
@@ -932,14 +932,14 @@
       <valsi>jei</valsi>
       , which is closely related semantically to
       <valsi>ni</valsi>. In the simplest cases,
-      <jbophrase>le jei</jbophrase>
+      <jbophrase>lo jei</jbophrase>
       produces not a number but a truth value:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-KuTE">
       <title><anchor xml:id="c11e6d1" /><indexterm type="general"><primary>2 + 2</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le jei li re su'i re du li vo [kei]</jbo>
+        <jbo>lo jei li re su'i re du li vo [kei]</jbo>
         <gloss>the truth-value-of the-number 2 + 2 = the-number 4 -</gloss>
         <natlang>the truth of 2 + 2 being 4</natlang>
       </interlinear-gloss>
@@ -953,7 +953,7 @@
       <title><anchor xml:id="c11e6d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le jei li re su'i re du li mu [kei]</jbo>
+        <jbo>lo jei li re su'i re du li mu [kei]</jbo>
         <gloss>the truth-value-of the-number 2 + 2 = the-number 5 -</gloss>
         <natlang>the truth of 2 + 2 being 5</natlang>
       </interlinear-gloss>
@@ -967,7 +967,7 @@
       <title><anchor xml:id="c11e6d3" /><indexterm type="general"><primary>whether criminal</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi ba jdice tu'a le jei la .djordj.</jbo>
+        <jbo>mi ba jdice tu'a lo jei la .djordj.</jbo>
         <gloss>I [future] decide on the (truth-value--of that-named George</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -1055,7 +1055,7 @@
       <title><anchor xml:id="c11e7d2" /></title>
 
       <interlinear-gloss>
-        <jbo valid="iffy">mi djuno le nu la .frank. cu bebna [kei]</jbo>
+        <jbo valid="iffy">mi djuno lo nu la .frank. cu bebna [kei]</jbo>
         <natlang>I know the event of Frank being a fool.</natlang>
       </interlinear-gloss>
     </example>
@@ -1070,14 +1070,14 @@
       , a concept discussed further in
       <xref linkend="section-sumti-raising" />
       , a properly marked sumti-raising would be
-      <jbophrase>mi djuno tu'a le nu la .frank. cu bebna [kei]</jbophrase>).
+      <jbophrase>mi djuno tu'a lo nu la .frank. cu bebna [kei]</jbophrase>).
     </para>
     <para>Try again:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-oCgP">
       <title><anchor xml:id="c11e7d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi djuno tu'a le jei la .frank. cu bebna [kei]</jbo>
+        <jbo>mi djuno tu'a lo jei la .frank. cu bebna [kei]</jbo>
         <natlang>I know about the truth-value of Frank being a fool.</natlang>
       </interlinear-gloss>
     </example>
@@ -1092,7 +1092,7 @@
       <title><anchor xml:id="c11e7d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi djuno le du'u la .frank. cu bebna [kei]</jbo>
+        <jbo>mi djuno lo du'u la .frank. cu bebna [kei]</jbo>
         <natlang>I know the predication that Frank is a fool.</natlang>
 
       </interlinear-gloss>
@@ -1101,7 +1101,7 @@
       Now we have it. Note that the implied assertion
       <quote>Frank is a fool</quote>
       is not a property of
-      <jbophrase>le du'u</jbophrase>
+      <jbophrase>lo du'u</jbophrase>
       abstraction, but of
       <valsi>djuno</valsi>
       ; we can only know what is in fact true. (As a result,
@@ -1116,7 +1116,7 @@
       <title><anchor xml:id="c11e7d5" /></title>
 
       <interlinear-gloss>
-        <jbo>mi kucli le du'u la .frank. cu bebna [kei]</jbo>
+        <jbo>mi kucli lo du'u la .frank. cu bebna [kei]</jbo>
         <natlang>I am curious about whether Frank is a fool.</natlang>
 
 
@@ -1127,7 +1127,7 @@
       and here
       <valsi>du'u</valsi>
       could probably be replaced by
-      <jbophrase>tu'a le jei</jbophrase>
+      <jbophrase>tu'a lo jei</jbophrase>
       without much change in meaning:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-h4De">
@@ -1138,7 +1138,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi kucli tu'a le jei la .frank. cu bebna [kei]</jbo>
+        <jbo>mi kucli tu'a lo jei la .frank. cu bebna [kei]</jbo>
         <natlang>I am curious about how true it is that Frank is a fool.</natlang>
       </interlinear-gloss>
     </example>
@@ -1162,7 +1162,7 @@
       </indexterm>
       <indexterm type="general"><primary>linguistic behavior</primary></indexterm>
       and
-      <jbophrase>le se du'u ...</jbophrase>
+      <jbophrase>lo se du'u ...</jbophrase>
       is very useful in filling places of selbri which refer to speaking, writing, or other linguistic behavior regarding bridi:
     </para>
 
@@ -1170,11 +1170,11 @@
       <title><anchor xml:id="c11e7d7" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. cusku le se--du'u</jbo>
+        <jbo>la .djan. cusku lo se--du'u</jbo>
         <gloss>That-named John expresses the (sentence-expressing-that</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… la .djordj. klama le zarci [kei]</jbo>
+        <jbo>… la .djordj. klama lo zarci [kei]</jbo>
         <gloss>… that-named George goes-to the store )</gloss>
         <natlang>John says that George goes to the store.</natlang>
       </interlinear-gloss>
@@ -1195,7 +1195,7 @@
         <gloss>That-named John expresses, quote,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>la .djordj. klama le zarci li'u</jbo>
+        <jbo>la .djordj. klama lo zarci li'u</jbo>
         <!-- gloss-lint: Retain the plain English quote-ending gloss. -->
         <gloss role="gloss-lint-labeled-terminators">that-named George goes to-the store, unquote.</gloss>
         <natlang>
@@ -1212,9 +1212,9 @@
       claims only that he said some words or other which were to the same purpose.
     </para>
     <para>
-      <jbophrase>le se du'u</jbophrase>
+      <jbophrase>lo se du'u</jbophrase>
       is much the same as
-      <jbophrase>lu'e le du'u</jbophrase>
+      <jbophrase>lu'e lo du'u</jbophrase>
       , a symbol for the predication, but
       <jbophrase>se du'u</jbophrase>
       can be used as a selbri, whereas
@@ -1264,7 +1264,7 @@
 
     <para>
       To express indirect questions in Lojban, we use a
-      <jbophrase>le du'u</jbophrase>
+      <jbophrase>lo du'u</jbophrase>
       abstraction, but rather than using a question word like
       <quote>who</quote>
       (
@@ -1278,11 +1278,11 @@
       <title><anchor xml:id="c11e8d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi djuno le du'u</jbo>
+        <jbo>mi djuno lo du'u</jbo>
         <gloss>I know the predication-of</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… ma kau pu klama le zarci</jbo>
+        <jbo>… ma kau pu klama lo zarci</jbo>
         <gloss>… X [indirect-question] [past] going-to the store.</gloss>
       </interlinear-gloss>
     </example>
@@ -1311,11 +1311,11 @@
       <title><anchor xml:id="c11e8d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi djuno le du'u</jbo>
+        <jbo>mi djuno lo du'u</jbo>
         <gloss>I know the predication-of/fact-that</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… la .djan. kau pu klama le zarci</jbo>
+        <jbo>… la .djan. kau pu klama lo zarci</jbo>
         <gloss>… that-named John [indirect-question] [past] going-to the store.</gloss>
         <natlang>I know who went to the store, namely John.</natlang>
 
@@ -1344,7 +1344,7 @@
       <title><anchor xml:id="c11e8d5" /></title>
 
       <interlinear-gloss>
-        <jbo>mi djuno le du'u ma pu klama le zarci</jbo>
+        <jbo>mi djuno lo du'u ma pu klama lo zarci</jbo>
         <gloss>I know the predication-of [what--sumti?] [past] goes-to the store</gloss>
       </interlinear-gloss>
     </example>
@@ -1358,7 +1358,7 @@
       <indexterm type="general"><primary>indirect questions without &quot;kau&quot;</primary></indexterm>
       <indexterm type="general"><primary>indirect question involving sumti</primary></indexterm>
       It is actually not necessary to use
-      <jbophrase>le du'u</jbophrase>
+      <jbophrase>lo du'u</jbophrase>
       and
       <valsi>kau</valsi>
       at all if the indirect question involves a sumti; there is generally a paraphrase of the type:
@@ -1369,7 +1369,7 @@
       <title><anchor xml:id="c11e8d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi djuno fi le pu klama be le zarci</jbo>
+        <jbo>mi djuno fi lo pu klama be lo zarci</jbo>
         <gloss>I know about the [past] goer to the store.</gloss>
         <natlang>I know something about the one who went to the store (namely, his identity).</natlang>
       </interlinear-gloss>
@@ -1386,11 +1386,11 @@
       <title><anchor xml:id="c11e8d8" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ba zgana le du'u la .djan.</jbo>
+        <jbo>mi ba zgana lo du'u la .djan.</jbo>
         <gloss>I [future] observe the predication-of/fact-that that-named John</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… jikau la .djordj. cu zvati le panka</jbo>
+        <jbo>… jikau la .djordj. cu zvati lo panka</jbo>
         <gloss>… [connective-indirect-question] that-named George - is-at the park.</gloss>
         <natlang>I will see whether John or George (or both) is at the park.</natlang>
       </interlinear-gloss>
@@ -1435,7 +1435,7 @@
       <title><anchor xml:id="c11e9d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi morji le li'i mi verba</jbo>
+        <jbo>mi morji lo li'i mi verba</jbo>
 
         <gloss>I remember the experience-of (my being-a-child)</gloss>
       </interlinear-gloss>
@@ -1456,7 +1456,7 @@
       <title><anchor xml:id="c11e9d2" /></title>
 
       <interlinear-gloss>
-        <jbo>mi nelci le si'o la .lojban. cu mulno</jbo>
+        <jbo>mi nelci lo si'o la .lojban. cu mulno</jbo>
         <gloss>I enjoy the concept-of that-named Lojban -- being-complete.</gloss>
       </interlinear-gloss>
     </example>
@@ -1474,7 +1474,7 @@
       <title><anchor xml:id="c11e9d3" /><indexterm type="general"><primary>mice</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>ko zgana le su'u le ci smacu cu bajra</jbo>
+        <jbo>ko zgana lo su'u lo ci smacu cu bajra</jbo>
         <gloss>you--[imperative] observe the abstract-nature-of the three mice -- running</gloss>
         <natlang>See how the three mice run!</natlang>
       </interlinear-gloss>
@@ -1528,7 +1528,7 @@
       <title><anchor xml:id="c11e9d4" /></title>
 
       <interlinear-gloss>
-        <jbo>le nu mi klama</jbo>
+        <jbo>lo nu mi klama</jbo>
         <gloss>the event-of my going</gloss>
       </interlinear-gloss>
     </example>
@@ -1537,7 +1537,7 @@
       <title><anchor xml:id="c11e9d5" /></title>
 
       <interlinear-gloss>
-        <jbo>le su'u mi klama kei be lo fasnu</jbo>
+        <jbo>lo su'u mi klama kei be lo fasnu</jbo>
         <gloss>the abstract-nature-of (my going) -- of-type an event</gloss>
       </interlinear-gloss>
     </example>
@@ -1552,7 +1552,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le su'u la .iecuuas.</jbo>
+        <jbo>lo su'u la .iecuuas.</jbo>
         <gloss>the abstract-nature-of (that-named Jesus</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -1613,11 +1613,11 @@
       <title><anchor xml:id="c11e10d2" /></title>
 
       <interlinear-gloss>
-        <jbo>mi troci le nu [mi] gasnu</jbo>
+        <jbo>mi troci lo nu [mi] gasnu</jbo>
         <gloss>I try the event-of (I am-agent-in</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le nu le vorme cu karbi'o</jbo>
+        <jbo>… lo nu lo vorme cu karbi'o</jbo>
         <gloss>… the event-of (the door - open-becomes)).</gloss>
       </interlinear-gloss>
     </example>
@@ -1641,7 +1641,7 @@
       <title><anchor xml:id="c11e10d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi troci tu'a le vorme</jbo>
+        <jbo>mi troci tu'a lo vorme</jbo>
         <gloss>I try some-action-to-do-with the door.</gloss>
       </interlinear-gloss>
     </example>
@@ -1666,14 +1666,14 @@
       <title><anchor xml:id="c11e10d5" /></title>
 
       <interlinear-gloss>
-        <jbo>tu'a le vorme lu'u ki'a</jbo>
+        <jbo>tu'a lo vorme lu'u ki'a</jbo>
 
         <gloss>something-to-do-with the door [terminator] [confusion!]</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent">
       which indicates that
-      <jbophrase>tu'a le vorme</jbophrase>
+      <jbophrase>tu'a lo vorme</jbophrase>
       cannot be understood. (The terminator for
       <valsi>tu'a</valsi>
       is
@@ -1722,7 +1722,7 @@
       <title><anchor xml:id="c11e10d7" /><indexterm type="general"><primary>cause death</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>tu'a mi rinka le nu do morsi</jbo>
+        <jbo>tu'a mi rinka lo nu do morsi</jbo>
         <gloss>something-to-do-with me causes the event-of you are-dead</gloss>
         <natlang>My action causes your death.</natlang>
       </interlinear-gloss>
@@ -1732,7 +1732,7 @@
       <title><anchor xml:id="c11e10d8" /></title>
 
       <interlinear-gloss>
-        <jbo>mi jai rinka le nu do morsi</jbo>
+        <jbo>mi jai rinka lo nu do morsi</jbo>
         <gloss>I am-associated-with causing the event-of your death.</gloss>
         <natlang>I cause your death.</natlang>
       </interlinear-gloss>
@@ -1754,7 +1754,7 @@
       <title><anchor xml:id="c11e10d9" /></title>
 
       <interlinear-gloss>
-        <jbo>le jai rinka be le nu do morsi</jbo>
+        <jbo>lo jai rinka be lo nu do morsi</jbo>
         <gloss>that-which-is associated-with causing ( the event-of your death )</gloss>
         <natlang>the one who caused your death</natlang>
       </interlinear-gloss>
@@ -1778,7 +1778,7 @@
       <title><anchor xml:id="c11e10d10" /></title>
 
       <interlinear-gloss>
-        <jbo>le jai--gau rinka be le nu do morsi</jbo>
+        <jbo>lo jai--gau rinka be lo nu do morsi</jbo>
         <gloss>that-which-is agent-in causing ( the event-of your death )</gloss>
       </interlinear-gloss>
     </example>
@@ -1931,7 +1931,7 @@
       <title><anchor xml:id="c11e12d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le mikce cu se cinri le pu'u jenai za'i mi sipna</jbo>
+        <jbo>lo mikce cu se cinri lo pu'u jenai za'i mi sipna</jbo>
         <natlang>The doctor is interested in the process of me sleeping but not in the state of me sleeping.</natlang>
 
       </interlinear-gloss>

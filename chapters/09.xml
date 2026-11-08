@@ -101,7 +101,7 @@
         <gloss>I - go to-that-named Boston from-that-named Atlanta</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le dargu le karce</jbo>
+        <jbo>… lo dargu lo karce</jbo>
         <gloss>… via-the road using-the car.</gloss>
       </interlinear-gloss>
     </example>
@@ -133,14 +133,14 @@
         <td>x<subscript>4</subscript></td>
         <td>route</td>
         <td>
-          <jbophrase>le dargu</jbophrase>
+          <jbophrase>lo dargu</jbophrase>
         </td>
       </tr>
       <tr>
         <td>x<subscript>5</subscript></td>
         <td>means</td>
         <td>
-          <jbophrase>le karce</jbophrase>
+          <jbophrase>lo karce</jbophrase>
         </td>
       </tr>
     </informaltable>
@@ -170,7 +170,7 @@
         <gloss>I, to-that-named Boston from-that-named Atlanta</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le dargu le karce cu klama</jbo>
+        <jbo>… lo dargu lo karce cu klama</jbo>
         <gloss>… via-the road using-the car, - go.</gloss>
       </interlinear-gloss>
     </example>
@@ -188,7 +188,7 @@
         <gloss>I to-that-named Boston - go from-that-named Atlanta</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le dargu le karce</jbo>
+        <jbo>… lo dargu lo karce</jbo>
         <gloss>… via-the road using-the car.</gloss>
       </interlinear-gloss>
     </example>
@@ -247,12 +247,12 @@
         <gloss>- from-Atlanta</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>le dargu</jbo>
+        <jbo>lo dargu</jbo>
         <gloss>via-the road</gloss>
         <gloss>via-the road</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>le karce</jbo>
+        <jbo>lo karce</jbo>
         <gloss>using-the car.</gloss>
         <gloss>using-the car.</gloss>
         <natlang>Look: a goer to Boston from Atlanta via the road using the car!</natlang>
@@ -320,12 +320,12 @@
       <title><anchor xml:id="c9e2d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama la .bastn. la .atlantas. le karce</jbo>
+        <jbo>mi klama la .bastn. la .atlantas. lo karce</jbo>
         <gloss>I go to-that-named Boston from-that-named Atlanta via-the car.</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent">
-      <jbophrase>le karce</jbophrase>
+      <jbophrase>lo karce</jbophrase>
       occupies the x<subscript>4</subscript> place, and therefore
       <xref linkend="example-random-id-jh7T" />
       means:
@@ -342,7 +342,7 @@
         <gloss>I go to-that-named Boston from-that-named Atlanta</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… zo'e le karce</jbo>
+        <jbo>… zo'e lo karce</jbo>
         <gloss>… via-something-unspecified using-the car.</gloss>
       </interlinear-gloss>
     </example>
@@ -426,7 +426,7 @@
         <gloss>x<subscript>1</subscript>= I - go x<subscript>2</subscript>= that-named Boston x<subscript>3</subscript>= that-named Atlanta</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… fo le dargu fu le karce</jbo>
+        <jbo>… fo lo dargu fu lo karce</jbo>
         <gloss>… x<subscript>4</subscript>= the road x<subscript>5</subscript>= the car.</gloss>
         <natlang>I go to Boston from Atlanta via the road using the car.</natlang>
       </interlinear-gloss>
@@ -447,14 +447,14 @@
       , the tag
       <valsi>fu</valsi>
       before
-      <jbophrase>le karce</jbophrase>
+      <jbophrase>lo karce</jbophrase>
       clarifies that
-      <jbophrase>le karce</jbophrase>
+      <jbophrase>lo karce</jbophrase>
       occupies the x<subscript>5</subscript> place of
       <valsi>klama</valsi>. The use of
       <valsi>fu</valsi>
       tells us nothing about the purpose or meaning of the x<subscript>5</subscript> place; it simply says that
-      <jbophrase>le karce</jbophrase>
+      <jbophrase>lo karce</jbophrase>
       occupies it.
     </para>
     <para>
@@ -468,7 +468,7 @@
       <title><anchor xml:id="c9e3d2" /></title>
 
       <interlinear-gloss>
-        <jbo>fa mi klama fe le zdani be mi be'o poi</jbo>
+        <jbo>fa mi klama fe lo zdani be mi be'o poi</jbo>
         <gloss>x<subscript>1</subscript>= I go x<subscript>2</subscript>= (the house of me) - which</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -496,7 +496,7 @@
         <td>x<subscript>2</subscript></td>
         <td>destination</td>
         <td>
-          <jbophrase>le zdani be mi be'o poi nurma vau</jbophrase>
+          <jbophrase>lo zdani be mi be'o poi nurma vau</jbophrase>
         </td>
       </tr>
       <tr>
@@ -541,11 +541,11 @@
       <title><anchor xml:id="c9e3d3" /></title>
 
       <interlinear-gloss>
-        <jbo>klama fa mi fi la .atlantas. fu le karce</jbo>
+        <jbo>klama fa mi fi la .atlantas. fu lo karce</jbo>
         <gloss>go x<subscript>1</subscript>= I x<subscript>3</subscript>= that-named Atlanta x<subscript>5</subscript>= the car</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… fe la .bastn. fo le dargu</jbo>
+        <jbo>… fe la .bastn. fo lo dargu</jbo>
         <gloss>… x<subscript>2</subscript>= that-named Boston x<subscript>4</subscript>= the road.</gloss>
         <natlang>Go I from Atlanta using the car to Boston via the road.</natlang>
       </interlinear-gloss>
@@ -569,7 +569,7 @@
       <title><anchor xml:id="c9e3d4" /></title>
 
       <interlinear-gloss>
-        <jbo>fu le karce fo le dargu fi la .atlantas.</jbo>
+        <jbo>fu lo karce fo lo dargu fi la .atlantas.</jbo>
         <gloss>x<subscript>5</subscript>= the car x<subscript>4</subscript>= the road x<subscript>3</subscript>= that-named Atlanta</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -590,7 +590,7 @@
       <title><anchor xml:id="c9e3d5" /></title>
 
       <interlinear-gloss>
-        <jbo>le karce le dargu la .atlantas.</jbo>
+        <jbo>lo karce lo dargu la .atlantas.</jbo>
         <gloss>The car to-the road from-that-named Atlanta</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -619,7 +619,7 @@
         <gloss>A-goer x<subscript>3</subscript>= that-named Atlanta x<subscript>2</subscript>= that-named Boston</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… fu le karce</jbo>
+        <jbo>… fu lo karce</jbo>
         <gloss>… x<subscript>5</subscript>= the car.</gloss>
         <natlang>A goer from Atlanta to Boston using the car.</natlang>
       </interlinear-gloss>
@@ -644,7 +644,7 @@
         <gloss>Go x<subscript>1</subscript>= I x<subscript>2</subscript>=that-named Boston x<subscript>3</subscript>=that-named Atlanta</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le dargu le karce</jbo>
+        <jbo>… lo dargu lo karce</jbo>
         <gloss>… x<subscript>4</subscript>=the road x<subscript>5</subscript>=the car.</gloss>
         <natlang>Go I to Boston from Atlanta via the road using the car.</natlang>
       </interlinear-gloss>
@@ -663,11 +663,11 @@
       <title><anchor xml:id="c9e3d8" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama fi la .atlantas. le dargu</jbo>
+        <jbo>mi klama fi la .atlantas. lo dargu</jbo>
         <gloss>I go x<subscript>3</subscript>= that-named Atlanta, the road</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… fe la .bastn. le karce</jbo>
+        <jbo>… fe la .bastn. lo karce</jbo>
         <gloss>… x<subscript>2</subscript>= that-named Boston, the car.</gloss>
         <natlang>I go from Atlanta via the road to Boston using the car.</natlang>
       </interlinear-gloss>
@@ -682,14 +682,14 @@
       , occupies the x<subscript>3</subscript> place by virtue of the tag
       <valsi>fi</valsi>
       , and
-      <jbophrase>le dargu</jbophrase>
+      <jbophrase>lo dargu</jbophrase>
       occupies the x<subscript>4</subscript> place as a result of following
       <jbophrase>la .atlantas.</jbophrase>. Finally,
       <jbophrase>la .bastn.</jbophrase>
       occupies the x<subscript>2</subscript> place because of its tag
       <valsi>fe</valsi>
       , and
-      <jbophrase>le karce</jbophrase>
+      <jbophrase>lo karce</jbophrase>
       skips over the already-occupied x<subscript>3</subscript> and x<subscript>4</subscript> places to land in the x<subscript>5</subscript> place.
     </para>
     <para>
@@ -719,7 +719,7 @@
         <gloss>[x<subscript>1</subscript>=] that-named Rick x<subscript>1</subscript>= that-named Jane goes-to</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… [fe] le kindi'u fe le zdani fe le zarci</jbo>
+        <jbo>… [fe] lo kindi'u fe lo zdani fe lo zarci</jbo>
         <gloss>… [x<subscript>2</subscript>=] the movie-theater x<subscript>2</subscript>= the house x<subscript>2</subscript>= the store</gloss>
       </interlinear-gloss>
     </example>
@@ -749,7 +749,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>fi'a do dunda [fe] le vi rozgu</jbo>
+        <jbo>fi'a do dunda [fe] lo vi rozgu</jbo>
         <gloss>[what-place]? you give x<subscript>2</subscript>= the nearby rose</gloss>
         <natlang>In what way are you involved in the giving of this rose?</natlang>
         <natlang>Are you the giver or the receiver of this rose?</natlang>
@@ -774,7 +774,7 @@
       indicates that the speaker wishes to know whether the sumti
       <valsi>do</valsi>
       falls in the x<subscript>1</subscript> or the x<subscript>3</subscript> place (the x<subscript>2</subscript> place is already occupied by
-      <jbophrase>le rozgu</jbophrase>). The listener can reply with a sentence consisting solely of a FA cmavo:
+      <jbophrase>lo rozgu</jbophrase>). The listener can reply with a sentence consisting solely of a FA cmavo:
       <valsi>fa</valsi>
       if the listener is the giver,
       <valsi>fi</valsi>
@@ -790,7 +790,7 @@
       , but it is actually not necessary, because
       <valsi>fi'a</valsi>
       does not count as a numeric tag; therefore,
-      <jbophrase>le vi rozgu</jbophrase>
+      <jbophrase>lo vi rozgu</jbophrase>
       would necessarily be in the x<subscript>2</subscript> place even if no tag were present, because it immediately follows the selbri.
     </para>
     <para>
@@ -948,9 +948,9 @@
       <indexterm type="general"><primary>converted selbri</primary><secondary>in descriptions</secondary>
       </indexterm>
       The most important use of conversion is in the construction of descriptions. A description is a sumti which begins with a cmavo of selma'o LA or LE, called the descriptor, and contains (in the simplest case) a selbri. We have already seen the descriptions
-      <jbophrase>le dargu</jbophrase>
+      <jbophrase>lo dargu</jbophrase>
       and
-      <jbophrase>le karce</jbophrase>. To this we could add:
+      <jbophrase>lo karce</jbophrase>. To this we could add:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-3YoA">
       <title>
@@ -959,7 +959,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le klama</jbo>
+        <jbo>lo klama</jbo>
         <natlang>the go-er, the one who goes</natlang>
       </interlinear-gloss>
     </example>
@@ -984,7 +984,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le se klama</jbo>
+        <jbo>lo se klama</jbo>
         <natlang>the destination gone to by someone</natlang>
       </interlinear-gloss>
     </example>
@@ -993,7 +993,7 @@
       <title><anchor xml:id="c9e4d5" /></title>
 
       <interlinear-gloss>
-        <jbo>le te klama</jbo>
+        <jbo>lo te klama</jbo>
         <natlang>the origin of someone's going</natlang>
       </interlinear-gloss>
     </example>
@@ -1001,7 +1001,7 @@
       <title><anchor xml:id="c9e4d6" /></title>
 
       <interlinear-gloss>
-        <jbo>le ve klama</jbo>
+        <jbo>lo ve klama</jbo>
         <natlang>the route of someone's going</natlang>
       </interlinear-gloss>
     </example>
@@ -1009,7 +1009,7 @@
       <title><anchor xml:id="c9e4d7" /></title>
 
       <interlinear-gloss>
-        <jbo>le xe klama</jbo>
+        <jbo>lo xe klama</jbo>
         <natlang>the means by which someone goes</natlang>
       </interlinear-gloss>
     </example>
@@ -1032,17 +1032,17 @@
       does not mean
       <quote>the route</quote>
       plain and simple: that is
-      <jbophrase>le pluta</jbophrase>
+      <jbophrase>lo pluta</jbophrase>
       , using a different selbri. It means a route that is used by someone for an act of
       <valsi>klama</valsi>
       ; that is, a journey with origin and destination. A
       <quote>road</quote>
       on Mars, on which no one has traveled or is ever likely to, may be called
-      <jbophrase>le pluta</jbophrase>
+      <jbophrase>lo pluta</jbophrase>
       , but it cannot be
-      <jbophrase>le ve klama</jbophrase>
+      <jbophrase>lo ve klama</jbophrase>
       , since there exists no one for whom it is
-      <jbophrase>le ve klama be fo da</jbophrase>
+      <jbophrase>lo ve klama be fo da</jbophrase>
       (the route taken in an actual journey by someone [da]).
     </para>
 
@@ -1167,7 +1167,7 @@
       <valsi>viska</valsi>
       <content>x<subscript>1</subscript> sees x<subscript>2</subscript> under conditions x<subscript>3</subscript></content>
     </definition>
-    <para>Seeing is a threefold relationship, involving an agent (le viska), an object of sight (le se viska), and an environment that makes seeing possible (le te viska). Seeing is done with one or more eyes, of course; in general, the eyes belong to the entity in the x<subscript>1</subscript> place.</para>
+    <para>Seeing is a threefold relationship, involving an agent (<jbophrase>lo viska</jbophrase>), an object of sight (<jbophrase>lo se viska</jbophrase>), and an environment that makes seeing possible (<jbophrase>lo te viska</jbophrase>). Seeing is done with one or more eyes, of course; in general, the eyes belong to the entity in the x<subscript>1</subscript> place.</para>
     <para><indexterm type="lojban-word"><primary>fi'o</primary><secondary>use in adding places to place structure</secondary>
       </indexterm><indexterm type="general"><primary>place structure</primary><secondary>adding new places to with modal sumti</secondary>
       </indexterm><indexterm type="lojban-word"><primary>fi'o</primary><secondary>as modal tag</secondary>
@@ -1178,7 +1178,7 @@
         <anchor xml:id="c9e5d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska do fi'o kanla [fe'u] le zunle</jbo>
+        <jbo>mi viska do fi'o kanla [fe'u] lo zunle</jbo>
         <gloss>I see you [modal] eye: - the left-thing</gloss>
         <natlang>I see you with the left eye.</natlang>
       </interlinear-gloss>
@@ -1197,10 +1197,10 @@
       (of selma'o FIhO) followed by a selbri, in this case the gismu
       <valsi>kanla</valsi>
       , forms a tag which is prefixed to the sumti filling the new place, namely
-      <jbophrase>le zunle</jbophrase>. The semantics of
-      <jbophrase>fi'o kanla le zunle</jbophrase>
+      <jbophrase>lo zunle</jbophrase>. The semantics of
+      <jbophrase>fi'o kanla lo zunle</jbophrase>
       is that
-      <jbophrase>le zunle</jbophrase>
+      <jbophrase>lo zunle</jbophrase>
       fills the x<subscript>1</subscript> place of
       <valsi>kanla</valsi>
       , whose place structure is
@@ -1219,11 +1219,11 @@
       <indexterm type="general"><primary>modal place</primary><secondary>relation of to selbri</secondary>
       </indexterm>
       Thus
-      <jbophrase>le zunle</jbophrase>
+      <jbophrase>lo zunle</jbophrase>
       is an eye. The x<subscript>2</subscript> place of
       <valsi>kanla</valsi>
       is unspecified and must be inferred from the context. It is important to remember that even though
-      <jbophrase>le zunle</jbophrase>
+      <jbophrase>lo zunle</jbophrase>
       is placed following
       <jbophrase>fi'o kanla</jbophrase>
       , semantically it belongs in the x<subscript>1</subscript> place of
@@ -1292,7 +1292,7 @@
       <title><anchor xml:id="c9e5d2" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska do fi'o se pilno le zunle kanla</jbo>
+        <jbo>mi viska do fi'o se pilno lo zunle kanla</jbo>
         <gloss>I see you [modal] [conversion] use: the left eye.</gloss>
         <natlang>I see you using my left eye.</natlang>
       </interlinear-gloss>
@@ -1334,7 +1334,7 @@
       <title><anchor xml:id="c9e6d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska do sepi'o le zunle kanla</jbo>
+        <jbo>mi viska do sepi'o lo zunle kanla</jbo>
 
         <gloss>I see you with-tool: the left eye</gloss>
         <natlang>I see you using my left eye.</natlang>
@@ -1433,7 +1433,7 @@
       <title><anchor xml:id="c9e6d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi citka xeka'a le vinji</jbo>
+        <jbo>mi citka xeka'a lo vinji</jbo>
         <gloss>I eat with-means-of-transport the airplane.</gloss>
         <natlang>I eat in the airplane.</natlang>
       </interlinear-gloss>
@@ -1458,7 +1458,7 @@
       <title><anchor xml:id="c9e6d7" /></title>
 
       <interlinear-gloss>
-        <jbo>lo nanmu be--do'e le berti cu klama le tcadu</jbo>
+        <jbo>lo nanmu be--do'e lo berti cu klama lo tcadu</jbo>
 
         <gloss>A man [related-to] the north - came to-the city.</gloss>
         <natlang>A man of the north came to the city.</natlang>
@@ -1468,7 +1468,7 @@
       </indexterm><indexterm type="general"><primary>of</primary><secondary>English word &quot;of&quot;</secondary>
         <tertiary>compared with &quot;do'e&quot;</tertiary>
       </indexterm><indexterm type="lojban-word"><primary>do'e</primary><secondary>compared with English &quot;of&quot;</secondary>
-      </indexterm>Here <jbophrase>le berti</jbophrase> is provided as a modal place of the selbri <valsi>nanmu</valsi>, but its exact significance is vague, and the colloquial translation parallels that vagueness with the vague English preposition <quote>of</quote>. <xref linkend="example-random-id-2vMd" /> also illustrates a modal place bound into a selbri with <valsi>be</valsi>. This construction is useful when the selbri of a description requires a modal place; this and other uses of <valsi>be</valsi> are more fully explained in <xref linkend="section-be-sumti" />.</para>
+      </indexterm>Here <jbophrase>lo berti</jbophrase> is provided as a modal place of the selbri <valsi>nanmu</valsi>, but its exact significance is vague, and the colloquial translation parallels that vagueness with the vague English preposition <quote>of</quote>. <xref linkend="example-random-id-2vMd" /> also illustrates a modal place bound into a selbri with <valsi>be</valsi>. This construction is useful when the selbri of a description requires a modal place; this and other uses of <valsi>be</valsi> are more fully explained in <xref linkend="section-be-sumti" />.</para>
   </section>
   <section xml:id="section-causals">
     <title><anchor xml:id="c9s7" />Modal sentence connection: the causals</title>
@@ -1661,11 +1661,11 @@
       <title><anchor xml:id="c9e7d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le spati cu banro ri'a le nu</jbo>
+        <jbo>lo spati cu banro ri'a lo nu</jbo>
         <gloss>The plant - grows with-physical-cause the event-of</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… do djacu dunda fi le spati</jbo>
+        <jbo>… do djacu dunda fi lo spati</jbo>
         <gloss>… you water give to the plant.</gloss>
         <natlang>The plant grows because you water it.</natlang>
       </interlinear-gloss>
@@ -1674,11 +1674,11 @@
       <title><anchor xml:id="c9e7d2" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. cpacu le pamoi se--jinga</jbo>
+        <jbo>la .djan. cpacu lo pamoi se--jinga</jbo>
         <gloss>- John gets the first prize</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… ki'u le nu la .djan. jinga</jbo>
+        <jbo>… ki'u lo nu la .djan. jinga</jbo>
         <gloss>… with-justification the event-of that-named John wins.</gloss>
         <natlang>John got the first prize because he won.</natlang>
       </interlinear-gloss>
@@ -1687,11 +1687,11 @@
       <title><anchor xml:id="c9e7d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi lebna le cukta mu'i</jbo>
+        <jbo>mi lebna lo cukta mu'i</jbo>
         <gloss>I took the book with-motivation</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le nu mi viska le cukta</jbo>
+        <jbo>… lo nu mi viska lo cukta</jbo>
         <gloss>… the event-of I saw the book.</gloss>
         <natlang>I took the book because I saw it.</natlang>
       </interlinear-gloss>
@@ -1707,7 +1707,7 @@
         <gloss>- Socrates dead became with-logical-justification</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le nu la .sokrates. remna</jbo>
+        <jbo>… lo nu la .sokrates. remna</jbo>
         <gloss>… the event-of that-named Socrates is-human.</gloss>
         <natlang>Socrates died because Socrates is human.</natlang>
       </interlinear-gloss>
@@ -1747,11 +1747,11 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>do djacu dunda fi le spati</jbo>
+        <jbo>do djacu dunda fi lo spati</jbo>
         <gloss>You water give to the plant</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… seri'a le nu ri banro</jbo>
+        <jbo>… seri'a lo nu ri banro</jbo>
         <gloss>… with-physical-effect the event-of it grows.</gloss>
         <natlang>You water the plant; therefore, it grows.</natlang>
       </interlinear-gloss>
@@ -1769,11 +1769,11 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le nu do djacu dunda fi le spati cu</jbo>
+        <jbo>lo nu do djacu dunda fi lo spati cu</jbo>
         <gloss>The event-of (you water give to the plant) -</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… rinka le nu le spati cu banro</jbo>
+        <jbo>… rinka lo nu lo spati cu banro</jbo>
         <gloss>… causes the event-of (the plant - grows).</gloss>
         <natlang>Your watering the plant causes its growth.</natlang>
         <natlang>If you water the plant, then it grows.</natlang>
@@ -1797,11 +1797,11 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le spati cu banro .iri'abo do</jbo>
+        <jbo>lo spati cu banro .iri'abo do</jbo>
         <gloss>The plant - grows. Because you</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… djacu dunda fi le spati</jbo>
+        <jbo>… djacu dunda fi lo spati</jbo>
         <gloss>… water give to the plant.</gloss>
         <natlang>The plant grows because you water it.</natlang>
       </interlinear-gloss>
@@ -1815,11 +1815,11 @@
         </title>
 
         <interlinear-gloss>
-          <jbo>do djacu dunda fi le spati</jbo>
+          <jbo>do djacu dunda fi lo spati</jbo>
           <gloss>You water give to the plant.</gloss>
         </interlinear-gloss>
         <interlinear-gloss>
-          <jbo>… .iseri'abo le spati cu banro</jbo>
+          <jbo>… .iseri'abo lo spati cu banro</jbo>
           <gloss>… Therefore the plant - grows.</gloss>
           <natlang>You water the plant; therefore, it grows.</natlang>
         </interlinear-gloss>
@@ -1849,11 +1849,11 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le spati cu banro .i ri'a do</jbo>
+        <jbo>lo spati cu banro .i ri'a do</jbo>
         <gloss>The plant - grows. - Because-of you,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… - djacu dunda fi le spati</jbo>
+        <jbo>… - djacu dunda fi lo spati</jbo>
         <gloss>… [something] water gives to the plant.</gloss>
         <natlang>The plant grows. Because of you, water is given to the plant.</natlang>
       </interlinear-gloss>
@@ -1909,11 +1909,11 @@
         <anchor xml:id="c9e8d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi jgari lei djacu</jbo>
+        <jbo>mi jgari loi djacu</jbo>
         <gloss>I grasp the-mass-of water</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .iri'abo mi jgari le kabri</jbo>
+        <jbo>… .iri'abo mi jgari lo kabri</jbo>
         <gloss>… with-physical-cause I grasp the cup.</gloss>
         <natlang>Causing the mass of water to be grasped by me, I grasped the cup.</natlang>
         <natlang>I grasp the water because I grasp the cup.</natlang>
@@ -1952,11 +1952,11 @@
       <title><anchor xml:id="c9e8d2" /></title>
 
       <interlinear-gloss>
-        <jbo>ri'agi mi jgari le kabri gi</jbo>
+        <jbo>ri'agi mi jgari lo kabri gi</jbo>
         <gloss>With-physical-cause I grasp the cup ,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… mi jgari lei djacu</jbo>
+        <jbo>… mi jgari loi djacu</jbo>
         <gloss>… I grasp the-mass-of water.</gloss>
         <natlang>Because I grasp the cup, I grasp the water.</natlang>
       </interlinear-gloss>
@@ -1969,11 +1969,11 @@
       <title><anchor xml:id="c9e8d3" /></title>
 
       <interlinear-gloss>
-        <jbo>seri'agi mi jgari lei djacu gi</jbo>
+        <jbo>seri'agi mi jgari loi djacu gi</jbo>
         <gloss>With-physical-effect I grasp the-mass-of water ,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… mi jgari le kabri</jbo>
+        <jbo>… mi jgari lo kabri</jbo>
         <gloss>… I grasp the cup.</gloss>
       </interlinear-gloss>
     </example>
@@ -2008,7 +2008,7 @@
       <title><anchor xml:id="c9e8d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi jgari ri'agi le kabri gi lei djacu</jbo>
+        <jbo>mi jgari ri'agi lo kabri gi loi djacu</jbo>
         <gloss>I grasp because the cup , the-mass-of water.</gloss>
       </interlinear-gloss>
     </example>
@@ -2026,11 +2026,11 @@
       <title><anchor xml:id="c9e8d5" /></title>
 
       <interlinear-gloss>
-        <jbo>mi dunda le cukta la .djan.</jbo>
+        <jbo>mi dunda lo cukta la .djan.</jbo>
         <gloss>I gave the book to-that-named John.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .imu'ibo la .djan. dunda lei jdini mi</jbo>
+        <jbo>… .imu'ibo la .djan. dunda loi jdini mi</jbo>
         <gloss>… Motivated-by that-named John gave the-mass-of money to-me.</gloss>
         <natlang>I gave the book to John, because John gave money to me.</natlang>
       </interlinear-gloss>
@@ -2044,11 +2044,11 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>nu'i mu'igi la .djan. lei jdini mi gi</jbo>
+        <jbo>nu'i mu'igi la .djan. loi jdini mi gi</jbo>
         <gloss>[start] because that-named John, the-mass-of money, me ;</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… mi le cukta la .djan. nu'u dunda</jbo>
+        <jbo>… mi lo cukta la .djan. nu'u dunda</jbo>
         <gloss>… I, the book, that-named John [end] gives.</gloss>
       </interlinear-gloss>
     </example>
@@ -2068,7 +2068,7 @@
       <title><anchor xml:id="c9e8d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi mu'igi viska le cukta gi lebna le cukta</jbo>
+        <jbo>mi mu'igi viska lo cukta gi lebna lo cukta</jbo>
         <gloss>I, because saw the book, - took the book.</gloss>
       </interlinear-gloss>
     </example>
@@ -2081,11 +2081,11 @@
       <title><anchor xml:id="c9e8d8" /></title>
 
       <interlinear-gloss>
-        <jbo>mi mu'igi viska gi lebna vau le cukta</jbo>
+        <jbo>mi mu'igi viska gi lebna vau lo cukta</jbo>
         <gloss>I because saw, therefore took, - the book.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="noindent">where <jbophrase>le cukta</jbophrase> is set off by the non-elidable <valsi>vau</valsi> and is made to belong to both bridi-tails (see <xref linkend="section-compound-bridi" /> for more explanations).</para>
+    <para role="noindent">where <jbophrase>lo cukta</jbophrase> is set off by the non-elidable <valsi>vau</valsi> and is made to belong to both bridi-tails (see <xref linkend="section-compound-bridi" /> for more explanations).</para>
     <para>
       <indexterm type="general"><primary>shared bridi-tail sumti</primary><secondary>avoiding</secondary>
       </indexterm>
@@ -2099,7 +2099,7 @@
       <title><anchor xml:id="c9e8d9" /></title>
 
       <interlinear-gloss>
-        <jbo>mi le cukta mu'igi viska gi lebna</jbo>
+        <jbo>mi lo cukta mu'igi viska gi lebna</jbo>
         <gloss>I, the book, because saw, therefore took.</gloss>
       </interlinear-gloss>
     </example>
@@ -2327,11 +2327,11 @@
       <title><anchor xml:id="c9e9d8" /><indexterm type="lojban-word"><primary>bai ke</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi bai ke ge klama le zarci</jbo>
+        <jbo>mi bai ke ge klama lo zarci</jbo>
         <gloss>I under-compulsion ( both go to-the market</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… gi cadzu le bisli [ke'e]</jbo>
+        <jbo>… gi cadzu lo bisli [ke'e]</jbo>
         <gloss>… and walk on-the ice ).</gloss>
         <natlang>Under compulsion, I both go to the market and walk on the ice.</natlang>
       </interlinear-gloss>
@@ -2340,9 +2340,9 @@
       Here the
       <valsi>bai</valsi>
       is spread over both
-      <jbophrase>klama le zarci</jbophrase>
+      <jbophrase>klama lo zarci</jbophrase>
       and
-      <jbophrase>cadzu le bisli</jbophrase>
+      <jbophrase>cadzu lo bisli</jbophrase>
       , and the
       <jbophrase>ge ... gi</jbophrase>
       represents the logical connection
@@ -2364,11 +2364,11 @@
       <title><anchor xml:id="c9e9d9" /></title>
 
       <interlinear-gloss>
-        <jbo>bai tu'e mi klama le zarci</jbo>
+        <jbo>bai tu'e mi klama lo zarci</jbo>
         <gloss>Under-compulsion [start] I go to-the market.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .i mi cadzu le bisli [tu'u]</jbo>
+        <jbo>… .i mi cadzu lo bisli [tu'u]</jbo>
         <gloss>… - I walk on-the ice [end].</gloss>
       </interlinear-gloss>
     </example>
@@ -2715,7 +2715,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le ni la .frank.</jbo>
+        <jbo>lo ni la .frank.</jbo>
         <gloss>The quantity-of that-named Frank's</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -2723,7 +2723,7 @@
         <gloss>liking that-named Betty -</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>zmadu le ni la .frank.</jbo>
+        <jbo>zmadu lo ni la .frank.</jbo>
         <gloss>is-more-than the quantity-of that-named Frank's</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -2857,15 +2857,15 @@
       <title><anchor xml:id="c9e11d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi bevri le dakli</jbo>
+        <jbo>mi bevri lo dakli</jbo>
         <gloss>I carry the sack.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .ijeseri'abo tu'e mi bevri le gerku</jbo>
+        <jbo>… .ijeseri'abo tu'e mi bevri lo gerku</jbo>
         <gloss>… And-[effect] ( I carry the dog.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .ijadu'ibo mi bevri le mlatu [tu'u]</jbo>
+        <jbo>… .ijadu'ibo mi bevri lo mlatu [tu'u]</jbo>
         <gloss>… And/or-[equal] I carry the cat. )</gloss>
         <natlang>I carry the sack. As a result I carry the dog or I carry the cat, equally.</natlang>
       </interlinear-gloss>
@@ -2874,15 +2874,15 @@
       <title><anchor xml:id="c9e11d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi bevri le dakli</jbo>
+        <jbo>mi bevri lo dakli</jbo>
         <gloss>I carry the sack</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… gi'eseri'ake bevri le gerku</jbo>
+        <jbo>… gi'eseri'ake bevri lo gerku</jbo>
         <gloss>… and-[effect] (carry the dog</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… gi'adu'ibo bevri le mlatu [ke'e]</jbo>
+        <jbo>… gi'adu'ibo bevri lo mlatu [ke'e]</jbo>
         <gloss>… and/or-[equal] carry the cat) -</gloss>
         <natlang>I carry the sack and as a result carry the dog or carry the cat equally.</natlang>
       </interlinear-gloss>
@@ -2894,15 +2894,15 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi bevri le dakli</jbo>
+        <jbo>mi bevri lo dakli</jbo>
         <gloss>I carry the sack</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .eseri'ake le gerku</jbo>
+        <jbo>… .eseri'ake lo gerku</jbo>
         <gloss>… and-[effect] (the dog</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .adu'ibo le mlatu [ke'e]</jbo>
+        <jbo>… .adu'ibo lo mlatu [ke'e]</jbo>
         <gloss>… and/or-[equal] the cat) -</gloss>
         <natlang>I carry the sack, and as a result the cat or the dog equally.</natlang>
       </interlinear-gloss>
@@ -2935,7 +2935,7 @@
       &hellip;
       <valsi>tu'u</valsi>
       portion was an effect, but would not pin down the
-      <jbophrase>mi bevri le dakli</jbophrase>
+      <jbophrase>mi bevri lo dakli</jbophrase>
       portion as the cause. It is legal for a modal (or a tense; see
       <xref linkend="chapter-tenses" />) to modify the whole of a
       <valsi>tu'e</valsi>
@@ -3040,7 +3040,7 @@
       Like SE conversions, JAI conversions are especially convenient in descriptions. We may refer to
       <quote>the language of an expression</quote>
       as
-      <jbophrase>le jai bau cusku</jbophrase>
+      <jbophrase>lo jai bau cusku</jbophrase>
       , for example.
     </para>
     <para>
@@ -3061,11 +3061,11 @@
       <title><anchor xml:id="c9e12d3" /></title>
 
       <interlinear-gloss>
-        <jbo>le nu mi lebna le cukta cu se--krinu</jbo>
+        <jbo>lo nu mi lebna lo cukta cu se--krinu</jbo>
         <gloss>The event-of (I take the book) - is-justified-by</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le nu mi viska le cukta</jbo>
+        <jbo>… lo nu mi viska lo cukta</jbo>
         <gloss>… the event-of (I see the book).</gloss>
         <natlang>My taking the book is justified by my seeing it.</natlang>
       </interlinear-gloss>
@@ -3074,11 +3074,11 @@
       <title><anchor xml:id="c9e12d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi jai--se--krinu le nu mi viska le cukta kei</jbo>
+        <jbo>mi jai--se--krinu lo nu mi viska lo cukta kei</jbo>
         <gloss>I am-justified-by the event-of (I see the book) -</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… [fai le nu mi lebna le cukta]</jbo>
+        <jbo>… [fai lo nu mi lebna lo cukta]</jbo>
         <gloss>… [namely, the event-of (I take the book)]</gloss>
         <natlang>I am justified in taking the book by seeing the book.</natlang>
       </interlinear-gloss>
@@ -3125,7 +3125,7 @@
       <title><anchor xml:id="c9e13d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi nelci do mu'inai le nu do nelci mi</jbo>
+        <jbo>mi nelci do mu'inai lo nu do nelci mi</jbo>
         <natlang>I like you, but not because you like me.</natlang>
       </interlinear-gloss>
     </example>
@@ -3165,11 +3165,11 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le spati cu banro na'emu'i le nu</jbo>
+        <jbo>lo spati cu banro na'emu'i lo nu</jbo>
         <gloss>The plant - grows other-than-motivated-by the event-of</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… do djacu dunda fi le spati</jbo>
+        <jbo>… do djacu dunda fi lo spati</jbo>
         <gloss>… you water give to the plant.</gloss>
       </interlinear-gloss>
     </example>
@@ -3282,11 +3282,11 @@
       <title><anchor xml:id="c9e15d1" /></title>
 
       <interlinear-gloss>
-        <jbo>la .frank. bajra seka'a le zdani</jbo>
+        <jbo>la .frank. bajra seka'a lo zdani</jbo>
         <gloss>That-named Frank runs with-destination the house.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .ije la .frank. bajra teka'a le zdani</jbo>
+        <jbo>… .ije la .frank. bajra teka'a lo zdani</jbo>
         <gloss>… And that-named Frank runs with-origin the house.</gloss>
         <natlang>Frank runs to the house, and Frank runs from the house.</natlang>
       </interlinear-gloss>
@@ -3299,7 +3299,7 @@
         <gloss>That-named Frank runs with-destination</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… je teka'a le zdani</jbo>
+        <jbo>… je teka'a lo zdani</jbo>
         <gloss>… and with-origin the house.</gloss>
         <natlang>Frank runs to and from the house.</natlang>
       </interlinear-gloss>
@@ -3309,11 +3309,11 @@
       <title><anchor xml:id="c9e15d3" /></title>
 
       <interlinear-gloss>
-        <jbo>la .frank. bajra seka'a le zdani</jbo>
+        <jbo>la .frank. bajra seka'a lo zdani</jbo>
         <gloss>That-named Frank runs with-destination the house</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… ce'e teka'a le zdani</jbo>
+        <jbo>… ce'e teka'a lo zdani</jbo>
         <gloss>… [joined-to] with-origin the house.</gloss>
       </interlinear-gloss>
     </example>

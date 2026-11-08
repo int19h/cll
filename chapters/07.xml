@@ -297,7 +297,7 @@
       <title><anchor xml:id="c7e2d3" /></title>
 
       <interlinear-gloss>
-        <jbo>do klama le zarci</jbo>
+        <jbo>do klama lo zarci</jbo>
         <gloss>You go-to the store.</gloss>
       </interlinear-gloss>
     </example>
@@ -306,7 +306,7 @@
       <title><anchor xml:id="c7e2d4" /></title>
 
       <interlinear-gloss>
-        <jbo>ko klama le zarci</jbo>
+        <jbo>ko klama lo zarci</jbo>
         <gloss>You--[imperative] go-to the store.</gloss>
         <natlang>
           Make
@@ -356,7 +356,7 @@
       <title><anchor xml:id="c7e2d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska le prenu poi prami ko</jbo>
+        <jbo>mi viska lo prenu poi prami ko</jbo>
         <gloss>I see the person that loves you-[imperative]</gloss>
         <natlang>
           Make
@@ -492,7 +492,7 @@
         <anchor xml:id="c7e3d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le ti bloti</jbo>
+        <jbo>lo ti bloti</jbo>
         <gloss>the this boat</gloss>
 
       </interlinear-gloss>
@@ -516,7 +516,7 @@
       <title><anchor xml:id="c7e3d2" /><indexterm type="general"><primary>this boat</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le vi bloti</jbo>
+        <jbo>lo vi bloti</jbo>
         <gloss>the here boat</gloss>
         <natlang>the nearby boat</natlang>
       </interlinear-gloss>
@@ -854,7 +854,7 @@
       <title><anchor xml:id="c7e5d1" /></title>
 
       <interlinear-gloss>
-        <jbo>la .alis. klama le zarci .i ko'a blanu</jbo>
+        <jbo>la .alis. klama lo zarci .i ko'a blanu</jbo>
         <gloss>That-named Alice goes-to the store . It-1 is-blue.</gloss>
       </interlinear-gloss>
     </example>
@@ -864,7 +864,7 @@
       plus knowledge about the real world, would tend to make English-speakers believe that
       <valsi>ko'a</valsi>
       refers to the store; in other words, that its antecedent is
-      <jbophrase>le zarci</jbophrase>. To a Lojbanist, however,
+      <jbophrase>lo zarci</jbophrase>. To a Lojbanist, however,
       <jbophrase>la .alis.</jbophrase>
       is just as likely an antecedent, in which case
       <xref linkend="example-random-id-qdCR" />
@@ -882,7 +882,7 @@
       <title><anchor xml:id="c7e5d2" /></title>
 
       <interlinear-gloss>
-        <jbo>la .alis. klama le zarci</jbo>
+        <jbo>la .alis. klama lo zarci</jbo>
         <gloss>That-named Alice goes-to the store</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -911,7 +911,7 @@
       <title><anchor xml:id="c7e5d3" /></title>
 
       <interlinear-gloss>
-        <jbo>la .alis. klama le zarci</jbo>
+        <jbo>la .alis. klama lo zarci</jbo>
         <gloss>That-named Alice goes-to the store</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -946,7 +946,7 @@
       <title><anchor xml:id="c7e5d4" /></title>
 
       <interlinear-gloss>
-        <jbo>la .alis. goi ko'a klama le zarci .i ko'a cu blanu</jbo>
+        <jbo>la .alis. goi ko'a klama lo zarci .i ko'a cu blanu</jbo>
         <gloss>That-named Alice, also-known-as it-1, goes-to the store . It-1 -- is-blue.</gloss>
       </interlinear-gloss>
     </example>
@@ -986,7 +986,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbophrase>ti slasi je mlatu bo cidja lante gacri cei broda .i le crino broda cu barda .i le xunre broda cu cmalu</jbophrase>
+        <jbophrase>ti slasi je mlatu bo cidja lante gacri cei broda .i lo crino broda cu barda .i lo xunre broda cu cmalu</jbophrase>
         <natlang>These are plastic cat-food can covers or thingies. The green thingy is large. The red thingy is small.</natlang>
       </interlinear-gloss>
     </example>
@@ -1026,13 +1026,13 @@
       Note that pro-bridi are so called because, even though they have the grammar of selbri, their antecedents are whole bridi. In the following rather contrived example, the antecedent of
       <valsi>brode</valsi>
       is the whole bridi
-      <jbophrase>mi klama le zarci</jbophrase>:
+      <jbophrase>mi klama lo zarci</jbophrase>:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-UFJf">
       <title><anchor xml:id="c7e5d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama cei brode le zarci .i do brode</jbo>
+        <jbo>mi klama cei brode lo zarci .i do brode</jbo>
 
         <gloss>I go-to (which-is claim-2) the store . You claim-2.</gloss>
         <natlang>I go to the store. You, too.</natlang>
@@ -1044,11 +1044,11 @@
       In the second bridi,
       <jbophrase>do brode</jbophrase>
       means
-      <jbophrase>do klama le zarci</jbophrase>,
+      <jbophrase>do klama lo zarci</jbophrase>,
       because
       <valsi>brode</valsi>
       carries the x<subscript>2</subscript> sumti of
-      <jbophrase>mi klama le zarci</jbophrase>
+      <jbophrase>mi klama lo zarci</jbophrase>
       along with it. It also potentially carries the x<subscript>1</subscript> sumti as well, but the explicit x<subscript>1</subscript> sumti
       <valsi>do</valsi>
       overrides the
@@ -1098,7 +1098,7 @@
       <title><anchor xml:id="c7e5d8" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska le gerku .i gy. cusku zo .arf.</jbo>
+        <jbo>mi viska lo gerku .i gy. cusku zo .arf.</jbo>
         <gloss>
           I see the dog . D expresses the-word
           <quote>Arf!</quote>.
@@ -1119,7 +1119,7 @@
       the cmavo for the letter
       <letteral>g</letteral>,
       must be
-      <jbophrase>le gerku</jbophrase>. In the English translation, we use the same principle to refer to the dog as
+      <jbophrase>lo gerku</jbophrase>. In the English translation, we use the same principle to refer to the dog as
       <quote>D</quote>. Of course, in case of ambiguity,
       <valsi>goi</valsi>
       can be used to make an explicit assignment.
@@ -1137,7 +1137,7 @@
       <title><anchor xml:id="c7e5d9" /></title>
 
       <interlinear-gloss>
-        <jbo>le ninmu goi la .sam. cu klama le zarci</jbo>
+        <jbo>lo ninmu goi la .sam. cu klama lo zarci</jbo>
         <gloss>The woman also-known-as that-named Sam -- goes-to the store.</gloss>
         <natlang>The woman, whom I'll call Sam, goes to the store.</natlang>
       </interlinear-gloss>
@@ -1251,7 +1251,7 @@
       <title><anchor xml:id="c7e6d1" /></title>
 
       <interlinear-gloss>
-        <jbo>la .alis. sipna ne'i le - ri kumfa</jbo>
+        <jbo>la .alis. sipna ne'i lo - ri kumfa</jbo>
         <gloss>That-named Alice sleeps in the of- [repeat-last-sumti] room.</gloss>
         <natlang>Alice sleeps in her room.</natlang>
       </interlinear-gloss>
@@ -1271,7 +1271,7 @@
       <title><anchor xml:id="c7e6d2" /></title>
 
       <interlinear-gloss>
-        <jbo>la .alis. sipna ne'i le - la .alis. kumfa</jbo>
+        <jbo>la .alis. sipna ne'i lo - la .alis. kumfa</jbo>
         <gloss>That-named Alice sleeps in the of- that-named Alice room.</gloss>
         <natlang>Alice sleeps in Alice's room.</natlang>
       </interlinear-gloss>
@@ -1280,7 +1280,7 @@
       Note that
       <valsi>ri</valsi>
       does not repeat
-      <jbophrase>le ri kumfa</jbophrase>,
+      <jbophrase>lo ri kumfa</jbophrase>,
       because that sumti is not yet complete when
       <valsi>ri</valsi>
       appears. This prevents
@@ -1322,11 +1322,11 @@
       <title><anchor xml:id="c7e6d4" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. viska le tricu .i</jbo>
+        <jbo>la .djan. viska lo tricu .i</jbo>
         <gloss>That-named John sees the tree. -</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… ri se--jadni le - ri jimca</jbo>
+        <jbo>… ri se--jadni lo - ri jimca</jbo>
         <gloss>… [repeat-last] is-adorned-by the of- [repeat-last] branch.</gloss>
         <natlang>John sees the tree. It is adorned by its branches.</natlang>
       </interlinear-gloss>
@@ -1337,7 +1337,7 @@
       has as antecedent the first
       <valsi>ri</valsi>,
       which has as antecedent
-      <jbophrase>le tricu</jbophrase>. All three refer to the same thing: a tree.
+      <jbophrase>lo tricu</jbophrase>. All three refer to the same thing: a tree.
     </para>
     <para>
       To refer to the next-to-last sumti, the third-from-last sumti, and so on,
@@ -1460,7 +1460,7 @@
       <title><anchor xml:id="c7e6d7" /></title>
 
       <interlinear-gloss>
-        <jbo>la .alis. klama le zarci</jbo>
+        <jbo>la .alis. klama lo zarci</jbo>
         <gloss>That-named Alice goes-to the store</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -1537,7 +1537,7 @@
       <title><anchor xml:id="c7e6d9" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci .i do go'i</jbo>
+        <jbo>mi klama lo zarci .i do go'i</jbo>
         <gloss>I go-to the store . You [repeat--last--bridi].</gloss>
         <natlang>I go to the store . You, too.</natlang>
       </interlinear-gloss>
@@ -1569,12 +1569,12 @@
       <title><anchor xml:id="c7e6d10" /></title>
 
       <interlinear-gloss>
-        <jbo>A: mi ba klama le zarci</jbo>
+        <jbo>A: mi ba klama lo zarci</jbo>
         <gloss>A: I [future] go-to the store.</gloss>
         <natlang>A: I am going to the store.</natlang>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>B: mi nelci le si'o mi go'i</jbo>
+        <jbo>B: mi nelci lo si'o mi go'i</jbo>
         <gloss>B: I like the concept-of I [repeat-last-bridi].</gloss>
         <natlang>B: I like the idea of my going.</natlang>
       </interlinear-gloss>
@@ -1587,12 +1587,12 @@
     <para role="indent">
       Here B's sentence repeats A's within an abstraction (explained in
       <xref linkend="chapter-abstractions" />):
-      <jbophrase>le si'o mi go'i</jbophrase>
+      <jbophrase>lo si'o mi go'i</jbophrase>
       means
-      <jbophrase>le si'o mi klama le zarci</jbophrase>. Why must B use the word
+      <jbophrase>lo si'o mi klama lo zarci</jbophrase>. Why must B use the word
       <valsi>mi</valsi>
       explicitly to replace the x<subscript>1</subscript> of
-      <jbophrase>mi klama le zarci</jbophrase>,
+      <jbophrase>mi klama lo zarci</jbophrase>,
       even though it looks like
       <valsi>mi</valsi>
       is replacing
@@ -1606,7 +1606,7 @@
     <example role="interlinear-gloss-example" xml:id="example-random-id-2uS7">
       <title><anchor xml:id="c7e6d11" /></title>
 
-      <jbophrase>mi nelci le si'o go'i</jbophrase>
+      <jbophrase>mi nelci lo si'o go'i</jbophrase>
     </example>
     <para role="noindent">that would mean:</para>
     <blockquote>
@@ -1632,11 +1632,11 @@
       <title><anchor xml:id="c7e6d12" /></title>
 
       <interlinear-gloss>
-        <jbo>le xekri mlatu cu klama le zarci .i le</jbo>
-        <gloss>The black cat - goes-to the store. - That-described-as-the-x<subscript>1</subscript>-place-of</gloss>
+        <jbo>lo xekri mlatu cu klama lo zarci .i lo</jbo>
+        <gloss>The black cat - goes-to the store. - The-x<subscript>1</subscript>-place-of</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… go'i cu cadzu le bisli</jbo>
+        <jbo>… go'i cu cadzu lo bisli</jbo>
         <gloss>… [repeat-last-bridi] - walks-on the ice.</gloss>
         <natlang>The black cat goes to the store. It walks on the ice.</natlang>
 
@@ -1646,14 +1646,14 @@
       Here the
       <valsi>go'i</valsi>
       repeats
-      <jbophrase>le xekri mlatu cu klama le zarci</jbophrase>,
+      <jbophrase>lo xekri mlatu cu klama lo zarci</jbophrase>,
       and since
-      <valsi>le</valsi>
+      <valsi>lo</valsi>
       makes the x<subscript>1</subscript> place into a description, and the x<subscript>1</subscript> place of this bridi is
-      <jbophrase>le xekri mlatu</jbophrase>,
-      <jbophrase>le go'i</jbophrase>
+      <jbophrase>lo xekri mlatu</jbophrase>,
+      <jbophrase>lo go'i</jbophrase>
       means
-      <jbophrase>le xekri mlatu</jbophrase>.
+      <jbophrase>lo xekri mlatu</jbophrase>.
     </para>
     <para>
       The cmavo
@@ -1670,15 +1670,15 @@
       <title><anchor xml:id="c7e6d13" /></title>
 
       <interlinear-gloss>
-        <jbo>mi nupre le nu mi go'o</jbo>
+        <jbo>mi nupre lo nu mi go'o</jbo>
         <gloss>I promise the event-of I [repeat-future-bridi].</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .i ba dunda le jdini - le bersa</jbo>
+        <jbo>… .i ba dunda lo jdini - lo bersa</jbo>
         <gloss>… - [Future] give the money to the son</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .i ba dunda le zdani - le tixnu</jbo>
+        <jbo>… .i ba dunda lo zdani - lo tixnu</jbo>
         <gloss>… - [Future] give the house to the daughter</gloss>
         <natlang>I promise to do the following: Give the money to my son. Give the house to my daughter.</natlang>
       </interlinear-gloss>
@@ -1687,7 +1687,7 @@
       (Note: The Lojban does not contain an equivalent of the
       <quote>my</quote>
       in the colloquial English; it leaves the fact that it is the speaker's son and daughter that are referred to implicit. To make the fact explicit, use
-      <jbophrase>le bersa</jbophrase>
+      <jbophrase>lo bersa</jbophrase>
       /
       <jbophrase>tixnu be mi</jbophrase>.)
     </para>
@@ -1703,11 +1703,11 @@
       <title><anchor xml:id="c7e6d14" /></title>
 
       <interlinear-gloss>
-        <jbo>mi se pluka le nu do pensi le nu</jbo>
+        <jbo>mi se pluka lo nu do pensi lo nu</jbo>
         <gloss>I - am-pleased-by the event-of (you think-about the (event-of</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… nei kei pu le nu do zukte</jbo>
+        <jbo>… nei kei pu lo nu do zukte</jbo>
         <gloss>… [main-bridi] ) before the (event-of your acting).</gloss>
         <natlang>I am pleased that you thought about whether I would be pleased (about ...) before you acted.</natlang>
       </interlinear-gloss>
@@ -1716,7 +1716,7 @@
       <title><anchor xml:id="c7e6d15" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ba klama ca le nu do no'a</jbo>
+        <jbo>mi ba klama ca lo nu do no'a</jbo>
 
         <gloss>I [future] go [present] the event-of you [repeats--outer--bridi]</gloss>
         <natlang>I will go when you do.</natlang>
@@ -1735,7 +1735,7 @@
       <title><anchor xml:id="c7e6d16" /></title>
 
       <interlinear-gloss>
-        <jbophrase>mi ba lumci le mi karce</jbophrase>
+        <jbophrase>mi ba lumci lo mi karce</jbophrase>
         <natlang>I will wash my car.</natlang>
       </interlinear-gloss>
     </example>
@@ -1763,9 +1763,9 @@
       forces the second
       <valsi>mi</valsi>
       from the original bridi to mean the new speaker rather than the former speaker. This means that
-      <jbophrase>mi nelci le si'o go'i ra'o</jbophrase>
+      <jbophrase>mi nelci lo si'o go'i ra'o</jbophrase>
       would be an acceptable alternative to
-      <jbophrase>mi nelci le si'o mi go'i</jbophrase>
+      <jbophrase>mi nelci lo si'o mi go'i</jbophrase>
       in B's statement in
       <xref linkend="example-random-id-9hf5" />.
     </para>
@@ -1793,7 +1793,7 @@
       <title><anchor xml:id="c7e6d19" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. cusku lu mi klama le zarci li'u</jbo>
+        <jbo>la .djan. cusku lu mi klama lo zarci li'u</jbo>
         <gloss>That-named John says [quote] I go-to the store [unquote].</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -1891,11 +1891,11 @@
       <title><anchor xml:id="c7e7d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le bartu be le zdani</jbo>
+        <jbo>mi klama lo bartu be lo zdani</jbo>
         <gloss>I go-to the outside of the house from</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le nenri be le zdani zu'i zu'i</jbo>
+        <jbo>… lo nenri be lo zdani zu'i zu'i</jbo>
         <gloss>… the inside of the house [by-typical-route] [by-typical-means]</gloss>
       </interlinear-gloss>
     </example>
@@ -1990,7 +1990,7 @@
       <title><anchor xml:id="c7e7d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi zbasu le dinju - loi mudri</jbo>
+        <jbo>mi zbasu lo dinju - loi mudri</jbo>
         <gloss>I make the building from a-group-of wood.</gloss>
         <natlang>I make the building out of wood.</natlang>
       </interlinear-gloss>
@@ -1999,7 +1999,7 @@
       <title><anchor xml:id="c7e7d5" /></title>
 
       <interlinear-gloss>
-        <jbo>zi'o zbasu le dinju - loi mudri</jbo>
+        <jbo>zi'o zbasu lo dinju - loi mudri</jbo>
         <gloss>[without-maker] makes the building from a-group-of wood.</gloss>
         <natlang>The building is made out of wood.</natlang>
       </interlinear-gloss>
@@ -2017,7 +2017,7 @@
       <title><anchor xml:id="c7e7d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi zbasu le dinju zi'o</jbo>
+        <jbo>mi zbasu lo dinju zi'o</jbo>
         <gloss>I make the building [without-material].</gloss>
         <natlang>I make the building.</natlang>
       </interlinear-gloss>
@@ -2050,7 +2050,7 @@
       <title><anchor xml:id="c7e7d8" /></title>
 
       <interlinear-gloss>
-        <jbo>mi troci le nu mi co'e le vorme</jbo>
+        <jbo>mi troci lo nu mi co'e lo vorme</jbo>
 
         <gloss>I try the event-of my [doing-the-obvious-action] to-the door.</gloss>
         <natlang>I try the door.</natlang>
@@ -2158,7 +2158,7 @@
       <title><anchor xml:id="c7e8d2" /></title>
 
       <interlinear-gloss>
-        <jbophrase>mi klama le zarci vo'e</jbophrase>
+        <jbophrase>mi klama lo zarci vo'e</jbophrase>
         <natlang>I go to the store from itself [by some route unspecified].</natlang>
       </interlinear-gloss>
     </example>
@@ -2166,7 +2166,7 @@
       <indexterm type="general"><primary>pro-sumti</primary><secondary>referring to place of different bridi with go'i-series</secondary>
       </indexterm>
       To refer to places of neighboring bridi, constructions like
-      <jbophrase>le se go'i ku</jbophrase>
+      <jbophrase>lo se go'i ku</jbophrase>
       do the job: this refers to the 2nd place of the previous main bridi, as explained in
       <xref linkend="section-ri-gohi-series" />.
     </para>
@@ -2444,7 +2444,7 @@
         <gloss>I see a cat such-that something-unspecified</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… zbasu ke'a - lei slasi</jbo>
+        <jbo>… zbasu ke'a - loi slasi</jbo>
         <gloss>… makes the-thing-being-relativized-[the-cat] from the-group-of plastic.</gloss>
         <natlang>I see a cat made of plastic.</natlang>
       </interlinear-gloss>
@@ -2459,7 +2459,7 @@
         <gloss>I see a cat such-that</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… [ke'a] zbasu lei slasi</jbo>
+        <jbo>… [ke'a] zbasu loi slasi</jbo>
         <gloss>… the-thing-being-relativized-[the-cat] makes the-group-of plastic</gloss>
         <natlang>I see a cat that makes plastic.</natlang>
       </interlinear-gloss>
@@ -2516,7 +2516,7 @@
         <anchor xml:id="c7e11d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le ka ce'u gleki</jbo>
+        <jbo>lo ka ce'u gleki</jbo>
         <gloss>the property-of (X being-happy)</gloss>
         <natlang>the property of being happy</natlang>
         <natlang>happiness</natlang>
@@ -2528,7 +2528,7 @@
       <title><anchor xml:id="c7e11d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le ka gleki ce'u</jbo>
+        <jbo>lo ka gleki ce'u</jbo>
         <gloss>the property-of (being-happy-about X)</gloss>
         <natlang>the property of being that which someone is happy about</natlang>
       </interlinear-gloss>
@@ -2733,7 +2733,7 @@
       <title><anchor xml:id="c7e14d1" /></title>
 
       <interlinear-gloss>
-        <jbo>ko'a du le nanmu</jbo>
+        <jbo>ko'a du lo nanmu</jbo>
         <gloss>It-1 is-identical-to the man</gloss>
       </interlinear-gloss>
     </example>
@@ -2742,7 +2742,7 @@
       <title><anchor xml:id="c7e14d2" /></title>
 
       <interlinear-gloss>
-        <jbo>ko'a mintu le nanmu</jbo>
+        <jbo>ko'a mintu lo nanmu</jbo>
 
         <gloss>It-1 is-the-same-as the man</gloss>
       </interlinear-gloss>
@@ -2867,7 +2867,7 @@
       <title><anchor xml:id="c7e15d3" /></title>
 
       <interlinear-gloss>
-        <jbo>fo'a goi le kulnrsu'omi .i lo fo'arselsanga</jbo>
+        <jbo>fo'a goi lo kulnrsu'omi .i lo fo'arselsanga</jbo>
         <gloss>x<subscript>6</subscript> stands-for the Finnish-culture . An x<subscript>6</subscript>-song.</gloss>
       </interlinear-gloss>
     </example>

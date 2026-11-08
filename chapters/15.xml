@@ -148,7 +148,7 @@
       <title><anchor xml:id="c15e2d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci</jbo>
+        <jbo>mi klama lo zarci</jbo>
         <gloss>I go-to the store.</gloss>
       </interlinear-gloss>
     </example>
@@ -157,7 +157,7 @@
       <title><anchor xml:id="c15e2d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na klama le zarci</jbo>
+        <jbo>mi na klama lo zarci</jbo>
         <gloss>I [false] go-to the store.</gloss>
       </interlinear-gloss>
     </example>
@@ -197,7 +197,7 @@
       <title><anchor xml:id="c15e2d5" /></title>
 
       <interlinear-gloss>
-        <jbo>mi [cu] na ca klama le zarci</jbo>
+        <jbo>mi [cu] na ca klama lo zarci</jbo>
         <gloss>I - [false] now am-a-go-er-to the market.</gloss>
         <natlang>I am not going to the market now.</natlang>
       </interlinear-gloss>
@@ -210,7 +210,7 @@
         <gloss>The-actual present noblest-governor of</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>le fasygu'e cu na krecau</jbo>
+        <jbo>lo fasygu'e cu na krecau</jbo>
         <gloss>the French-country - [false] is-hair-without.</gloss>
         <natlang>The current king of France isn't bald.</natlang>
       </interlinear-gloss>
@@ -252,11 +252,11 @@
       <title><anchor xml:id="c15e2d8" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na gleki le nu</jbo>
+        <jbo>mi na gleki lo nu</jbo>
         <gloss>I [false] am-happy-about the event-of</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… na klama le nu dansu</jbo>
+        <jbo>… na klama lo nu dansu</jbo>
         <gloss>… ([false] going-to the event-of dancing).</gloss>
         <natlang>It is not the case that I am happy about it not being the case that I am going to the dance.</natlang>
         <natlang>I am not happy about not going to the dance.</natlang>
@@ -282,7 +282,7 @@
         <gloss>I am-fond-of one-who-is ([false]</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>ca nolraitru be le fasygu'e</jbo>
+        <jbo>ca nolraitru be lo fasygu'e</jbo>
         <gloss>the-current king of the French-country).</gloss>
         <natlang>I am fond of one who isn't the current king of France.</natlang>
       </interlinear-gloss>
@@ -341,7 +341,7 @@
       <title><anchor xml:id="c15e2d13" /></title>
 
       <interlinear-gloss>
-        <jbo>mi [cu] ta'e klama le zarci</jbo>
+        <jbo>mi [cu] ta'e klama lo zarci</jbo>
 
         <gloss>I - habitually go-to the market.</gloss>
       </interlinear-gloss>
@@ -354,7 +354,7 @@
       <title><anchor xml:id="c15e2d19" /></title>
 
       <interlinear-gloss>
-        <jbo>mi [cu] na ta'e klama le zarci</jbo>
+        <jbo>mi [cu] na ta'e klama lo zarci</jbo>
         <gloss>I - [false] habitually go-to the market.</gloss>
         <natlang>It is false that I habitually go to the market.</natlang>
       </interlinear-gloss>
@@ -364,7 +364,7 @@
       <title><anchor xml:id="c15e2d20" /></title>
 
       <interlinear-gloss>
-        <jbo>mi [cu] ta'e na klama le zarci</jbo>
+        <jbo>mi [cu] ta'e na klama lo zarci</jbo>
         <gloss>I - habitually ([false] go-to) the market.</gloss>
         <natlang>I habitually don't go to the market.</natlang>
       </interlinear-gloss>
@@ -394,11 +394,11 @@
       <title><anchor xml:id="c15e2d15" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na klama le zarci ki'u</jbo>
+        <jbo>mi na klama lo zarci ki'u</jbo>
         <gloss>I [false] go-to the market because-of</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… lenu le karce cu spofu</jbo>
+        <jbo>… lonu lo karce cu spofu</jbo>
         <gloss>… the-event-of the car - is-broken.</gloss>
         <natlang>It is false that: I go to the market because the car is broken.</natlang>
       </interlinear-gloss>
@@ -413,11 +413,11 @@
       <title><anchor xml:id="c15e2d16" /></title>
 
       <interlinear-gloss>
-        <jbo>le nu mi na klama le zarci cu se krinu</jbo>
+        <jbo>lo nu mi na klama lo zarci cu se krinu</jbo>
         <gloss>The event-of (my [false] going-to the market) - - is-justified-by</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le nu le karce cu spofu</jbo>
+        <jbo>… lo nu lo karce cu spofu</jbo>
         <gloss>… the event-of (the car - being-broken).</gloss>
         <natlang>My not going to the market is because the car is broken.</natlang>
       </interlinear-gloss>
@@ -653,7 +653,7 @@
       <title><anchor xml:id="c15e4d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci</jbo>
+        <jbo>mi klama lo zarci</jbo>
         <gloss>I go-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -661,11 +661,11 @@
       <title><anchor xml:id="c15e4d2" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e klama le zarci</jbo>
+        <jbo>mi na'e klama lo zarci</jbo>
         <gloss>I (other-than go-to) the market.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">Comparing these two, we see that the negation operator in <xref linkend="example-random-id-qH4n" /> is <valsi>na'e</valsi>. But what exactly does <valsi>na'e</valsi> negate? Does the negation include only the gismu <valsi>klama</valsi>, which is the entire selbri in this case, or does it take in the <jbophrase>le zarci</jbophrase> as well? In Lojban, the answer is unambiguously <quote>only the gismu</quote>. The cmavo <valsi>na'e</valsi> always applies only to what follows it.</para>
+    <para role="indent">Comparing these two, we see that the negation operator in <xref linkend="example-random-id-qH4n" /> is <valsi>na'e</valsi>. But what exactly does <valsi>na'e</valsi> negate? Does the negation include only the gismu <valsi>klama</valsi>, which is the entire selbri in this case, or does it take in the <jbophrase>lo zarci</jbophrase> as well? In Lojban, the answer is unambiguously <quote>only the gismu</quote>. The cmavo <valsi>na'e</valsi> always applies only to what follows it.</para>
     <para>
       <xref linkend="example-random-id-qH4n" />
       looks as if it were parallel to:
@@ -674,7 +674,7 @@
       <title><anchor xml:id="c15e4d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na klama le zarci</jbo>
+        <jbo>mi na klama lo zarci</jbo>
         <gloss>I [false] go-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -684,7 +684,7 @@
       <title><anchor xml:id="c15e4d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi cadzu klama le zarci</jbo>
+        <jbo>mi cadzu klama lo zarci</jbo>
         <gloss>I walking-ly go-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -693,7 +693,7 @@
       <title><anchor xml:id="c15e4d5" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e cadzu klama le zarci</jbo>
+        <jbo>mi na'e cadzu klama lo zarci</jbo>
         <gloss>I (other-than walkingly) go-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -701,7 +701,7 @@
       <title><anchor xml:id="c15e4d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi cadzu na'e klama le zarci</jbo>
+        <jbo>mi cadzu na'e klama lo zarci</jbo>
         <gloss>I walkingly (other-than go-to) the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -713,8 +713,8 @@
       <title><anchor xml:id="c15e4d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e ke cadzu klama [ke'e] le zarci</jbo>
-        <jbo>mi na'e (ke cadzu klama [ke'e]) le zarci</jbo>
+        <jbo>mi na'e ke cadzu klama [ke'e] lo zarci</jbo>
+        <jbo>mi na'e (ke cadzu klama [ke'e]) lo zarci</jbo>
         <gloss>I other-than ( walkingly go-to ) the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -724,8 +724,8 @@
       <title><anchor xml:id="c15e4d8" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e ke sutra cadzu ke'e klama le zarci</jbo>
-        <jbo>mi na'e (ke sutra cadzu ke'e) klama le zarci</jbo>
+        <jbo>mi na'e ke sutra cadzu ke'e klama lo zarci</jbo>
+        <jbo>mi na'e (ke sutra cadzu ke'e) klama lo zarci</jbo>
         <gloss>I other-than ( quickly walkingly ) go-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -750,11 +750,11 @@
       <title><anchor xml:id="c15e4d9" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e ke sutra cadzu be le mi birka</jbo>
+        <jbo>mi na'e ke sutra cadzu be lo mi birka</jbo>
         <gloss>I other-than ( quickly walking on the of-me arms-ly</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… ke'e klama le zarci</jbo>
+        <jbo>… ke'e klama lo zarci</jbo>
         <gloss>… ) go-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -769,8 +769,8 @@
       <title><anchor xml:id="c15e4d10" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e ke sutra cadzu [ke'e] lemi birka</jbo>
-        <jbo>mi na'e (ke sutra cadzu [ke'e]) lemi birka</jbo>
+        <jbo>mi na'e ke sutra cadzu [ke'e] lomi birka</jbo>
+        <jbo>mi na'e (ke sutra cadzu [ke'e]) lomi birka</jbo>
         <gloss>I other-than ( quickly walk-on ) my arms.</gloss>
       </interlinear-gloss>
     </example>
@@ -778,8 +778,8 @@
       <title><anchor xml:id="c15e4d11" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e ke sutra cadzu be lemi birka [ke'e]</jbo>
-        <jbo>mi na'e (ke sutra cadzu be lemi birka [ke'e])</jbo>
+        <jbo>mi na'e ke sutra cadzu be lomi birka [ke'e]</jbo>
+        <jbo>mi na'e (ke sutra cadzu be lomi birka [ke'e])</jbo>
         <gloss>I other-than ( quickly walk on my arms ).</gloss>
       </interlinear-gloss>
     </example>
@@ -828,7 +828,7 @@
       <title><anchor xml:id="c15e4d13" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e klama le zarci</jbo>
+        <jbo>mi na'e klama lo zarci</jbo>
         <gloss>I other-than (go-to) the market.</gloss>
         <gloss>I not go-to the market.</gloss>
       </interlinear-gloss>
@@ -837,7 +837,7 @@
       <title><anchor xml:id="c15e4d14" /></title>
 
       <interlinear-gloss>
-        <jbo>mi nalkla le zarci</jbo>
+        <jbo>mi nalkla lo zarci</jbo>
         <gloss>I am-a-non-go-er-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -851,7 +851,7 @@
         <gloss>An-actual currently noblest-governor</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>be le fasygu'e cu krecau</jbo>
+        <jbo>be lo fasygu'e cu krecau</jbo>
         <gloss>of the French-country - is-hair-without.</gloss>
         <natlang>The current King of France is bald.</natlang>
       </interlinear-gloss>
@@ -871,7 +871,7 @@
         <gloss>An-actual currently noblest-governor</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>be le fasygu'e cu na'e krecau</jbo>
+        <jbo>be lo fasygu'e cu na'e krecau</jbo>
         <gloss>of the French-country - is-other-than hair-without.</gloss>
         <natlang>The current King of France is other-than-bald.</natlang>
       </interlinear-gloss>
@@ -885,7 +885,7 @@
         <gloss>An-actual currently noblest-governor</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>be le fasygu'e cu nalkrecau</jbo>
+        <jbo>be lo fasygu'e cu nalkrecau</jbo>
         <gloss>of the French-country - is-non-hair-without.</gloss>
         <natlang>The current King of France is a non-bald-one.</natlang>
       </interlinear-gloss>
@@ -902,7 +902,7 @@
     </para>
 
 
-    <para>There is no current King of France, so the description <jbophrase>lo ca nolraitru be le fasygu'e</jbophrase> has nothing to refer to. The word <valsi>lo</valsi> is veridical: whatever it picks out must really be a current King of France, and nothing is (see <xref linkend="section-basic-descriptors" />). The claim therefore fails, since there is nothing for it to be about.</para>
+    <para>There is no current King of France, so the description <jbophrase>lo ca nolraitru be lo fasygu'e</jbophrase> has nothing to refer to. The word <valsi>lo</valsi> is veridical: whatever it picks out must really be a current King of France, and nothing is (see <xref linkend="section-basic-descriptors" />). The claim therefore fails, since there is nothing for it to be about.</para>
     <para role="status-note">
       <indexterm type="general"><primary>descriptions</primary><secondary>reference failure under negation</secondary>
       </indexterm>
@@ -917,7 +917,7 @@
         <gloss>An-actual current noblest-governor</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>be le fasygu'e cu na krecau</jbo>
+        <jbo>be lo fasygu'e cu na krecau</jbo>
         <gloss>of the French-country - [false] is-hair-without.</gloss>
         <natlang>It is false that the current King of France is bald.</natlang>
       </interlinear-gloss>
@@ -931,7 +931,7 @@
       <title><anchor xml:id="c15e5d1" /></title>
 
       <interlinear-gloss>
-        <jbo>le stizu cu na'e xunre</jbo>
+        <jbo>lo stizu cu na'e xunre</jbo>
         <gloss>The chair - is-a-non- (red-thing).</gloss>
       </interlinear-gloss>
     </example>
@@ -940,7 +940,7 @@
       <title><anchor xml:id="c15e5d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le stizu cu dzukla be le zarci</jbo>
+        <jbo>lo stizu cu dzukla be lo zarci</jbo>
         <gloss>The chair - walkingly-goes to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -949,7 +949,7 @@
       <title><anchor xml:id="c15e5d3" /></title>
 
       <interlinear-gloss>
-        <jbo>le stizu cu na'e xunre skari</jbo>
+        <jbo>lo stizu cu na'e xunre skari</jbo>
         <gloss>The chair - (is-of-a-non red) color.</gloss>
       </interlinear-gloss>
     </example>
@@ -979,7 +979,7 @@
       <title><anchor xml:id="c15e5d4" /></title>
 
       <interlinear-gloss>
-        <jbo>le stizu cu na'e xunre be ci'u loka skari</jbo>
+        <jbo>lo stizu cu na'e xunre be ci'u loka skari</jbo>
         <gloss>The chair - is-non (red on a-scale-of a-property color-ness).</gloss>
       </interlinear-gloss>
     </example>
@@ -998,11 +998,11 @@
       <title><anchor xml:id="c15e5d5" /></title>
 
       <interlinear-gloss>
-        <jbo>le stizu cu na'e xunre</jbo>
+        <jbo>lo stizu cu na'e xunre</jbo>
         <gloss>The chair - is-a-non (red</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… be teci'e le skari</jbo>
+        <jbo>… be teci'e lo skari</jbo>
         <gloss>… of a-system with-components-the colors)-thing.</gloss>
       </interlinear-gloss>
     </example>
@@ -1015,7 +1015,7 @@
       <title><anchor xml:id="c15e5d6" /></title>
 
       <interlinear-gloss>
-        <jbo>le stizu cu na'e xunre</jbo>
+        <jbo>lo stizu cu na'e xunre</jbo>
         <gloss>The chair - is-a-non (red</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -1032,7 +1032,7 @@
       <title><anchor xml:id="c15e5d7" /></title>
 
       <interlinear-gloss>
-        <jbo>le stizu cu na'e xunre</jbo>
+        <jbo>lo stizu cu na'e xunre</jbo>
         <gloss>The chair - is-a-non (red</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -1057,7 +1057,7 @@
       <title><anchor xml:id="c15e5d8" /></title>
 
       <interlinear-gloss>
-        <jbo>le stizu cu to'e xunre be ci'u loka skari</jbo>
+        <jbo>lo stizu cu to'e xunre be ci'u loka skari</jbo>
 
         <gloss>The chair - is-a-(opposite-of red) on scale a-property-of color-ness.</gloss>
       </interlinear-gloss>
@@ -1165,14 +1165,14 @@
         <gloss>Zero of-those-who-are currently noblest-governors of</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le fasygu'e cu krecau</jbo>
+        <jbo>… lo fasygu'e cu krecau</jbo>
         <gloss>… the French-country - are-hair-without.</gloss>
         <natlang>No current king of France is bald.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">Is <xref linkend="example-random-id-PL1E" /> true?<indexterm type="general"><primary>outer quantifier</primary><secondary>zero, over description referents</secondary>
       </indexterm> When France has kings, the sentence is at least straightforward. The word <valsi>no</valsi> counts the referents of the description (see <xref linkend="section-quantified-descriptions" />), so the sentence denies baldness of every one of them, and it is true exactly when none of those kings is in fact bald. But when there are no current Kings of France at all, the description has nothing to refer to, and the sentence inherits the reference problem that <xref linkend="section-nahe" /> discusses.</para>
-    <para>To make the plainly true claim directly, we quantify over a variable instead. Then no description has to refer to nonexistent kings: <jbophrase>no da poi ca nolraitru be le fasygu'e cu krecau</jbophrase>. That is, nothing that is a current King of France lacks hair. This sentence is true precisely because nothing satisfies the restriction. (Older texts read descriptions like the one in <xref linkend="example-random-id-PL1E" /> quite differently: see <xref linkend="appendix-changes" />.)</para>
+    <para>To make the plainly true claim directly, we quantify over a variable instead. Then no description has to refer to nonexistent kings: <jbophrase>no da poi ca nolraitru be lo fasygu'e cu krecau</jbophrase>. That is, nothing that is a current King of France lacks hair. This sentence is true precisely because nothing satisfies the restriction. (Older texts read descriptions like the one in <xref linkend="example-random-id-PL1E" /> quite differently: see <xref linkend="appendix-changes" />.)</para>
     <para>
       Now let us look at the same sentence using
       <jbophrase>na'ebo</jbophrase>
@@ -1187,7 +1187,7 @@
         <gloss>Something-other-than (the current noblest-governor</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>be le fasygu'e cu krecau</jbo>
+        <jbo>be lo fasygu'e cu krecau</jbo>
         <gloss>of the French-country) - is-hair-without.</gloss>
         <natlang>Something other than the current King of France is bald.</natlang>
       </interlinear-gloss>
@@ -1258,7 +1258,7 @@
       <title><anchor xml:id="c15e7d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na pu klama le zarci</jbo>
+        <jbo>mi na pu klama lo zarci</jbo>
         <gloss>I [false] [past] go-to the store.</gloss>
         <natlang>I didn't go to the store.</natlang>
       </interlinear-gloss>
@@ -1268,7 +1268,7 @@
       <title><anchor xml:id="c15e7d2" /></title>
 
       <interlinear-gloss>
-        <jbo>mi punai klama le zarci</jbo>
+        <jbo>mi punai klama lo zarci</jbo>
         <gloss>I [past-not] go-to the store.</gloss>
         <natlang>I didn't go to the store.</natlang>
       </interlinear-gloss>
@@ -1290,7 +1290,7 @@
       <title><anchor xml:id="c15e7d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi paroinai dansu le bisli</jbo>
+        <jbo>mi paroinai dansu lo bisli</jbo>
         <gloss>I [once]-[not] dance-on the ice</gloss>
       </interlinear-gloss>
     </example>
@@ -1584,7 +1584,7 @@
       <title><anchor xml:id="c15e9d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ja'a klama le zarci</jbo>
+        <jbo>mi ja'a klama lo zarci</jbo>
         <gloss>I [true] go-to the store</gloss>
         <natlang>I indeed go to the store.</natlang>
       </interlinear-gloss>
@@ -1842,11 +1842,11 @@
       <title><anchor xml:id="c15e10d15" /></title>
 
       <interlinear-gloss>
-        <jbo>xu do sisti lezu'o</jbo>
+        <jbo>xu do sisti lozu'o</jbo>
         <gloss>is-it-true-that: you cease the-activity-of</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>do rapydarxi ledo fetspe</jbo>
+        <jbo>do rapydarxi lodo fetspe</jbo>
         <gloss>you repeat-hitting your female-spouse?</gloss>
         <natlang>Have you stopped beating your wife?</natlang>
       </interlinear-gloss>

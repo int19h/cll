@@ -814,7 +814,7 @@
       <title><anchor xml:id="c18e5d3" /><indexterm type="general"><primary>3 grams</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>levi sfani cu grake li ci</jbo>
+        <jbo>lovi sfani cu grake li ci</jbo>
         <gloss>This fly - masses-in-grams the-number three.</gloss>
         <natlang>This fly has a mass of 3 grams.</natlang>
       </interlinear-gloss>
@@ -833,7 +833,7 @@
       is being used as a sumti. Note that this is the way in which measurements are stated in Lojban: all the predicates for units of length, mass, temperature, and so on have the measured object as the first place and a number as the second place. Using
       <valsi>li</valsi>
       for
-      <valsi>le</valsi>
+      <valsi>lo</valsi>
       in
       <xref linkend="example-random-id-nSU9" />
       would produce
@@ -2632,7 +2632,7 @@
 
       <interlinear-gloss>
         <jbo>loi mi ratcu cu cimei</jbo>
-        <gloss>Those-I-describe-as-the-group-of my rats - are-a-threesome.</gloss>
+        <gloss>The-group-of my rats - are-a-threesome.</gloss>
         <natlang>My rats are three.</natlang>
         <natlang>I have three rats.</natlang>
 
@@ -2806,7 +2806,7 @@
       <title><anchor xml:id="c18e11d8" /></title>
 
       <interlinear-gloss>
-        <jbo>levi sanmi cu fi'ucisi'e loi mi djedi cidja</jbo>
+        <jbo>lovi sanmi cu fi'ucisi'e loi mi djedi cidja</jbo>
         <gloss>This-here meal - is-a-slash-three-portion-of - my day food.</gloss>
         <natlang>This meal is one-third of my daily food.</natlang>
       </interlinear-gloss>
@@ -2878,7 +2878,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>levi rozgu cu sofi'upanova'e xunre</jbo>
+        <jbo>lovi rozgu cu sofi'upanova'e xunre</jbo>
         <gloss>This-here rose - is-9/10-scale red.</gloss>
         <natlang>This rose is 9 out of 10 on the scale of redness.</natlang>
         <natlang>This rose is very red.</natlang>

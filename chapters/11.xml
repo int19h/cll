@@ -92,7 +92,7 @@
       <indexterm type="general"><primary>descriptions</primary><secondary>and abstractions</secondary>
       </indexterm>
       Abstraction selbri may also be used in descriptions, preceded by
-      <valsi>le</valsi>
+      <valsi>lo</valsi>
       (or any other member of selma'o LE):
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-sQ33">
@@ -104,7 +104,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent"><indexterm type="general"><primary>abstractions</primary><secondary>le contrasted with lo before</secondary>
-      </indexterm>The choice of descriptor matters for abstractions just as it does for anything else (see <xref linkend="section-basic-descriptors" />). The form <jbophrase>le nu</jbophrase> points to a particular event that the speaker has in mind. The form <jbophrase>lo nu</jbophrase> refers to whatever event really fits the description, and it is the usual choice when the speaker means no particular occasion. The examples in this chapter mostly use <jbophrase>le nu</jbophrase>, which is fine wherever a specific occasion is in view; read them with that distinction in mind.</para>
+      </indexterm>The choice of descriptor matters for abstractions just as it does for anything else (see <xref linkend="section-basic-descriptors" />). The form <jbophrase>le nu</jbophrase> points to a particular event that the speaker has in mind. The form <jbophrase>lo nu</jbophrase> refers to whatever event really fits the description, and it is the usual choice when the speaker means no particular occasion.</para>
     <para role="indent">We will most often use descriptions containing abstraction either at the end of a bridi, or just before the main selbri with its <valsi>cu</valsi>; in either of these circumstances, <valsi>kei</valsi> can normally be elided. The same holds when a <emphasis>bare</emphasis> tense or tag stands directly before the main selbri, in the place of the <valsi>cu</valsi>: by the binding rule above, the tag closes the abstraction exactly as <valsi>cu</valsi> does. A tag that heads a larger construction, however, does not close it. An example is the <jbophrase>ba bo</jbophrase> of a bridi-tail connective.</para>
     <para>
       <indexterm type="general"><primary>abstractions</primary><secondary>place structure</secondary>
@@ -149,11 +149,11 @@
       made use of
       <valsi>nu</valsi>
       as the abstractor, and it is certainly the most common abstractor in Lojban text. Its purpose is to capture the event or state of the bridi considered as a whole. Do not confuse the
-      <valsi>le</valsi>
+      <valsi>lo</valsi>
       description built on a
       <valsi>nu</valsi>
       abstraction with ordinary descriptions based on
-      <valsi>le</valsi>
+      <valsi>lo</valsi>
       alone. The following sumti are quite distinct:
     </para>
     <example xml:id="example-random-id-qF0u" role="interlinear-gloss-example">

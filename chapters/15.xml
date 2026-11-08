@@ -398,7 +398,7 @@
         <gloss>I [false] go-to the market because-of</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… lenu lo karce cu spofu</jbo>
+        <jbo>… lonu lo karce cu spofu</jbo>
         <gloss>… the-event-of the car - is-broken.</gloss>
         <natlang>It is false that: I go to the market because the car is broken.</natlang>
       </interlinear-gloss>
@@ -769,8 +769,8 @@
       <title><anchor xml:id="c15e4d10" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e ke sutra cadzu [ke'e] lemi birka</jbo>
-        <jbo>mi na'e (ke sutra cadzu [ke'e]) lemi birka</jbo>
+        <jbo>mi na'e ke sutra cadzu [ke'e] lomi birka</jbo>
+        <jbo>mi na'e (ke sutra cadzu [ke'e]) lomi birka</jbo>
         <gloss>I other-than ( quickly walk-on ) my arms.</gloss>
       </interlinear-gloss>
     </example>
@@ -778,8 +778,8 @@
       <title><anchor xml:id="c15e4d11" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na'e ke sutra cadzu be lemi birka [ke'e]</jbo>
-        <jbo>mi na'e (ke sutra cadzu be lemi birka [ke'e])</jbo>
+        <jbo>mi na'e ke sutra cadzu be lomi birka [ke'e]</jbo>
+        <jbo>mi na'e (ke sutra cadzu be lomi birka [ke'e])</jbo>
         <gloss>I other-than ( quickly walk on my arms ).</gloss>
       </interlinear-gloss>
     </example>
@@ -1842,11 +1842,11 @@
       <title><anchor xml:id="c15e10d15" /></title>
 
       <interlinear-gloss>
-        <jbo>xu do sisti lezu'o</jbo>
+        <jbo>xu do sisti lozu'o</jbo>
         <gloss>is-it-true-that: you cease the-activity-of</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>do rapydarxi ledo fetspe</jbo>
+        <jbo>do rapydarxi lodo fetspe</jbo>
         <gloss>you repeat-hitting your female-spouse?</gloss>
         <natlang>Have you stopped beating your wife?</natlang>
       </interlinear-gloss>

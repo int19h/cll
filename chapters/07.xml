@@ -1633,7 +1633,7 @@
 
       <interlinear-gloss>
         <jbo>lo xekri mlatu cu klama lo zarci .i lo</jbo>
-        <gloss>The black cat - goes-to the store. - That-described-as-the-x<subscript>1</subscript>-place-of</gloss>
+        <gloss>The black cat - goes-to the store. - The-x<subscript>1</subscript>-place-of</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… go'i cu cadzu lo bisli</jbo>
@@ -1648,7 +1648,7 @@
       repeats
       <jbophrase>lo xekri mlatu cu klama lo zarci</jbophrase>,
       and since
-      <valsi>le</valsi>
+      <valsi>lo</valsi>
       makes the x<subscript>1</subscript> place into a description, and the x<subscript>1</subscript> place of this bridi is
       <jbophrase>lo xekri mlatu</jbophrase>,
       <jbophrase>lo go'i</jbophrase>

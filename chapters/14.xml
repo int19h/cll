@@ -2952,13 +2952,13 @@
       The cmavo
       <valsi>ku</valsi>
       is the elidable terminator for
-      <valsi>le</valsi>
+      <valsi>lo</valsi>
       , which can almost always be elided, but here it is needed for clarity. Without the first
       <valsi>ku</valsi>
       , a reader meets
       <jbophrase>lo nanmu joi</jbophrase>
       and expects another tanru component to follow; only the second
-      <valsi>le</valsi>
+      <valsi>lo</valsi>
       shows that the connection is between sumti. The grammar still gives the sentence its intended structure, because no other structure fits the whole text (see <xref linkend="ebnf-parses" />). The parser of the first edition, which read only one unit ahead (see <xref linkend="ebnf-parses" />), rejected the sentence anyway. No such problem arises with logical connectives, because an ek signals a following sumti and a jek a following tanru component unambiguously.
     </para>
     <para>

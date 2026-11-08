@@ -1453,7 +1453,7 @@
 
       <interlinear-gloss>
         <jbo>la .tcarlis. cusku lo'u <phrase>lo ninmu cu morsi</phrase> le'u</jbo>
-        <gloss>- Charlie says [quote] <phrase>le ninmu cu morsi</phrase> [unquote].</gloss>
+        <gloss>- Charlie says [quote] <phrase>lo ninmu cu morsi</phrase> [unquote].</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… .iku'i ri jmive</jbo>
@@ -2367,7 +2367,11 @@
       was cut off before the end and changed into a cmevla. The entire ungrammatical
       <valsi>le</valsi>
       construct is erased and replaced by
-      <jbophrase>lo xekri zdani</jbophrase>.
+      <jbophrase>lo xekri zdani</jbophrase>. Note that the replacement begins with
+      <valsi>lo</valsi>, not
+      <valsi>le</valsi>:
+      <valsi>sa</valsi>
+      asks only that the following word be a starting marker of the same kind (here, any cmavo of selma'o LE), not that it be the same word.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>sa</primary><secondary>unsettled status of</secondary>

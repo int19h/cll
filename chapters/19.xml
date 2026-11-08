@@ -27,7 +27,7 @@
       <title><anchor xml:id="c19e2d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci .i do cadzu le bisli</jbo>
+        <jbo>mi klama lo zarci .i do cadzu lo bisli</jbo>
         <gloss>I go-to the store. - You walk-on the ice.</gloss>
       </interlinear-gloss>
     </example>
@@ -251,7 +251,7 @@
       <title><anchor xml:id="c19e4d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci</jbo>
+        <jbo>mi klama lo zarci</jbo>
         <natlang>I went-to the market</natlang>
       </interlinear-gloss>
     </example>
@@ -284,7 +284,7 @@
       <title><anchor xml:id="c19e4d3" /><indexterm type="general"><primary>news</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le nuzba zo'u mi co'i facki</jbo>
+        <jbo>lo nuzba zo'u mi co'i facki</jbo>
         <gloss>The news : I [achievative] find-out.</gloss>
 
       </interlinear-gloss>
@@ -295,7 +295,7 @@
       <title><anchor xml:id="c19e4d4" /><indexterm type="general"><primary>news</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi co'i facki le nuzba</jbo>
+        <jbo>mi co'i facki lo nuzba</jbo>
         <gloss>I [perfective] find-out the news.</gloss>
 
       </interlinear-gloss>
@@ -306,7 +306,7 @@
       <title><anchor xml:id="c19e4d5" /><indexterm type="general"><primary>fish eat</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le finpe zo'u citka</jbo>
+        <jbo>lo finpe zo'u citka</jbo>
         <gloss>the fish : eat</gloss>
       </interlinear-gloss>
     </example>
@@ -510,7 +510,7 @@
       <title><anchor xml:id="c19e5d1" /></title>
 
       <interlinear-gloss>
-        <jbo>xu do klama le zarci</jbo>
+        <jbo>xu do klama lo zarci</jbo>
         <gloss>[True-or-false?] You go-to the store</gloss>
         <natlang>Are you going to the store/Did you go to the store?</natlang>
       </interlinear-gloss>
@@ -535,7 +535,7 @@
       <title><anchor xml:id="c19e5d2" /></title>
 
       <interlinear-gloss>
-        <jbo>ma klama le zarci</jbo>
+        <jbo>ma klama lo zarci</jbo>
         <gloss>[What-sumti?] goes-to the store</gloss>
         <natlang>Who is going to the store?</natlang>
       </interlinear-gloss>
@@ -560,7 +560,7 @@
       <title><anchor xml:id="c19e5d4" /></title>
 
       <interlinear-gloss>
-        <jbophrase>le zarci</jbophrase>
+        <jbophrase>lo zarci</jbophrase>
         <natlang>The store.</natlang>
       </interlinear-gloss>
     </example>
@@ -589,7 +589,7 @@
       <title><anchor xml:id="c19e5d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi le zarci</jbo>
+        <jbo>mi lo zarci</jbo>
         <gloss>I, [to]-the store.</gloss>
       </interlinear-gloss>
     </example>
@@ -613,7 +613,7 @@
       <title><anchor xml:id="c19e5d8" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. la .marcas. le zarci le briju</jbo>
+        <jbo>la .djan. la .marcas. lo zarci lo briju</jbo>
         <gloss>- John, - Marsha, the store, the office.</gloss>
 
         <natlang>John and Marsha go to the store and the office, respectively.</natlang>
@@ -626,9 +626,9 @@
       into
       <xref linkend="example-random-id-nDeV" />
       produces an ungrammatical result, because
-      <jbophrase valid="false">* ... le zarci fa'u le briju</jbophrase>
+      <jbophrase valid="false">* ... lo zarci fa'u lo briju</jbophrase>
       is ungrammatical Lojban: the first
-      <jbophrase>le zarci</jbophrase>
+      <jbophrase>lo zarci</jbophrase>
       has to be closed with its proper terminator
       <valsi>ku</valsi>
       , for reasons explained in
@@ -819,7 +819,7 @@
       <title><anchor xml:id="c19e6d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi cu klama - le zarci -- le zdani -- le dargu -- le karce</jbo>
+        <jbo>mi cu klama - lo zarci -- lo zdani -- lo dargu -- lo karce</jbo>
         <gloss>I -- go to the market from the house via the road using the car.</gloss>
       </interlinear-gloss>
     </example>
@@ -834,11 +834,11 @@
       <title><anchor xml:id="c19e6d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le karce cu xe-klama - le zarci</jbo>
+        <jbo>lo karce cu xe-klama - lo zarci</jbo>
         <gloss>The car -- is-a-transportation-means to the market</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… - le zdani -- le dargu -- mi</jbo>
+        <jbo>… - lo zdani -- lo dargu -- mi</jbo>
         <gloss>… from the house via the road for me.</gloss>
       </interlinear-gloss>
     </example>
@@ -847,11 +847,11 @@
       <title><anchor xml:id="c19e6d3" /></title>
 
       <interlinear-gloss>
-        <jbo>fo le dargu fi le zdani fa mi</jbo>
+        <jbo>fo lo dargu fi lo zdani fa mi</jbo>
         <gloss>Via the road, from the house, - I,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… fe le zarci fu le karce cu klama</jbo>
+        <jbo>… fe lo zarci fu lo karce cu klama</jbo>
         <gloss>… to the market, using the car, - go.</gloss>
       </interlinear-gloss>
     </example>
@@ -875,7 +875,7 @@
         <gloss>The-referent-of the-previous-sentence - is-an-event-of-going by me</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… - le zarci -- le zdani -- le dargu -- le karce</jbo>
+        <jbo>… - lo zarci -- lo zdani -- lo dargu -- lo karce</jbo>
         <gloss>… to the market from the house via the road using the car.</gloss>
       </interlinear-gloss>
     </example>
@@ -903,15 +903,15 @@
       <title><anchor xml:id="c19e6d5" /></title>
 
       <interlinear-gloss>
-        <jbo>le karce cu sexixa--nunkla - mi</jbo>
+        <jbo>lo karce cu sexixa--nunkla - mi</jbo>
         <gloss>The car - is-a-transportation-means-in-the-event-of-going by me</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… - le zarci -- le zdani</jbo>
+        <jbo>… - lo zarci -- lo zdani</jbo>
         <gloss>… to the market from the house</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… - le dargu la'edi'u</jbo>
+        <jbo>… - lo dargu la'edi'u</jbo>
         <gloss>… via the road is-an-event-which-is-referred-to-by-the-last-sentence.</gloss>
       </interlinear-gloss>
     </example>
@@ -920,7 +920,7 @@
       <title><anchor xml:id="c19e6d6" /></title>
 
       <interlinear-gloss>
-        <jbo>fu le dargu fo le zdani fe mi</jbo>
+        <jbo>fu lo dargu fo lo zdani fe mi</jbo>
         <gloss>Via the road, from the house, by me,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -928,7 +928,7 @@
         <gloss>… -- is-an-event-which is-referred-to-by-the-last-sentence,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… fi le zarci faxixa le karce cu nunkla</jbo>
+        <jbo>… fi lo zarci faxixa lo karce cu nunkla</jbo>
         <gloss>… to the market, using the car, - is-an-event-of-going.</gloss>
       </interlinear-gloss>
     </example>
@@ -1136,7 +1136,7 @@
       <title><anchor xml:id="c19e7d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama pamai le zarci .e remai le zdani</jbo>
+        <jbo>mi klama pamai lo zarci .e remai lo zdani</jbo>
         <gloss>I go-to (firstly) the store and (secondly) the house.</gloss>
 
       </interlinear-gloss>
@@ -1202,7 +1202,7 @@
       <title><anchor xml:id="c19e8d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska le blanu .ia zdani [ku]</jbo>
+        <jbo>mi viska lo blanu .ia zdani [ku]</jbo>
         <gloss>I see the blue [belief] house. -</gloss>
         <natlang>I see the house, which I believe to be blue.</natlang>
       </interlinear-gloss>
@@ -1211,7 +1211,7 @@
       <title><anchor xml:id="c19e8d2" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska le blanu zdani .ia [ku]</jbo>
+        <jbo>mi viska lo blanu zdani .ia [ku]</jbo>
         <gloss>I see the blue house [belief]. -</gloss>
         <natlang>I see the blue thing, which I believe to be a house.</natlang>
       </interlinear-gloss>
@@ -1220,7 +1220,7 @@
       <title><anchor xml:id="c19e8d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska le .ia blanu zdani [ku]</jbo>
+        <jbo>mi viska lo .ia blanu zdani [ku]</jbo>
         <gloss>I see the [belief] blue house -</gloss>
         <natlang>I see what I believe to be a blue house.</natlang>
       </interlinear-gloss>
@@ -1229,7 +1229,7 @@
       <title><anchor xml:id="c19e8d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska le blanu zdani ku .ia</jbo>
+        <jbo>mi viska lo blanu zdani ku .ia</jbo>
         <gloss>I see (the blue house) - [belief]</gloss>
         <natlang>I see what I believe to be a blue house.</natlang>
       </interlinear-gloss>
@@ -1243,7 +1243,7 @@
       <title><anchor xml:id="c19e8d5" /></title>
 
       <interlinear-gloss>
-        <jbo>[.i] .ia mi viska le blanu zdani</jbo>
+        <jbo>[.i] .ia mi viska lo blanu zdani</jbo>
         <gloss>- [belief] I see the blue house.</gloss>
         <natlang>I believe I see a blue house.</natlang>
       </interlinear-gloss>
@@ -1275,7 +1275,7 @@
       <title><anchor xml:id="c19e8d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska le fu'e .ia blanu zdani fu'o ponse</jbo>
+        <jbo>mi viska lo fu'e .ia blanu zdani fu'o ponse</jbo>
 
 
         <gloss>I see the [start] [belief] blue house [end] possessor</gloss>
@@ -1427,7 +1427,7 @@
       <title><anchor xml:id="c19e9d4" /></title>
 
       <interlinear-gloss>
-        <jbo>la .tcarlis. cusku lu le ninmu cu morsi li'u</jbo>
+        <jbo>la .tcarlis. cusku lu lo ninmu cu morsi li'u</jbo>
         <gloss>- Charlie says [quote] the woman - is-dead [unquote].</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -1446,13 +1446,13 @@
       ,
       <valsi>ri</valsi>
       is a pro-sumti which refers to the most recent previous sumti, namely
-      <jbophrase>le ninmu</jbophrase>. Compare:
+      <jbophrase>lo ninmu</jbophrase>. Compare:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-hvhb">
       <title><anchor xml:id="c19e9d5" /></title>
 
       <interlinear-gloss>
-        <jbo>la .tcarlis. cusku lo'u <phrase>le ninmu cu morsi</phrase> le'u</jbo>
+        <jbo>la .tcarlis. cusku lo'u <phrase>lo ninmu cu morsi</phrase> le'u</jbo>
         <gloss>- Charlie says [quote] <phrase>le ninmu cu morsi</phrase> [unquote].</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -1460,7 +1460,7 @@
         <gloss>… However, the-last-mentioned is-alive.</gloss>
         <natlang>
           Charlie says
-          <jbophrase>le ninmu cu morsi</jbophrase>
+          <jbophrase>lo ninmu cu morsi</jbophrase>
           , but he is alive.
         </natlang>
       </interlinear-gloss>
@@ -1471,9 +1471,9 @@
       ,
       <valsi>ri</valsi>
       cannot refer to the referent of the alleged sumti
-      <jbophrase>le ninmu</jbophrase>
+      <jbophrase>lo ninmu</jbophrase>
       , because
-      <jbophrase>le ninmu cu morsi</jbophrase>
+      <jbophrase>lo ninmu cu morsi</jbophrase>
       is a mere uninterpreted sequence of Lojban words. Instead,
       <valsi>ri</valsi>
       ends up referring to the referent of the sumti
@@ -1562,7 +1562,7 @@
       <title><anchor xml:id="c19e10d3" /></title>
 
       <interlinear-gloss>
-        <jbophrase>mi djuno fi le valsi po'u zoi gy. gyrations .gy.</jbophrase>
+        <jbophrase>mi djuno fi lo valsi po'u zoi gy. gyrations .gy.</jbophrase>
         <natlang>
           I know about the word which-is
           <quote>gyrations</quote>.
@@ -1573,7 +1573,7 @@
       <title><anchor xml:id="c19e10d4" /></title>
 
       <interlinear-gloss>
-        <jbophrase>mi djuno fi le valsi po'u zoi jai. gyrations .jai</jbophrase>
+        <jbophrase>mi djuno fi lo valsi po'u zoi jai. gyrations .jai</jbophrase>
         <natlang>
           I know about the word which-is
           <quote>gyrations</quote>.
@@ -1895,11 +1895,11 @@
       <title><anchor xml:id="c19e12d1" /></title>
 
       <interlinear-gloss>
-        <jbo>doi .lisas. mi djica le nu to doi .frank.</jbo>
+        <jbo>doi .lisas. mi djica lo nu to doi .frank.</jbo>
         <gloss>O Lisa, I desire the event-of ( O Frank,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… ko sisti toi do viska le mlatu</jbo>
+        <jbo>… ko sisti toi do viska lo mlatu</jbo>
         <gloss>… [imperative] stop! ) you see the cat.</gloss>
         <natlang>Lisa, I want you to (Frank! Stop!) see the cat.</natlang>
       </interlinear-gloss>
@@ -2044,7 +2044,7 @@
       <title><anchor xml:id="c19e12d6" /><indexterm type="general"><primary>said John</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. cusku lu mi klama le zarci li'u</jbo>
+        <jbo>la .djan. cusku lu mi klama lo zarci li'u</jbo>
         <gloss>- John expresses [quote] I go-to the store [unquote].</gloss>
       </interlinear-gloss>
     </example>
@@ -2060,7 +2060,7 @@
       <title><anchor xml:id="c19e12d7" /><indexterm type="general"><primary>said John</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>lu mi klama le zarci seisa'a </jbo>
+        <jbo>lu mi klama lo zarci seisa'a </jbo>
         <gloss>[quote] I go-to the store ( </gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -2077,7 +2077,7 @@
       <title><anchor xml:id="c19e12d8" /><indexterm type="general"><primary>said John</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbophrase>lu seisa'a la .djan. cusku be dei mi klama le zarci</jbophrase>
+        <jbophrase>lu seisa'a la .djan. cusku be dei mi klama lo zarci</jbophrase>
         <natlang>
           John said,
           <quote>I go to the store</quote>.
@@ -2088,7 +2088,7 @@
       <title><anchor xml:id="c19e12d9" /><indexterm type="general"><primary>said John</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbophrase>lu mi klama seisa'a la djan cusku le zarci</jbophrase>
+        <jbophrase>lu mi klama seisa'a la djan cusku lo zarci</jbophrase>
         <natlang>
           <quote>I go</quote>
           , John said,
@@ -2326,7 +2326,7 @@
       <title><anchor xml:id="c19e13d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska le sa .i mi cusku zo .djan.</jbo>
+        <jbo>mi viska lo sa .i mi cusku zo .djan.</jbo>
         <gloss>
           I see the ... - I say the-word
           <quote>John</quote>.
@@ -2352,7 +2352,7 @@
       <title><anchor xml:id="c19e13d9" /></title>
 
       <interlinear-gloss>
-        <jbo>mi viska le blanu .zdan. sa le xekri zdani</jbo>
+        <jbo>mi viska le blanu .zdan. sa lo xekri zdani</jbo>
         <gloss>I see the blue hou ... the black house.</gloss>
       </interlinear-gloss>
     </example>
@@ -2367,7 +2367,7 @@
       was cut off before the end and changed into a cmevla. The entire ungrammatical
       <valsi>le</valsi>
       construct is erased and replaced by
-      <jbophrase>le xekri zdani</jbophrase>.
+      <jbophrase>lo xekri zdani</jbophrase>.
     </para>
     <para role="status-note">
       <indexterm type="general"><primary>sa</primary><secondary>unsettled status of</secondary>

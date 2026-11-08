@@ -951,11 +951,11 @@
       <title><anchor xml:id="c14e5d7" /></title>
 
       <interlinear-gloss>
-        <jbo>le nu do cidja dunda fi le xarju</jbo>
+        <jbo>lo nu do cidja dunda fi lo xarju</jbo>
         <gloss>The event-of (you food give to the pig)</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… cu rinka le nu ri ba banro</jbo>
+        <jbo>… cu rinka lo nu ri ba banro</jbo>
         <gloss>… - causes the event-of (it will grow).</gloss>
       </interlinear-gloss>
     </example>
@@ -1059,7 +1059,7 @@
       <title><anchor xml:id="c14e6d1" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. klama le zarci .ije la .alis. klama le zarci</jbo>
+        <jbo>la .djan. klama lo zarci .ije la .alis. klama lo zarci</jbo>
         <natlang>John goes to the market, and Alice goes to the market.</natlang>
       </interlinear-gloss>
     </example>
@@ -1068,7 +1068,7 @@
       <title><anchor xml:id="c14e6d2" /></title>
 
       <interlinear-gloss>
-        <jbo>la djan .e la .alis. klama le zarci</jbo>
+        <jbo>la djan .e la .alis. klama lo zarci</jbo>
         <gloss>That-named John and that-named Alice go-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -1107,7 +1107,7 @@
         <gloss>That-named John - is/does-something. And</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>la .alis. klama le zarci</jbo>
+        <jbo>la .alis. klama lo zarci</jbo>
         <gloss>that-named Alice goes-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -1117,7 +1117,7 @@
       <title><anchor xml:id="c14e6d4" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. .o la .alis. klama le zarci</jbo>
+        <jbo>la .djan. .o la .alis. klama lo zarci</jbo>
         <gloss>That-named John if-and-only-if that-named Alice goes-to the market.</gloss>
         <natlang>John goes to the market if, and only if, Alice does.</natlang>
       </interlinear-gloss>
@@ -1142,7 +1142,7 @@
       <title><anchor xml:id="c14e6d5" /></title>
 
       <interlinear-gloss>
-        <jbo>ga la .djan. gi la .alis. klama le zarci</jbo>
+        <jbo>ga la .djan. gi la .alis. klama lo zarci</jbo>
         <natlang>Either John or Alice (or both) goes to the market.</natlang>
       </interlinear-gloss>
     </example>
@@ -1161,7 +1161,7 @@
       <title><anchor xml:id="c14e6d6" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. na.a la .alis. klama le zarci</jbo>
+        <jbo>la .djan. na.a la .alis. klama lo zarci</jbo>
         <gloss>That-named John only-if that-named Alice goes-to the market.</gloss>
         <natlang>John goes to the market only if Alice does.</natlang>
       </interlinear-gloss>
@@ -1587,11 +1587,11 @@
       <title><anchor xml:id="c14e8d9" /></title>
 
       <interlinear-gloss>
-        <jbo>mi dzukla le zarci .e le zdani</jbo>
+        <jbo>mi dzukla lo zarci .e lo zdani</jbo>
         <gloss>I walk-to the market and the house</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .a ke le ckule .e le briju [ke'e]</jbo>
+        <jbo>… .a ke lo ckule .e lo briju [ke'e]</jbo>
         <gloss>… or ( the school and the office ).</gloss>
       </interlinear-gloss>
     </example>
@@ -1652,7 +1652,7 @@
       <title><anchor xml:id="c14e9d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci .ije mi nelci la .djan.</jbo>
+        <jbo>mi klama lo zarci .ije mi nelci la .djan.</jbo>
         <gloss>I go-to the market, and I like that-named John.</gloss>
       </interlinear-gloss>
     </example>
@@ -1662,7 +1662,7 @@
       <title><anchor xml:id="c14e9d2" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci gi'e nelci la .djan.</jbo>
+        <jbo>mi klama lo zarci gi'e nelci la .djan.</jbo>
         <gloss>I go-to the market and like that-named John.</gloss>
       </interlinear-gloss>
     </example>
@@ -1679,7 +1679,7 @@
       <valsi>gi'e</valsi>
       is the gihek corresponding to
       <quote>and</quote>. The actual phrases
-      <jbophrase>klama le zarci</jbophrase>
+      <jbophrase>klama lo zarci</jbophrase>
       and
       <jbophrase>nelci la .djan.</jbophrase>
       that the gihek connects are known as
@@ -1692,7 +1692,7 @@
       <title><anchor xml:id="c14e9d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ricfu gi'e klama le zarci</jbo>
+        <jbo>mi ricfu gi'e klama lo zarci</jbo>
         <gloss>I am-rich and go-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -1702,7 +1702,7 @@
       , the first bridi-tail is
       <valsi>ricfu</valsi>
       , a simple selbri, and the second bridi-tail is
-      <jbophrase>klama le zarci</jbophrase>
+      <jbophrase>klama lo zarci</jbophrase>
       , a selbri with one following sumti.
     </para>
     <para>
@@ -1714,7 +1714,7 @@
       <title><anchor xml:id="c14e9d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi dunda le cukta do .ije mi lebna lo jdini do</jbo>
+        <jbo>mi dunda lo cukta do .ije mi lebna lo jdini do</jbo>
         <gloss>I give the book to-you, and I take some money from-you.</gloss>
       </interlinear-gloss>
     </example>
@@ -1731,7 +1731,7 @@
       <title><anchor xml:id="c14e9d5" /></title>
 
       <interlinear-gloss>
-        <jbo>fi do fa mi dunda le cukta</jbo>
+        <jbo>fi do fa mi dunda lo cukta</jbo>
         <gloss>to/from you - I give the book</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -1759,7 +1759,7 @@
       <title><anchor xml:id="c14e9d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi dunda le cukta gi'e lebna lo jdini vau do</jbo>
+        <jbo>mi dunda lo cukta gi'e lebna lo jdini vau do</jbo>
         <gloss>I (give the book) and (take some money) - to/from-you.</gloss>
       </interlinear-gloss>
     </example>
@@ -1779,7 +1779,7 @@
       <title><anchor xml:id="c14e9d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci [vau]</jbo>
+        <jbo>mi klama lo zarci [vau]</jbo>
         <gloss>I go-to the market. -</gloss>
       </interlinear-gloss>
     </example>
@@ -1793,7 +1793,7 @@
     <example role="interlinear-gloss-example" xml:id="example-random-id-RfIR">
       <title><anchor xml:id="c14e9d8" /></title>
 
-      <jbophrase>mi klama le zarci [vau] gi'e nelci la .djan. [vau] [vau]</jbophrase>
+      <jbophrase>mi klama lo zarci [vau] gi'e nelci la .djan. [vau] [vau]</jbophrase>
     </example>
     <para role="noindent">
       where the double
@@ -1813,7 +1813,7 @@
       <title><anchor xml:id="c14e9d9" /></title>
 
       <interlinear-gloss>
-        <jbo>klama le zarci gi'e dzukla le briju</jbo>
+        <jbo>klama lo zarci gi'e dzukla lo briju</jbo>
         <gloss>A-goer to-the market and a-walker to-the office.</gloss>
       </interlinear-gloss>
     </example>
@@ -1917,19 +1917,19 @@
       <title><anchor xml:id="c14e10d2" /></title>
 
       <interlinear-gloss>
-        <jbo>mi dzukla le zarci</jbo>
+        <jbo>mi dzukla lo zarci</jbo>
         <gloss>I walk-to the market</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… gi'e dzukla le zdani</jbo>
+        <jbo>… gi'e dzukla lo zdani</jbo>
         <gloss>… and walk-to the house,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… gi'a ke dzukla le ckule</jbo>
+        <jbo>… gi'a ke dzukla lo ckule</jbo>
         <gloss>… or ( walk-to the school</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… gi'e dzukla le briju [ke'e]</jbo>
+        <jbo>… gi'e dzukla lo briju [ke'e]</jbo>
         <gloss>… and walk-to the office. )</gloss>
       </interlinear-gloss>
     </example>
@@ -1962,11 +1962,11 @@
         <gloss>[If] I owe some currency-units to-that-named John,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .inaja mi dunda le cukta la .djan.</jbo>
+        <jbo>… .inaja mi dunda lo cukta la .djan.</jbo>
         <gloss>… then I give the book to-that-named John</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .ijabo mi lebna le cukta la .djan.</jbo>
+        <jbo>… .ijabo mi lebna lo cukta la .djan.</jbo>
         <gloss>… or I take the book from-that-named John.</gloss>
       </interlinear-gloss>
     </example>
@@ -1979,7 +1979,7 @@
         <gloss>[If] I owe some currency-units then (give</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… gi'abo lebna vau le cukta vau la .djan.</jbo>
+        <jbo>… gi'abo lebna vau lo cukta vau la .djan.</jbo>
         <gloss>… or take) - a book - to/from-that-named John.</gloss>
       </interlinear-gloss>
     </example>
@@ -1993,7 +1993,7 @@
       is the x<subscript>2</subscript> of
       <valsi>dejni</valsi>
       , whereas
-      <jbophrase>le cukta</jbophrase>
+      <jbophrase>lo cukta</jbophrase>
       is a tail-term shared between
       <valsi>dunda</valsi>
       and
@@ -2017,7 +2017,7 @@
         <gloss>To/from that-named John, [if] - I owe some currency-units</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… nagi'a - dunda gi'abo lebna vau le cukta</jbo>
+        <jbo>… nagi'a - dunda gi'abo lebna vau lo cukta</jbo>
         <gloss>… then [I] give or take - the book.</gloss>
       </interlinear-gloss>
     </example>
@@ -2031,7 +2031,7 @@
       <title><anchor xml:id="c14e10d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ge klama le zarci gi nelci la .djan.</jbo>
+        <jbo>mi ge klama lo zarci gi nelci la .djan.</jbo>
         <gloss>I both go-to the market and like that-named John.</gloss>
       </interlinear-gloss>
     </example>
@@ -2045,7 +2045,7 @@
       <title><anchor xml:id="c14e10d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ge klama le zarci gi'e dzukla le zdani</jbo>
+        <jbo>mi ge klama lo zarci gi'e dzukla lo zdani</jbo>
         <gloss>I both (go to-the market and walk to-the house)</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -2064,7 +2064,7 @@
       <title><anchor xml:id="c14e10d8" /></title>
 
       <interlinear-gloss>
-        <jbo>- mi na ge klama le zarci gi dzukla le zdani</jbo>
+        <jbo>- mi na ge klama lo zarci gi dzukla lo zdani</jbo>
         <gloss>[False!] I - both go-to the market and walk-to the house.</gloss>
       </interlinear-gloss>
     </example>
@@ -2079,7 +2079,7 @@
       <title><anchor xml:id="c14e10d9" /></title>
 
       <interlinear-gloss>
-        <jbo>mi ge dunda le cukta</jbo>
+        <jbo>mi ge dunda lo cukta</jbo>
         <gloss>I both (give the book)</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -2098,7 +2098,7 @@
       <title><anchor xml:id="c14e10d10" /></title>
 
       <interlinear-gloss>
-        <jbo>ge klama le zarci gi dzukla le briju</jbo>
+        <jbo>ge klama lo zarci gi dzukla lo briju</jbo>
         <gloss>Both a-goer to-the market and a-walker to-the office.</gloss>
       </interlinear-gloss>
     </example>
@@ -2107,7 +2107,7 @@
       <title><anchor xml:id="c14e10d11" /></title>
 
       <interlinear-gloss>
-        <jbo>mi gonai le zarci cu klama gi le bisli cu dansu</jbo>
+        <jbo>mi gonai lo zarci cu klama gi lo bisli cu dansu</jbo>
         <gloss>I either-but-not-both to-the office - go or on-the ice - dance.</gloss>
         <natlang>I either go to the office or dance on the ice (but not both).</natlang>
       </interlinear-gloss>
@@ -2147,11 +2147,11 @@
       <title><anchor xml:id="c14e11d2" /><indexterm type="general"><primary>to the market from the office</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci ce'e le briju</jbo>
+        <jbo>mi klama lo zarci ce'e lo briju</jbo>
         <gloss>I go to-the market [plus] from-the office</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… pe'e je le zdani ce'e le ckule</jbo>
+        <jbo>… pe'e je lo zdani ce'e lo ckule</jbo>
         <gloss>… [joint] and to-the house [plus] from-the school.</gloss>
       </interlinear-gloss>
     </example>
@@ -2166,11 +2166,11 @@
       <title><anchor xml:id="c14e11d3" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le zarci le briju</jbo>
+        <jbo>mi klama lo zarci lo briju</jbo>
         <gloss>I go to-the market from-the office,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .ije mi klama le zdani le ckule</jbo>
+        <jbo>… .ije mi klama lo zdani lo ckule</jbo>
         <gloss>… and I go to-the house from-the school.</gloss>
       </interlinear-gloss>
     </example>
@@ -2186,7 +2186,7 @@
       <title><anchor xml:id="c14e11d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi pe'e ja do ce'e le zarci cu klama le briju</jbo>
+        <jbo>mi pe'e ja do ce'e lo zarci cu klama lo briju</jbo>
         <gloss>I [joint] or you [plus] to-the market - go to/from-the office.</gloss>
       </interlinear-gloss>
     </example>
@@ -2195,11 +2195,11 @@
       <title><anchor xml:id="c14e11d5" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama le briju .ija do le zarci cu klama</jbo>
+        <jbo>mi klama lo briju .ija do lo zarci cu klama</jbo>
         <gloss>I go to-the office, or you to-the market - go</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… le briju</jbo>
+        <jbo>… lo briju</jbo>
         <gloss>… from-the office.</gloss>
       </interlinear-gloss>
     </example>
@@ -2207,7 +2207,7 @@
       <indexterm type="general"><primary>unequal termset connection</primary><secondary>compared with compound bridi connection with unequal separate bridi-tails</secondary>
       </indexterm>
       So
-      <jbophrase>le briju</jbophrase>
+      <jbophrase>lo briju</jbophrase>
       is your origin but my destination, and thus falls in the x<subscript>2</subscript> and x<subscript>3</subscript> places of
       <valsi>klama</valsi>
       simultaneously! This is legal because even though there is only one selbri,
@@ -2223,13 +2223,13 @@
       <title><anchor xml:id="c14e11d6" /></title>
 
       <interlinear-gloss>
-        <jbo>mi - klama le zarci gi'e dzukla vau le briju</jbo>
+        <jbo>mi - klama lo zarci gi'e dzukla vau lo briju</jbo>
         <gloss>I ( go to-the market and walk ) to/from-the office.</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent">
       means that I go to the market from the office, and I walk to the office;
-      <jbophrase>le briju</jbophrase>
+      <jbophrase>lo briju</jbophrase>
       is the x<subscript>3</subscript> place of
       <valsi>klama</valsi>
       and the x<subscript>2</subscript> place of
@@ -2254,11 +2254,11 @@
       <title><anchor xml:id="c14e11d7" /></title>
 
       <interlinear-gloss>
-        <jbo>mi klama nu'i ge le zarci le briju</jbo>
+        <jbo>mi klama nu'i ge lo zarci lo briju</jbo>
         <gloss>I go [start-termset] both to-the market from-the office</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… nu'u gi le zdani le ckule [nu'u]</jbo>
+        <jbo>… nu'u gi lo zdani lo ckule [nu'u]</jbo>
         <gloss>… [joint] and to-the house from-the school [end-termset].</gloss>
       </interlinear-gloss>
     </example>
@@ -2888,7 +2888,7 @@
       <title><anchor xml:id="c14e14d3" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djan. joi la .alis. cu bevri le pipno</jbo>
+        <jbo>la .djan. joi la .alis. cu bevri lo pipno</jbo>
         <gloss>That-named John in-a-group-with that-named Alice - carry the piano.</gloss>
 
       </interlinear-gloss>
@@ -2944,7 +2944,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>le nanmu ku joi le ninmu [ku] cu klama le zarci</jbo>
+        <jbo>lo nanmu ku joi lo ninmu [ku] cu klama lo zarci</jbo>
         <gloss>The man - in-a-group-with the woman - - go-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -2956,7 +2956,7 @@
       , which can almost always be elided, but here it is needed for clarity. Without the first
       <valsi>ku</valsi>
       , a reader meets
-      <jbophrase>le nanmu joi</jbophrase>
+      <jbophrase>lo nanmu joi</jbophrase>
       and expects another tanru component to follow; only the second
       <valsi>le</valsi>
       shows that the connection is between sumti. The grammar still gives the sentence its intended structure, because no other structure fits the whole text (see <xref linkend="ebnf-parses" />). The parser of the first edition, which read only one unit ahead (see <xref linkend="ebnf-parses" />), rejected the sentence anyway. No such problem arises with logical connectives, because an ek signals a following sumti and a jek a following tanru component unambiguously.
@@ -3546,11 +3546,11 @@
         <gloss>I [future] do the-referent-of the-following: -</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… tu'e kanji lo ni cteki .ice'o lumci le karce</jbo>
+        <jbo>… tu'e kanji lo ni cteki .ice'o lumci lo karce</jbo>
         <gloss>… ( Compute the quantity-of taxes. And-then wash the car.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .ice'o dzukansa le gerku tu'u</jbo>
+        <jbo>… .ice'o dzukansa lo gerku tu'u</jbo>
         <gloss>… And-then walkingly-accompany the dog. )</gloss>
         <natlang>List of things to do: Figure taxes. Wash car. Walk dog.</natlang>
       </interlinear-gloss>
@@ -3736,7 +3736,7 @@
       <title><anchor xml:id="c14e16d4" /><indexterm type="general"><primary>bomb destroyed fifty miles</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le jbama pu daspo la .uacintyn.</jbo>
+        <jbo>lo jbama pu daspo la .uacintyn.</jbo>
         <gloss>The bomb [past] destroys - Washington</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -3974,7 +3974,7 @@
       <title><anchor xml:id="c14e16d10" /><indexterm type="general"><primary>carry the piano</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>joigi la .djan. gi la .alis. bevri le pipno</jbo>
+        <jbo>joigi la .djan. gi la .alis. bevri lo pipno</jbo>
         <gloss>[Together] that-named John and that-named Alice carry the piano.</gloss>
 
       </interlinear-gloss>
@@ -4093,7 +4093,7 @@
       <title><anchor xml:id="c14e17d1" /><indexterm type="general"><primary>three of four people</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>vei ci .a vo [ve'o] prenu cu klama le zarci</jbo>
+        <jbo>vei ci .a vo [ve'o] prenu cu klama lo zarci</jbo>
         <gloss>( Three or four ) people - go-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -4109,7 +4109,7 @@
       <title><anchor xml:id="c14e17d2" /></title>
 
       <interlinear-gloss>
-        <jbo>vei ga ci gi vo [ve'o] prenu cu klama le zarci</jbo>
+        <jbo>vei ga ci gi vo [ve'o] prenu cu klama lo zarci</jbo>
         <gloss>( Either 3 or 4 ) people - go-to the market.</gloss>
       </interlinear-gloss>
     </example>
@@ -4223,7 +4223,7 @@
   </section>
   <section xml:id="section-sumtcita">
     <title><anchor xml:id="c14s18" />Tenses, modals, and logical connection</title>
-    <para>The tense and modal systems of Lojban interact with the logical connective system. No one chapter can explain all of these simultaneously, so each chapter must present its own view of the area of interaction, with emphasis on its own concepts and terminology. In the examples of this chapter, the many tenses of various selma'o, as well as the modals of selma'o BAI, are represented by the simple time cmavo <valsi>pu</valsi>, <valsi>ca</valsi>, and <valsi>ba</valsi> (of selma'o PU), standing for the past, the present, and the future respectively. Preceding a selbri, these cmavo state the time when the bridi was, is, or will be true (analogous to English verb tenses); preceding a sumti, they state that the event of the main bridi is before, simultaneous with, or after the event given by the sumti (which is generally a <jbophrase>le nu</jbophrase> abstraction; see <xref linkend="section-events" />).</para>
+    <para>The tense and modal systems of Lojban interact with the logical connective system. No one chapter can explain all of these simultaneously, so each chapter must present its own view of the area of interaction, with emphasis on its own concepts and terminology. In the examples of this chapter, the many tenses of various selma'o, as well as the modals of selma'o BAI, are represented by the simple time cmavo <valsi>pu</valsi>, <valsi>ca</valsi>, and <valsi>ba</valsi> (of selma'o PU), standing for the past, the present, and the future respectively. Preceding a selbri, these cmavo state the time when the bridi was, is, or will be true (analogous to English verb tenses); preceding a sumti, they state that the event of the main bridi is before, simultaneous with, or after the event given by the sumti (which is generally a <jbophrase>lo nu</jbophrase> abstraction; see <xref linkend="section-events" />).</para>
     <para>
       <indexterm type="general"><primary>logically connected tenses</primary><secondary>definition</secondary>
       </indexterm>
@@ -4310,7 +4310,7 @@
       <title><anchor xml:id="c14e18d5" /></title>
 
       <interlinear-gloss>
-        <jbo>mi pu klama le zarci .ije mi pu tervecnu lo cidja</jbo>
+        <jbo>mi pu klama lo zarci .ije mi pu tervecnu lo cidja</jbo>
         <gloss>I [past] go-to the market. And I [past] buy items-of food.</gloss>
       </interlinear-gloss>
     </example>
@@ -4336,7 +4336,7 @@
       <title><anchor xml:id="c14e18d6" /><indexterm type="lojban-word"><primary>.ijebabo</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi pu klama le zarci</jbo>
+        <jbo>mi pu klama lo zarci</jbo>
         <gloss>I [past] go-to the market.</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -4375,7 +4375,7 @@
       <title><anchor xml:id="c14e18d7" /><indexterm type="general"><primary>simultaneously</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>la .djan .e cabo la .alis. klama le zarci</jbo>
+        <jbo>la .djan .e cabo la .alis. klama lo zarci</jbo>
         <gloss>That-named John and [simultaneous] that-named Alice go-to the market.</gloss>
         <natlang>John and Alice go to the market simultaneously.</natlang>
       </interlinear-gloss>
@@ -4399,11 +4399,11 @@
       <title><anchor xml:id="c14e18d8" /><indexterm type="general"><primary>and earlier</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi dzukla le zarci .e pu</jbo>
+        <jbo>mi dzukla lo zarci .e pu</jbo>
         <gloss>I walk-to the market and [earlier]</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… ke le zdani .a le ckule [ke'e]</jbo>
+        <jbo>… ke lo zdani .a lo ckule [ke'e]</jbo>
         <gloss>… ( the house or the school ).</gloss>
         <natlang>I walk to the market and, before that, to the house or the school.</natlang>
       </interlinear-gloss>
@@ -4426,7 +4426,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi dunda le cukta gi'e babo</jbo>
+        <jbo>mi dunda lo cukta gi'e babo</jbo>
         <gloss>I give the book and [later]</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -4448,7 +4448,7 @@
       <title><anchor xml:id="c14e18d10" /><indexterm type="general"><primary>and simultaneously</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi dzukla le zarci gi'e ca</jbo>
+        <jbo>mi dzukla lo zarci gi'e ca</jbo>
         <gloss>I walk-to the market and [simultaneous]</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -4548,7 +4548,7 @@
       <title><anchor xml:id="c14e18d14" /></title>
 
       <interlinear-gloss>
-        <jbo>vei ci .ebabo vo [ve'o] tadni cu zvati le kumfa</jbo>
+        <jbo>vei ci .ebabo vo [ve'o] tadni cu zvati lo kumfa</jbo>
         <gloss>( 3 and-[future] 4 ) students - are-at the room.</gloss>
         <natlang>Three and, later, four students were in the room.</natlang>
       </interlinear-gloss>
@@ -4570,7 +4570,7 @@
       </title>
 
       <interlinear-gloss>
-        <jbo>mi pu ge klama le zarci gi tervecnu lo cidja</jbo>
+        <jbo>mi pu ge klama lo zarci gi tervecnu lo cidja</jbo>
 
         <gloss>I [past] both go-to the market and buy some food</gloss>
         <natlang>I went to the market and bought some food.</natlang>
@@ -4604,7 +4604,7 @@
       <title><anchor xml:id="c14e19d2" /></title>
 
       <interlinear-gloss>
-        <jbo>le mikce cu se cinri le pu'u jenai za'i mi sipna</jbo>
+        <jbo>lo mikce cu se cinri lo pu'u jenai za'i mi sipna</jbo>
         <gloss>The doctor - - is-interested-in the process-of and-not state-of me sleeping.</gloss>
         <natlang>The doctor is interested in the process of me sleeping but not in the state of me sleeping.</natlang>
       </interlinear-gloss>
@@ -4623,7 +4623,7 @@
       <title><anchor xml:id="c14e19d3" /><indexterm type="general"><primary>Jupiter life</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>mi jinvi le du'u loi jmive</jbo>
+        <jbo>mi jinvi lo du'u loi jmive</jbo>
         <gloss>I opine the fact-that a-group-of living-things</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -4640,11 +4640,11 @@
       <title><anchor xml:id="c14e19d4" /></title>
 
       <interlinear-gloss>
-        <jbo>mi jinvi le du'u loi jmive cu zvati la .iupiter.</jbo>
+        <jbo>mi jinvi lo du'u loi jmive cu zvati la .iupiter.</jbo>
         <gloss>I opine the fact-that a-group-of living-things - is-at that-named Jupiter</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… .ijonai mi jinvi le du'u loi jmive</jbo>
+        <jbo>… .ijonai mi jinvi lo du'u loi jmive</jbo>
         <gloss>… or-else I opine the fact-that a-group-of living-things</gloss>
       </interlinear-gloss>
       <interlinear-gloss>

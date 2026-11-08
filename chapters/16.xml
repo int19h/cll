@@ -313,7 +313,7 @@
       <title><anchor xml:id="c16e2d7" /><indexterm type="general"><primary>somebody's dog</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>da zo'u le da gerku cu viska mi</jbo>
+        <jbo>da zo'u lo da gerku cu viska mi</jbo>
         <gloss>There-is-an-X such-that the of-X dog - sees me</gloss>
         <natlang>Somebody's dog sees me</natlang>
       </interlinear-gloss>
@@ -1128,16 +1128,16 @@
       <indexterm type="general"><primary>implicit quantifiers</primary><secondary>abolition of</secondary>
       </indexterm>
       What about descriptions, like
-      <jbophrase>le nanmu</jbophrase>
+      <jbophrase>lo nanmu</jbophrase>
       or
       <jbophrase>ci lo gerku</jbophrase>? An <emphasis>unquantified</emphasis> description is a constant (see
       <xref linkend="section-quantified-descriptions" />). It refers to particular things, and constants take no part in scope distinctions at all. So
-      <jbophrase>le nanmu cu batci le gerku</jbophrase>
+      <jbophrase>lo nanmu cu batci lo gerku</jbophrase>
       raises no questions of scope (how many for each), just as
       <jbophrase>la .djan. cu batci la .spat.</jbophrase>
       raises none.
     </para>
-    <para>Scope questions arise only for genuinely quantified terms. These are bare <jbophrase>PA broda</jbophrase> (which is <jbophrase>PA da poi broda</jbophrase>), and descriptions with an <emphasis>explicit outer</emphasis> quantifier, like <jbophrase>re le ci mlatu</jbophrase>. You can group those in termsets exactly as you can the variables above. When both quantifiers are <valsi>ro</valsi>, the grouping doesn't matter, because universal claims are independent of order:</para>
+    <para>Scope questions arise only for genuinely quantified terms. These are bare <jbophrase>PA broda</jbophrase> (which is <jbophrase>PA da poi broda</jbophrase>), and descriptions with an <emphasis>explicit outer</emphasis> quantifier, like <jbophrase>re lo ci mlatu</jbophrase>. You can group those in termsets exactly as you can the variables above. When both quantifiers are <valsi>ro</valsi>, the grouping doesn't matter, because universal claims are independent of order:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-MADY">
       <title><anchor xml:id="c16e7d6" /></title>
 
@@ -1172,7 +1172,7 @@
       <title><anchor xml:id="c16e8d2" /></title>
 
       <interlinear-gloss>
-        <jbo valid="iffy">ro da poi klama le zarci cu cadzu le foldi</jbo>
+        <jbo valid="iffy">ro da poi klama lo zarci cu cadzu lo foldi</jbo>
         <gloss>All X such-that-it goes-to the store - walks-on the field.</gloss>
         <natlang>Everyone who goes to the store walks across the field.</natlang>
       </interlinear-gloss>
@@ -1197,10 +1197,10 @@
     </para>
     <para>
       This implication is of a special kind. It clings to the restriction, not to the claim, so it survives even when you negate the claim. The sentence
-      <jbophrase>naku ro da poi klama le zarci cu cadzu le foldi</jbophrase>
+      <jbophrase>naku ro da poi klama lo zarci cu cadzu lo foldi</jbophrase>
       still concerns actual store-goers. Under the negation rules of
       <xref linkend="section-negation-boundaries" />, it is exactly equivalent to
-      <jbophrase>su'o da poi klama le zarci ku'o naku cadzu le foldi</jbophrase>, where the
+      <jbophrase>su'o da poi klama lo zarci ku'o naku cadzu lo foldi</jbophrase>, where the
       <valsi>ku'o</valsi>
       keeps the
       <valsi>naku</valsi>
@@ -1225,11 +1225,11 @@
       <title><anchor xml:id="c16e8d3" /></title>
 
       <interlinear-gloss>
-        <jbo>ro da zo'u da go klama le zarci</jbo>
+        <jbo>ro da zo'u da go klama lo zarci</jbo>
         <gloss>For-every X : X if-and-only-if it-is-a-goer-to the store</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… gi cadzu le foldi</jbo>
+        <jbo>… gi cadzu lo foldi</jbo>
         <gloss>… - is-a-walker-on the field.</gloss>
       </interlinear-gloss>
     </example>
@@ -1401,7 +1401,7 @@
       <title><anchor xml:id="c16e9d1" /></title>
 
       <interlinear-gloss>
-        <jbo>mi na klama le zarci</jbo>
+        <jbo>mi na klama lo zarci</jbo>
         <gloss>I [false] go-to the store.</gloss>
         <natlang>It is false that I go to the store.</natlang>
         <natlang>I don't go to the store.</natlang>
@@ -1438,7 +1438,7 @@
       <title><anchor xml:id="c16e9d2" /></title>
 
       <interlinear-gloss>
-        <jbo>naku zo'u mi klama le zarci</jbo>
+        <jbo>naku zo'u mi klama lo zarci</jbo>
         <gloss>It-is-not-the-case-that : I go-to the store.</gloss>
         <natlang>It is false that: I go to the store.</natlang>
       </interlinear-gloss>
@@ -2231,7 +2231,7 @@
     <example role="interlinear-gloss-example" xml:id="example-random-id-u784">
       <title><anchor xml:id="c16e11d15" /></title>
 
-      <jbophrase>mi naku naku le zarci cu klama</jbophrase>
+      <jbophrase>mi naku naku lo zarci cu klama</jbophrase>
     </example>
     <para role="indent">
       Other expressions using two
@@ -2426,7 +2426,7 @@
       <title><anchor xml:id="c16e12d4" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djein. le zarci na ge dzukla gi bajrykla</jbo>
+        <jbo>la .djein. lo zarci na ge dzukla gi bajrykla</jbo>
         <gloss>that-named Jane to-the market [false] both walks and runs.</gloss>
       </interlinear-gloss>
     </example>
@@ -2434,14 +2434,14 @@
       <title><anchor xml:id="c16e12d5" /></title>
 
       <interlinear-gloss>
-        <jbo>la .djein. le zarci ganai dzukla ginai bajrykla</jbo>
+        <jbo>la .djein. lo zarci ganai dzukla ginai bajrykla</jbo>
         <gloss>that-named Jane to-the market either-([false] walks) or-([false] runs.</gloss>
         <gloss>that-named Jane to-the market if walks then-([false] runs).</gloss>
       </interlinear-gloss>
     </example>
     <para role="noindent">
       (Placing
-      <jbophrase>le zarci</jbophrase>
+      <jbophrase>lo zarci</jbophrase>
       before the selbri makes sure that it is properly associated with both parts of the logical connection. Otherwise, it is easy to erroneously leave it off one of the two sentences.)
     </para>
     <para>
@@ -2463,7 +2463,7 @@
       <title><anchor xml:id="c16e12d6" /></title>
 
       <interlinear-gloss>
-        <jbo>naku zo'u la .djein. le zarci</jbo>
+        <jbo>naku zo'u la .djein. lo zarci</jbo>
         <gloss>It-is-false-that : that-named Jane to-the market</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -2476,11 +2476,11 @@
       <title><anchor xml:id="c16e12d7" /></title>
 
       <interlinear-gloss>
-        <jbo>naku zo'u ge la .djein. le zarci cu dzukla</jbo>
+        <jbo>naku zo'u ge la .djein. lo zarci cu dzukla</jbo>
         <gloss>It-is-false that: both (that-named Jane to-the market - walks)</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… gi la .djein. le zarci cu bajrykla</jbo>
+        <jbo>… gi la .djein. lo zarci cu bajrykla</jbo>
         <gloss>… and (that-named Jane to-the market - runs).</gloss>
       </interlinear-gloss>
     </example>
@@ -2490,11 +2490,11 @@
       <title><anchor xml:id="c16e12d8" /></title>
 
       <interlinear-gloss>
-        <jbo>ga la .djein. le zarci na dzukla</jbo>
+        <jbo>ga la .djein. lo zarci na dzukla</jbo>
         <gloss>Either that-named Jane to-the market [false] walks,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… gi la .djein. le zarci na bajrykla</jbo>
+        <jbo>… gi la .djein. lo zarci na bajrykla</jbo>
         <gloss>… or that-named Jane to-the market [false] runs.</gloss>
       </interlinear-gloss>
     </example>
@@ -2503,11 +2503,11 @@
       <title><anchor xml:id="c16e12d9" /></title>
 
       <interlinear-gloss>
-        <jbo>ganai la .djein. le zarci cu dzukla</jbo>
+        <jbo>ganai la .djein. lo zarci cu dzukla</jbo>
         <gloss>If that-named Jane to-the market - walks,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… ginai la .djein. le zarci cu bajrykla</jbo>
+        <jbo>… ginai la .djein. lo zarci cu bajrykla</jbo>
         <gloss>… then-([false] that-named Jane to-the market - runs).</gloss>
         <natlang>If Jane walks to the market, then she doesn't run.</natlang>
       </interlinear-gloss>

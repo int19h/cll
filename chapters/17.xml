@@ -1439,7 +1439,7 @@
       <title><anchor xml:id="c17e9d2" /></title>
 
       <interlinear-gloss>
-        <jbophrase>le gerku goi gy. cu xekri .i gy. klama le zdani</jbophrase>
+        <jbophrase>lo gerku goi gy. cu xekri .i gy. klama lo zdani</jbophrase>
         <natlang>The dog, or G, is black. G goes to the house.</natlang>
       </interlinear-gloss>
     </example>
@@ -1455,7 +1455,7 @@
       <title><anchor xml:id="c17e9d3" /></title>
 
       <interlinear-gloss>
-        <jbophrase>le gerku cu xekri. .i gy. klama le zdani</jbophrase>
+        <jbophrase>lo gerku cu xekri. .i gy. klama lo zdani</jbophrase>
         <natlang>The dog is black. G goes to the house.</natlang>
       </interlinear-gloss>
     </example>
@@ -1769,7 +1769,7 @@
       <title><anchor xml:id="c17e11d3" /><indexterm type="general"><primary>Nth rat</primary></indexterm></title>
 
       <interlinear-gloss>
-        <jbo>le vi ratcu cu ny.moi le'i mi ratcu</jbo>
+        <jbo>lo vi ratcu cu ny.moi lo'i mi ratcu</jbo>
         <gloss>the here rat - is-nth-of the-set-of my rats</gloss>
         <natlang>This rat is my Nth rat.</natlang>
 
@@ -2088,7 +2088,7 @@
       <title><anchor xml:id="c17e13d2" /></title>
 
       <interlinear-gloss>
-        <jbo>me'o se'e rexarerei sinxa le ka panpi</jbo>
+        <jbo>me'o se'e rexarerei sinxa lo ka panpi</jbo>
         <gloss>the-expression [code] 262E is-a-sign-of the quality-of being-at-peace</gloss>
       </interlinear-gloss>
     </example>

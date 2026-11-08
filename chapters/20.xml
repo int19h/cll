@@ -18,7 +18,7 @@
     </bridgehead>
     <para>Specifies a logical connection (e.g. “and”, “or”, “if”), usually between sumti.</para>
     <interlinear-gloss>
-      <jbo>la--.djan. a la--.djein. klama le zarci</jbo>
+      <jbo>la--.djan. a la--.djein. klama lo zarci</jbo>
       <gloss>John and/or Jane goes-to the store</gloss>
     </interlinear-gloss>
 
@@ -42,7 +42,7 @@
 
     <para>Emphasizes the next single word, or marks it as a nonce word (one invented for the occasion).</para>
     <interlinear-gloss>
-      <jbo>la--ba'e--.djordj. klama le zarci</jbo>
+      <jbo>la--ba'e--.djordj. klama lo zarci</jbo>
       <gloss>
         <emphasis>George</emphasis>
         goes-to the store.
@@ -81,7 +81,7 @@
       to a tanru unit.
     </para>
     <interlinear-gloss>
-      <jbo>mi - klama be le zarci bei le zdani be'o -- troci</jbo>
+      <jbo>mi - klama be lo zarci bei lo zdani be'o -- troci</jbo>
       <gloss>I am-a (goer to the store from the home ) type-of trier.</gloss>
       <natlang>I try to go from the home to the market.</natlang>
     </interlinear-gloss>
@@ -96,7 +96,7 @@
       <xref linkend="BE" />. Terminates sumti that are attached to a tanru unit.
     </para>
     <interlinear-gloss>
-      <jbo>mi - klama be le zarci be'o -- troci</jbo>
+      <jbo>mi - klama be lo zarci be'o -- troci</jbo>
       <gloss>I am-a (goer to the market ) type-of trier.</gloss>
       <natlang>I try to go to the market.</natlang>
     </interlinear-gloss>
@@ -184,7 +184,7 @@
 
     <para>Words representing the letters of the Lojban alphabet, plus various shift words which alter the interpretation of other letter words. Terminated by BOI.</para>
     <interlinear-gloss>
-      <jbo>.abu tavla by - le -- la--.ibymym. skami</jbo>
+      <jbo>.abu tavla by - lo -- la--.ibymym. skami</jbo>
       <gloss>A talks-to B about the of- IBM computers.</gloss>
       <natlang>A talks to B about IBM computers.</natlang>
     </interlinear-gloss>
@@ -196,7 +196,7 @@
 
     <para>Indicates the intensity of an emotion: maximum, strong, weak, or not at all. Typically follows another particle which specifies the emotion.</para>
     <interlinear-gloss>
-      <jbo>.ei cai mi klama le zarci</jbo>
+      <jbo>.ei cai mi klama lo zarci</jbo>
       <gloss>[Obligation!] [Intense!] I go-to the market.</gloss>
       <natlang>I must go to the market.</natlang>
     </interlinear-gloss>
@@ -224,7 +224,7 @@
       <natlang>This is a plastic cat-food can cover, or thingy.</natlang>
     </interlinear-gloss>
     <interlinear-gloss>
-      <jbophrase>.i le crino broda cu barda .i le xunre broda cu cmalu</jbophrase>
+      <jbophrase>.i lo crino broda cu barda .i lo xunre broda cu cmalu</jbophrase>
       <natlang>The green thingy is large. The red thingy is small.</natlang>
     </interlinear-gloss>
     <bridgehead>
@@ -249,7 +249,7 @@
 
     <para>When inserted between the components of a tanru, inverts it, so that the following tanru unit modifies the previous one.</para>
     <interlinear-gloss>
-      <jbo>mi troci co klama le zarci - le zdani</jbo>
+      <jbo>mi troci co klama lo zarci - lo zdani</jbo>
       <gloss>I am-a-trier of-type (goer-to the market from the house).</gloss>
       <natlang>I try to go to the market from the house.</natlang>
     </interlinear-gloss>
@@ -278,7 +278,7 @@
 
     <para>Separates the selbri of a bridi from any sumti which precede it. Never strictly necessary, but often useful to eliminate various elidable terminators.</para>
     <interlinear-gloss>
-      <jbo>le gerku cu klama le zarci</jbo>
+      <jbo>lo gerku cu klama lo zarci</jbo>
       <gloss>The dog -- goes-to the store.</gloss>
     </interlinear-gloss>
     <bridgehead>
@@ -298,7 +298,7 @@
       <xref linkend="BAI" />.
     </para>
     <interlinear-gloss>
-      <jbo>do cu'e klama le zarci</jbo>
+      <jbo>do cu'e klama lo zarci</jbo>
       <gloss>You [When/Where?] go-to the store?</gloss>
       <natlang>When are you going to the store?</natlang>
     </interlinear-gloss>
@@ -357,7 +357,7 @@
       <gloss>x<subscript>1</subscript>= I -- go x<subscript>3</subscript>= Atlanta</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
-      <jbo>… fe la--.bastn. fo le dargu fu le karce</jbo>
+      <jbo>… fe la--.bastn. fo lo dargu fu lo karce</jbo>
       <gloss>… x<subscript>2</subscript>= Boston x<subscript>4</subscript>= the road x<subscript>5</subscript>= the car.</gloss>
       <natlang>I go from Atlanta to Boston via the road using the car.</natlang>
     </interlinear-gloss>
@@ -375,7 +375,7 @@
       <xref linkend="VIhA" />) the action of the bridi takes place.
     </para>
     <interlinear-gloss>
-      <jbo>le nanmu zu'a batci le gerku</jbo>
+      <jbo>lo nanmu zu'a batci lo gerku</jbo>
       <gloss>The man [left] bites the dog.</gloss>
       <natlang>To my left, the man bites the dog.</natlang>
     </interlinear-gloss>
@@ -401,7 +401,7 @@
       <xref linkend="ZAhO" />) refers to space rather than time.
     </para>
     <interlinear-gloss>
-      <jbo>ko vi'i fe'e di'i sombo le gurni</jbo>
+      <jbo>ko vi'i fe'e di'i sombo lo gurni</jbo>
       <gloss>You-imperative [1-dimensional] [space] [regularly] sow the grain.</gloss>
       <natlang>Sow the grain in a line and evenly!</natlang>
     </interlinear-gloss>
@@ -416,7 +416,7 @@
       <xref linkend="FIhO" />. Indicates the end of an ad hoc modal tag: the tagged sumti immediately follows.
     </para>
     <interlinear-gloss>
-      <jbo>mi viska do fi'o kanla [fe'u] le zunle</jbo>
+      <jbo>mi viska do fi'o kanla [fe'u] lo zunle</jbo>
       <gloss>I see you [modal] eye : the left-thing</gloss>
       <natlang>I see you with the left eye.</natlang>
     </interlinear-gloss>
@@ -432,7 +432,7 @@
       <xref linkend="FEhU" />.
     </para>
     <interlinear-gloss>
-      <jbo>mi viska do fi'o kanla le zunle</jbo>
+      <jbo>mi viska do fi'o kanla lo zunle</jbo>
       <gloss>I see you with eye the left-thing</gloss>
       <natlang>I see you with my left eye.</natlang>
     </interlinear-gloss>
@@ -478,7 +478,7 @@
       <xref linkend="FUhO" />.
     </para>
     <interlinear-gloss>
-      <jbo>mi viska le fu'e .ia blanu zdani fu'o ponse</jbo>
+      <jbo>mi viska lo fu'e .ia blanu zdani fu'o ponse</jbo>
       <gloss>I see the [start] [belief] blue house [end] possessor</gloss>
       <natlang>I see the owner of a blue house, or what I believe to be one.</natlang>
     </interlinear-gloss>
@@ -494,7 +494,7 @@
       which are in effect.
     </para>
     <interlinear-gloss>
-      <jbo>mi viska le fu'e .ia blanu zdani fu'o ponse</jbo>
+      <jbo>mi viska lo fu'e .ia blanu zdani fu'o ponse</jbo>
       <gloss>I see the [start] [belief] blue house [end] possessor.</gloss>
       <natlang>I see the owner of what I believe to be a blue house.</natlang>
     </interlinear-gloss>
@@ -575,7 +575,7 @@
 
     <para>Specifies a logical connective (e.g. “and”, “or”, “if”) between two bridi-tails: a bridi-tail is a selbri with any associated following sumti, but not including any preceding sumti.</para>
     <interlinear-gloss>
-      <jbo>mi klama le zarci gi'e nelci la--.djan.</jbo>
+      <jbo>mi klama lo zarci gi'e nelci la--.djan.</jbo>
       <gloss>I go-to the market and like John.</gloss>
     </interlinear-gloss>
     <bridgehead>
@@ -602,7 +602,7 @@
 
     <para>A general selma'o for all cmavo which can take the place of brivla. There are several groups of these.</para>
     <interlinear-gloss>
-      <jbophrase>A: mi klama le zarci</jbophrase>
+      <jbophrase>A: mi klama lo zarci</jbophrase>
       <jbophrase>B: mi go'i</jbophrase>
       <natlang>A: I'm going to the market.</natlang>
       <natlang>B: Me, too.</natlang>
@@ -631,7 +631,7 @@
 
     <para>Separates two sentences from each other.</para>
     <interlinear-gloss>
-      <jbo>mi klama le zarci .i mi klama le zdani</jbo>
+      <jbo>mi klama lo zarci .i mi klama lo zdani</jbo>
       <gloss>I go-to the market . I go-to the house.</gloss>
     </interlinear-gloss>
     <bridgehead>
@@ -653,7 +653,7 @@
 
     <para>When followed by a tense or modal, creates a conversion operator attachable to a selbri which exchanges the modal place with the x<subscript>1</subscript> place of the selbri. When alone, is a conversion operator exchanging the x<subscript>1</subscript> place of the selbri (which should be an abstract sumti) with one of the places of the abstracted-over bridi.</para>
     <interlinear-gloss>
-      <jbo>mi jai--gau galfi le bitmu se--skari</jbo>
+      <jbo>mi jai--gau galfi lo bitmu se--skari</jbo>
       <gloss>I am-the-actor-in modifying the wall color.</gloss>
       <natlang>I act so as to modify the wall color.</natlang>
       <natlang>I change the color of the wall.</natlang>
@@ -671,7 +671,7 @@
       <xref linkend="GA" />.
     </para>
     <interlinear-gloss>
-      <jbo>la--.djan. joi la--.alis. cu bevri le pipno</jbo>
+      <jbo>la--.djan. joi la--.alis. cu bevri lo pipno</jbo>
       <gloss>John in-a-group-with Alice -- carry the piano.</gloss>
     </interlinear-gloss>
     <bridgehead>
@@ -769,7 +769,7 @@
 
     <para>A general selma'o which contains all cmavo which can substitute for sumti. These cmavo are divided into several groups.</para>
     <interlinear-gloss>
-      <jbo>le blanu zdani goi ko'a cu barda</jbo>
+      <jbo>lo blanu zdani goi ko'a cu barda</jbo>
       <gloss>The blue house (referred--to--as it-1) -- is-big.</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
@@ -795,7 +795,7 @@
       to indicate natural language-style negation.
     </para>
     <interlinear-gloss>
-      <jbo>le prenu ku - le zdani ku klama</jbo>
+      <jbo>lo prenu ku - lo zdani ku klama</jbo>
       <gloss>The person , to the house , goes.</gloss>
       <natlang>The person goes to the house.</natlang>
     </interlinear-gloss>
@@ -829,7 +829,7 @@
       <xref linkend="NOI" />. Indicates the end of a relative clause.
     </para>
     <interlinear-gloss>
-      <jbo>le zdani poi blanu ku'o barda</jbo>
+      <jbo>lo zdani poi blanu ku'o barda</jbo>
       <gloss>The house that( is-blue ) is-big.</gloss>
     </interlinear-gloss>
     <bridgehead>
@@ -890,7 +890,7 @@
       <xref linkend="LA" />.
     </para>
     <interlinear-gloss>
-      <jbo>le gerku cu klama le zdani</jbo>
+      <jbo>lo gerku cu klama lo zdani</jbo>
       <gloss>The dog -- goes-to the house.</gloss>
     </interlinear-gloss>
     <bridgehead>
@@ -936,7 +936,7 @@
       <xref linkend="LU" />. Indicates the end of a text quotation.
     </para>
     <interlinear-gloss>
-      <jbo>mi cusku lu mi klama le zarci li'u</jbo>
+      <jbo>mi cusku lu mi klama lo zarci li'u</jbo>
       <gloss>I express [quote] I go-to the market [end-quote].</gloss>
     </interlinear-gloss>
     <bridgehead>
@@ -982,7 +982,7 @@
       <xref linkend="LIhU" />.
     </para>
     <interlinear-gloss>
-      <jbo>mi cusku lu mi klama le zarci li'u</jbo>
+      <jbo>mi cusku lu mi klama lo zarci li'u</jbo>
       <gloss>I express [quote] I go-to the market [end-quote].</gloss>
     </interlinear-gloss>
     <bridgehead>
@@ -1014,7 +1014,7 @@
 
     <para>When suffixed to a number or string of letter words, produces a free modifier which serves as an index number within a text.</para>
     <interlinear-gloss>
-      <jbo>pamai mi pu klama le zarci</jbo>
+      <jbo>pamai mi pu klama lo zarci</jbo>
       <gloss>1-thly, I [past] go-to the market.</gloss>
       <natlang>First, I went to the market.</natlang>
     </interlinear-gloss>
@@ -1112,7 +1112,7 @@
       cmavo.
     </para>
     <interlinear-gloss>
-      <jbo>le verba mo'i ri'u cadzu le bisli</jbo>
+      <jbo>lo verba mo'i ri'u cadzu lo bisli</jbo>
       <gloss>The child [movement] [right] walks-on the ice.</gloss>
       <natlang>The child walks toward my right on the ice.</natlang>
     </interlinear-gloss>
@@ -1126,7 +1126,7 @@
 
     <para>Contradictory negators, asserting that a whole bridi is false (or true).</para>
     <interlinear-gloss>
-      <jbophrase>mi na klama le zarci</jbophrase>
+      <jbophrase>mi na klama lo zarci</jbophrase>
       <natlang>It is not true that I go to the market.</natlang>
     </interlinear-gloss>
 
@@ -1221,7 +1221,7 @@
       <xref linkend="GOI" />.
     </para>
     <interlinear-gloss>
-      <jbo>le zdani poi blanu cu cmalu</jbo>
+      <jbo>lo zdani poi blanu cu cmalu</jbo>
       <gloss>The house which is-blue -- is-small.</gloss>
     </interlinear-gloss>
     <bridgehead>
@@ -1235,7 +1235,7 @@
       <xref linkend="KEI" />.
     </para>
     <interlinear-gloss>
-      <jbo>la--.djan. cu djica le nu sonci [kei]</jbo>
+      <jbo>la--.djan. cu djica lo nu sonci [kei]</jbo>
       <gloss>John -- desires the event-of being-a-soldier. -</gloss>
     </interlinear-gloss>
     <bridgehead>
@@ -1265,11 +1265,11 @@
       <xref linkend="NUhU" />.
     </para>
     <interlinear-gloss>
-      <jbo>mi klama nu'i ge - le zarci -- le briju</jbo>
+      <jbo>mi klama nu'i ge - lo zarci -- lo briju</jbo>
       <gloss>I go [start] both to the market from the office</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
-      <jbo>… nu'u gi - le zdani -- le ckule [nu'u]</jbo>
+      <jbo>… nu'u gi - lo zdani -- lo ckule [nu'u]</jbo>
       <gloss>… [joint] and to the house from the school. -</gloss>
     </interlinear-gloss>
     <bridgehead>
@@ -1283,11 +1283,11 @@
       <xref linkend="NUhI" />. Marks the end of a termset.
     </para>
     <interlinear-gloss>
-      <jbo>mi klama nu'i ge - le zarci -- le briju</jbo>
+      <jbo>mi klama nu'i ge - lo zarci -- lo briju</jbo>
       <gloss>I go [start] both to the market from the office</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
-      <jbo>… nu'u gi - le zdani -- le ckule [nu'u]</jbo>
+      <jbo>… nu'u gi - lo zdani -- lo ckule [nu'u]</jbo>
       <gloss>… [joint] and to the house from the school. -</gloss>
     </interlinear-gloss>
     <bridgehead>
@@ -1341,7 +1341,7 @@
 
     <para>Specifies simple time directions (future, past, or neither).</para>
     <interlinear-gloss>
-      <jbo>mi pu klama le zarci</jbo>
+      <jbo>mi pu klama lo zarci</jbo>
       <gloss>I [past] go-to the market.</gloss>
       <natlang>I went to the market.</natlang>
     </interlinear-gloss>
@@ -1356,11 +1356,11 @@
       <xref linkend="GOhA" />) to fit the current context rather than the original context.
     </para>
     <interlinear-gloss>
-      <jbophrase>A: mi ba lumci le mi karce</jbophrase>
+      <jbophrase>A: mi ba lumci lo mi karce</jbophrase>
       <jbophrase>B: mi go'i</jbophrase>
       <natlang>A: I [future] wash my car.</natlang>
       <natlang>B: I do-the-same-thing (i.e. wash A's car).</natlang>
-      <jbophrase>A: mi ba lumci le mi karce</jbophrase>
+      <jbophrase>A: mi ba lumci lo mi karce</jbophrase>
       <jbophrase>B: mi go'i ra'o</jbophrase>
       <natlang>A: I [future] wash my car.</natlang>
       <natlang>B: I do-the-corresponding-thing (i.e. wash B's car).</natlang>
@@ -1373,7 +1373,7 @@
 
     <para>When suffixed to a number, makes an extensional tense (e.g. once, twice, many times).</para>
     <interlinear-gloss>
-      <jbo>mi reroi klama le zarci</jbo>
+      <jbo>mi reroi klama lo zarci</jbo>
       <gloss>I twice go-to the market.</gloss>
     </interlinear-gloss>
     <bridgehead>
@@ -1386,7 +1386,7 @@
       <valsi>sa</valsi>, and machine parsers implement it only approximately: see
       <xref linkend="section-erasure" />.)</para>
     <interlinear-gloss>
-      <jbo>mi klama sa do klama le zarci</jbo>
+      <jbo>mi klama sa do klama lo zarci</jbo>
       <gloss>I go, er, you go-to the market.</gloss>
     </interlinear-gloss>
     <bridgehead>
@@ -1399,7 +1399,7 @@
 
     <para>Converts a selbri, rearranging the order of places by exchanging the x<subscript>1</subscript> place with a specified numbered place.</para>
     <interlinear-gloss>
-      <jbo>le zarci cu se--klama mi</jbo>
+      <jbo>lo zarci cu se--klama mi</jbo>
       <gloss>The market -- is-gone-to-by me.</gloss>
     </interlinear-gloss>
 
@@ -1442,7 +1442,7 @@
 
     <para>Erases the previous single word.</para>
     <interlinear-gloss>
-      <jbo>mi si do klama le zarci</jbo>
+      <jbo>mi si do klama lo zarci</jbo>
       <gloss>I, er, you go-to the market.</gloss>
     </interlinear-gloss>
     <bridgehead>
@@ -1472,7 +1472,7 @@
 
     <para>A tense modifier specifying frequencies within an interval of time or space (regularly, habitually, etc.).</para>
     <interlinear-gloss>
-      <jbo>le verba ta'e klama le ckule</jbo>
+      <jbo>lo verba ta'e klama lo ckule</jbo>
       <gloss>The child habitually goes-to the school.</gloss>
     </interlinear-gloss>
     <bridgehead>
@@ -1530,11 +1530,11 @@
       <xref linkend="TOI" />.
     </para>
     <interlinear-gloss>
-      <jbo>doi .lisas. mi djica le nu</jbo>
+      <jbo>doi .lisas. mi djica lo nu</jbo>
       <gloss>O Lisa, I desire the event-of</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
-      <jbo>… to doi .frank. ko sisti toi do viska le mlatu</jbo>
+      <jbo>… to doi .frank. ko sisti toi do viska lo mlatu</jbo>
       <gloss>… ( O Frank, [imperative] stop! ) you see the cat.</gloss>
       <natlang>Lisa, I want you to (Frank! Stop!) see the cat.</natlang>
     </interlinear-gloss>
@@ -1549,11 +1549,11 @@
       <xref linkend="TO" />. The right discursive parenthesis.
     </para>
     <interlinear-gloss>
-      <jbo>doi .lisas. mi djica le nu</jbo>
+      <jbo>doi .lisas. mi djica lo nu</jbo>
       <gloss>O Lisa, I desire the event-of</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
-      <jbo>… to doi .frank. ko sisti toi do viska le mlatu</jbo>
+      <jbo>… to doi .frank. ko sisti toi do viska lo mlatu</jbo>
       <gloss>… ( O Frank, [imperative] stop! ) you see the cat.</gloss>
       <natlang>Lisa, I want you to (Frank! Stop!) see the cat.</natlang>
     </interlinear-gloss>
@@ -1606,7 +1606,7 @@
 
     <para>A tense indicating distance in space (near, far, or neither).</para>
     <interlinear-gloss>
-      <jbo>le nanmu va batci le gerku</jbo>
+      <jbo>lo nanmu va batci lo gerku</jbo>
       <gloss>The man [medium-distance] bites the dog.</gloss>
       <natlang>Over there the man is biting the dog.</natlang>
     </interlinear-gloss>
@@ -1622,7 +1622,7 @@
       logical connection.
     </para>
     <interlinear-gloss>
-      <jbo>mi dunda le cukta [vau] gi'e</jbo>
+      <jbo>mi dunda lo cukta [vau] gi'e</jbo>
       <gloss>I (give the book ) and</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
@@ -1711,11 +1711,11 @@
 
     <para>A tense indicating dimensionality in space (line, plane, volume, or space-time interval).</para>
     <interlinear-gloss>
-      <jbo>le verba ve'a</jbo>
+      <jbo>lo verba ve'a</jbo>
       <gloss>The child [medium-space-interval]</gloss>
     </interlinear-gloss>
     <interlinear-gloss>
-      <jbo>… vi'a cadzu le bisli</jbo>
+      <jbo>… vi'a cadzu lo bisli</jbo>
       <gloss>… [2-dimensional] walks-on the ice.</gloss>
       <natlang>In a medium-sized area, the child walks on the ice.</natlang>
     </interlinear-gloss>
@@ -1727,7 +1727,7 @@
 
     <para>Attaches relative clauses or phrases to a whole (possibly connected) sumti, rather than simply to the leftmost portion of the sumti.</para>
     <interlinear-gloss>
-      <jbo>la--.frank. ce la--.djordj. vu'o noi gidva cu zvati le kumfa</jbo>
+      <jbo>la--.frank. ce la--.djordj. vu'o noi gidva cu zvati lo kumfa</jbo>
       <gloss>Frank [in-set-with] George , which are-guides , are-in the room.</gloss>
       <natlang>Frank and George, who are guides, are in the room.</natlang>
     </interlinear-gloss>

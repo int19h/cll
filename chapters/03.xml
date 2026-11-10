@@ -1931,29 +1931,10 @@
     <para role="status-note" condition="status:de-facto">
       <indexterm type="general"><primary>consonant triples</primary><secondary>parser restrictions in names</secondary></indexterm>
       <indexterm type="general"><primary>cmevla</primary><secondary>consonant triples in</secondary></indexterm>
-      (A status note: The rules above remain the official CLL rules.
-      The PEG word-form grammar in <xref linkend="section-peg-grammar" /> and the camxes and jbotci parsers also forbid
-      <morphology>ndj</morphology>, <morphology>ndz</morphology>, <morphology>ntc</morphology>, and <morphology>nts</morphology> in names.
-      Both parsers reject <jbophrase valid="false">la .kandjan.</jbophrase> because of <morphology>ndj</morphology>.
-      This restriction is de facto, supported by the working grammar and its implementations, without official adoption.)
-    </para>
-    <para role="status-note" condition="status:de-facto">
       <indexterm type="general"><primary>consonant clusters</primary><secondary>medial, in the PEG grammar</secondary></indexterm>
       <indexterm type="general"><primary>consonantal syllables</primary><secondary>in medial clusters</secondary></indexterm>
-      (A status note: The PEG grammar also gives a de facto analysis of medial clusters through syllables.
-      A coda is the consonant after a syllable's vowel.
-      An onset is the consonant or cluster before it.
-      Medial clusters divide into a coda and an onset, with consonantal syllables also allowed between vowel-bearing syllables.
-      A consonantal syllable has <letteral>l</letteral>, <letteral>m</letteral>, <letteral>n</letteral>, or <letteral>r</letteral> as its nucleus, the syllable's center.
-      Camxes accepts <valsi>kanbrti</valsi> through a consonantal syllable, but jbotci currently rejects it.)
+      The rules above are the official ones. The PEG word-form grammar in <xref linkend="section-peg-grammar" /> departs from them in two ways, and camxes, the parser that implements it, follows suit; this is de facto Lojban, backed by a working document and its implementation but never adopted by an official body. First, the grammar forbids <morphology>ndj</morphology>, <morphology>ndz</morphology>, <morphology>ntc</morphology>, and <morphology>nts</morphology> in names too, so camxes rejects <jbophrase valid="false">la .kandjan.</jbophrase>, which the rules above allow. Second, instead of limiting a cluster inside a word to three consonants, the grammar splits it into the coda of one syllable (the consonant that closes it) and the onset of the next (the consonants that open it), and it lets a consonantal syllable stand between the two: a syllable whose nucleus is a syllabic <letteral>l</letteral>, <letteral>m</letteral>, <letteral>n</letteral>, or <letteral>r</letteral> (see <xref linkend="section-diphthongs" />) rather than a vowel. So camxes accepts <valsi valid="maybe">kanbrti</valsi>, in which <morphology>br</morphology> is a syllable of its own, even though its four-consonant cluster goes beyond what the rules above permit outside names.
     </para>
-    <para role="status-note" condition="status:de-facto">
-      Both camxes and jbotci reject <valsi valid="false">barkfa</valsi>, whose <morphology>kf</morphology> cannot form an onset.
-      The PEG analysis permits some clusters longer than the official three-consonant limit in <xref linkend="section-clusters" />.
-      See <xref linkend="section-fuhivla" /> for the different initial-cluster rule and for borrowing examples with longer medial clusters.
-    </para>
-
-
 
   </section>
   <section xml:id="section-buffer-vowels">

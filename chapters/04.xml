@@ -2323,8 +2323,32 @@
           <valsi valid="false">trkaile</valsi>. The cluster does not have to fall within the first five letters of the word. For example, the only cluster in
           <valsi valid="maybe">ro'i'inre'o</valsi>
           is
-          <morphology>nr</morphology>, at the fifth and sixth letters (apostrophes do not count). This word is a valid fu'ivla if it resolves as a single brivla under the rules of
-          <xref linkend="section-peg-grammar" />;
+          <morphology>nr</morphology>, at the fifth and sixth letters (apostrophes do not count);
+        </para>
+        <para role="status-note" condition="status:de-facto">
+          <indexterm type="general"><primary>fu'ivla</primary><secondary>initial clusters, parser restrictions on</secondary></indexterm>
+          <indexterm type="general"><primary>PEG morphology</primary><secondary>origin of initial-cluster restrictions</secondary></indexterm>
+          (A status note: The initial-cluster rule above remains the official CLL rule.
+          The PEG word-form grammar in <xref linkend="section-peg-grammar" /> gives a stricter, de facto test, implemented by camxes and jbotci.
+          An affricate is a stop followed by a fricative.
+          The PEG allows an affricate alone: <morphology>tc</morphology>, <morphology>ts</morphology>, <morphology>dj</morphology>, or <morphology>dz</morphology>.
+          Its other initial clusters consist of an optional sibilant, an optional middle consonant, and an optional <letteral>l</letteral> or <letteral>r</letteral>.
+          These combinations remain subject to the grammar's consonant-pair restrictions.)
+        </para>
+        <para role="status-note" condition="status:de-facto">
+          A sibilant is a hissing consonant: <letteral>c</letteral>, <letteral>j</letteral>, <letteral>s</letteral>, or <letteral>z</letteral>.
+          The middle consonant comes from <letteral>p</letteral>, <letteral>t</letteral>, <letteral>k</letteral>, <letteral>f</letteral>, <letteral>x</letteral>, <letteral>b</letteral>, <letteral>d</letteral>, <letteral>g</letteral>, <letteral>v</letteral>, <letteral>m</letteral>, or <letteral>n</letteral>.
+          For example, <valsi valid="maybe">ctckrana</valsi> satisfies the official initial-cluster rule, but both parsers reject it.
+          For initial-cluster compatibility across these tools, choose a cluster that satisfies both rules, as in <valsi>spraile</valsi>.
+          Test the whole word as well, since other rules also constrain fu'ivla.
+        </para>
+        <para role="status-note" condition="status:de-facto">
+          This stricter rule comes from Jorge Llambías's 2005 BPFK PEG morphology working document.
+          No official body adopted it.
+          Under the de facto PEG test, a candidate must resolve as a single brivla under <xref linkend="section-peg-grammar" />.
+          That test, rather than the official cluster rule alone, determines parser acceptance.
+          It also admits <valsi valid="maybe">ro'i'inre'o</valsi> despite its late cluster.
+          See <xref linkend="section-initial-pairs" /> for the de facto restrictions on medial clusters and names.
         </para>
       </listitem>
       <listitem>
@@ -2818,6 +2842,13 @@
       and
       <quote>form</quote>
       respectively.
+    </para>
+    <para role="status-note" condition="status:de-facto">
+      <indexterm type="general"><primary>fu'ivla</primary><secondary>integral examples, cluster status of</secondary></indexterm>
+      (A status note: The forms <valsi valid="maybe">cmacrntegrale</valsi>, <valsi>dinjrnintegrale</valsi>, and <valsi>tarmrnintegrale</valsi> are valid under the PEG grammar through consonantal syllables.
+      They break the official three-consonant limit of <xref linkend="section-clusters" /> and the medial-triple restrictions in <xref linkend="section-initial-pairs" />.
+      Their validity therefore belongs to the de facto PEG analysis, not to the official CLL cluster rules.
+      Camxes accepts all three, while jbotci currently rejects <valsi valid="maybe">cmacrntegrale</valsi>.)
     </para>
     <para>Here are some fu'ivla representing cultures and related things, shown with more than one rafsi prefix:</para>
     <example xml:id="example-random-id-qJG8" role="lojbanization-example">

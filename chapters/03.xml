@@ -1925,14 +1925,15 @@
     <para>
       <indexterm type="general"><primary>consonant clusters</primary><secondary>more than three consonants in</secondary>
       </indexterm>
-      Lojbanized names can begin or end with any permissible consonant pair, not just the 48 initial consonant pairs listed above, and can have consonant triples in any location, as long as the pairs making up those triples are permissible. In addition, Lojbanized names can contain consonant clusters with more than three consonants, again requiring that each pair within the cluster is valid.
+      <indexterm type="general"><primary>consonant triples</primary><secondary>parser restrictions in names</secondary></indexterm>
+      <indexterm type="general"><primary>cmevla</primary><secondary>consonant triples in</secondary></indexterm>
+      Lojbanized names can begin or end with any permissible consonant pair, not just the 48 initial consonant pairs listed above, and can have consonant triples in any location, as long as the pairs making up those triples are permissible. In addition, Lojbanized names can contain consonant clusters with more than three consonants, again requiring that each pair within the cluster is valid. The four forbidden triples stay forbidden in names, though, wherever they fall in a cluster: <cmevla valid="false">.kandjan.</cmevla> is not a valid name, and neither is <cmevla valid="false">.xantsk.</cmevla>.
     </para>
 
     <para role="status-note" condition="status:de-facto">
-      <indexterm type="general"><primary>consonant triples</primary><secondary>parser restrictions in names</secondary></indexterm>
-      <indexterm type="general"><primary>cmevla</primary><secondary>consonant triples in</secondary></indexterm>
-      The rules above are the official ones, but the PEG word-form grammar in <xref linkend="section-peg-grammar" />, and camxes, the parser that implements it, forbid <morphology>ndj</morphology>, <morphology>ndz</morphology>, <morphology>ntc</morphology>, and <morphology>nts</morphology> in names too. So camxes rejects <jbophrase valid="false">la .kandjan.</jbophrase>, which the rules above allow. This restriction is de facto: it has a working document and an implementation behind it, but no official body ever adopted it.
+      The ban on <morphology>ndj</morphology>, <morphology>ndz</morphology>, <morphology>ntc</morphology>, and <morphology>nts</morphology> in names follows the PEG word-form grammar (see <xref linkend="section-peg-grammar" />) and is de facto. <xref linkend="appendix-changes" /> gives its status and history.
     </para>
+
 
   </section>
   <section xml:id="section-buffer-vowels">

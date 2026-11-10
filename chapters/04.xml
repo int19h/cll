@@ -2315,23 +2315,20 @@
           </indexterm>
           <indexterm type="general"><primary>fu'ivla</primary><secondary>rules for formation of</secondary>
           </indexterm>
-          must contain a consonant cluster; if this consonant cluster is at the beginning, it must either be a permissible initial consonant pair, or a longer cluster such that each pair of adjacent consonants in the cluster is a permissible initial consonant pair:
+          <indexterm type="general"><primary>fu'ivla</primary><secondary>initial clusters, parser restrictions on</secondary></indexterm>
+          must contain a consonant cluster; if this consonant cluster is at the beginning, it must be either an affricate on its own (a stop that releases into a fricative, written <morphology>tc</morphology>, <morphology>ts</morphology>, <morphology>dj</morphology>, or <morphology>dz</morphology>), or else up to three consonants in a fixed order: an optional sibilant (one of the hissing or hushing sounds <letteral>c</letteral>, <letteral>j</letteral>, <letteral>s</letteral>, and <letteral>z</letteral>), then an optional consonant that is neither a sibilant nor <letteral>l</letteral> or <letteral>r</letteral>, then an optional <letteral>l</letteral> or <letteral>r</letteral>. A few combinations of these are excluded even so, and <xref linkend="section-peg-grammar" /> gives the exact set. Thus
           <valsi valid="maybe">spraile</valsi>
           is acceptable, but not
-          <valsi valid="false">ktraile</valsi>
-          or
-          <valsi valid="false">trkaile</valsi>. The cluster does not have to fall within the first five letters of the word. For example, the only cluster in
+          <valsi valid="false">ktraile</valsi>,
+          <valsi valid="false">trkaile</valsi>, or
+          <valsi valid="false">ctckrana</valsi>, although every adjacent pair in <valsi valid="false">ctckrana</valsi> is a permissible initial pair. The cluster does not have to fall within the first five letters of the word. For example, the only cluster in
           <valsi valid="maybe">ro'i'inre'o</valsi>
           is
-          <morphology>nr</morphology>, at the fifth and sixth letters (apostrophes do not count);
+          <morphology>nr</morphology>, at the fifth and sixth letters (apostrophes do not count). This word is a valid fu'ivla if it resolves as a single brivla under the rules of
+          <xref linkend="section-peg-grammar" />;
         </para>
         <para role="status-note" condition="status:de-facto">
-          <indexterm type="general"><primary>fu'ivla</primary><secondary>initial clusters, parser restrictions on</secondary></indexterm>
-          <indexterm type="general"><primary>PEG morphology</primary><secondary>origin of initial-cluster restrictions</secondary></indexterm>
-          The rule above for clusters at the start of a word is the official one. The PEG word-form grammar in <xref linkend="section-peg-grammar" />, and camxes, the parser that implements it, use a stricter de facto rule for the cluster at the start of a word. Such a cluster is either an affricate on its own (a stop that releases into a fricative, written <morphology>tc</morphology>, <morphology>ts</morphology>, <morphology>dj</morphology>, or <morphology>dz</morphology>), or else up to three consonants in a fixed order: an optional sibilant (one of the hissing or hushing sounds <letteral>c</letteral>, <letteral>j</letteral>, <letteral>s</letteral>, and <letteral>z</letteral>), then an optional consonant that is neither a sibilant nor <letteral>l</letteral> or <letteral>r</letteral>, then an optional <letteral>l</letteral> or <letteral>r</letteral>, with a few combinations excluded even so. Thus <valsi valid="maybe">ctckrana</valsi> passes the official rule, since <morphology>ct</morphology>, <morphology>tc</morphology>, <morphology>ck</morphology>, and <morphology>kr</morphology> are all permissible initial pairs, but camxes rejects it. If you're coining a new fu'ivla, pick an initial cluster that meets both rules, as <valsi valid="maybe">spraile</valsi> does, and the cluster will satisfy the official rule and the parsers alike.
-        </para>
-        <para role="status-note" condition="status:de-facto">
-          The stricter rule comes from the PEG morphology working document that Jorge Llambías wrote in 2005 for the BPFK, the language-definition committee introduced in <xref linkend="chapter-about" />; no official body ever adopted it. In practice, camxes and the parsers that follow the PEG grammar don't test the cluster in isolation: they accept a fu'ivla if the whole word resolves as a single brivla under the rules of <xref linkend="section-peg-grammar" />. That test is also what admits <valsi valid="maybe">ro'i'inre'o</valsi>, late cluster and all. The grammar is also stricter about clusters inside a fu'ivla (see the note after this list) and about consonant triples in names (see <xref linkend="section-initial-pairs" />).
+          These rules for clusters at the start of a fu'ivla, and the rule for clusters inside one given after this list, follow the PEG word-form grammar and are de facto. <xref linkend="appendix-changes" /> gives their status and history.
         </para>
       </listitem>
       <listitem>
@@ -2377,12 +2374,9 @@
     <para>
       <indexterm type="general"><primary>fu'ivla</primary><secondary>consonant clusters in</secondary>
       </indexterm>
-      Note that consonant triples or larger clusters that are not at the beginning of a fu'ivla can be quite flexible, as long as all consonant pairs are permissible. There is no need to restrict fu'ivla clusters to permissible initial pairs except at the beginning.
-    </para>
-    <para role="status-note" condition="status:de-facto">
       <indexterm type="general"><primary>consonant clusters</primary><secondary>medial, in the PEG grammar</secondary></indexterm>
       <indexterm type="general"><primary>consonantal syllables</primary><secondary>in medial clusters</secondary></indexterm>
-      That is the official rule. The PEG word-form grammar in <xref linkend="section-peg-grammar" />, and camxes with it, are stricter here too, as a matter of de facto practice rather than official adoption. They divide a cluster inside a word into three parts: an optional coda for the syllable before it (a single consonant that closes that syllable), then any consonantal syllables, which are syllables whose nucleus is a syllabic <letteral>l</letteral>, <letteral>m</letteral>, <letteral>n</letteral>, or <letteral>r</letteral> (see <xref linkend="section-diphthongs" />) rather than a vowel, and finally the onset of the next vowel's syllable (the consonants that open it), which must take one of the forms allowed at the start of a word. So <valsi valid="maybe">barkfa</valsi>, whose pairs <morphology>rk</morphology> and <morphology>kf</morphology> are both permissible, satisfies the official rule, but camxes rejects it: <morphology>kf</morphology> can't open a syllable, and <letteral>k</letteral> can't be syllabic. On the other hand, camxes accepts <valsi valid="maybe">tarmkani</valsi>, dividing it as <morphology>ta</morphology>, <morphology>rm</morphology>, <morphology>ka</morphology>, <morphology>ni</morphology>: the first syllable has no coda, <morphology>rm</morphology> is a consonantal syllable with a syllabic <letteral>m</letteral>, and <letteral>k</letteral> is the onset of the next.
+      A cluster that is not at the beginning of a fu'ivla can be longer than an initial one, but it has to divide into syllables. It may start with a coda, a single consonant that closes the syllable before it. Then come any consonantal syllables, which are syllables whose nucleus is a syllabic <letteral>l</letteral>, <letteral>m</letteral>, <letteral>n</letteral>, or <letteral>r</letteral> (see <xref linkend="section-diphthongs" />) rather than a vowel. Last comes the onset of the next vowel's syllable, the consonants that open it, and these must form a cluster that would be allowed at the start of a word. So <valsi valid="maybe">tarmkani</valsi> is a valid fu'ivla: it divides as <morphology>ta</morphology>, <morphology>rm</morphology>, <morphology>ka</morphology>, <morphology>ni</morphology>, where the first syllable has no coda, <morphology>rm</morphology> is a consonantal syllable with a syllabic <letteral>m</letteral>, and <letteral>k</letteral> opens the next syllable. On the other hand, <valsi valid="false">barkfa</valsi> is not a fu'ivla, since <morphology>kf</morphology> can't open a syllable and <letteral>k</letteral> can't be syllabic.
     </para>
 
 

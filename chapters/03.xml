@@ -2107,7 +2107,7 @@
     <para>
       <indexterm type="general"><primary>syllabication</primary><secondary>rules for</secondary>
       </indexterm>
-      A single consonant always belongs to the following vowel. A consonant pair is normally divided between the two vowels; however, if the pair constitute a valid initial consonant pair, they are normally both assigned to the following vowel. A consonant triple is divided between the first and second consonants, unless the first two form a consonantal syllable of their own, as they can in a fu'ivla like <valsi valid="maybe">tarmkani</valsi> (see <xref linkend="section-fuhivla" />). Apostrophes and commas, of course, also represent syllable breaks. Syllabic consonants usually appear alone in their syllables.
+      A single consonant always belongs to the following vowel. A consonant pair is normally divided between the two vowels; however, if the pair constitute a valid initial consonant pair, they are normally both assigned to the following vowel. A consonant triple is normally divided between the first and second consonants. If the whole triple could begin a fu'ivla, as <morphology>str</morphology> does in <valsi valid="maybe">kastro'e</valsi>, it goes with the following vowel instead; and in a fu'ivla, the first two consonants can form a consonantal syllable of their own, as <morphology>rm</morphology> does in <valsi valid="maybe">tarmkani</valsi> (see <xref linkend="section-fuhivla" />). Apostrophes and commas, of course, also represent syllable breaks.
     </para>
     <para>
       <indexterm type="general"><primary>syllabication</primary><secondary>and names</secondary>

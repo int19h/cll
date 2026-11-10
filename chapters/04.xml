@@ -2315,16 +2315,20 @@
           </indexterm>
           <indexterm type="general"><primary>fu'ivla</primary><secondary>rules for formation of</secondary>
           </indexterm>
-          must contain a consonant cluster; if this consonant cluster is at the beginning, it must either be a permissible initial consonant pair, or a longer cluster such that each pair of adjacent consonants in the cluster is a permissible initial consonant pair:
+          <indexterm type="general"><primary>fu'ivla</primary><secondary>initial clusters, allowed forms of</secondary></indexterm>
+          must contain a consonant cluster; if this consonant cluster is at the beginning, it must be either an affricate on its own (a stop that releases into a fricative, written <morphology>tc</morphology>, <morphology>ts</morphology>, <morphology>dj</morphology>, or <morphology>dz</morphology>), or else up to three consonants in a fixed order: an optional sibilant (one of the hissing or hushing sounds <letteral>c</letteral>, <letteral>j</letteral>, <letteral>s</letteral>, and <letteral>z</letteral>), then an optional consonant that is neither a sibilant nor <letteral>l</letteral> or <letteral>r</letteral>, then an optional <letteral>l</letteral> or <letteral>r</letteral>. In addition, every adjacent pair in the cluster must be a permissible initial pair (see <xref linkend="section-initial-pairs" />). Thus
           <valsi valid="maybe">spraile</valsi>
           is acceptable, but not
-          <valsi valid="false">ktraile</valsi>
-          or
-          <valsi valid="false">trkaile</valsi>. The cluster does not have to fall within the first five letters of the word. For example, the only cluster in
+          <valsi valid="false">ktraile</valsi>,
+          <valsi valid="false">trkaile</valsi>, or
+          <valsi valid="false">ctckrana</valsi>, although every adjacent pair in <valsi valid="false">ctckrana</valsi> is a permissible initial pair. The cluster does not have to fall within the first five letters of the word. For example, the only cluster in
           <valsi valid="maybe">ro'i'inre'o</valsi>
           is
           <morphology>nr</morphology>, at the fifth and sixth letters (apostrophes do not count). This word is a valid fu'ivla if it resolves as a single brivla under the rules of
           <xref linkend="section-peg-grammar" />;
+        </para>
+        <para role="status-note" condition="status:de-facto">
+          These rules for clusters at the start of a fu'ivla, and the rule for clusters inside one given after this list, follow the PEG word-form grammar and are de facto. <xref linkend="appendix-changes" /> gives their status and history.
         </para>
       </listitem>
       <listitem>
@@ -2370,7 +2374,9 @@
     <para>
       <indexterm type="general"><primary>fu'ivla</primary><secondary>consonant clusters in</secondary>
       </indexterm>
-      Note that consonant triples or larger clusters that are not at the beginning of a fu'ivla can be quite flexible, as long as all consonant pairs are permissible. There is no need to restrict fu'ivla clusters to permissible initial pairs except at the beginning.
+      <indexterm type="general"><primary>consonant clusters</primary><secondary>medial, in fu'ivla</secondary></indexterm>
+      <indexterm type="general"><primary>consonantal syllables</primary><secondary>in medial clusters</secondary></indexterm>
+      A cluster that is not at the beginning of a fu'ivla can be longer than an initial one, but it has to divide into syllables. It may start with a coda, a single consonant that closes the syllable before it. Then come any consonantal syllables. Each of these is exactly two consonants: any consonant followed by a syllabic <letteral>l</letteral>, <letteral>m</letteral>, <letteral>n</letteral>, or <letteral>r</letteral> (see <xref linkend="section-diphthongs" />), which serves as the syllable's nucleus in place of a vowel. Last comes the onset of the next vowel's syllable, the consonants that open it, which must be either a single consonant or a cluster that would be allowed at the start of a fu'ivla by the first of the rules above. Every adjacent pair in the whole cluster must still be permissible, and the four triples forbidden in <xref linkend="section-initial-pairs" /> stay forbidden. A consonant that could begin that onset can't be syllabic, so an <letteral>m</letteral> directly before the <letteral>l</letteral> or <letteral>r</letteral> that ends the cluster always belongs to the onset, as <morphology>ml</morphology> or <morphology>mr</morphology>. So <valsi valid="maybe">tarmkani</valsi> is a valid fu'ivla: it divides as <morphology>ta</morphology>, <morphology>rm</morphology>, <morphology>ka</morphology>, <morphology>ni</morphology>, where the first syllable has no coda, <morphology>rm</morphology> is a consonantal syllable with a syllabic <letteral>m</letteral>, and <letteral>k</letteral> opens the next syllable. So is <valsi valid="maybe">tabdmkani</valsi>, with the consonantal syllable <morphology>dm</morphology>, but <valsi valid="false">tabdmlani</valsi> is not, because its <letteral>m</letteral> belongs to the onset <morphology>ml</morphology>. Nor is <valsi valid="false">barkfa</valsi> a fu'ivla, since <morphology>kf</morphology> can't open a syllable and <letteral>k</letteral> can't be syllabic.
     </para>
 
 
@@ -2380,7 +2386,7 @@
       <indexterm type="general"><primary>fu'ivla</primary><secondary>categorized contrasted with uncategorized in ease of construction</secondary>
       </indexterm>
       This is a fairly liberal definition and allows quite a lot of possibilities within
-      <quote>fu'ivla space</quote>. Stage 3 fu'ivla can be made easily on the fly, as lujvo can, because the procedure for forming them always guarantees a word that cannot violate any of the rules. Stage 4 fu'ivla require running tests that are not simple to characterize or perform, and should be made only after deliberation and by someone knowledgeable about all the considerations that apply.
+      <quote>fu'ivla space</quote>. Stage 3 fu'ivla can be made easily on the fly, as lujvo can, because the procedure for forming them, given below, guarantees a word that cannot violate any of the rules, provided that the word passes the simple checks in its step 4. Stage 4 fu'ivla require running tests that are not simple to characterize or perform, and should be made only after deliberation and by someone knowledgeable about all the considerations that apply.
     </para>
     <para>Here we explain<indexterm type="general"><primary>slinku'i test</primary><secondary>explained</secondary>
       </indexterm> the most famous of those tests in detail. Recall the rule: a fu'ivla with a CV cmavo joined to its front must not have the form of a lujvo. Look at a word in isolation and you cannot see the trap this rule guards against. Take <valsi valid="false">slinku'i</valsi>, the traditional example that gives the test its name. It is deliberately illegal, and it is another inheritance from Loglan.</para>
@@ -2442,7 +2448,7 @@
         <para>If the last letter is not a vowel, modify the ending so that the word ends in a vowel, either by removing a final consonant or by adding a suggestively chosen final vowel.</para>
       </listitem>
       <listitem>
-        <para>If the first letter is not a consonant, modify the beginning so that the word begins with a consonant, either by removing an initial vowel or adding a suggestively chosen initial consonant.</para>
+        <para>If the first letter is not a consonant, modify the beginning so that the word begins with a consonant, either by removing an initial vowel or adding a suggestively chosen initial consonant. Then check the consonant clusters. If the word begins with more than one consonant, the safe choice is a cluster that is allowed at the start of a fu'ivla (see the first of the rules for fu'ivla above), which always works after the hyphen. Another beginning can work too, as <morphology>blg</morphology> does in <valsi valid="maybe">bangrblgari'a</valsi> below, but only if the whole cluster around the hyphen, from the final consonants of the rafsi chosen in step 5 to the first vowel of the borrowed word, follows the rule for clusters inside a fu'ivla, given after those rules. Every cluster later in the word must follow that rule as well. Where a cluster fails, drop one of its consonants or put a vowel into it: <valsi valid="false">cidjrktulu</valsi> fails, but <valsi valid="maybe">cidjrkatulu</valsi> works. Finally, make sure that the vowels follow the rules of <xref linkend="section-diphthongs" /> and <xref linkend="section-vowel-pairs" />; in particular, no consonant may come directly before a glide.</para>
       </listitem>
       <listitem>
         <para>

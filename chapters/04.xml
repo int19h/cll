@@ -2331,7 +2331,7 @@
           The rule above is the official one. The PEG word-form grammar in <xref linkend="section-peg-grammar" />, and camxes, the parser that implements it, use a stricter de facto rule for the cluster at the start of a word. Such a cluster is either an affricate on its own (a stop that releases into a fricative, written <morphology>tc</morphology>, <morphology>ts</morphology>, <morphology>dj</morphology>, or <morphology>dz</morphology>), or else up to three consonants in a fixed order: an optional sibilant (one of the hissing or hushing sounds <letteral>c</letteral>, <letteral>j</letteral>, <letteral>s</letteral>, and <letteral>z</letteral>), then an optional consonant that is neither a sibilant nor <letteral>l</letteral> or <letteral>r</letteral>, then an optional <letteral>l</letteral> or <letteral>r</letteral>, with a few combinations excluded even so. Thus <valsi valid="maybe">ctckrana</valsi> passes the official rule, since <morphology>ct</morphology>, <morphology>tc</morphology>, <morphology>ck</morphology>, and <morphology>kr</morphology> are all permissible initial pairs, but camxes rejects it. If you're coining a new fu'ivla, pick an initial cluster that meets both rules, as <valsi valid="maybe">spraile</valsi> does, and the cluster will satisfy the official rule and the parsers alike.
         </para>
         <para role="status-note" condition="status:de-facto">
-          The stricter rule comes from the PEG morphology working document that Jorge Llambías wrote in 2005 for the BPFK, the language-definition committee introduced in <xref linkend="chapter-about" />; no official body ever adopted it. In practice, camxes and the parsers that follow the PEG grammar don't test the cluster in isolation: they accept a fu'ivla if the whole word resolves as a single brivla under the rules of <xref linkend="section-peg-grammar" />. That test is also what admits <valsi valid="maybe">ro'i'inre'o</valsi>, late cluster and all. For the ways the grammar treats clusters inside a word and in names, see <xref linkend="section-initial-pairs" />.
+          The stricter rule comes from the PEG morphology working document that Jorge Llambías wrote in 2005 for the BPFK, the language-definition committee introduced in <xref linkend="chapter-about" />; no official body ever adopted it. In practice, camxes and the parsers that follow the PEG grammar don't test the cluster in isolation: they accept a fu'ivla if the whole word resolves as a single brivla under the rules of <xref linkend="section-peg-grammar" />. That test is also what admits <valsi valid="maybe">ro'i'inre'o</valsi>, late cluster and all. The grammar is also stricter about clusters inside a fu'ivla (see the note after this list) and about consonant triples in names (see <xref linkend="section-initial-pairs" />).
         </para>
       </listitem>
       <listitem>
@@ -2378,6 +2378,11 @@
       <indexterm type="general"><primary>fu'ivla</primary><secondary>consonant clusters in</secondary>
       </indexterm>
       Note that consonant triples or larger clusters that are not at the beginning of a fu'ivla can be quite flexible, as long as all consonant pairs are permissible. There is no need to restrict fu'ivla clusters to permissible initial pairs except at the beginning.
+    </para>
+    <para role="status-note" condition="status:de-facto">
+      <indexterm type="general"><primary>consonant clusters</primary><secondary>medial, in the PEG grammar</secondary></indexterm>
+      <indexterm type="general"><primary>consonantal syllables</primary><secondary>in medial clusters</secondary></indexterm>
+      That is the official rule. The PEG word-form grammar in <xref linkend="section-peg-grammar" />, and camxes with it, are stricter here too, as a matter of de facto practice rather than official adoption. They split a cluster inside a word into the coda of one syllable (the consonant that closes it) and the onset of the next (the consonants that open it, which must form a valid initial cluster), with room in between for consonantal syllables: syllables whose nucleus is a syllabic <letteral>l</letteral>, <letteral>m</letteral>, <letteral>n</letteral>, or <letteral>r</letteral> (see <xref linkend="section-diphthongs" />) rather than a vowel. So <valsi valid="maybe">barkfa</valsi>, whose pairs <morphology>rk</morphology> and <morphology>kf</morphology> are both permissible, satisfies the official rule, but camxes rejects it: <morphology>kf</morphology> can't open a syllable, and <letteral>k</letteral> can't be syllabic. On the other hand, camxes accepts <valsi valid="maybe">tarmkani</valsi>, in which <morphology>rm</morphology> is a consonantal syllable with a syllabic <letteral>m</letteral>.
     </para>
 
 
@@ -2825,10 +2830,6 @@
       and
       <quote>form</quote>
       respectively.
-    </para>
-    <para role="status-note" condition="status:de-facto">
-      <indexterm type="general"><primary>fu'ivla</primary><secondary>integral examples, cluster status of</secondary></indexterm>
-      The clusters <morphology>crnt</morphology> in <valsi valid="maybe">cmacrntegrale</valsi>, <morphology>njrn</morphology> in <valsi valid="maybe">dinjrnintegrale</valsi>, and <morphology>rmrn</morphology> in <valsi valid="maybe">tarmrnintegrale</valsi> each have four consonants, which the official rules of <xref linkend="section-initial-pairs" /> allow only in names. These words are valid only under the de facto PEG analysis described there, in which a syllabic consonant can be the nucleus of a syllable (<valsi valid="maybe">dinjrnintegrale</valsi>, for instance, has the consonantal syllable <morphology>jr</morphology>, with a syllabic <letteral>r</letteral>); camxes accepts all three.
     </para>
     <para>Here are some fu'ivla representing cultures and related things, shown with more than one rafsi prefix:</para>
     <example xml:id="example-random-id-qJG8" role="lojbanization-example">

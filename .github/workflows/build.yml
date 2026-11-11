@@ -274,7 +274,7 @@ jobs:
       contents: read # Read the release marker through the API; no checkout
       pages: write
       id-token: write
-    timeout-minutes: 10
+    timeout-minutes: 15
     concurrency:
       group: book-pages-preview
       cancel-in-progress: false

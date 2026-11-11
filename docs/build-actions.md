@@ -36,7 +36,7 @@ The other artifacts contain only their selected file:
 
 HTML takes about 31 minutes. All six formats together take about 83 minutes.
 These are measured examples, not time guarantees. The build job has a 150-minute limit.
-The deployment job has a 10-minute limit once it starts. Environment approval can add a wait before it starts.
+The deployment job has a 15-minute limit once it starts. Environment approval can add a wait before it starts.
 
 Typst and ConTeXt remain experimental PDF backends. See their build guides for limitations.
 The workflow copies the setup block from the release-site workflow on `pages`.
@@ -80,7 +80,7 @@ If the marker exists, the workflow always skips preview deployment to protect th
 This guard protects `int19h/cll` before the deployment job requests environment approval.
 
 The deployment job repeats these checks after environment approval, immediately before `deploy-pages`.
-That check runs inline with the job token. It does not check out or run branch code.
+That check runs inline in the deploy job with the job token, and the deploy job has no checkout step. The check is still part of the workflow file on the selected branch, so the environment's deployment rules are what protect against a changed workflow.
 A new release marker, disabled Pages site, or changed Pages source stops the preview at this late check.
 
 Repository administrators can set the Actions repository variable `BUILD_PAGES_PREVIEW` to `deny` to disable previews.
@@ -97,4 +97,5 @@ Do not establish or publish a release site while a preview deploy is pending or 
 Set `BUILD_PAGES_PREVIEW=deny`, and cancel pending previews, before establishing the release site.
 
 After a successful deployment, its summary links to the preview.
+When the late check skips the preview, the deploy job still ends green, and GitHub lists a successful environment deployment with no URL. The run summary states whether the preview was deployed or skipped, and why.
 The workflow does not create a repository or change Pages settings.

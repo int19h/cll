@@ -196,7 +196,6 @@ Each release is on the [releases page](https://github.com/int19h/cll/releases).
 
 The book gives its credits in section 1.5, "Acknowledgements and credits".
 Read that section in the [published book](https://int19h.github.io/cll/), or in `chapters/01.xml` at the anchor `c1s5`.
-This file does not repeat the list, so the two cannot disagree.
 AI models wrote this edition's new and changed text under the direction of its editor, and other AI models reviewed it.
 
 ## License

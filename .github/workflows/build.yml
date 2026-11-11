@@ -1,0 +1,213 @@
+name: Build selected formats
+on:
+  workflow_dispatch:
+    inputs:
+      html:
+        description: Build html
+        type: boolean
+        default: true
+      epub:
+        description: Build epub
+        type: boolean
+        default: false
+      pdf:
+        description: Build pdf
+        type: boolean
+        default: false
+      pdf-weasyprint:
+        description: Build pdf-weasyprint
+        type: boolean
+        default: false
+      pdf-typst:
+        description: Build pdf-typst
+        type: boolean
+        default: false
+      pdf-context:
+        description: Build pdf-context
+        type: boolean
+        default: false
+      preview:
+        description: Deploy HTML preview when the repository guard allows it
+        type: boolean
+        default: true
+
+permissions: {}
+
+jobs:
+  build:
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
+    outputs:
+      preview: ${{ steps.guard.outputs.preview }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Select formats
+        id: formats
+        env:
+          INPUTS: ${{ toJSON(inputs) }}
+        run: |
+          python3 - <<'PYTHON'
+          import json, os
+          inputs = json.loads(os.environ['INPUTS'])
+          formats = [f for f in ('html', 'epub', 'pdf', 'pdf-weasyprint', 'pdf-typst', 'pdf-context') if inputs.get(f) is True]
+          if not formats:
+              message = 'Select at least one output format.'
+              print('::error::' + message)
+              with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out: out.write(message + '\n')
+              raise SystemExit(1)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out: out.write('list=' + ' '.join(formats) + '\n')
+          PYTHON
+      - name: Guard Pages preview
+        id: guard
+        env:
+          PREVIEW: ${{ inputs.preview }}
+          FORMATS: ${{ steps.formats.outputs.list }}
+          BUILD_PAGES_PREVIEW: ${{ vars.BUILD_PAGES_PREVIEW }}
+        run: |
+          echo 'preview=false' >> "$GITHUB_OUTPUT"
+          if [ "$PREVIEW" != true ]; then
+            note='Preview skipped: preview was not selected.'
+          elif [[ " $FORMATS " != *' html '* ]]; then
+            note='Preview skipped: HTML was not selected.'
+          else
+            note=$(bash scripts/build-preview-guard.sh) || {
+              echo 'Preview skipped: guard lookup failed; deployment is blocked.' >> "$GITHUB_STEP_SUMMARY"
+              exit 1
+            }
+            if [[ "$note" == 'Preview allowed:'* ]]; then echo 'preview=true' >> "$GITHUB_OUTPUT"; fi
+          fi
+          echo "$note"
+          echo "$note" >> "$GITHUB_STEP_SUMMARY"
+      - name: Install build toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            xmlto xsltproc libxml2-utils tidy zip unzip locales \
+            build-essential pkg-config libxml2-dev libxslt1-dev zlib1g-dev
+          sudo locale-gen en_US.UTF-8
+          sudo ln -sf /bin/bash /bin/sh          # build scripts assume sh == bash
+          # pinned to the same versions as the reviewed build container
+          # (Dockerfile) so CI output does not drift as new releases land
+          sudo gem install --no-document nokogiri:1.18.8 optimist:3.2.0 htmlentities:4.3.4
+          npm config set fetch-retries 5
+          npm config set fetch-retry-maxtimeout 120000
+          sudo npm install -g regenerator@0.14.12
+
+      - name: Install a JRE (ePub check)
+        if: contains(format(' {0} ', steps.formats.outputs.list), ' epub ')
+        run: sudo apt-get install -y --no-install-recommends default-jre-headless
+
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        if: contains(format(' {0} ', steps.formats.outputs.list), ' pdf-weasyprint ')
+        with: { node-version: '24.22.1' }
+
+      - name: Install WeasyPrint runtime libraries
+        if: contains(format(' {0} ', steps.formats.outputs.list), ' pdf-weasyprint ')
+        run: |
+          sudo apt-get install -y --no-install-recommends python3-venv \
+            libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 \
+            fonts-dejavu-core fonts-linuxlibertine
+
+      - name: Make sure that Docker works (container toolchain)
+        if: contains(format(' {0} ', steps.formats.outputs.list), ' pdf-context ')
+        run: docker info >/dev/null
+
+      - name: Install Prince (PDF renderer)
+        if: contains(format(' {0} ', steps.formats.outputs.list), ' pdf ')
+        run: |
+          # same version as the reviewed build container (Dockerfile)
+          wget -q "https://www.princexml.com/download/prince_16.2-1_ubuntu24.04_amd64.deb"
+          sudo apt-get install -y ./prince_16.2-1_ubuntu24.04_amd64.deb
+          prince --version
+
+      - name: Build selected outputs
+        env:
+          FORMATS: ${{ steps.formats.outputs.list }}
+          CONTAINER_BIN: docker
+        run: bash scripts/build-selected-formats.sh "$FORMATS" "$PWD/_artifacts"
+      - name: Upload html
+        if: contains(format(' {0} ', steps.formats.outputs.list), ' html ')
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: cll-html
+          path: _artifacts/html/
+          if-no-files-found: error
+      - name: Upload epub
+        if: contains(format(' {0} ', steps.formats.outputs.list), ' epub ')
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: cll-epub
+          path: _artifacts/epub/
+          if-no-files-found: error
+      - name: Upload pdf
+        if: contains(format(' {0} ', steps.formats.outputs.list), ' pdf ')
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: cll-pdf
+          path: _artifacts/pdf/
+          if-no-files-found: error
+      - name: Upload pdf-weasyprint
+        if: contains(format(' {0} ', steps.formats.outputs.list), ' pdf-weasyprint ')
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: cll-pdf-weasyprint
+          path: _artifacts/pdf-weasyprint/
+          if-no-files-found: error
+      - name: Upload pdf-typst
+        if: contains(format(' {0} ', steps.formats.outputs.list), ' pdf-typst ')
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: cll-pdf-typst
+          path: _artifacts/pdf-typst/
+          if-no-files-found: error
+      - name: Upload pdf-context
+        if: contains(format(' {0} ', steps.formats.outputs.list), ' pdf-context ')
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: cll-pdf-context
+          path: _artifacts/pdf-context/
+          if-no-files-found: error
+      - name: Summarize outputs
+        env:
+          FORMATS: ${{ steps.formats.outputs.list }}
+        run: |
+          {
+            echo 'Built formats:'
+            for f in $FORMATS; do echo "- cll-$f"; done
+            echo ''
+            echo "Download the artifacts from the [run page]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."
+            if [[ " $FORMATS " == *' html '* ]]; then
+              echo 'Unzip cll-html and open index.html to read locally.'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload Pages preview
+        if: steps.guard.outputs.preview == 'true'
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
+        with:
+          path: _artifacts/html
+
+  deploy:
+    needs: build
+    if: needs.build.outputs.preview == 'true'
+    permissions:
+      pages: write
+      id-token: write
+    concurrency:
+      group: book-pages-preview
+      cancel-in-progress: false
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy HTML preview
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
+      - name: Link preview
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: echo "[Read the HTML preview]($PAGE_URL)" >> "$GITHUB_STEP_SUMMARY"

@@ -1,4 +1,8 @@
 name: Build selected formats
+# Toolchain setup mirrors pages:.github/workflows/pages.yml, from
+# "Install build toolchain" through "Install Prince (PDF renderer)".
+# Keep changes coordinated with that block; this workflow additionally checks
+# the Prince SHA-256 from Dockerfile. Do not edit the pages branch here.
 on:
   workflow_dispatch:
     inputs:
@@ -37,6 +41,8 @@ jobs:
   build:
     permissions:
       contents: read
+      pages: read # GET /repos/{owner}/{repo}/pages, including private repositories
+    timeout-minutes: 150
     runs-on: ubuntu-24.04
     outputs:
       preview: ${{ steps.guard.outputs.preview }}
@@ -64,6 +70,7 @@ jobs:
       - name: Guard Pages preview
         id: guard
         env:
+          GH_TOKEN: ${{ github.token }}
           PREVIEW: ${{ inputs.preview }}
           FORMATS: ${{ steps.formats.outputs.list }}
           BUILD_PAGES_PREVIEW: ${{ vars.BUILD_PAGES_PREVIEW }}
@@ -75,7 +82,9 @@ jobs:
             note='Preview skipped: HTML was not selected.'
           else
             note=$(bash scripts/build-preview-guard.sh) || {
-              echo 'Preview skipped: guard lookup failed; deployment is blocked.' >> "$GITHUB_STEP_SUMMARY"
+              message='Build stopped: the preview guard failed. See the log. Clear preview to build without it.'
+              echo "::error::$message"
+              echo "$message" >> "$GITHUB_STEP_SUMMARY"
               exit 1
             }
             if [[ "$note" == 'Preview allowed:'* ]]; then echo 'preview=true' >> "$GITHUB_OUTPUT"; fi
@@ -121,81 +130,151 @@ jobs:
         run: |
           # same version as the reviewed build container (Dockerfile)
           wget -q "https://www.princexml.com/download/prince_16.2-1_ubuntu24.04_amd64.deb"
+          echo '305d755ff6437e855c151920d1363970d8cc7bff1ea4006290c36ad5d8e06c69  prince_16.2-1_ubuntu24.04_amd64.deb' | sha256sum -c -
           sudo apt-get install -y ./prince_16.2-1_ubuntu24.04_amd64.deb
           prince --version
 
-      - name: Build selected outputs
+      - name: Build prerequisites ready
+        id: ready
+        run: 'true'
+      - name: Build html
+        id: build_html
+        if: ${{ !cancelled() && steps.ready.outcome == 'success' && contains(format(' {0} ', steps.formats.outputs.list), ' html ') }}
+        continue-on-error: true
         env:
-          FORMATS: ${{ steps.formats.outputs.list }}
           CONTAINER_BIN: docker
-        run: bash scripts/build-selected-formats.sh "$FORMATS" "$PWD/_artifacts"
+        run: bash scripts/build-selected-formats.sh html "$PWD/_artifacts"
       - name: Upload html
-        if: contains(format(' {0} ', steps.formats.outputs.list), ' html ')
+        id: upload_html
+        if: ${{ !cancelled() && steps.build_html.outcome == 'success' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: cll-html
           path: _artifacts/html/
           if-no-files-found: error
+          retention-days: 14
+      - name: Build epub
+        id: build_epub
+        if: ${{ !cancelled() && steps.ready.outcome == 'success' && contains(format(' {0} ', steps.formats.outputs.list), ' epub ') }}
+        continue-on-error: true
+        env:
+          CONTAINER_BIN: docker
+        run: bash scripts/build-selected-formats.sh epub "$PWD/_artifacts"
       - name: Upload epub
-        if: contains(format(' {0} ', steps.formats.outputs.list), ' epub ')
+        id: upload_epub
+        if: ${{ !cancelled() && steps.build_epub.outcome == 'success' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: cll-epub
           path: _artifacts/epub/
           if-no-files-found: error
+          retention-days: 14
+      - name: Build pdf
+        id: build_pdf
+        if: ${{ !cancelled() && steps.ready.outcome == 'success' && contains(format(' {0} ', steps.formats.outputs.list), ' pdf ') }}
+        continue-on-error: true
+        env:
+          CONTAINER_BIN: docker
+        run: bash scripts/build-selected-formats.sh pdf "$PWD/_artifacts"
       - name: Upload pdf
-        if: contains(format(' {0} ', steps.formats.outputs.list), ' pdf ')
+        id: upload_pdf
+        if: ${{ !cancelled() && steps.build_pdf.outcome == 'success' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: cll-pdf
           path: _artifacts/pdf/
           if-no-files-found: error
+          retention-days: 14
+      - name: Build pdf-weasyprint
+        id: build_pdf_weasyprint
+        if: ${{ !cancelled() && steps.ready.outcome == 'success' && contains(format(' {0} ', steps.formats.outputs.list), ' pdf-weasyprint ') }}
+        continue-on-error: true
+        env:
+          CONTAINER_BIN: docker
+        run: bash scripts/build-selected-formats.sh pdf-weasyprint "$PWD/_artifacts"
       - name: Upload pdf-weasyprint
-        if: contains(format(' {0} ', steps.formats.outputs.list), ' pdf-weasyprint ')
+        id: upload_pdf_weasyprint
+        if: ${{ !cancelled() && steps.build_pdf_weasyprint.outcome == 'success' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: cll-pdf-weasyprint
           path: _artifacts/pdf-weasyprint/
           if-no-files-found: error
+          retention-days: 14
+      - name: Build pdf-typst
+        id: build_pdf_typst
+        if: ${{ !cancelled() && steps.ready.outcome == 'success' && contains(format(' {0} ', steps.formats.outputs.list), ' pdf-typst ') }}
+        continue-on-error: true
+        env:
+          CONTAINER_BIN: docker
+        run: bash scripts/build-selected-formats.sh pdf-typst "$PWD/_artifacts"
       - name: Upload pdf-typst
-        if: contains(format(' {0} ', steps.formats.outputs.list), ' pdf-typst ')
+        id: upload_pdf_typst
+        if: ${{ !cancelled() && steps.build_pdf_typst.outcome == 'success' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: cll-pdf-typst
           path: _artifacts/pdf-typst/
           if-no-files-found: error
+          retention-days: 14
+      - name: Build pdf-context
+        id: build_pdf_context
+        if: ${{ !cancelled() && steps.ready.outcome == 'success' && contains(format(' {0} ', steps.formats.outputs.list), ' pdf-context ') }}
+        continue-on-error: true
+        env:
+          CONTAINER_BIN: docker
+        run: bash scripts/build-selected-formats.sh pdf-context "$PWD/_artifacts"
       - name: Upload pdf-context
-        if: contains(format(' {0} ', steps.formats.outputs.list), ' pdf-context ')
+        id: upload_pdf_context
+        if: ${{ !cancelled() && steps.build_pdf_context.outcome == 'success' }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: cll-pdf-context
           path: _artifacts/pdf-context/
           if-no-files-found: error
-      - name: Summarize outputs
+          retention-days: 14
+      - name: Summarize outputs and fail if a selected format failed
+        if: ${{ !cancelled() && steps.ready.outcome == 'success' }}
         env:
           FORMATS: ${{ steps.formats.outputs.list }}
+          STEPS: ${{ toJSON(steps) }}
         run: |
-          {
-            echo 'Built formats:'
-            for f in $FORMATS; do echo "- cll-$f"; done
-            echo ''
-            echo "Download the artifacts from the [run page]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."
-            if [[ " $FORMATS " == *' html '* ]]; then
-              echo 'Unzip cll-html and open index.html to read locally.'
-            fi
-          } >> "$GITHUB_STEP_SUMMARY"
+          python3 - <<'PYTHON'
+          import json, os
+          steps = json.loads(os.environ['STEPS'])
+          failed = []
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              for fmt in os.environ['FORMATS'].split():
+                  result = steps.get('build_' + fmt.replace('-', '_'), {}).get('outcome', 'skipped')
+                  uploaded = steps.get('upload_' + fmt.replace('-', '_'), {}).get('outcome') == 'success'
+                  if result == 'success' and uploaded:
+                      out.write('- Built artifact: cll-' + fmt + '\n')
+                  else:
+                      failed.append(fmt)
+                      status = 'upload failed' if result == 'success' else result
+                      out.write('- Not available: ' + fmt + ' (' + status + ')\n')
+              out.write('\nArtifacts expire after 14 days. Download them from the [run page](' + os.environ['GITHUB_SERVER_URL'] + '/' + os.environ['GITHUB_REPOSITORY'] + '/actions/runs/' + os.environ['GITHUB_RUN_ID'] + ').\n')
+              if 'html' in os.environ['FORMATS'].split() and steps.get('build_html', {}).get('outcome') == 'success':
+                  out.write('Unzip cll-html and open index.html to read locally.\n')
+          if failed:
+              print('::error::Selected formats failed: ' + ', '.join(failed))
+              raise SystemExit(1)
+          PYTHON
       - name: Upload Pages preview
-        if: steps.guard.outputs.preview == 'true'
+        if: ${{ success() && steps.guard.outputs.preview == 'true' && steps.build_html.outcome == 'success' }}
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: _artifacts/html
+          retention-days: 14
 
   deploy:
     needs: build
     if: needs.build.outputs.preview == 'true'
     permissions:
+      contents: read # Read the release marker through the API; no checkout
       pages: write
       id-token: write
+    timeout-minutes: 10
     concurrency:
       group: book-pages-preview
       cancel-in-progress: false
@@ -204,10 +283,92 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Recheck preview after environment approval
+        id: late_guard
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_PAGES_PREVIEW: ${{ vars.BUILD_PAGES_PREVIEW }}
+        run: |
+          echo 'deploy=false' >> "$GITHUB_OUTPUT"
+          note=$(python3 - <<'PYTHON'
+          import json
+          import os
+          import re
+          import sys
+          import urllib.error
+          import urllib.request
+
+
+          def check_preview():
+              policy = os.environ.get('BUILD_PAGES_PREVIEW') or 'auto'
+              if policy == 'deny':
+                  return 'Preview skipped: BUILD_PAGES_PREVIEW=deny.'
+              if policy != 'auto':
+                  raise ValueError('Invalid BUILD_PAGES_PREVIEW: use auto or deny.')
+              token = os.environ['GH_TOKEN']
+              if not token:
+                  raise ValueError('The preview guard requires the job token.')
+              base = os.environ['GITHUB_API_URL'].rstrip('/') + '/repos/' + os.environ['GITHUB_REPOSITORY']
+
+              def get(path, missing=False):
+                  request = urllib.request.Request(base + path, headers={
+                      'Authorization': 'Bearer ' + token,
+                      'Accept': 'application/vnd.github+json',
+                      'X-GitHub-Api-Version': '2022-11-28',
+                  })
+                  try:
+                      with urllib.request.urlopen(request, timeout=30) as response:
+                          return json.load(response)
+                  except urllib.error.HTTPError as error:
+                      if missing and error.code == 404:
+                          return None
+                      raise RuntimeError('GitHub API lookup failed for ' + path + ': HTTP ' + str(error.code)) from None
+
+              # Confirm repository access before interpreting resource-level 404s.
+              repository = get('')
+              if not isinstance(repository.get('has_pages'), bool):
+                  raise ValueError('The repository response lacks has_pages.')
+              site = get('/pages', missing=True)
+              if site is None and repository['has_pages']:
+                  raise ValueError('Pages lookup returned 404 for an enabled site.')
+              branch = get('/branches/pages', missing=True)
+              if branch is not None:
+                  commit = branch['commit']['sha']
+                  if not re.fullmatch('[0-9a-f]{40}', commit):
+                      raise ValueError('The pages branch response has an invalid commit.')
+                  # Inspect the exact branch commit returned by the live lookup.
+                  marker = get('/contents/pages/versions.tsv?ref=' + commit, missing=True)
+                  if marker is not None:
+                      return 'Preview skipped: pages branch contains pages/versions.tsv (published book site). See the fork setup instructions.'
+              if site is None:
+                  return 'Preview skipped: Pages is not enabled. Set Settings > Pages > Source to GitHub Actions.'
+              if site.get('build_type') == 'legacy':
+                  return 'Preview skipped: Pages does not use GitHub Actions. Set Settings > Pages > Source to GitHub Actions.'
+              if site.get('build_type') != 'workflow':
+                  raise ValueError('Pages lookup returned an unknown build_type.')
+              return 'Preview allowed: no release manifest and Pages uses GitHub Actions.'
+
+
+          try:
+              print(check_preview())
+          except Exception as error:
+              sys.exit('Preview guard failed: ' + str(error))
+          PYTHON
+          ) || {
+            message='Deployment stopped: the late preview guard failed. See the log.'
+            echo "::error::$message"
+            echo "$message" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          }
+          echo "$note"
+          echo "$note" >> "$GITHUB_STEP_SUMMARY"
+          if [[ "$note" == 'Preview allowed:'* ]]; then echo 'deploy=true' >> "$GITHUB_OUTPUT"; fi
       - name: Deploy HTML preview
+        if: steps.late_guard.outputs.deploy == 'true'
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
       - name: Link preview
+        if: steps.deployment.outcome == 'success'
         env:
           PAGE_URL: ${{ steps.deployment.outputs.page_url }}
         run: echo "[Read the HTML preview]($PAGE_URL)" >> "$GITHUB_STEP_SUMMARY"

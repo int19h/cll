@@ -9,8 +9,13 @@ for f in $formats; do
 done
 mkdir -p "$out"
 version=$(scripts/build-version.sh)
-# Use the full source version (including a branch commit suffix) in the archive.
+# Validate metadata before inserting it into the landing page.
 [[ "$version" =~ ^[A-Za-z0-9.+_-]+$ ]] || { echo 'Unsafe build version' >&2; exit 1; }
+commit=$(git rev-parse HEAD)
+[[ "$commit" =~ ^[0-9a-f]{40}$ ]] || { echo 'Invalid source commit' >&2; exit 1; }
+need_output() {
+  [ -s "$1" ] || { echo "Missing or empty output: $1" >&2; exit 1; }
+}
 for f in $formats; do
   dest="$out/$f"
   mkdir -p "$dest"
@@ -18,13 +23,16 @@ for f in $formats; do
     html)
       for target in xhtml_sections xhtml_nochunks; do ./cll_build -n -T "$target"; done
       for dir in xhtml_section_chunks xhtml_no_chunks; do
-        test -s "build/$dir/index.html"
+        need_output "build/$dir/index.html"
         cp -pr "build/$dir" "$dest/"
       done
       find "$dest" -name 'sed*' -type f -delete
-      printf '%s\n' '<!doctype html><meta charset="utf-8"><title>CLL preview</title><h1>CLL preview</h1><p><a href="xhtml_section_chunks/">Read section by section</a></p><p><a href="xhtml_no_chunks/">Read on one page</a></p>' > "$dest/index.html"
-      tar -C "$dest" -czf "$out/cll-$version-html.tar.gz" .
-      mv "$out/cll-$version-html.tar.gz" "$dest/"
+      cat > "$dest/index.html" <<HTML
+<!doctype html><meta charset="utf-8"><title>CLL preview</title>
+<h1>CLL preview</h1><p>Version: $version<br>Commit: $commit</p>
+<p><a href="xhtml_section_chunks/index.html">Read section by section</a></p>
+<p><a href="xhtml_no_chunks/index.html">Read on one page</a></p>
+HTML
       continue ;;
     epub) target=epub; file=cll.epub ;;
     pdf) target=pdf; file=cll.pdf ;;
@@ -39,6 +47,6 @@ for f in $formats; do
   esac
   rm -f "build/$file" "build/$target.done"
   if [ "$f" = pdf-context ]; then ./run_context_container.sh; else ./cll_build -n -T "$target"; fi
-  test -s "build/$file"
+  need_output "build/$file"
   cp -p "build/$file" "$dest/"
 done

@@ -1,7 +1,7 @@
 # Releasing this edition
 
 This guide describes releases from the `int19h/cll` fork.
-[AGENTS.md](AGENTS.md#releases) defines the release rules.
+[AGENTS.md](../AGENTS.md#releases) defines the release rules.
 A prerelease is a version before its final release.
 
 A release needs separate authorization to publish.

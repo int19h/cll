@@ -11,7 +11,7 @@ filesfile=/tmp/official_tar.$$
 rm $filesfile
 touch $filesfile
 
-cp ../CHANGELOG .
+cp ../CHANGELOG.md CHANGELOG
 echo CHANGELOG >>$filesfile
 
 for file in *

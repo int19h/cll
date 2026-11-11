@@ -1,7 +1,9 @@
 # Anchors and stable links
 
 The chapters contain `<anchor xml:id="..."/>` elements.
-Outside chapters 20 and 21, these anchors exist only to keep old links working.
+These anchors keep links to the book stable: a link to an anchor keeps working when the text around it moves.
+Many of them date from the first edition and keep old links working.
+In chapters 20 and 21, the book's own cross-references also point to anchors.
 When you move text, move its anchor with it.
 Never change or remove an existing anchor.
 
@@ -13,7 +15,16 @@ Never change or remove an existing anchor.
 | `cNsM` | Section M of chapter N | `c5s2` |
 | `cNeMdK` | Example K of section M in chapter N | `c5e2d3` |
 
-The appendices use `aN` and `aN-name`, for example `a03` and `a03-gadri`.
+The book also uses these forms:
+
+| Form | Marks | Example |
+| --- | --- | --- |
+| `cN-name` | A section of chapter N | `c21-intro`, `c21-peg` |
+| `aN` | Appendix N | `a03` |
+| `aN-name` | A section of appendix N | `a03-gadri` |
+
+The chrestomathy section with the extract from *Alice in Wonderland* has the anchor `a0102`, which follows neither form.
+
 Chapter 20 has one anchor for each selma'o, such as `BAI`.
 Each EBNF rule in chapter 21 has two anchors: `bN` keeps old links working, and `cll_bnf-N` is the target of the EBNF cross-references.
 `scripts/check-cross-reference.py` checks those anchors (see [checks.md](checks.md)).

@@ -20,7 +20,10 @@ The WeasyPrint and Typst checks install their own pinned tools, as described in 
 
 ## Quick run
 
-These commands cover the checks that need only Python, Ruby with Nokogiri, `xmllint`, `zip`, and Node.js:
+These commands cover the checks that need only Python with Pillow, Ruby with Nokogiri, `xmllint`, `zip`, and Node.js.
+The first two lines join the book into one file and check it with `xmllint`.
+In CI, a problem makes the workflow print the `xmllint` output.
+Locally, read the output for warnings that contain `not defined`, `parser error`, or `already defined`.
 
 ```sh
 { cat scripts/header.xml chapters/*.xml; echo '</book>'; } > book-assembled.xml
@@ -58,9 +61,6 @@ node tests/test-prince-index-guard.js
 node tests/test-prince-index-prep.js
 node tests/test-prince-index.js
 ```
-
-In CI, a problem makes the workflow print the `xmllint` output.
-Locally, read the output for warnings that contain `not defined`, `parser error`, or `already defined`.
 
 ## xml-wellformed
 
@@ -114,7 +114,7 @@ The status lint reports a `status-note` without `condition` as a warning, and th
 | Gloss columns self-test | The lint below, on fixtures | `ruby scripts/test-lint-gloss-columns.rb` |
 | Gloss columns | Each gloss line has a column for every Lojban word, and structural words such as `cu` and terminators have suitable glosses (see [markup-tags.md](markup-tags.md#interlinear-gloss)) | `ruby scripts/lint-gloss-columns.rb chapters/*.xml` |
 | Word spellings self-test | The lint below, on fixtures | `ruby scripts/test-lint-word-spellings.rb` |
-| Word spellings | Lojban text has no CGV sequence (a consonant, a glide, and a vowel), and every comma inside a word appears in `scripts/reviewed-comma-words.json` | `ruby scripts/lint-word-spellings.rb chapters/*.xml` |
+| Word spellings | Lojban text has no CGV sequence (a consonant, a glide, and a vowel), and every word with a comma between two vowels appears in `scripts/reviewed-comma-words.json`. It does not check commas next to consonants. It reads only Lojban elements such as `jbo`, `valsi`, and `jbophrase`, and it skips text marked `valid="false"` or `valid="maybe"` and the quoted text of `zoi` and `la'o`. | `ruby scripts/lint-word-spellings.rb chapters/*.xml` |
 | jbophrase frames | A frame such as `lu ... li'u` links each of its words to the glossary, and the glossary collects those words | `ruby scripts/test-jbophrase-frames.rb` |
 
 This job checks that Nokogiri is version 1.18.8, the version that the Dockerfile installs.

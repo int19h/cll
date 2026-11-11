@@ -71,8 +71,12 @@ The attribute has these effects:
 - The build removes the attribute, so the output does not mark such text.
 - `scripts/extract-examples.py` ignores the attribute. The report-only example parse can therefore list marked lines as failures.
 
-Some `sumti` and `gismu` elements carry `glossary="false"`.
-The build removes that attribute, and it has no effect on those elements.
+Some markup in the chapters has no effect on the output.
+Do not add more of it:
+
+- Some `sumti` and `gismu` elements carry `glossary="false"`. The build removes the attribute.
+- `chapters/02.xml` has one `elidable delineated="false"`. The build removes the attribute, and the word still appears in brackets.
+- `chapters/06.xml` has two `jbophrase role="ungrammatical"`. The build replaces the role with `jbophrase`, so the output does not mark them. To mark an ungrammatical phrase, use `valid="false"`.
 
 ## Examples
 
@@ -162,7 +166,8 @@ Each one becomes a column.
 The build puts an `elidable` word in square brackets, and an empty `elidable` prints `-`.
 `elidable="false"` prints the word without brackets.
 The other children of `interlinear-gloss-itemized` are `natlang`, `comment`, and loose `sumti`, `selbri`, or `elidable` elements.
-Each becomes a full-width line in a second table, as in an interlinear gloss.
+Each becomes a full-width row.
+`natlang` and `comment` rows go into a second table, as in an interlinear gloss, and the other rows stay in the first table.
 
 ### Pronunciation
 
@@ -235,9 +240,13 @@ For the scoring examples in chapter 4, use `rafsi` and `score`:
 
 ### Comments
 
-`comment` adds a remark to a line in an example, such as `(Lojbanize)`.
-The build converts it to `emphasis role="comment"`.
-It can appear inside `jbo`, `gloss`, and `natlang`, and directly inside `pronunciation` and `interlinear-gloss-itemized`.
+`comment` adds a remark to an example, such as `(Lojbanize)`.
+The build treats it according to where it stands:
+
+- Inside a `natlang` line, or inside a `jbo` or `natlang` line of a `lojbanization`, it becomes inline `emphasis role="comment"`.
+- Inside the `jbo` or `gloss` line of an `interlinear-gloss-itemized`, it becomes a column of its own.
+- Directly inside `pronunciation`, it becomes a line of its own, with the role `pronunciation-comment`.
+- Directly inside `interlinear-gloss-itemized`, it becomes a full-width row in the second table.
 
 ## cmavo lists
 
@@ -312,6 +321,20 @@ Put the place structure in `content`.
 
 Inside `title`, `term`, `member`, `secondary`, or `td`, both elements make an inline phrase.
 Elsewhere, each makes a block quotation.
+
+## Index terms
+
+To add an index entry by hand, put an `indexterm` in the paragraph that the entry points to. The chapters usually put it at the start of the paragraph:
+
+```xml
+<para><indexterm type="general"><primary>indefinite descriptions</primary></indexterm>By a quirk of Lojban syntax, ...</para>
+```
+
+`primary` holds the entry, and the optional `secondary` and `tertiary` hold subentries.
+The `type` attribute chooses the index.
+`scripts/merge.sh` makes only two indexes: `general` (the General Index) and `lojban-word` (the Lojban Words Index).
+An `indexterm` of any other type reaches no index.
+The build adds a `lojban-word` term for each `valsi` by itself, so most hand-written terms use `general`.
 
 ## Mathematics
 

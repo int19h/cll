@@ -41,9 +41,13 @@ cd cll
 ### Container build
 
 The main build runs in a container.
-You need Podman or Docker, and Bash.
-`run_container.sh` tries Podman first, then Docker.
-To choose another command, set `CONTAINER_BIN`.
+You need Podman and Bash.
+`run_container.sh` always passes the Podman option `--userns=keep-id`, so it does not work with Docker yet.
+Issue [#229](https://github.com/int19h/cll/issues/229) tracks Docker support.
+
+The script runs the command in `CONTAINER_BIN`.
+If that variable is not set, it uses `podman`, or `docker` if Podman is not installed.
+If `info` fails for the selected command, the script stops.
 
 To build all formats, run:
 
@@ -63,16 +67,18 @@ It needs a terminal.
 | `-t` | Fast test build. The build changes cross-references so that the selected files build on their own, and it skips most of the glossary work. |
 | `-s` | Like `-t`, but with the full glossary |
 | `-T TARGET` | Build one target instead of `all` |
-| `-a DIRECTORY` | Copy the results to `DIRECTORY` as well |
+| `-a DIRECTORY` | Copy the results to `DIRECTORY` as well. Give the absolute path of a directory that exists, such as `"$PWD/output"`. |
 | `-n` | Skip the comparison with `official/` |
 | `-h` | Print the usage, including the list of targets. `./cll_build -h` prints it without a container. |
 
 To build one or more chapters, give their files after `-t` or `-s`:
 
 ```sh
-./run_container.sh -t chapters/05.xml
-./run_container.sh -t chapters/05.xml chapters/06.xml
+./run_container.sh -t -n chapters/05.xml
+./run_container.sh -t -n chapters/05.xml chapters/06.xml
 ```
+
+The `-n` option skips the comparison with the published book, which would compare these chapters with the whole book.
 
 `-t` without chapter files builds the whole book faster than a full build:
 
@@ -83,7 +89,7 @@ To build one or more chapters, give their files after `-t` or `-s`:
 To build only one format, choose a target:
 
 ```sh
-./run_container.sh -t -T pdf
+./run_container.sh -t -n -T pdf
 ```
 
 The default target, `all`, builds the three HTML versions, the Prince PDF, and the ePub.
@@ -99,8 +105,16 @@ The default target, `all`, builds the three HTML versions, the Prince PDF, and t
 
 Open `index.html` in an HTML folder to read that version.
 With `-a`, the HTML folders are copied as `cll-xhtml_chapter_chunks/`, `cll-xhtml_section_chunks/`, and `cll-xhtml_no_chunks/`, beside `cll.pdf` and `cll.epub`.
-At this commit, the ePub step with `-a` also tries to copy `cll.mobi`, which the build no longer makes, so that step fails.
-Use `-a` with the HTML and PDF targets.
+The ePub step with `-a` also tries to copy `cll.mobi`, which the build no longer makes.
+So `-a` with the default target fails at the ePub step.
+Use `-a` together with `-T` and an HTML or PDF target, for example:
+
+```sh
+mkdir -p output
+./run_container.sh -n -T pdf -a "$PWD/output"
+```
+
+Issue [#176](https://github.com/int19h/cll/issues/176) tracks this problem.
 
 After a successful build, `cll_build` compares the single-page HTML with the copies in `official/`.
 It writes the visual comparisons to `build/diff_from_official/` and `build/diff_from_previous/`.
@@ -120,6 +134,9 @@ Three other engines each have their own launcher, image, and guide:
 
 Each launcher accepts `-t` and `-s` with chapter files, as `run_container.sh` does.
 The Typst and ConTeXt launchers also accept `-a DIRECTORY`.
+These three launchers pass `--userns=keep-id` only to Podman.
+With Docker, they run the container as your user and group instead.
+The "Build selected formats" workflow runs the ConTeXt launcher with Docker.
 The Typst and ConTeXt PDFs are still experimental.
 
 ### Native build and pins
@@ -167,6 +184,7 @@ These guides describe the rules for the book's content and markup:
 
 - [AGENTS.md](AGENTS.md) gives the editorial rules: sources, authority levels, the edition's decisions, and the style of the book's prose.
 - [docs/status-markup.md](docs/status-markup.md) describes the markup that records the status of a rule.
+- [docs/docbook-basics.md](docs/docbook-basics.md) explains the DocBook markup of a chapter for contributors who have not used DocBook.
 - [docs/markup-tags.md](docs/markup-tags.md) describes the custom DocBook elements for Lojban material.
 - [docs/anchors.md](docs/anchors.md) explains the anchors that keep old links working.
 

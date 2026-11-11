@@ -6,7 +6,9 @@ This page shows the standard markup that a chapter uses.
 
 ## A chapter
 
-Each file in `chapters/` holds one chapter or appendix:
+Each file in `chapters/` holds one chapter or appendix.
+A chapter file has the root element `chapter`, as below.
+The two appendix files, `a01.xml` and `a03.xml`, have the root element `article` with the same kind of content.
 
 ```xml
 <chapter xml:id="chapter-dialects">
@@ -61,9 +63,12 @@ A new section or example needs two IDs: an `xml:id` on the element and an `ancho
 Take the next free number for the anchor.
 If you insert a section before others, keep their anchors as they are.
 Never renumber or reuse an existing anchor.
+Do not reuse the number of a removed section or example either.
 [anchors.md](anchors.md) explains why and lists the other anchor forms.
 
-Before you commit, search for the new IDs to make sure that nothing else uses them:
+Before you commit, search for each new ID.
+The search must print only the line that you added.
+The ID below already exists in chapter 22, so here it only shows the form of the command:
 
 ```sh
 grep -rn 'xml:id="example-random-id-x22a"' chapters/

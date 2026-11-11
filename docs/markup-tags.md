@@ -324,7 +324,8 @@ Elsewhere, each makes a block quotation.
 
 ## Index terms
 
-To add an index entry by hand, put an `indexterm` in the paragraph that the entry points to. The chapters usually put it at the start of the paragraph:
+To add an index entry by hand, put an `indexterm` in the paragraph that the entry points to.
+The chapters usually put it at the start of the paragraph:
 
 ```xml
 <para><indexterm type="general"><primary>indefinite descriptions</primary></indexterm>By a quirk of Lojban syntax, ...</para>

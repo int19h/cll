@@ -78,7 +78,7 @@ To build one or more chapters, give their files after `-t` or `-s`:
 ./run_container.sh -t -n chapters/05.xml chapters/06.xml
 ```
 
-The `-n` option skips the comparison with the published book, which would compare these chapters with the whole book.
+The `-n` option skips the comparison with the copies in `official/`, which would compare these chapters with the whole book.
 
 `-t` without chapter files builds the whole book faster than a full build:
 
@@ -105,7 +105,7 @@ The default target, `all`, builds the three HTML versions, the Prince PDF, and t
 
 Open `index.html` in an HTML folder to read that version.
 With `-a`, the HTML folders are copied as `cll-xhtml_chapter_chunks/`, `cll-xhtml_section_chunks/`, and `cll-xhtml_no_chunks/`, beside `cll.pdf` and `cll.epub`.
-The ePub step with `-a` also tries to copy `cll.mobi`, which the build no longer makes.
+The ePub step with `-a` also tries to copy `cll.mobi`, which the build does not make.
 So `-a` with the default target fails at the ePub step.
 Use `-a` together with `-T` and an HTML or PDF target, for example:
 

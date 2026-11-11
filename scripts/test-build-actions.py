@@ -30,6 +30,7 @@ def python_body(script):
 class FakeAPI(BaseHTTPRequestHandler):
     state = 'empty'
     requests = []
+    rule_policies = []
 
     def do_GET(self):
         type(self).requests.append((self.path, self.headers.get('Authorization')))
@@ -38,6 +39,24 @@ class FakeAPI(BaseHTTPRequestHandler):
             status = 401
         elif self.state == 'error':
             status = 503
+        elif self.path == '/repos/test/private/environments/github-pages':
+            if self.state == 'environment-missing':
+                status = 404
+            elif self.state == 'environment-forbidden':
+                status = 403
+            elif self.state == 'environment-unrestricted':
+                data = {'deployment_branch_policy': None}
+            elif self.state == 'environment-protected':
+                data = {'deployment_branch_policy': {'protected_branches': True, 'custom_branch_policies': False}}
+            elif self.state == 'environment-unknown':
+                data = {'deployment_branch_policy': {}}
+            else:
+                data = {'deployment_branch_policy': {'protected_branches': False, 'custom_branch_policies': True}}
+        elif self.path == '/repos/test/private/environments/github-pages/deployment-branch-policies?per_page=100':
+            if self.state == 'environment-policy-error':
+                status = 500
+            else:
+                data = {'total_count': len(self.rule_policies) + (1 if self.state == 'environment-paginated' else 0), 'branch_policies': self.rule_policies}
         elif self.path == '/repos/test/private':
             data = {'has_pages': self.state != 'disabled'}
         elif self.path == '/repos/test/private/pages':
@@ -183,6 +202,50 @@ class BuildActions(unittest.TestCase):
         self.assertIn('::error::Build stopped: the preview guard failed.', run.stdout)
         self.assertIn('Clear preview to build without it.', summary)
 
+    def test_conservative_environment_rules(self):
+        for state, policies, kind, name, allowed, warning in [
+            ('environment-unrestricted', [], 'branch', 'feature/example', True, False),
+            ('environment-protected', [], 'branch', 'feature/example', True, True),
+            ('environment-protected', [], 'tag', 'main', True, True),
+            ('environment-missing', [], 'branch', 'feature/example', True, True),
+            ('environment-forbidden', [], 'branch', 'feature/example', True, True),
+            ('environment-unknown', [], 'branch', 'feature/example', True, True),
+            ('environment-custom', [], 'branch', 'feature/example', True, True),
+            ('environment-custom', [('branch', 'main')], 'branch', 'main', True, False),
+            ('environment-custom', [('branch', 'main')], 'branch', 'feature/example', False, False),
+            ('environment-custom', [('branch', 'main'), ('branch', 'feature/example')], 'branch', 'feature/example', True, False),
+            ('environment-custom', [('branch', 'main')], 'tag', 'main', False, False),
+            ('environment-custom', [('tag', 'main')], 'branch', 'main', False, False),
+            ('environment-custom', [('tag', 'main')], 'tag', 'main', True, False),
+            ('environment-custom', [('branch', 'feature/*')], 'branch', 'feature/example/nested', True, True),
+            ('environment-custom', [('branch', '[Mm]ain')], 'branch', 'main', True, True),
+            ('environment-custom', [('branch', r'feature/\*')], 'branch', 'feature/example', True, True),
+            ('environment-custom', [('branch', 'développer')], 'branch', 'feature/example', True, True),
+            ('environment-custom', [('other', 'main')], 'branch', 'feature/example', True, True),
+            ('environment-custom', [('branch', 'refs/heads/main')], 'branch', 'main', True, False),
+            ('environment-paginated', [('branch', 'main')], 'branch', 'feature/example', True, True),
+            ('environment-policy-error', [('branch', 'main')], 'branch', 'feature/example', True, True),
+        ]:
+            with self.subTest(state=state, policies=policies, kind=kind, name=name):
+                FakeAPI.state, FakeAPI.requests = state, []
+                FakeAPI.rule_policies = [{'type': t, 'name': n} for t,n in policies]
+                env = self.environment(GITHUB_REF_TYPE=kind, GITHUB_REF_NAME=name,
+                                       GITHUB_REF=('refs/heads/' if kind == 'branch' else 'refs/tags/') + name)
+                run, output, summary = self.run_block('python3 scripts/check-preview-branch-rules.py', env)
+                self.assertEqual(run.returncode, 0, run.stderr)
+                self.assertEqual(output, 'preview=' + str(allowed).lower() + '\n')
+                self.assertEqual('::warning::' in run.stdout, warning)
+                self.assertTrue(summary)
+                self.assertTrue(all(auth == 'Bearer fixture-job-token' for _, auth in FakeAPI.requests))
+                if not allowed:
+                    self.assertIn('Preview skipped:', summary)
+        # A missing ref must warn and continue without asking the API.
+        FakeAPI.requests = []
+        run, output, _ = self.run_block('python3 scripts/check-preview-branch-rules.py', self.environment(GITHUB_REF_TYPE='', GITHUB_REF_NAME='', GITHUB_REF=''))
+        self.assertEqual(output, 'preview=true\n')
+        self.assertIn('::warning::', run.stdout)
+        self.assertEqual(FakeAPI.requests, [])
+
     def test_workflow_pins_permissions_and_conditions(self):
         tool = ROOT/'scripts/test-build-workflow.rb'
         subprocess.run(['ruby', str(tool)], check=True)
@@ -191,6 +254,7 @@ class BuildActions(unittest.TestCase):
         for before, after in [
             ("needs.build.outputs.preview == 'true'", 'true'),
             ("steps.late_guard.outputs.deploy == 'true'", 'true'),
+            ("steps.branch_rules.outputs.preview == 'true'", 'true'),
             ("success() && steps.guard.outputs.preview == 'true'", 'true'),
             ('pages: read #', 'pages: write #'),
             ('retention-days: 14', 'retention-days: 90'),

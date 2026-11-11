@@ -41,11 +41,12 @@ jobs:
   build:
     permissions:
       contents: read
+      actions: read # Read github-pages environment deployment rules
       pages: read # GET /repos/{owner}/{repo}/pages, including private repositories
     timeout-minutes: 150
     runs-on: ubuntu-24.04
     outputs:
-      preview: ${{ steps.guard.outputs.preview }}
+      preview: ${{ steps.branch_rules.outputs.preview }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
@@ -91,6 +92,12 @@ jobs:
           fi
           echo "$note"
           echo "$note" >> "$GITHUB_STEP_SUMMARY"
+      - name: Check preview environment deployment rules
+        id: branch_rules
+        if: steps.guard.outputs.preview == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/check-preview-branch-rules.py
       - name: Install build toolchain
         run: |
           sudo apt-get update
@@ -261,7 +268,7 @@ jobs:
               raise SystemExit(1)
           PYTHON
       - name: Upload Pages preview
-        if: ${{ success() && steps.guard.outputs.preview == 'true' && steps.build_html.outcome == 'success' }}
+        if: ${{ success() && steps.guard.outputs.preview == 'true' && steps.branch_rules.outputs.preview == 'true' && steps.build_html.outcome == 'success' }}
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
         with:
           path: _artifacts/html

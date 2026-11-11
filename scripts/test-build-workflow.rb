@@ -9,7 +9,7 @@ errors = []
 check = ->(condition, message) { errors << message unless condition }
 check.call(workflow['permissions'] == {}, 'Top-level permissions must be empty.')
 expected = {
-  'build' => { 'contents' => 'read', 'pages' => 'read' },
+  'build' => { 'contents' => 'read', 'actions' => 'read', 'pages' => 'read' },
   'deploy' => { 'contents' => 'read', 'pages' => 'write', 'id-token' => 'write' }
 }
 expected.each do |name, permissions|
@@ -35,8 +35,11 @@ deploy = jobs.fetch('deploy')
 steps = build.fetch('steps')
 guard = steps.find { |s| s['id'] == 'guard' }
 check.call(guard && guard.fetch('env')['GH_TOKEN'] == '${{ github.token }}', 'Early guard must receive the job token.')
-check.call(build.fetch('outputs')['preview'] == '${{ steps.guard.outputs.preview }}', 'Build must export the early guard result.')
+check.call(build.fetch('outputs')['preview'] == '${{ steps.branch_rules.outputs.preview }}', 'Build must export the environment eligibility result.')
 check.call(steps.index(guard) < steps.index(steps.find { |s| s['id'] == 'ready' }), 'Early guard must run before building.')
+rules = steps.find { |s| s['id'] == 'branch_rules' }
+check.call(rules && rules['if'] == "steps.guard.outputs.preview == 'true'" && rules.fetch('env')['GH_TOKEN'] == '${{ github.token }}', 'Environment check must require the release guard and job token.')
+check.call(rules['run'] == 'python3 scripts/check-preview-branch-rules.py' && steps.index(guard) < steps.index(rules) && steps.index(rules) < steps.index(steps.find { |s| s['id'] == 'ready' }), 'Environment rules must be checked before building.')
 check.call(deploy['needs'] == 'build' && deploy['if'] == "needs.build.outputs.preview == 'true'", 'Deployment must require the guarded successful build.')
 check.call(deploy.fetch('concurrency') == {'group' => 'book-pages-preview', 'cancel-in-progress' => false}, 'Preview must serialize without joining the release concurrency group.')
 check.call(deploy.fetch('environment')['name'] == 'github-pages', 'Deployment must use the protected environment.')
@@ -48,7 +51,7 @@ check.call(action['uses'].start_with?('actions/deploy-pages@') && action['if'] =
 check.call(link['if'] == "steps.deployment.outcome == 'success'", 'Only a successful deployment can produce a preview link.')
 check.call(deploy['steps'].none? { |s| s['uses']&.start_with?('actions/checkout@') }, 'Deployment must not check out branch code.')
 upload = steps.find { |s| s['name'] == 'Upload Pages preview' }
-check.call(upload['if'] == "${{ success() && steps.guard.outputs.preview == 'true' && steps.build_html.outcome == 'success' }}", 'Pages upload must require the early guard and successful HTML/job.')
+check.call(upload['if'] == "${{ success() && steps.guard.outputs.preview == 'true' && steps.branch_rules.outputs.preview == 'true' && steps.build_html.outcome == 'success' }}", 'Pages upload must require the early guard and successful HTML/job.')
 %w[html epub pdf pdf-weasyprint pdf-typst pdf-context].each do |fmt|
   id = 'build_' + fmt.tr('-', '_')
   step = steps.find { |s| s['id'] == id }

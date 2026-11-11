@@ -50,6 +50,8 @@ Native system packages can change with the runner image. See [build-pins.md](bui
 The `preview` checkbox defaults to selected. It requires `html`.
 Without `html`, the workflow skips the preview and explains why in the summary.
 Artifacts remain available when the workflow skips deployment.
+On a private repository, the preview site is public unless the account's plan lets you restrict Pages access.
+See GitHub's [Pages access controls](https://docs.github.com/en/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site).
 
 1. When creating the fork, leave **Copy the main branch only** selected. This is GitHub's default.
 2. Open **Actions** and enable workflows in the fork.
@@ -61,9 +63,31 @@ Artifacts remain available when the workflow skips deployment.
 The Pages environment normally permits only the default branch at first.
 Add your feature branch, or choose a rule that permits your preview branches.
 Keep any required reviewer rules that your repository needs.
-The workflow does not inspect these branch rules: the API requires additional Actions read permission.
-See GitHub's [environment API permissions](https://docs.github.com/en/rest/deployments/environments#get-an-environment).
-A branch that the environment rejects cannot deploy, even if the preview guard permits it.
+Before the build, the job token reads the environment and its deployment rules with `actions: read`.
+This permission was verified in a private repository with GitHub Actions.
+For a complete list of literal rules, the workflow skips previews of clearly disallowed branches or tags.
+For example, a single `main` branch rule skips a preview from `feature/example`.
+This skips deployment only. The HTML artifact still builds, unless you cancel the run.
+
+The check is conservative. It does not reproduce GitHub's pattern matcher or request administration permission to inspect full branch protection.
+GitHub remains authoritative for these modes:
+
+| Environment mode | Early behavior |
+| --- | --- |
+| No deployment policy | Continue to deployment. |
+| Protected branches only | Warn and continue. GitHub handles protection and tag exceptions. |
+| Selected branches and tags, all relevant rules literal | Continue for a possible exact match. Skip a ref with no matching rule. |
+| Selected branches and tags with wildcard or other nonliteral rules | Warn and continue when no literal rule matches. |
+| Missing environment, unreadable response, empty/incomplete list, or unknown state | Warn and continue. Never skip on uncertainty. |
+
+Branch and tag rules are separate. A branch rule does not permit a tag with the same name.
+GitHub's wildcard characters do not match `/`: `feature/*` does not permit `feature/example/nested`.
+In protected-only mode, GitHub allows all branches if no branch protection rules exist anywhere in the repository.
+GitHub also rejects a tag with the same name as a protected branch.
+The workflow leaves these decisions to GitHub rather than risk an incorrect early skip.
+A missing environment can be created when the deploy job references it; configure it before running the workflow to avoid surprises.
+See GitHub's [deployment branch and tag rules](https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments#deployment-branches-and-tags) and [API permissions](https://docs.github.com/en/rest/deployments/branch-policies#list-deployment-branch-policies).
+A ref that GitHub rejects cannot deploy, even if the early check permits it.
 
 If your fork copied all branches, its copied `pages` branch also blocks previews.
 If the fork publishes no release site, delete that copied `pages` branch in the fork before requesting a preview.
@@ -85,8 +109,10 @@ A new release marker, disabled Pages site, or changed Pages source stops the pre
 
 Repository administrators can set the Actions repository variable `BUILD_PAGES_PREVIEW` to `deny` to disable previews.
 Unset or `auto` uses the checks above. These are the only accepted values.
-There is no override for a release manifest or a failed lookup.
-An invalid value or failed lookup stops the job with an error. Clear `preview` to build artifacts without running the guard.
+There is no override for a release manifest or a failed release-site or Pages-readiness lookup.
+An invalid value or failure in that guard stops the job with an error.
+Clear `preview` to build artifacts without running the guard.
+The separate environment-rule check warns and continues on uncertainty, as described above.
 Authenticated API requests support private repositories too.
 
 Preview deployments serialize with other previews in the `book-pages-preview` concurrency group.

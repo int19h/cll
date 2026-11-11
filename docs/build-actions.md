@@ -64,10 +64,11 @@ The Pages environment normally permits only the default branch at first.
 Add your feature branch, or choose a rule that permits your preview branches.
 Keep any required reviewer rules that your repository needs.
 Before the build, the job token reads the environment and its deployment rules with `actions: read`.
-This permission was verified in a private repository with GitHub Actions.
 For a complete list of literal rules, the workflow skips previews of clearly disallowed branches or tags.
 For example, a single `main` branch rule skips a preview from `feature/example`.
 This skips deployment only. The HTML artifact still builds, unless you cancel the run.
+A skipped run does not deploy later, so after you add the rule, run the workflow again.
+A rule that differs from the branch name only in letter case does not cause a skip, and GitHub decides at the deploy job.
 
 The check is conservative. It does not reproduce GitHub's pattern matcher or request administration permission to inspect full branch protection.
 GitHub remains authoritative for these modes:

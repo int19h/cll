@@ -7,6 +7,7 @@ An absent environment or unreadable/unknown state must never cause a skip.
 import json
 import os
 import re
+import urllib.error
 import urllib.request
 
 
@@ -27,8 +28,11 @@ def check():
             'Accept': 'application/vnd.github+json',
             'X-GitHub-Api-Version': '2022-11-28',
         })
-        with urllib.request.urlopen(request, timeout=30) as response:
-            return json.load(response)
+        try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+                return json.load(response)
+        except urllib.error.HTTPError as error:
+            raise RuntimeError('GitHub API lookup failed for ' + path + ': HTTP ' + str(error.code) + '.') from None
 
     environment = get('/environments/github-pages')
     if 'deployment_branch_policy' not in environment:
@@ -55,9 +59,12 @@ def check():
     # become an early skip. GitHub decides final eligibility at deployment.
     if name in names or ref in names:
         return True, 'Preview environment has a literal rule for this ' + kind + '.'
+    folded = name.casefold()
+    if any(pattern.casefold() in (folded, ref.casefold()) for pattern in names):
+        raise ValueError('A deployment rule differs from this ' + kind + ' only in letter case, so GitHub must decide.')
     if any(not re.fullmatch(r'[A-Za-z0-9_./-]+', pattern) for pattern in names):
         raise ValueError('GitHub must evaluate wildcard, escaped, or other nonliteral patterns.')
-    return False, 'Preview skipped: ' + kind + ' ' + repr(name) + ' is not allowed by the github-pages environment deployment rules. Add it in Settings > Environments > github-pages.'
+    return False, 'Preview skipped: ' + kind + ' ' + repr(name) + ' is not allowed by the github-pages environment deployment rules. Add it in Settings > Environments > github-pages, then run the workflow again.'
 
 
 def main():
@@ -67,7 +74,7 @@ def main():
     except Exception as error:
         allowed = True
         warning = True
-        note = 'Preview environment eligibility is unknown: ' + str(error) + ' Continuing to GitHub\'s deploy-time check.'
+        note = 'Preview environment eligibility is unknown: ' + str(error).rstrip('.') + '. Continuing to GitHub\'s deploy-time check.'
     # Ref names cannot contain newlines; sanitize diagnostic exceptions too.
     note = note.replace('\r', ' ').replace('\n', ' ')
     print(('::warning::' if warning else '') + note)

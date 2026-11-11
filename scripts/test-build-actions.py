@@ -223,6 +223,8 @@ class BuildActions(unittest.TestCase):
             ('environment-custom', [('branch', 'développer')], 'branch', 'feature/example', True, True),
             ('environment-custom', [('other', 'main')], 'branch', 'feature/example', True, True),
             ('environment-custom', [('branch', 'refs/heads/main')], 'branch', 'main', True, False),
+            ('environment-custom', [('branch', 'Main')], 'branch', 'main', True, True),
+            ('environment-custom', [('branch', 'MAIN'), ('branch', 'develop')], 'branch', 'main', True, True),
             ('environment-paginated', [('branch', 'main')], 'branch', 'feature/example', True, True),
             ('environment-policy-error', [('branch', 'main')], 'branch', 'feature/example', True, True),
         ]:

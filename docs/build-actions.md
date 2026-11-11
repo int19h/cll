@@ -34,8 +34,7 @@ The other artifacts contain only their selected file:
 | `pdf-typst` | `cll-typst.pdf` |
 | `pdf-context` | `cll-context.pdf` |
 
-HTML takes about 31 minutes. All six formats together take about 83 minutes.
-These are measured examples, not time guarantees. The build job has a 150-minute limit.
+The build job has a 150-minute limit.
 The deployment job has a 15-minute limit once it starts. Environment approval can add a wait before it starts.
 
 Typst and ConTeXt remain experimental PDF backends. See their build guides for limitations.

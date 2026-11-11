@@ -1,12 +1,17 @@
-Version 1.1
-###########
+# Changelog
+
+This file records the history of the upstream book up to CLL 1.1.
+The changes in this edition are listed in the
+[GitHub releases](https://github.com/int19h/cll/releases) and in the book's
+"Changes from the first edition" appendix (`chapters/a03.xml`).
+
+## Version 1.1
 
 This version is the same as the original Red Book (the one with the
 gold lettering), with only errata fixes and the like; no
 substantial content changes.
 
-2019-10-08
-==========
+### 2019-10-08
 
 Updated everything, which led to various knock-on changes.  Most are
 quite minor.  No significant content changes (a few word definitions
@@ -28,8 +33,7 @@ got updated from jbovlaste).
 - updated gems, including dealing with the rename of Trollop to
   Optimist
 
-2018-05-21
-==========
+### 2018-05-21
 
 Rollup of many minor changes.  I am, in particular, not noting any
 scripting or build process or build documentation changes here
@@ -45,8 +49,7 @@ unless they are significant in some way.
 - quotations must begin with {lo'u}, not {le'u} (#252)
 - Fix a misaligned example gloss in section 18.5 (#251) (#250)
 
-2016-08-27
-==========
+### 2016-08-27
 
 Internal-only change to how examples are handled, as an example
 (heh) of how to push roles through to the HTML so that you can do
@@ -57,8 +60,7 @@ as such was not pushed anywhere, not even to the website; the only
 reason I even updated official/ was so that future diffs didn't show
 all these irrelevant class= changes
 
-2016-08-26
-==========
+### 2016-08-26
 
 Fix the EPUB (and the Kindle MOBI) round two!
 
@@ -80,8 +82,7 @@ This version was only pushed to the EPUB on the publisher side; the
 changes to the PDF were so minor that it didn't seem worth it to
 push the print version as well.
 
-2016-06-12
-==========
+### 2016-06-12
 
 All versions: two bug fixes:
 
@@ -92,11 +93,9 @@ https://github.com/lojban/cll/issues/248
 This version was pushed everywhere, so there will be print and EPUB
 versions of this available for purchase.
 
-2016-06-10
-==========
+### 2016-06-10
 
-EPUB
-----
+#### EPUB
 
 This was the "fix up the EPUB" version; we now roll our own EPUB,
 and it passes EPubCheck 4.0.1 without errors.  Many other changes;
@@ -106,8 +105,7 @@ EPUB).
 
 This is considered the first good/complete EPUB version.
 
-HTML
-----
+#### HTML
 
 The HTML version passes tidy without errors (although it does have
 some bizarre "<a> anchor [blah] already defined" warnings that
@@ -124,8 +122,7 @@ links (before it was a comma, which just looks weird).
 This is considerd the first good/complete HTML version.
 
 
-Print/PDF
----------
+#### Print/PDF
 A couple of tiny changes (added a title to section 20.1, changed the
 caption on a chapter picture).
 
@@ -136,34 +133,28 @@ the two PDFs look very different, even though the content has
 changed, so I'm storing this new version for purposes of future
 comparison.
 
-2016-05-25
-==========
+### 2016-05-25
 
-HTML
-----
+#### HTML
 
 Revamping of the navigation links in the HTML version.
 
-Print/PDF
---------
+#### Print/PDF
 
 No changes in theory.  In practice, the navigation links invaded the
 PDF file, but we never rolled a new official version at this point
 so it doesn't matter.
 
-2016-04-13 / 2016-04-12
-=======================
+### 2016-04-13 / 2016-04-12
 
-Print/PDF
----------
+#### Print/PDF
 
 This is considered the first good/complete PDF/print version.
 
 Changes after this to the PDF/print version are expected to be
 extremely minor/cosmetic.
 
-Prior To 2016-04-12
-===================
+### Prior To 2016-04-12
 
 BAD VERSIONS!
 

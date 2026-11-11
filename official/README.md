@@ -1,7 +1,7 @@
 # Historical upstream release guide
 
 This document records the upstream CLL 1.1 publication process.
-For this fork, follow the [current release guide](../README-updating.md).
+For this fork, follow the [current release guide](../docs/releasing.md).
 The `scripts/update_official` and `scripts/tar_official` tools serve the historical process below.
 
 So you've made changes that you want to push to the world.

@@ -11,7 +11,7 @@ filesfile=/tmp/official_tar.$$
 rm $filesfile
 touch $filesfile
 
-cp ../CHANGELOG .
+cp ../CHANGELOG.md CHANGELOG
 echo CHANGELOG >>$filesfile
 
 for file in *
@@ -28,3 +28,5 @@ cat $filesfile
 tar -zcvf ../official_cll.tar -T $filesfile
 
 rm $filesfile
+# The archive keeps the historical name; remove the temporary copy.
+rm -f CHANGELOG

@@ -1,0 +1,207 @@
+# Checks and tests
+
+The `checks` workflow (`.github/workflows/checks.yml`) runs on every pull request to `main` and on every push to `main`.
+This page lists each check that it runs, what the check tests, and the command that runs it locally.
+Run the commands from the repository root.
+None of them builds the book.
+
+## Tools
+
+The workflow uses these tools.
+Install the tools for the checks that you want to run.
+
+- Python 3 and Pillow. On Debian and Ubuntu, Pillow is `python3-pil`.
+- `xmllint` and `zip`. On Debian and Ubuntu, `xmllint` is in `libxml2-utils`.
+- Ruby 3.2 with Nokogiri 1.18.8: `gem install --no-document nokogiri:1.18.8`.
+- Node.js 24.
+- For the parser checks, a checkout of [ilmentufa](https://github.com/lojban/ilmentufa) at the commit that the workflow pins (see [Parser probes](#parser-probes)).
+
+The WeasyPrint and Typst checks install their own pinned tools, as described in their sections.
+
+## Quick run
+
+These commands cover the checks that need only Python with Pillow, Ruby with Nokogiri, `xmllint`, `zip`, and Node.js.
+The first two lines join the book into one file and check it with `xmllint`.
+In CI, a problem makes the workflow print the `xmllint` output.
+Locally, read the output for warnings that contain `not defined`, `parser error`, or `already defined`.
+
+```sh
+{ cat scripts/header.xml chapters/*.xml; echo '</book>'; } > book-assembled.xml
+xmllint --loaddtd --noent --noout book-assembled.xml; rm book-assembled.xml
+python3 scripts/test-build-actions.py
+ruby scripts/test-build-workflow.rb
+python3 scripts/test-xhtml-format.py
+python3 scripts/test-chapter-pictures.py
+python3 scripts/test-lint-undotted-cmevla.py
+python3 scripts/lint-undotted-cmevla.py chapters/*.xml
+python3 scripts/test-extract-examples.py
+python3 scripts/check-cross-reference.py chapters/21.xml
+python3 scripts/test-check-cross-reference.py
+python3 scripts/lint-status-markup.py chapters/*.xml
+python3 scripts/test-lint-status-markup.py
+python3 scripts/test-html-mathjax.py
+python3 scripts/check-peg-grammar.py
+python3 scripts/test-check-peg-grammar.py
+python3 scripts/test-build-pins.py
+scripts/check-edition-branding.sh
+python3 scripts/test-build-epub.py
+python3 scripts/test-xml-prince-postprocess.py
+python3 scripts/test-nokogiri-spaces.py
+ruby scripts/test-lint-gloss-columns.rb
+ruby scripts/lint-gloss-columns.rb chapters/*.xml
+ruby scripts/test-lint-word-spellings.rb
+ruby scripts/lint-word-spellings.rb chapters/*.xml
+ruby scripts/test-jbophrase-frames.rb
+ruby scripts/test-docbook-to-context.rb
+python3 scripts/test-context-assets.py
+python3 scripts/test-build-version.py
+node tests/test-run-probes.js
+node tests/test-audio-loading.js
+node tests/test-prince-index-guard.js
+node tests/test-prince-index-prep.js
+node tests/test-prince-index.js
+```
+
+## xml-wellformed
+
+| Check | What it tests | Command |
+| --- | --- | --- |
+| Build workflow | The format selection, preview guard, and helper scripts of the "Build selected formats" workflow, and its action pins, permissions, and timeouts | `python3 scripts/test-build-actions.py` and `ruby scripts/test-build-workflow.rb` |
+| XHTML formatting | The HTML clean-up scripts keep the spaces between inline elements | `python3 scripts/test-xhtml-format.py` |
+| Chapter artwork | Each of chapters 1 to 21 references its own chapter picture, a large RGBA PNG in `assets/media/`, no unreferenced chapter picture is shipped, and the chapter 2 diagram keeps its size and padding | `python3 scripts/test-chapter-pictures.py` |
+| Well-formed book | The book header and all chapters together are well-formed XML, with no undefined entity and no duplicate ID | See [Quick run](#quick-run) |
+
+The book check joins `scripts/header.xml`, every `chapters/*.xml` file, and a closing `</book>` into one file.
+`xmllint` reports undefined entities and duplicate IDs only as warnings, so the workflow searches its output for them and fails on a match.
+
+## cmevla-dot-lint
+
+| Check | What it tests | Command |
+| --- | --- | --- |
+| Dotside lint self-test | The lint below, on small fixtures | `python3 scripts/test-lint-undotted-cmevla.py` |
+| Dotside lint | A name after `la`, `lai`, `la'i`, or `doi` has a dot on both sides, as the dotside rule requires | `python3 scripts/lint-undotted-cmevla.py chapters/*.xml` |
+| Example extraction | `scripts/extract-examples.py`, which the example parse below uses | `python3 scripts/test-extract-examples.py` |
+| EBNF cross-reference | Chapter 21's EBNF rules, their anchors, and the printed cross-reference agree | `python3 scripts/check-cross-reference.py chapters/21.xml` |
+| EBNF cross-reference self-test | The check above fails on planted defects | `python3 scripts/test-check-cross-reference.py` |
+| Status markup | The `role="status-note"` and `condition` markup follows [status-markup.md](status-markup.md) | `python3 scripts/lint-status-markup.py chapters/*.xml` |
+| Status markup self-test | The lint above, on fixtures | `python3 scripts/test-lint-status-markup.py` |
+| Browser MathJax | The HTML loads one pinned MathJax script with an integrity hash | `python3 scripts/test-html-mathjax.py` |
+| PEG grammar | The word-form grammar printed in chapter 21 matches `tests/fixtures/peg-morphology.peg` rule for rule | `python3 scripts/check-peg-grammar.py` |
+| PEG grammar self-test | The check above detects corrupted copies | `python3 scripts/test-check-peg-grammar.py` |
+| Container pins | The Dockerfiles keep their fixed image digest, package snapshot, and ConTeXt inputs (see [build-pins.md](build-pins.md)) | `python3 scripts/test-build-pins.py` |
+
+The dotside lint is a heuristic.
+It treats a word that ends in a consonant after one of those cmavo as a name.
+`scripts/lint-undotted-cmevla.allow` lists known cases, with a maximum count for each.
+If a file has more cases than the list allows, the lint fails.
+Do not add entries for new text.
+
+The status lint reports a `status-note` without `condition` as a warning, and the warnings do not fail the job.
+
+## edition-branding
+
+| Check | What it tests | Command |
+| --- | --- | --- |
+| Edition branding | The PDF running head and the ePub name this edition from `.env`, and never the first edition | `scripts/check-edition-branding.sh` |
+| ePub packaging | The ePub packager, run on a small book, keeps the reader's assets and leaves out the renderer sources | `python3 scripts/test-build-epub.py` |
+
+## prince-postprocess-smoke
+
+| Check | What it tests | Command |
+| --- | --- | --- |
+| Prince postprocessor | `scripts/xml_prince_postprocess.rb`, the last step before Prince, on `tests/fixtures/xml-prince-postprocess.xhtml` | `python3 scripts/test-xml-prince-postprocess.py` |
+| Nokogiri spaces | The Ruby build scripts keep the spaces between inline elements | `python3 scripts/test-nokogiri-spaces.py` |
+| Gloss columns self-test | The lint below, on fixtures | `ruby scripts/test-lint-gloss-columns.rb` |
+| Gloss columns | Each gloss line has a column for every Lojban word, and structural words such as `cu` and terminators have suitable glosses (see [markup-tags.md](markup-tags.md#interlinear-gloss)) | `ruby scripts/lint-gloss-columns.rb chapters/*.xml` |
+| Word spellings self-test | The lint below, on fixtures | `ruby scripts/test-lint-word-spellings.rb` |
+| Word spellings | Lojban text has no CGV sequence (a consonant, a glide, and a vowel), and every word with a comma between two vowels appears in `scripts/reviewed-comma-words.json`. It does not check commas next to consonants. It reads only Lojban elements such as `jbo`, `valsi`, and `jbophrase`, and it skips text marked `valid="false"` or `valid="maybe"` and the quoted text of `zoi` and `la'o`. | `ruby scripts/lint-word-spellings.rb chapters/*.xml` |
+| jbophrase frames | A frame such as `lu ... li'u` links each of its words to the glossary, and the glossary collects those words | `ruby scripts/test-jbophrase-frames.rb` |
+
+This job checks that Nokogiri is version 1.18.8, the version that the Dockerfile installs.
+Check your version with `ruby -rnokogiri -e 'puts Nokogiri::VERSION'`.
+
+## typst-smoke
+
+This job installs the pinned Typst compiler and runs the converter tests with it:
+
+```sh
+bash scripts/install_typst.sh build/tools
+TYPST="$PWD/build/tools/typst" ruby scripts/test_docbook_to_typst.rb
+```
+
+Without `TYPST`, the tests skip the compilation step.
+See [typst-pdf.md](typst-pdf.md#tests).
+
+## weasyprint-smoke
+
+This job installs the pinned WeasyPrint and MathJax tools under `build/weasyprint-tools`, then tests the version label and the renderer:
+
+```sh
+./scripts/install-weasyprint.sh
+python3 scripts/test-build-version.py
+PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-weasyprint.py
+```
+
+The installer needs Python 3 with `venv` and Node.js 22 or later.
+The renderer also needs Pango, HarfBuzz, and the fonts listed in [build-weasyprint.md](build-weasyprint.md#local-build).
+`scripts/test-build-version.py` tests the version label that `scripts/build-version.sh` makes from `.env` and Git tags.
+
+## context-converter
+
+| Check | What it tests | Command |
+| --- | --- | --- |
+| Script syntax | The build scripts parse as Bash | `bash -n cll_build run_context_container.sh scripts/build_context.sh` |
+| ConTeXt converter | `scripts/docbook_to_context.rb` on small books | `ruby scripts/test-docbook-to-context.rb` |
+| ConTeXt assets | `scripts/context_assets.py`, which prepares images for the ConTeXt PDF | `python3 scripts/test-context-assets.py` |
+
+See [build-context.md](build-context.md#diagnostics-and-tests).
+
+## Parser probes
+
+The `parser-probes` job fetches ilmentufa, the JavaScript camxes parser, at a pinned commit.
+To get the same checkout:
+
+```sh
+mkdir ../ilmentufa && cd ../ilmentufa
+git init -q
+git remote add origin https://github.com/lojban/ilmentufa
+git fetch -q --depth 1 origin 778ea138f7d150121ca722db7536ce3b123943ac
+git checkout -q FETCH_HEAD
+cd -
+```
+
+If the workflow changes the pin, use the commit in `.github/workflows/checks.yml`.
+
+| Check | What it tests | Command |
+| --- | --- | --- |
+| Comma syllables | camxes splits each word in `scripts/reviewed-comma-words.json` into syllables at its commas | `ILMENTUFA_DIR=../ilmentufa node scripts/check-comma-syllables.js` |
+| Probe runner | `tests/run-probes.js` reports parser failures correctly | `node tests/test-run-probes.js` |
+| Audio loading | `assets/scripts/sance-next.js`, which plays pronunciation audio in the HTML book, handles loading failures | `node tests/test-audio-loading.js` |
+| Prince index | The Prince scripts that check and format the index | `node tests/test-prince-index-guard.js`, `node tests/test-prince-index-prep.js`, and `node tests/test-prince-index.js` |
+| Magic-word probes | The parser accepts or rejects each probe in `tests/fixtures/magic-word-probes.tsv` as expected | `ILMENTUFA_DIR=../ilmentufa node tests/run-probes.js` |
+
+[tests/README.md](../tests/README.md) describes the probe table and its exit codes.
+
+## Example validation
+
+The `example-validation` job is report-only.
+Its failures do not fail the workflow.
+It extracts every Lojban example line and parses it with camxes:
+
+```sh
+python3 scripts/extract-examples.py chapters/*.xml > examples.tsv
+ILMENTUFA_DIR=../ilmentufa node scripts/validate-examples.js examples.tsv
+```
+
+The workflow saves the report as the `example-report` artifact.
+The report also lists lines that are invalid on purpose.
+Check the result for any example that you changed.
+
+## Other tests
+
+These tests do not run in the `checks` workflow:
+
+- `python3 scripts/test-context-indexes.py build/cll-context.pdf` checks the printed indexes of a finished ConTeXt PDF. It needs PyMuPDF.
+- `python3 scripts/test-html-mathjax.py FILE` also compares a downloaded MathJax script with the integrity hash. See the [README](../README.md#mathematics-in-the-html-book).
+
+To check one chapter in a real build, run `./cll_build -t chapters/NN.xml`, or use the container as described in the [README](../README.md#build-on-your-computer).

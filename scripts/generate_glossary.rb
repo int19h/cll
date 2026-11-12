@@ -7,6 +7,8 @@ require 'optimist'
 require 'nokogiri'
 require 'fileutils'
 require 'htmlentities'
+require 'digest'
+require 'set'
 
 # Initialize our own variables:
 mydir=File.expand_path(File.dirname(__FILE__))
@@ -48,18 +50,25 @@ unless opts[:testing]
       exit 1
     end
     jbovlaste_tree=Nokogiri::XML(open "#{builddir}/jbovlaste.xml")
+    defined_words = jbovlaste_tree.xpath('//valsi').select do |entry|
+      !entry.xpath('.//definition').text.strip.empty?
+    end.map { |entry| entry['word'] }.to_set
 end
 
 coder = HTMLEntities.new
 
-md5_1=%x{md5sum "#{builddir}/cll_preglossary.xml"}.chomp.split[0]
-md5_2=%x{md5sum "#{builddir}/jbovlaste.xml"}.chomp.split[0]
-suffix=''
-if opts[:testing]
-  suffix='-testing'
-end
-
-glossfile="#{builddir}/glossary.xml-#{md5_1}-#{md5_2}#{suffix}"
+# The cache name covers every input the glossary text depends on. A change to
+# this script or to util.rb, or the addition or removal of a pronunciation
+# file, must not reuse a glossary written by older code. The button records
+# only whether the MP3 is present, so the name list is enough.
+audio_dir = File.expand_path('../assets/media/vreji', mydir)
+audio_inventory = Dir.glob(File.join(audio_dir, '*.mp3')).select { |path| File.file?(path) }.map { |path| File.basename(path) }.sort
+inputs = [__FILE__, File.join(mydir, 'util.rb'), File.join(builddir, 'cll_preglossary.xml')]
+inputs << File.join(builddir, 'jbovlaste.xml') unless opts[:testing]
+digest = Digest::SHA256.new
+inputs.each { |path| digest << Digest::SHA256.file(path).hexdigest << "\n" }
+digest << audio_inventory.join("\n") << "\n" << opts[:testing].to_s
+glossfile = File.join(builddir, "glossary.xml-#{digest.hexdigest}")
 $stderr.puts "glossfile: #{glossfile}; exists: #{File.exist?(glossfile)} size: #{File.size?(glossfile)}"
 
 if File.exist?(glossfile) and File.size?(glossfile) and File.size?(glossfile) > 100
@@ -71,7 +80,21 @@ else
   File.open(glossfile + ".tmp", 'w') do |gfh|
     tree=Nokogiri::XML(open "#{builddir}/cll_preglossary.xml")
     words = find_lojban_words( tree ).select { |x| x.attributes['valid'].to_s != 'maybe' }.map { |x| x.text.to_s } + find_frame_words( tree )
-    words.sort { |a,b| slugify(a).downcase <=> slugify(b).downcase }.uniq.each do |word|
+    glossary_word_groups(words).each do |slug, spellings|
+      # Spellings that slugify to one ID, such as .y. and y, share one entry.
+      # Prefer a spelling that has a definition so an undefined alias cannot
+      # hide it. Every link still uses valsi- plus that same slug.
+      word = if opts[:testing]
+        spellings.first
+      else
+        spellings.find { |spelling| defined_words.include?(spelling) }
+      end
+      unless word
+        spellings.each do |spelling|
+          $stderr.puts %Q{\n"NO JBOVLASTE DEFINITION FOUND FOR WORD "#{spelling}"}
+        end
+        next
+      end
       $stderr.print "#{word} "
       if ! initial_letter
         gfh.puts %q{
@@ -87,7 +110,6 @@ definitions.  These definitions are here simply as a quick reference.
         }
       end
 
-      slug=slugify(word)
       #puts "#{word}\t#{slug}"
 
       new_initial_letter=slug.chars.first.upcase
@@ -179,4 +201,4 @@ definitions.  These definitions are here simply as a quick reference.
   File.rename(glossfile + ".tmp", glossfile)
 end
 
-puts %x{cat #{glossfile}}
+puts File.read(glossfile)

@@ -50,6 +50,11 @@ python3 scripts/test-xml-prince-postprocess.py
 python3 scripts/test-nokogiri-spaces.py
 ruby scripts/test-lint-gloss-columns.rb
 ruby scripts/lint-gloss-columns.rb chapters/*.xml
+ruby scripts/test-lint-index-types.rb
+ruby scripts/lint-index-types.rb chapters/*.xml
+ruby scripts/test-merge-branding.rb
+ruby scripts/test-partial-references.rb
+ruby scripts/test-generate-glossary.rb
 ruby scripts/test-lint-word-spellings.rb
 ruby scripts/lint-word-spellings.rb chapters/*.xml
 ruby scripts/test-jbophrase-frames.rb
@@ -114,6 +119,11 @@ The status lint reports a `status-note` without `condition` as a warning, and th
 | Nokogiri spaces | The Ruby build scripts keep the spaces between inline elements | `python3 scripts/test-nokogiri-spaces.py` |
 | Gloss columns self-test | The lint below, on fixtures | `ruby scripts/test-lint-gloss-columns.rb` |
 | Gloss columns | Each gloss line has a column for every Lojban word, and structural words such as `cu` and terminators have suitable glosses (see [markup-tags.md](markup-tags.md#interlinear-gloss)) | `ruby scripts/lint-gloss-columns.rb chapters/*.xml` |
+| Index types self-test | The lint below, on fixtures | `ruby scripts/test-lint-index-types.rb` |
+| Index types | Every hand-written `indexterm` has the type `general` or `lojban-word`, the only two indexes that the build makes | `ruby scripts/lint-index-types.rb chapters/*.xml` |
+| Branding values | `.env` values with `&`, `'`, `=` and quotes reach the title page unchanged and as well-formed XML | `ruby scripts/test-merge-branding.rb` |
+| Partial builds | With `-t` and `-s`, every cross-reference to an omitted target is replaced, so a single chapter passes validation | `ruby scripts/test-partial-references.rb` |
+| Glossary | The glossary cache changes when the generator, `scripts/util.rb` or the pronunciation recordings change, and spellings with the same ID share one entry | `ruby scripts/test-generate-glossary.rb` |
 | Word spellings self-test | The lint below, on fixtures | `ruby scripts/test-lint-word-spellings.rb` |
 | Word spellings | Lojban text has no CGV sequence (a consonant, a glide, and a vowel), and every word with a comma between two vowels appears in `scripts/reviewed-comma-words.json`. It does not check commas next to consonants. It reads only Lojban elements such as `jbo`, `valsi`, and `jbophrase`, and it skips text marked `valid="false"` or `valid="maybe"` and the quoted text of `zoi` and `la'o`. | `ruby scripts/lint-word-spellings.rb chapters/*.xml` |
 | jbophrase frames | A frame such as `lu ... li'u` links each of its words to the glossary, and the glossary collects those words | `ruby scripts/test-jbophrase-frames.rb` |

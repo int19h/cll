@@ -834,7 +834,7 @@
       <quote>they</quote>. Lojban does have equivalents of this latter group: in fact, it has more of them than English does. However, they are organized and used very differently.
     </para>
     <para>
-      <indexterm type="pro-sumti">
+      <indexterm type="lojban-word">
         <primary>ko'a-series</primary>
         <secondary>pro-sumti as assignable</secondary>
       </indexterm>
@@ -871,7 +871,7 @@
       means that Alice, not the store, is blue.
     </para>
     <para>
-      <indexterm type="pro-sumti">
+      <indexterm type="lojban-word">
         <primary>ko'a-series</primary>
         <secondary>assigning pro-sumti with goi</secondary>
       </indexterm>
@@ -891,7 +891,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="pro-sumti">
+      <indexterm type="lojban-word">
         <primary>ko'a-series</primary>
         <secondary>assignment with goi as being symmetrical</secondary>
       </indexterm>
@@ -2632,7 +2632,7 @@
       </indexterm>
       <indexterm type="general"><primary>anaphoric pro-sumti</primary><secondary>stability of</secondary>
       </indexterm>
-      <indexterm type="generlojban-wordal"><primary>ke'a</primary>
+      <indexterm type="lojban-word"><primary>ke'a</primary>
         <secondary>stability of</secondary>
       </indexterm>
       <indexterm type="general"><primary>reflexive pro-sumti</primary><secondary>stability of</secondary>

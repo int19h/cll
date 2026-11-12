@@ -37,5 +37,5 @@ if [ -L build ]; then
 fi
 "$container_bin" run --rm "${user_args[@]}" "${mount_args[@]}" \
   -e TMPDIR=/srv/cll/build/tmp -e XDG_CACHE_HOME=/srv/cll/build/cache \
-  -e CLL_BUILD_VERSION="$build_version" \
+  -e HOME=/tmp -e CLL_BUILD_VERSION="$build_version" \
   "$image" ./cll_build -n -T pdf_weasyprint "$@"

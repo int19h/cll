@@ -39,6 +39,6 @@ if [[ $(basename "$container") == podman ]]; then
   user_args=(--userns=keep-id)
 fi
 "$container" run --rm "${user_args[@]}" "${mounts[@]}" \
-  -e CLL_BUILD_VERSION="$build_version" \
+  -e HOME=/tmp -e CLL_BUILD_VERSION="$build_version" \
   -w "$repo" "$(cat "$build/context-image.id")" \
   ./cll_build -n -T pdf_context "${args[@]}"

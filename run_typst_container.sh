@@ -45,4 +45,4 @@ if [[ $(basename "$container_bin") == podman ]]; then user_args=(--userns=keep-i
 terminal=()
 if [[ -t 0 && -t 1 ]]; then terminal=(-it); fi
 exec "$container_bin" run --rm "${terminal[@]}" "${user_args[@]}" "${volumes[@]}" --workdir "$repo" \
-  -e CLL_BUILD_VERSION="$build_version" "$image" ./cll_build -n -T pdf_typst "${args[@]}"
+  -e HOME=/tmp -e CLL_BUILD_VERSION="$build_version" "$image" ./cll_build -n -T pdf_typst "${args[@]}"

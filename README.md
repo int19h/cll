@@ -41,9 +41,10 @@ cd cll
 ### Container build
 
 The main build runs in a container.
-You need Podman and Bash.
-`run_container.sh` always passes the Podman option `--userns=keep-id`, so it does not work with Docker yet.
-Issue [#229](https://github.com/int19h/cll/issues/229) tracks Docker support.
+You need Bash and either Podman or Docker.
+With Podman, the launcher uses `--userns=keep-id`.
+With Docker, it runs as your user and group.
+Build output stays owned by your user.
 
 The script runs the command in `CONTAINER_BIN`.
 If that variable is not set, it uses `podman`, or `docker` if Podman is not installed.
@@ -58,7 +59,9 @@ To build all formats, run:
 The script builds the image `lojban/cll_build` from `Dockerfile`.
 It then runs `./cll_build` inside a container named `cll_build`, with your checkout mounted, and passes its own arguments to `cll_build`.
 Before it starts, it stops and removes any container with that name, so run only one such build at a time on a machine.
-It needs a terminal.
+It enables interactive input and terminal output only when standard input is a terminal.
+It also runs from scripts and CI.
+If `build/` is a symlink, the launcher mounts its destination too.
 
 ### Build options
 
@@ -67,7 +70,7 @@ It needs a terminal.
 | `-t` | Fast test build. The build changes cross-references so that the selected files build on their own, and it skips most of the glossary work. |
 | `-s` | Like `-t`, but with the full glossary |
 | `-T TARGET` | Build one target instead of `all` |
-| `-a DIRECTORY` | Copy the results to `DIRECTORY` as well. Give the absolute path of a directory that exists, such as `"$PWD/output"`. |
+| `-a DIRECTORY` | Copy the results to `DIRECTORY` as well. The launcher creates the directory if needed and resolves it to an absolute path before mounting it. Relative paths start from the current directory. |
 | `-n` | Skip the comparison with `official/` |
 | `-h` | Print the usage, including the list of targets. `./cll_build -h` prints it without a container. |
 
@@ -110,8 +113,7 @@ So `-a` with the default target fails at the ePub step.
 Use `-a` together with `-T` and an HTML or PDF target, for example:
 
 ```sh
-mkdir -p output
-./run_container.sh -n -T pdf -a "$PWD/output"
+./run_container.sh -n -T pdf -a output
 ```
 
 Issue [#176](https://github.com/int19h/cll/issues/176) tracks this problem.
@@ -134,6 +136,8 @@ Three other engines each have their own launcher, image, and guide:
 
 Each launcher accepts `-t` and `-s` with chapter files, as `run_container.sh` does.
 The Typst and ConTeXt launchers also accept `-a DIRECTORY`.
+They create the directory if needed and resolve it to an absolute path before mounting it.
+The Typst launcher resolves relative paths from the checkout; ConTeXt uses the current directory.
 These three launchers pass `--userns=keep-id` only to Podman.
 With Docker, they run the container as your user and group instead.
 The "Build selected formats" workflow runs the ConTeXt launcher with Docker.

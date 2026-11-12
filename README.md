@@ -45,8 +45,10 @@ You need Bash 3.2 or later and either Podman (rootless) or Docker (rootful or ro
 All four launchers use `--userns=keep-id` with Podman.
 With rootful Docker, they run containers as your user and group.
 With rootless Docker, they run as root inside the container, which maps to the daemon's host user.
-If the rootless detection query fails, they use your user and group.
+The launchers ask `docker info` whether the daemon is rootless.
+If that query fails, they print a warning and use your user and group.
 Build output stays owned by your user.
+With rootless Docker, keep the checkout files in your primary group: the build copies files with their group, and other groups map to unrelated group IDs on the host.
 
 Podman needs an init binary on the host for `--init`.
 On Debian and Ubuntu, install the `catatonit` package.

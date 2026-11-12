@@ -56,10 +56,6 @@ doc = doc.gsub( %r{--CHAPBR--}, ' <br/>' )
 # In both cases, regex is *WAY* easier, and shouldn't cause any
 # trouble.
 
-# Put in our own header
-header = File.open( 'scripts/header.xml', 'r' ) { |f| f.read }
-doc = doc.gsub( %r{^.*<book [^>]*>}m, header )
-
 puts doc
 
 exit 0

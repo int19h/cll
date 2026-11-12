@@ -11,10 +11,9 @@ Reproducible artifacts backing the CLL-update research claims (issue #11).
   example-validation CI, issue #8).
 - `fixtures/xml-prince-postprocess.xhtml` — input for the Prince
   postprocessor smoke test (`scripts/test-xml-prince-postprocess.py`), which
-  runs `scripts/xml_prince_postprocess.rb` and checks all five of its
-  transformations. The shapes are copied from real build output, except the
-  `<book>`-rooted document element: that branch of the script no longer fires
-  on the release path (see issue #112), and the fixture pins it as written.
+  runs `scripts/xml_prince_postprocess.rb` and checks all four of its
+  transformations. The XHTML root matches real Prince input. The test also
+  checks that output does not depend on the working directory (issue #112).
   The literal U+00A0 between "Chapter" and "21" is required — the script's
   regex contains that character.
 - `fixtures/peg-morphology-diff.md` — rule-level diff between the BPFK wiki

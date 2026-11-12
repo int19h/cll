@@ -19,7 +19,7 @@ Report errors and suggest changes in the [issues](https://github.com/int19h/cll/
 | `tests/` | Parser probes and test fixtures |
 | `typst/` | The Typst page layout, `book.typ` |
 | `epub/` | ePub templates and the bundled epubcheck |
-| `dictionary/` | `all_words.xml`, the jbovlaste dictionary export that the glossary uses. If this file is missing or empty, the build downloads a new export. |
+| `dictionary/` | `all_words.xml`, the jbovlaste dictionary export that the glossary uses. If this file is missing or empty, the build downloads a new export. `cll_build -j` fetches a fresh export into that file. |
 | `official/` | Published builds of CLL 1.1 and of the upstream 1.2 versions, which the local comparison step uses. `official/gadri/` keeps the ratified text of the article reform. |
 | `orig/` | Files from the first edition, and the SVG source of the chapter 2 diagram |
 | `coverage/` | Small test books for the coverage mode of `cll_build` (`-c`). They predate the current asset layout, and no check runs them. |
@@ -88,6 +88,7 @@ The launchers reject paths with whitespace before building an image because `scr
 | `-T TARGET` | Build one target instead of `all` |
 | `-a DIRECTORY` | Copy the results to `DIRECTORY` as well. The launcher creates the directory if needed and resolves it to an absolute path before mounting it. Relative paths start from the current directory. |
 | `-n` | Skip the comparison with `official/` |
+| `-j` | Fetch a fresh Jbovlaste export into `dictionary/all_words.xml`. Review that file before committing it. |
 | `-h` | Print the usage, including the list of targets. `./cll_build -h` prints it without a container. |
 
 To build one or more chapters, give their files after `-t` or `-s`:

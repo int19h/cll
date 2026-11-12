@@ -1,35 +1,63 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 # Find and go to where the script lives
-sdir="$(dirname "$(readlink -f $0)")"
+sdir="$(dirname "$(readlink -f "$0")")"
 cd "$sdir"
 # And step out one
 cd ..
 
-if [ ! "$1" ]
+if [ -z "${1:-}" ]
 then
-  echo "Give build dir as sole argument."
+  echo "Usage: update_jbovlaste_xml.sh BUILD_DIR [--refresh]" >&2
   exit 1
 fi
 
 builddir=$1
-if [ -s 'dictionary/all_words.xml' ]
+if [[ "${2:-}" != "" && "${2:-}" != --refresh ]]; then
+  echo "Unknown option: $2" >&2
+  exit 1
+fi
+
+# Jbovlaste is read-only. Lensisku is its de facto successor, but Lensisku's
+# XML export is a different shape (<entry><word>, not <valsi word>), and the
+# glossary reads the Jbovlaste export. Keep this URL while it still serves that
+# export.
+jbovlaste_url='http://jbovlaste.lojban.org/export/xml-export.html?lang=en&bot_key=z2BsnKYJhAB0VNsl'
+
+if [[ "${2:-}" != --refresh && -s dictionary/all_words.xml ]]
 then
   echo
-  echo "Using the extant dictionary/all_words for the jbovlaste dictionary file.  If you think this is in error, run the build with -j."
+  echo "Using dictionary/all_words.xml for the glossary. Run cll_build -j to fetch a fresh Jbovlaste export."
   echo
 else
   echo
-  echo "Pulling a new dictionary/all_words from the web.  If you end up using it you should check it in so we have consistent builds."
+  echo "Fetching dictionary/all_words.xml from the Jbovlaste XML export."
+  echo "Jbovlaste is read-only, and Lensisku is its de facto successor. Lensisku's XML is a different shape, so this build still uses the Jbovlaste export."
+  echo "Review the file before committing it, so builds stay reproducible."
   echo
-  wget 'http://jbovlaste.lojban.org/export/xml-export.html?lang=en&bot_key=z2BsnKYJhAB0VNsl' -O 'dictionary/all_words.xml'
+  temporary=$(mktemp dictionary/all_words.xml.XXXXXX)
+  trap '[[ -z "${temporary:-}" ]] || rm -f -- "$temporary"' EXIT
+  if ! wget "$jbovlaste_url" -O "$temporary"; then
+    echo "The Jbovlaste download failed. dictionary/all_words.xml was not changed." >&2
+    exit 1
+  fi
+  # Do not replace a usable dictionary with a failed or empty download.
+  if ! test -s "$temporary" || ! xmllint --nonet --noout "$temporary"; then
+    echo "The download was empty or not well-formed XML. dictionary/all_words.xml was not changed." >&2
+    exit 1
+  fi
+  # mktemp is private (mode 600). A wget download is readable.
+  chmod 644 -- "$temporary"
+  mv -- "$temporary" dictionary/all_words.xml
+  temporary=""
+  trap - EXIT
 fi
 
 cp dictionary/all_words.xml "$builddir/jbovlaste.xml.new"
 
-sizenew="$(stat -c %s $builddir/jbovlaste.xml.new || echo 0)"
+sizenew="$(stat -c %s "$builddir/jbovlaste.xml.new" || echo 0)"
 if [ ! -f "$builddir/jbovlaste.xml.new" -o ! "$sizenew" -o "$sizenew" -lt 100 ]
 then
   echo
@@ -38,7 +66,7 @@ then
   exit 1
 fi
 
-size="$(stat -c %s $builddir/jbovlaste.xml || echo 0)"
+size="$(stat -c %s "$builddir/jbovlaste.xml" || echo 0)"
 if [ ! -f "$builddir/jbovlaste.xml" -o ! "$size" -o "$size" -lt 100 ]
 then
   echo

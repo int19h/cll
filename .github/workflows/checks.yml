@@ -21,6 +21,8 @@ jobs:
           ruby scripts/test-build-workflow.rb
       - name: Makefile archives and incremental inputs
         run: python3 scripts/test-makefile.py
+      - name: Build helper failure and dictionary refresh tests
+        run: python3 scripts/test-build-helpers.py
       - name: XHTML formatting preserves inline spaces
         run: python3 scripts/test-xhtml-format.py
       - name: Chapter artwork references and PNGs
@@ -92,10 +94,8 @@ jobs:
       - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
           ruby-version: '3.2'
-      # Deliberately not bundler-cache: the checked-in Gemfile.lock resolves
-      # nokogiri 1.10.4, while the Dockerfile and the Pages build both install
-      # 1.18.8. Testing 1.10.4 would characterize a version we never release.
-      # Reconciling the manifest with the released pins is separate work.
+      # Gemfile.lock records the production pins. This job still installs the
+      # gems directly, as the Dockerfile does, so the check does not depend on Bundler.
       - name: Install libxml2-utils
         run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils
       - name: Install the production Nokogiri, Optimist, and HTMLEntities gems

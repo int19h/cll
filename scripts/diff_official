@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 type=xhtml_no_chunks
 
 read_var() {

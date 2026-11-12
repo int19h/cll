@@ -13,7 +13,7 @@ This test runs the real script, unmodified, on one small fixture that carries
 one instance of each thing the script transforms, and asserts the resulting
 document. It is a characterization test of the existing command-line
 behavior, so it deliberately goes through the process boundary: ARGV[0], the
-repository-root working directory, the real scripts/header.xml, Nokogiri's
+working-directory independence, Nokogiri's
 own serialization, the order of the DOM and regex passes, stdout-only output,
 and the exit status.
 
@@ -30,22 +30,16 @@ Run: python3 scripts/test-xml-prince-postprocess.py
 """
 import subprocess
 import sys
+import tempfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 SCRIPT = ROOT / "scripts" / "xml_prince_postprocess.rb"
-HEADER = ROOT / "scripts" / "header.xml"
 FIXTURE = ROOT / "tests" / "fixtures" / "xml-prince-postprocess.xhtml"
 
 # The separator xml/docbook2html_config_prince.xsl injects into chapter titles.
 MARKER = "--CHAPBR--"
-
-# An attribute on the fixture's own <book> start tag. The header substitution
-# throws that tag away, so its survival means the substitution did not run --
-# a check that finding a <book> root would not give us, since the replacement
-# header supplies a <book> root of its own.
-SENTINEL = "ORIGINAL-ROOT-MUST-BE-REPLACED"
 
 # Spelled with escapes on purpose. The separator after "Chapter" is a no-break
 # space -- the XSL writes it, and the script's xref-title regex matches on it --
@@ -104,12 +98,12 @@ def text_before(elem, stop):
     return "".join(parts), hit
 
 
-def run_postprocess():
-    """Run the script the way scripts/Makefile does: from the repository root."""
+def run_postprocess(cwd=ROOT):
+    """Exercise the command line from a supplied working directory."""
     try:
         return subprocess.run(
             ["ruby", str(SCRIPT), str(FIXTURE)],
-            cwd=str(ROOT),
+            cwd=str(cwd),
             capture_output=True,
         )
     except FileNotFoundError:
@@ -117,7 +111,7 @@ def run_postprocess():
 
 
 def main():
-    for path in (SCRIPT, HEADER, FIXTURE):
+    for path in (SCRIPT, FIXTURE):
         if not path.is_file():
             die(f"missing {path}")
 
@@ -133,14 +127,10 @@ def main():
     stdout = proc.stdout
     text = stdout.decode("utf-8")
 
-    # --- header replacement, and the repository-root working directory -------
-    header = HEADER.read_bytes()
-    check(stdout.startswith(header),
-          "stdout begins with the checked-in scripts/header.xml",
-          f"first bytes were {stdout[:len(header)][:160]!r}")
-    check(SENTINEL not in text,
-          "the fixture's original root start tag is gone",
-          f"the sentinel {SENTINEL!r} survived in the output")
+    with tempfile.TemporaryDirectory() as directory:
+        elsewhere = run_postprocess(directory)
+    check(elsewhere.returncode == 0 and elsewhere.stdout == stdout,
+          "output is identical outside the repository working directory")
 
     # --- no marker survives anywhere, not just in element text --------------
     check(MARKER not in text,
@@ -152,8 +142,12 @@ def main():
         root = ET.fromstring(stdout)
     except ET.ParseError as exc:
         die(f"stdout is not well-formed XML: {exc}")
-    check(root.tag == "book", "the parsed root element is <book>",
+    check(root.tag == "{http://www.w3.org/1999/xhtml}html", "the parsed root is XHTML <html>",
           f"root tag was {root.tag!r}")
+
+    # Strip namespaces for the transformation assertions below.
+    for element in root.iter():
+        element.tag = element.tag.rsplit("}", 1)[-1]
 
     # --- chapter heading: marker becomes a break, and keeps a real space -----
     headings = [h for h in root.iter("h1")

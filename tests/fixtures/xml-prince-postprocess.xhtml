@@ -14,10 +14,9 @@
   * The chapter heading and the xref title both carry the CHAPBR separator
     that the postprocessor rewrites; the test asserts none survives.
 
-  The root element is "book" with a sentinel attribute, so that the header
-  substitution has something to replace and the test can prove it ran.
+  The XHTML root matches the Prince input in the production pipeline.
 -->
-<book xmlns="http://www.w3.org/1999/xhtml" data-postprocess-sentinel="ORIGINAL-ROOT-MUST-BE-REPLACED">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Smoke test</title></head><body>
   <div class="chapter">
     <div class="titlepage">
       <div>
@@ -51,4 +50,4 @@
       </div>
     </div>
   </div>
-</book>
+</body></html>

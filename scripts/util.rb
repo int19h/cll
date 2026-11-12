@@ -26,3 +26,8 @@ def find_frame_words( tree )
     parts ? parts.each_slice(2).map(&:first) : []
   end
 end
+
+# Keep legacy slugs stable. Colliding spellings share one glossary entry.
+def glossary_word_groups(words)
+  words.uniq.sort_by { |word| [slugify(word).downcase, word] }.group_by { |word| slugify(word) }
+end

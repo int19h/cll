@@ -8,12 +8,14 @@ build step). It is an inventory of what `scripts/Makefile` and its
 helper scripts actually invoke; the Dockerfile is the ground truth for
 the container toolset.
 
-`cll_build` propagates failures *reported by make*: if a make recipe
-fails (including a missing tool invoked directly by a recipe, such as
-`regenerator` or `prince`), the wrapper exits nonzero and prints
-`BUILD FAILED`, and the post-build diff against `official/` is
-skipped. Individual helper scripts may still mask their own internal
-failures; hardening them is tracked separately.
+`cll_build` exits with a nonzero status after `make` reports a failure.
+A missing tool in a recipe is one such failure. Examples are `regenerator` and `prince`.
+`cll_build` prints `BUILD FAILED`. It then skips the comparison with `official/`.
+`cll_build` also exits with a nonzero status after `scripts/diff_official` fails.
+It prints a warning that names the comparison status.
+Use `-n` to skip the comparison.
+The XHTML post-processing scripts stop after a tool fails.
+They keep the original page. They do not write an empty file in its place.
 
 ## Shared by every target
 
@@ -28,11 +30,10 @@ EPUB targets alike — uses:
 - `regenerator` from npm (`npm install -g regenerator`), used for the
   ES5 transform of `assets/scripts/sance-next.js` while assembling
   `cll.xml`;
-- `ruby` and the gems pinned in `Gemfile.lock`. The locked Nokogiri
-  builds a native extension, so Bundler needs a compiler and the
-  library headers: on Debian/Ubuntu install `ruby-full build-essential
-  libxml2-dev libxslt1-dev zlib1g-dev`, then
-  `gem install bundler && bundle install`.
+- Ruby 3.2 or later and Bundler 4.
+  `Gemfile.lock` pins Nokogiri 1.18.8, Optimist 3.2.0, and htmlentities 4.3.4.
+  The Nokogiri gem is precompiled for x86_64 Linux and for aarch64 Linux.
+  Run `gem install bundler && bundle install`.
 
 ## Per-target extras
 

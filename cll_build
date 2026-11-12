@@ -38,9 +38,9 @@ Build faster for testing:
 
 -t: Does what -s does, but also prevents most glossary processing so the glossary building goes much faster.  Normally you want this intead of -s.
 
-Regenerate jbovlaste:
+Refresh the dictionary:
 
--j: Pulls down a new version of xml/jbovlaste.xml from jbovlaste.  Note that if you do this you should later check in the new version, so we can have consistent builds.
+-j: Fetch a fresh Jbovlaste export into dictionary/all_words.xml. Review the changes before committing the dictionary, to keep builds reproducible.
 
 Copy output to your web directory:
 
@@ -215,11 +215,10 @@ then
   rm -f $builddir/cll.xml
 fi
 
-# If regeneration of xml/jbovlaste.xml was requestiod, remove
-# that file and it will get regenerated downstream.
+# Refresh now, even if make considers the glossary up to date.
 if [ "$update_jbovlaste" ]
 then
-  rm xml/jbovlaste.xml
+  scripts/update_jbovlaste_xml.sh "$builddir" --refresh || exit
 fi
 
 make -f scripts/Makefile builddir="$builddir" test="$optlist" chapters="$chapters" covcopydir="$covarchivedir" copydir="$archivedir" $target
@@ -233,6 +232,11 @@ fi
 if [ $make_rc -eq 0 -a $diff = 'yes' ]
 then
   ./scripts/diff_official
+  diff_rc=$?
+  if [ "$diff_rc" -ne 0 ]; then
+    echo "WARNING: book build succeeded, but scripts/diff_official failed (status $diff_rc). Use -n to skip comparisons." >&2
+    make_rc=$diff_rc
+  fi
 fi
 
 if [ "$shell" = 'yes' ]

@@ -37,11 +37,11 @@ Preserve these distinctions:
 - CHECKPOINTED means fixed by an early BPFK checkpoint. The authoritative texts are frozen snapshots from 2004–2005. Gadri are Lojban articles. BAI contains modal tags. The snapshots cover Letterals, Aspect, gadri, Magic Words, and six BAI sections.
 
   The Aspect checkpoint includes the reversal of ZAhO meanings when used as modal tags. The committee explicitly deferred `si`, `sa`, and `su`. Distance markers were outside the BAI checkpoint.
-- DE-FACTO means supported by practice or implementation without official adoption. State the kind of evidence. Morphology describes how word forms are built. PEG morphology has both a working document and implementation. This includes combining forms from borrowed words. `VA`, `ZI`, `VEhA`, and `ZEhA` regularization also has a working document and implementation.
+- DE-FACTO means supported by a working document of the definition effort, practice, or implementation without official adoption. State the kind of evidence. This edition's non-importing `ro` follows the BPFK Inexact Numbers draft. That section was not checkpointed. Morphology describes how word forms are built. PEG morphology has both a working document and implementation. This includes combining forms from borrowed words. `VA`, `ZI`, `VEhA`, and `ZEhA` regularization also has a working document and implementation.
 
   The tested parsers implement `si` and `su` erasure. Camxes is the principal compatibility target across the surveyed tools.
 - PROPOSED means a concrete proposal without adoption. The e-series attitude markers belong here. Dictionary entries reflect the proposed senses, but they do not grant official status. This edition selects the directive account on editorial grounds. The BPFK drafted and discussed that account but never completed or adopted it.
-- UNSETTLED means that sources or implementations disagree without a final resolution. Subjects include `ro` existential import, `sa`, `na` scope, the comma, `lo'e`, `le'e`, `jei`, and `lo'i` of nothing. An editorial choice does not settle a dispute for the language as a whole.
+- UNSETTLED means that sources or implementations disagree without a final resolution. Subjects include `sa`, `na` scope, the comma, `lo'e`, `le'e`, `jei`, and `lo'i` of nothing. An editorial choice does not settle a dispute for the language as a whole. This edition teaches non-importing `ro` under DE-FACTO, following the BPFK Inexact Numbers draft.
 
 Do not teach an unsettled point as settled. Label de facto material and unadopted proposals. Preserve the 2007 promise that pre-xorlo CLL usage is "not incorrect." Describe changes without branding that older usage as an error.
 
@@ -53,7 +53,7 @@ Apply the following decisions:
 
 1. Describe mainstream current Lojban with explicit status labels.
 2. Teach CLL's `na` rule with a status note. A prenex is a clause prefix containing terms or operators. `na` equals `naku` at the head of the prenex. Distinguish `na pu` from `pu na`.
-3. Teach `ro` with existential import. Present that requirement as projective, meaning that it survives negation. Include a status note about the non-importing alternative. See int19h/jbotci#279 for the consistency argument.
+3. Teach `ro` without existential import. `ro da poi broda cu brode` is true when nothing brodas. Mark this reading DE-FACTO, from the BPFK Inexact Numbers draft, which was not checkpointed. Give a short status note in the main text. Record the first edition's importing rule and this change in the changes appendix. Preserve any separate reference requirement of explicit descriptions such as `ro lo broda`. Do not claim community usage or preference without evidence for that claim. See issue #230 and the November 11, 2026 decision on #1.
 4. Treat the comma as a writing convention with no sound value.
 5. Describe the intent of `sa` erasure. Mark its semantics as unsettled. State relevant differences between parsers. Do not prescribe unusual, unsupported behavior.
 6. Favor modern examples when choosing between `le` and `lo`. Use fully modern examples in chapters 2 and 6. Elsewhere, retain `le` when the example specifically teaches it. Do not replace every `le` mechanically.
@@ -100,9 +100,9 @@ Preserve the following distinctions:
 
   BU forms letterals, symbols used as Lojban letters. The later synthesis conflicts with the frozen BU definition in some cases. The frozen text forbids `ba'e bu`, while the later synthesis and camxes allow it. Trace each rule to its source. Do not call the later synthesis checkpointed.
 - Distance markers `VA`, `ZI`, `VEhA`, and `ZEhA` were outside the 2005 BAI checkpoint.
-- The ratified article definitions equate `PA broda` with `PA da poi broda`. Do not substitute `PA lo broda`.
+- The ratified article definitions equate `PA broda` with `PA da poi broda`. Do not substitute `PA lo broda`. They also equate `PA sumti` with `PA da poi ke'a me sumti`. This preserves the description's own reference requirement.
 - The 2020 article ratification covers wiki revision 123823 and the two named corrections. A live wiki page is not the ratified text.
-- CLL 16.8 gives `ro` existential import. Present that import as projective under this edition's editorial decision. Jbotci's bare universal output is an implementation gap. It is not evidence that `ro` lacks import.
+- The first edition's CLL 16.8 gives `ro` existential import. This edition teaches non-importing `ro`, following the uncheckpointed BPFK Inexact Numbers draft, with DE-FACTO status. Record the first edition's rule in the changes appendix. Non-importing `ro` preserves ordinary quantifier duality and contradictory `na` negation.
 - Jbovlaste is read-only. Lensisku is its de facto successor. Neither dictionary's content has official status merely because it appears there.
 
 ## Builds

@@ -467,7 +467,7 @@
       There are various possible translations of universal claims in English: sometimes we use
       <quote>anybody/anything</quote>
       rather than
-      <quote>everybody/everything</quote>. Often it makes no difference which of these is used: when it does make a difference, it is a rather subtle one which is explained in
+      <quote>everybody/everything</quote>. Usually it makes no difference which of these is used. But English <quote>any</quote> has other uses too, and some of them are not universal claims at all; see
       <xref linkend="section-any" />.
     </para>
   </section>
@@ -1167,79 +1167,88 @@
 
       <para>Anyone who goes to the store, walks across the field.</para>
     </example>
-    <para role="indent">Using the facilities already discussed, a plausible translation might be</para>
+    <para role="indent">Using the facilities already discussed, we can translate this as</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-7Kn8">
       <title><anchor xml:id="c16e8d2" /></title>
 
       <interlinear-gloss>
-        <jbo valid="iffy">ro da poi klama lo zarci cu cadzu lo foldi</jbo>
+        <jbo>ro da poi klama lo zarci cu cadzu lo foldi</jbo>
         <gloss>All X such-that-it goes-to the store - walks-on the field.</gloss>
         <natlang>Everyone who goes to the store walks across the field.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="general"><primary>everyone</primary><secondary>contrasted with anyone in assumption of existence</secondary>
-      </indexterm>
-      <indexterm type="general"><primary>anyone</primary><secondary>contrasted with everyone in assumption of existence</secondary>
-      </indexterm>
       <indexterm type="general"><primary>any</primary><secondary>as a restricted universal claim</secondary>
       </indexterm>
-      But there is a subtle difference between
-      <xref linkend="example-random-id-R4mX" />
-      and
-      <xref linkend="example-random-id-7Kn8" />.
+      <indexterm type="general"><primary>existential import</primary><secondary>of ro</secondary>
+      </indexterm>
       <xref linkend="example-random-id-7Kn8" />
-      tells us that, in fact, there are people who go to the store, and that they walk across the field. A sumti of the type
-      <jbophrase>ro da poi klama</jbophrase>
-      requires that there are things which
-      <valsi>klama</valsi>
-      : Lojban universal claims always imply the corresponding existential claims as well.
+      claims no more than
+      <xref linkend="example-random-id-R4mX" />
+      does. In particular, it does not say that anyone goes to the store. A claim with
+      <valsi>ro</valsi>
+      says nothing about whether anything satisfies its restriction; in the terms of logicians, it has no <quote>existential import</quote>. If nobody goes to the store, then nobody who goes there fails to walk across the field, and
+      <xref linkend="example-random-id-7Kn8" />
+      is true, if not very interesting. The rule concerns
+      <valsi>ro</valsi>
+      alone. It does not change what the descriptions
+      <jbophrase>lo zarci</jbophrase>
+      and
+      <jbophrase>lo foldi</jbophrase>
+      refer to.
     </para>
     <para>
-      This implication is of a special kind. It clings to the restriction, not to the claim, so it survives even when you negate the claim. The sentence
+      To deny the claim, you need a counterexample. Under the negation rules of
+      <xref linkend="section-negation-boundaries" /> and
+      <xref linkend="section-na-outside-prenex" />, the sentence
       <jbophrase>naku ro da poi klama lo zarci cu cadzu lo foldi</jbophrase>
-      still concerns actual store-goers. Under the negation rules of
-      <xref linkend="section-negation-boundaries" />, it is exactly equivalent to
+      is equivalent to
       <jbophrase>su'o da poi klama lo zarci ku'o naku cadzu lo foldi</jbophrase>, where the
       <valsi>ku'o</valsi>
       keeps the
       <valsi>naku</valsi>
-      out of the relative clause. Logicians call such survivors <quote>presuppositions</quote>. Without this reading, the universal-existential implication and the negation rules cannot both hold.
+      out of the relative clause. Both say that somebody goes to the store and does not walk across the field. If nobody goes to the store, both are false.
     </para>
-    <para role="status-note">
+    <para role="status-note" condition="status:de-facto">
       <indexterm type="general"><primary>ro</primary><secondary>existential import of, status</secondary>
       </indexterm>
-      <indexterm type="general"><primary>presupposition</primary><secondary>existential import as</secondary>
-      </indexterm>
-      It is unsettled whether restricted universal claims carry existential import, that is, whether they imply that something exists. Some writing and software treat
-      <jbophrase>ro da poi broda</jbophrase>
-      as vacuously true when nothing brodas: true because no counterexample exists. This book teaches the importing, presuppositional reading, which is the only one consistent with the negation rules of
-      <xref linkend="section-negation-boundaries" />. But learn to recognize the alternative in real text (see
-      <xref linkend="appendix-changes" />).
+      This is a change from the first edition, where a
+      <valsi>ro</valsi>
+      claim also meant that something satisfies its restriction, so that
+      <xref linkend="example-random-id-7Kn8" />
+      implied that someone goes to the store. The rule taught here follows
+      <quote>Inexact Numbers</quote>, a working draft of the BPFK, the language-definition committee introduced in
+      <xref linkend="chapter-about" />. The committee never checkpointed that draft, so the rule is de facto.
+      <xref linkend="appendix-changes" />
+      records the change.
     </para>
     <para>
-      <xref linkend="example-random-id-R4mX" />, on the other hand, does not require that there are any people who go to the store: it simply states, conditionally, that if there is anyone who goes to the store, he or she walks across the field as well. This conditional form mirrors the true Lojban translation of
-      <xref linkend="example-random-id-R4mX" />:
+      The restriction can also be moved into the claim itself, as a one-way conditional (see
+      <xref linkend="chapter-connectives" />):
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-BwU7">
       <title><anchor xml:id="c16e8d3" /></title>
 
       <interlinear-gloss>
-        <jbo>ro da zo'u da go klama lo zarci</jbo>
-        <gloss>For-every X : X if-and-only-if it-is-a-goer-to the store</gloss>
+        <jbo>ro da zo'u ganai da klama lo zarci</jbo>
+        <gloss>For-every X : if X goes-to the store,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
-        <jbo>… gi cadzu lo foldi</jbo>
-        <gloss>… - is-a-walker-on the field.</gloss>
+        <jbo>… gi da cadzu lo foldi</jbo>
+        <gloss>… then X walks-on the field.</gloss>
+        <natlang>Everyone who goes to the store walks across the field.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
       <indexterm type="general"><primary>any</primary><secondary>as a universal claim</secondary>
         <tertiary>later restricted</tertiary>
       </indexterm>
-      Although
+      Here
+      <jbophrase>ro da</jbophrase>
+      ranges over everything, and the conditional does the work of the relative clause: anything that goes to the store also walks across the field.
       <xref linkend="example-random-id-BwU7" />
-      is a universal claim as well, its universality only implies that there are objects of some sort or another in the universe of discourse. Because the claim is conditional, nothing is implied about the existence of goers-to-the-store or of walkers-on-the-field, merely that any entity which is one is also the other.
+      makes the same claim as
+      <xref linkend="example-random-id-7Kn8" />, and neither requires that there be any goers-to-the-store or walkers-on-the-field.
     </para>
     <para>
       <indexterm type="general"><primary>any</primary><secondary>as an existential claim</secondary>

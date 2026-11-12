@@ -23,6 +23,9 @@ Run the complete PDF build:
 
 The launcher uses Podman or Docker.
 It also accepts the existing `-t` and `-s` flags and chapter filenames.
+Use `-a DIRECTORY` to copy the PDF to another directory.
+The launcher creates the directory if needed.
+Relative paths start from the caller's current directory.
 The existing chapter-preview preprocessing does not resolve every cross-reference outside the selected chapters.
 Chapters 1 and 18 both fail standalone XML validation because they reference omitted appendices.
 Use the complete build when a selected chapter needs those references.

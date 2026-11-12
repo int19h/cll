@@ -41,13 +41,20 @@ cd cll
 ### Container build
 
 The main build runs in a container.
-You need Podman and Bash.
-`run_container.sh` always passes the Podman option `--userns=keep-id`, so it does not work with Docker yet.
-Issue [#229](https://github.com/int19h/cll/issues/229) tracks Docker support.
+You need Bash 3.2 or later and either rootless Podman or rootful Docker.
+Rootless Docker has not been tested.
+All four launchers use `--userns=keep-id` with Podman.
+With Docker, they run containers as your user and group.
+Build output stays owned by your user.
 
-The script runs the command in `CONTAINER_BIN`.
-If that variable is not set, it uses `podman`, or `docker` if Podman is not installed.
-If `info` fails for the selected command, the script stops.
+Podman needs an init binary on the host for `--init`.
+On Debian and Ubuntu, install the `catatonit` package.
+
+Each launcher runs the command in `CONTAINER_BIN`.
+The value can include arguments, such as `CONTAINER_BIN="env podman"` or `CONTAINER_BIN="sudo docker"`.
+The launcher splits it on whitespace. Shell quotes and operators are not interpreted.
+If that variable is not set, each launcher uses `podman`, or `docker` if Podman is not installed.
+If `info` fails for the selected command, the launcher stops.
 
 To build all formats, run:
 
@@ -58,7 +65,16 @@ To build all formats, run:
 The script builds the image `lojban/cll_build` from `Dockerfile`.
 It then runs `./cll_build` inside a container named `cll_build`, with your checkout mounted, and passes its own arguments to `cll_build`.
 Before it starts, it stops and removes any container with that name, so run only one such build at a time on a machine.
-It needs a terminal.
+The launchers pass `-i` when standard input is a terminal.
+They pass `-t` only when standard input and standard output are both terminals.
+Each container uses `--init` to forward signals and clean up exited child processes.
+Signals also reach the build's child processes during non-terminal runs.
+The launchers also run from scripts and CI.
+Each launcher mounts the checkout at its absolute host path and uses it as the working directory.
+The build directory is mounted at its absolute host path too.
+Both absolute and relative `build/` symlinks can point outside the checkout.
+The resolved checkout and build directory paths must not contain whitespace.
+The launchers reject paths with whitespace before building an image because `scripts/Makefile` cannot use them.
 
 ### Build options
 
@@ -67,7 +83,7 @@ It needs a terminal.
 | `-t` | Fast test build. The build changes cross-references so that the selected files build on their own, and it skips most of the glossary work. |
 | `-s` | Like `-t`, but with the full glossary |
 | `-T TARGET` | Build one target instead of `all` |
-| `-a DIRECTORY` | Copy the results to `DIRECTORY` as well. Give the absolute path of a directory that exists, such as `"$PWD/output"`. |
+| `-a DIRECTORY` | Copy the results to `DIRECTORY` as well. The launcher creates the directory if needed and resolves it to an absolute path before mounting it. Relative paths start from the current directory. |
 | `-n` | Skip the comparison with `official/` |
 | `-h` | Print the usage, including the list of targets. `./cll_build -h` prints it without a container. |
 
@@ -110,8 +126,7 @@ So `-a` with the default target fails at the ePub step.
 Use `-a` together with `-T` and an HTML or PDF target, for example:
 
 ```sh
-mkdir -p output
-./run_container.sh -n -T pdf -a "$PWD/output"
+./run_container.sh -n -T pdf -a output
 ```
 
 Issue [#176](https://github.com/int19h/cll/issues/176) tracks this problem.
@@ -133,9 +148,9 @@ Three other engines each have their own launcher, image, and guide:
 | ConTeXt | `./run_context_container.sh` | `build/cll-context.pdf` | [docs/build-context.md](docs/build-context.md) |
 
 Each launcher accepts `-t` and `-s` with chapter files, as `run_container.sh` does.
-The Typst and ConTeXt launchers also accept `-a DIRECTORY`.
-These three launchers pass `--userns=keep-id` only to Podman.
-With Docker, they run the container as your user and group instead.
+All four launchers accept `-a DIRECTORY`.
+They create the directory if needed and resolve it to an absolute path before mounting it.
+Relative paths start from the caller's current directory.
 The "Build selected formats" workflow runs the ConTeXt launcher with Docker.
 The Typst and ConTeXt PDFs are still experimental.
 

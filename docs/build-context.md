@@ -22,9 +22,10 @@ The testing mode uses placeholder glossary definitions and adjusts cross-referen
 Chapter numbering follows the selected input order.
 
 The wrapper uses Podman when available, or Docker otherwise.
-Set `CONTAINER_BIN` to select another executable.
+Set `CONTAINER_BIN` to select another command.
 It builds `Dockerfile.context`, which contains no Prince installation.
-Each invocation uses an unnamed disposable container and the image ID stored in its own build directory.
+The launcher captures the image ID from `build --quiet` in a shell variable.
+It uses that ID to start an unnamed disposable container.
 It does not stop existing containers or overwrite a shared image tag.
 
 Use `-a DIRECTORY` to copy the result to another directory.

@@ -1,17 +1,38 @@
 #!/bin/bash
-set -euo pipefail
+# Bash 3.2 treats empty arrays as unset, so keep nounset disabled.
+set -eo pipefail
 
-repo=$(cd "$(dirname "$0")" && pwd)
+# Select one engine; do not fall back when the selected engine is unavailable.
+engine=()
 if [ -n "${CONTAINER_BIN:-}" ]; then
-  container=$CONTAINER_BIN
-elif command -v podman >/dev/null; then
-  container=podman
+  container_bin=$CONTAINER_BIN
+  read -r -a engine <<< "$container_bin"
 else
-  container=docker
+  container_bin=$(command -v podman || command -v docker || true)
+  if [ -n "$container_bin" ]; then engine=("$container_bin"); fi
 fi
-"$container" info >/dev/null
+if [ "${#engine[@]}" -eq 0 ]; then
+  echo 'Install Podman or Docker, or set CONTAINER_BIN to a container command.' >&2
+  exit 1
+fi
+if ! "${engine[@]}" info >/dev/null 2>&1; then
+  echo "Container command '$container_bin info' failed. Check that the selected engine is running and accessible." >&2
+  exit 1
+fi
+
+script_path=$(readlink -f "$0")
+repo=${script_path%/*}
+repo=${repo:-/}
 mkdir -p "$repo/build"
-build=$(realpath "$repo/build")
+# Preserve trailing newlines so the whitespace check sees the full path.
+build=$(realpath "$repo/build" && printf .)
+build=${build%$'\n.'}
+case "$repo:$build" in
+  *[[:space:]]*)
+    echo 'Checkout and build directory paths must not contain whitespace. scripts/Makefile does not support it.' >&2
+    printf 'Checkout: %s\nBuild directory: %s\n' "$repo" "$build" >&2
+    exit 2 ;;
+esac
 args=("$@")
 mounts=(-v "$repo:$repo" -v "$build:$build")
 for ((i=0; i<${#args[@]}; i++)); do
@@ -19,11 +40,11 @@ for ((i=0; i<${#args[@]}; i++)); do
     -t|-s|-n) ;;
     -a)
       ((i+=1))
-      if [ "$i" -ge "${#args[@]}" ]; then
+      if [ "$i" -ge "${#args[@]}" ] || [ -z "${args[i]}" ]; then
         echo '-a requires an output directory.' >&2
         exit 2
       fi
-      mkdir -p "${args[i]}"
+      mkdir -p -- "${args[i]}"
       args[i]=$(realpath "${args[i]}")
       mounts+=(-v "${args[i]}:${args[i]}") ;;
     -*)
@@ -33,12 +54,17 @@ for ((i=0; i<${#args[@]}; i++)); do
 done
 # The image ID and unnamed disposable container avoid shared tags and names.
 build_version=$(cd "$repo" && scripts/build-version.sh)
-"$container" build --iidfile "$build/context-image.id" -f "$repo/Dockerfile.context" "$repo"
+image=$("${engine[@]}" build --quiet -f "$repo/Dockerfile.context" "$repo")
 user_args=(--user "$(id -u):$(id -g)")
-if [[ $(basename "$container") == podman ]]; then
+if "${engine[@]}" --version | grep -qi podman; then
   user_args=(--userns=keep-id)
 fi
-"$container" run --rm "${user_args[@]}" "${mounts[@]}" \
-  -e CLL_BUILD_VERSION="$build_version" \
-  -w "$repo" "$(cat "$build/context-image.id")" \
-  ./cll_build -n -T pdf_context "${args[@]}"
+terminal=()
+if [ -t 0 ]; then
+  terminal+=(-i)
+  if [ -t 1 ]; then terminal+=(-t); fi
+fi
+exec "${engine[@]}" run --init --rm "${terminal[@]}" "${user_args[@]}" "${mounts[@]}" \
+  -e HOME=/tmp -e CLL_BUILD_VERSION="$build_version" \
+  -w "$repo" "$image" \
+  ./scripts/container-command.sh ./cll_build -n -T pdf_context "${args[@]}"

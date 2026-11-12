@@ -94,8 +94,10 @@ jobs:
       # nokogiri 1.10.4, while the Dockerfile and the Pages build both install
       # 1.18.8. Testing 1.10.4 would characterize a version we never release.
       # Reconciling the manifest with the released pins is separate work.
-      - name: Install the production Nokogiri version
-        run: gem install --no-document nokogiri:1.18.8
+      - name: Install libxml2-utils
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils
+      - name: Install the production Nokogiri, Optimist, and HTMLEntities gems
+        run: gem install --no-document nokogiri:1.18.8 optimist:3.2.0 htmlentities:4.3.4
       - name: Prince postprocessor smoke test
         run: |
           ruby -rnokogiri -e 'puts "Nokogiri #{Nokogiri::VERSION}"; abort "expected Nokogiri 1.18.8" unless Nokogiri::VERSION == "1.18.8"'
@@ -111,6 +113,16 @@ jobs:
         run: ruby scripts/lint-word-spellings.rb chapters/*.xml
       - name: Glossary links in jbophrase frames
         run: ruby scripts/test-jbophrase-frames.rb
+      - name: Index type lint self-test
+        run: ruby scripts/test-lint-index-types.rb
+      - name: Index term types
+        run: ruby scripts/lint-index-types.rb chapters/*.xml
+      - name: Branding values survive merge
+        run: ruby scripts/test-merge-branding.rb
+      - name: Partial builds retarget omitted references
+        run: ruby scripts/test-partial-references.rb
+      - name: Glossary cache and ids
+        run: ruby scripts/test-generate-glossary.rb
 
   typst-smoke:
     runs-on: ubuntu-24.04

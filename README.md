@@ -47,6 +47,9 @@ All four launchers use `--userns=keep-id` with Podman.
 With Docker, they run containers as your user and group.
 Build output stays owned by your user.
 
+Podman needs an init binary on the host for `--init`.
+On Debian and Ubuntu, install the `catatonit` package.
+
 Each launcher runs the command in `CONTAINER_BIN`.
 The value can include arguments, such as `CONTAINER_BIN="env podman"` or `CONTAINER_BIN="sudo docker"`.
 The launcher splits it on whitespace. Shell quotes and operators are not interpreted.
@@ -70,6 +73,8 @@ The launchers also run from scripts and CI.
 Each launcher mounts the checkout at its absolute host path and uses it as the working directory.
 The build directory is mounted at its absolute host path too.
 Both absolute and relative `build/` symlinks can point outside the checkout.
+The resolved checkout and build directory paths must not contain whitespace.
+The launchers reject paths with whitespace before building an image because `scripts/Makefile` cannot use them.
 
 ### Build options
 

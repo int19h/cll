@@ -4,9 +4,14 @@
 set -eo pipefail
 
 # Select one engine; do not fall back when the selected engine is unavailable.
-container_bin=${CONTAINER_BIN:-$(command -v podman || command -v docker || true)}
 engine=()
-read -r -a engine <<< "$container_bin"
+if [ -n "${CONTAINER_BIN:-}" ]; then
+  container_bin=$CONTAINER_BIN
+  read -r -a engine <<< "$container_bin"
+else
+  container_bin=$(command -v podman || command -v docker || true)
+  if [ -n "$container_bin" ]; then engine=("$container_bin"); fi
+fi
 if [ "${#engine[@]}" -eq 0 ]; then
   echo 'Install Podman or Docker, or set CONTAINER_BIN to a container command.' >&2
   exit 1
@@ -15,7 +20,9 @@ if ! "${engine[@]}" info >/dev/null 2>&1; then
   echo "Container command '$container_bin info' failed. Check that the selected engine is running and accessible." >&2
   exit 1
 fi
-repo_dir=$(dirname "$(readlink -f "$0")")
+script_path=$(readlink -f "$0")
+repo_dir=${script_path%/*}
+repo_dir=${repo_dir:-/}
 args=("$@")
 extra_vols=()
 for ((i=0; i<${#args[@]}; i++)); do
@@ -40,9 +47,17 @@ for ((i=0; i<${#args[@]}; i++)); do
   esac
 done
 cd "$repo_dir"
-build_version=$(scripts/build-version.sh)
 mkdir -p build
-build_dir=$(readlink -f build)
+# Preserve trailing newlines so the whitespace check sees the full path.
+build_dir=$(readlink -f build && printf .)
+build_dir=${build_dir%$'\n.'}
+case "$repo_dir:$build_dir" in
+  *[[:space:]]*)
+    echo 'Checkout and build directory paths must not contain whitespace. scripts/Makefile does not support it.' >&2
+    printf 'Checkout: %s\nBuild directory: %s\n' "$repo_dir" "$build_dir" >&2
+    exit 2 ;;
+esac
+build_version=$(scripts/build-version.sh)
 mkdir -p "$build_dir/tmp" "$build_dir/cache"
 exec 9>"$build_dir/.weasyprint.lock"
 flock -n 9 || { echo 'A WeasyPrint build already uses this build directory.' >&2; exit 1; }

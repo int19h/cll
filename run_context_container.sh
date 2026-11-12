@@ -3,9 +3,14 @@
 set -eo pipefail
 
 # Select one engine; do not fall back when the selected engine is unavailable.
-container_bin=${CONTAINER_BIN:-$(command -v podman || command -v docker || true)}
 engine=()
-read -r -a engine <<< "$container_bin"
+if [ -n "${CONTAINER_BIN:-}" ]; then
+  container_bin=$CONTAINER_BIN
+  read -r -a engine <<< "$container_bin"
+else
+  container_bin=$(command -v podman || command -v docker || true)
+  if [ -n "$container_bin" ]; then engine=("$container_bin"); fi
+fi
 if [ "${#engine[@]}" -eq 0 ]; then
   echo 'Install Podman or Docker, or set CONTAINER_BIN to a container command.' >&2
   exit 1
@@ -15,9 +20,19 @@ if ! "${engine[@]}" info >/dev/null 2>&1; then
   exit 1
 fi
 
-repo=$(cd "$(dirname "$0")" && pwd)
+script_path=$(readlink -f "$0")
+repo=${script_path%/*}
+repo=${repo:-/}
 mkdir -p "$repo/build"
-build=$(realpath "$repo/build")
+# Preserve trailing newlines so the whitespace check sees the full path.
+build=$(realpath "$repo/build" && printf .)
+build=${build%$'\n.'}
+case "$repo:$build" in
+  *[[:space:]]*)
+    echo 'Checkout and build directory paths must not contain whitespace. scripts/Makefile does not support it.' >&2
+    printf 'Checkout: %s\nBuild directory: %s\n' "$repo" "$build" >&2
+    exit 2 ;;
+esac
 args=("$@")
 mounts=(-v "$repo:$repo" -v "$build:$build")
 for ((i=0; i<${#args[@]}; i++)); do

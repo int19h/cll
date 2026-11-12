@@ -41,10 +41,11 @@ cd cll
 ### Container build
 
 The main build runs in a container.
-You need Bash 3.2 or later and either rootless Podman or rootful Docker.
-Rootless Docker has not been tested.
+You need Bash 3.2 or later and either Podman (rootless) or Docker (rootful or rootless).
 All four launchers use `--userns=keep-id` with Podman.
-With Docker, they run containers as your user and group.
+With rootful Docker, they run containers as your user and group.
+With rootless Docker, they run as root inside the container, which maps to the daemon's host user.
+If the rootless detection query fails, they use your user and group.
 Build output stays owned by your user.
 
 Podman needs an init binary on the host for `--init`.

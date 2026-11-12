@@ -84,6 +84,10 @@ rm -f /tmp/rc.$$
 user_args=(--user "$(id -u):$(id -g)")
 if "${engine[@]}" --version | grep -qi podman; then
   user_args=(--userns=keep-id)
+elif security_options=$("${engine[@]}" info --format '{{.SecurityOptions}}' 2>/dev/null) &&
+     [[ "$security_options" == *name=rootless* ]]; then
+  # Root in a rootless Docker container maps to the daemon's host user.
+  user_args=()
 fi
 terminal=()
 if [ -t 0 ]; then

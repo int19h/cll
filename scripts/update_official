@@ -12,7 +12,6 @@ usage() {
   echo "-p -- builds PDF"
   echo "-x -- builds xhtml"
   echo "-e -- builds epub"
-  echo "-m -- builds mobi"
   echo "-t -- makes tags"
   exit
 }
@@ -20,11 +19,10 @@ usage() {
 xhtml=""
 pdf=""
 epub=""
-mobi=""
 tags=""
 version=""
 
-while getopts "v:hpxemt" opt
+while getopts "v:hpxet" opt
 do
   case "$opt" in
     p)    pdf="yes"
@@ -32,8 +30,6 @@ do
     x)    xhtml="yes"
           ;;
     e)    epub="yes"
-          ;;
-    m)    mobi="yes"
           ;;
     t)    tags="yes"
           ;;
@@ -55,7 +51,7 @@ then
   exit 1
 fi
 
-if [ ! "$pdf" -a ! "$xhtml" -a ! "$epub" -a ! "$mobi" -a ! "$tags" ]
+if [ ! "$pdf" -a ! "$xhtml" -a ! "$epub" -a ! "$tags" ]
 then
   echo "At least one build type is required."
   echo
@@ -95,14 +91,6 @@ then
   ln -s cll_v${version}_${dateish}.epub official/cll_v${version}.epub
 fi
 
-if [ "$mobi" ]
-then
-  echo "Copying and linking mobi"
-  cp build/cll.mobi official/cll_v${version}_${dateish}.mobi
-  rm official/cll_v${version}.mobi
-  ln -s cll_v${version}_${dateish}.mobi official/cll_v${version}.mobi
-fi
-
 if [ "$pdf" ]
 then
   echo "Copying and linking pdf"
@@ -113,7 +101,6 @@ fi
 
 if [ "$tags" ]
 then
-    git tag v${version}-${dateish}-mobi
     git tag v${version}-${dateish}-pdf
     git tag v${version}-${dateish}-html
     git tag v${version}-${dateish}-epub

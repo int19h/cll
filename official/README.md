@@ -61,22 +61,23 @@ want, run:
 
     $ scripts/update_official -x -v 1.1 [assuming the version is still 1.1]
 
-Updating EPUB & MOBI official/
-------------------------------
+Updating EPUB official/
+-----------------------
 
-We check the EPUB's format with both epubchecker and kindlegen.
-Since it's generated from the same xhtml as everything else (more or
-less), if it passes all those tests it's probably fine.
+Check the EPUB with epubcheck.
+The EPUB comes from the same XHTML as the other formats.
+A clean epubcheck result is the packaging check.
 
-However, it's now part of diff_official, too, since it's just a zip.
+The EPUB is a zip.
+diff_official includes the EPUB.
 
-The MOBI is generated directly from the EPUB via kindlegen, but you can
-check it if you want.
+Upstream built a MOBI from the EPUB with Kindlegen.
+This edition has no MOBI build.
+`scripts/update_official` has no `-m` option.
 
 When done, run:
 
     $ scripts/update_official -e -v 1.1 [assuming the version is still 1.1]
-    $ scripts/update_official -m -v 1.1 [assuming the version is still 1.1]
 
 Updating PDF official/
 ----------------------

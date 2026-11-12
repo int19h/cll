@@ -130,6 +130,6 @@ cat $srcdir/content.opf.s3 >>$epubbuilddir/content.opf
 $brand cover >$epubbuilddir/assets/media/cover.svg
 $brand fill <$srcdir/cover.html >$epubbuilddir/cover.html
 
-rm -f $basedir/build/cll.epub $basedir/build/cll.mobi
+rm -f $basedir/build/cll.epub
 
 zip -q -X -r $basedir/build/cll.epub mimetype *

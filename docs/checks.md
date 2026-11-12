@@ -30,6 +30,7 @@ Locally, read the output for warnings that contain `not defined`, `parser error`
 xmllint --loaddtd --noent --noout book-assembled.xml; rm book-assembled.xml
 python3 scripts/test-build-actions.py
 ruby scripts/test-build-workflow.rb
+python3 scripts/test-makefile.py
 python3 scripts/test-xhtml-format.py
 python3 scripts/test-chapter-pictures.py
 python3 scripts/test-lint-undotted-cmevla.py

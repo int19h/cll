@@ -119,20 +119,17 @@ The default target, `all`, builds the three HTML versions, the Prince PDF, and t
 | `xhtml_sections` | `build/xhtml_section_chunks/`, one HTML page per section |
 | `xhtml_nochunks` | `build/xhtml_no_chunks/`, the whole book on one page |
 | `pdf` | `build/cll.pdf`, made by Prince |
-| `epub` (or `mobi`) | `build/cll.epub` |
+| `epub` | `build/cll.epub` |
 | `clean`, `realclean` | Remove build output |
 
 Open `index.html` in an HTML folder to read that version.
 With `-a`, the HTML folders are copied as `cll-xhtml_chapter_chunks/`, `cll-xhtml_section_chunks/`, and `cll-xhtml_no_chunks/`, beside `cll.pdf` and `cll.epub`.
-The ePub step with `-a` also tries to copy `cll.mobi`, which the build does not make.
-So `-a` with the default target fails at the ePub step.
-Use `-a` together with `-T` and an HTML or PDF target, for example:
+The copy runs even when the build output is already up to date.
+To build all default formats and copy them to `output`, run:
 
 ```sh
-./run_container.sh -n -T pdf -a output
+./run_container.sh -a output
 ```
-
-Issue [#176](https://github.com/int19h/cll/issues/176) tracks this problem.
 
 After a successful build, `cll_build` compares the single-page HTML with the copies in `official/`.
 It writes the visual comparisons to `build/diff_from_official/` and `build/diff_from_previous/`.

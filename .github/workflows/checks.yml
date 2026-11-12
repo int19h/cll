@@ -19,6 +19,8 @@ jobs:
         run: |
           python3 scripts/test-build-actions.py
           ruby scripts/test-build-workflow.rb
+      - name: Makefile archives and incremental inputs
+        run: python3 scripts/test-makefile.py
       - name: XHTML formatting preserves inline spaces
         run: python3 scripts/test-xhtml-format.py
       - name: Chapter artwork references and PNGs

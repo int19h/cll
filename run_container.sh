@@ -1,15 +1,18 @@
 #!/bin/bash
 
-set -euo pipefail
+# Bash 3.2 treats empty arrays as unset, so keep nounset disabled.
+set -eo pipefail
 
 # Select one engine; do not fall back when the selected engine is unavailable.
-CONTAINER_BIN=${CONTAINER_BIN:-$(command -v podman || command -v docker || true)}
-if [ -z "$CONTAINER_BIN" ]; then
+container_bin=${CONTAINER_BIN:-$(command -v podman || command -v docker || true)}
+engine=()
+read -r -a engine <<< "$container_bin"
+if [ "${#engine[@]}" -eq 0 ]; then
   echo 'Install Podman or Docker, or set CONTAINER_BIN to a container command.' >&2
   exit 1
 fi
-if ! "$CONTAINER_BIN" info >/dev/null 2>&1; then
-  echo "Container command '$CONTAINER_BIN info' failed. Check that the selected engine is running and accessible." >&2
+if ! "${engine[@]}" info >/dev/null 2>&1; then
+  echo "Container command '$container_bin info' failed. Check that the selected engine is running and accessible." >&2
   exit 1
 fi
 
@@ -34,24 +37,21 @@ do
   fi
 done
 
-"$CONTAINER_BIN" kill cll_build >/dev/null 2>&1 || true
-"$CONTAINER_BIN" rm cll_build >/dev/null 2>&1 || true
+"${engine[@]}" kill cll_build >/dev/null 2>&1 || true
+"${engine[@]}" rm cll_build >/dev/null 2>&1 || true
 
 dir=$(dirname "$(readlink -f "$0")")
 mkdir -p "$dir/build"
 build_dir=$(realpath "$dir/build")
-mounts=(-v "$dir:/srv/cll")
-if [ -L "$dir/build" ]; then
-  mounts+=(-v "$build_dir:$build_dir")
-fi
+mounts=(-v "$dir:$dir" -v "$build_dir:$build_dir")
 build_version=$("$dir/scripts/build-version.sh") || exit 1
 
 # FOR TESTING; forces complete container rebuild
-# $CONTAINER_BIN build --no-cache -t lojban/cll_build -f Dockerfile .
-# $CONTAINER_BIN rmi lojban/cll_build
+# "${engine[@]}" build --no-cache -t lojban/cll_build -f Dockerfile .
+# "${engine[@]}" rmi lojban/cll_build
 echo "Running container image build; this may take a while."
 echo
-"$CONTAINER_BIN" build -t lojban/cll_build -f "$dir/Dockerfile" "$dir" >/tmp/rc.$$ 2>&1 || {
+"${engine[@]}" build -t lojban/cll_build -f "$dir/Dockerfile" "$dir" >/tmp/rc.$$ 2>&1 || {
   echo "Container image build failed.  Here's the output: "
   echo
   cat /tmp/rc.$$
@@ -67,15 +67,18 @@ echo
 rm -f /tmp/rc.$$
 
 user_args=(--user "$(id -u):$(id -g)")
-if "$CONTAINER_BIN" --version | grep -qi podman; then
+if "${engine[@]}" --version | grep -qi podman; then
   user_args=(--userns=keep-id)
 fi
 terminal=()
-if [ -t 0 ]; then terminal=(-it); fi
+if [ -t 0 ]; then
+  terminal+=(-i)
+  if [ -t 1 ]; then terminal+=(-t); fi
+fi
 
 # Numeric Docker users may have no passwd entry or writable home directory.
-exec "$CONTAINER_BIN" run --name cll_build \
-  "${user_args[@]}" "${mounts[@]}" "${extra_vols[@]}" \
+exec "${engine[@]}" run --init --name cll_build \
+  "${user_args[@]}" "${mounts[@]}" "${extra_vols[@]}" -w "$dir" \
   -e HOME=/tmp -e XDG_CACHE_HOME=/tmp/.cache \
   -e CLL_BUILD_VERSION="$build_version" "${terminal[@]}" lojban/cll_build \
-  ./cll_build "${args[@]}"
+  ./scripts/container-command.sh ./cll_build "${args[@]}"

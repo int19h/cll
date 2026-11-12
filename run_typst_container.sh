@@ -1,19 +1,25 @@
 #!/bin/bash
 # An isolated container launcher for the optional Typst target.
-set -euo pipefail
-repo=$(cd -- "$(dirname -- "$0")" && pwd)
-cd "$repo"
-container_bin=${CONTAINER_BIN:-}
-if [ -z "$container_bin" ]; then
-  container_bin=$(command -v podman || command -v docker || true)
-fi
-if [ -z "$container_bin" ] || ! "$container_bin" info >/dev/null 2>&1; then
-  echo 'Start podman or Docker, or set CONTAINER_BIN to a working container command.' >&2
+# Bash 3.2 treats empty arrays as unset, so keep nounset disabled.
+set -eo pipefail
+
+# Select one engine; do not fall back when the selected engine is unavailable.
+container_bin=${CONTAINER_BIN:-$(command -v podman || command -v docker || true)}
+engine=()
+read -r -a engine <<< "$container_bin"
+if [ "${#engine[@]}" -eq 0 ]; then
+  echo 'Install Podman or Docker, or set CONTAINER_BIN to a container command.' >&2
   exit 1
 fi
-mkdir -p build
+if ! "${engine[@]}" info >/dev/null 2>&1; then
+  echo "Container command '$container_bin info' failed. Check that the selected engine is running and accessible." >&2
+  exit 1
+fi
+
+repo=$(cd -- "$(dirname -- "$0")" && pwd)
+mkdir -p "$repo/build"
 # Preserve absolute and relative build symlinks by mounting both host paths unchanged.
-builddir=$(realpath build)
+builddir=$(realpath "$repo/build")
 key=$(printf '%s' "$repo" | sha256sum | cut -c 1-16)
 image="localhost/cll-typst:$key"
 args=()
@@ -27,7 +33,11 @@ while getopts ':nstSha:' opt; do
       exit 0
       ;;
     a)
-      mkdir -p "$OPTARG"
+      if [ -z "$OPTARG" ]; then
+        echo '-a requires an output directory.' >&2
+        exit 2
+      fi
+      mkdir -p -- "$OPTARG"
       archive=$(realpath "$OPTARG")
       volumes+=(-v "$archive:/srv/typst-export")
       args+=(-a /srv/typst-export)
@@ -37,12 +47,16 @@ while getopts ':nstSha:' opt; do
 done
 shift "$((OPTIND - 1))"
 args+=("$@")
+cd "$repo"
 build_version=$(scripts/build-version.sh)
 # Podman/Docker assigns a fresh container ID. No shared container is stopped.
-"$container_bin" build --target typst -t "$image" -f Dockerfile .
+"${engine[@]}" build --target typst -t "$image" -f Dockerfile .
 user_args=(--user "$(id -u):$(id -g)")
-if [[ $(basename "$container_bin") == podman ]]; then user_args=(--userns=keep-id); fi
+if "${engine[@]}" --version | grep -qi podman; then user_args=(--userns=keep-id); fi
 terminal=()
-if [[ -t 0 && -t 1 ]]; then terminal=(-it); fi
-exec "$container_bin" run --rm "${terminal[@]}" "${user_args[@]}" "${volumes[@]}" --workdir "$repo" \
-  -e HOME=/tmp -e CLL_BUILD_VERSION="$build_version" "$image" ./cll_build -n -T pdf_typst "${args[@]}"
+if [ -t 0 ]; then
+  terminal+=(-i)
+  if [ -t 1 ]; then terminal+=(-t); fi
+fi
+exec "${engine[@]}" run --init --rm "${terminal[@]}" "${user_args[@]}" "${volumes[@]}" --workdir "$repo" \
+  -e HOME=/tmp -e CLL_BUILD_VERSION="$build_version" "$image" ./scripts/container-command.sh ./cll_build -n -T pdf_typst "${args[@]}"

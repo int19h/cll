@@ -41,14 +41,17 @@ cd cll
 ### Container build
 
 The main build runs in a container.
-You need Bash and either Podman or Docker.
-With Podman, the launcher uses `--userns=keep-id`.
-With Docker, it runs as your user and group.
+You need Bash 3.2 or later and either rootless Podman or rootful Docker.
+Rootless Docker has not been tested.
+All four launchers use `--userns=keep-id` with Podman.
+With Docker, they run containers as your user and group.
 Build output stays owned by your user.
 
-The script runs the command in `CONTAINER_BIN`.
-If that variable is not set, it uses `podman`, or `docker` if Podman is not installed.
-If `info` fails for the selected command, the script stops.
+Each launcher runs the command in `CONTAINER_BIN`.
+The value can include arguments, such as `CONTAINER_BIN="env podman"` or `CONTAINER_BIN="sudo docker"`.
+The launcher splits it on whitespace. Shell quotes and operators are not interpreted.
+If that variable is not set, each launcher uses `podman`, or `docker` if Podman is not installed.
+If `info` fails for the selected command, the launcher stops.
 
 To build all formats, run:
 
@@ -59,9 +62,14 @@ To build all formats, run:
 The script builds the image `lojban/cll_build` from `Dockerfile`.
 It then runs `./cll_build` inside a container named `cll_build`, with your checkout mounted, and passes its own arguments to `cll_build`.
 Before it starts, it stops and removes any container with that name, so run only one such build at a time on a machine.
-It enables interactive input and terminal output only when standard input is a terminal.
-It also runs from scripts and CI.
-If `build/` is a symlink, the launcher mounts its destination too.
+The launchers pass `-i` when standard input is a terminal.
+They pass `-t` only when standard input and standard output are both terminals.
+Each container uses `--init` to forward signals and clean up exited child processes.
+Signals also reach the build's child processes during non-terminal runs.
+The launchers also run from scripts and CI.
+Each launcher mounts the checkout at its absolute host path and uses it as the working directory.
+The build directory is mounted at its absolute host path too.
+Both absolute and relative `build/` symlinks can point outside the checkout.
 
 ### Build options
 
@@ -135,11 +143,9 @@ Three other engines each have their own launcher, image, and guide:
 | ConTeXt | `./run_context_container.sh` | `build/cll-context.pdf` | [docs/build-context.md](docs/build-context.md) |
 
 Each launcher accepts `-t` and `-s` with chapter files, as `run_container.sh` does.
-The Typst and ConTeXt launchers also accept `-a DIRECTORY`.
+All four launchers accept `-a DIRECTORY`.
 They create the directory if needed and resolve it to an absolute path before mounting it.
-The Typst launcher resolves relative paths from the checkout; ConTeXt uses the current directory.
-These three launchers pass `--userns=keep-id` only to Podman.
-With Docker, they run the container as your user and group instead.
+Relative paths start from the caller's current directory.
 The "Build selected formats" workflow runs the ConTeXt launcher with Docker.
 The Typst and ConTeXt PDFs are still experimental.
 

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # A POSIX variable
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
 
@@ -40,17 +42,16 @@ trap 'rm -f "$ofile"' EXIT
 cp scripts/header.xml "$ofile"
 
 read_var() {
-    VAR=$(grep "^$1=" "$2" | xargs)
-    IFS="=" read -ra VAR <<< "$VAR"
-    echo ${VAR[1]}
+    ruby scripts/branding-value.rb "$1" "$2"
 }
 
 version=$(scripts/build-version.sh) || exit 1
-publisher=$(read_var PUBLISHER .env)
-publisher_disclaimer=$(read_var PUBLISHER_DISCLAIMER .env)
-title=$(read_var TITLE .env)
-reviser=$(read_var REVISER .env)
-subtitle=$(read_var SUBTITL .env)
+version=$(printf '%s' "$version" | ruby -rcgi -e 'print CGI.escapeHTML(STDIN.read)')
+publisher=$(read_var PUBLISHER .env) || exit 1
+publisher_disclaimer=$(read_var PUBLISHER_DISCLAIMER .env) || exit 1
+title=$(read_var TITLE .env) || exit 1
+reviser=$(read_var REVISER .env) || exit 1
+subtitle=$(read_var SUBTITL .env) || exit 1
 datestamp=$(date +%Y-%m-%d)
 
 subtitle_elem=""
@@ -94,45 +95,26 @@ $publisher_disclaimer_elem
 
 " >>"$ofile"
 
-#<chapter xml:id="chapter-selbri">
-#<section xml:id="section-brivla">
-
-for file in $@
+for file in "$@"
 do
-  if [ "$testing" ]
-  then
-    # This breaks working sections/chapters as well as broken ones; oh well.
-
-    chaptertag=$(grep '<chapter ' $file | head -n 1 | sed 's/.*xml:id="//' | sed 's/".*//')
-    sectiontag=$(grep '<section ' $file | head -n 1 | sed 's/.*xml:id="//' | sed 's/".*//')
-
-    cat $file | \
-      sed "s/<link linkend=\"chapter-[^\"]*\"/<link linkend=\"$chaptertag\"/g" | \
-      sed "s/<xref linkend=\"chapter-[^\"]*\"/<xref linkend=\"$chaptertag\"/g" | \
-      sed "s/<xref linkend=\"cll_chapter[^\"]*\"/<xref linkend=\"$chaptertag\"/g" | \
-      sed "s/<xref linkend=\"section-[^\"]*\"/<xref linkend=\"$sectiontag\"/g" >>"$ofile"
-  else
-    cat $file >>"$ofile"
-  fi
+  cat "$file" >>"$ofile"
 done
 
-cp "$ofile" $BUILDDIR/cll_preglossary.xml
+cp "$ofile" "$BUILDDIR/cll_preglossary.xml"
 
-echo '</book>' >>$BUILDDIR/cll_preglossary.xml
+echo '</book>' >>"$BUILDDIR/cll_preglossary.xml"
 
 if [ "$testing" -a "$testing" != "solo" ]
 then
-  scripts/generate_glossary.rb -b "$BUILDDIR" -t >>"$ofile"
-  if [ "$?" -ne 0 ]
+  if ! scripts/generate_glossary.rb -b "$BUILDDIR" -t >>"$ofile"
   then
-    echo "Glossary generation failed."
+    echo "Glossary generation failed." >&2
     exit 1
   fi
 else
-  scripts/generate_glossary.rb -b "$BUILDDIR" >>"$ofile"
-  if [ "$?" -ne 0 ]
+  if ! scripts/generate_glossary.rb -b "$BUILDDIR" >>"$ofile"
   then
-    echo "Glossary generation failed."
+    echo "Glossary generation failed." >&2
     exit 1
   fi
 fi
@@ -150,6 +132,10 @@ echo '
 </index>
 
 </book>' >>"$ofile"
+
+if [ "$testing" ]; then
+  ruby scripts/partial-references.rb "$ofile"
+fi
 
 mv "$ofile" "$finalfile" || exit 1
 trap - EXIT

@@ -5,7 +5,7 @@ xsl_base = xml/docbook-xsl-1.78.1
 SHELL=/bin/bash -o pipefail
 
 .PHONY: all
-all: xhtml_chapters xhtml_sections xhtml_nochunks pdf epub mobi
+all: xhtml_chapters xhtml_sections xhtml_nochunks pdf epub
 
 .PHONY: clean
 clean:
@@ -51,6 +51,16 @@ xhtml_nochunks: nochunks = -nochunks
 xhtml_nochunks: xsl_file = $(xsl_base)/xhtml/docbook.xsl
 xhtml_nochunks: $(builddir)/xhtml_no_chunks.done
 
+# Archive on every request, including when the rendered files are current.
+xhtml_chapters xhtml_sections xhtml_nochunks:
+ifdef copydir
+	mkdir -p "$(copydir)"
+	rm -rf "$(copydir)/cll-$(notdir $(basename $<))"
+	cp -pr "$(basename $<)" "$(copydir)/cll-$(notdir $(basename $<))"
+	# The appcache is supremely unhelpful when testing.
+	find "$(copydir)/cll-$(notdir $(basename $<))" -type f -name cll.appcache -delete
+endif
+
 # Do the actual chunking work
 $(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_xhtml.xsl assets/css/master.css scripts/xhtml_postprocess_appcache.sh scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb
 	rm -rf $(builddir)/xhtml_$*_chunks
@@ -70,13 +80,6 @@ $(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl $(builddir
 	scripts/xhtml_postprocess_appcache.sh $(builddir)/xhtml_$*_chunks/
 	touch $(builddir)/xhtml_$*_chunks.done
 
-ifdef copydir
-	mkdir -p $(copydir)
-	rm -rf $(copydir)/cll-xhtml_$*_chunks
-	cp -pr $(builddir)/xhtml_$*_chunks $(copydir)/cll-xhtml_$*_chunks
-	# The appcache is supremely unhelpful when testing
-	find $(copydir) -name cll.appcache | xargs rm
-endif
 
 #*******
 # ConTeXt PDF (opt-in; the default PDF and release targets still use Prince)
@@ -96,6 +99,10 @@ $(builddir)/cll-context.pdf: $(builddir)/cll_processed_xhtml.xml scripts/docbook
 #*******
 .PHONY: pdf
 pdf: $(builddir)/pdf.done
+ifdef copydir
+	mkdir -p $(copydir)
+	cp $(builddir)/cll.pdf $(copydir)/cll.pdf
+endif
 $(builddir)/pdf.done: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl assets/css/master.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/xml_prince_postprocess.rb scripts/prince_check_margins.js scripts/prince_shave_index.js scripts/prince_check_index.js
 	rm -rf $(builddir)/pdf
 	mkdir -p $(builddir)/pdf
@@ -113,10 +120,6 @@ $(builddir)/pdf.done: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_confi
 	
 	prince -vvv --script=scripts/prince_check_margins.js --script=scripts/prince_shave_index.js --script=scripts/prince_check_index.js $(builddir)/pdf/cll_processed_xhtml_pdf.html -o $(builddir)/cll.pdf
 	touch $(builddir)/pdf.done
-ifdef copydir
-	mkdir -p $(copydir)
-	cp $(builddir)/cll.pdf $(copydir)/cll.pdf
-endif
 
 #*******
 # Optional WeasyPrint PDF, with static MathJax CommonHTML
@@ -158,26 +161,21 @@ $(builddir)/cll-typst.pdf: $(builddir)/cll_processed_xhtml.xml scripts/docbook_t
 	TYPST_ALLOW_MISSING_REFS=$(if $(test),1,0) scripts/build_pdf_typst.sh "$(builddir)"
 
 #*******
-# EPUB ; also generates .MOBI
+# EPUB
 #*******
 .PHONY: epub
-.PHONY: mobi
-mobi: $(builddir)/cll.epub
 epub: $(builddir)/cll.epub
+ifdef copydir
+	mkdir -p $(copydir)
+	cp $(builddir)/cll.epub $(copydir)/cll.epub
+endif
 
 $(builddir)/cll.epub: $(builddir)/epub-xhtml/index.html scripts/build_epub.sh scripts/epub_branding.rb .env epub/mimetype epub/* epub/META-INF/container.xml
 	scripts/build_epub.sh $(PWD)
 	mv $(builddir)/cll.epub $(builddir)/cll.tmp.epub
 	java -jar $(PWD)/epub/epubcheck-4.0.1/epubcheck.jar $(builddir)/cll.tmp.epub 2>&1 | grep -v "should have the extension '.xhtml'"
-# This both checks for Kindle support *and* generates the .mobi
-	# $(PWD)/epub/kindlegen/kindlegen $(builddir)/cll.tmp.epub -o cll.mobi
 # It checks out; move it into place
 	mv $(builddir)/cll.tmp.epub $(builddir)/cll.epub
-ifdef copydir
-	mkdir -p $(copydir)
-	cp $(builddir)/cll.epub $(copydir)/cll.epub
-	cp $(builddir)/cll.mobi $(copydir)/cll.mobi
-endif
 
 # Note that the epub doesn't rely on the PDF, but rather on the HTML
 # that is used to build the PDF, but it amounts to the same thing
@@ -198,6 +196,7 @@ $(builddir)/epub-xhtml/index.html: $(builddir)/cll_processed_xhtml.xml xml/docbo
 #*******
 # Testing
 #*******
+.PHONY: coverage
 coverage: clean xhtml_nochunks pdf
 ifneq ($(covcopydir),)
 	mkdir -p $(covcopydir)
@@ -205,5 +204,5 @@ ifneq ($(covcopydir),)
 	rm -rf $(covcopydir)/cll-xhtml_no_chunks
 	cp -pr $(builddir)/xhtml_no_chunks $(covcopydir)/cll-xhtml_no_chunks
 	# The appcache is supremely unhelpful when testing
-	find $(covcopydir) -name cll.appcache | xargs rm
+	find "$(covcopydir)/cll-xhtml_no_chunks" -type f -name cll.appcache -delete
 endif

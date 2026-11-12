@@ -1187,7 +1187,7 @@
       <xref linkend="example-random-id-R4mX" />
       does. In particular, it does not say that anyone goes to the store. A claim with
       <valsi>ro</valsi>
-      says nothing about whether its restriction has members; in the terms of logicians, it has no <quote>existential import</quote>. If nobody goes to the store, then nobody who goes there fails to walk across the field, and
+      says nothing about whether anything satisfies its restriction; in the terms of logicians, it has no <quote>existential import</quote>. If nobody goes to the store, then nobody who goes there fails to walk across the field, and
       <xref linkend="example-random-id-7Kn8" />
       is true, if not very interesting. The rule concerns
       <valsi>ro</valsi>
@@ -1199,7 +1199,8 @@
     </para>
     <para>
       To deny the claim, you need a counterexample. Under the negation rules of
-      <xref linkend="section-negation-boundaries" />, the sentence
+      <xref linkend="section-negation-boundaries" /> and
+      <xref linkend="section-na-outside-prenex" />, the sentence
       <jbophrase>naku ro da poi klama lo zarci cu cadzu lo foldi</jbophrase>
       is equivalent to
       <jbophrase>su'o da poi klama lo zarci ku'o naku cadzu lo foldi</jbophrase>, where the
@@ -1211,9 +1212,9 @@
     <para role="status-note" condition="status:de-facto">
       <indexterm type="general"><primary>ro</primary><secondary>existential import of, status</secondary>
       </indexterm>
-      This is a change from the first edition, which required the restriction of a
+      This is a change from the first edition, where a
       <valsi>ro</valsi>
-      claim to have members, so that
+      claim also meant that something satisfies its restriction, so that
       <xref linkend="example-random-id-7Kn8" />
       implied that someone goes to the store. The rule taught here follows
       <quote>Inexact Numbers</quote>, a working draft of the BPFK, the language-definition committee introduced in

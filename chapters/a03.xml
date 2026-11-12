@@ -254,7 +254,7 @@
         </para>
       </listitem>
       <listitem>
-        <para><indexterm type="general"><primary>ro</primary><secondary>existential import, change summary</secondary></indexterm>This change is <emphasis>de facto</emphasis>: it comes from a working document of the definition effort, the committee's draft section <quote>Inexact Numbers</quote>, which was never checkpointed. The first edition required a restricted universal claim with <valsi>ro</valsi> to imply that its restriction has members. This edition teaches that such a claim is true when the restriction is empty, so <jbophrase>ro da poi broda cu brode</jbophrase> is true if nothing is a broda. See <xref linkend="section-any" />.</para>
+        <para><indexterm type="general"><primary>ro</primary><secondary>existential import, change summary</secondary></indexterm>This change is <emphasis>de facto</emphasis>: it comes from a working document of the definition effort, the committee's draft section <quote>Inexact Numbers</quote>, which was never checkpointed. In the first edition, a restricted universal claim with <valsi>ro</valsi> implied that something satisfies its restriction. This edition teaches that such a claim is true when the restriction is empty, so <jbophrase>ro da poi broda cu brode</jbophrase> is true if nothing is a broda. See <xref linkend="section-any" />.</para>
       </listitem>
       <listitem>
         <para>
@@ -266,7 +266,7 @@
   </section>
   <section xml:id="section-changes-unchanged">
     <title><anchor xml:id="a03-unchanged" />Debated but not changed</title>
-    <para>Readers who know the community discussion may expect some changes that this edition deliberately does not make, because no official body ever adopted them:</para>
+    <para>Readers who know the community discussion may expect some changes that this edition deliberately does not make, because they have neither official adoption nor de facto status:</para>
     <itemizedlist>
       <listitem><para><indexterm type="general"><primary>na</primary><secondary>scope of, unchanged</secondary></indexterm>A <valsi>na</valsi> before the selbri still negates the whole bridi. The proposal for a narrower scope in place was never adopted by any official body. (The positions of <valsi>na</valsi> relative to a tense do now differ, however. That is a de facto resolution: the semantic software surveyed for this edition implements it, and <xref linkend="chapter-negation" /> teaches it.)</para></listitem>
       <listitem><para><indexterm type="general"><primary>distance tenses</primary><secondary>medium readings, unchanged</secondary></indexterm>The middle members of the space and time series for distance and interval (<valsi>va</valsi>, <valsi>za</valsi>, <valsi>ve'a</valsi>, <valsi>ze'a</valsi>) keep the <quote>medium</quote> readings they had in the first edition. A regularization to <quote>unspecified</quote> circulated only as a proposal, and so did a new reading of the tagged sumti of a distance word, as the distance itself rather than the reference point. See <xref linkend="chapter-tenses" />.</para></listitem>

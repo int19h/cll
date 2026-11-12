@@ -4,6 +4,13 @@ xsl_base = xml/docbook-xsl-1.78.1
 
 SHELL=/bin/bash -o pipefail
 
+# Files a recipe reads or copies into the rendered tree. A later edit must
+# rebuild the same output a clean build would produce.
+dtd_files := $(shell find dtd -type f | LC_ALL=C sort)
+html_copied_files := $(shell find assets dtd -type f | LC_ALL=C sort)
+pdf_copied_files := $(shell find assets/css assets/fonts assets/media dtd -type f ! -path 'assets/media/examples/*' ! -path 'assets/media/vreji/*' | LC_ALL=C sort)
+epub_copied_files := $(shell find assets/fonts assets/media -type f ! -path 'assets/media/examples/*' ! -path 'assets/media/vreji/*' | LC_ALL=C sort)
+
 .PHONY: all
 all: xhtml_chapters xhtml_sections xhtml_nochunks pdf epub
 
@@ -26,14 +33,14 @@ $(builddir)/build-metadata: build_metadata_force
 	@{ scripts/build-version.sh && date +%Y-%m-%d; } >$@.tmp || { rm -f $@.tmp; exit 1; }
 	@cmp -s $@.tmp $@ && rm $@.tmp || mv $@.tmp $@
 
-$(builddir)/cll.xml: $(chapters) xml/iso-pub.ent xml/identity.xsl xml/docbook2html_config_common.xsl scripts/update_jbovlaste_xml.sh scripts/generate_glossary.rb scripts/merge.sh .env $(builddir)/build-metadata
+$(builddir)/cll.xml: $(chapters) xml/iso-pub.ent xml/identity.xsl xml/docbook2html_config_common.xsl scripts/update_jbovlaste_xml.sh scripts/generate_glossary.rb scripts/util.rb scripts/header.xml scripts/merge.sh .env dictionary/all_words.xml assets/scripts/sance-next.js $(builddir)/build-metadata
 	regenerator --include-runtime $(PWD)/assets/scripts/sance-next.js > $(builddir)/sance.js
 	rm -rf $(builddir)/xml $(builddir)/dtd
 	cp -pr $(PWD)/xml $(builddir)/
 	cp -pr $(PWD)/dtd $(builddir)/
 	scripts/merge.sh -b "$(builddir)" $(test) $(chapters)
 
-$(builddir)/cll_processed_xhtml.xml: $(builddir)/cll.xml scripts/xml_preprocess.rb scripts/gloss-cells.rb
+$(builddir)/cll_processed_xhtml.xml: $(builddir)/cll.xml scripts/xml_preprocess.rb scripts/gloss-cells.rb scripts/util.rb scripts/header.xml xml/iso-pub.ent $(dtd_files)
 	ruby scripts/xml_preprocess.rb $(builddir)/cll.xml >$(builddir)/cll_processed_xhtml.xml 2>$(builddir)/xml_preprocess.out || (tail $(builddir)/xml_preprocess.out && false)
 
 #*******
@@ -62,7 +69,7 @@ ifdef copydir
 endif
 
 # Do the actual chunking work
-$(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_xhtml.xsl assets/css/master.css scripts/xhtml_postprocess_appcache.sh scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb
+$(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl xml/docbook2html_config_common.xsl $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_xhtml.xsl assets/css/master.css scripts/xhtml_postprocess_appcache.sh scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/util.rb xml/iso-pub.ent $(html_copied_files)
 	rm -rf $(builddir)/xhtml_$*_chunks
 	mkdir -p $(builddir)/xhtml_$*_chunks
 	cp -pr $(PWD)/dtd $(builddir)/xhtml_$*_chunks/
@@ -91,7 +98,7 @@ ifdef copydir
 	cp "$(builddir)/cll-context.pdf" "$(copydir)/cll-context.pdf"
 endif
 
-$(builddir)/cll-context.pdf: $(builddir)/cll_processed_xhtml.xml scripts/docbook_to_context.rb scripts/build_context.sh scripts/context_assets.py assets/context/cll-layout.tex $(shell find assets/fonts assets/media -type f)
+$(builddir)/cll-context.pdf: $(builddir)/cll_processed_xhtml.xml scripts/docbook_to_context.rb scripts/build_context.sh scripts/context_assets.py assets/context/cll-layout.tex $(dtd_files) $(shell find assets/fonts assets/media -type f)
 	bash scripts/build_context.sh "$(builddir)"
 
 #*******
@@ -103,7 +110,7 @@ ifdef copydir
 	mkdir -p $(copydir)
 	cp $(builddir)/cll.pdf $(copydir)/cll.pdf
 endif
-$(builddir)/pdf.done: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl assets/css/master.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/xml_prince_postprocess.rb scripts/prince_check_margins.js scripts/prince_shave_index.js scripts/prince_check_index.js
+$(builddir)/pdf.done: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl assets/css/master.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/util.rb scripts/header.xml scripts/xml_prince_postprocess.rb scripts/prince_check_margins.js scripts/prince_shave_index.js scripts/prince_check_index.js xml/iso-pub.ent $(pdf_copied_files)
 	rm -rf $(builddir)/pdf
 	mkdir -p $(builddir)/pdf
 	cp -pr $(PWD)/assets/css/master.css $(builddir)/pdf/final.css
@@ -133,7 +140,7 @@ ifdef copydir
 	cp $(builddir)/cll-weasyprint.pdf $(copydir)/cll-weasyprint.pdf
 endif
 
-$(builddir)/weasyprint/cll_processed_xhtml_pdf.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl scripts/xml_prince_postprocess.rb scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb assets/css/master.css $(WEASYPRINT_ASSETS)
+$(builddir)/weasyprint/cll_processed_xhtml_pdf.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl scripts/xml_prince_postprocess.rb scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/util.rb scripts/header.xml assets/css/master.css xml/iso-pub.ent $(dtd_files) $(WEASYPRINT_ASSETS)
 	mkdir -p $(builddir)/weasyprint
 	cp -pr $(PWD)/assets $(PWD)/dtd $(builddir)/weasyprint/
 	cp assets/css/master.css $(builddir)/weasyprint/final.css
@@ -157,7 +164,7 @@ ifdef copydir
 endif
 typst: pdf_typst
 
-$(builddir)/cll-typst.pdf: $(builddir)/cll_processed_xhtml.xml scripts/docbook_to_typst.rb scripts/build_pdf_typst.sh typst/book.typ $(wildcard assets/fonts/*.otf assets/fonts/linux-libertine/*.otf assets/media/*.png assets/media/*.gif assets/media/*.svg)
+$(builddir)/cll-typst.pdf: $(builddir)/cll_processed_xhtml.xml scripts/docbook_to_typst.rb scripts/build_pdf_typst.sh typst/book.typ $(dtd_files) $(wildcard assets/fonts/*.otf assets/fonts/linux-libertine/*.otf assets/media/*.png assets/media/*.gif assets/media/*.svg)
 	TYPST_ALLOW_MISSING_REFS=$(if $(test),1,0) scripts/build_pdf_typst.sh "$(builddir)"
 
 #*******
@@ -180,7 +187,7 @@ $(builddir)/cll.epub: $(builddir)/epub-xhtml/index.html scripts/build_epub.sh sc
 # Note that the epub doesn't rely on the PDF, but rather on the HTML
 # that is used to build the PDF, but it amounts to the same thing
 # for requirements here.
-$(builddir)/epub-xhtml/index.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_common.xsl xml/docbook2html_config_epub.xsl $(PWD)/assets/css/master.css $(PWD)/assets/media/* scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb
+$(builddir)/epub-xhtml/index.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_common.xsl xml/docbook2html_config_epub.xsl assets/css/master.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/util.rb xml/iso-pub.ent $(dtd_files) $(epub_copied_files)
 	rm -rf $(builddir)/epub-xhtml/
 	mkdir -p $(builddir)/epub-xhtml/
 	cp -pr $(PWD)/dtd $(builddir)/epub-xhtml/

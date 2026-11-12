@@ -7,6 +7,7 @@ require 'optimist'
 require 'nokogiri'
 require 'fileutils'
 require 'htmlentities'
+require 'digest'
 
 # Initialize our own variables:
 mydir=File.expand_path(File.dirname(__FILE__))
@@ -59,7 +60,14 @@ if opts[:testing]
   suffix='-testing'
 end
 
-glossfile="#{builddir}/glossary.xml-#{md5_1}-#{md5_2}#{suffix}"
+# The preglossary and dictionary checksums do not change when the generator
+# changes. Include the scripts so an older glossary is not reused.
+script_digest = Digest::MD5.hexdigest(
+  File.binread(File.join(mydir, 'generate_glossary.rb')) +
+  "\0" +
+  File.binread(File.join(mydir, 'util.rb'))
+)
+glossfile="#{builddir}/glossary.xml-#{md5_1}-#{md5_2}-#{script_digest}#{suffix}"
 $stderr.puts "glossfile: #{glossfile}; exists: #{File.exist?(glossfile)} size: #{File.size?(glossfile)}"
 
 if File.exist?(glossfile) and File.size?(glossfile) and File.size?(glossfile) > 100

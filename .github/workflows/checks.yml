@@ -107,6 +107,16 @@ jobs:
         run: ruby scripts/test-lint-gloss-columns.rb
       - name: Interlinear gloss columns
         run: ruby scripts/lint-gloss-columns.rb chapters/*.xml
+      - name: Index type lint self-test
+        run: ruby scripts/test-lint-index-types.rb
+      - name: Index types
+        run: ruby scripts/lint-index-types.rb chapters/*.xml
+      - name: Branding values in the merged book
+        run: ruby scripts/test-merge-branding.rb
+      - name: Partial builds resolve every cross-reference
+        run: ruby scripts/test-partial-references.rb
+      - name: Glossary cache and colliding spellings
+        run: ruby scripts/test-generate-glossary.rb
       - name: Word spelling lint self-test
         run: ruby scripts/test-lint-word-spellings.rb
       - name: CGV and comma spellings

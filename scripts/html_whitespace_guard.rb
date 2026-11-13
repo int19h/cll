@@ -3,28 +3,35 @@
 # Compare two XHTML texts and refuse an unsafe whitespace change (issue #207).
 #
 # The guard parses each text on its own. It does not call the formatter.
-# A whitespace run may appear or disappear only at a free gap. The free-gap
-# decision and the characters on each side of a run come from
-# HtmlInlineNeighbors, the same module the formatter uses. An inline run
-# may change between a space and a line break only when that module says
-# both sides are safe. A block edge, a visible br, and a free gap may
-# reshape a run only when the inline character is safe or absent. Every
-# other inline run must match byte for byte. Inside a verbatim element the
-# text must match byte for byte. The gap after a br is never free, and a
-# hidden element never makes a gap free. An uncertain element freezes the
-# runs on both sides, the same way a verbatim element does.
+# A whitespace run may appear or disappear only at a free gap. While the
+# guard builds tokens, HtmlInlineNeighbors decides whether a run is fixed
+# and which characters count as safe. That is the same module the
+# formatter uses, including fixed_inline_run? and boundary_gap_free?.
+# The statuses that later accept or refuse a gap are a second walk, over
+# the guard's own tokens (token_edge, left_neighbor_status,
+# right_neighbor_status). That walk has to stay at least as strict as the
+# shared one. A whitespace-only CDATA section is an unsafe character here,
+# and an empty entity is :entity. Both refuse a change the shared walk can
+# allow. The guard must not accept a change the formatter keeps.
+# An inline run may change between a space and a line break only when the
+# shared module says both sides are safe. A block edge, a visible br, and
+# a free gap may reshape a run only when the inline character is safe or
+# absent. Every other inline run must match byte for byte. Inside a
+# verbatim element the text must match byte for byte. The gap after a br
+# is never free, and a hidden element never makes a gap free. An uncertain
+# element freezes the runs on both sides, the same way a verbatim element
+# does.
 #
 # The comparison covers the raw XML declaration, the doctype and the text
 # of its internal subset, the order of comments and processing instructions
 # around the doctype, and comments, processing instructions, and entity
 # references in the text. The guard loads the same local XHTML DTD as the
 # formatter, through the catalog, and does not use the network. That parse
-# is only for entities. The XHTML DTD fixes the namespace on html. When the
-# root tag in the text declares the same namespace the DTD tree shows, the
-# walk uses that tree and does not open a second parser. A different root
-# tag, or a tag the scan cannot read, uses a streaming read for every
-# element. That read does not build a second tree. An undefined entity
-# anywhere in the page is an error, and the message names it.
+# is only for entities. The XHTML DTD fixes the namespace on every html
+# element, including one nested inside another namespace. Every element is
+# therefore compared with a byte scan that does not load the DTD and does
+# not build a second tree. The scan does not apply that fixed xmlns. An undefined entity anywhere in the page
+# is an error, and the message names it.
 #
 # libxml2 reads XML_CATALOG_FILES when the catalog is first initialized.
 # Nokogiri's packaged libxml2 is linked into nokogiri.so, so
@@ -51,9 +58,15 @@ module HtmlWhitespaceGuard
   WS_TOKEN = [:ws].freeze
   # Most elements declare no namespace. One frozen list stands for all of them.
   EMPTY_DECLS = [].freeze
-  # The root tag of a book page is in the first few hundred bytes. A longer
-  # prolog falls back to the pull parser instead of scanning the whole page.
-  ROOT_SCAN_LIMIT = 65_536
+  # Character references and these names are expanded in namespace values.
+  # Any other name has to be declared in the document's internal subset.
+  PREDEFINED_ENTITIES = {
+    'amp' => '&',
+    'lt' => '<',
+    'gt' => '>',
+    'apos' => "'",
+    'quot' => '"'
+  }.freeze
   ZWSP = HtmlInlineNeighbors::ZWSP
   WIDE_RANGES = HtmlInlineNeighbors::WIDE_RANGES
 
@@ -139,11 +152,9 @@ module HtmlWhitespaceGuard
     raise Unsafe, 'not well-formed XML' unless doc&.root
 
     reject_undefined_entities!(doc)
-    # The fixed xmlns on html is the DTD default that can hide a change.
-    # A matching root tag means the DTD tree already shows the source
-    # namespaces, so the walk does not build a sketch. A different tag uses
-    # the pull parser, which stops before any descendant is expanded.
-    cursor = namespace_cursor_for(text, doc)
+    # The DTD fixes xmlns on every html element. The byte scan does not
+    # load that DTD, so a nested html keeps the namespace of its parent.
+    cursor = namespace_cursor_for(text)
     tokens = []
     walk_document(doc, cursor, tokens)
     raise Unsafe, 'namespace parse diverged' if cursor && !cursor.done?
@@ -257,259 +268,558 @@ module HtmlWhitespaceGuard
     match && match[0]
   end
 
-  # Namespaces and a structural sketch from a pull parser. No second tree.
+  # Element names and namespace records, in document order. Text, comments,
+  # and entity references are not stored: the token walk checks element
+  # names as it goes, and a mismatch or a leftover element is a divergence.
   class NsCursor
-    def initialize(shape, records)
-      @shape = shape.freeze
-      @records = records.freeze
-      @si = 0
-      @ri = 0
+    def initialize(flat)
+      @flat = flat
+      @i = 0
+      @depth = 0
+      @want_name = false
+      @record = nil
     end
 
     def done?
-      @si == @shape.length && @ri == @records.length
+      @i == @flat.length && @depth == 0 && !@want_name && @record.nil?
     end
 
     def expect(kind)
-      got = @shape[@si]
-      @si += 1
-      raise Unsafe, 'namespace parse diverged' unless got == kind
+      if @want_name
+        @want_name = false
+        raise Unsafe, 'namespace parse diverged' unless kind == @flat[@i]
+
+        @record = @flat[@i + 1]
+        @i += 2
+        return
+      end
+      case kind
+      when :element
+        raise Unsafe, 'namespace parse diverged' if @i >= @flat.length
+
+        @want_name = true
+        @depth += 1
+      when :end
+        @depth -= 1
+        raise Unsafe, 'namespace parse diverged' if @depth < 0
+      end
     end
 
     def take_record
-      record = @records[@ri]
-      @ri += 1
+      record = @record
+      @record = nil
       raise Unsafe, 'namespace parse diverged' unless record
 
       record
     end
   end
 
-  # Same node order as a document that was not given the external DTD.
-  # Blank text is skipped only at the top level. An empty element has no
-  # end event, so the sketch supplies one. Node types are libxml2's.
-  #
-  # This uses libxml's pull parser directly. Nokogiri's Reader#namespaces
-  # expands the current element and every descendant, which keeps a second
-  # tree alive. Attribute reads do not. The reader is freed before the
-  # method returns, and before the token walk.
-  def with_namespace_reader(text)
-    options = Nokogiri::XML::ParseOptions.new.default_xml.strict.nonet.to_i
-    reader = nil
-    reader = libxml_fn(
-      'xmlReaderForMemory',
-      [Fiddle::TYPE_VOIDP, Fiddle::TYPE_INT, Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP, Fiddle::TYPE_INT],
-      Fiddle::TYPE_VOIDP
-    ).call(text, text.bytesize, nil, nil, options)
-    raise Unsafe, 'not well-formed XML' if reader_null?(reader)
-
-    silence_reader(reader)
-    yield reader
-  ensure
-    libxml_fn('xmlFreeTextReader', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOID).call(reader) if reader && !reader_null?(reader)
-  end
-
-  # nil when the root tag matches the DTD tree. The pull parser runs only
-  # when the tag differs, or when the scan cannot read it.
-  def namespace_cursor_for(text, doc)
-    dtd = dtd_namespace_record(doc.root)
-    source = source_root_namespace(text)
-    source = read_root_namespace(text) if source.nil?
-    return nil if source == dtd
-
+  # Every element, from a parse that does not load the DTD. A nil cursor
+  # would fall back to the DTD tree and hide a nested html, so the caller
+  # always receives one. The sketch is finished before the token walk.
+  def namespace_cursor_for(text)
     namespace_cursor(text)
   end
 
-  # The root start tag, read from the text. nil when the prolog is too
-  # large or the tag is not a plain quoted start tag. The caller then uses
-  # the pull parser. A match avoids opening that parser on an ordinary page.
-  def source_root_namespace(text)
-    source = text.delete_prefix("\uFEFF")
-    limit = [source.length, ROOT_SCAN_LIMIT].min
-    index = 0
-    if source.start_with?('<?xml')
-      index = source.index('?>', index)
-      return nil unless index && index < limit
+  def ascii_word?(raw, start, word)
+    return false unless raw.bytesize >= start + word.bytesize
 
-      index += 2
-    end
-    while index < limit
-      index += 1 while index < limit && xml_space?(source[index])
-      break if index >= limit
+    word.each_byte.with_index.all? { |expected, offset|
+      found = raw.getbyte(start + offset)
+      found && (found | 0x20) == (expected | 0x20)
+    }
+  end
 
-      if starts_at?(source, index, '<!--')
-        index = source.index('-->', index)
-        return nil unless index && index < limit
+  def skip_doctype(raw, start)
+    i = start + 9
+    length = raw.bytesize
+    while i < length
+      byte = raw.getbyte(i)
+      if byte == 0x5B
+        return subset_end(raw, i + 1)
+      elsif byte == 0x3E
+        return i + 1
+      elsif byte == 0x22 || byte == 0x27
+        stop = raw.index(byte.chr, i + 1)
+        return length unless stop
 
-        index += 3
-      elsif starts_at?(source, index, '<?')
-        index = source.index('?>', index)
-        return nil unless index && index < limit
+        i = stop + 1
+      elsif byte == 0x3C && raw.byteslice(i + 1, 3) == '!--'
+        stop = raw.index('-->', i + 4)
+        return length unless stop
 
-        index += 2
-      elsif starts_at?(source, index, '<!DOCTYPE')
-        index = skip_doctype(source, index, limit)
-        return nil unless index
-      elsif source[index] == '<'
-        return root_tag_namespace(source, index, limit)
+        i = stop + 3
       else
-        return nil
+        i += 1
       end
     end
-    nil
+    length
   end
 
-  def starts_at?(source, index, text)
-    source[index, text.length] == text
-  end
+  # Position after the doctype's closing '>'. The subset ends at ']>'
+  # outside a quote, a comment, or a processing instruction.
+  def subset_end(raw, start)
+    i = start
+    length = raw.bytesize
+    while i < length
+      byte = raw.getbyte(i)
+      if byte == 0x5D && raw.getbyte(i + 1) == 0x3E
+        return i + 2
+      elsif byte == 0x22 || byte == 0x27
+        stop = raw.index(byte.chr, i + 1)
+        return length unless stop
 
-  def xml_space?(char)
-    char == ' ' || char == "\n" || char == "\t" || char == "\r" || char == "\f"
-  end
+        i = stop + 1
+      elsif byte == 0x3C && raw.byteslice(i + 1, 3) == '!--'
+        stop = raw.index('-->', i + 4)
+        return length unless stop
 
-  def skip_doctype(source, index, limit)
-    quote = nil
-    depth = 0
-    while index < limit
-      char = source[index]
-      if quote
-        quote = nil if char == quote
-      elsif char == '"' || char == "'"
-        quote = char
-      elsif char == '['
-        depth += 1
-      elsif char == ']'
-        depth -= 1
-      elsif char == '>' && depth.zero?
-        return index + 1
-      end
-      index += 1
-    end
-    nil
-  end
+        i = stop + 3
+      elsif byte == 0x3C && raw.getbyte(i + 1) == 0x3F
+        stop = raw.index('?>', i + 2)
+        return length unless stop
 
-  # [uri, decls] for the root element, or nil when the tag is not plain.
-  def root_tag_namespace(source, index, limit)
-    return nil unless source[index] == '<'
-
-    index += 1
-    name_at = index
-    index += 1 while index < limit && !xml_space?(source[index]) && source[index] != '>' && source[index] != '/'
-    return nil if index == name_at || index >= limit
-
-    name = source[name_at...index]
-    return nil if name.include?('<') || name.include?('&')
-
-    decls = []
-    while index < limit
-      index += 1 while index < limit && xml_space?(source[index])
-      break if index >= limit || source[index] == '>' || source[index] == '/'
-
-      name_at = index
-      index += 1 while index < limit && source[index] != '=' && !xml_space?(source[index]) && source[index] != '>' && source[index] != '/'
-      attr = source[name_at...index]
-      return nil if attr.empty?
-      index += 1 while index < limit && xml_space?(source[index])
-      return nil if index >= limit || source[index] != '='
-
-      index += 1
-      index += 1 while index < limit && xml_space?(source[index])
-      return nil if index >= limit
-
-      quote = source[index]
-      return nil unless quote == '"' || quote == "'"
-
-      value_at = index + 1
-      index = source.index(quote, value_at)
-      return nil unless index && index < limit
-
-      value = source[value_at...index]
-      return nil if value.include?('&') || value.include?('<')
-
-      index += 1
-      if attr == 'xmlns'
-        decls << [nil, value]
-      elsif attr.start_with?('xmlns:') && attr.length > 6
-        decls << [attr.delete_prefix('xmlns:'), value]
+        i = stop + 2
+      else
+        i += 1
       end
     end
-    return nil if index >= limit
-
-    prefix, = name.split(':', 2) if name.include?(':')
-    found = prefix ? decls.find { |declared, _href| declared == prefix } : decls.find { |declared, _href| declared.nil? }
-    uri = found && found[1]
-    listed = decls.empty? ? EMPTY_DECLS : decls.map { |declared, href| [shared_string(declared), shared_string(href)] }
-    namespace_record(shared_string(uri), listed)
+    length
   end
 
-  # The root only. Used when the text scan cannot read the root tag.
-  # The reader is freed before the caller walks the document.
-  def read_root_namespace(text)
-    with_namespace_reader(text) do |reader|
-      read = libxml_fn('xmlTextReaderRead', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT)
-      node_type = libxml_fn('xmlTextReaderNodeType', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT)
-      ns_uri = libxml_fn('xmlTextReaderConstNamespaceUri', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOIDP)
-      while read.call(reader) == 1
-        next unless node_type.call(reader) == 1
+  def tag_boundary?(byte)
+    byte == 0x20 || byte == 0x09 || byte == 0x0A || byte == 0x0D || byte == 0x0C ||
+      byte == 0x3E || byte == 0x2F
+  end
 
-        return namespace_record(
-          shared_string(reader_cstr(ns_uri.call(reader))),
-          reader_attribute_decls(reader)
-        )
+  def tag_space?(byte)
+    byte == 0x20 || byte == 0x09 || byte == 0x0A || byte == 0x0D || byte == 0x0C
+  end
+
+  # XML Namespaces binds this prefix in every document. A tag that declares
+  # a prefix copies the map before it adds that binding.
+  def base_prefixes
+    @base_prefixes ||= { 'xml' => 'http://www.w3.org/XML/1998/namespace' }.freeze
+  end
+
+  def intern_local_name(raw, at, len)
+    raise Unsafe, 'namespace parse diverged' if len <= 0
+
+    if len <= 7
+      key = 0
+      n = 0
+      while n < len
+        key = (key << 8) | raw.getbyte(at + n)
+        n += 1
       end
-      raise Unsafe, 'not well-formed XML'
+      return (@short_names ||= {})[key] ||= raw.byteslice(at, len).force_encoding(Encoding::UTF_8)
     end
+    shared_string(raw.byteslice(at, len).force_encoding(Encoding::UTF_8))
   end
 
-  def read_namespaces(text)
-    shape = []
-    records = []
-    status = nil
-    with_namespace_reader(text) do |reader|
-      read = libxml_fn('xmlTextReaderRead', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT)
-      node_type = libxml_fn('xmlTextReaderNodeType', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT)
-      depth = libxml_fn('xmlTextReaderDepth', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT)
-      local_name = libxml_fn('xmlTextReaderConstLocalName', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOIDP)
-      const_name = libxml_fn('xmlTextReaderConstName', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOIDP)
-      ns_uri = libxml_fn('xmlTextReaderConstNamespaceUri', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOIDP)
-      empty_element = libxml_fn('xmlTextReaderIsEmptyElement', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT)
-      const_value = libxml_fn('xmlTextReaderConstValue', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOIDP)
-      while (status = read.call(reader)) == 1
-        case node_type.call(reader)
-        when 1
-          shape << :element << shared_string(reader_cstr(local_name.call(reader)))
-          records << namespace_record(
-            shared_string(reader_cstr(ns_uri.call(reader))),
-            reader_attribute_decls(reader)
-          )
-          shape << :end if empty_element.call(reader) == 1
-        when 15
-          shape << :end
-        when 4
-          shape << :cdata
-        when 3, 13, 14
-          if depth.call(reader).zero?
-            value = reader_cstr(const_value.call(reader)).to_s
-            next if value.match?(/\A[ \t\n\r\f]*\z/)
-          end
-          shape << :text
-        when 5
-          shape << :entity << reader_cstr(const_name.call(reader))
-        when 8
-          shape << :comment
-        when 7
-          shape << :pi << reader_cstr(local_name.call(reader))
-        when 9, 10, 16, 17
-          next
+  def name_byte?(byte)
+    return false if byte.nil?
+
+    (byte >= 0x41 && byte <= 0x5A) || (byte >= 0x61 && byte <= 0x7A) ||
+      (byte >= 0x30 && byte <= 0x39) || byte == 0x5F || byte == 0x2D || byte == 0x2E ||
+      byte == 0x3A || byte >= 0x80
+  end
+
+  def skip_ascii_space(raw, pos, limit)
+    while pos < limit && tag_space?(raw.getbyte(pos))
+      pos += 1
+    end
+    pos
+  end
+
+  def internal_entity_map(raw)
+    map = {}
+    i = 0
+    while (i = raw.index('<!ENTITY', i))
+      j = skip_ascii_space(raw, i + 8, raw.bytesize)
+      if raw.getbyte(j) == 0x25
+        i = declaration_end(raw, j)
+        next
+      end
+      name_at = j
+      j += 1 while name_byte?(raw.getbyte(j))
+      raise Unsafe, 'namespace parse diverged' if j == name_at
+
+      name = raw.byteslice(name_at, j - name_at).force_encoding(Encoding::UTF_8)
+      j = skip_ascii_space(raw, j, raw.bytesize)
+      quote = raw.getbyte(j)
+      if quote == 0x22 || quote == 0x27
+        close = raw.index(quote.chr, j + 1)
+        raise Unsafe, 'namespace parse diverged' unless close
+
+        map[name] = raw.byteslice(j + 1, close - j - 1).force_encoding(Encoding::UTF_8)
+        i = declaration_end(raw, close + 1)
+      else
+        i = declaration_end(raw, j)
+      end
+    end
+    map
+  end
+
+  def declaration_end(raw, pos)
+    length = raw.bytesize
+    while pos < length
+      byte = raw.getbyte(pos)
+      if byte == 0x3E
+        return pos + 1
+      elsif byte == 0x22 || byte == 0x27
+        close = raw.index(byte.chr, pos + 1)
+        return length unless close
+
+        pos = close + 1
+      else
+        pos += 1
+      end
+    end
+    length
+  end
+
+  def decode_attr_bytes(raw, from, to, entities)
+    i = from
+    while i < to
+      byte = raw.getbyte(i)
+      if byte == 0x26 || byte == 0x09 || byte == 0x0A || byte == 0x0D
+        binary = decode_attr_slow(raw, from, to, entities, [])
+        return shared_string(binary.force_encoding(Encoding::UTF_8))
+      end
+      i += 1
+    end
+    shared_string(raw.byteslice(from, to - from).force_encoding(Encoding::UTF_8))
+  end
+
+  def decode_attr_slow(raw, from, to, entities, seen)
+    out = String.new(encoding: Encoding::ASCII_8BIT)
+    i = from
+    while i < to
+      byte = raw.getbyte(i)
+      if byte == 0x26
+        semi = raw.index(';'.b, i + 1)
+        raise Unsafe, 'namespace parse diverged' unless semi && semi < to
+
+        token = raw.byteslice(i + 1, semi - i - 1).force_encoding(Encoding::UTF_8)
+        if token.start_with?('#')
+          code = token.start_with?('#x', '#X') ? Integer(token[2..], 16) : Integer(token[1..], 10)
+          append_codepoint(out, code)
         else
-          shape << :other
+          out << expand_entity_bytes(token, entities, seen)
+        end
+        i = semi + 1
+      elsif byte == 0x0D
+        out << 0x20
+        i += 1
+        i += 1 if i < to && raw.getbyte(i) == 0x0A
+      elsif byte == 0x0A || byte == 0x09
+        out << 0x20
+        i += 1
+      else
+        start = i
+        i += 1
+        while i < to
+          nxt = raw.getbyte(i)
+          break if nxt == 0x26 || nxt == 0x09 || nxt == 0x0A || nxt == 0x0D
+
+          i += 1
+        end
+        out << raw.byteslice(start, i - start)
+      end
+    end
+    out
+  rescue ArgumentError
+    raise Unsafe, 'namespace parse diverged'
+  end
+
+  def append_codepoint(out, code)
+    if code < 0 || code > 0x10FFFF || (code >= 0xD800 && code <= 0xDFFF)
+      raise Unsafe, 'namespace parse diverged'
+    end
+
+    out << code.chr(Encoding::UTF_8).b
+  end
+
+  def expand_entity_bytes(name, entities, seen)
+    raise Unsafe, 'namespace parse diverged' if seen.include?(name) || seen.length > 32
+
+    if entities&.key?(name)
+      body = entities[name].b
+      return decode_attr_slow(body, 0, body.bytesize, entities, seen + [name])
+    end
+    predefined = PREDEFINED_ENTITIES[name]
+    raise Unsafe, 'namespace parse diverged' unless predefined
+
+    predefined.b
+  end
+
+  def xmlns_attribute_prefix(raw, at, len)
+    return :no if len < 5
+    return :no unless raw.getbyte(at) == 0x78 && raw.byteslice(at, 5) == 'xmlns'
+
+    return nil if len == 5
+    return :no unless raw.getbyte(at + 5) == 0x3A && len > 6
+
+    shared_string(raw.byteslice(at + 6, len - 6).force_encoding(Encoding::UTF_8))
+  end
+
+  def tag_finish(raw, start)
+    pos = start + 1
+    length = raw.bytesize
+    while pos < length
+      gt = raw.index('>', pos)
+      return nil unless gt
+
+      dq = raw.index('"', pos)
+      sq = raw.index("'", pos)
+      dq = length if dq.nil? || dq > gt
+      sq = length if sq.nil? || sq > gt
+      return gt if dq == length && sq == length
+
+      qat = dq < sq ? dq : sq
+      close = raw.index(dq < sq ? '"' : "'", qat + 1)
+      return nil unless close
+
+      pos = close + 1
+    end
+    nil
+  end
+
+  # Flat [local name, namespace record, ...]. The external DTD is not applied,
+  # so a nested html keeps its parent's namespace. Tags that declare nothing
+  # and use no prefix skip attribute parsing. xmlns offsets are collected once
+  # so that search stays inside the tag.
+  def scan_element_namespaces(raw)
+    raw = raw.b
+    entities = raw.include?('<!ENTITY') ? internal_entity_map(raw) : nil
+    xmlns_at = []
+    mark = 0
+    while (mark = raw.index('xmlns', mark))
+      xmlns_at << mark
+      mark += 5
+    end
+    xmlns_i = 0
+    flat = []
+    scopes = []
+    uri = nil
+    prefixes = base_prefixes
+    depth = 0
+    length = raw.bytesize
+    i = 0
+    while (i = raw.index('<', i))
+      kind = raw.getbyte(i + 1)
+      if kind == 0x21
+        if raw.byteslice(i + 2, 2) == '--'
+          stop = raw.index('-->', i + 4)
+          i = stop ? stop + 3 : length
+        elsif raw.byteslice(i + 2, 7) == '[CDATA['
+          stop = raw.index(']]>', i + 9)
+          i = stop ? stop + 3 : length
+        elsif ascii_word?(raw, i + 2, 'DOCTYPE')
+          i = skip_doctype(raw, i)
+        else
+          stop = raw.index('>', i + 2)
+          i = stop ? stop + 1 : length
+        end
+      elsif kind == 0x3F
+        stop = raw.index('?>', i + 2)
+        i = stop ? stop + 2 : length
+      elsif kind == 0x2F
+        depth -= 1
+        raise Unsafe, 'namespace parse diverged' if depth < 0
+
+        while (top = scopes.last) && top[0] == depth
+          _, uri, prefixes = scopes.pop
+        end
+        stop = raw.index('>', i + 2)
+        i = stop ? stop + 1 : length
+      elsif kind.nil?
+        break
+      else
+        finish = tag_finish(raw, i)
+        raise Unsafe, 'namespace parse diverged' unless finish
+
+        xmlns_i += 1 while xmlns_i < xmlns_at.length && xmlns_at[xmlns_i] < i
+        has_xmlns = xmlns_i < xmlns_at.length && xmlns_at[xmlns_i] < finish
+        name_at = i + 1
+        pos = name_at
+        colon = nil
+        while pos < finish
+          byte = raw.getbyte(pos)
+          break if tag_boundary?(byte)
+
+          colon = pos if byte == 0x3A && colon.nil?
+          pos += 1
+        end
+        if colon || has_xmlns
+          i, uri, prefixes, depth = append_declared_element(
+            raw, i, length, entities, flat, scopes, uri, prefixes, depth
+          )
+        else
+          local = intern_local_name(raw, name_at, pos - name_at)
+          edge = finish - 1
+          edge -= 1 while edge > i && tag_space?(raw.getbyte(edge))
+          empty = raw.getbyte(edge) == 0x2F
+          flat << local << namespace_record(uri, EMPTY_DECLS)
+          depth += 1 unless empty
+          i = finish + 1
         end
       end
     end
-    raise Unsafe, 'not well-formed XML' unless status&.zero?
+    raise Unsafe, 'namespace parse diverged' if depth != 0 || !scopes.empty?
 
-    [shape, records]
+    flat
   end
+
+  def append_declared_element(raw, i, length, entities, flat, scopes, uri, prefixes, depth)
+    name_at = i + 1
+    pos = name_at
+    colon = nil
+    while pos < length
+      byte = raw.getbyte(pos)
+      break if tag_boundary?(byte)
+
+      colon = pos if byte == 0x3A && colon.nil?
+      pos += 1
+    end
+    if colon
+      prefix = shared_string(raw.byteslice(name_at, colon - name_at).force_encoding(Encoding::UTF_8))
+      local = intern_local_name(raw, colon + 1, pos - colon - 1)
+    else
+      prefix = nil
+      local = intern_local_name(raw, name_at, pos - name_at)
+    end
+    decls = nil
+    empty = false
+    while pos < length
+      byte = raw.getbyte(pos)
+      if tag_space?(byte)
+        pos += 1
+        next
+      end
+      break if byte == 0x3E
+      if byte == 0x2F
+        empty = true
+        pos += 1
+        next
+      end
+      attr_at = pos
+      pos += 1 while pos < length && !tag_boundary?(raw.getbyte(pos)) && raw.getbyte(pos) != 0x3D
+      attr_prefix = xmlns_attribute_prefix(raw, attr_at, pos - attr_at)
+      pos = skip_ascii_space(raw, pos, length)
+      value_from = nil
+      value_to = nil
+      if raw.getbyte(pos) == 0x3D
+        pos = skip_ascii_space(raw, pos + 1, length)
+        quote = raw.getbyte(pos)
+        raise Unsafe, 'namespace parse diverged' unless quote == 0x22 || quote == 0x27
+
+        close = raw.index(quote.chr, pos + 1)
+        raise Unsafe, 'namespace parse diverged' unless close
+
+        value_from = pos + 1
+        value_to = close
+        pos = close + 1
+      end
+      next if attr_prefix == :no
+
+      raise Unsafe, 'namespace parse diverged' unless value_from
+
+      decls ||= []
+      decls << [attr_prefix, decode_attr_bytes(raw, value_from, value_to, entities)]
+    end
+    raise Unsafe, 'namespace parse diverged' unless pos < length && raw.getbyte(pos) == 0x3E
+
+    element_uri, next_uri, next_prefixes = bound_namespace(prefix, uri, prefixes, decls)
+    flat << local << namespace_record(element_uri, decls || EMPTY_DECLS)
+    unless empty
+      if decls
+        scopes << [depth, uri, prefixes]
+        uri = next_uri
+        prefixes = next_prefixes
+      end
+      depth += 1
+    end
+    [pos + 1, uri, prefixes, depth]
+  end
+
+  def bound_namespace(prefix, uri, prefixes, decls)
+    next_uri = uri
+    next_prefixes = prefixes
+    if decls
+      copied = false
+      decls.each do |decl_prefix, value|
+        if decl_prefix.nil?
+          next_uri = value.empty? ? nil : value
+        else
+          unless copied
+            next_prefixes = prefixes.dup
+            copied = true
+          end
+          next_prefixes[decl_prefix] = value
+        end
+      end
+    end
+    element_uri = if prefix
+                    raise Unsafe, 'namespace parse diverged' unless next_prefixes.key?(prefix)
+
+                    found = next_prefixes[prefix]
+                    found.respond_to?(:empty?) && found.empty? ? nil : found
+                  else
+                    next_uri
+                  end
+    [element_uri, next_uri, next_prefixes]
+  end
+
+  # Namespaces the DTD parse added, compared with the file's own parse.
+  # The formatter's serializer writes those defaults out, so a later
+  # comparison of two serialized trees does not see them.
+  def compare_dtd_namespaces!(source, doc, name:)
+    flat = scan_element_namespaces(source.b)
+    index = 0
+    each_element_preorder(doc) do |element|
+      if index >= flat.length || flat[index] != element.name || !same_namespace?(flat[index + 1], element)
+        raise Unsafe, "#{name}: CHANGED namespace of <#{element.name}>"
+      end
+      index += 2
+    end
+    return if index == flat.length
+
+    raise Unsafe, "#{name}: CHANGED namespace of the document"
+  end
+
+  # The common element has no declarations. Comparing it does not allocate.
+  def same_namespace?(record, element)
+    href = element.namespace&.href
+    definitions = element.namespace_definitions
+    if definitions.empty?
+      record[0] == href && record[1].equal?(EMPTY_DECLS)
+    else
+      decls = definitions.map { |namespace| [namespace.prefix, namespace.href] }
+      record == [href, decls]
+    end
+  end
+
+  def each_element_preorder(node, &block)
+    node.children.each do |child|
+      next unless child.element?
+
+      yield child
+      each_element_preorder(child, &block)
+    end
+  end
+
+  def dom_namespace(element)
+    definitions = element.namespace_definitions
+    decls = if definitions.empty?
+              EMPTY_DECLS
+            else
+              definitions.map { |namespace| [namespace.prefix, namespace.href] }
+            end
+    [element.namespace&.href, decls]
+  end
+
 
   # One record object for every element that only inherits a namespace.
   # The tokens keep the href and the declaration list, and compare them by value.
@@ -519,88 +829,8 @@ module HtmlWhitespaceGuard
     (@plain_ns ||= {})[uri] ||= [uri, EMPTY_DECLS].freeze
   end
 
-  def reader_attribute_decls(reader)
-    fns = attribute_reader_fns
-    count = fns[:count].call(reader)
-    return EMPTY_DECLS if count.to_i <= 0
-
-    decls = nil
-    moved = false
-    count.to_i.times do |index|
-      next unless fns[:move].call(reader, index) == 1
-
-      moved = true
-      name = reader_cstr(fns[:name].call(reader))
-      next unless name == 'xmlns' || (name && name.start_with?('xmlns:'))
-
-      prefix = name == 'xmlns' ? nil : name.delete_prefix('xmlns:')
-      (decls ||= []) << [shared_string(prefix), shared_string(reader_cstr(fns[:value].call(reader)))]
-    end
-    fns[:back].call(reader) if moved
-    decls || EMPTY_DECLS
-  end
-
-  def attribute_reader_fns
-    @attribute_reader_fns ||= {
-      count: libxml_fn('xmlTextReaderAttributeCount', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT),
-      move: libxml_fn('xmlTextReaderMoveToAttributeNo', [Fiddle::TYPE_VOIDP, Fiddle::TYPE_INT], Fiddle::TYPE_INT),
-      name: libxml_fn('xmlTextReaderConstName', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOIDP),
-      value: libxml_fn('xmlTextReaderConstValue', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOIDP),
-      back: libxml_fn('xmlTextReaderMoveToElement', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT)
-    }
-  end
-
-  def reader_cstr(ptr)
-    return nil if reader_null?(ptr)
-
-    pointer = ptr.is_a?(Fiddle::Pointer) ? ptr : Fiddle::Pointer.new(ptr.to_i)
-    return nil if pointer.null?
-
-    pointer.to_s
-  end
-
-  # The namespace read does not load the DTD, so an entity that the DTD
-  # defines is unknown here. The DTD parse already reported real errors.
-  # A handler keeps those warnings off stderr. The closure has to stay
-  # alive for the process, or libxml calls a freed address.
-  def silence_reader(reader)
-    @reader_error_handler ||= Fiddle::Closure::BlockCaller.new(
-      Fiddle::TYPE_VOID,
-      [Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP, Fiddle::TYPE_INT, Fiddle::TYPE_VOIDP]
-    ) { |*| }
-    @reader_structured_handler ||= Fiddle::Closure::BlockCaller.new(
-      Fiddle::TYPE_VOID,
-      [Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP]
-    ) { |*| }
-    libxml_fn(
-      'xmlTextReaderSetErrorHandler',
-      [Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP],
-      Fiddle::TYPE_VOID
-    ).call(reader, @reader_error_handler, nil)
-    libxml_fn(
-      'xmlTextReaderSetStructuredErrorHandler',
-      [Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP],
-      Fiddle::TYPE_VOID
-    ).call(reader, @reader_structured_handler, nil)
-  end
-
-  def reader_null?(ptr)
-    ptr.nil? || (ptr.respond_to?(:null?) && ptr.null?) || (ptr.is_a?(Integer) && ptr.zero?)
-  end
-
-  def libxml_fn(name, args, result)
-    @libxml_fns ||= {}
-    @libxml_fns[[name, args, result]] ||= begin
-      symbol = nokogiri_libxml && nokogiri_libxml[name]
-      raise Unsafe, 'namespace reader is unavailable' unless symbol
-
-      Fiddle::Function.new(symbol, args, result)
-    end
-  end
-
   def namespace_cursor(text)
-    shape, records = read_namespaces(text)
-    NsCursor.new(shape, records)
+    NsCursor.new(scan_element_namespaces(text.b))
   end
 
   def walk_document(doc, cursor, tokens)
@@ -617,10 +847,12 @@ module HtmlWhitespaceGuard
   end
 
   def walk(element, cursor, tokens, verbatim, inline_ancestor)
+    raise Unsafe, 'namespace parse diverged' unless cursor
+
     note(cursor, :element)
     name = cached_name(element)
     note(cursor, name)
-    record = cursor ? cursor.take_record : dtd_namespace_record(element)
+    record = cursor.take_record
     inside_inline = inline_ancestor || inline?(element)
     region = verbatim || verbatim?(element) || (block?(element) && inline_ancestor)
     kind = element_kind(element)
@@ -918,19 +1150,6 @@ module HtmlWhitespaceGuard
     value = shared_string(namespace.href)
     namespace.instance_variable_set(:@_href, value)
     value
-  end
-
-  # Declarations on this element. Empty lists share one object so a page of
-  # ordinary elements does not allocate a list per element.
-  def namespace_decls(element)
-    defs = element.namespace_definitions
-    return EMPTY_DECLS if defs.empty?
-
-    defs.map { |ns| [shared_string(ns.prefix), href_of(ns)] }
-  end
-
-  def dtd_namespace_record(element)
-    namespace_record(href_of(element.namespace), namespace_decls(element))
   end
 
   def attributes(element)

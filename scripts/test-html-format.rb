@@ -615,22 +615,32 @@ class HtmlFormatContract < Minitest::Test
       ['span', ['only-media'], false],
       ['br', ['example-break'], true],
       ['hr', [], false]
-    ], hiding_rules(sample)
+    ], hiding_rules(sample).map { |rule| [rule[:tag], rule[:classes], rule[:unconditional]] }
 
     found = []
-    stylesheet_texts.each { |text| found.concat(hiding_rules(text)) }
-    assert_includes found, ['hr', [], false]
-    assert_includes found, ['br', ['example-break'], true]
-    assert_includes found, ['br', ['table-break'], true]
-    assert_includes found, [nil, ['display-none'], true]
-    assert_includes found, [nil, ['guibutton'], true]
-    assert_includes found, [nil, ['release-separator'], false]
-    assert_includes found, ['h3', [], false]
-    found.each do |tag, classes, unconditional|
-      visibility = HtmlInlineNeighbors.subject_visibility(tag, classes)
-      expected = unconditional ? :hidden : :uncertain
-      assert_equal expected, visibility, "#{tag.inspect} #{classes.inspect} unconditional=#{unconditional} is #{visibility}"
+    shown = []
+    stylesheet_texts.each do |text|
+      assert_equal [], stylesheet_problems(text), text[0, 80]
+      css_visibility_rules(text).each do |rule|
+        (rule[:effect] == :hide ? found : shown) << rule
+      end
     end
+    subjects = found.map { |rule| [rule[:tag], rule[:classes], rule[:unconditional]] }
+    assert_includes subjects, ['hr', [], false]
+    assert_includes subjects, ['br', ['example-break'], true]
+    assert_includes subjects, ['br', ['table-break'], true]
+    assert_includes subjects, [nil, ['display-none'], true]
+    assert_includes subjects, [nil, ['guibutton'], true]
+    assert_includes subjects, [nil, ['release-separator'], false]
+    assert_includes subjects, ['h3', [], false]
+    found.each do |rule|
+      visibility = HtmlInlineNeighbors.subject_visibility(rule[:tag], rule[:classes])
+      expected = rule[:unconditional] ? :hidden : :uncertain
+      assert_equal expected, visibility, rule[:selector]
+    end
+    assert shown.any? { |rule| rule[:tag] == 'p' && rule[:classes].empty? }
+    assert shown.any? { |rule| rule[:classes] == ['tutci'] }
+    assert shown.any? { |rule| rule[:classes] == ['publication-notice'] }
     assert_equal :hidden, HtmlInlineNeighbors.subject_visibility(nil, ['display-none'])
     assert_equal :uncertain, HtmlInlineNeighbors.subject_visibility('hr', [])
     assert_equal :uncertain, HtmlInlineNeighbors.subject_visibility('h3', [])
@@ -652,6 +662,54 @@ class HtmlFormatContract < Minitest::Test
     assert HtmlInlineNeighbors.uncertain_element?(separator)
     hidden = parsed(page('<div class="display-none">x</div>')).at_xpath('//*[local-name()="div"]')
     assert HtmlInlineNeighbors.hidden_element?(hidden)
+    revealed = parsed(page('<li class="display-none tutci">a</li>')).at_xpath('//*[local-name()="li"]')
+    assert HtmlInlineNeighbors.uncertain_element?(revealed)
+    notice = parsed(page('<span class="display-none publication-notice">a</span>')).at_xpath('//*[local-name()="span"]')
+    assert HtmlInlineNeighbors.uncertain_element?(notice)
+    button = parsed(page('<span class="guibutton publication-notice">a</span>')).at_xpath('//*[local-name()="span"]')
+    assert HtmlInlineNeighbors.uncertain_element?(button)
+    paragraph = parsed(page('<p class="display-none">a</p>')).at_xpath('//*[local-name()="p"]')
+    assert HtmlInlineNeighbors.uncertain_element?(paragraph)
+  end
+
+  def test_stylesheet_scanner_fails_on_constructs_it_does_not_understand
+    cases = {
+      '@layer x;' => '@layer x',
+      '@import "extra.css";' => '@import "extra.css"',
+      '@charset "UTF-8";' => '@charset "UTF-8"',
+      '.foo::after { display: none }' => '.foo::after',
+      'span.foo:first-child { display: none }' => 'span.foo:first-child',
+      'a[name] { display: none }' => 'a[name]',
+      '#x { display: none }' => '#x',
+      '.foo:not(.bar) { display: none }' => '.foo:not(.bar)',
+      '.foo:not(.bar, .baz) { display: none }' => '.foo:not(.bar, .baz)',
+      'a[title="a,b"], b { display: none }' => 'a[title="a,b"]',
+      '@supports (display: flex) { .new-hidden { display: none } }' => '@supports (display: flex)',
+      '.parent { & > .new-hidden { display: none; } }' => '.parent'
+    }
+    cases.each do |css, fragment|
+      problems = stylesheet_problems(css)
+      assert problems.any? { |item| item.include?(fragment) }, "#{css} -> #{problems.inspect}"
+    end
+    reveal = stylesheet_problems('@media print { .display-none { display: inline } }')
+    assert reveal.any? { |item| item.include?('display-none') }, reveal.inspect
+    ancestor = stylesheet_problems('.z .display-none { display: block }')
+    assert ancestor.any? { |item| item.include?('display-none') }, ancestor.inspect
+  end
+
+  def test_stylesheet_scanner_reads_a_quoted_brace_and_collapse
+    quoted = css_visibility_rules('.new-hidden { content: "{"; display: none }')
+    assert_equal [[nil, ['new-hidden'], true, :hide]], quoted.map { |rule|
+      [rule[:tag], rule[:classes], rule[:unconditional], rule[:effect]]
+    }
+    collapsed = css_visibility_rules('tr.x { visibility: collapse }')
+    assert_equal [['tr', ['x'], true, :hide]], collapsed.map { |rule|
+      [rule[:tag], rule[:classes], rule[:unconditional], rule[:effect]]
+    }
+    shown = css_visibility_rules('img.plain { display: block }')
+    assert_equal [['img', ['plain'], true, :show]], shown.map { |rule|
+      [rule[:tag], rule[:classes], rule[:unconditional], rule[:effect]]
+    }
   end
 
   def test_titlepage_hr_keeps_the_space_through_cleanup
@@ -700,6 +758,131 @@ class HtmlFormatContract < Minitest::Test
           HtmlWhitespaceGuard.compare!(source, collapsed, name: 'chapter-tour.html')
         end
         assert_match(/CHANGED/, message.message, kind)
+      end
+    end
+  end
+
+  def test_revealed_list_items_keep_the_space_through_cleanup
+    bodies = {
+      'tutci' => '<ul><li class="display-none tutci">a</li> <li class="display-none tutci">b</li></ul>',
+      'publication-notice' => '<div class="book"><div class="titlepage"><ul><li class="display-none publication-notice">a</li> <li class="display-none publication-notice">b</li></ul></div></div>',
+      'publication-notice-guibutton' => '<div class="book"><div class="titlepage"><ul><li class="guibutton publication-notice">a</li> <li class="guibutton publication-notice">b</li></ul></div></div>'
+    }
+    bodies.each do |kind, body|
+      Dir.mktmpdir do |dir|
+        source = page(body)
+        File.write(File.join(dir, 'page.html'), source)
+        _out, err, status = Open3.capture3(File.join(ROOT, 'scripts/xhtml_postprocess_cleanup.sh'), dir)
+        assert status.success?, "#{kind}: #{err}"
+        text = File.read(File.join(dir, 'page.html'))
+        assert_match(%r{>a</li>\s+<li}m, text, kind)
+        refute_match(%r{>a</li><li}, text, kind)
+        assert_safe(source)
+        removed = source.sub('>a</li> <li', '>a</li><li')
+        message = assert_raises(HtmlWhitespaceGuard::Unsafe) do
+          HtmlWhitespaceGuard.compare!(source, removed, name: 'chapter-tour.html')
+        end
+        assert_match(/REMOVED|CHANGED/, message.message, kind)
+      end
+    end
+  end
+
+  def test_nested_html_namespace_is_rejected
+    inherited = page('<div xmlns="urn:test"><html>a<br/>b</html></div>')
+    Dir.mktmpdir do |dir|
+      File.write(File.join(dir, 'page.html'), inherited)
+      _out, err, status = Open3.capture3(File.join(ROOT, 'scripts/xhtml_postprocess_cleanup.sh'), dir)
+      refute status.success?, err
+      assert_match(/CHANGED namespace/, err)
+      kept = File.read(File.join(dir, 'page.html'))
+      assert_includes kept, '<html>a<br/>b</html>'
+      refute_includes kept, '<div xmlns="urn:test"><html xmlns='
+    end
+
+    explicit = page('<div xmlns="urn:test"><html xmlns="http://www.w3.org/1999/xhtml">a<br/>b</html></div>')
+    removed = explicit.sub('<div xmlns="urn:test"><html xmlns="http://www.w3.org/1999/xhtml">', '<div xmlns="urn:test"><html>')
+    message = assert_raises(HtmlWhitespaceGuard::Unsafe) do
+      HtmlWhitespaceGuard.compare!(explicit, removed, name: 'chapter-tour.html')
+    end
+    assert_match(/CHANGED namespace of <html>/, message.message)
+  end
+
+  # A '>' or an apostrophe inside a quoted attribute must not end the start
+  # tag. The declaration after it still belongs to that element.
+  def test_namespace_declaration_after_a_quoted_angle_stays_on_that_element
+    source = page('<p title="it\'s a>b" xmlns:x="urn:one">t</p>')
+    HtmlWhitespaceGuard.compare_dtd_namespaces!(source, parsed(source), name: 'quoted-angle')
+    changed = source.sub('urn:one', 'urn:two')
+    message = assert_raises(HtmlWhitespaceGuard::Unsafe) do
+      HtmlWhitespaceGuard.compare!(source, changed, name: 'quoted-angle')
+    end
+    assert_match(/CHANGED namespace of <p>/, message.message)
+  end
+
+  def test_namespace_declarations_decode_entities
+    encoded = page('<p xmlns="urn:a&amp;b&#38;c">t</p>')
+    HtmlWhitespaceGuard.compare_dtd_namespaces!(encoded, parsed(encoded), name: 'encoded')
+    internal = <<~XML
+      <?xml version="1.0"?>
+      <!DOCTYPE html [<!ENTITY ns "urn:from-entity">]>
+      <html xmlns="&ns;"><body><p>t</p></body></html>
+    XML
+    HtmlWhitespaceGuard.compare_dtd_namespaces!(internal, parsed(internal), name: 'entity')
+    changed = internal.sub('urn:from-entity', 'urn:other')
+    message = assert_raises(HtmlWhitespaceGuard::Unsafe) do
+      HtmlWhitespaceGuard.compare_dtd_namespaces!(changed, parsed(internal), name: 'entity')
+    end
+    assert_match(/CHANGED namespace of <html>/, message.message)
+  end
+
+  def test_guard_is_never_less_strict_than_the_formatter_on_reviewer_cases
+    zw = "\u200B"
+    cases = {
+      'tutci-list' => '<ul><li class="display-none tutci">a</li> <li class="display-none tutci">b</li></ul>',
+      'notice' => '<div class="book"><div class="titlepage"><ul><li class="display-none publication-notice">a</li> <li class="guibutton publication-notice">b</li></ul></div></div>',
+      'nested-book-hr' => '<div class="book"><div class="titlepage"><div class="titlepage">a<hr/> word</div></div></div>',
+      'nested-article-hr' => '<div class="article"><div class="titlepage"><div><div class="titlepage">a<hr/> word</div></div></div></div>',
+      'separator' => %(<div class="book"><div class="titlepage"><p>a<span class="release-separator">#{zw}</span>\nb</p></div></div>),
+      'wide-br' => '<p>漢<br/> 字</p>',
+      'hidden-block' => '<div>word a <div class="display-none">h</div></div>'
+    }
+    cases.each do |name, body|
+      source = page(body)
+      plain = unformatted(source)
+      pretty = formatted(source)
+      HtmlWhitespaceGuard.compare!(plain, pretty, name: name)
+      doc = parsed(plain)
+      doc.xpath('//text()').each do |node|
+        next unless node.content.match?(/\A[ \t\n\r\f]+\z/) && !node.content.empty?
+
+        parent = node.parent
+        kids = parent.children.to_a
+        index = kids.index(node)
+        next unless index
+
+        original = node.content
+        unless HtmlFormat.blank_gap_free?(parent, kids, index)
+          node.content = ''
+          emptied = HtmlFormat.write(doc)
+          node.content = original
+          next if emptied == plain
+
+          message = assert_raises(HtmlWhitespaceGuard::Unsafe, name) do
+            HtmlWhitespaceGuard.compare!(plain, emptied, name: name)
+          end
+          assert_match(/REMOVED|CHANGED/, message.message, "#{name} delete")
+        end
+        next unless HtmlFormat.gap_fixed?(node)
+
+        node.content = original.include?("\n") ? ' ' : "\n"
+        reshaped = HtmlFormat.write(doc)
+        node.content = original
+        next if reshaped == plain
+
+        message = assert_raises(HtmlWhitespaceGuard::Unsafe, name) do
+          HtmlWhitespaceGuard.compare!(plain, reshaped, name: name)
+        end
+        assert_match(/CHANGED/, message.message, "#{name} reshape")
       end
     end
   end
@@ -1176,38 +1359,379 @@ class HtmlWhitespaceGuardContract < Minitest::Test
   end
 end
 
-# Each hiding rule is [tag, classes, unconditional_single].
-# unconditional_single is true only for a top-level rule whose selector is
-# one compound. A rule under @media or any other at-rule is not that, and
-# neither is a selector with an ancestor. The comment strip runs first, so
-# a commented-out rule is not a rule.
-def hiding_rules(css)
-  rules = []
-  scan_css_rules(css.gsub(%r{/\*.*?\*/}m, ''), rules, false)
-  rules
-end
-
-def scan_css_rules(css, rules, in_at)
-  index = 0
-  while (brace = css.index('{', index))
-    prelude = css[index...brace]
-    body, finish = css_block(css, brace)
-    if prelude.strip.start_with?('@')
-      scan_css_rules(body, rules, true)
-    elsif body !~ /\{/ && (body.match?(/display\s*:\s*none\b/i) || body.match?(/visibility\s*:\s*hidden\b/i))
-      prelude.split(',').each do |selector|
-        subject = selector_subject(selector)
-        next unless subject
-
-        rules << [subject[0], subject[1], !in_at && single_compound?(selector)]
-      end
-    end
-    index = finish + 1
+# A construct the scanner does not claim to understand. The message names
+# the rule so a new stylesheet cannot hide a subject by slipping past.
+class CssNotUnderstood < StandardError
+  def initialize(rule)
+    super("stylesheet rule not understood: #{rule}")
   end
 end
 
-def single_compound?(selector)
-  selector.strip.split(/\s*(?:>|\+|~)\s*|\s+/).reject(&:empty?).length == 1
+# At-rules that were read in assets/css and that do not set display or
+# visibility on an HTML element. @page is page geometry and margin boxes.
+# @font-face is a font file. The scanner still reads a display or
+# visibility declaration nested inside one of them. A nested at-rule under
+# a reviewed rule, such as @bottom-left, is part of that review.
+REVIEWED_AT_RULES = %w[@page @font-face].freeze
+
+# One visibility rule: effect is :hide or :show, unconditional is true only
+# for a top-level rule whose selector is one plain compound.
+def css_visibility_rules(css)
+  rules = []
+  scan_css(strip_css_comments(css), rules, false, false)
+  rules
+end
+
+def hiding_rules(css)
+  css_visibility_rules(css).select { |rule| rule[:effect] == :hide }
+end
+
+def stylesheet_problems(css)
+  problems = []
+  rules = css_visibility_rules(css)
+  rules.each do |rule|
+    if rule[:effect] == :hide
+      got = HtmlInlineNeighbors.subject_visibility(rule[:tag], rule[:classes])
+      want = rule[:unconditional] ? :hidden : :uncertain
+      problems << "#{rule[:selector]} is #{got}, want #{want}" unless got == want
+    else
+      problems.concat(showing_problems(rule))
+    end
+  end
+  problems
+rescue CssNotUnderstood => error
+  [error.message]
+end
+
+def showing_problems(rule)
+  problems = []
+  rule[:classes].each do |klass|
+    next if HtmlInlineNeighbors::SHOWING_CLASSES.include?(klass)
+
+    problems << "#{rule[:selector]} showing class #{klass} is not listed"
+  end
+  if rule[:tag] && !HtmlInlineNeighbors::SHOWING_TAGS.include?(rule[:tag])
+    problems << "#{rule[:selector]} showing tag #{rule[:tag]} is not listed"
+  end
+  HtmlInlineNeighbors::HIDDEN_SUBJECTS.each do |hide_tag, hide_classes|
+    sample = showing_sample(rule[:tag], rule[:classes], hide_tag, hide_classes)
+    next unless sample
+
+    tag, classes = sample
+    node = parsed(page(%(<#{tag} class="#{classes.join(' ')}">x</#{tag}>))).at_xpath("//*[local-name()='#{tag}']")
+    problems << "#{rule[:selector]} leaves #{tag}.#{classes.join('.')} hidden" if HtmlInlineNeighbors.hidden_element?(node)
+  end
+  %w[script style].each do |name|
+    next if rule[:tag] && rule[:tag] != name
+    next if rule[:tag].nil? && rule[:classes].empty?
+
+    node = parsed(page(%(<#{name} class="#{rule[:classes].join(' ')}">x</#{name}>))).at_xpath("//*[local-name()='#{name}']")
+    problems << "#{rule[:selector]} leaves #{name} hidden" if HtmlInlineNeighbors.hidden_element?(node)
+  end
+  problems
+end
+
+# An element that carries the hidden subject and that the showing rule
+# could match by tag or by a class. nil when no such element exists.
+def showing_sample(show_tag, show_classes, hide_tag, hide_classes)
+  if show_tag && hide_tag && show_tag != hide_tag
+    return nil if show_classes.empty?
+
+    [hide_tag, (hide_classes + show_classes).uniq]
+  else
+    [show_tag || hide_tag || 'div', (hide_classes + show_classes).uniq]
+  end
+end
+
+def strip_css_comments(css)
+  out = +''
+  index = 0
+  quote = nil
+  while index < css.length
+    if quote
+      out << css[index]
+      if css[index] == '\\' && index + 1 < css.length
+        index += 1
+        out << css[index]
+      elsif css[index] == quote
+        quote = nil
+      end
+    elsif css[index] == '"' || css[index] == "'"
+      quote = css[index]
+      out << css[index]
+    elsif css[index, 2] == '/*'
+      close = css.index('*/', index + 2)
+      raise CssNotUnderstood, 'unclosed comment' unless close
+
+      index = close + 1
+    else
+      out << css[index]
+    end
+    index += 1
+  end
+  out
+end
+
+def scan_css(css, rules, in_at, reviewed_parent)
+  index = 0
+  while index < css.length
+    index += 1 while index < css.length && css[index].match?(/[ \t\n\r\f]/)
+    break if index >= css.length || css[index] == '}'
+
+    if css[index] == '@'
+      prelude, mark = read_css_until(css, index, true)
+      text = prelude.strip
+      if mark >= css.length
+        raise CssNotUnderstood, text
+      elsif css[mark] == ';'
+        raise CssNotUnderstood, text unless reviewed_parent || reviewed_at_rule?(text)
+
+        index = mark + 1
+      else
+        body, finish = css_block(css, mark)
+        if at_rule_name(text) == '@media'
+          scan_css(body, rules, true, false)
+        elsif reviewed_parent || reviewed_at_rule?(text)
+          scan_css(body, rules, true, true)
+        else
+          raise CssNotUnderstood, text
+        end
+        index = finish + 1
+      end
+    else
+      brace, semi = next_css_divider(css, index)
+      if semi && (brace.nil? || semi < brace)
+        piece = css[index...semi].strip
+        raise CssNotUnderstood, piece unless reviewed_parent || piece.empty?
+
+        index = semi + 1
+        next
+      end
+      break if brace.nil?
+
+      selector = css[index...brace]
+      body, finish = css_block(css, brace)
+      record_style_rule(selector, body, rules, in_at)
+      index = finish + 1
+    end
+  end
+end
+
+def reviewed_at_rule?(prelude)
+  REVIEWED_AT_RULES.include?(at_rule_name(prelude))
+end
+
+def at_rule_name(prelude)
+  prelude.strip.downcase[/\A@[a-z-]+/] || prelude.strip
+end
+
+def record_style_rule(selector, body, rules, in_at)
+  raise CssNotUnderstood, selector.strip if nested_brace?(body)
+
+  effects = declaration_effects(body, selector)
+  return if effects.empty?
+
+  parts = split_selectors(selector)
+  parsed = parts.map { |part| [part.strip, plain_compounds(part)] }
+  parsed.each do |part, compounds|
+    tag, classes = subject_parts(compounds.last)
+    unconditional = !in_at && compounds.length == 1
+    effects.each do |effect|
+      rules << {
+        effect: effect, tag: tag, classes: classes,
+        unconditional: unconditional, selector: part
+      }
+    end
+  end
+end
+
+def declaration_effects(body, selector)
+  effects = []
+  each_declaration(body) do |property, value|
+    next unless property == 'display' || property == 'visibility'
+
+    token = value.downcase.sub(/\s*!important\z/, '').strip.split(/\s+/).first
+    raise CssNotUnderstood, selector.strip if token.nil? || token.empty? || token.include?('(')
+
+    hiding = (property == 'display' && token == 'none') ||
+             (property == 'visibility' && (token == 'hidden' || token == 'collapse'))
+    effects << (hiding ? :hide : :show)
+  end
+  effects.uniq
+end
+
+def each_declaration(body)
+  each_top_level(body, ';') do |piece|
+    property, value = piece.split(':', 2)
+    next if property.nil? || value.nil?
+
+    yield property.strip.downcase, value.strip
+  end
+end
+
+def split_selectors(selector)
+  parts = []
+  each_top_level(selector, ',') { |part| parts << part }
+  raise CssNotUnderstood, selector.strip if parts.empty?
+
+  parts
+end
+
+# Split on a separator that is outside strings, parentheses, and brackets.
+# A separator inside those is a construct this scanner does not split.
+def each_top_level(text, separator)
+  buf = +''
+  quote = nil
+  paren = 0
+  bracket = 0
+  index = 0
+  while index < text.length
+    char = text[index]
+    if quote
+      buf << char
+      if char == '\\' && index + 1 < text.length
+        index += 1
+        buf << text[index]
+      elsif char == quote
+        quote = nil
+      end
+    elsif char == '"' || char == "'"
+      quote = char
+      buf << char
+    elsif char == '('
+      paren += 1
+      buf << char
+    elsif char == ')'
+      paren -= 1
+      raise CssNotUnderstood, text.strip if paren.negative?
+
+      buf << char
+    elsif char == '['
+      bracket += 1
+      buf << char
+    elsif char == ']'
+      bracket -= 1
+      raise CssNotUnderstood, text.strip if bracket.negative?
+
+      buf << char
+    elsif char == separator && paren.zero? && bracket.zero?
+      yield buf
+      buf = +''
+    elsif char == separator
+      raise CssNotUnderstood, text.strip
+    else
+      buf << char
+    end
+    index += 1
+  end
+  raise CssNotUnderstood, text.strip if quote || paren != 0 || bracket != 0
+
+  yield buf
+end
+
+def plain_compounds(selector)
+  text = selector.strip
+  raise CssNotUnderstood, text if text.empty? || text.match?(/[:\[#]/)
+
+  parts = text.split(/\s*(?:>|\+|~)\s*|\s+/).reject(&:empty?)
+  raise CssNotUnderstood, text if parts.empty?
+
+  parts.each do |part|
+    plain = part.match?(/\A(?:[A-Za-z*][\w-]*)?(?:\.[_A-Za-z][\w-]*)*\z/)
+    raise CssNotUnderstood, text unless plain && part.match?(/[A-Za-z*]/) && part != '*'
+    # A bare star matches every element. It is not a tag-and-classes subject.
+    raise CssNotUnderstood, text if part == '*'
+  end
+  parts
+end
+
+def subject_parts(compound)
+  tag = compound[/\A[A-Za-z*][\w-]*/]
+  tag = nil if tag.nil? || tag == '*'
+  classes = compound.scan(/\.([_A-Za-z][\w-]*)/).flatten
+  [tag, classes]
+end
+
+def nested_brace?(body)
+  quote = nil
+  index = 0
+  while index < body.length
+    char = body[index]
+    if quote
+      if char == '\\' && index + 1 < body.length
+        index += 2
+        next
+      end
+      quote = nil if char == quote
+    elsif char == '"' || char == "'"
+      quote = char
+    elsif char == '{'
+      return true
+    end
+    index += 1
+  end
+  false
+end
+
+def read_css_until(css, index, stop_semi)
+  quote = nil
+  paren = 0
+  cursor = index
+  while cursor < css.length
+    char = css[cursor]
+    if quote
+      if char == '\\' && cursor + 1 < css.length
+        cursor += 2
+        next
+      end
+      quote = nil if char == quote
+    elsif char == '"' || char == "'"
+      quote = char
+    elsif char == '('
+      paren += 1
+    elsif char == ')'
+      paren -= 1
+    elsif paren.zero? && (char == '{' || (stop_semi && char == ';'))
+      return [css[index...cursor], cursor]
+    end
+    cursor += 1
+  end
+  [css[index..], css.length]
+end
+
+def next_css_divider(css, index)
+  quote = nil
+  paren = 0
+  bracket = 0
+  brace = nil
+  semi = nil
+  cursor = index
+  while cursor < css.length
+    char = css[cursor]
+    if quote
+      if char == '\\' && cursor + 1 < css.length
+        cursor += 2
+        next
+      end
+      quote = nil if char == quote
+    elsif char == '"' || char == "'"
+      quote = char
+    elsif char == '('
+      paren += 1
+    elsif char == ')'
+      paren -= 1
+    elsif char == '['
+      bracket += 1
+    elsif char == ']'
+      bracket -= 1
+    elsif paren.zero? && bracket.zero?
+      brace = cursor if char == '{' && brace.nil?
+      semi = cursor if char == ';' && semi.nil?
+      break if brace || semi
+    end
+    cursor += 1
+  end
+  [brace, semi]
 end
 
 def css_block(css, open_at)

@@ -9,7 +9,10 @@
 # one of those sides, and a gap is not created beside one. An uncertain
 # element is not one of those sides. Any hr, any h3, and any
 # release-separator is uncertain, because some hiding rule names that tag
-# or class. The whitespace on both sides of it stays byte for byte. An inline run
+# or class. An element that matches a hidden subject is uncertain when a
+# showing rule could match its tag or one of its classes, in any context
+# or medium. The whitespace on both sides of an uncertain element stays
+# byte for byte. An inline run
 # may change between one space and one line break only when both characters
 # are in the safe set from HtmlInlineNeighbors. A visible block or a visible
 # br may reshape a run only when the inline side is a safe character, a

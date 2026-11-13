@@ -7,10 +7,28 @@ require "#{mydir}/util.rb"
 require "#{mydir}/html_format.rb"
 require "#{mydir}/html_whitespace_guard.rb"
 
-$document = Nokogiri::XML(File.open ARGV[0]) do |config|
+page_path = ARGV[0].to_s
+$document = Nokogiri::XML(File.open page_path) do |config|
   config.default_xml
   config.strict
   config.options = Nokogiri::XML::ParseOptions::DTDLOAD   # Needed for the external DTD to be loaded
+end
+
+# The shell passes the page path after the temporary file. One-argument
+# callers still name the file they passed.
+page_name = ARGV[1].to_s
+page_name = page_path if page_name.empty?
+
+# The DTD fixes xmlns on every html element, including one nested in
+# another namespace. Compare the file as it was read, before any edit.
+# Both serialized trees already contain that default, so the whitespace
+# comparison below cannot see it.
+begin
+  HtmlWhitespaceGuard.compare_dtd_namespaces!(File.read(page_path), $document, name: page_name)
+rescue HtmlWhitespaceGuard::Unsafe => error
+  warn error.message
+  $stderr.flush
+  exit! 1
 end
 
 # Drop stuff we don't want, because display: none makes epub sad
@@ -23,11 +41,6 @@ unless %w[pretty none].include?(mode)
   $stderr.flush
   exit! 1
 end
-
-# The shell passes the page path after the temporary file. One-argument
-# callers still name the file they passed.
-page_name = ARGV[1].to_s
-page_name = ARGV[0].to_s if page_name.empty?
 
 if mode == 'none'
   print HtmlFormat.write($document)

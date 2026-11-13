@@ -26,20 +26,26 @@
 # character is safe or there is none. The gap after a br is never free.
 #
 # Hiding is not decided by matching selectors. A subject is hidden only
-# when a display:none or visibility:hidden rule is unconditional and a
-# single compound, so the element is hidden in every context and medium.
-# Every other hiding subject is uncertain: every hr, every h3, and every
+# when a hiding rule is unconditional and a single compound, and no rule
+# that sets display or visibility to a showing value could match the
+# element by its tag or by any of its classes. A showing value is anything
+# other than none, hidden, or collapse. The rule may sit in any context
+# and any medium. .tutci is display:inline-block, so li.display-none.tutci
+# is uncertain. .publication-notice is display:block, so an element that
+# also has display-none or guibutton is uncertain. Every other hiding
+# subject is uncertain too: every hr, every h3, and every
 # release-separator, because some rule could match that tag or class.
 # An uncertain element is never skipped, never a visible block, and never
 # frees a gap. The whitespace on both sides stays byte for byte, as it
 # does beside a verbatim element. script and style are hidden by name,
-# because their text is not shown. A hidden element is skipped while
-# looking for a character. A visible verbatim element, such as MathML or
+# because their text is not shown, unless a showing rule names that tag
+# or one of their classes. A hidden element is skipped while looking for
+# a character. A visible verbatim element, such as MathML or
 # xml:space="preserve", is not read. Entity replacement text comes from
 # the document. The formatter and the guard both load the local XHTML DTD,
 # so a DTD entity such as nbsp has the same characters on both sides. The
-# guard reads namespace declarations from a parse that does not apply DTD
-# defaults.
+# guard reads every element's namespace from a parse that does not apply
+# DTD defaults.
 #
 # A head without a Content-Type meta element is formatted again on a second
 # pass. The pages of this book include that element.
@@ -64,6 +70,14 @@ module HtmlInlineNeighbors
     ['h3', []],
     [nil, %w[release-separator]]
   ].freeze
+
+  # Tags and classes named by a rule that sets display or visibility to a
+  # showing value, in any context and any medium. An element that matches
+  # a hidden subject is uncertain when its tag is here or it has one of
+  # these classes. The lists are the subjects in assets/css/master.css:
+  # p, img, .tutci, .publication-notice, .release-version, .release-date.
+  SHOWING_TAGS = %w[img p].freeze
+  SHOWING_CLASSES = %w[publication-notice release-date release-version tutci].freeze
 
   # East Asian wide and fullwidth characters. They are outside the safe set.
   # A space between two of them would be removed if a line break replaced it.
@@ -247,26 +261,30 @@ module HtmlInlineNeighbors
 
   # :hidden, :uncertain, or :visible. Cached on the node. script and style
   # are hidden by name. A hiding subject matches by tag and class tokens,
-  # with no ancestor and no at-rule check.
+  # with no ancestor and no at-rule check. A showing tag or class on that
+  # element makes it uncertain instead.
   def element_visibility(node)
     return :visible unless node&.element?
     return node.instance_variable_get(:@_vis) if node.instance_variable_defined?(:@_vis)
 
     name = node.name
-    visibility = if name == 'script' || name == 'style'
-                   :hidden
+    classes = class_tokens(node)
+    visibility = if name == 'script' || name == 'style' ||
+                    HIDDEN_SUBJECTS.any? { |subject| subject_match?(name, classes, subject) }
+                   showing_overlap?(name, classes) ? :uncertain : :hidden
+                 elsif UNCERTAIN_SUBJECTS.any? { |subject| subject_match?(name, classes, subject) }
+                   :uncertain
                  else
-                   classes = class_tokens(node)
-                   if HIDDEN_SUBJECTS.any? { |subject| subject_match?(name, classes, subject) }
-                     :hidden
-                   elsif UNCERTAIN_SUBJECTS.any? { |subject| subject_match?(name, classes, subject) }
-                     :uncertain
-                   else
-                     :visible
-                   end
+                   :visible
                  end
     node.instance_variable_set(:@_vis, visibility)
     visibility
+  end
+
+  # True when a showing rule could match this element by its tag or by any
+  # class it carries. The rule's ancestors and medium are not consulted.
+  def showing_overlap?(name, classes)
+    SHOWING_TAGS.include?(name) || classes.any? { |token| SHOWING_CLASSES.include?(token) }
   end
 
   def class_tokens(node)

@@ -21,23 +21,14 @@
 # at the top of assets/css/master.css.
 
 require 'nokogiri'
+require_relative 'html_inline_neighbors'
 
 module HtmlFormat
   XHTML = 'http://www.w3.org/1999/xhtml'
   WS_CHAR = /[ \t\n\r\f]/
   WS_RUN = /[ \t\n\r\f]+/
-  ZWSP = "\u200B"
-  # Keep the same ranges in html_whitespace_guard.rb.
-  WIDE_RANGES = [
-    0x1100..0x115F,
-    0x2E80..0x9FFF,
-    0xAC00..0xD7AF,
-    0xF900..0xFAFF,
-    0xFE30..0xFE4F,
-    0xFF01..0xFF60,
-    0xFFE0..0xFFE6,
-    0x20000..0x3FFFD
-  ].freeze
+  ZWSP = HtmlInlineNeighbors::ZWSP
+  WIDE_RANGES = HtmlInlineNeighbors::WIDE_RANGES
   TEXT_ESCAPE = /[&<>]/
   ATTR_ESCAPE = /[&<"]/
   WIDTH = 100
@@ -178,6 +169,10 @@ module HtmlFormat
 
   def inline_parent?(node)
     html?(node) && !block?(node) && !verbatim?(node)
+  end
+
+  def inline?(node)
+    inline_parent?(node)
   end
 
   def format_element(element, depth)
@@ -387,14 +382,11 @@ module HtmlFormat
   end
 
   def protect_run?(before_char, after_char)
-    return false if before_char.nil? || after_char.nil?
-    return true if before_char == ZWSP || after_char == ZWSP
-    wide_char?(before_char) && wide_char?(after_char)
+    HtmlInlineNeighbors.protect_run?(before_char, after_char)
   end
 
   def wide_char?(char)
-    cp = char.ord
-    WIDE_RANGES.any? { |range| range.cover?(cp) }
+    HtmlInlineNeighbors.wide_char?(char)
   end
 
   def protect_between?(node)
@@ -402,18 +394,51 @@ module HtmlFormat
   end
 
   # A newline that must stay a newline. Flattening it to a space would delete
-  # the space between wide characters, or the space beside U+200B.
+  # the space between wide characters, or the space beside U+200B. The other
+  # character may sit in a different element, so an ASCII-only node still looks
+  # at a newline that touches its edge. An internal ASCII newline does not.
   def protected_newline?(raw, node)
     return false unless newline_run?(raw)
-    return false unless raw.include?(ZWSP) || raw.match?(/[^\u0000-\u007F]/)
-    parts = raw.split(/([ \t\n\r\f]+)/, -1)
-    parts.each_with_index do |part, index|
-      next unless index.odd? && newline_run?(part)
-      before = part_char(parts, index, -1) || inline_neighbor_char(node, :before)
-      after = part_char(parts, index, 1) || inline_neighbor_char(node, :after)
-      return true if protect_run?(before, after)
+    return protected_ascii_newline?(raw, node) if ascii_text?(raw)
+
+    before = nil
+    saw_nl = false
+    raw.each_char do |char|
+      if ws_char?(char)
+        saw_nl = true if char == "\n" || char == "\r"
+        next
+      end
+      if saw_nl
+        left = before || inline_neighbor_char(node, :before)
+        return true if protect_run?(left, char)
+
+        saw_nl = false
+      end
+      before = char
     end
+    return false unless saw_nl
+
+    left = before || inline_neighbor_char(node, :before)
+    protect_run?(left, inline_neighbor_char(node, :after))
+  end
+
+  def protected_ascii_newline?(raw, node)
+    if raw.match?(/\A[ \t\f]*[\n\r]/) && inline_neighbor_char(node, :before) == ZWSP
+      return true
+    end
+    if raw.match?(/[\n\r][ \t\f]*\z/) && inline_neighbor_char(node, :after) == ZWSP
+      return true
+    end
+
     false
+  end
+
+  def ascii_text?(raw)
+    !raw.include?(ZWSP) && !raw.match?(/[^\u0000-\u007F]/)
+  end
+
+  def ws_char?(char)
+    char == ' ' || char == "\t" || char == "\n" || char == "\r" || char == "\f"
   end
 
   def part_char(parts, index, direction)
@@ -430,34 +455,7 @@ module HtmlFormat
 
   # A block or a br ends the inline run. The gap there is not this rule.
   def inline_neighbor_char(node, direction)
-    sib = direction == :before ? node.previous_sibling : node.next_sibling
-    while sib
-      if sib.element?
-        return nil if block?(sib) || br?(sib)
-        char = element_edge_char(sib, direction == :before ? :last : :first)
-        return char if char
-      elsif sib.text? || sib.cdata?
-        stripped = sib.content.gsub(WS_RUN, '')
-        return (direction == :before ? stripped[-1] : stripped[0]) unless stripped.empty?
-      end
-      sib = direction == :before ? sib.previous_sibling : sib.next_sibling
-    end
-    nil
-  end
-
-  def element_edge_char(node, side)
-    seq = side == :last ? node.children.reverse_each : node.children.each
-    seq.each do |child|
-      if child.text? || child.cdata?
-        text = child.content.gsub(WS_RUN, '')
-        return (side == :last ? text[-1] : text[0]) unless text.empty?
-      elsif child.element?
-        next if block?(child) || br?(child)
-        char = element_edge_char(child, side)
-        return char if char
-      end
-    end
-    nil
+    HtmlInlineNeighbors.neighbor_char(node, direction, self)
   end
 
   # Extra characters the writer adds. &amp; is +4, &lt; and &gt; are +3,

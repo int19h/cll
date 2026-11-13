@@ -6,6 +6,7 @@ require 'minitest/autorun'
 require 'nokogiri'
 require 'open3'
 require 'shellwords'
+require 'fileutils'
 require 'tempfile'
 
 ROOT = File.expand_path('..', __dir__)
@@ -74,8 +75,10 @@ class HtmlFormatContract < Minitest::Test
     assert_equal HtmlFormat::BLOCK, HtmlWhitespaceGuard::BLOCK
     assert_equal HtmlFormat::ELEMENT_ONLY, HtmlWhitespaceGuard::ELEMENT_ONLY
     assert_equal HtmlFormat::VERBATIM, HtmlWhitespaceGuard::VERBATIM
-    assert_equal HtmlFormat::WIDE_RANGES, HtmlWhitespaceGuard::WIDE_RANGES
-    assert_equal HtmlFormat::ZWSP, HtmlWhitespaceGuard::ZWSP
+    assert_same HtmlInlineNeighbors::WIDE_RANGES, HtmlFormat::WIDE_RANGES
+    assert_same HtmlInlineNeighbors::WIDE_RANGES, HtmlWhitespaceGuard::WIDE_RANGES
+    assert_same HtmlInlineNeighbors::ZWSP, HtmlFormat::ZWSP
+    assert_same HtmlInlineNeighbors::ZWSP, HtmlWhitespaceGuard::ZWSP
   end
 
   def test_paragraph_edges_hug_or_separate
@@ -322,16 +325,96 @@ class HtmlFormatContract < Minitest::Test
 
   def test_cleanup_keeps_the_page_when_the_guard_fails
     Dir.mktmpdir do |dir|
-      path = File.join(dir, 'chapter-tour.html')
+      scripts = File.join(dir, 'scripts')
+      FileUtils.cp_r(File.join(ROOT, 'scripts'), scripts)
+      cleanup = File.join(scripts, 'xhtml_postprocess_cleanup_file.rb')
+      source = File.read(cleanup)
+      patched = source.sub("HtmlFormat.format!($document)\n") {
+        <<~'RUBY'
+          HtmlFormat.format!($document)
+            em = $document.at_xpath('//*[local-name()="em"]')
+            gap = em&.next_sibling
+            gap.unlink if gap&.text? && !gap.content.empty? && gap.content.match?(/\A[ \t\n\r\f]+\z/)
+        RUBY
+      }
+      refute_equal source, patched
+      File.write(cleanup, patched)
+      pages = File.join(dir, 'pages')
+      Dir.mkdir(pages)
+      path = File.join(pages, 'chapter-tour.html')
       File.write(path, page('<p><em>a</em> <em>b</em></p>'))
       original = File.binread(path)
-      env = ENV.to_h.merge('CLL_HTML_GUARD_BREAK' => 'drop-space')
-      _out, err, status = Open3.capture3(env, 'bash', File.join(ROOT, 'scripts/xhtml_postprocess_cleanup.sh'), dir)
+      _out, err, status = Open3.capture3('bash', File.join(scripts, 'xhtml_postprocess_cleanup.sh'), pages)
       refute status.success?, err
       assert_equal original, File.binread(path)
       assert_includes err, 'chapter-tour.html'
       refute_match(/chapter-tour\.html\./, err)
     end
+  end
+
+  def test_inline_edge_whitespace_sees_the_outside_character
+    zw = HtmlFormat::ZWSP
+    long = 'a' * 100
+    leading = assert_safe(page("<p>#{long}#{zw}<span> word</span></p>"))
+    assert_includes body_of(leading), '<span> word</span>'
+    refute_includes body_of(leading), "<span>\n"
+
+    trailing = assert_safe(page("<p><span>#{long} </span>#{zw}word</p>"))
+    assert_includes body_of(trailing), ' </span>'
+
+    nested_lead = assert_safe(page("<p>#{long}#{zw}<span><em> word</em></span></p>"))
+    assert_includes body_of(nested_lead), '<em> word</em>'
+
+    nested_trail = assert_safe(page("<p><span><em>#{long} </em></span>#{zw}word</p>"))
+    assert_includes body_of(nested_trail), ' </em>'
+
+    other_node = assert_safe(page("<p>#{long}<span>#{zw}</span> <em>word</em></p>"))
+    assert_includes body_of(other_node), '</span> <em>word</em>'
+  end
+
+  def test_newline_beside_zwsp_in_another_element_stays
+    zw = HtmlFormat::ZWSP
+    kept = assert_safe(page("<p>#{zw}<span>\nword</span></p>"))
+    assert_match(%r{<span>\nword</span>}, body_of(kept))
+
+    nested = assert_safe(page("<p>#{zw}<span><em>\nword</em></span></p>"))
+    assert_match(%r{<em>\nword</em>}, body_of(nested))
+
+    left = assert_safe(page("<p><span>#{zw}</span>\nword</p>"))
+    assert_match(%r{</span>\nword}, body_of(left))
+
+    right = assert_safe(page("<p>word\n<span>#{zw}</span></p>"))
+    assert_match(%r{word\n<span>}, body_of(right))
+  end
+
+  def test_added_wide_ranges_do_not_become_line_breaks
+    samples = [
+      "\uFF61 \uFF62",
+      "\uA000 \uA001",
+      "\u{1B000} \u{1B001}",
+      "\uFE10 \uFE11",
+      "\uFE50 \uFE51",
+      "\uFFE8 \uFFE9",
+      "\u{16FE0} \u{16FE1}"
+    ]
+    samples.each do |pair|
+      left, right = pair.split(' ')
+      pretty = assert_safe(page("<p>#{(pair + ' ') * 30}</p>"))
+      body = body_of(pretty)
+      assert_includes body, pair
+      refute_match(/#{Regexp.escape(left)}\n/, body)
+      refute_match(/\n\s*#{Regexp.escape(right)}/, body)
+    end
+  end
+
+  def test_entity_reference_counts_as_an_inline_neighbor
+    source = <<~XML
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE html [<!ENTITY z "&#x200B;">]>
+      <html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>T</title></head><body><p>#{'a' * 100}&z;<span> word</span></p></body></html>
+    XML
+    pretty = assert_safe(source)
+    assert_includes body_of(pretty), '<span> word</span>'
   end
 end
 
@@ -536,5 +619,103 @@ class HtmlWhitespaceGuardContract < Minitest::Test
     changed = wrap("<p><span class=\"guibutton\">play\nmore</span></p>")
     message = refute_safe(source, changed)
     assert_match(/CHANGED/, message)
+  end
+
+  def test_rejects_a_break_across_an_inline_edge
+    zw = HtmlWhitespaceGuard::ZWSP
+    refute_safe(wrap("<p>#{zw}<span> word</span></p>"), wrap("<p>#{zw}<span>\nword</span></p>"))
+    refute_safe(wrap("<p><span>word </span>#{zw}</p>"), wrap("<p><span>word\n</span>#{zw}</p>"))
+    refute_safe(wrap("<p>#{zw}<span><em> word</em></span></p>"), wrap("<p>#{zw}<span><em>\nword</em></span></p>"))
+    refute_safe(wrap("<p><span><em>word </em></span>#{zw}</p>"), wrap("<p><span><em>word\n</em></span>#{zw}</p>"))
+    refute_safe(wrap("<p>a#{zw} <em>b</em></p>"), wrap("<p>a#{zw}\n<em>b</em></p>"))
+    refute_safe(wrap('<p>漢<span> 字</span></p>'), wrap("<p>漢<span>\n字</span></p>"))
+    refute_safe(wrap('<p><span>漢 </span>字</p>'), wrap("<p><span>漢\n</span>字</p>"))
+    refute_safe(wrap('<p><b><i>漢 </i></b>字</p>'), wrap("<p><b><i>漢\n</i></b>字</p>"))
+    refute_safe(wrap("<p>\u{1B000} \u{1B001}</p>"), wrap("<p>\u{1B000}\n\u{1B001}</p>"))
+    refute_safe(wrap("<p>\uFF76 \uFF85</p>"), wrap("<p>\uFF76\n\uFF85</p>"))
+  end
+
+  def test_rejects_newline_and_space_swaps_beside_an_outside_zwsp
+    zw = HtmlWhitespaceGuard::ZWSP
+    refute_safe(wrap("<p><span>#{zw}</span>\nword</p>"), wrap("<p><span>#{zw}</span> word</p>"))
+    refute_safe(wrap("<p>word\n<span>#{zw}</span></p>"), wrap("<p>word <span>#{zw}</span></p>"))
+    refute_safe(wrap("<p>#{zw}<span>\nword</span></p>"), wrap("<p>#{zw}<span> word</span></p>"))
+    refute_safe(wrap("<p><span>word\n</span>#{zw}</p>"), wrap("<p><span>word </span>#{zw}</p>"))
+  end
+
+  def test_entity_reference_protects_the_neighboring_run
+    decl = '<!DOCTYPE html [<!ENTITY z "&#x200B;">]>'
+    source = document('<p>&z;<span> word</span></p>', doctype: decl)
+    changed = document("<p>&z;<span>\nword</span></p>", doctype: decl)
+    refute_safe(source, changed)
+    wide = '<!DOCTYPE html [<!ENTITY w "&#x6F22;">]>'
+    refute_safe(
+      document('<p>&w;<span> 字</span></p>', doctype: wide),
+      document("<p>&w;<span>\n字</span></p>", doctype: wide)
+    )
+  end
+
+  def test_parse_error_names_the_page_and_the_side
+    good = wrap('<p>a</p>')
+    bad = good.sub('</p>', '')
+    after = assert_raises(HtmlWhitespaceGuard::Unsafe) do
+      HtmlWhitespaceGuard.compare!(good, bad, name: 'malformed-page-name.html')
+    end
+    assert_includes after.message, 'malformed-page-name.html'
+    assert_includes after.message, 'after'
+    refute_match(/before:/, after.message)
+
+    before = assert_raises(HtmlWhitespaceGuard::Unsafe) do
+      HtmlWhitespaceGuard.compare!(bad, good, name: 'malformed-page-name.html')
+    end
+    assert_includes before.message, 'malformed-page-name.html'
+    assert_includes before.message, 'before'
+  end
+
+  def test_compares_undefined_attribute_entities_in_order
+    swapped = refute_safe(
+      document('<p title="a&nbsp;&ensp;b">x</p>'),
+      document('<p title="a&ensp;&nbsp;b">x</p>')
+    )
+    assert_match(/CHANGED entity reference/, swapped)
+    removed = refute_safe(
+      document('<p title="a&nbsp;b">x</p>'),
+      document('<p title="ab">x</p>')
+    )
+    assert_match(/CHANGED entity reference/, removed)
+    HtmlWhitespaceGuard.compare!(
+      document('<p title="a&nbsp;b">x y</p>'),
+      document("<p title=\"a&nbsp;b\">x\ny</p>"),
+      name: 'same-entity'
+    )
+  end
+
+  def test_compares_the_raw_declaration_and_the_prolog_order
+    source = document('<p>a</p>')
+    standalone = refute_safe(source, source.sub('encoding="UTF-8"?>', 'encoding="UTF-8" standalone="yes"?>'))
+    assert_match(/CHANGED xml declaration/, standalone)
+    version_only = refute_safe(source, source.sub('<?xml version="1.0" encoding="UTF-8"?>', '<?xml version="1.0"?>'))
+    assert_match(/CHANGED xml declaration/, version_only)
+
+    decl = '<?xml version="1.0" encoding="UTF-8"?>'
+    body = "<html xmlns=\"http://www.w3.org/1999/xhtml\"><head><title>T</title></head><body><p>a</p></body></html>\n"
+    moved = refute_safe("#{decl}\n<!-- c -->\n#{DOCTYPE}\n#{body}", "#{decl}\n#{DOCTYPE}\n<!-- c -->\n#{body}")
+    assert_match(/CHANGED prolog/, moved)
+
+    notation = refute_safe(
+      '<!DOCTYPE r [<!NOTATION n SYSTEM "a">]><r/>',
+      '<!DOCTYPE r [<!NOTATION n SYSTEM "b">]><r/>'
+    )
+    assert_match(/CHANGED doctype/, notation)
+    parameter = refute_safe(
+      '<!DOCTYPE r [<!ENTITY a "A">]><r/>',
+      '<!DOCTYPE r [<!ENTITY % a "A">]><r/>'
+    )
+    assert_match(/CHANGED doctype/, parameter)
+    comment = refute_safe(
+      '<!DOCTYPE r [<!ELEMENT r ANY>]><r/>',
+      '<!DOCTYPE r [<!-- c --><!ELEMENT r ANY>]><r/>'
+    )
+    assert_match(/CHANGED doctype/, comment)
   end
 end

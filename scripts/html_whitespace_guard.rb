@@ -5,14 +5,18 @@
 # The guard parses each text on its own. It does not call the formatter.
 # A whitespace run may appear or disappear only at a free gap. Inside a
 # verbatim element the text must match byte for byte. The gap after a br
-# is never free. The comparison covers the XML declaration, the doctype
-# and its internal subset, and comments, processing instructions, and
-# entity references anywhere in the document.
+# is never free. The comparison covers the raw XML declaration, the doctype
+# and the text of its internal subset, the order of comments and processing
+# instructions around the doctype, and comments, processing instructions,
+# and entity references in the document. An undefined entity in an attribute
+# is dropped by the parser; those "Entity ... not defined" warnings are
+# compared in order, without the line numbers.
 #
 # Usage: ruby scripts/html_whitespace_guard.rb [--strict] BEFORE AFTER
 # BEFORE and AFTER are files, or directories of .html files with the same names.
 
 require 'nokogiri'
+require_relative 'html_inline_neighbors'
 
 module HtmlWhitespaceGuard
   class Unsafe < StandardError
@@ -21,21 +25,12 @@ module HtmlWhitespaceGuard
   XHTML = 'http://www.w3.org/1999/xhtml'
   XMLNS = 'http://www.w3.org/2000/xmlns/'
   WS_RUN = /[ \t\n\r\f]+/
-  ZWSP = "\u200B"
-
-  # East Asian wide and fullwidth characters. A space between two of these,
-  # or beside U+200B, is not a line break: a segment break would be removed
-  # and the space would disappear. Keep the same ranges in html_format.rb.
-  WIDE_RANGES = [
-    0x1100..0x115F,
-    0x2E80..0x9FFF,
-    0xAC00..0xD7AF,
-    0xF900..0xFAFF,
-    0xFE30..0xFE4F,
-    0xFF01..0xFF60,
-    0xFFE0..0xFFE6,
-    0x20000..0x3FFFD
-  ].freeze
+  # One object for every ordinary whitespace run. Nothing mutates a token.
+  WS_TOKEN = [:ws].freeze
+  WSP_SPACE = [:wsp, ' '].freeze
+  WSP_BREAK = [:wsp, "\n"].freeze
+  ZWSP = HtmlInlineNeighbors::ZWSP
+  WIDE_RANGES = HtmlInlineNeighbors::WIDE_RANGES
 
   # These lists match scripts/html_format.rb. The guard keeps its own copy.
   BLOCK = %w[
@@ -63,14 +58,15 @@ module HtmlWhitespaceGuard
     bits = 0
     if node.element?
       namespace = node.namespace
-      html = namespace.nil? || namespace.href == XHTML
+      href = href_of(namespace)
+      html = namespace.nil? || href == XHTML
       name = node.name
       if html
         bits |= G_HTML
         bits |= G_BLOCK if BLOCK.include?(name)
         bits |= G_VERBATIM if VERBATIM.include?(name) || guibutton?(node)
         bits |= G_BR if name == 'br'
-      elsif namespace && namespace.href != XHTML
+      elsif href && href != XHTML
         bits |= G_VERBATIM
       end
       bits |= G_VERBATIM if node['xml:space'] == 'preserve'
@@ -94,8 +90,8 @@ module HtmlWhitespaceGuard
   end
 
   def compare!(before, after, name:, strict: false)
-    left = parse_tokens(before)
-    right = parse_tokens(after)
+    left = parse_side(before, name, 'before')
+    right = parse_side(after, name, 'after')
     problems = differences(left, right, strict: strict)
     return if problems.empty?
 
@@ -105,60 +101,154 @@ module HtmlWhitespaceGuard
     raise Unsafe, lines.join("\n")
   end
 
+  def parse_side(text, name, side)
+    parse_tokens(text)
+  rescue Unsafe => error
+    raise Unsafe, "#{name}: #{side}: #{error.message}"
+  end
+
   def parse_tokens(text)
     doc = Nokogiri::XML(text) { |config| config.strict.nonet }
     raise Unsafe, 'not well-formed XML' unless doc.root
 
     tokens = []
     walk_document(doc, tokens)
-    [doc, tokens]
+    [doc, tokens, raw_declaration(text)]
   rescue Nokogiri::XML::SyntaxError => error
     raise Unsafe, "not well-formed XML: #{error.message.strip}"
   end
 
+  # The declaration is the raw text. Parsed version and encoding hide
+  # standalone, a missing encoding, and quote or space differences.
+  def raw_declaration(text)
+    source = text.delete_prefix("\uFEFF")
+    match = source.match(/\A<\?xml\b.*?\?>/m)
+    match && match[0]
+  end
+
   def walk_document(doc, tokens)
+    # carry[0] is the previous non-whitespace character in the open inline
+    # run. A block or a br clears it. queue holds text that still needs the
+    # next character, plus tokens that follow that text, so the walk does
+    # not search the tree for each node.
+    carry = [nil]
+    queue = []
     doc.children.each do |child|
       next if child.is_a?(Nokogiri::XML::DTD)
-      if child.element?
-        walk(child, tokens, false, false)
-      elsif child.text? || child.cdata?
-        next if child.text? && child.content.match?(/\A[ \t\n\r\f]*\z/)
-        append_text(tokens, child, child.cdata?, nil, nil)
-      elsif child.comment?
-        tokens << [:comment, child.content]
-      elsif child.processing_instruction?
-        tokens << [:pi, child.name, child.content]
-      elsif child.is_a?(Nokogiri::XML::EntityReference)
-        tokens << [:entity, child.name]
-      end
+      next if child.text? && child.content.match?(/\A[ \t\n\r\f]*\z/)
+
+      take_node(child, tokens, false, false, carry, queue)
+    end
+    flush_queue(queue, tokens, nil)
+  end
+
+  def walk(element, tokens, verbatim, inline_ancestor, carry, queue)
+    inside_inline = inline_ancestor || inline?(element)
+    region = verbatim || verbatim?(element) || (block?(element) && inline_ancestor)
+    # br is inline by name, but it ends the run the same way a block does.
+    if br?(element) || !inline?(element)
+      flush_queue(queue, tokens, nil)
+      carry[0] = nil
+      carry = [nil]
+      queue = []
+    end
+
+    put_token(queue, tokens, start_token(element, region))
+    element.children.each do |child|
+      take_node(child, tokens, region, inside_inline, carry, queue)
+    end
+    # A block's own tail has no next character. An inline tail may.
+    flush_queue(queue, tokens, nil) if br?(element) || !inline?(element)
+    put_token(
+      queue, tokens,
+      [:end, cached_name(element), element_kind(element), nil, region, href_of(element.namespace)]
+    )
+  end
+
+  def take_node(node, tokens, region, inline_ancestor, carry, queue)
+    if node.element?
+      child_region = region || verbatim?(node) || (block?(node) && inline_ancestor)
+      walk(node, tokens, child_region, inline_ancestor, carry, queue)
+    elsif node.text? || node.cdata?
+      take_text(node, tokens, region, node.cdata?, carry, queue)
+    elsif node.is_a?(Nokogiri::XML::EntityReference)
+      take_entity(node, tokens, carry, queue)
+    elsif node.comment?
+      put_token(queue, tokens, [:comment, node.content])
+    elsif node.processing_instruction?
+      put_token(queue, tokens, [:pi, node.name, node.content])
     end
   end
 
-  def walk(element, tokens, verbatim, inline_ancestor)
-    inside_inline = inline_ancestor || inline?(element)
-    region = verbatim || verbatim?(element) || (block?(element) && inline_ancestor)
-    tokens << start_token(element, region)
-    kids = element.children
-    kids.each_with_index do |child, index|
-      if child.element?
-        child_region = region || verbatim?(child) || (block?(child) && inside_inline)
-        walk(child, tokens, child_region, inside_inline)
-      elsif child.text? || child.cdata?
-        if region || child.cdata?
-          append_text(tokens, child, true, nil, nil)
-        else
-          left, right = neighbor_chars(kids, index)
-          append_text(tokens, child, false, left, right)
-        end
-      elsif child.is_a?(Nokogiri::XML::EntityReference)
-        tokens << [:entity, child.name]
-      elsif child.comment?
-        tokens << [:comment, child.content]
-      elsif child.processing_instruction?
-        tokens << [:pi, child.name, child.content]
+  def take_text(node, tokens, region, cdata, carry, queue)
+    raw = node.content
+    return if raw.empty?
+    if region
+      put_token(queue, tokens, [:vtext, raw])
+      return
+    end
+
+    first = HtmlInlineNeighbors.first_non_ws(raw)
+    if cdata
+      flush_queue(queue, tokens, first) if first
+      put_token(queue, tokens, [:vtext, raw])
+      last = HtmlInlineNeighbors.last_non_ws(raw)
+      carry[0] = last if last
+      return
+    end
+
+    # A blank node has no character, so the run stays open through it.
+    if first.nil?
+      queue << [:blank, raw, carry[0]]
+      return
+    end
+
+    flush_queue(queue, tokens, first)
+    left = carry[0]
+    if HtmlInlineNeighbors.boundary_ws?(raw, :last)
+      queue << [:text, raw, left]
+    else
+      emit_text(tokens, raw, left, nil)
+    end
+    last = HtmlInlineNeighbors.last_non_ws(raw)
+    carry[0] = last if last
+  end
+
+  # The reference contributes its replacement characters to the run and
+  # keeps its own token. An undefined reference has no characters.
+  def take_entity(node, tokens, carry, queue)
+    raw = node.content.to_s
+    first = raw.empty? ? nil : HtmlInlineNeighbors.first_non_ws(raw)
+    flush_queue(queue, tokens, first) if first
+    put_token(queue, tokens, [:entity, node.name])
+    return if raw.empty?
+
+    last = HtmlInlineNeighbors.last_non_ws(raw)
+    carry[0] = last if last
+  end
+
+  def put_token(queue, tokens, token)
+    if queue.empty?
+      tokens << token
+    else
+      queue << [:ready, token]
+    end
+  end
+
+  def flush_queue(queue, tokens, right)
+    return if queue.empty?
+
+    queue.each do |item|
+      case item[0]
+      when :text
+        emit_text(tokens, item[1], item[2], right)
+      when :blank
+        append_ws_run(tokens, item[1], item[2], right)
+      else
+        tokens << item[1]
       end
     end
-    tokens << [:end, cached_name(element), element_kind(element), nil, region, element.namespace&.href]
+    queue.clear
   end
 
   # [:start, name, kind, attrs, region, uri, decls, container_free]
@@ -166,19 +256,19 @@ module HtmlWhitespaceGuard
   def start_token(element, region)
     [
       :start, cached_name(element), element_kind(element), attributes(element), region,
-      element.namespace&.href, namespace_decls(element), container_free?(element)
+      href_of(element.namespace), namespace_decls(element), container_free?(element)
     ]
   end
 
-  def append_text(tokens, node, verbatim, left_char, right_char)
-    raw = node.content
-    return if raw.empty?
-    if verbatim
-      tokens << [:vtext, raw]
-      return
-    end
+  def emit_text(tokens, raw, left_char, right_char)
     if raw.match?(/\A[ \t\n\r\f]*\z/)
       append_ws_run(tokens, raw, left_char, right_char)
+      return
+    end
+    # An ASCII run is protected only when a neighbor is U+200B. Splitting
+    # it would copy every word on the page for a case this node cannot hit.
+    if plain_ascii?(raw, left_char, right_char)
+      emit_collapsed(tokens, raw)
       return
     end
 
@@ -207,7 +297,7 @@ module HtmlWhitespaceGuard
           pending_lead = nil
         end
         flush.call
-        tokens << [:wsp, newline_run?(part) ? "\n" : ' ']
+        tokens << (newline_run?(part) ? WSP_BREAK : WSP_SPACE)
       elsif char_after_run(parts, index).nil?
         pending_trail = true
       elsif buffer.empty?
@@ -218,7 +308,30 @@ module HtmlWhitespaceGuard
     end
 
     flush.call
-    tokens << [:ws] if pending_trail
+    tokens << WS_TOKEN if pending_trail
+  end
+
+  # No protected run. One space and one line break are the same token.
+  def plain_ascii?(raw, left_char, right_char)
+    return false unless raw.ascii_only?
+    return false if HtmlInlineNeighbors.boundary_ws?(raw, :first) && left_char == ZWSP
+    return false if HtmlInlineNeighbors.boundary_ws?(raw, :last) && right_char == ZWSP
+
+    true
+  end
+
+  def emit_collapsed(tokens, raw)
+    lead = HtmlInlineNeighbors.boundary_ws?(raw, :first)
+    trail = HtmlInlineNeighbors.boundary_ws?(raw, :last)
+    if !lead && !trail
+      tokens << [:text, raw.match?(WS_RUN) ? raw.gsub(WS_RUN, ' ') : raw]
+      return
+    end
+
+    tokens << WS_TOKEN if lead
+    core = raw.gsub(WS_RUN, ' ').strip
+    tokens << [:text, core] unless core.empty?
+    tokens << WS_TOKEN if trail
   end
 
   # A protected run records space and newline as different tokens, so a
@@ -226,21 +339,18 @@ module HtmlWhitespaceGuard
   # The run after a br stays presence-only: a normal br may still break.
   def append_ws_run(tokens, run, left_char, right_char)
     if protect_run?(left_char, right_char)
-      tokens << [:wsp, newline_run?(run) ? "\n" : ' ']
+      tokens << (newline_run?(run) ? WSP_BREAK : WSP_SPACE)
     else
-      tokens << [:ws]
+      tokens << WS_TOKEN
     end
   end
 
   def protect_run?(left_char, right_char)
-    return false if left_char.nil? || right_char.nil?
-    return true if left_char == ZWSP || right_char == ZWSP
-    wide_char?(left_char) && wide_char?(right_char)
+    HtmlInlineNeighbors.protect_run?(left_char, right_char)
   end
 
   def wide_char?(char)
-    cp = char.ord
-    WIDE_RANGES.any? { |range| range.cover?(cp) }
+    HtmlInlineNeighbors.wide_char?(char)
   end
 
   def newline_run?(run)
@@ -257,50 +367,6 @@ module HtmlWhitespaceGuard
     text = parts[index + 1]
     return nil if text.nil? || text.empty?
     text[0]
-  end
-
-  # The character on each side of a text node, skipping blank text.
-  # A block sibling is not an inline neighbor: the gap between blocks is free.
-  def neighbor_chars(kids, index)
-    [neighbor_char(kids, index, -1), neighbor_char(kids, index, 1)]
-  end
-
-  def neighbor_char(kids, index, step)
-    cursor = index + step
-    while cursor >= 0 && cursor < kids.length
-      child = kids[cursor]
-      if child.element?
-        return nil if block?(child) || br?(child)
-        char = element_edge_char(child, step.negative? ? :last : :first)
-        return char if char
-      elsif child.text? || child.cdata?
-        text = child.content.gsub(WS_RUN, '')
-        return (step.negative? ? text[-1] : text[0]) unless text.empty?
-      elsif child.is_a?(Nokogiri::XML::EntityReference)
-        text = child.content.to_s.gsub(WS_RUN, '')
-        return (step.negative? ? text[-1] : text[0]) unless text.empty?
-      end
-      cursor += step
-    end
-    nil
-  end
-
-  def element_edge_char(node, side)
-    seq = side == :last ? node.children.reverse_each : node.children.each
-    seq.each do |child|
-      if child.text? || child.cdata?
-        text = child.content.gsub(WS_RUN, '')
-        return (side == :last ? text[-1] : text[0]) unless text.empty?
-      elsif child.element?
-        next if block?(child)
-        char = element_edge_char(child, side)
-        return char if char
-      elsif child.is_a?(Nokogiri::XML::EntityReference)
-        text = child.content.to_s.gsub(WS_RUN, '')
-        return (side == :last ? text[-1] : text[0]) unless text.empty?
-      end
-    end
-    nil
   end
 
   def html?(node)
@@ -345,27 +411,54 @@ module HtmlWhitespaceGuard
     child.element? && block?(child)
   end
 
+  # Nokogiri returns a new frozen String for every href, and String#-@
+  # then returns that same object. A page repeats a few URIs on every
+  # element, so the tokens share one copy.
+  def shared_string(text)
+    return nil if text.nil?
+
+    (@shared ||= {})[text] ||= text
+  end
+
+  # One Ruby object stands for a namespace, while href allocates every call.
+  def href_of(namespace)
+    return nil unless namespace
+    return namespace.instance_variable_get(:@_href) if namespace.instance_variable_defined?(:@_href)
+
+    value = shared_string(namespace.href)
+    namespace.instance_variable_set(:@_href, value)
+    value
+  end
+
   def attributes(element)
     element.attribute_nodes.map { |attr|
-      href = attr.namespace&.href
+      href = href_of(attr.namespace)
       next if href == XMLNS
       [href, attr.name, attr.value]
     }.compact
   end
 
   def namespace_decls(element)
-    element.namespace_definitions.map { |ns| [ns.prefix, ns.href] }
+    element.namespace_definitions.map { |ns|
+      [shared_string(ns.prefix), href_of(ns)]
+    }
   end
 
   def differences(left, right, strict:)
-    left_doc, left_tokens = left
-    right_doc, right_tokens = right
+    left_doc, left_tokens, left_decl = left
+    right_doc, right_tokens, right_decl = right
     problems = []
-    unless xml_declaration(left_doc) == xml_declaration(right_doc)
+    unless left_decl == right_decl
       problems << 'CHANGED xml declaration'
     end
     unless doctype(left_doc) == doctype(right_doc)
       problems << 'CHANGED doctype'
+    end
+    unless prolog_marks(left_doc) == prolog_marks(right_doc)
+      problems << 'CHANGED prolog'
+    end
+    unless entity_warnings(left_doc) == entity_warnings(right_doc)
+      problems << 'CHANGED entity reference'
     end
     left_content = content_tokens(left_tokens)
     right_content = content_tokens(right_tokens)
@@ -377,22 +470,52 @@ module HtmlWhitespaceGuard
     problems
   end
 
-  def xml_declaration(doc)
-    [doc.version, doc.encoding]
-  end
-
   def doctype(doc)
     subset = doc.internal_subset
     return nil unless subset
-    [subset.name, subset.external_id, subset.system_id, subset.children.map { |node| subset_decl(node) }]
+
+    # to_s includes notations, which are absent from children, but drops a
+    # comment-only subset. The child list keeps that comment.
+    [
+      subset.name, subset.external_id, subset.system_id, subset.to_s,
+      subset.children.map { |node| subset_decl(node) }
+    ]
   end
 
   def subset_decl(node)
     if node.is_a?(Nokogiri::XML::EntityDecl)
-      [:entity, node.name, node.content, node.external_id, node.system_id]
+      [:entity, node.name, node.content, node.external_id, node.system_id, node.entity_type]
     else
       [:decl, node.to_s]
     end
+  end
+
+  # Comments and processing instructions before the root, with the doctype
+  # between them. The content walk skips the doctype, so this is what keeps
+  # a comment from moving across it unnoticed.
+  def prolog_marks(doc)
+    marks = []
+    doc.children.each do |child|
+      break if child.element?
+
+      if child.is_a?(Nokogiri::XML::DTD)
+        marks << :doctype
+      elsif child.comment?
+        marks << [:comment, child.content]
+      elsif child.processing_instruction?
+        marks << [:pi, child.name, child.content]
+      end
+    end
+    marks
+  end
+
+  # Line and column numbers change when the formatter wraps a line, so only
+  # the warning text is compared, in document order.
+  def entity_warnings(doc)
+    doc.errors.filter_map { |error|
+      text = error.to_s.strip.sub(/\A\d+:\d+:\s*/, '')
+      text if text.match?(/Entity '.+' not defined/)
+    }
   end
 
   # Drop presence-only whitespace. A protected run (:wsp) stays, because a

@@ -34,12 +34,6 @@ if mode == 'none'
 else
   before = HtmlFormat.write($document)
   HtmlFormat.format!($document)
-  # Tests set this so the guard can fail. The build does not.
-  if ENV['CLL_HTML_GUARD_BREAK'] == 'drop-space'
-    em = $document.at_xpath('//*[local-name()="em"]')
-    gap = em&.next_sibling
-    gap.unlink if gap&.text? && !gap.content.empty? && gap.content.match?(/\A[ \t\n\r\f]+\z/)
-  end
   after = HtmlFormat.write($document)
   begin
     HtmlWhitespaceGuard.compare!(before, after, name: page_name)

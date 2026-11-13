@@ -57,6 +57,14 @@ rm -f $epubbuilddir/cll.appcache
 
 # The stylesheet run wrote the finished navigation document (issue #208).
 navdir="$builddir/epub-nav"
+for navfile in toc.xhtml spine.txt
+do
+  if [ ! -f "$navdir/$navfile" ]
+  then
+    echo "The navigation file $navdir/$navfile is missing ; bailing."
+    exit 1
+  fi
+done
 cp -p "$navdir/toc.xhtml" "$epubbuilddir/toc.xhtml"
 
 version="$(xmllint --nonet --loaddtd --xpath 'normalize-space(/*[local-name()="book"]/*[local-name()="info"]/*[local-name()="releaseinfo"])' "$builddir/cll.xml")"
@@ -107,7 +115,7 @@ done
 cat $srcdir/content.opf.s2 >>$epubbuilddir/content.opf
 
 # The spine is the stylesheet's own list of the pages, in reading order.
-while IFS= read -r ref
+while IFS= read -r ref || [ -n "$ref" ]
 do
   [ -n "$ref" ] || continue
   if [ ! -f "$epubbuilddir/$ref" ]

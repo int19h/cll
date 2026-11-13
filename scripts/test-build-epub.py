@@ -101,6 +101,26 @@ class EpubAssets(unittest.TestCase):
             result = package()
             self.assertNotEqual(result.returncode, 0)
             self.assertIn('Spine file missing.html is not in the package', result.stdout)
+
+            # The last spine line counts even when the file has no final newline.
+            (nav / 'spine.txt').write_text('index.html\nchapter.html')
+            result = package()
+            self.assertEqual(result.returncode, 0, result.stdout)
+            with zipfile.ZipFile(build / 'cll.epub') as archive:
+                manifest = ET.fromstring(archive.read('content.opf'))
+                refs = [item.get('idref') for item in manifest.findall('{*}spine/{*}itemref')]
+                self.assertEqual(refs, ['cover', 'indexhtml', 'chapterhtml'])
+
+            (nav / 'toc.xhtml').unlink()
+            result = package()
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('toc.xhtml is missing', result.stdout)
+            (nav / 'toc.xhtml').write_bytes(toc_bytes)
+
+            (nav / 'spine.txt').unlink()
+            result = package()
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('spine.txt is missing', result.stdout)
             (nav / 'spine.txt').write_text('index.html\nchapter.html\n')
 
             # Unknown reader assets must still fail instead of disappearing.

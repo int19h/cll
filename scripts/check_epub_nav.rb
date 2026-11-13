@@ -23,9 +23,30 @@ def text(node)
   node.text.gsub(/\s+/, ' ').strip
 end
 
+def report_errors
+  $errors.first(40).each { |e| warn "check_epub_nav: #{e}" }
+  warn "check_epub_nav: #{$errors.size} problems"
+  exit 1
+end
+
+def check_title(nav_doc, title)
+  return unless title
+  node = nav_doc.at_xpath('/h:html/h:head/h:title', NS)
+  if node.nil?
+    bad 'toc.xhtml has no title'
+  else
+    found = text(node)
+    bad "title is #{found.inspect}, not #{title.inspect}" unless found == title
+  end
+end
+
 nav_doc = parse(File.join(dir, 'toc.xhtml'))
 navs = nav_doc.xpath('//h:nav[@epub:type="toc"]', NS)
-bad "toc.xhtml has #{navs.size} toc nav elements, not 1" unless navs.size == 1
+unless navs.size == 1
+  bad "toc.xhtml has #{navs.size} toc nav elements, not 1"
+  check_title(nav_doc, title)
+  report_errors
+end
 nav = navs.first
 
 # 1. Structure (EPUB 3.3, section 7.3).
@@ -46,10 +67,7 @@ entries = nav.xpath('.//h:a', NS).map do |a|
 end
 bad 'the nav has no entries' if entries.empty?
 entries.each { |e| bad "entry at line #{e[:line]} has no text" if e[:text].empty? }
-if title
-  found = text(nav_doc.at_xpath('/h:html/h:head/h:title', NS))
-  bad "title is #{found.inspect}, not #{title.inspect}" unless found == title
-end
+check_title(nav_doc, title)
 
 # 2. Every link names an existing file and, with a fragment, an existing id.
 ids = Hash.new do |h, file|
@@ -124,7 +142,5 @@ end
 if $errors.empty?
   puts "check_epub_nav: #{entries.size} entries, #{spine_files.size} spine items: correct"
 else
-  $errors.first(40).each { |e| warn "check_epub_nav: #{e}" }
-  warn "check_epub_nav: #{$errors.size} problems"
-  exit 1
+  report_errors
 end

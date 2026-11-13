@@ -182,10 +182,18 @@ class EpubNav(unittest.TestCase):
                 self.assertEqual(phrase.get('lang'), 'jbo')
 
         spine = [line.strip() for line in spine_path.read_text(encoding='utf-8').splitlines() if line.strip()]
-        self.assertEqual(sorted(spine), sorted(pages))
-        self.assertEqual(len(spine), len(set(spine)))
-        self.assertIn('deep-second.html', spine)
-        self.assertIn('index.html', spine)
+        # enumerate-files lists each chunk once, parent before its children.
+        self.assertEqual(spine, [
+            'index.html',
+            'chapter-one.html',
+            'section-second.html',
+            'sub-second.html',
+            'deep-second.html',
+            'article-one.html',
+            'go01.html',
+            'ix01.html',
+        ])
+        self.assertEqual(set(spine), set(pages))
         self.assertTrue(all('/' not in name for name in spine))
 
         package = self.package(out, nav, spine)
@@ -219,6 +227,48 @@ class EpubNav(unittest.TestCase):
         toc = toc.replace('<ol>', '<ol><li><a href="index.html">Extra</a></li>', 1)
         (extra / 'toc.xhtml').write_text(toc)
         self.assert_check(extra, spine_path, 'Fixture & Book', 1, 'index.html shows')
+
+        broken = self.clone(package)
+        toc = (broken / 'toc.xhtml').read_text(encoding='utf-8')
+        toc = toc.replace('<ol>', '<ol><li><em>Broken</em></li>', 1)
+        (broken / 'toc.xhtml').write_text(toc)
+        self.assert_check(broken, spine_path, 'Fixture & Book', 1, 'has children')
+
+        out_of_order = self.clone(package)
+        toc = (out_of_order / 'toc.xhtml').read_text(encoding='utf-8')
+        toc = toc.replace('href="chapter-one.html"', 'href="__chapter__"', 1)
+        toc = toc.replace('href="article-one.html"', 'href="chapter-one.html"', 1)
+        toc = toc.replace('href="__chapter__"', 'href="article-one.html"', 1)
+        (out_of_order / 'toc.xhtml').write_text(toc)
+        self.assert_check(out_of_order, spine_path, 'Fixture & Book', 1, 'goes back in the reading order')
+
+        omitted = self.clone(package)
+        opf = (omitted / 'content.opf').read_text(encoding='utf-8')
+        opf = opf.replace('<itemref idref="deepsecondhtml"/>\n', '', 1)
+        (omitted / 'content.opf').write_text(opf)
+        self.assert_check(omitted, spine_path, 'Fixture & Book', 1, 'page deep-second.html is not in the spine')
+
+        no_nav = self.clone(package)
+        toc = (no_nav / 'toc.xhtml').read_text(encoding='utf-8')
+        toc = toc.replace(' epub:type="toc"', '', 1)
+        (no_nav / 'toc.xhtml').write_text(toc)
+        self.assert_check(no_nav, spine_path, 'Fixture & Book', 1, 'has 0 toc nav elements')
+
+        two_navs = self.clone(package)
+        toc = (two_navs / 'toc.xhtml').read_text(encoding='utf-8')
+        toc = toc.replace(
+            '</nav>',
+            '</nav><nav epub:type="toc"><ol><li><a href="index.html">Again</a></li></ol></nav>',
+            1,
+        )
+        (two_navs / 'toc.xhtml').write_text(toc)
+        self.assert_check(two_navs, spine_path, 'Fixture & Book', 1, 'has 2 toc nav elements')
+
+        no_title = self.clone(package)
+        toc = (no_title / 'toc.xhtml').read_text(encoding='utf-8')
+        toc = re.sub(r'<title>.*?</title>', '', toc, count=1, flags=re.S)
+        (no_title / 'toc.xhtml').write_text(toc)
+        self.assert_check(no_title, spine_path, 'Fixture & Book', 1, 'toc.xhtml has no title')
 
     def package(self, pages, nav, spine):
         destination = self.root / 'package'
@@ -268,6 +318,9 @@ class EpubNav(unittest.TestCase):
             self.assertIn(message, result.stdout)
         if status == 0:
             self.assertIn('correct', result.stdout)
+        else:
+            self.assertNotIn('NoMethodError', result.stdout)
+            self.assertNotIn('Traceback', result.stdout)
 
 
 if __name__ == '__main__':

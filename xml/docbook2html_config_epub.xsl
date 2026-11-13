@@ -42,6 +42,7 @@
     <xsl:call-template name="write.chunk">
       <xsl:with-param name="filename" select="$cll.epub.nav.file"/>
       <xsl:with-param name="method" select="'xml'"/>
+      <xsl:with-param name="encoding" select="'UTF-8'"/>
       <xsl:with-param name="indent" select="'no'"/>
       <xsl:with-param name="omit-xml-declaration" select="'no'"/>
       <xsl:with-param name="doctype-public" select="''"/>

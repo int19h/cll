@@ -32,7 +32,7 @@ while IFS= read -r -d '' file; do
   sed -r -e 's;<html xmlns=([^> ]*);<html xmlns=\1 xml:lang="en" lang="en";' \
     -e 's; "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">; "dtd/xhtml1-transitional.dtd">;' \
     "$original" > "$tmp"
-  ruby "$cufile" "$tmp" > "$tmp.ruby"
+  ruby "$cufile" "$tmp" "$original" > "$tmp.ruby"
   mv -- "$tmp.ruby" "$tmp"
   chmod --reference="$original" "$tmp"
   mv -- "$tmp" "$original"

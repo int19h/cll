@@ -24,14 +24,25 @@ unless %w[pretty none].include?(mode)
   exit! 1
 end
 
+# The shell passes the page path after the temporary file. One-argument
+# callers still name the file they passed.
+page_name = ARGV[1].to_s
+page_name = ARGV[0].to_s if page_name.empty?
+
 if mode == 'none'
   print HtmlFormat.write($document)
 else
   before = HtmlFormat.write($document)
   HtmlFormat.format!($document)
+  # Tests set this so the guard can fail. The build does not.
+  if ENV['CLL_HTML_GUARD_BREAK'] == 'drop-space'
+    em = $document.at_xpath('//*[local-name()="em"]')
+    gap = em&.next_sibling
+    gap.unlink if gap&.text? && !gap.content.empty? && gap.content.match?(/\A[ \t\n\r\f]+\z/)
+  end
   after = HtmlFormat.write($document)
   begin
-    HtmlWhitespaceGuard.compare!(before, after, name: ARGV[0].to_s)
+    HtmlWhitespaceGuard.compare!(before, after, name: page_name)
   rescue HtmlWhitespaceGuard::Unsafe => error
     warn error.message
     $stderr.flush

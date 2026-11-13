@@ -5,6 +5,7 @@
 require 'minitest/autorun'
 require 'nokogiri'
 require 'open3'
+require 'shellwords'
 require 'tempfile'
 
 ROOT = File.expand_path('..', __dir__)
@@ -43,6 +44,14 @@ def body_of(text)
   match[0]
 end
 
+# The ePub test runs the packager's real HTML edits, not a copy of them.
+def packager_html_edits
+  text = File.read(File.join(ROOT, 'scripts/build_epub.sh'))
+  match = text.match(/for file in \$\(find \$epubbuilddir\/ -name '\*\.html'\)\ndo\n(.*?)\ndone\n/m)
+  raise 'packager HTML loop not found in scripts/build_epub.sh' unless match
+  match[1]
+end
+
 class HtmlFormatContract < Minitest::Test
   def assert_guard(before, after, name: 'fixture')
     HtmlWhitespaceGuard.compare!(before, after, name: name)
@@ -65,6 +74,8 @@ class HtmlFormatContract < Minitest::Test
     assert_equal HtmlFormat::BLOCK, HtmlWhitespaceGuard::BLOCK
     assert_equal HtmlFormat::ELEMENT_ONLY, HtmlWhitespaceGuard::ELEMENT_ONLY
     assert_equal HtmlFormat::VERBATIM, HtmlWhitespaceGuard::VERBATIM
+    assert_equal HtmlFormat::WIDE_RANGES, HtmlWhitespaceGuard::WIDE_RANGES
+    assert_equal HtmlFormat::ZWSP, HtmlWhitespaceGuard::ZWSP
   end
 
   def test_paragraph_edges_hug_or_separate
@@ -149,8 +160,6 @@ class HtmlFormatContract < Minitest::Test
   end
 
   def test_hidden_br_before_a_block_does_not_gain_a_line_break
-    source = page("</div><br class=\"example-break\"/>\n<p>text</p>".sub('</div>', '<div></div>'))
-    # The markup above is assembled below; this placeholder keeps the idea visible.
     source = page("<div></div><br class=\"example-break\"/>\n<p>text</p>")
     pretty = assert_safe(source)
     body = body_of(pretty)
@@ -227,16 +236,10 @@ class HtmlFormatContract < Minitest::Test
     file = Tempfile.new(['epub-page', '.html'])
     file.write(pretty)
     file.close
-    sed = [
-      'sed', '-i', '-r',
-      '-e', '/^\s*(<!DOCTYPE|<script|<meta) /d',
-      '-e', 's;^\s*<[?]xml .*;<?xml version="1.0" encoding="UTF-8"?>;',
-      '-e', 's;^\s*<html .*;<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">;',
-      '-e', 's;\s+summary="[^"]*";;',
-      file.path
-    ]
-    _out, status = Open3.capture2(*sed)
-    assert status.success?
+    # A missed grep is the loop's last status. The packager continues after the loop.
+    script = "set -e\nfile=#{Shellwords.escape(file.path)}\n#{packager_html_edits}\ntrue\n"
+    _out, err, status = Open3.capture3('bash', '-c', script)
+    assert status.success?, err
     edited = File.read(file.path)
     doc = parsed(edited)
     assert_equal 'Chapter', doc.at('title').text
@@ -279,6 +282,56 @@ class HtmlFormatContract < Minitest::Test
     assert_includes stderr, 'CLL_HTML_FORMAT'
   ensure
     file&.unlink
+  end
+
+  def test_whitespace_only_element_collapses_to_one_space
+    pretty = assert_safe(page("<p> \n\t </p><p></p>"))
+    body = body_of(pretty)
+    assert_includes body, '<p> </p>'
+    assert_includes body, '<p></p>'
+    refute_includes body, '<p>  '
+  end
+
+  def test_inline_children_of_a_container_keep_their_space
+    listed = assert_safe(page('<ul><span>a</span> <span>b</span></ul>'))
+    assert_includes body_of(listed), '</span> <span>b</span>'
+    row = assert_safe(page('<table><tr>a <em>b</em></tr></table>'))
+    assert_includes body_of(row), 'a <em>b</em>'
+  end
+
+  def test_no_break_between_wide_characters_or_beside_zwsp
+    han = (['漢 字'] * 40).join
+    pretty = assert_safe(page("<p>#{han}</p>"))
+    body = body_of(pretty)
+    refute_match(/漢\n/, body)
+    refute_match(/\n\s*字/, body)
+    assert_includes body, '漢 字'
+
+    zw = "#{HtmlFormat::ZWSP} " + ('word ' * 40)
+    pretty = assert_safe(page("<p>#{zw}</p>"))
+    refute_match(/#{HtmlFormat::ZWSP}\n/, body_of(pretty))
+  end
+
+  def test_guibutton_text_is_not_broken
+    label = (['play'] * 40).join(' ')
+    pretty = assert_safe(page(%(<p><span class="x guibutton y">#{label}</span></p>)))
+    assert_equal label, parsed(pretty).at('span').text
+    other = assert_safe(page(%(<p><span class="not-guibutton">#{label}</span></p>)))
+    assert_includes parsed(other).at('span').text, "\n"
+  end
+
+  def test_cleanup_keeps_the_page_when_the_guard_fails
+    Dir.mktmpdir do |dir|
+      path = File.join(dir, 'chapter-tour.html')
+      File.write(path, page('<p><em>a</em> <em>b</em></p>'))
+      original = File.binread(path)
+      env = ENV.to_h.merge('CLL_HTML_GUARD_BREAK' => 'drop-space')
+      _out, err, status = Open3.capture3(env, 'bash', File.join(ROOT, 'scripts/xhtml_postprocess_cleanup.sh'), dir)
+      refute status.success?, err
+      assert_equal original, File.binread(path)
+      assert_includes err, 'chapter-tour.html'
+      refute_match(/chapter-tour\.html\./, err)
+    end
   end
 end
 
@@ -381,5 +434,107 @@ class HtmlWhitespaceGuardContract < Minitest::Test
       refute bad_status.success?
       assert_includes err, 'page.html'
     end
+  end
+
+  def document(body, decl: '<?xml version="1.0" encoding="UTF-8"?>', doctype: DOCTYPE, before: '', after: '')
+    "#{decl}\n#{before}#{doctype}\n<html xmlns=\"http://www.w3.org/1999/xhtml\"><head><title>T</title></head><body>#{body}</body></html>#{after}\n"
+  end
+
+  def test_rejects_a_doctype_only_change
+    source = document('<p>a</p>')
+    refute_safe(source, document('<p>a</p>', doctype: '<!DOCTYPE html>'))
+    refute_safe(source, document('<p>a</p>', doctype: ''))
+    changed = source.sub('XHTML 1.0 Transitional', 'XHTML 1.0 Strict')
+    message = refute_safe(source, changed)
+    assert_match(/CHANGED doctype/, message)
+  end
+
+  def test_rejects_a_document_comment_or_pi_change
+    source = document('<p>a</p>', before: "<!-- note -->\n<?cll keep?>\n", after: "\n<!-- tail -->\n<?cll after?>")
+    refute_safe(source, source.sub('<!-- note -->', ''))
+    refute_safe(source, source.sub('<?cll keep?>', ''))
+    refute_safe(source, source.sub('<!-- tail -->', ''))
+    refute_safe(source, source.sub('<?cll after?>', ''))
+  end
+
+  def test_rejects_an_xml_declaration_change
+    source = document('<p>a</p>')
+    version = refute_safe(source, source.sub('version="1.0"', 'version="1.1"'))
+    assert_match(/CHANGED xml declaration/, version)
+    encoding = refute_safe(source, source.sub('encoding="UTF-8"', 'encoding="ISO-8859-1"'))
+    assert_match(/CHANGED xml declaration/, encoding)
+  end
+
+  def test_rejects_entity_substitution_deletion_and_redefinition
+    decls = "<!ENTITY a \"alpha\"><!ENTITY b \"beta\">"
+    body = '<p>&a;</p><pre>&a;</pre>'
+    source = document(body, doctype: "<!DOCTYPE html [#{decls}]>")
+    substituted = refute_safe(source, document('<p>&b;</p><pre>&a;</pre>', doctype: "<!DOCTYPE html [#{decls}]>"))
+    assert_match(/&a;|&b;/, substituted)
+    refute_safe(source, document('<p></p><pre>&a;</pre>', doctype: "<!DOCTYPE html [#{decls}]>"))
+    redefined = document(body, doctype: '<!DOCTYPE html [<!ENTITY a "omega"><!ENTITY b "beta">]>')
+    message = refute_safe(source, redefined)
+    assert_match(/CHANGED doctype/, message)
+    verbatim = refute_safe(source, document('<p>&a;</p><pre>alpha</pre>', doctype: "<!DOCTYPE html [#{decls}]>"))
+    assert_match(/CHANGED/, verbatim)
+  end
+
+  def test_rejects_namespace_uri_and_prefix_rebinding
+    math = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>'
+    foreign = refute_safe(wrap(math), wrap('<math xmlns="urn:other"><mi>x</mi></math>'))
+    assert_match(/CHANGED namespace/, foreign)
+
+    bound = '<p xmlns:x="urn:one" x:foo="a">a</p>'
+    uri = refute_safe(wrap(bound), wrap('<p xmlns:x="urn:two" x:foo="a">a</p>'))
+    assert_match(/CHANGED namespace/, uri)
+    prefix = refute_safe(wrap(bound), wrap('<p xmlns:y="urn:one" y:foo="a">a</p>'))
+    assert_match(/CHANGED namespace/, prefix)
+  end
+
+  def test_rejects_a_space_between_inline_children_of_a_container
+    refute_safe(
+      wrap('<ul><span>a</span> <span>b</span></ul>'),
+      wrap('<ul><span>a</span><span>b</span></ul>')
+    )
+    refute_safe(
+      wrap('<ol><em>a</em> <em>b</em></ol>'),
+      wrap('<ol><em>a</em><em>b</em></ol>')
+    )
+    refute_safe(
+      wrap('<dl><span>a</span> <span>b</span></dl>'),
+      wrap('<dl><span>a</span><span>b</span></dl>')
+    )
+    refute_safe(
+      wrap('<table><tr>a <em>b</em></tr></table>'),
+      wrap('<table><tr>a<em>b</em></tr></table>')
+    )
+    HtmlWhitespaceGuard.compare!(
+      wrap('<ul><li>a</li><li>b</li></ul>'),
+      wrap("<ul><li>a</li>\n<li>b</li></ul>"),
+      name: 'items'
+    )
+  end
+
+  def test_rejects_a_break_between_wide_characters
+    refute_safe(wrap('<p>漢 字</p>'), wrap("<p>漢\n字</p>"))
+    refute_safe(wrap("<p>漢#{HtmlWhitespaceGuard::ZWSP} 字</p>"), wrap("<p>漢#{HtmlWhitespaceGuard::ZWSP}\n字</p>"))
+    HtmlWhitespaceGuard.compare!(wrap('<p>漢  字</p>'), wrap('<p>漢 字</p>'), name: 'wide')
+    HtmlWhitespaceGuard.compare!(wrap('<p>alpha beta</p>'), wrap("<p>alpha\nbeta</p>"), name: 'ordinary')
+  end
+
+  def test_rejects_adding_or_removing_the_single_kept_space
+    removed = refute_safe(wrap('<p> </p>'), wrap('<p></p>'))
+    assert_match(/REMOVED between <p> and <\/p>/, removed)
+    added = refute_safe(wrap('<p></p>'), wrap('<p> </p>'))
+    assert_match(/ADDED +between <p> and <\/p>/, added)
+    cell = refute_safe(wrap('<table><tr><td> </td></tr></table>'), wrap('<table><tr><td></td></tr></table>'))
+    assert_match(/REMOVED between <td> and <\/td>/, cell)
+  end
+
+  def test_rejects_a_break_inside_guibutton
+    source = wrap('<p><span class="guibutton">play more</span></p>')
+    changed = wrap("<p><span class=\"guibutton\">play\nmore</span></p>")
+    message = refute_safe(source, changed)
+    assert_match(/CHANGED/, message)
   end
 end

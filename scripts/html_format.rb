@@ -13,6 +13,10 @@
 # follows them stays one space. A normal br breaks the line only when
 # whitespace already follows it.
 #
+# A space between two East Asian wide characters, or beside U+200B, stays a
+# space. A segment break there would be removed. span.guibutton is verbatim:
+# assets/scripts/sance-next.js reads it with innerText while it is hidden.
+#
 # Block-level elements are assumed to be blocks on the page. See the note
 # at the top of assets/css/master.css.
 
@@ -22,6 +26,18 @@ module HtmlFormat
   XHTML = 'http://www.w3.org/1999/xhtml'
   WS_CHAR = /[ \t\n\r\f]/
   WS_RUN = /[ \t\n\r\f]+/
+  ZWSP = "\u200B"
+  # Keep the same ranges in html_whitespace_guard.rb.
+  WIDE_RANGES = [
+    0x1100..0x115F,
+    0x2E80..0x9FFF,
+    0xAC00..0xD7AF,
+    0xF900..0xFAFF,
+    0xFE30..0xFE4F,
+    0xFF01..0xFF60,
+    0xFFE0..0xFFE6,
+    0x20000..0x3FFFD
+  ].freeze
   TEXT_ESCAPE = /[&<>]/
   ATTR_ESCAPE = /[&<"]/
   WIDTH = 100
@@ -66,7 +82,7 @@ module HtmlFormat
       if html
         bits |= F_HTML
         bits |= F_BLOCK if BLOCK.include?(name)
-        bits |= F_VERBATIM if VERBATIM.include?(name)
+        bits |= F_VERBATIM if VERBATIM.include?(name) || guibutton?(node)
         bits |= F_BR if name == 'br'
         bits |= F_ELEMENT_ONLY if ELEMENT_ONLY.include?(name)
         bits |= F_VOID if VOID.include?(name)
@@ -95,8 +111,14 @@ module HtmlFormat
     classes.split(/[ \t\n\r\f]+/).any? { |item| HIDDEN_BR.include?(item) }
   end
 
+  # The class is one token, so "not-guibutton" does not match.
+  def guibutton?(node)
+    classes = node['class']
+    return false unless classes
+    classes.split(/[ \t\n\r\f]+/).include?('guibutton')
+  end
+
   def format!(doc)
-    ensure_content_type_meta!(doc)
     format_element(doc.root, 0)
     doc
   end
@@ -134,9 +156,20 @@ module HtmlFormat
     (info(node) & F_ELEMENT_ONLY) != 0
   end
 
-  # F1 applies only when the container has no text other than whitespace.
+  # html and head are always structural. ul, ol, dl, and the table containers
+  # are structural only when every significant child is a block or a table part.
+  # Inline children and text inside tr stay inline content.
   def structural?(node)
-    element_only?(node) && node.children.all? { |child| !child.text? || blank?(child) }
+    return false unless element_only?(node)
+    name = cached_name(node)
+    return true if name == 'html' || name == 'head'
+    node.children.all? { |child| structural_child?(child) }
+  end
+
+  def structural_child?(child)
+    return blank?(child) if child.text?
+    return true if child.comment? || child.processing_instruction?
+    child.element? && block?(child)
   end
 
   def blank?(node)
@@ -145,31 +178,6 @@ module HtmlFormat
 
   def inline_parent?(node)
     html?(node) && !block?(node) && !verbatim?(node)
-  end
-
-  # libxml2 writes a Content-Type meta while saving an XHTML document, and it
-  # does not put that tag in the tree. Add the same element first so a second
-  # format pass sees the same head the first pass wrote.
-  def ensure_content_type_meta!(doc)
-    subset = doc.internal_subset
-    return unless subset && subset.external_id.to_s.include?('XHTML')
-    head = doc.root&.element_children&.find { |child| child.name == 'head' && html?(child) }
-    return unless head
-    return if head.element_children.any? { |child| content_type_meta?(child) }
-
-    meta = Nokogiri::XML::Node.new('meta', doc)
-    meta.namespace = head.namespace if head.namespace
-    meta['http-equiv'] = 'Content-Type'
-    meta['content'] = 'text/html; charset=UTF-8'
-    if (first = head.children.first)
-      first.add_previous_sibling(meta)
-    else
-      head.add_child(meta)
-    end
-  end
-
-  def content_type_meta?(node)
-    node.name == 'meta' && node['http-equiv'].to_s.casecmp('content-type').zero?
   end
 
   def format_element(element, depth)
@@ -283,13 +291,11 @@ module HtmlFormat
 
   def free_before?(parent, kids, index)
     prev = significant(kids, index, -1)
-    return false if prev && br?(prev)
     return true if structural?(parent)
     prev && block?(prev)
   end
 
   def free_after?(parent, kids, index)
-    return false if br?(kids[index])
     nxt = significant(kids, index, 1)
     return true if structural?(parent)
     nxt && block?(nxt)
@@ -340,8 +346,10 @@ module HtmlFormat
     end
     if blank?(node)
       return 0 if blank_gap_free?(parent, kids, index)
+      return nil if newline_run?(raw) && protect_between?(node)
       return 1
     end
+    return nil if protected_newline?(raw, node)
     collapsed_length(raw, free_before?(parent, kids, index), free_after?(parent, kids, index))
   end
 
@@ -372,6 +380,84 @@ module HtmlFormat
 
   def ws_codepoint?(cp)
     cp == 32 || cp == 9 || cp == 10 || cp == 13 || cp == 12
+  end
+
+  def newline_run?(run)
+    run.include?("\n") || run.include?("\r")
+  end
+
+  def protect_run?(before_char, after_char)
+    return false if before_char.nil? || after_char.nil?
+    return true if before_char == ZWSP || after_char == ZWSP
+    wide_char?(before_char) && wide_char?(after_char)
+  end
+
+  def wide_char?(char)
+    cp = char.ord
+    WIDE_RANGES.any? { |range| range.cover?(cp) }
+  end
+
+  def protect_between?(node)
+    protect_run?(inline_neighbor_char(node, :before), inline_neighbor_char(node, :after))
+  end
+
+  # A newline that must stay a newline. Flattening it to a space would delete
+  # the space between wide characters, or the space beside U+200B.
+  def protected_newline?(raw, node)
+    return false unless newline_run?(raw)
+    return false unless raw.include?(ZWSP) || raw.match?(/[^\u0000-\u007F]/)
+    parts = raw.split(/([ \t\n\r\f]+)/, -1)
+    parts.each_with_index do |part, index|
+      next unless index.odd? && newline_run?(part)
+      before = part_char(parts, index, -1) || inline_neighbor_char(node, :before)
+      after = part_char(parts, index, 1) || inline_neighbor_char(node, :after)
+      return true if protect_run?(before, after)
+    end
+    false
+  end
+
+  def part_char(parts, index, direction)
+    cursor = index + direction
+    while cursor >= 0 && cursor < parts.length
+      part = parts[cursor]
+      if cursor.even? && !part.empty?
+        return direction.negative? ? part[-1] : part[0]
+      end
+      cursor += direction
+    end
+    nil
+  end
+
+  # A block or a br ends the inline run. The gap there is not this rule.
+  def inline_neighbor_char(node, direction)
+    sib = direction == :before ? node.previous_sibling : node.next_sibling
+    while sib
+      if sib.element?
+        return nil if block?(sib) || br?(sib)
+        char = element_edge_char(sib, direction == :before ? :last : :first)
+        return char if char
+      elsif sib.text? || sib.cdata?
+        stripped = sib.content.gsub(WS_RUN, '')
+        return (direction == :before ? stripped[-1] : stripped[0]) unless stripped.empty?
+      end
+      sib = direction == :before ? sib.previous_sibling : sib.next_sibling
+    end
+    nil
+  end
+
+  def element_edge_char(node, side)
+    seq = side == :last ? node.children.reverse_each : node.children.each
+    seq.each do |child|
+      if child.text? || child.cdata?
+        text = child.content.gsub(WS_RUN, '')
+        return (side == :last ? text[-1] : text[0]) unless text.empty?
+      elsif child.element?
+        next if block?(child) || br?(child)
+        char = element_edge_char(child, side)
+        return char if char
+      end
+    end
+    nil
   end
 
   # Extra characters the writer adds. &amp; is +4, &lt; and &gt; are +3,
@@ -405,6 +491,8 @@ module HtmlFormat
     if blank?(node)
       if blank_gap_free?(parent, kids, index)
         node.unlink
+      elsif newline_run?(raw) && protect_between?(node)
+        node.content = "\n"
       else
         node.content = ' '
       end
@@ -581,7 +669,13 @@ module HtmlFormat
       node.instance_variable_set(:@html_format_parts, parts)
       parts.each_with_index do |part, index|
         if index.odd?
-          items << { kind: :ws, node: node, index: index }
+          before = part_char(parts, index, -1) || inline_neighbor_char(node, :before)
+          after = part_char(parts, index, 1) || inline_neighbor_char(node, :after)
+          items << {
+            kind: :ws, node: node, index: index,
+            protected: protect_run?(before, after),
+            newline: newline_run?(part)
+          }
         elsif !part.empty?
           items << { kind: :atom, length: text_length(part) }
         end
@@ -645,6 +739,21 @@ module HtmlFormat
           br_state = nil
           item[:decision] = :space
           chunk += 1
+        elsif item[:protected]
+          if pending
+            decide.call(chunk)
+          else
+            column += chunk
+          end
+          chunk = 0
+          pending = nil
+          if item[:newline]
+            item[:decision] = :keep_nl
+            column = indent_col
+          else
+            item[:decision] = :space
+            column += 1
+          end
         else
           if pending
             decide.call(chunk)
@@ -671,7 +780,11 @@ module HtmlFormat
     by_node.each do |node, breaks|
       parts = node.instance_variable_get(:@html_format_parts)
       breaks.each do |item|
-        parts[item[:index]] = item[:decision] == :break ? indent : ' '
+        parts[item[:index]] = case item[:decision]
+                              when :break then indent
+                              when :keep_nl then "\n"
+                              else ' '
+                              end
       end
       node.content = parts.join
       node.remove_instance_variable(:@html_format_parts)

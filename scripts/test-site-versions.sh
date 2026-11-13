@@ -368,6 +368,7 @@ set -euo pipefail
 [ "$1 $2" = '-n -T' ]
 [ "${CLL_BUILD_VERSION:-}" = "${BS_EXPECT_VERSION:-source-version}" ]
 echo "$3" >> "$BS_LOG"
+echo "$3 offline=${offline-}" >> "$BS_LOG.offline"
 mkdir -p build
 case "$3" in
   xhtml_sections) mkdir -p build/xhtml_section_chunks; echo "html $CLL_BUILD_VERSION" > build/xhtml_section_chunks/index.html ;;
@@ -427,6 +428,12 @@ for selection in html epub pdf pdf-weasyprint pdf-typst pdf-context "$SITE_ALL_F
   done
   eq "RC label for '$selection'" 1 "$(grep -c 'version 1.4-rc1 (release candidate)' "$b/out/1.4-rc1/index.html")"
 done
+# Comparison builds skip the offline worker; the version's own HTML keeps it.
+: > "$b/log"; : > "$b/log.offline"
+bs html
+eq "comparison builds pass offline=no" yes "$(grep -qx 'xhtml_nochunks offline=no' "$b/log.offline" && echo yes || echo no)"
+eq "the version's section HTML keeps its worker" 0 "$(grep -c '^xhtml_sections offline=no$' "$b/log.offline" || true)"
+eq "the version's one-page HTML keeps its worker" yes "$(grep -qx 'xhtml_nochunks offline=' "$b/log.offline" && echo yes || echo no)"
 # One override reaches every native target, the container launcher, and
 # annotated source copies that lack Git metadata.
 CLL_BUILD_VERSION=colojban-1.4-rc1 BS_EXPECT_VERSION=colojban-1.4-rc1 bs "$SITE_ALL_FORMATS"

@@ -1,33 +1,43 @@
 # frozen_string_literal: true
 
 # Shared by the HTML formatter and the whitespace guard (issue #207).
-# One wide-character list and one inline-neighbor search, so the two agree.
+# One safe-character set, one inline-neighbor search, and one free-gap
+# decision, so the two agree.
 #
-# A whitespace run is protected when either side is U+200B, even when the
-# other side is unknown. A visible verbatim inline element, such as MathML
-# or a span with xml:space="preserve", contributes its first or last
-# character. When it has none, that side is unknown, and an unknown side
-# beside a wide character protects the run. An element the stylesheet hides
-# (display-none, guibutton, a hidden br, script, style) is skipped.
-# A visible br is a line boundary. External DTD entities contribute no
-# character: the formatter loads the DTD and the guard does not, and neither
-# uses that expansion for a neighbor.
+# An inline run may change between a space and a line break only when both
+# sides are characters in the safe set. The safe set is the scripts this
+# book uses: ASCII punctuation and letters, Latin, Greek, Cyrillic, and
+# general punctuation. A character is left out when it is wide, a control,
+# or in Unicode category Cf, Mn, Me, or Zs (format, mark, or space).
+# Every other inline run stays byte for byte. That includes a side that is
+# missing, a hidden element, a verbatim element, or a character outside the
+# safe set. A visible block or a visible br is a structural boundary, not
+# one of those frozen sides.
+#
+# A gap is free when a visible block bounds it, on either side or as the
+# parent edge of a structural container. An empty anchor before a paragraph
+# is that shape. A hidden element is not a visible block, so it does not
+# make a gap free by itself. A visible block on the other side, or a
+# structural container, still does. The gap after a br is never free.
+#
+# An element the stylesheet hides (display-none, guibutton, a hidden br,
+# script, style) is skipped while looking for a character. A visible
+# verbatim element, such as MathML or xml:space="preserve", is not read.
+# Entity replacement text comes from the document. The formatter and the
+# guard both load the local XHTML DTD, so a DTD entity such as nbsp has the
+# same characters on both sides.
 #
 # A head without a Content-Type meta element is formatted again on a second
 # pass. The pages of this book include that element.
 
 module HtmlInlineNeighbors
   ZWSP = "\u200B"
-  # No character could be read from a visible inline element. This is not
-  # the same as a block or a visible br, which end the line.
-  UNKNOWN = :unknown
 
   HIDDEN_CLASS = %w[display-none guibutton].freeze
   HIDDEN_BR = %w[example-break table-break].freeze
-  PREDEFINED_ENTITIES = %w[amp lt gt apos quot].freeze
 
-  # East Asian wide and fullwidth characters. A space between two of these,
-  # or beside U+200B, is not a line break: a segment break would be removed.
+  # East Asian wide and fullwidth characters. They are outside the safe set.
+  # A space between two of them would be removed if a line break replaced it.
   WIDE_RANGES = [
     0x1100..0x115F,
     0x2E80..0x9FFF,
@@ -47,59 +57,98 @@ module HtmlInlineNeighbors
     0x20000..0x3FFFD
   ].freeze
 
+  # Format, mark, space, and the other categories that must not be safe
+  # even when a code point sits inside a script range below.
+  UNSAFE_CATEGORY = /[\p{Cf}\p{Mn}\p{Me}\p{Cc}\p{Cs}\p{Co}\p{Cn}\p{Zs}\p{Zl}\p{Zp}]/.freeze
+
   module_function
 
   def wide_char?(char)
-    return false unless char.is_a?(String) && !char.empty?
+    return false unless char.is_a?(String) && char.length == 1
 
     cp = char.ord
     WIDE_RANGES.any? { |range| range.cover?(cp) }
   end
 
-  # Unknown means a visible inline element yielded no character. Nil means
-  # a real line boundary or the end of the run. U+200B protects either way.
-  def protect_run?(before_char, after_char)
-    return true if before_char == ZWSP || after_char == ZWSP
+  # Printable ASCII, Latin, Greek, Cyrillic, and general punctuation.
+  # U+00A0 is a space. U+00AD is a format character. Both are excluded.
+  def safe_char?(char)
+    return false unless char.is_a?(String) && char.length == 1
 
-    left_unknown = before_char == UNKNOWN
-    right_unknown = after_char == UNKNOWN
-    return true if left_unknown && (right_unknown || wide_char?(after_char))
-    return true if right_unknown && wide_char?(before_char)
-    return false if before_char.nil? || after_char.nil? || left_unknown || right_unknown
+    cp = char.ord
+    return true if cp >= 0x21 && cp <= 0x7E
+    return false if cp <= 0x20 || cp == 0x7F
+    return false if UNSAFE_CATEGORY.match?(char)
+    return false if wide_char?(char)
+    return true if cp >= 0x00A1 && cp <= 0x024F
+    return true if cp >= 0x1E00 && cp <= 0x1EFF
+    return true if cp >= 0x0370 && cp <= 0x03FF || cp >= 0x1F00 && cp <= 0x1FFF
+    return true if cp >= 0x0400 && cp <= 0x052F
+    return true if cp >= 0x2000 && cp <= 0x206F
 
-    wide_char?(before_char) && wide_char?(after_char)
+    false
   end
 
-  # The character on the before or after side of node.
-  # Walk siblings, descend into inline elements, and when the siblings run
-  # out climb to an inline parent. A block or a visible br ends the run.
+  def mutable_run?(left, right)
+    safe_char?(left) && safe_char?(right)
+  end
+
+  # True when an inline run must be copied unchanged. A visible block is
+  # not frozen: the formatter reindents there. A visible br is not frozen
+  # either: the br rule owns that run. A hidden br is not :br. The search
+  # skips it, and the characters on either side decide. Any other unsafe
+  # side freezes the run.
+  def fixed_inline_run?(left, right)
+    return false if mutable_run?(left, right)
+    return false if left == :block || right == :block
+    return false if left == :br || right == :br
+
+    true
+  end
+
+  # A gap may gain or lose whitespace when a visible block bounds it.
+  # Either side is enough: a paragraph after an empty anchor is that shape.
+  # A hidden element is not that block. The parent edge of a structural
+  # container counts, including beside a hidden child. The gap after a br
+  # does not.
+  def boundary_gap_free?(left_visible_block, right_visible_block, after_br: false, container: false)
+    return false if after_br
+    return true if container
+
+    left_visible_block || right_visible_block
+  end
+
+  # The status on the before or after side of node.
+  # A string is a character. :block is a visible block, including the
+  # parent edge of a block. :br is a visible br. :verbatim is a visible
+  # verbatim element, which is not read. nil means nothing was found.
   # rules responds to block?, br?, inline?, and verbatim?.
-  def neighbor_char(node, direction, rules)
+  def neighbor_status(node, direction, rules)
     before = direction == :before
     side = before ? :last : :first
     current = node
     while current
       sib = before ? current.previous_sibling : current.next_sibling
       while sib
-        found = edge_of(sib, side, rules)
-        return nil if found == :boundary
-        return UNKNOWN if found == UNKNOWN
-        return found if found
+        found = edge_status(sib, side, rules)
+        return found unless found.nil?
 
         sib = before ? sib.previous_sibling : sib.next_sibling
       end
       parent = current.parent
-      break unless parent&.element? && rules.inline?(parent)
-      break if hidden_element?(parent)
+      break unless parent&.element?
+      # The interior of a block, hidden or not, still reindents at its edge.
+      return :block if rules.block?(parent)
+      return :verbatim if rules.verbatim?(parent)
+      break unless hidden_element?(parent) || rules.inline?(parent)
 
       current = parent
     end
     nil
   end
 
-  # nil: nothing here, keep looking. :boundary: a real line end.
-  # UNKNOWN: a visible element with no character. A string is the character.
-  def edge_of(node, side, rules)
+  # nil: nothing here, keep looking. A string is the character.
+  def edge_status(node, side, rules)
     unless node.element?
       return nil if node.comment? || node.processing_instruction?
 
@@ -109,55 +158,32 @@ module HtmlInlineNeighbors
       return side == :last ? last_non_ws(text) : first_non_ws(text)
     end
 
-    return :boundary if rules.block?(node)
+    # A hidden element is not a boundary. Look past it, block or inline.
     return nil if hidden_element?(node)
-    return :boundary if rules.br?(node)
+    return :block if rules.block?(node)
+    return :br if rules.br?(node)
+    return :verbatim if rules.verbatim?(node)
+    return read_status(node, side, rules) if rules.inline?(node)
 
-    if rules.verbatim?(node) || rules.inline?(node)
-      found = read_edge(node, side, rules)
-      return found if found
-      return UNKNOWN if rules.verbatim?(node)
-
-      return nil
-    end
-    :boundary
+    :block
   end
 
-  # First or last visible character inside node, or nil when it has none.
-  # An empty visible verbatim descendant is unknown: do not read past it.
-  def read_edge(node, side, rules)
+  # First or last status inside an ordinary inline element.
+  # An empty inline element is transparent. A verbatim child is not.
+  def read_status(node, side, rules)
     children = node.children
     seq = side == :last ? children.reverse_each : children.each
     seq.each do |child|
-      found = read_child(child, side, rules)
-      return found if found
+      found = edge_status(child, side, rules)
+      return found unless found.nil?
     end
     nil
-  end
-
-  def read_child(child, side, rules)
-    if child.element?
-      return nil if hidden_element?(child)
-      return :boundary if rules.block?(child) || rules.br?(child)
-      if rules.verbatim?(child)
-        found = read_edge(child, side, rules)
-        return found if found
-
-        return UNKNOWN
-      end
-      return read_edge(child, side, rules)
-    end
-
-    text = text_of(child)
-    return nil if text.nil? || text.empty?
-
-    side == :last ? last_non_ws(text) : first_non_ws(text)
   end
 
   # display:none in assets/css/master.css, plus script and style, which
   # the browser does not render. A hidden br is display:none as well.
   def hidden_element?(node)
-    return false unless node.element?
+    return false unless node&.element?
 
     name = node.name
     return true if name == 'script' || name == 'style'
@@ -175,39 +201,8 @@ module HtmlInlineNeighbors
     if node.text? || node.cdata?
       node.content
     elsif node.is_a?(Nokogiri::XML::EntityReference)
-      entity_text(node)
+      node.content.to_s
     end
-  end
-
-  # Predefined and internal-subset entities expand the same way with or
-  # without the external DTD. An entity from that DTD, such as nbsp, does not.
-  def entity_text(node)
-    name = node.name
-    return node.content.to_s if PREDEFINED_ENTITIES.include?(name)
-    return node.content.to_s if internal_entity?(node)
-
-    ''
-  end
-
-  def internal_entity?(node)
-    internal_entity_names(node.document).include?(node.name)
-  end
-
-  def internal_entity_names(doc)
-    return doc.instance_variable_get(:@_ient) if doc.instance_variable_defined?(:@_ient)
-
-    names = {}
-    subset = doc.internal_subset
-    if subset
-      subset.children.each do |decl|
-        next unless decl.is_a?(Nokogiri::XML::EntityDecl)
-        next if decl.entity_type == 4 || decl.entity_type == 5
-
-        names[decl.name] = true
-      end
-    end
-    doc.instance_variable_set(:@_ient, names)
-    names
   end
 
   # Byte scan. each_char would allocate a string for every leading space,
@@ -250,10 +245,6 @@ module HtmlInlineNeighbors
       return text.byteslice(start, index - start + 1)
     end
     nil
-  end
-
-  def ws_char?(char)
-    char == ' ' || char == "\t" || char == "\n" || char == "\r" || char == "\f"
   end
 
   def boundary_ws?(text, side)

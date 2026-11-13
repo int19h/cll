@@ -3,19 +3,22 @@
 # Whitespace-safe layout for the book's XHTML pages (issue #207).
 #
 # The formatter only adds, removes, or reshapes whitespace text. A run may
-# appear or disappear only at a free gap. Everywhere else an existing run
-# becomes one space or one line break. pre, script, style, textarea,
+# appear or disappear only at a free gap. A free gap has a visible block on
+# either side, or it is the parent edge of a structural container. A hidden
+# element is never one of those sides, and a gap is not created beside one.
+# An inline run may change between one space and one line break only when
+# both characters are in the safe set from HtmlInlineNeighbors. Every other
+# inline run stays byte for byte. pre, script, style, textarea,
 # xml:space="preserve", MathML, other namespaces, and a block inside an
 # inline element stay byte for byte.
 #
-# br.example-break and br.table-break are display:none in assets/css/master.css.
-# Whitespace after one of them stays one space, unless the run is protected.
-# A normal br breaks the line only when whitespace already follows it.
+# br.example-break, br.table-break, and any other hidden br are display:none
+# in assets/css/master.css. Whitespace after one of them stays one space,
+# unless that run is frozen. A normal br breaks the line only when
+# whitespace already follows it.
 #
-# A space between two East Asian wide characters, or beside U+200B, stays a
-# space. A segment break there would be removed. The neighbor search is
-# HtmlInlineNeighbors. span.guibutton is verbatim: assets/scripts/sance-next.js
-# reads it with innerText while it is hidden.
+# span.guibutton is verbatim: assets/scripts/sance-next.js reads it with
+# innerText while it is hidden.
 #
 # Block-level elements are assumed to be blocks on the page. See the note
 # at the top of assets/css/master.css.
@@ -47,7 +50,6 @@ module HtmlFormat
 
   VOID = %w[area base br col embed hr img input link meta param source track wbr].freeze
 
-  HIDDEN_BR = %w[example-break table-break].freeze
   DOCUMENT_ROOTS = %w[html head body].freeze
 
   # Cached on the element. Repeated .name and .namespace calls allocate a
@@ -77,7 +79,9 @@ module HtmlFormat
         bits |= F_BR if name == 'br'
         bits |= F_ELEMENT_ONLY if ELEMENT_ONLY.include?(name)
         bits |= F_VOID if VOID.include?(name)
-        if (bits & F_BR) != 0 && hidden_br_class?(node)
+        # example-break, table-break, display-none, and guibutton. The
+        # shared hidden-element test is the one list.
+        if (bits & F_BR) != 0 && HtmlInlineNeighbors.hidden_element?(node)
           bits |= F_HIDDEN_BR
         end
       elsif namespace && namespace.href != XHTML
@@ -94,12 +98,6 @@ module HtmlFormat
   def cached_name(node)
     info(node)
     node.instance_variable_get(:@_hn)
-  end
-
-  def hidden_br_class?(node)
-    classes = node['class']
-    return false unless classes
-    classes.split(/[ \t\n\r\f]+/).any? { |item| HIDDEN_BR.include?(item) }
   end
 
   # The class is one token, so "not-guibutton" does not match.
@@ -284,24 +282,41 @@ module HtmlFormat
     nil
   end
 
+  def visible_block?(node)
+    node&.element? && block?(node) && !HtmlInlineNeighbors.hidden_element?(node)
+  end
+
+  def hidden_element?(node)
+    node&.element? && HtmlInlineNeighbors.hidden_element?(node)
+  end
+
   def free_before?(parent, kids, index)
     prev = significant(kids, index, -1)
-    return true if structural?(parent)
-    prev && block?(prev)
+    HtmlInlineNeighbors.boundary_gap_free?(
+      prev && visible_block?(prev),
+      false,
+      container: structural?(parent)
+    )
   end
 
   def free_after?(parent, kids, index)
     nxt = significant(kids, index, 1)
-    return true if structural?(parent)
-    nxt && block?(nxt)
+    HtmlInlineNeighbors.boundary_gap_free?(
+      false,
+      nxt && visible_block?(nxt),
+      container: structural?(parent)
+    )
   end
 
   def blank_gap_free?(parent, kids, index)
     prev = significant(kids, index, -1)
-    return false if prev && br?(prev)
-    return true if structural?(parent)
     nxt = significant(kids, index, 1)
-    (prev && block?(prev)) || (nxt && block?(nxt))
+    HtmlInlineNeighbors.boundary_gap_free?(
+      prev && visible_block?(prev),
+      nxt && visible_block?(nxt),
+      after_br: prev&.element? && br?(prev),
+      container: structural?(parent)
+    )
   end
 
   def flat_length(element)
@@ -341,10 +356,10 @@ module HtmlFormat
     end
     if blank?(node)
       return 0 if blank_gap_free?(parent, kids, index)
-      return nil if newline_run?(raw) && protect_between?(node)
+      return nil if frozen_blank?(node)
       return 1
     end
-    return nil if protected_newline?(raw, node)
+    return nil if uncollapsible?(raw, node)
     collapsed_length(raw, free_before?(parent, kids, index), free_after?(parent, kids, index))
   end
 
@@ -381,64 +396,35 @@ module HtmlFormat
     run.include?("\n") || run.include?("\r")
   end
 
-  def protect_run?(before_char, after_char)
-    HtmlInlineNeighbors.protect_run?(before_char, after_char)
-  end
-
   def wide_char?(char)
     HtmlInlineNeighbors.wide_char?(char)
   end
 
-  def protect_between?(node)
-    protect_run?(inline_neighbor_char(node, :before), inline_neighbor_char(node, :after))
+  # A blank run that is not exactly one space, and that the allow-list
+  # does not allow to change. Flattening it would change the bytes.
+  def frozen_blank?(node)
+    raw = node.content
+    return false if raw == ' '
+
+    before = inline_neighbor_status(node, :before)
+    after = inline_neighbor_status(node, :after)
+    HtmlInlineNeighbors.fixed_inline_run?(before, after)
   end
 
-  # A newline that must stay a newline. Flattening it to a space would delete
-  # the space between wide characters, or the space beside U+200B. The other
-  # character may sit in a different element, so an ASCII-only node still looks
-  # at a newline that touches its edge. An internal ASCII newline does not.
-  def protected_newline?(raw, node)
-    return false unless newline_run?(raw)
-    return protected_ascii_newline?(raw, node) if ascii_text?(raw)
+  # A whitespace run that must stay as it is. A single space can survive
+  # flattening, because collapsing whitespace would leave that space alone.
+  def uncollapsible?(raw, node)
+    return false unless raw.match?(WS_RUN)
 
-    before = nil
-    saw_nl = false
-    raw.each_char do |char|
-      if ws_char?(char)
-        saw_nl = true if char == "\n" || char == "\r"
-        next
-      end
-      if saw_nl
-        left = before || inline_neighbor_char(node, :before)
-        return true if protect_run?(left, char)
+    parts = raw.split(/([ \t\n\r\f]+)/, -1)
+    parts.each_with_index do |part, index|
+      next if index.even? || part == ' '
 
-        saw_nl = false
-      end
-      before = char
+      before = part_char(parts, index, -1) || inline_neighbor_status(node, :before)
+      after = part_char(parts, index, 1) || inline_neighbor_status(node, :after)
+      return true if HtmlInlineNeighbors.fixed_inline_run?(before, after)
     end
-    return false unless saw_nl
-
-    left = before || inline_neighbor_char(node, :before)
-    protect_run?(left, inline_neighbor_char(node, :after))
-  end
-
-  def protected_ascii_newline?(raw, node)
-    if raw.match?(/\A[ \t\f]*[\n\r]/) && inline_neighbor_char(node, :before) == ZWSP
-      return true
-    end
-    if raw.match?(/[\n\r][ \t\f]*\z/) && inline_neighbor_char(node, :after) == ZWSP
-      return true
-    end
-
     false
-  end
-
-  def ascii_text?(raw)
-    !raw.include?(ZWSP) && !raw.match?(/[^\u0000-\u007F]/)
-  end
-
-  def ws_char?(char)
-    char == ' ' || char == "\t" || char == "\n" || char == "\r" || char == "\f"
   end
 
   def part_char(parts, index, direction)
@@ -453,9 +439,9 @@ module HtmlFormat
     nil
   end
 
-  # A block or a br ends the inline run. The gap there is not this rule.
-  def inline_neighbor_char(node, direction)
-    HtmlInlineNeighbors.neighbor_char(node, direction, self)
+  # A character, :block, :br, :verbatim, or nil. See HtmlInlineNeighbors.
+  def inline_neighbor_status(node, direction)
+    HtmlInlineNeighbors.neighbor_status(node, direction, self)
   end
 
   # Extra characters the writer adds. &amp; is +4, &lt; and &gt; are +3,
@@ -489,8 +475,8 @@ module HtmlFormat
     if blank?(node)
       if blank_gap_free?(parent, kids, index)
         node.unlink
-      elsif newline_run?(raw) && protect_between?(node)
-        node.content = "\n"
+      elsif frozen_blank?(node)
+        nil
       else
         node.content = ' '
       end
@@ -532,38 +518,83 @@ module HtmlFormat
       if kind == :block
         place_block(nodes[0], element, depth, index == runs.length - 1)
       else
-        place_inline(element, nodes, depth, index, index == runs.length - 1)
+        place_inline(element, nodes, depth, runs, index)
       end
     end
   end
 
   def place_block(child, parent, depth, last)
-    separate_before(child, depth + 1)
+    # A hidden block is not a boundary. Normalize a gap that is already
+    # there after a visible block, and do not invent one. Inventing one
+    # puts a line break into the visible text.
+    if !hidden_element?(child) || inter_block_gap?(child)
+      separate_before(child, depth + 1)
+    end
     format_element(child, depth + 1)
-    ensure_text_before_end(parent, depth) if last
+    ensure_text_before_end(parent, depth) if last && !hidden_element?(child)
   end
 
-  def place_inline(parent, nodes, depth, index, last)
-    lead_free = index.positive? || structural?(parent)
-    trail_free = !last || structural?(parent)
+  # A blank text node whose previous significant sibling is a visible block.
+  def inter_block_gap?(node)
+    prev = node.previous_sibling
+    return false unless prev&.text? && blank?(prev) && !prev.content.empty?
+
+    left = previous_significant(node)
+    left&.element? && visible_block?(left)
+  end
+
+  def place_inline(parent, nodes, depth, runs, index)
+    last = index == runs.length - 1
+    prev_run = index.positive? ? runs[index - 1] : nil
+    next_run = last ? nil : runs[index + 1]
+    # A blank between a visible block and a hidden block is the block gap.
+    # Leave it so place_block can normalize the indent. Stripping it deletes
+    # the line the hidden block sits on.
+    if next_run && next_run[0] == :block && hidden_element?(next_run[1][0]) && nodes.all? { |node| blank?(node) }
+      return
+    end
+    lead_free = run_visible_block?(prev_run) || (prev_run.nil? && structural?(parent))
+    trail_free = run_visible_block?(next_run) || (next_run.nil? && structural?(parent))
     lead = edge_whitespace?(nodes, :lead)
     trail = edge_whitespace?(nodes, :trail)
-    content = strip_edges(nodes)
+    # A parent block edge is still reindented. A hidden sibling is not, so
+    # the space before "word" in a<div class="display-none"> stays a space.
+    lead_structural = lead_free || structural_edge?(nodes, :lead)
+    trail_structural = trail_free || structural_edge?(nodes, :trail)
+    content = strip_edges(
+      nodes,
+      keep_lead: lead && !lead_structural,
+      keep_trail: trail && !trail_structural
+    )
     if content.empty?
       if !lead_free && !trail_free && parent.children.empty?
         parent.add_child(Nokogiri::XML::Text.new(' ', parent.document))
       end
-      ensure_text_before_end(parent, depth) if last && (lead_free || trail) && parent.element_children.any?
+      if last && (trail_free || (trail && trail_structural)) && parent.element_children.any?
+        ensure_text_before_end(parent, depth)
+      end
       return
     end
-    if lead_free || lead
+    if lead_free || (lead && lead_structural)
       separate_before(content[0], depth + 1)
       start_col = INDENT * (depth + 1)
     else
       start_col = INDENT * depth + open_length(parent)
     end
     wrap(content, depth + 1, start_col)
-    ensure_text_before_end(parent, depth) if last && (trail_free || trail)
+    ensure_text_before_end(parent, depth) if last && (trail_free || (trail && trail_structural))
+  end
+
+  def run_visible_block?(run)
+    run && run[0] == :block && visible_block?(run[1][0])
+  end
+
+  def structural_edge?(nodes, side)
+    node = side == :lead ? nodes.first : nodes.last
+    return false unless node
+
+    status = inline_neighbor_status(node, side == :lead ? :before : :after)
+    status == :block || status == :br
   end
 
   def edge_whitespace?(nodes, side)
@@ -575,33 +606,41 @@ module HtmlFormat
   # Drop edge whitespace from the list that wrap() sees. Whitespace that
   # already follows a br stays in the tree: that gap is not free, and a
   # hidden br must not gain a line break.
-  def strip_edges(nodes)
+  def strip_edges(nodes, keep_lead: false, keep_trail: false)
     nodes = nodes.dup
-    while nodes[0] && blank?(nodes[0])
-      nodes.shift.unlink
-    end
-    while nodes[-1] && blank?(nodes[-1])
-      if nodes.length >= 2 && br?(nodes[-2])
-        nodes.pop
-        break
+    unless keep_lead
+      while nodes[0] && blank?(nodes[0])
+        nodes.shift.unlink
       end
-      nodes.pop.unlink
     end
-    return nodes if nodes.empty?
-    if nodes[0].text? && !nodes[0].cdata?
-      nodes[0].content = nodes[0].content.sub(/\A[ \t\n\r\f]+/, '')
-      nodes.shift.unlink if nodes[0].content.empty?
-    end
-    return nodes if nodes.empty?
-    if nodes[-1].text? && !nodes[-1].cdata?
-      stripped = nodes[-1].content.sub(/[ \t\n\r\f]+\z/, '')
-      if !stripped.empty?
-        nodes[-1].content = stripped
-      elsif nodes.length >= 2 && br?(nodes[-2])
-        nodes[-1].content = ' '
-        nodes.pop
-      else
+    unless keep_trail
+      while nodes[-1] && blank?(nodes[-1])
+        if nodes.length >= 2 && br?(nodes[-2])
+          nodes.pop
+          break
+        end
         nodes.pop.unlink
+      end
+    end
+    return nodes if nodes.empty?
+    unless keep_lead
+      if nodes[0].text? && !nodes[0].cdata?
+        nodes[0].content = nodes[0].content.sub(/\A[ \t\n\r\f]+/, '')
+        nodes.shift.unlink if nodes[0].content.empty?
+      end
+    end
+    return nodes if nodes.empty?
+    unless keep_trail
+      if nodes[-1].text? && !nodes[-1].cdata?
+        stripped = nodes[-1].content.sub(/[ \t\n\r\f]+\z/, '')
+        if !stripped.empty?
+          nodes[-1].content = stripped
+        elsif nodes.length >= 2 && br?(nodes[-2])
+          nodes[-1].content = ' '
+          nodes.pop
+        else
+          nodes.pop.unlink
+        end
       end
     end
     nodes
@@ -667,11 +706,11 @@ module HtmlFormat
       node.instance_variable_set(:@html_format_parts, parts)
       parts.each_with_index do |part, index|
         if index.odd?
-          before = part_char(parts, index, -1) || inline_neighbor_char(node, :before)
-          after = part_char(parts, index, 1) || inline_neighbor_char(node, :after)
+          before = part_char(parts, index, -1) || inline_neighbor_status(node, :before)
+          after = part_char(parts, index, 1) || inline_neighbor_status(node, :after)
           items << {
-            kind: :ws, node: node, index: index,
-            protected: protect_run?(before, after),
+            kind: :ws, node: node, index: index, original: part,
+            fixed: HtmlInlineNeighbors.fixed_inline_run?(before, after),
             newline: newline_run?(part)
           }
         elsif !part.empty?
@@ -733,19 +772,7 @@ module HtmlFormat
           pending = nil
           item[:decision] = :break
           column = indent_col
-        elsif br_state == :hidden
-          br_state = nil
-          # A hidden br is not a rendered line. A protected run keeps its
-          # newline; any other run stays one space.
-          if item[:protected] && item[:newline]
-            item[:decision] = :keep_nl
-            column = indent_col
-            chunk = 0
-          else
-            item[:decision] = :space
-            chunk += 1
-          end
-        elsif item[:protected]
+        elsif item[:fixed]
           if pending
             decide.call(chunk)
           else
@@ -753,13 +780,25 @@ module HtmlFormat
           end
           chunk = 0
           pending = nil
+          br_state = nil
+          item[:decision] = :keep
           if item[:newline]
-            item[:decision] = :keep_nl
             column = indent_col
           else
-            item[:decision] = :space
-            column += 1
+            column += item[:original].length
           end
+        elsif br_state == :hidden
+          br_state = nil
+          # A hidden br is not a rendered line. A frozen run kept its bytes
+          # above. Any other run stays one space.
+          if pending
+            decide.call(chunk)
+          else
+            column += chunk
+          end
+          chunk = 0
+          item[:decision] = :space
+          chunk += 1
         else
           if pending
             decide.call(chunk)
@@ -788,7 +827,7 @@ module HtmlFormat
       breaks.each do |item|
         parts[item[:index]] = case item[:decision]
                               when :break then indent
-                              when :keep_nl then "\n"
+                              when :keep then item[:original]
                               else ' '
                               end
       end

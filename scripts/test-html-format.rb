@@ -479,6 +479,73 @@ class HtmlFormatContract < Minitest::Test
       }))
     end
   end
+
+  def test_a_pair_outside_the_safe_set_keeps_its_run
+    wide = assert_safe(page('<p>漢  字</p>'))
+    assert_includes body_of(wide), '漢  字'
+    zw = HtmlFormat::ZWSP
+    kept = assert_safe(page("<p>a#{zw}  b</p>"))
+    assert_includes body_of(kept), "#{zw}  b"
+    ipa = assert_safe(page("<p>a\n\u0251</p>"))
+    assert_match(/a\nɑ/, body_of(ipa))
+  end
+
+  def test_a_hidden_block_keeps_the_space_before_it
+    pretty = assert_safe(page('<div>a<div class="display-none">x</div> word</div>'))
+    body = body_of(pretty)
+    assert_includes body, '</div> word'
+    refute_includes body, '</div>word'
+    zw = HtmlFormat::ZWSP
+    marked = assert_safe(page("<div>a#{zw}<div class=\"display-none\">x</div> word</div>"))
+    assert_includes body_of(marked), '</div> word'
+    # A newline after the hidden block stays, and no line break is inserted before it.
+    newline = assert_safe(page("<div>a#{zw}<div class=\"display-none\">x</div>\nword</div>"))
+    body = body_of(newline)
+    assert_includes body, "a#{zw}<div class=\"display-none\">x</div>\nword"
+    refute_includes body, "a#{zw}\n"
+    hidden_br = assert_safe(page("<p>a#{zw}<br class=\"display-none\"/>\nword</p>"))
+    assert_includes body_of(hidden_br), "display-none\" />\nword"
+    refute_includes body_of(hidden_br), "\n      word"
+  end
+
+  def test_a_verbatim_neighbor_keeps_the_run
+    zw = HtmlFormat::ZWSP
+    math = '<math xmlns="http://www.w3.org/1998/Math/MathML"></math>'
+    empty_wide = assert_safe(page("<p><span xml:space=\"preserve\">x#{math}</span>\n漢</p>"))
+    assert_match(%r{</span>\n漢}, body_of(empty_wide))
+    empty_ascii = assert_safe(page("<p><span xml:space=\"preserve\">#{zw}#{math}</span>\nb</p>"))
+    assert_match(%r{</span>\nb}, body_of(empty_ascii))
+    opaque = assert_safe(page("<p><span xml:space=\"preserve\"><br/>a#{zw}</span>\nword</p>"))
+    assert_match(%r{</span>\nword}, body_of(opaque))
+    swapped = page("<p><span xml:space=\"preserve\"><br/>a#{zw}</span> word</p>")
+    refute_safe_page(page("<p><span xml:space=\"preserve\"><br/>a#{zw}</span>\nword</p>"), swapped)
+  end
+
+  def refute_safe_page(before, after)
+    assert_raises(HtmlWhitespaceGuard::Unsafe) do
+      HtmlWhitespaceGuard.compare!(before, after, name: 'verbatim-edge.html')
+    end
+  end
+
+  def test_a_large_page_with_nbsp_stays_fast
+    han = '漢' * 200_000
+    source = page("<p>#{han}&nbsp;#{han}</p>")
+    elapsed = Dir.chdir(ROOT) do
+      started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      doc = Nokogiri::XML(source) do |config|
+        config.default_xml
+        config.strict
+        config.options = Nokogiri::XML::ParseOptions::DTDLOAD
+      end
+      before = HtmlFormat.write(doc)
+      HtmlFormat.format!(doc)
+      after = HtmlFormat.write(doc)
+      HtmlWhitespaceGuard.compare!(before, after, name: 'large-nbsp.html')
+      assert_includes after, '&nbsp;'
+      Process.clock_gettime(Process::CLOCK_MONOTONIC) - started
+    end
+    assert_operator elapsed, :<, 8, "large page took #{elapsed.round(2)}s"
+  end
 end
 
 class HtmlWhitespaceGuardContract < Minitest::Test
@@ -664,7 +731,7 @@ class HtmlWhitespaceGuardContract < Minitest::Test
   def test_rejects_a_break_between_wide_characters
     refute_safe(wrap('<p>漢 字</p>'), wrap("<p>漢\n字</p>"))
     refute_safe(wrap("<p>漢#{HtmlWhitespaceGuard::ZWSP} 字</p>"), wrap("<p>漢#{HtmlWhitespaceGuard::ZWSP}\n字</p>"))
-    HtmlWhitespaceGuard.compare!(wrap('<p>漢  字</p>'), wrap('<p>漢 字</p>'), name: 'wide')
+    refute_safe(wrap('<p>漢  字</p>'), wrap('<p>漢 字</p>'))
     HtmlWhitespaceGuard.compare!(wrap('<p>alpha beta</p>'), wrap("<p>alpha\nbeta</p>"), name: 'ordinary')
   end
 
@@ -735,17 +802,17 @@ class HtmlWhitespaceGuardContract < Minitest::Test
     assert_includes before.message, 'before'
   end
 
-  def test_compares_undefined_attribute_entities_in_order
+  def test_defined_attribute_entities_compare_as_values
     swapped = refute_safe(
       document('<p title="a&nbsp;&ensp;b">x</p>'),
       document('<p title="a&ensp;&nbsp;b">x</p>')
     )
-    assert_match(/CHANGED entity reference/, swapped)
+    assert_match(/CHANGED attributes/, swapped)
     removed = refute_safe(
       document('<p title="a&nbsp;b">x</p>'),
       document('<p title="ab">x</p>')
     )
-    assert_match(/CHANGED entity reference/, removed)
+    assert_match(/CHANGED attributes/, removed)
     HtmlWhitespaceGuard.compare!(
       document('<p title="a&nbsp;b">x y</p>'),
       document("<p title=\"a&nbsp;b\">x\ny</p>"),
@@ -755,28 +822,68 @@ class HtmlWhitespaceGuardContract < Minitest::Test
       document('<p title="a&nbsp;b">x</p>'),
       document('<p title="ab&nbsp;">x</p>')
     )
-    assert_match(/CHANGED entity reference/, moved)
+    assert_match(/CHANGED attributes/, moved)
     across = refute_safe(
       document('<p title="a&nbsp;b" id="xy">x</p>'),
       document('<p title="ab" id="x&nbsp;y">x</p>')
     )
-    assert_match(/CHANGED entity reference/, across)
+    assert_match(/CHANGED attributes/, across)
     elements = refute_safe(
       document('<p title="a&nbsp;b">x</p><p title="ab">y</p>'),
       document('<p title="ab">x</p><p title="a&nbsp;b">y</p>')
     )
-    assert_match(/CHANGED entity reference/, elements)
+    assert_match(/CHANGED attributes/, elements)
     wide = refute_safe(
       document('<p title="漢&nbsp;b">x</p>'),
       document('<p title="漢b&nbsp;">x</p>')
     )
-    assert_match(/CHANGED entity reference/, wide)
+    assert_match(/CHANGED attributes/, wide)
+    same_char = refute_safe(
+      document('<p title="&#233;&nbsp;">x</p>'),
+      document('<p title="é&nbsp; ">x</p>')
+    )
+    assert_match(/CHANGED attributes/, same_char)
+    HtmlWhitespaceGuard.compare!(
+      document('<p title="&#233;&nbsp;">x</p>'),
+      document('<p title="é&nbsp;">x</p>'),
+      name: 'charref'
+    )
     defined = '<!DOCTYPE html [<!ENTITY a "A"><!ENTITY b "A">]>'
     HtmlWhitespaceGuard.compare!(
       document('<p title="&a;">x</p>', doctype: defined),
       document('<p title="&b;">x</p>', doctype: defined),
       name: 'defined-attr'
     )
+  end
+
+  def test_rejects_an_undefined_entity_by_name
+    bare = '<!DOCTYPE html>'
+    text = assert_raises(HtmlWhitespaceGuard::Unsafe) do
+      HtmlWhitespaceGuard.compare!(
+        document('<p>a&nosuch;b</p>', doctype: bare),
+        document('<p>a&nosuch;b</p>', doctype: bare),
+        name: 'missing-text.html'
+      )
+    end
+    assert_includes text.message, 'missing-text.html'
+    assert_includes text.message, '&nosuch;'
+
+    attr = assert_raises(HtmlWhitespaceGuard::Unsafe) do
+      HtmlWhitespaceGuard.compare!(
+        document('<p title="a&字;b">x</p>', doctype: bare),
+        document('<p title="ab&字;">x</p>', doctype: bare),
+        name: 'missing-attr.html'
+      )
+    end
+    assert_includes attr.message, '&字;'
+    latin = assert_raises(HtmlWhitespaceGuard::Unsafe) do
+      HtmlWhitespaceGuard.compare!(
+        document('<p title="a&eacute;b">x</p>'.sub('eacute', 'é'), doctype: bare),
+        document('<p title="x">x</p>', doctype: bare),
+        name: 'missing-latin.html'
+      )
+    end
+    assert_includes latin.message, '&é;'
   end
 
   def test_rejects_a_protected_run_beside_a_verbatim_or_hidden_element

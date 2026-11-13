@@ -2,7 +2,9 @@
 // The book service worker, run against mock caches and fetch.
 // Run: node tests/test-offline-worker.js
 const assert = require('node:assert/strict');
+const { execFileSync } = require('node:child_process');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 const vm = require('node:vm');
 
@@ -17,26 +19,39 @@ const PRECACHE = [
 const LAZY = ['assets/fonts/noto-cjk-x.otf'];
 
 const template = fs.readFileSync(path.join(__dirname, '../scripts/sw.template.js'), 'utf8');
-const code = template
-  .replace('@BUILD@', BUILD)
-  .replace('@PRECACHE@', JSON.stringify(PRECACHE))
-  .replace('@LAZY@', JSON.stringify(LAZY));
+
+function fill(precache, lazy) {
+  return template
+    .replace('@BUILD@', BUILD)
+    .replace('@PRECACHE@', JSON.stringify(precache))
+    .replace('@LAZY@', JSON.stringify(lazy));
+}
+
+const code = fill(PRECACHE, LAZY);
 assert.equal(code.includes('@'), false);
+{
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cll-sw-'));
+  const file = path.join(dir, 'sw.js');
+  fs.writeFileSync(file, code);
+  execFileSync(process.execPath, ['--check', file], { stdio: 'pipe' });
+  fs.rmSync(dir, { recursive: true, force: true });
+}
 
 function response(fields) {
   return { status: 200, redirected: false, type: 'basic', clone() { return this; }, ...fields };
 }
 
-function boot(routes = new Map()) {
+function boot(routes = new Map(), options = {}) {
   const calls = [];
   const stores = new Map();
-  const state = { skipped: 0, claimed: 0, openError: null };
+  const state = { skipped: 0, claimed: 0, openError: null, opens: [] };
   function bucket(name) {
     if (!stores.has(name)) stores.set(name, new Map());
     return stores.get(name);
   }
   const caches = {
     async open(name) {
+      state.opens.push(name);
       if (state.openError) throw state.openError;
       bucket(name);
       return {
@@ -66,7 +81,7 @@ function boot(routes = new Map()) {
   };
   sandbox.self = sandbox;
   vm.createContext(sandbox);
-  vm.runInContext(code, sandbox);
+  vm.runInContext(fill(options.precache || PRECACHE, options.lazy || LAZY), sandbox);
   return { calls, stores, state, listeners, bucket };
 }
 
@@ -180,7 +195,9 @@ async function respond(worker, request) {
   assert.equal(cached.calls.length, 0);
 
   // 9. A lazy file is stored on a 200 and left out on a 404.
+  // The cache already holds the precache, as it does after install.
   const lazyHit = boot(new Map([[lazyUrl, () => response({ marker: 'font' })]]));
+  lazyHit.bucket(CACHE).set(indexUrl, response({ marker: 'index' }));
   const stored = await respond(lazyHit, request(lazyUrl));
   assert.equal(stored.handled, true);
   assert.equal(stored.body.marker, 'font');
@@ -188,6 +205,7 @@ async function respond(worker, request) {
   assert.equal(lazyHit.bucket(CACHE).get(lazyUrl).marker, 'font');
 
   const lazyMiss = boot(new Map([[lazyUrl, () => response({ status: 404, marker: 'gone' })]]));
+  lazyMiss.bucket(CACHE).set(indexUrl, response({ marker: 'index' }));
   const missed = await respond(lazyMiss, request(lazyUrl));
   assert.equal(missed.body.status, 404);
   if (missed.waited) await missed.waited;
@@ -196,11 +214,65 @@ async function respond(worker, request) {
   // 10. A cache error falls through to the network.
   const broken = boot();
   broken.state.openError = new Error('full');
+  broken.bucket(CACHE).set(indexUrl, response({ marker: 'stale' }));
   const fell = await respond(broken, request(indexUrl));
   assert.equal(fell.handled, true);
   assert.equal(fell.body.status, 200);
   assert.equal(broken.calls.length, 1);
   assert.equal(broken.calls[0].url, indexUrl);
+
+  // 11. A precached path missing from a live cache is fetched and stored.
+  const repaired = boot(new Map([[cssUrl, () => response({ marker: 'fresh' })]]));
+  repaired.bucket(CACHE).set(indexUrl, response({ marker: 'index' }));
+  const fetched = await respond(repaired, request(cssUrl));
+  assert.equal(fetched.body.marker, 'fresh');
+  await fetched.waited;
+  assert.equal(repaired.bucket(CACHE).get(cssUrl).marker, 'fresh');
+  assert.equal(repaired.bucket(CACHE).get(indexUrl).marker, 'index');
+
+  // 12. A deleted cache is not opened again, so an old worker cannot recreate it.
+  const retired = boot(new Map([[indexUrl, () => response({ marker: 'network' })]]));
+  const fromNetwork = await respond(retired, request(indexUrl));
+  assert.equal(fromNetwork.body.marker, 'network');
+  assert.deepEqual(retired.state.opens, []);
+  if (fromNetwork.waited) await fromNetwork.waited;
+  assert.equal(retired.stores.has(CACHE), false);
+
+  // 13. Opening a cache that has no entries deletes it and uses the network.
+  const emptied = boot(new Map([[indexUrl, () => response({ marker: 'network' })]]));
+  emptied.bucket(CACHE);
+  const dropped = await respond(emptied, request(indexUrl));
+  assert.equal(dropped.body.marker, 'network');
+  assert.deepEqual(emptied.state.opens, [CACHE]);
+  if (dropped.waited) await dropped.waited;
+  assert.equal(emptied.stores.has(CACHE), false);
+
+  // 14. An integrity failure stops the other downloads and does not call skipWaiting.
+  const many = Array.from({ length: 12 }, (_, index) => [
+    `file-${index}.html`,
+    index === 0 ? 'sha256-bad' : `sha256-${index}`,
+  ]);
+  let releaseHold;
+  const hold = new Promise((resolve) => { releaseHold = resolve; });
+  const routes = new Map(many.map(([file, integrity]) => {
+    const url = SCOPE + file;
+    if (integrity === 'sha256-bad') {
+      return [url, () => Promise.reject(new TypeError('integrity mismatch'))];
+    }
+    return [url, () => hold.then(() => response({ marker: file }))];
+  }));
+  const mismatch = boot(routes, { precache: many, lazy: [] });
+  await assert.rejects(() => fire(mismatch, 'install', {}), /integrity mismatch/);
+  assert.equal(mismatch.state.skipped, 0);
+  const requested = mismatch.calls.map((item) => item.url);
+  assert.equal(requested.includes(SCOPE + 'file-0.html'), true);
+  assert.equal(requested.includes(SCOPE + 'file-7.html'), true);
+  assert.equal(requested.includes(SCOPE + 'file-8.html'), false);
+  releaseHold();
+  await new Promise((resolve) => setImmediate(resolve));
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(mismatch.calls.some((item) => item.url === SCOPE + 'file-8.html'), false);
+  assert.equal(mismatch.bucket(CACHE).size, 0);
 
   console.log('Offline worker tests passed');
 })().catch((error) => { console.error(error); process.exitCode = 1; });

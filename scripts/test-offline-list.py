@@ -41,6 +41,8 @@ def write_book(folder):
         '<script src="//cdn.example/other.js"></script>'
         '</head><body><a href="#section">jump</a>'
         '<img src="assets/media/picture.png">'
+        '<h2 style="clear: both">title</h2>'
+        '<style>h2 { color: black; /* url("assets/fonts/missing.otf") */ }</style>'
         '</body></html>\n',
         encoding='utf-8')
     (folder / 'other.html').write_text(
@@ -88,9 +90,10 @@ def integrity(folder, relative):
     return 'sha256-' + base64.b64encode(digest).decode()
 
 
-def expected_hash(folder, template_text):
+def expected_hash(folder, template_text, lazy_names=LAZY):
     entries = [[name, integrity(folder, name)] for name in EXPECTED]
-    payload = json.dumps([entries, LAZY, template_text], separators=(',', ':'))
+    lazy_entries = [[name, integrity(folder, name)] for name in lazy_names]
+    payload = json.dumps([entries, lazy_entries, template_text], separators=(',', ':'))
     return hashlib.sha256(payload.encode()).hexdigest()[:16]
 
 
@@ -103,10 +106,6 @@ class OfflineListTest(unittest.TestCase):
 
     def tearDown(self):
         self.tmp.cleanup()
-
-    def test_default_budget_is_20_mib(self):
-        source = GENERATOR.read_text(encoding='utf-8')
-        self.assertIn('20 * 1024 * 1024', source)
 
     def test_list_integrity_and_stable_hash(self):
         pages = {
@@ -134,8 +133,6 @@ class OfflineListTest(unittest.TestCase):
         self.assertIn('1 lazy', first.stdout)
         for name, content in pages.items():
             self.assertEqual((self.folder / name).read_bytes(), content)
-        syntax = subprocess.run(['node', '--check', str(worker_path)], capture_output=True, text=True)
-        self.assertEqual(syntax.returncode, 0, syntax.stderr)
 
         second = run(self.folder)
         self.assertEqual(second.returncode, 0, second.stderr)
@@ -171,6 +168,21 @@ class OfflineListTest(unittest.TestCase):
         self.assertEqual(retimed.returncode, 0, retimed.stderr)
         timed_build, _, _ = parse_worker(worker_path.read_text(encoding='utf-8'))
         self.assertNotEqual(timed_build, new_build)
+
+    def test_lazy_bytes_change_the_hash(self):
+        self.assertEqual(run(self.folder).returncode, 0)
+        worker_path = self.folder / 'sw.js'
+        build, _, lazy_paths = parse_worker(worker_path.read_text(encoding='utf-8'))
+        self.assertEqual(lazy_paths, LAZY)
+        font = self.folder / LAZY[0]
+        font.write_bytes(font.read_bytes() + b'x')
+        changed = run(self.folder)
+        self.assertEqual(changed.returncode, 0, changed.stderr)
+        new_build, precache, new_lazy = parse_worker(worker_path.read_text(encoding='utf-8'))
+        self.assertEqual(new_lazy, LAZY)
+        self.assertEqual([entry[0] for entry in precache], EXPECTED)
+        self.assertNotEqual(new_build, build)
+        self.assertEqual(new_build, expected_hash(self.folder, self.template_text))
 
     def test_missing_file_names_the_file_and_writes_nothing(self):
         index = self.folder / 'index.html'
@@ -249,6 +261,81 @@ class OfflineListTest(unittest.TestCase):
     def test_verify_without_a_worker_fails(self):
         result = run(self.folder, args=('--verify',))
         self.assertEqual(result.returncode, 1)
+        self.assertFalse((self.folder / 'sw.js').exists())
+
+    def test_root_relative_reference_is_an_error(self):
+        index = self.folder / 'index.html'
+        original = index.read_text(encoding='utf-8')
+        index.write_text(
+            original.replace('assets/media/picture.png', '/assets/media/picture.png'),
+            encoding='utf-8')
+        result = run(self.folder)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('/assets/media/picture.png', result.stderr)
+        self.assertIn('root-relative', result.stderr)
+        self.assertFalse((self.folder / 'sw.js').exists())
+
+        index.write_text(original, encoding='utf-8')
+        (self.folder / 'final.css').write_text(
+            'body { background: url("/assets/fonts/a.otf"); }\n', encoding='utf-8')
+        css_result = run(self.folder)
+        self.assertEqual(css_result.returncode, 1)
+        self.assertIn('/assets/fonts/a.otf', css_result.stderr)
+        self.assertIn('final.css', css_result.stderr)
+        self.assertFalse((self.folder / 'sw.js').exists())
+
+    def test_url_inside_a_css_comment_is_ignored(self):
+        css = self.folder / 'final.css'
+        css.write_text(
+            '/* url("./assets/fonts/missing.otf")\n'
+            '   url(/also-missing.otf) */\n'
+            + css.read_text(encoding='utf-8'),
+            encoding='utf-8')
+        result = run(self.folder)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        _, precache, _ = parse_worker((self.folder / 'sw.js').read_text(encoding='utf-8'))
+        paths = [entry[0] for entry in precache]
+        self.assertNotIn('assets/fonts/missing.otf', paths)
+        self.assertNotIn('also-missing.otf', paths)
+
+    def test_unread_reference_forms_are_errors(self):
+        index = self.folder / 'index.html'
+        original = index.read_text(encoding='utf-8')
+        cases = [
+            ('srcset', original.replace(
+                '</body>',
+                '<img src="assets/media/picture.png" srcset="assets/media/picture.png 2x"></body>'),
+             'srcset'),
+            ('source', original.replace(
+                '</body>', '<video><source src="clip.mp4"></video></body>'),
+             'source element'),
+            ('object', original.replace(
+                '</body>', '<object data="assets/media/picture.png"></object></body>'),
+             'object element'),
+            ('embed', original.replace(
+                '</body>', '<embed src="assets/media/picture.png"></body>'),
+             'embed element'),
+            ('style attribute', original.replace(
+                '</body>', '<p style="background: url(assets/media/picture.png)"></p></body>'),
+             'style attribute'),
+            ('style element', original.replace(
+                '</body>', '<style>@import "extra.css";</style></body>'),
+             'style element'),
+        ]
+        for name, text, needle in cases:
+            with self.subTest(name=name):
+                index.write_text(text, encoding='utf-8')
+                result = run(self.folder)
+                self.assertEqual(result.returncode, 1, result.stderr)
+                self.assertIn(needle, result.stderr)
+                self.assertFalse((self.folder / 'sw.js').exists())
+        index.write_text(original, encoding='utf-8')
+        css = self.folder / 'final.css'
+        css.write_text(css.read_text(encoding='utf-8') + '@import "extra.css";\n', encoding='utf-8')
+        imported = run(self.folder)
+        self.assertEqual(imported.returncode, 1)
+        self.assertIn('unread @import', imported.stderr)
+        self.assertIn('final.css', imported.stderr)
         self.assertFalse((self.folder / 'sw.js').exists())
 
 

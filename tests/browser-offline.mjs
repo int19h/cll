@@ -13,8 +13,18 @@ import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const playwrightCore = process.env.PLAYWRIGHT_CORE
-  || '/build/bickr/scratch/d1-browser-test/node_modules/playwright-core';
+
+function loadPlaywright() {
+  const spec = process.env.PLAYWRIGHT_CORE;
+  try {
+    return spec ? require(spec) : require('playwright-core');
+  } catch (error) {
+    console.error('Cannot load playwright-core.');
+    console.error('Install the package and its browsers. See docs/checks.md.');
+    console.error('Set PLAYWRIGHT_CORE to the package directory when Node cannot find it.');
+    process.exit(1);
+  }
+}
 const sectionDir = path.resolve(process.env.CLL_SECTION || path.join(repo, 'build/xhtml_section_chunks'));
 const singleDir = path.resolve(process.env.CLL_SINGLE || path.join(repo, 'build/xhtml_no_chunks'));
 const port = Number(process.env.CLL_PORT || 18905);
@@ -182,7 +192,10 @@ if (!biggest) throw new Error('section folder has no html page');
 if (!audio) throw new Error('section folder has no mp3');
 console.log('precache', sectionList, singleList, 'largest', biggest, 'audio', audio);
 
-const scratch = fs.mkdtempSync(path.join('/build/cll/service-worker-205', 'browser-'));
+const pw = loadPlaywright();
+const scratchRoot = process.env.CLL_SCRATCH || os.tmpdir();
+fs.mkdirSync(scratchRoot, { recursive: true });
+const scratch = fs.mkdtempSync(path.join(scratchRoot, 'cll-browser-'));
 const book = path.join(scratch, 'cll/1.3.8');
 fs.mkdirSync(path.join(book, 'diff_from_previous'), { recursive: true });
 fs.symlinkSync(sectionDir, path.join(book, 'xhtml_section_chunks'));
@@ -191,7 +204,6 @@ fs.writeFileSync(path.join(book, 'index.html'), '<!DOCTYPE html><html><head><tit
 fs.writeFileSync(path.join(book, 'diff_from_previous/difference.html'),
   '<!DOCTYPE html><html><head><script defer src="../xhtml_no_chunks/assets/scripts/offline.js"></script></head><body><p>comparison</p></body></html>\n');
 
-const pw = require(playwrightCore);
 const base = 'http://127.0.0.1:' + port + versionPath + '/';
 let browser;
 let server;

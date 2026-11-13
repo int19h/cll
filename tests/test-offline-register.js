@@ -42,7 +42,7 @@ function boot({ href, src = SCRIPT, protocol = 'https:', secure = true, readySta
   };
   vm.createContext(sandbox);
   vm.runInContext(SOURCE, sandbox);
-  return { calls, attrs, listeners };
+  return { calls, attrs, listeners, navigator };
 }
 
 async function settle() {
@@ -91,11 +91,27 @@ async function settle() {
   assert.deepEqual(oldBrowser.calls, []);
   assert.equal(oldBrowser.listeners.load, undefined);
 
-  // 5. Data saver skips registration.
+  // 5. Data saver is checked when register runs, not only when the script is parsed.
   const saver = boot({ href: BOOK + 'index.html', saveData: true });
   if (saver.listeners.load) saver.listeners.load();
   await settle();
   assert.deepEqual(saver.calls, []);
+
+  const saverReady = boot({ href: BOOK + 'index.html', saveData: true, readyState: 'complete' });
+  await settle();
+  assert.deepEqual(saverReady.calls, []);
+
+  const turnedOn = boot({ href: BOOK + 'index.html', saveData: false });
+  turnedOn.navigator.connection.saveData = true;
+  turnedOn.listeners.load();
+  await settle();
+  assert.deepEqual(turnedOn.calls, []);
+
+  const turnedOff = boot({ href: BOOK + 'index.html', saveData: true });
+  turnedOff.navigator.connection.saveData = false;
+  turnedOff.listeners.load();
+  await settle();
+  assert.deepEqual(turnedOff.calls, [BOOK + 'sw.js']);
 
   // 6. A rejected register call is handled, and the attribute stays unset.
   const before = unhandled.length;

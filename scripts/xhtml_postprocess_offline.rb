@@ -19,12 +19,53 @@ def fail!(message)
   exit 1
 end
 
-# A reference the browser would load from this folder, or nil when it would not.
-def local_path(ref)
+# :external is another site or a fragment. :root starts with "/". A string is a relative path.
+def classify_ref(ref)
   return nil if ref.nil? || ref.empty?
-  return nil if ref =~ %r{\A([a-z][a-z0-9+.-]*:|//|#)}i
+  return :external if ref =~ %r{\A(?:[a-z][a-z0-9+.-]*:|//|#)}i
+  return :root if ref.start_with?('/')
   path = ref.sub(/[?#].*\z/, '').sub(%r{\A\./}, '')
   path.empty? ? nil : path
+end
+
+def strip_css_comments(text)
+  text.gsub(%r{/\*.*?\*/}m, '')
+end
+
+def add_local(ref, where, into)
+  kind = classify_ref(ref)
+  return if kind.nil? || kind == :external
+  fail!("root-relative reference in #{where}: #{ref}") if kind == :root
+  into << kind
+end
+
+# style attributes and <style> blocks are not read. A reference there stops the build.
+def reject_unread_style(text, where)
+  cleaned = strip_css_comments(text)
+  return unless cleaned =~ /url\s*\(/i || cleaned =~ /@import\s*['"]/
+  fail!("unread style reference in #{where}")
+end
+
+def reject_unread_html(doc, page)
+  doc.css('[srcset]').each do |node|
+    value = node['srcset'].to_s
+    fail!("unread srcset in #{page}: #{value}") unless value.strip.empty?
+  end
+  doc.css('source[src], source[srcset]').each do |_node|
+    fail!("unread source element in #{page}")
+  end
+  doc.css('object[data]').each do |node|
+    fail!("unread object element in #{page}: #{node['data']}")
+  end
+  doc.css('embed[src]').each do |node|
+    fail!("unread embed element in #{page}: #{node['src']}")
+  end
+  doc.css('[style]').each do |node|
+    reject_unread_style(node['style'].to_s, "#{page} style attribute")
+  end
+  doc.css('style').each do |node|
+    reject_unread_style(node.text.to_s, "#{page} style element")
+  end
 end
 
 # Resolve a path relative to a file in the book folder. nil means the path escapes the folder.
@@ -75,13 +116,13 @@ Dir.chdir(folder) do
   refs = Set.new
   pages.each do |page|
     doc = Nokogiri::HTML(File.read(page, encoding: 'UTF-8'))
+    reject_unread_html(doc, page)
     doc.css('link[rel~="stylesheet"][href], link[rel~="icon"][href]').each do |node|
-      refs << local_path(node['href'])
+      add_local(node['href'], page, refs)
     end
-    doc.css('script[src]').each { |node| refs << local_path(node['src']) }
-    doc.css('img[src]').each { |node| refs << local_path(node['src']) }
+    doc.css('script[src]').each { |node| add_local(node['src'], page, refs) }
+    doc.css('img[src]').each { |node| add_local(node['src'], page, refs) }
   end
-  refs.delete(nil)
 
   resolved = Set.new
   refs.each do |ref|
@@ -93,10 +134,13 @@ Dir.chdir(folder) do
 
   refs.select { |ref| ref.end_with?('.css') && File.file?(ref) }.each do |css|
     base = File.dirname(css)
-    File.read(css, encoding: 'UTF-8').scan(/url\(\s*["']?([^"')]+)["']?\s*\)/).flatten.each do |url|
-      relative = local_path(url)
-      next unless relative
-      path = resolve_path(base, relative)
+    cleaned = strip_css_comments(File.read(css, encoding: 'UTF-8'))
+    fail!("unread @import in #{css}") if cleaned =~ /@import\s*['"]/
+    cleaned.scan(/url\(\s*["']?([^"')]+)["']?\s*\)/).flatten.each do |url|
+      kind = classify_ref(url)
+      next if kind.nil? || kind == :external
+      fail!("root-relative reference in #{css}: #{url}") if kind == :root
+      path = resolve_path(base, kind)
       fail!("path escapes the book folder: #{url} from #{css}") if path.nil?
       refs << path
     end
@@ -117,7 +161,9 @@ Dir.chdir(folder) do
   end
 
   entries = precache.map { |file| [file, 'sha256-' + Digest::SHA256.file(file).base64digest] }
-  build = Digest::SHA256.hexdigest(JSON.generate([entries, lazy, template]))[0, 16]
+  # The worker stores lazy paths only. Their bytes still belong to the build id.
+  lazy_entries = lazy.map { |file| [file, 'sha256-' + Digest::SHA256.file(file).base64digest] }
+  build = Digest::SHA256.hexdigest(JSON.generate([entries, lazy_entries, template]))[0, 16]
   out = template.sub('@BUILD@') { build }
                 .sub('@PRECACHE@') { "[\n" + entries.map { |entry| JSON.generate(entry) }.join(",\n") + "\n]" }
                 .sub('@LAZY@') { JSON.generate(lazy) }

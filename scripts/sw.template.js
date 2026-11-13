@@ -19,11 +19,25 @@ self.addEventListener('install', (event) => {
     const have = new Set((await cache.keys()).map((request) => request.url));
     const todo = PRECACHE.filter((entry) => !have.has(SCOPE + entry[0]));
     let next = 0;
+    let stop = false;
     const fetchNext = async () => {
       while (next < todo.length) {
+        if (stop) { return; }
         const [path, integrity] = todo[next++];
-        const response = await fetch(SCOPE + path, { cache: 'no-cache', integrity });
-        if (response.status !== 200 || response.redirected) { throw new Error(path + ': ' + response.status); }
+        if (stop) { return; }
+        let response;
+        try {
+          response = await fetch(SCOPE + path, { cache: 'no-cache', integrity });
+        } catch (error) {
+          stop = true;
+          throw error;
+        }
+        if (stop) { return; }
+        if (response.status !== 200 || response.redirected) {
+          stop = true;
+          throw new Error(path + ': ' + response.status);
+        }
+        if (stop) { return; }
         await cache.put(SCOPE + path, response);
       }
     };
@@ -50,14 +64,27 @@ self.addEventListener('fetch', (event) => {
   const lazy = LAZY.has(path);
   if (!lazy && !KNOWN.has(path)) { return; }
   event.respondWith((async () => {
-    let cache;
+    let cache = null;
     try {
-      cache = await caches.open(CACHE);
-      const hit = await cache.match(SCOPE + path, { ignoreVary: true });
-      if (hit) { return hit; }
-    } catch (error) { /* fall through to the network */ }
+      // An old worker must not open a cache that a newer worker has deleted.
+      // caches.open would create it again. An empty cache is that race: drop it.
+      const names = await caches.keys();
+      if (names.includes(CACHE)) {
+        const opened = await caches.open(CACHE);
+        const existing = await opened.keys();
+        if (existing.length === 0) {
+          await caches.delete(CACHE);
+        } else {
+          cache = opened;
+          const hit = await cache.match(SCOPE + path, { ignoreVary: true });
+          if (hit) { return hit; }
+        }
+      }
+    } catch (error) {
+      cache = null;
+    }
     const response = await fetch(request);
-    if (cache && lazy && response.status === 200 && response.type === 'basic') {
+    if (cache && response.status === 200 && response.type === 'basic') {
       event.waitUntil(cache.put(SCOPE + path, response.clone()).catch(() => {}));
     }
     return response;

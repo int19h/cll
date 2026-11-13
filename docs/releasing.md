@@ -35,7 +35,7 @@ Versions 1.3.6 and 1.3.7 were published directly, without a release candidate.
 ## Write the release notes
 
 Compare the edition with this fork's previous final release.
-When you choose that release, skip prereleases.
+Skip prereleases when choosing that release.
 For the first fork release, 1.3.2, use `baseline/uncll-1.2.16` instead.
 That branch freezes upstream `geklojban-1.2.16`.
 
@@ -87,7 +87,7 @@ This example row contains tab characters between columns:
 ```
 
 Commit the version entry on `pages`.
-If the current task authorizes a deployment, push that branch.
+Push that branch only when the current task authorizes a deployment.
 The push starts the Pages deployment, which attaches the selected files to the draft.
 Wait until the deployment finishes.
 
@@ -101,18 +101,8 @@ Make sure that the tag, edition branch, branding, and comparisons agree.
 The first release that contains the service worker needs an offline test of the draft.
 Do this after the deployment finishes and before publication.
 Use current Chrome, Firefox, and Safari, and include one phone.
-The steps are the same as [Offline reading of a draft release](checks.md#offline-reading-of-a-draft-release):
-
-1. Open one section page of the draft. Wait until the `html` element has `data-offline="ready"`, or wait one minute.
-2. Turn the network off. Open five pages that you did not open before, through links and through the table of contents. Each page loads with its fonts and pictures.
-3. Reload one of those pages. It loads.
-4. Open a page of version 1.3.7 with the network off. It fails to load.
-5. Turn the network on. Play one audio example. It plays.
-6. Open a comparison page. The developer tools show no service worker for that page.
-7. Repeat steps 1 to 3 for the one-page form.
-8. The origin holds one cache for each form that you opened. Each cache name contains that version's path.
-
-If every step succeeds in each browser, publish the release.
+Follow the eight steps in [Offline reading of a draft release](checks.md#offline-reading-of-a-draft-release).
+Do not publish the release until every step succeeds in each browser.
 
 While a Pages deployment runs, do not publish a release.
 The pipeline reads the draft state before each group of release changes.

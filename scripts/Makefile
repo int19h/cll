@@ -68,7 +68,10 @@ ifdef copydir
 	rm -f "$(copydir)/cll-$(notdir $(basename $<))/sw.js"
 endif
 
-# Do the actual chunking work
+# Do the actual chunking work.
+# offline=no skips sw.js. Any other value writes it.
+# cll_build does not forward arguments to make. Pass the variable in the environment:
+#   offline=no ./cll_build -n -T xhtml_nochunks
 $(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl xml/docbook2html_config_common.xsl $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_xhtml.xsl assets/css/master.css scripts/xhtml_postprocess_offline.rb scripts/sw.template.js assets/scripts/offline.js scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/util.rb xml/iso-pub.ent $(html_copied_files)
 	rm -rf $(builddir)/xhtml_$*_chunks
 	mkdir -p $(builddir)/xhtml_$*_chunks
@@ -84,7 +87,9 @@ $(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl xml/docboo
 	cp -pr $(PWD)/assets $(builddir)/xhtml_$*_chunks/
 	cp -avr $(builddir)/sance.js $(builddir)/xhtml_$*_chunks/assets/scripts/sance.js
 	scripts/xhtml_postprocess_cleanup.sh $(builddir)/xhtml_$*_chunks/
+ifneq ($(offline),no)
 	scripts/xhtml_postprocess_offline.rb $(builddir)/xhtml_$*_chunks/ scripts/sw.template.js
+endif
 	touch $(builddir)/xhtml_$*_chunks.done
 
 

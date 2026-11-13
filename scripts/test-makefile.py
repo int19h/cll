@@ -17,7 +17,7 @@ class MakefileTests(unittest.TestCase):
         self.build = self.root / 'build'
         self.build.mkdir()
 
-    def make(self, *args, makefile=None, old=None):
+    def make(self, *args, makefile=None, old=None, env=None):
         if old is None:
             old = [self.build / 'cll_processed_xhtml.xml', self.build / 'build-metadata']
         command = ['make', '--no-print-directory', '-f',
@@ -27,7 +27,8 @@ class MakefileTests(unittest.TestCase):
             command.extend(['-o', str(path)])
         command.extend(map(str, args))
         result = subprocess.run(
-            command, cwd=SOURCE, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            command, cwd=SOURCE, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+            env=env)
         self.assertEqual(result.returncode, 0, result.stdout)
         return result.stdout
 
@@ -141,6 +142,20 @@ class MakefileTests(unittest.TestCase):
                 self.assertTrue(
                     'Nothing to be done' in output or 'is up to date' in output,
                     output)
+
+    def test_offline_no_skips_the_generator(self):
+        done = self.build / 'xhtml_no_chunks.done'
+        self.touch_output(done)
+        default = self.make('-n', '-Wscripts/xhtml_postprocess_offline.rb', done)
+        self.assertIn('xhtml_postprocess_offline.rb', default)
+        skipped = self.make('-n', '-Wscripts/xhtml_postprocess_offline.rb', 'offline=no', done)
+        self.assertNotIn('xhtml_postprocess_offline.rb', skipped)
+        self.assertIn('xhtml_postprocess_cleanup.sh', skipped)
+        env = os.environ.copy()
+        env['offline'] = 'no'
+        from_env = self.make('-n', '-Wscripts/xhtml_postprocess_offline.rb', done, env=env)
+        self.assertNotIn('xhtml_postprocess_offline.rb', from_env)
+        self.assertIn('touch', from_env)
 
 
 if __name__ == '__main__':

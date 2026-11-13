@@ -10,8 +10,9 @@
   // Pages outside the book folder (the comparison pages) load this file
   // too. They must not install the book.
   if (new URL('./', location.href).href !== root) { return; }
-  if (navigator.connection && navigator.connection.saveData) { return; }
   function register() {
+    // Check at registration time, including a later load event.
+    if (navigator.connection && navigator.connection.saveData) { return; }
     navigator.serviceWorker.register(root + 'sw.js').then(function () {
       return navigator.serviceWorker.ready;
     }).then(function () {

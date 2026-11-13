@@ -38,7 +38,9 @@ export AUTHOR="John Woldemar Cowan"
 
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
-for t in content.opf.s1 toc.xhtml.s1 cover.html; do
+# The navigation document is written by the stylesheets. Its title is
+# checked by scripts/check_epub_nav.rb during the ePub build (issue #208).
+for t in content.opf.s1 cover.html; do
   ruby scripts/epub_branding.rb fill <"epub/$t" >"$tmp/$t"
   if grep -n 'REPLACETITLE\|REPLACEFILEAS\|REPLACEPUBLISHER\|REPLACEREVISER\|REPLACEVERSION' "$tmp/$t"; then
     bad "epub/$t keeps a placeholder after filling"

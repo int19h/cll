@@ -177,9 +177,10 @@ ifdef copydir
 	cp $(builddir)/cll.epub $(copydir)/cll.epub
 endif
 
-$(builddir)/cll.epub: $(builddir)/epub-xhtml/index.html scripts/build_epub.sh scripts/epub_branding.rb .env epub/mimetype epub/* epub/META-INF/container.xml
+$(builddir)/cll.epub: $(builddir)/epub-xhtml/index.html scripts/build_epub.sh scripts/check_epub_nav.rb scripts/epub_branding.rb .env epub/mimetype epub/* epub/META-INF/container.xml
 	scripts/build_epub.sh $(PWD)
 	mv $(builddir)/cll.epub $(builddir)/cll.tmp.epub
+	ruby scripts/check_epub_nav.rb $(builddir)/epub $(builddir)/epub-nav/spine.txt "$$(grep '^TITLE=' .env | head -n 1 | cut -d= -f2- | sed -e 's/^"//' -e 's/"$$//')"
 	java -jar $(PWD)/epub/epubcheck-4.0.1/epubcheck.jar $(builddir)/cll.tmp.epub 2>&1 | grep -v "should have the extension '.xhtml'"
 # It checks out; move it into place
 	mv $(builddir)/cll.tmp.epub $(builddir)/cll.epub
@@ -187,11 +188,18 @@ $(builddir)/cll.epub: $(builddir)/epub-xhtml/index.html scripts/build_epub.sh sc
 # Note that the epub doesn't rely on the PDF, but rather on the HTML
 # that is used to build the PDF, but it amounts to the same thing
 # for requirements here.
+# The navigation document and the page list are written beside the pages.
+# xmlto copies only *.*htm* out of its temporary directory, and a relative
+# path would be resolved against that directory (issue #208).
+epubnavdir = $(abspath $(builddir))/epub-nav
+
 $(builddir)/epub-xhtml/index.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_common.xsl xml/docbook2html_config_epub.xsl assets/css/master.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/util.rb xml/iso-pub.ent $(dtd_files) $(epub_copied_files)
-	rm -rf $(builddir)/epub-xhtml/
-	mkdir -p $(builddir)/epub-xhtml/
+	rm -rf $(builddir)/epub-xhtml/ $(epubnavdir)/
+	mkdir -p $(builddir)/epub-xhtml/ $(epubnavdir)/
 	cp -pr $(PWD)/dtd $(builddir)/epub-xhtml/
-	xmlto -m xml/docbook2html_config_epub.xsl -o $(builddir)/epub-xhtml/ -x $(xsl_base)/xhtml/chunk.xsl xhtml $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
+	xmlto -m xml/docbook2html_config_epub.xsl --stringparam cll.epub.nav.file=$(epubnavdir)/toc.xhtml --stringparam generate.manifest=1 --stringparam manifest=$(epubnavdir)/spine.txt -o $(builddir)/epub-xhtml/ -x $(xsl_base)/xhtml/chunk.xsl xhtml $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
+	test -s $(epubnavdir)/toc.xhtml
+	test -s $(epubnavdir)/spine.txt
 	cp -p $(PWD)/assets/css/master.css $(builddir)/epub-xhtml/final.css
 	cp -pr $(PWD)/assets $(builddir)/epub-xhtml/
 	rm -rf $(builddir)/epub-xhtml/assets/css

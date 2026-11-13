@@ -75,9 +75,11 @@ jobs:
       - name: Running head and ePub name the edition from .env
         run: scripts/check-edition-branding.sh
       - name: Install ePub packaging tools
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils zip
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils zip unzip
       - name: Package ePub assets without renderer sources
         run: python3 scripts/test-build-epub.py
+      - name: EPUBCheck pin and error status
+        run: python3 scripts/test-epubcheck.py
 
   # The ePub navigation document is written from the DocBook source (issue #208).
   epub-nav:

@@ -291,7 +291,7 @@ case "$*" in
 *xhtml_nochunks*) mkdir -p build/xhtml_no_chunks; echo html > build/xhtml_no_chunks/index.html ;;
 esac
 '''
-        for name in ['cll_build', 'scripts/install-weasyprint.sh', 'scripts/install_typst.sh']:
+        for name in ['cll_build', 'scripts/install-weasyprint.sh', 'scripts/install_typst.sh', 'scripts/install-epubcheck.sh']:
             f=p/name
             f.write_text(mock)
             f.chmod(0o755)
@@ -303,7 +303,7 @@ esac
     def test_dispatch(self):
         expected = {
             'html': ['./cll_build -n -T xhtml_sections', './cll_build -n -T xhtml_nochunks'],
-            'epub': ['./cll_build -n -T epub'],
+            'epub': ['./scripts/install-epubcheck.sh build/tools/epubcheck', './cll_build -n -T epub'],
             'pdf': ['./cll_build -n -T pdf'],
             'pdf-weasyprint': ['./scripts/install-weasyprint.sh ', './cll_build -n -T pdf_weasyprint'],
             'pdf-typst': ['./scripts/install_typst.sh build/typst-tools', './cll_build -n -T pdf_typst'],

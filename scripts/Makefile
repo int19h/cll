@@ -182,12 +182,12 @@ ifdef copydir
 	cp $(builddir)/cll.epub $(copydir)/cll.epub
 endif
 
-$(builddir)/cll.epub: $(builddir)/epub-xhtml/index.html scripts/build_epub.sh scripts/check_epub_nav.rb scripts/epub_branding.rb .env epub/mimetype epub/* epub/META-INF/container.xml
+$(builddir)/cll.epub: $(builddir)/epub-xhtml/index.html scripts/build_epub.sh scripts/check_epub_nav.rb scripts/epub_branding.rb scripts/run-epubcheck.sh scripts/install-epubcheck.sh .env epub/mimetype epub/* epub/META-INF/container.xml
 	scripts/build_epub.sh $(PWD)
 	mv $(builddir)/cll.epub $(builddir)/cll.tmp.epub
 	ruby scripts/check_epub_nav.rb $(builddir)/epub $(builddir)/epub-nav/spine.txt "$$(grep '^TITLE=' .env | head -n 1 | cut -d= -f2- | sed -e 's/^"//' -e 's/"$$//')"
-	java -jar $(PWD)/epub/epubcheck-4.0.1/epubcheck.jar $(builddir)/cll.tmp.epub 2>&1 | grep -v "should have the extension '.xhtml'"
-# It checks out; move it into place
+	scripts/run-epubcheck.sh $(builddir)/cll.tmp.epub
+# Warnings stay in the log. An error stops the build before this move.
 	mv $(builddir)/cll.tmp.epub $(builddir)/cll.epub
 
 # Note that the epub doesn't rely on the PDF, but rather on the HTML

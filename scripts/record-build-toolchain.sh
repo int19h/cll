@@ -15,11 +15,18 @@ if [ -f /usr/local/share/cll/context-sources.txt ]; then
   cp /usr/local/share/cll/context-sources.txt "$output/context-sources.txt"
 fi
 {
-  for tool in ruby node npm xsltproc xmllint prince context typst; do
+  for tool in ruby node npm xsltproc xmllint prince context typst java; do
     if command -v "$tool" >/dev/null; then
       "$tool" --version
     fi
   done
+  epubcheck_jar=${EPUBCHECK_JAR:-}
+  if [ -z "$epubcheck_jar" ] && [ -f /usr/local/share/epubcheck/epubcheck.jar ]; then
+    epubcheck_jar=/usr/local/share/epubcheck/epubcheck.jar
+  fi
+  if [ -n "$epubcheck_jar" ] && [ -f "$epubcheck_jar" ] && command -v java >/dev/null; then
+    java -jar "$epubcheck_jar" --version
+  fi
   if command -v gem >/dev/null; then
     gem list --local
   fi

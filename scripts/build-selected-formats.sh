@@ -34,7 +34,12 @@ for f in $formats; do
 <p><a href="xhtml_no_chunks/index.html">Read on one page</a></p>
 HTML
       continue ;;
-    epub) target=epub; file=cll.epub ;;
+    epub)
+      ./scripts/install-epubcheck.sh build/tools/epubcheck
+      export EPUBCHECK_JAR="$PWD/build/tools/epubcheck/epubcheck.jar"
+      target=epub
+      file=cll.epub
+      ;;
     pdf) target=pdf; file=cll.pdf ;;
     pdf-weasyprint)
       ./scripts/install-weasyprint.sh

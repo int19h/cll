@@ -21,7 +21,7 @@ The WeasyPrint and Typst checks install their own pinned tools, as described in 
 
 ## Quick run
 
-These commands cover the checks that need only Python with Pillow, Ruby with Nokogiri, `xmllint`, `xsltproc`, `zip`, and Node.js.
+These commands cover the checks that need only Python with Pillow, Ruby with Nokogiri, `xmllint`, `xsltproc`, `zip`, `unzip`, and Node.js.
 The first two lines join the book into one file and check it with `xmllint`.
 In CI, a problem makes the workflow print the `xmllint` output.
 Locally, read the output for warnings that contain `not defined`, `parser error`, or `already defined`.
@@ -47,6 +47,7 @@ python3 scripts/test-check-peg-grammar.py
 python3 scripts/test-build-pins.py
 scripts/check-edition-branding.sh
 python3 scripts/test-build-epub.py
+python3 scripts/test-epubcheck.py
 python3 scripts/test-epub-nav.py
 python3 scripts/test-xml-prince-postprocess.py
 python3 scripts/test-offline-list.py
@@ -116,6 +117,7 @@ The status lint reports a `status-note` without `condition` as a warning, and th
 | --- | --- | --- |
 | Edition branding | The PDF running head and the ePub name this edition from `.env`, and never the first edition | `scripts/check-edition-branding.sh` |
 | ePub packaging | The ePub packager, run on a small book, keeps the reader's assets and leaves out the renderer sources | `python3 scripts/test-build-epub.py` |
+| EPUBCheck pin and status | The installer rejects a bad archive before extraction. A warning is printed and the build continues. An error stops the build. With Java and an installed jar, a missing spine page fails the real checker | `python3 scripts/test-epubcheck.py` |
 
 ## epub-nav
 

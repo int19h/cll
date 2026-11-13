@@ -146,11 +146,12 @@ The check needs `xsltproc` as well as Ruby and Nokogiri.
 This job checks that Nokogiri is version 1.18.8, the version that the Dockerfile installs.
 Check your version with `ruby -rnokogiri -e 'puts Nokogiri::VERSION'`.
 
-Pass `offline=no` to skip `sw.js`.
+Set `offline` to `no` to skip `sw.js`.
 Any other value of `offline` writes `sw.js`.
 `cll_build` passes its environment through to `make`.
 It does not accept make variables as arguments.
-A comparison build uses this command:
+The pages branch will set `offline=no` for comparison builds.
+It will use this command:
 
 ```sh
 offline=no ./cll_build -n -T xhtml_nochunks

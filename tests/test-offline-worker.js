@@ -3,6 +3,7 @@
 // Run: node tests/test-offline-worker.js
 const assert = require('node:assert/strict');
 const { execFileSync } = require('node:child_process');
+const { createHash } = require('node:crypto');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
@@ -41,10 +42,14 @@ function response(fields) {
   return { status: 200, redirected: false, type: 'basic', clone() { return this; }, ...fields };
 }
 
+function sri(text) {
+  return 'sha256-' + createHash('sha256').update(text).digest('base64');
+}
+
 function boot(routes = new Map(), options = {}) {
   const calls = [];
   const stores = new Map();
-  const state = { skipped: 0, claimed: 0, openError: null, opens: [] };
+  const state = { skipped: 0, claimed: 0, openError: null, opens: [], entryLists: 0, putError: null };
   function bucket(name) {
     if (!stores.has(name)) stores.set(name, new Map());
     return stores.get(name);
@@ -55,11 +60,22 @@ function boot(routes = new Map(), options = {}) {
       if (state.openError) throw state.openError;
       bucket(name);
       return {
-        async keys() { return [...bucket(name).keys()].map((url) => ({ url })); },
-        async put(url, body) { bucket(name).set(String(url), body); },
+        async keys() {
+          state.entryLists += 1;
+          return [...bucket(name).keys()].map((url) => ({ url }));
+        },
+        async put(url, body) {
+          if (state.putError) {
+            const error = state.putError;
+            state.putError = null;
+            throw error;
+          }
+          bucket(name).set(String(url), body);
+        },
         async match(url) { return bucket(name).get(String(url)); },
       };
     },
+    async has(name) { return stores.has(name); },
     async keys() { return [...stores.keys()]; },
     async delete(name) { return stores.delete(name); },
   };
@@ -71,7 +87,12 @@ function boot(routes = new Map(), options = {}) {
       const url = typeof input === 'string' ? input : input.url;
       calls.push({ url, options, method: typeof input === 'string' ? 'GET' : input.method });
       const made = routes.get(url);
-      return made ? made() : response({});
+      const result = made ? await made() : response({});
+      if (options && options.integrity && result && result.bodyText !== undefined
+          && sri(result.bodyText) !== options.integrity) {
+        throw new TypeError('Failed to find a valid digest in the integrity attribute');
+      }
+      return result;
     },
     addEventListener(type, fn) { (listeners[type] ||= []).push(fn); },
     registration: { scope: SCOPE },
@@ -186,6 +207,7 @@ async function respond(worker, request) {
   assert.equal(folder.handled, true);
   assert.equal(folder.body, indexBody);
   assert.equal(cached.calls.length, 0);
+  assert.equal(cached.state.entryLists, 0);
 
   // 8. A query string still hits the cached file.
   const cssBody = response({ marker: 'css' });
@@ -221,14 +243,51 @@ async function respond(worker, request) {
   assert.equal(broken.calls.length, 1);
   assert.equal(broken.calls[0].url, indexUrl);
 
-  // 11. A precached path missing from a live cache is fetched and stored.
+  // 11. A precached path missing from a live cache is revalidated and stored.
   const repaired = boot(new Map([[cssUrl, () => response({ marker: 'fresh' })]]));
   repaired.bucket(CACHE).set(indexUrl, response({ marker: 'index' }));
   const fetched = await respond(repaired, request(cssUrl));
   assert.equal(fetched.body.marker, 'fresh');
+  assert.equal(repaired.calls[0].options.cache, 'no-cache');
+  assert.equal(repaired.calls[0].options.integrity, 'sha256-css');
+  assert.equal(repaired.state.entryLists, 1);
   await fetched.waited;
   assert.equal(repaired.bucket(CACHE).get(cssUrl).marker, 'fresh');
   assert.equal(repaired.bucket(CACHE).get(indexUrl).marker, 'index');
+
+  // 11b. Different bytes on repair do not enter this build's cache.
+  const oldHtml = 'BUILD-A';
+  const newHtml = 'BUILD-B';
+  const oldCss = 'css-a';
+  const mixed = boot(new Map([
+    [indexUrl, () => response({ bodyText: newHtml, marker: newHtml })],
+    [cssUrl, () => response({ bodyText: oldCss, marker: oldCss })],
+  ]), {
+    precache: [['index.html', sri(oldHtml)], ['final.css', sri(oldCss)]],
+    lazy: [],
+  });
+  mixed.bucket(CACHE).set(cssUrl, response({ marker: oldCss }));
+  const poisoned = await respond(mixed, request(indexUrl));
+  assert.equal(poisoned.body.marker, newHtml);
+  assert.equal(mixed.calls[0].options.cache, 'no-cache');
+  assert.equal(mixed.calls[0].options.integrity, sri(oldHtml));
+  assert.equal(mixed.calls[1].options.cache, 'no-cache');
+  assert.equal(mixed.calls[1].options.integrity, undefined);
+  if (poisoned.waited) await poisoned.waited;
+  assert.equal(mixed.bucket(CACHE).has(indexUrl), false);
+  assert.equal(mixed.bucket(CACHE).get(cssUrl).marker, oldCss);
+
+  const redirectedRepair = boot(new Map([
+    [indexUrl, () => response({ redirected: true, bodyText: oldHtml, marker: 'redir' })],
+  ]), {
+    precache: [['index.html', sri(oldHtml)], ['final.css', sri(oldCss)]],
+    lazy: [],
+  });
+  redirectedRepair.bucket(CACHE).set(cssUrl, response({ marker: oldCss }));
+  const redirectedBody = await respond(redirectedRepair, request(indexUrl));
+  assert.equal(redirectedBody.body.marker, 'redir');
+  if (redirectedBody.waited) await redirectedBody.waited;
+  assert.equal(redirectedRepair.bucket(CACHE).has(indexUrl), false);
 
   // 12. A deleted cache is not opened again, so an old worker cannot recreate it.
   const retired = boot(new Map([[indexUrl, () => response({ marker: 'network' })]]));
@@ -273,6 +332,26 @@ async function respond(worker, request) {
   await new Promise((resolve) => setImmediate(resolve));
   assert.equal(mismatch.calls.some((item) => item.url === SCOPE + 'file-8.html'), false);
   assert.equal(mismatch.bucket(CACHE).size, 0);
+
+  // 15. A failed cache.put sets the stop flag and does not fetch the rest.
+  const putFiles = Array.from({ length: 12 }, (_, index) => [`p${index}.html`, `sha256-${index}`]);
+  let releasePut;
+  const holdPut = new Promise((resolve) => { releasePut = resolve; });
+  const putRoutes = new Map(putFiles.map(([file], index) => {
+    const url = SCOPE + file;
+    if (index === 0) return [url, () => response({ marker: file })];
+    return [url, () => holdPut.then(() => response({ marker: file }))];
+  }));
+  const putFail = boot(putRoutes, { precache: putFiles, lazy: [] });
+  putFail.state.putError = new Error('disk full');
+  await assert.rejects(() => fire(putFail, 'install', {}), /disk full/);
+  assert.equal(putFail.state.skipped, 0);
+  assert.equal(putFail.calls.some((item) => item.url === SCOPE + 'p8.html'), false);
+  releasePut();
+  await new Promise((resolve) => setImmediate(resolve));
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(putFail.calls.some((item) => item.url === SCOPE + 'p8.html'), false);
+  assert.equal(putFail.bucket(CACHE).size, 0);
 
   console.log('Offline worker tests passed');
 })().catch((error) => { console.error(error); process.exitCode = 1; });

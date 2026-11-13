@@ -11,6 +11,7 @@ const SCOPE_PATH = new URL(SCOPE).pathname;
 const PREFIX = 'cll-book:' + SCOPE_PATH + ':';
 const CACHE = PREFIX + BUILD;
 const KNOWN = new Set(PRECACHE.map((entry) => entry[0]));
+const INTEGRITY = new Map(PRECACHE);
 const PARALLEL = 8;
 
 self.addEventListener('install', (event) => {
@@ -38,7 +39,12 @@ self.addEventListener('install', (event) => {
           throw new Error(path + ': ' + response.status);
         }
         if (stop) { return; }
-        await cache.put(SCOPE + path, response);
+        try {
+          await cache.put(SCOPE + path, response);
+        } catch (error) {
+          stop = true;
+          throw error;
+        }
       }
     };
     await Promise.all(Array.from({ length: PARALLEL }, fetchNext));
@@ -66,25 +72,38 @@ self.addEventListener('fetch', (event) => {
   event.respondWith((async () => {
     let cache = null;
     try {
-      // An old worker must not open a cache that a newer worker has deleted.
-      // caches.open would create it again. An empty cache is that race: drop it.
-      const names = await caches.keys();
-      if (names.includes(CACHE)) {
+      // caches.has does not create a cache a newer worker has deleted.
+      if (await caches.has(CACHE)) {
         const opened = await caches.open(CACHE);
+        const hit = await opened.match(SCOPE + path, { ignoreVary: true });
+        if (hit) { return hit; }
+        // A miss is the only time we list entries. An empty cache is the
+        // race where open recreated a deleted cache: drop it and do not store.
         const existing = await opened.keys();
         if (existing.length === 0) {
           await caches.delete(CACHE);
         } else {
           cache = opened;
-          const hit = await cache.match(SCOPE + path, { ignoreVary: true });
-          if (hit) { return hit; }
         }
       }
     } catch (error) {
       cache = null;
     }
+    const integrity = INTEGRITY.get(path);
+    if (cache && integrity) {
+      try {
+        const checked = await fetch(SCOPE + path, { cache: 'no-cache', integrity });
+        if (checked.status === 200 && !checked.redirected && checked.type === 'basic') {
+          event.waitUntil(cache.put(SCOPE + path, checked.clone()).catch(() => {}));
+        }
+        return checked;
+      } catch (error) {
+        // The bytes do not belong to this build. Show the network page and do not store it.
+        return fetch(SCOPE + path, { cache: 'no-cache' });
+      }
+    }
     const response = await fetch(request);
-    if (cache && response.status === 200 && response.type === 'basic') {
+    if (cache && response.status === 200 && !response.redirected && response.type === 'basic') {
       event.waitUntil(cache.put(SCOPE + path, response.clone()).catch(() => {}));
     }
     return response;

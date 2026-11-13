@@ -6,6 +6,7 @@ Run: python3 scripts/test-offline-list.py
 import base64
 import hashlib
 import json
+import os
 import re
 import subprocess
 import tempfile
@@ -223,6 +224,27 @@ class OfflineListTest(unittest.TestCase):
         over = run(self.folder, args=('--budget', str(size - 1)))
         self.assertEqual(over.returncode, 1)
         self.assertIn('budget', over.stderr)
+        self.assertEqual((self.folder / 'sw.js').read_bytes(), original)
+
+    def test_default_budget_is_20_mib(self):
+        budget = 20 * 1024 * 1024
+        index = self.folder / 'index.html'
+        index.write_text(
+            index.read_text(encoding='utf-8').replace(
+                '</body>', '<img src="assets/media/big.bin"></body>'),
+            encoding='utf-8')
+        others = sum((self.folder / name).stat().st_size for name in EXPECTED)
+        big = self.folder / 'assets' / 'media' / 'big.bin'
+        big.write_bytes(b'')
+        os.truncate(big, budget - others)
+        exact = run(self.folder)
+        self.assertEqual(exact.returncode, 0, exact.stderr)
+        original = (self.folder / 'sw.js').read_bytes()
+        os.truncate(big, budget - others + 1)
+        over = run(self.folder)
+        self.assertEqual(over.returncode, 1)
+        self.assertIn('budget', over.stderr)
+        self.assertIn(str(budget), over.stderr)
         self.assertEqual((self.folder / 'sw.js').read_bytes(), original)
 
     def test_css_parent_path_stays_inside_the_folder(self):

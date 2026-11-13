@@ -25,16 +25,21 @@
 # other side, or a structural container, still does, when the inline
 # character is safe or there is none. The gap after a br is never free.
 #
-# An element is a visible block only when no display:none or visibility:hidden
-# rule in the stylesheets can match it. The rules are the subjects in
-# HIDING_RULES, taken from assets/css. A contextual subject is uncertain
-# until the whole selector matches. script and style are hidden as well.
-# A hidden element is skipped while looking for a character. A visible
-# verbatim element, such as MathML or xml:space="preserve", is not read.
-# Entity replacement text comes from the document. The formatter and the
-# guard both load the local XHTML DTD, so a DTD entity such as nbsp has the
-# same characters on both sides. The guard reads namespace declarations
-# from a parse that does not apply DTD defaults.
+# Hiding is not decided by matching selectors. A subject is hidden only
+# when a display:none or visibility:hidden rule is unconditional and a
+# single compound, so the element is hidden in every context and medium.
+# Every other hiding subject is uncertain: every hr, every h3, and every
+# release-separator, because some rule could match that tag or class.
+# An uncertain element is never skipped, never a visible block, and never
+# frees a gap. The whitespace on both sides stays byte for byte, as it
+# does beside a verbatim element. script and style are hidden by name,
+# because their text is not shown. A hidden element is skipped while
+# looking for a character. A visible verbatim element, such as MathML or
+# xml:space="preserve", is not read. Entity replacement text comes from
+# the document. The formatter and the guard both load the local XHTML DTD,
+# so a DTD entity such as nbsp has the same characters on both sides. The
+# guard reads namespace declarations from a parse that does not apply DTD
+# defaults.
 #
 # A head without a Content-Type meta element is formatted again on a second
 # pass. The pages of this book include that element.
@@ -42,47 +47,22 @@
 module HtmlInlineNeighbors
   ZWSP = "\u200B"
 
-  HIDDEN_CLASS = %w[display-none guibutton].freeze
-  HIDDEN_BR = %w[example-break table-break].freeze
+  # [tag or nil, classes]. Tag nil matches any element. Classes are exact
+  # tokens. These are the unconditional single-compound hiding rules.
+  HIDDEN_SUBJECTS = [
+    [nil, %w[display-none]],
+    [nil, %w[guibutton]],
+    ['br', %w[example-break]],
+    ['br', %w[table-break]]
+  ].freeze
 
-  # display:none and visibility:hidden rules whose subjects the HTML
-  # stylesheets hide. Each compound is [combinator, tag or nil, classes].
-  # The combinator joins that compound to the one on its left. :hidden
-  # means the subject itself is enough. :uncertain means an ancestor
-  # combinator has to match before the element is hidden. The test parses
-  # assets/css and requires every such subject to be :hidden or :uncertain.
-  HIDING_RULES = [
-    { visibility: :uncertain, compounds: [
-      [nil, nil, %w[book]],
-      [:child, nil, %w[titlepage]],
-      [:descendant, nil, %w[release-separator]]
-    ] },
-    { visibility: :hidden, compounds: [
-      [nil, 'br', %w[example-break]]
-    ] },
-    { visibility: :uncertain, compounds: [
-      [nil, nil, %w[whole-index]],
-      [:descendant, 'h3', []]
-    ] },
-    { visibility: :hidden, compounds: [
-      [nil, nil, %w[guibutton]]
-    ] },
-    { visibility: :hidden, compounds: [
-      [nil, nil, %w[display-none]]
-    ] },
-    { visibility: :uncertain, compounds: [
-      [nil, nil, %w[article]],
-      [:child, nil, %w[titlepage]],
-      [:descendant, 'hr', []]
-    ] },
-    { visibility: :uncertain, compounds: [
-      [nil, nil, %w[book]],
-      [:child, nil, %w[titlepage]],
-      [:descendant, 'hr', []]
-    ] },
-    { visibility: :hidden, compounds: [
-      [nil, 'br', %w[table-break]]
-    ] }
+  # Subjects of every other hiding rule, including rules under @media and
+  # rules with an ancestor. An element that could be that subject is
+  # uncertain wherever it sits.
+  UNCERTAIN_SUBJECTS = [
+    ['hr', []],
+    ['h3', []],
+    [nil, %w[release-separator]]
   ].freeze
 
   # East Asian wide and fullwidth characters. They are outside the safe set.
@@ -188,9 +168,17 @@ module HtmlInlineNeighbors
   # The status on the before or after side of node.
   # A string is a character. :block is a visible block, including the
   # parent edge of a block. :br is a visible br. :verbatim is a visible
-  # verbatim element, which is not read. nil means nothing was found.
-  # rules responds to block?, br?, inline?, and verbatim?.
+  # verbatim element, which is not read. :uncertain is an element a
+  # hiding rule might match. It is not read and it is not a visible block.
+  # nil means nothing was found. The result is not stored on the node:
+  # a page keeps both guard documents, and an instance variable on every
+  # text node stays in that memory. rules responds to block?, br?, inline?,
+  # and verbatim?.
   def neighbor_status(node, direction, rules)
+    compute_neighbor_status(node, direction, rules)
+  end
+
+  def compute_neighbor_status(node, direction, rules)
     before = direction == :before
     side = before ? :last : :first
     current = node
@@ -226,7 +214,9 @@ module HtmlInlineNeighbors
     end
 
     # A hidden element is not a boundary. Look past it, block or inline.
+    # An uncertain element is a boundary, and its text is not the neighbor.
     return nil if hidden_element?(node)
+    return :uncertain if uncertain_element?(node)
     return :block if rules.block?(node)
     return :br if rules.br?(node)
     return :verbatim if rules.verbatim?(node)
@@ -247,17 +237,36 @@ module HtmlInlineNeighbors
     nil
   end
 
-  # True when a display:none or visibility:hidden rule matches node, or
-  # the element is script or style. The answer is cached on the node.
   def hidden_element?(node)
-    return false unless node&.element?
-    return node.instance_variable_get(:@_hid) if node.instance_variable_defined?(:@_hid)
+    element_visibility(node) == :hidden
+  end
+
+  def uncertain_element?(node)
+    element_visibility(node) == :uncertain
+  end
+
+  # :hidden, :uncertain, or :visible. Cached on the node. script and style
+  # are hidden by name. A hiding subject matches by tag and class tokens,
+  # with no ancestor and no at-rule check.
+  def element_visibility(node)
+    return :visible unless node&.element?
+    return node.instance_variable_get(:@_vis) if node.instance_variable_defined?(:@_vis)
 
     name = node.name
-    classes = class_tokens(node)
-    hidden = name == 'script' || name == 'style' || hiding_rule?(node, name, classes)
-    node.instance_variable_set(:@_hid, hidden)
-    hidden
+    visibility = if name == 'script' || name == 'style'
+                   :hidden
+                 else
+                   classes = class_tokens(node)
+                   if HIDDEN_SUBJECTS.any? { |subject| subject_match?(name, classes, subject) }
+                     :hidden
+                   elsif UNCERTAIN_SUBJECTS.any? { |subject| subject_match?(name, classes, subject) }
+                     :uncertain
+                   else
+                     :visible
+                   end
+                 end
+    node.instance_variable_set(:@_vis, visibility)
+    visibility
   end
 
   def class_tokens(node)
@@ -267,65 +276,24 @@ module HtmlInlineNeighbors
     classes.split(/[ \t\n\r\f]+/)
   end
 
-  # :hidden, :uncertain, or :visible for a selector subject. tag nil means
-  # the subject names no element. classes is the subject's class list.
+  # :hidden, :uncertain, or :visible for one selector subject. tag nil
+  # means the subject names no element. classes is that subject's class
+  # list, not the classes of an element that merely contains them.
   # A new stylesheet rule fails the test until its subject is listed.
   def subject_visibility(tag, classes)
-    wanted = Array(classes).map(&:to_s).sort
     tag = nil if tag.nil? || tag == '*'
-    found = nil
-    HIDING_RULES.each do |rule|
-      subject = rule[:compounds].last
-      next unless subject[1] == tag && subject[2].sort == wanted
+    wanted = Array(classes).map(&:to_s).sort
+    return :hidden if HIDDEN_SUBJECTS.any? { |subject| subject[0] == tag && subject[1].sort == wanted }
+    return :uncertain if UNCERTAIN_SUBJECTS.any? { |subject| subject[0] == tag && subject[1].sort == wanted }
 
-      return :hidden if rule[:visibility] == :hidden
-
-      found = :uncertain
-    end
-    found || :visible
+    :visible
   end
 
-  def hiding_rule?(node, name, classes)
-    return true if classes.any? { |token| HIDDEN_CLASS.include?(token) }
-    return true if name == 'br' && classes.any? { |token| HIDDEN_BR.include?(token) }
+  def subject_match?(name, classes, subject)
+    tag, wanted = subject
+    return false if tag && tag != name
 
-    HIDING_RULES.any? do |rule|
-      subject = rule[:compounds].last
-      next false unless compound_match?(name, classes, subject)
-      next true if rule[:compounds].length == 1
-
-      rule_chain?(node, rule[:compounds])
-    end
-  end
-
-  def compound_match?(name, classes, compound)
-    return false if compound[1] && compound[1] != name
-
-    (compound[2] - classes).empty?
-  end
-
-  def compound_match_node?(node, compound)
-    return false unless node&.element?
-
-    compound_match?(node.name, class_tokens(node), compound)
-  end
-
-  # compounds[-1] already matches node. Walk toward the left.
-  def rule_chain?(node, compounds)
-    index = compounds.length - 2
-    current = node
-    while index >= 0
-      relation = compounds[index + 1][0]
-      current = current.parent
-      if relation == :descendant
-        current = current.parent while current&.element? && !compound_match_node?(current, compounds[index])
-      end
-      return false unless relation == :child || relation == :descendant
-      return false unless compound_match_node?(current, compounds[index])
-
-      index -= 1
-    end
-    true
+    wanted.all? { |token| classes.include?(token) }
   end
 
   def text_of(node)

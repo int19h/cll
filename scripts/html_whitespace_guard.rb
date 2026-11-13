@@ -11,17 +11,20 @@
 # reshape a run only when the inline character is safe or absent. Every
 # other inline run must match byte for byte. Inside a verbatim element the
 # text must match byte for byte. The gap after a br is never free, and a
-# hidden element never makes a gap free.
+# hidden element never makes a gap free. An uncertain element freezes the
+# runs on both sides, the same way a verbatim element does.
 #
 # The comparison covers the raw XML declaration, the doctype and the text
 # of its internal subset, the order of comments and processing instructions
 # around the doctype, and comments, processing instructions, and entity
 # references in the text. The guard loads the same local XHTML DTD as the
 # formatter, through the catalog, and does not use the network. That parse
-# is only for entities. Element and attribute namespaces come from a second
-# parse that does not apply DTD defaults, so removing xmlns from html is
-# visible. An undefined entity anywhere in the page is an error, and the
-# message names it.
+# is only for entities. The XHTML DTD fixes the namespace on html. When the
+# root tag in the text declares the same namespace the DTD tree shows, the
+# walk uses that tree and does not open a second parser. A different root
+# tag, or a tag the scan cannot read, uses a streaming read for every
+# element. That read does not build a second tree. An undefined entity
+# anywhere in the page is an error, and the message names it.
 #
 # libxml2 reads XML_CATALOG_FILES when the catalog is first initialized.
 # Nokogiri's packaged libxml2 is linked into nokogiri.so, so
@@ -44,6 +47,13 @@ module HtmlWhitespaceGuard
   XHTML = 'http://www.w3.org/1999/xhtml'
   XMLNS = 'http://www.w3.org/2000/xmlns/'
   WS_RUN = /[ \t\n\r\f]+/
+  # Mutable whitespace shares one object. A fixed run keeps its own bytes.
+  WS_TOKEN = [:ws].freeze
+  # Most elements declare no namespace. One frozen list stands for all of them.
+  EMPTY_DECLS = [].freeze
+  # The root tag of a book page is in the first few hundred bytes. A longer
+  # prolog falls back to the pull parser instead of scanning the whole page.
+  ROOT_SCAN_LIMIT = 65_536
   ZWSP = HtmlInlineNeighbors::ZWSP
   WIDE_RANGES = HtmlInlineNeighbors::WIDE_RANGES
 
@@ -129,13 +139,14 @@ module HtmlWhitespaceGuard
     raise Unsafe, 'not well-formed XML' unless doc&.root
 
     reject_undefined_entities!(doc)
-    # DTD defaults would put the XHTML namespace back on html. Namespaces
-    # come from this parse. The DTD parse above is only for entities.
-    ns_doc = Nokogiri::XML(text) { |config| config.default_xml.strict.nonet }
-    raise Unsafe, 'not well-formed XML' unless ns_doc&.root
-
+    # The fixed xmlns on html is the DTD default that can hide a change.
+    # A matching root tag means the DTD tree already shows the source
+    # namespaces, so the walk does not build a sketch. A different tag uses
+    # the pull parser, which stops before any descendant is expanded.
+    cursor = namespace_cursor_for(text, doc)
     tokens = []
-    walk_document(doc, ns_doc, tokens)
+    walk_document(doc, cursor, tokens)
+    raise Unsafe, 'namespace parse diverged' if cursor && !cursor.done?
     [doc, tokens, raw_declaration(text)]
   rescue Nokogiri::XML::SyntaxError => error
     message = error.message.strip
@@ -246,85 +257,421 @@ module HtmlWhitespaceGuard
     match && match[0]
   end
 
-  def walk_document(doc, ns_doc, tokens)
-    pair_nodes(doc.children, ns_doc.children, tokens, false, false, skip_blank: true)
-  end
-
-  def pair_nodes(children, ns_children, tokens, region, inline_ancestor, skip_blank: false)
-    left = listed_nodes(children, skip_blank)
-    right = listed_nodes(ns_children, skip_blank)
-    unless left.length == right.length
-      raise Unsafe, 'namespace parse diverged'
+  # Namespaces and a structural sketch from a pull parser. No second tree.
+  class NsCursor
+    def initialize(shape, records)
+      @shape = shape.freeze
+      @records = records.freeze
+      @si = 0
+      @ri = 0
     end
 
-    left.each_with_index do |child, index|
-      take_node(child, right[index], tokens, region, inline_ancestor)
+    def done?
+      @si == @shape.length && @ri == @records.length
+    end
+
+    def expect(kind)
+      got = @shape[@si]
+      @si += 1
+      raise Unsafe, 'namespace parse diverged' unless got == kind
+    end
+
+    def take_record
+      record = @records[@ri]
+      @ri += 1
+      raise Unsafe, 'namespace parse diverged' unless record
+
+      record
     end
   end
 
-  def listed_nodes(nodes, skip_blank)
-    nodes.reject { |child|
-      child.is_a?(Nokogiri::XML::DTD) ||
-        (skip_blank && child.text? && child.content.match?(/\A[ \t\n\r\f]*\z/))
+  # Same node order as a document that was not given the external DTD.
+  # Blank text is skipped only at the top level. An empty element has no
+  # end event, so the sketch supplies one. Node types are libxml2's.
+  #
+  # This uses libxml's pull parser directly. Nokogiri's Reader#namespaces
+  # expands the current element and every descendant, which keeps a second
+  # tree alive. Attribute reads do not. The reader is freed before the
+  # method returns, and before the token walk.
+  def with_namespace_reader(text)
+    options = Nokogiri::XML::ParseOptions.new.default_xml.strict.nonet.to_i
+    reader = nil
+    reader = libxml_fn(
+      'xmlReaderForMemory',
+      [Fiddle::TYPE_VOIDP, Fiddle::TYPE_INT, Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP, Fiddle::TYPE_INT],
+      Fiddle::TYPE_VOIDP
+    ).call(text, text.bytesize, nil, nil, options)
+    raise Unsafe, 'not well-formed XML' if reader_null?(reader)
+
+    silence_reader(reader)
+    yield reader
+  ensure
+    libxml_fn('xmlFreeTextReader', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOID).call(reader) if reader && !reader_null?(reader)
+  end
+
+  # nil when the root tag matches the DTD tree. The pull parser runs only
+  # when the tag differs, or when the scan cannot read it.
+  def namespace_cursor_for(text, doc)
+    dtd = dtd_namespace_record(doc.root)
+    source = source_root_namespace(text)
+    source = read_root_namespace(text) if source.nil?
+    return nil if source == dtd
+
+    namespace_cursor(text)
+  end
+
+  # The root start tag, read from the text. nil when the prolog is too
+  # large or the tag is not a plain quoted start tag. The caller then uses
+  # the pull parser. A match avoids opening that parser on an ordinary page.
+  def source_root_namespace(text)
+    source = text.delete_prefix("\uFEFF")
+    limit = [source.length, ROOT_SCAN_LIMIT].min
+    index = 0
+    if source.start_with?('<?xml')
+      index = source.index('?>', index)
+      return nil unless index && index < limit
+
+      index += 2
+    end
+    while index < limit
+      index += 1 while index < limit && xml_space?(source[index])
+      break if index >= limit
+
+      if starts_at?(source, index, '<!--')
+        index = source.index('-->', index)
+        return nil unless index && index < limit
+
+        index += 3
+      elsif starts_at?(source, index, '<?')
+        index = source.index('?>', index)
+        return nil unless index && index < limit
+
+        index += 2
+      elsif starts_at?(source, index, '<!DOCTYPE')
+        index = skip_doctype(source, index, limit)
+        return nil unless index
+      elsif source[index] == '<'
+        return root_tag_namespace(source, index, limit)
+      else
+        return nil
+      end
+    end
+    nil
+  end
+
+  def starts_at?(source, index, text)
+    source[index, text.length] == text
+  end
+
+  def xml_space?(char)
+    char == ' ' || char == "\n" || char == "\t" || char == "\r" || char == "\f"
+  end
+
+  def skip_doctype(source, index, limit)
+    quote = nil
+    depth = 0
+    while index < limit
+      char = source[index]
+      if quote
+        quote = nil if char == quote
+      elsif char == '"' || char == "'"
+        quote = char
+      elsif char == '['
+        depth += 1
+      elsif char == ']'
+        depth -= 1
+      elsif char == '>' && depth.zero?
+        return index + 1
+      end
+      index += 1
+    end
+    nil
+  end
+
+  # [uri, decls] for the root element, or nil when the tag is not plain.
+  def root_tag_namespace(source, index, limit)
+    return nil unless source[index] == '<'
+
+    index += 1
+    name_at = index
+    index += 1 while index < limit && !xml_space?(source[index]) && source[index] != '>' && source[index] != '/'
+    return nil if index == name_at || index >= limit
+
+    name = source[name_at...index]
+    return nil if name.include?('<') || name.include?('&')
+
+    decls = []
+    while index < limit
+      index += 1 while index < limit && xml_space?(source[index])
+      break if index >= limit || source[index] == '>' || source[index] == '/'
+
+      name_at = index
+      index += 1 while index < limit && source[index] != '=' && !xml_space?(source[index]) && source[index] != '>' && source[index] != '/'
+      attr = source[name_at...index]
+      return nil if attr.empty?
+      index += 1 while index < limit && xml_space?(source[index])
+      return nil if index >= limit || source[index] != '='
+
+      index += 1
+      index += 1 while index < limit && xml_space?(source[index])
+      return nil if index >= limit
+
+      quote = source[index]
+      return nil unless quote == '"' || quote == "'"
+
+      value_at = index + 1
+      index = source.index(quote, value_at)
+      return nil unless index && index < limit
+
+      value = source[value_at...index]
+      return nil if value.include?('&') || value.include?('<')
+
+      index += 1
+      if attr == 'xmlns'
+        decls << [nil, value]
+      elsif attr.start_with?('xmlns:') && attr.length > 6
+        decls << [attr.delete_prefix('xmlns:'), value]
+      end
+    end
+    return nil if index >= limit
+
+    prefix, = name.split(':', 2) if name.include?(':')
+    found = prefix ? decls.find { |declared, _href| declared == prefix } : decls.find { |declared, _href| declared.nil? }
+    uri = found && found[1]
+    listed = decls.empty? ? EMPTY_DECLS : decls.map { |declared, href| [shared_string(declared), shared_string(href)] }
+    namespace_record(shared_string(uri), listed)
+  end
+
+  # The root only. Used when the text scan cannot read the root tag.
+  # The reader is freed before the caller walks the document.
+  def read_root_namespace(text)
+    with_namespace_reader(text) do |reader|
+      read = libxml_fn('xmlTextReaderRead', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT)
+      node_type = libxml_fn('xmlTextReaderNodeType', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT)
+      ns_uri = libxml_fn('xmlTextReaderConstNamespaceUri', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOIDP)
+      while read.call(reader) == 1
+        next unless node_type.call(reader) == 1
+
+        return namespace_record(
+          shared_string(reader_cstr(ns_uri.call(reader))),
+          reader_attribute_decls(reader)
+        )
+      end
+      raise Unsafe, 'not well-formed XML'
+    end
+  end
+
+  def read_namespaces(text)
+    shape = []
+    records = []
+    status = nil
+    with_namespace_reader(text) do |reader|
+      read = libxml_fn('xmlTextReaderRead', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT)
+      node_type = libxml_fn('xmlTextReaderNodeType', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT)
+      depth = libxml_fn('xmlTextReaderDepth', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT)
+      local_name = libxml_fn('xmlTextReaderConstLocalName', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOIDP)
+      const_name = libxml_fn('xmlTextReaderConstName', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOIDP)
+      ns_uri = libxml_fn('xmlTextReaderConstNamespaceUri', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOIDP)
+      empty_element = libxml_fn('xmlTextReaderIsEmptyElement', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT)
+      const_value = libxml_fn('xmlTextReaderConstValue', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOIDP)
+      while (status = read.call(reader)) == 1
+        case node_type.call(reader)
+        when 1
+          shape << :element << shared_string(reader_cstr(local_name.call(reader)))
+          records << namespace_record(
+            shared_string(reader_cstr(ns_uri.call(reader))),
+            reader_attribute_decls(reader)
+          )
+          shape << :end if empty_element.call(reader) == 1
+        when 15
+          shape << :end
+        when 4
+          shape << :cdata
+        when 3, 13, 14
+          if depth.call(reader).zero?
+            value = reader_cstr(const_value.call(reader)).to_s
+            next if value.match?(/\A[ \t\n\r\f]*\z/)
+          end
+          shape << :text
+        when 5
+          shape << :entity << reader_cstr(const_name.call(reader))
+        when 8
+          shape << :comment
+        when 7
+          shape << :pi << reader_cstr(local_name.call(reader))
+        when 9, 10, 16, 17
+          next
+        else
+          shape << :other
+        end
+      end
+    end
+    raise Unsafe, 'not well-formed XML' unless status&.zero?
+
+    [shape, records]
+  end
+
+  # One record object for every element that only inherits a namespace.
+  # The tokens keep the href and the declaration list, and compare them by value.
+  def namespace_record(uri, decls)
+    return [uri, decls] unless decls.equal?(EMPTY_DECLS)
+
+    (@plain_ns ||= {})[uri] ||= [uri, EMPTY_DECLS].freeze
+  end
+
+  def reader_attribute_decls(reader)
+    fns = attribute_reader_fns
+    count = fns[:count].call(reader)
+    return EMPTY_DECLS if count.to_i <= 0
+
+    decls = nil
+    moved = false
+    count.to_i.times do |index|
+      next unless fns[:move].call(reader, index) == 1
+
+      moved = true
+      name = reader_cstr(fns[:name].call(reader))
+      next unless name == 'xmlns' || (name && name.start_with?('xmlns:'))
+
+      prefix = name == 'xmlns' ? nil : name.delete_prefix('xmlns:')
+      (decls ||= []) << [shared_string(prefix), shared_string(reader_cstr(fns[:value].call(reader)))]
+    end
+    fns[:back].call(reader) if moved
+    decls || EMPTY_DECLS
+  end
+
+  def attribute_reader_fns
+    @attribute_reader_fns ||= {
+      count: libxml_fn('xmlTextReaderAttributeCount', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT),
+      move: libxml_fn('xmlTextReaderMoveToAttributeNo', [Fiddle::TYPE_VOIDP, Fiddle::TYPE_INT], Fiddle::TYPE_INT),
+      name: libxml_fn('xmlTextReaderConstName', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOIDP),
+      value: libxml_fn('xmlTextReaderConstValue', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_VOIDP),
+      back: libxml_fn('xmlTextReaderMoveToElement', [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT)
     }
   end
 
-  def walk(element, ns_element, tokens, verbatim, inline_ancestor)
-    raise Unsafe, 'namespace parse diverged' unless same_node?(element, ns_element)
+  def reader_cstr(ptr)
+    return nil if reader_null?(ptr)
 
+    pointer = ptr.is_a?(Fiddle::Pointer) ? ptr : Fiddle::Pointer.new(ptr.to_i)
+    return nil if pointer.null?
+
+    pointer.to_s
+  end
+
+  # The namespace read does not load the DTD, so an entity that the DTD
+  # defines is unknown here. The DTD parse already reported real errors.
+  # A handler keeps those warnings off stderr. The closure has to stay
+  # alive for the process, or libxml calls a freed address.
+  def silence_reader(reader)
+    @reader_error_handler ||= Fiddle::Closure::BlockCaller.new(
+      Fiddle::TYPE_VOID,
+      [Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP, Fiddle::TYPE_INT, Fiddle::TYPE_VOIDP]
+    ) { |*| }
+    @reader_structured_handler ||= Fiddle::Closure::BlockCaller.new(
+      Fiddle::TYPE_VOID,
+      [Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP]
+    ) { |*| }
+    libxml_fn(
+      'xmlTextReaderSetErrorHandler',
+      [Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP],
+      Fiddle::TYPE_VOID
+    ).call(reader, @reader_error_handler, nil)
+    libxml_fn(
+      'xmlTextReaderSetStructuredErrorHandler',
+      [Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP, Fiddle::TYPE_VOIDP],
+      Fiddle::TYPE_VOID
+    ).call(reader, @reader_structured_handler, nil)
+  end
+
+  def reader_null?(ptr)
+    ptr.nil? || (ptr.respond_to?(:null?) && ptr.null?) || (ptr.is_a?(Integer) && ptr.zero?)
+  end
+
+  def libxml_fn(name, args, result)
+    @libxml_fns ||= {}
+    @libxml_fns[[name, args, result]] ||= begin
+      symbol = nokogiri_libxml && nokogiri_libxml[name]
+      raise Unsafe, 'namespace reader is unavailable' unless symbol
+
+      Fiddle::Function.new(symbol, args, result)
+    end
+  end
+
+  def namespace_cursor(text)
+    shape, records = read_namespaces(text)
+    NsCursor.new(shape, records)
+  end
+
+  def walk_document(doc, cursor, tokens)
+    walk_children(doc.children, cursor, tokens, false, false, skip_blank: true)
+  end
+
+  def walk_children(children, cursor, tokens, region, inline_ancestor, skip_blank: false)
+    children.each do |child|
+      next if child.is_a?(Nokogiri::XML::DTD)
+      next if skip_blank && child.text? && child.content.match?(/\A[ \t\n\r\f]*\z/)
+
+      take_node(child, cursor, tokens, region, inline_ancestor)
+    end
+  end
+
+  def walk(element, cursor, tokens, verbatim, inline_ancestor)
+    note(cursor, :element)
+    name = cached_name(element)
+    note(cursor, name)
+    record = cursor ? cursor.take_record : dtd_namespace_record(element)
     inside_inline = inline_ancestor || inline?(element)
     region = verbatim || verbatim?(element) || (block?(element) && inline_ancestor)
-    first_edge = inline_edge(element, :first)
-    last_edge = inline_edge(element, :last)
-    tokens << start_token(element, ns_element, region, first_edge, last_edge)
-    pair_nodes(element.children, ns_element.children, tokens, region, inside_inline)
-    tokens << [
-      :end, cached_name(element), element_kind(element), nil, region, href_of(element.namespace),
-      last_edge
-    ]
+    kind = element_kind(element)
+    tokens << start_token(element, record, region, kind)
+    walk_children(element.children, cursor, tokens, region, inside_inline)
+    note(cursor, :end)
+    tokens << [:end, name, kind, nil, region, record[0]]
   end
 
-  def take_node(node, ns_node, tokens, region, inline_ancestor)
-    raise Unsafe, 'namespace parse diverged' unless same_node?(node, ns_node)
-
+  def take_node(node, cursor, tokens, region, inline_ancestor)
     if node.element?
       child_region = region || verbatim?(node) || (block?(node) && inline_ancestor)
-      walk(node, ns_node, tokens, child_region, inline_ancestor)
-    elsif node.text? || node.cdata?
-      take_text(node, tokens, region, node.cdata?)
+      walk(node, cursor, tokens, child_region, inline_ancestor)
+    elsif node.cdata?
+      note(cursor, :cdata)
+      take_text(node, tokens, region, true)
+    elsif node.text?
+      note(cursor, :text)
+      take_text(node, tokens, region, false)
     elsif node.is_a?(Nokogiri::XML::EntityReference)
+      note(cursor, :entity)
+      note(cursor, node.name)
       tokens << [:entity, node.name, node.content.to_s]
     elsif node.comment?
+      note(cursor, :comment)
       tokens << [:comment, node.content]
     elsif node.processing_instruction?
+      note(cursor, :pi)
+      note(cursor, node.name)
       tokens << [:pi, node.name, node.content]
+    else
+      note(cursor, :other)
     end
   end
 
-  def same_node?(node, other)
-    return false unless other
-    if node.element?
-      other.element? && other.name == node.name
-    elsif node.cdata?
-      other.cdata?
-    elsif node.text?
-      other.text? && !other.cdata?
-    elsif node.is_a?(Nokogiri::XML::EntityReference)
-      other.is_a?(Nokogiri::XML::EntityReference) && other.name == node.name
-    elsif node.comment?
-      other.comment?
-    elsif node.processing_instruction?
-      other.processing_instruction? && other.name == node.name
-    else
-      node.class == other.class
-    end
+  def note(cursor, kind)
+    cursor.expect(kind) if cursor
   end
 
   def take_text(node, tokens, region, cdata)
     raw = node.content
     return if raw.empty?
-    if region || cdata
+    # A verbatim region stays one opaque string. CDATA outside one is still
+    # characters, so a neighbor can see them. Treating it as verbatim would
+    # freeze runs that are only next to ordinary text.
+    if region
       tokens << [:vtext, raw]
+      return
+    end
+    if cdata
+      tokens << [:cdata, raw]
       return
     end
     if raw.match?(/\A[ \t\n\r\f]*\z/)
@@ -372,10 +719,10 @@ module HtmlWhitespaceGuard
       return
     end
 
-    tokens << [:ws, *lead] if lead
+    tokens << WS_TOKEN if lead
     core = raw.gsub(WS_RUN, ' ').strip
     tokens << [:text, core] unless core.empty?
-    tokens << [:ws, *trail] if trail
+    tokens << WS_TOKEN if trail
   end
 
   def append_ws(tokens, node, run, left_inside, right_inside)
@@ -384,7 +731,7 @@ module HtmlWhitespaceGuard
     if HtmlInlineNeighbors.fixed_inline_run?(left, right)
       tokens << [:fixed, run]
     else
-      tokens << [:ws, left, right]
+      tokens << WS_TOKEN
     end
   end
 
@@ -399,24 +746,111 @@ module HtmlWhitespaceGuard
     run.include?("\n") || run.include?("\r")
   end
 
-  # [:start, name, kind, attrs, region, uri, decls, container_free, first_edge, last_edge]
-  # content_tokens keeps the first seven fields. The edges and container_free
-  # are only for gap checks. An inline edge is the character inside the
-  # element, or nil when the element is empty. A block stores nil there.
-  def start_token(element, ns_element, region, first_edge, last_edge)
+  # [:start, name, kind, attrs, region, uri, decls, container_free]
+  # content_tokens keeps the first seven fields. container_free is only for
+  # gap checks. record is [href, decls]. Inline edges are not stored. A page
+  # has one start token per element, and a gap asks for an edge only when
+  # whitespace appeared or disappeared there.
+  def start_token(element, record, region, kind)
     [
-      :start, cached_name(element), element_kind(element), attributes(element), region,
-      href_of(element.namespace), namespace_decls(ns_element), container_free?(element),
-      first_edge, last_edge
+      :start, cached_name(element), kind, attributes(element), region,
+      record[0], record[1], container_free?(element)
     ]
   end
 
-  # The character an inline element presents to a gap. Other kinds do not
-  # need one: the kind itself is the boundary.
-  def inline_edge(element, side)
-    return nil unless element_kind(element) == :inline
+  # The status the first or last child token presents. nil means look past.
+  # A hidden element is skipped as a whole. An uncertain element, a verbatim
+  # element, a block, and a br stop the walk. An inline element is entered.
+  def token_edge(tokens, from, to, side)
+    step = side == :first ? 1 : -1
+    index = side == :first ? from : to - 1
+    while index >= from && index < to
+      token = tokens[index]
+      case token[0]
+      when :ws, :fixed, :comment, :pi
+        index += step
+      when :text
+        text = token[1]
+        char = step.positive? ? text[0] : text[-1]
+        return char if char
+        index += step
+      when :cdata
+        text = token[1]
+        char = step.positive? ? HtmlInlineNeighbors.first_non_ws(text) : HtmlInlineNeighbors.last_non_ws(text)
+        return char if char
+        return (step.positive? ? text[0] : text[-1]) unless text.empty?
+        index += step
+      when :vtext
+        return :verbatim
+      when :entity
+        text = token[2].to_s
+        char = step.positive? ? HtmlInlineNeighbors.first_non_ws(text) : HtmlInlineNeighbors.last_non_ws(text)
+        return char if char
+        index += step
+      when :start
+        if step.negative?
+          index += step
+        else
+          kind = token[2]
+          if kind == :hidden
+            index = skip_forward(tokens, index)
+          elsif kind == :inline || kind.nil?
+            index += 1
+          else
+            return kind
+          end
+        end
+      when :end
+        if step.positive?
+          index += step
+        else
+          kind = token[2]
+          if kind == :hidden
+            index = skip_backward(tokens, index)
+          elsif kind == :inline || kind.nil?
+            index -= 1
+          else
+            return kind
+          end
+        end
+      else
+        index += step
+      end
+    end
+    nil
+  end
 
-    HtmlInlineNeighbors.read_status(element, side, self)
+  def skip_forward(tokens, index)
+    depth = 0
+    limit = tokens.length
+    i = index
+    while i < limit
+      case tokens[i][0]
+      when :start
+        depth += 1
+      when :end
+        depth -= 1
+        return i + 1 if depth.zero?
+      end
+      i += 1
+    end
+    limit
+  end
+
+  def skip_backward(tokens, index)
+    depth = 0
+    i = index
+    while i >= 0
+      case tokens[i][0]
+      when :end
+        depth += 1
+      when :start
+        depth -= 1
+        return i - 1 if depth.zero?
+      end
+      i -= 1
+    end
+    -1
   end
 
   def html?(node)
@@ -441,8 +875,11 @@ module HtmlWhitespaceGuard
 
   def element_kind(element)
     bits = ginfo(element)
-    return :br if (bits & G_BR) != 0
+    # Hidden and uncertain come before br and block. A hidden br is not a
+    # br boundary, and an hr or an h3 is not a visible block.
     return :hidden if HtmlInlineNeighbors.hidden_element?(element)
+    return :uncertain if HtmlInlineNeighbors.uncertain_element?(element)
+    return :br if (bits & G_BR) != 0
     return :block if (bits & G_BLOCK) != 0
     return :verbatim if (bits & G_VERBATIM) != 0
 
@@ -483,20 +920,25 @@ module HtmlWhitespaceGuard
     value
   end
 
+  # Declarations on this element. Empty lists share one object so a page of
+  # ordinary elements does not allocate a list per element.
+  def namespace_decls(element)
+    defs = element.namespace_definitions
+    return EMPTY_DECLS if defs.empty?
+
+    defs.map { |ns| [shared_string(ns.prefix), href_of(ns)] }
+  end
+
+  def dtd_namespace_record(element)
+    namespace_record(href_of(element.namespace), namespace_decls(element))
+  end
+
   def attributes(element)
     element.attribute_nodes.map { |attr|
       href = href_of(attr.namespace)
       next if href == XMLNS
       [href, attr.name, attr.value]
     }.compact
-  end
-
-  # Declarations from the parse that did not apply DTD defaults. The XHTML
-  # DTD fixes xmlns on html, so the DTD parse cannot show that it was removed.
-  def namespace_decls(element)
-    element.namespace_definitions.map { |ns|
-      [shared_string(ns.prefix), href_of(ns)]
-    }
   end
 
   def differences(left, right, strict:)
@@ -591,7 +1033,7 @@ module HtmlWhitespaceGuard
     after = label(left[index + 1] || right[index + 1])
     if left_here.nil? || right_here.nil?
       ["CHANGED between #{before} and the end"]
-    elsif %i[text vtext entity fixed].include?(left_here[0]) || %i[text vtext entity fixed].include?(right_here[0])
+    elsif %i[text vtext cdata entity fixed].include?(left_here[0]) || %i[text vtext cdata entity fixed].include?(right_here[0])
       ["CHANGED between #{before} and #{after}: #{label(left_here)} / #{label(right_here)}"]
     elsif left_here[0] == :start && right_here[0] == :start && left_here[1] == right_here[1]
       if left_here[5] != right_here[5] || left_here[6] != right_here[6]
@@ -612,32 +1054,34 @@ module HtmlWhitespaceGuard
       other = right_gaps[index]
       next unless other
       next if gap[2] == other[2]
-      next if !strict && free_gap?(gap)
+      next if !strict && free_gap?(gap, left_tokens)
       verb = other[2] ? 'ADDED  ' : 'REMOVED'
       problems << "#{verb} between #{label(gap[0])} and #{label(gap[1])}"
     end
     problems
   end
 
-  # Each gap is [left, right, ws, parent, verbatim, ws_token].
-  # ws_token is nil when this side has no whitespace there. Its fields are
-  # the neighbor statuses the formatter and the guard both use.
+  # Each gap is [left, right, present, parent, verbatim, left_index, right_index].
+  # Statuses are computed only when a gap's presence differs. A shared :ws
+  # token carries none.
   def gaps(tokens)
     found = []
     stack = []
     previous = nil
-    pending = nil
+    prev_index = nil
+    pending = false
     verbatim_depth = 0
-    tokens.each do |token|
+    tokens.each_with_index do |token, index|
       if token[0] == :ws
-        pending = token
+        pending = true
         next
       end
       if previous
-        found << [previous, token, !pending.nil?, stack.last, verbatim_depth.positive?, pending]
+        found << [previous, token, pending, stack.last, verbatim_depth.positive?, prev_index, index]
       end
-      pending = nil
+      pending = false
       previous = token
+      prev_index = index
       if token[0] == :start
         verbatim_depth += 1 if token[4]
         stack << token
@@ -649,20 +1093,16 @@ module HtmlWhitespaceGuard
     found
   end
 
-  def free_gap?(gap)
+  def free_gap?(gap, tokens)
     return false if gap[4]
 
     left = gap[0]
     right = gap[1]
     parent = gap[3]
-    ws = gap[5]
-    if ws
-      left_status = ws[1]
-      right_status = ws[2]
-    else
-      left_status = token_status(left, :right)
-      right_status = token_status(right, :left)
-    end
+    left_status = token_status(tokens, gap[5], :right)
+    right_status = token_status(tokens, gap[6], :left)
+    left_status = left_neighbor_status(tokens, gap[5]) if left_status.nil?
+    right_status = right_neighbor_status(tokens, gap[6]) if right_status.nil?
     HtmlInlineNeighbors.boundary_gap_free?(
       left && left[0] == :end && left[2] == :block,
       right && right[0] == :start && right[2] == :block,
@@ -673,11 +1113,46 @@ module HtmlWhitespaceGuard
     )
   end
 
+  # Status of the content token at index, looking through a hidden element
+  # or an empty inline. Those are not boundaries. The walk skips the whole
+  # element, so text inside a hidden element is not a neighbor.
+  def left_neighbor_status(tokens, index)
+    i = index
+    while i >= 0
+      token = tokens[i]
+      if token[0] == :ws
+        i -= 1
+        next
+      end
+      status = token_status(tokens, i, :right)
+      return status unless status.nil?
+      i = token[0] == :end && (token[2] == :hidden || token[2] == :inline) ? skip_backward(tokens, i) : i - 1
+    end
+    nil
+  end
+
+  def right_neighbor_status(tokens, index)
+    i = index
+    limit = tokens.length
+    while i < limit
+      token = tokens[i]
+      if token[0] == :ws
+        i += 1
+        next
+      end
+      status = token_status(tokens, i, :left)
+      return status unless status.nil?
+      i = token[0] == :start && (token[2] == :hidden || token[2] == :inline) ? skip_forward(tokens, i) : i + 1
+    end
+    nil
+  end
+
   # The status a content token presents to the gap on :left or :right.
   # A block or a br is that boundary. An empty inline element has no
   # character. A hidden element contributes nothing. Anything else that is
   # not a safe character fails closed.
-  def token_status(token, side)
+  def token_status(tokens, index, side)
+    token = tokens[index]
     return nil unless token
 
     case token[0]
@@ -686,14 +1161,20 @@ module HtmlWhitespaceGuard
       return nil if text.empty?
 
       side == :right ? text[-1] : text[0]
+    when :cdata
+      text = token[1].to_s
+      return nil if text.empty?
+
+      char = side == :right ? HtmlInlineNeighbors.last_non_ws(text) : HtmlInlineNeighbors.first_non_ws(text)
+      return char if char
+
+      side == :right ? text[-1] : text[0]
     when :entity
       text = token[2].to_s
       char = side == :right ? HtmlInlineNeighbors.last_non_ws(text) : HtmlInlineNeighbors.first_non_ws(text)
       char || :entity
-    when :end
-      kind_status(token[2], token[6])
-    when :start
-      kind_status(token[2], token[8])
+    when :start, :end
+      element_status(tokens, index)
     when :vtext, :fixed
       :verbatim
     else
@@ -701,13 +1182,25 @@ module HtmlWhitespaceGuard
     end
   end
 
-  def kind_status(kind, inner)
-    case kind
-    when :block then :block
-    when :br then :br
-    when :verbatim then :verbatim
-    when :hidden then nil
-    else inner
+  # What an element presents to a gap beside it. A block, a br, a verbatim
+  # element, and an uncertain element are that boundary. A hidden element
+  # presents nothing. An inline element presents the child status on the
+  # side that faces the gap, and an empty inline presents nothing.
+  def element_status(tokens, index)
+    token = tokens[index]
+    case token[2]
+    when :block, :br, :verbatim, :uncertain
+      token[2]
+    when :hidden
+      nil
+    else
+      if token[0] == :start
+        finish = skip_forward(tokens, index)
+        token_edge(tokens, index + 1, finish - 1, :first)
+      else
+        start = skip_backward(tokens, index)
+        token_edge(tokens, start + 2, index, :last)
+      end
     end
   end
 
@@ -723,7 +1216,7 @@ module HtmlWhitespaceGuard
       "<#{token[1]}#{extra}>"
     when :end
       "</#{token[1]}>"
-    when :text, :vtext
+    when :text, :vtext, :cdata
       text = token[1].to_s.gsub(WS_RUN, ' ')
       text = "#{text[0, 40]}..." if text.length > 40
       "\"#{text}\""

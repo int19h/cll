@@ -608,48 +608,98 @@ class HtmlFormatContract < Minitest::Test
       }
       @page { @bottom-left { content: "x"; } }
       p.shown { display: block; }
+      br.example-break { display: none }
+      .article > .titlepage hr { display: none }
     CSS
-    assert_equal [['span', ['only-media']]], hiding_subjects(sample)
+    assert_equal [
+      ['span', ['only-media'], false],
+      ['br', ['example-break'], true],
+      ['hr', [], false]
+    ], hiding_rules(sample)
 
     found = []
-    stylesheet_texts.each { |text| found.concat(hiding_subjects(text)) }
-    assert_includes found, ['hr', []]
-    assert_includes found, ['br', ['example-break']]
-    assert_includes found, ['br', ['table-break']]
-    assert_includes found, [nil, ['display-none']]
-    assert_includes found, [nil, ['guibutton']]
-    assert_includes found, [nil, ['release-separator']]
-    assert_includes found, ['h3', []]
-    found.uniq.each do |tag, classes|
+    stylesheet_texts.each { |text| found.concat(hiding_rules(text)) }
+    assert_includes found, ['hr', [], false]
+    assert_includes found, ['br', ['example-break'], true]
+    assert_includes found, ['br', ['table-break'], true]
+    assert_includes found, [nil, ['display-none'], true]
+    assert_includes found, [nil, ['guibutton'], true]
+    assert_includes found, [nil, ['release-separator'], false]
+    assert_includes found, ['h3', [], false]
+    found.each do |tag, classes, unconditional|
       visibility = HtmlInlineNeighbors.subject_visibility(tag, classes)
-      assert_includes [:hidden, :uncertain], visibility, "#{tag.inspect} #{classes.inspect} is #{visibility}"
+      expected = unconditional ? :hidden : :uncertain
+      assert_equal expected, visibility, "#{tag.inspect} #{classes.inspect} unconditional=#{unconditional} is #{visibility}"
     end
+    assert_equal :hidden, HtmlInlineNeighbors.subject_visibility(nil, ['display-none'])
     assert_equal :uncertain, HtmlInlineNeighbors.subject_visibility('hr', [])
+    assert_equal :uncertain, HtmlInlineNeighbors.subject_visibility('h3', [])
+    assert_equal :uncertain, HtmlInlineNeighbors.subject_visibility(nil, ['release-separator'])
     assert_equal :visible, HtmlInlineNeighbors.subject_visibility('h1', [])
 
-    article = parsed(page('<div class="article"><div class="titlepage"><hr/></div></div>'))
-    book = parsed(page('<div class="book"><div class="titlepage"><hr/></div></div>'))
-    body = parsed(page('<div><hr/></div>'))
-    assert HtmlInlineNeighbors.hidden_element?(article.at_xpath('//*[local-name()="hr"]'))
-    assert HtmlInlineNeighbors.hidden_element?(book.at_xpath('//*[local-name()="hr"]'))
-    refute HtmlInlineNeighbors.hidden_element?(body.at_xpath('//*[local-name()="hr"]'))
-    wrapped = parsed(page('<div class="book"><div><div class="titlepage"><hr/></div></div></div>'))
-    refute HtmlInlineNeighbors.hidden_element?(wrapped.at_xpath('//*[local-name()="hr"]'))
+    bodies = {
+      'article' => '<div class="article"><div class="titlepage"><hr/></div></div>',
+      'book' => '<div class="book"><div class="titlepage"><hr/></div></div>',
+      'body' => '<div><hr/></div>',
+      'nested' => '<div class="book"><div><div class="titlepage"><hr/></div></div></div>'
+    }
+    bodies.each do |kind, body|
+      hr = parsed(page(body)).at_xpath('//*[local-name()="hr"]')
+      refute HtmlInlineNeighbors.hidden_element?(hr), kind
+      assert HtmlInlineNeighbors.uncertain_element?(hr), kind
+    end
+    separator = parsed(page('<span class="release-separator">x</span>')).at_xpath('//*[local-name()="span"]')
+    assert HtmlInlineNeighbors.uncertain_element?(separator)
+    hidden = parsed(page('<div class="display-none">x</div>')).at_xpath('//*[local-name()="div"]')
+    assert HtmlInlineNeighbors.hidden_element?(hidden)
   end
 
   def test_titlepage_hr_keeps_the_space_through_cleanup
     {
       'article' => '<div class="article"><div class="titlepage">a<hr/> word</div></div>',
-      'book' => '<div class="book"><div class="titlepage">a<hr/> word</div></div>'
+      'book' => '<div class="book"><div class="titlepage">a<hr/> word</div></div>',
+      'nested-article' => '<div class="article"><div class="titlepage"><div><div class="titlepage">a<hr/> word</div></div></div></div>',
+      'nested-book' => '<div class="book"><div class="titlepage"><div class="titlepage">a<hr/> word</div></div></div>',
+      'nested-book-wrapped' => '<div class="book"><div class="titlepage"><div><div class="titlepage">a<hr/> word</div></div></div></div>'
     }.each do |kind, body|
       Dir.mktmpdir do |dir|
-        File.write(File.join(dir, 'page.html'), page(body))
+        source = page(body)
+        File.write(File.join(dir, 'page.html'), source)
         _out, err, status = Open3.capture3(File.join(ROOT, 'scripts/xhtml_postprocess_cleanup.sh'), dir)
         assert status.success?, "#{kind}: #{err}"
         text = File.read(File.join(dir, 'page.html'))
         assert_match(%r{a\s*<hr[^>]*>\s+word}m, text, kind)
         refute_includes text, 'aword'
-        assert_safe(page(body))
+        assert_safe(source)
+        removed = source.sub(' word', 'word')
+        message = assert_raises(HtmlWhitespaceGuard::Unsafe) do
+          HtmlWhitespaceGuard.compare!(source, removed, name: 'chapter-tour.html')
+        end
+        assert_match(/REMOVED|CHANGED/, message.message, kind)
+      end
+    end
+  end
+
+  def test_print_only_separator_keeps_the_newline_through_cleanup
+    zwsp = "\u200B"
+    {
+      'astra' => %(<div class="book"><div class="titlepage">a<span class="release-separator">#{zwsp}</span>\nword</div></div>),
+      'opus' => %(<div class="book"><div class="titlepage"><p>a<span class="release-separator">#{zwsp}</span>\nb</p></div></div>)
+    }.each do |kind, body|
+      Dir.mktmpdir do |dir|
+        source = page(body)
+        File.write(File.join(dir, 'page.html'), source)
+        _out, err, status = Open3.capture3(File.join(ROOT, 'scripts/xhtml_postprocess_cleanup.sh'), dir)
+        assert status.success?, "#{kind}: #{err}"
+        text = File.read(File.join(dir, 'page.html'))
+        assert_includes text, "<span class=\"release-separator\">#{zwsp}</span>\n", kind
+        refute_includes text, 'aword'
+        assert_safe(source)
+        collapsed = source.sub("</span>\n", '</span> ')
+        message = assert_raises(HtmlWhitespaceGuard::Unsafe) do
+          HtmlWhitespaceGuard.compare!(source, collapsed, name: 'chapter-tour.html')
+        end
+        assert_match(/CHANGED/, message.message, kind)
       end
     end
   end
@@ -1126,27 +1176,38 @@ class HtmlWhitespaceGuardContract < Minitest::Test
   end
 end
 
-def hiding_subjects(css)
-  subjects = []
-  scan_css_rules(css.gsub(%r{/\*.*?\*/}m, ''), subjects)
-  subjects
+# Each hiding rule is [tag, classes, unconditional_single].
+# unconditional_single is true only for a top-level rule whose selector is
+# one compound. A rule under @media or any other at-rule is not that, and
+# neither is a selector with an ancestor. The comment strip runs first, so
+# a commented-out rule is not a rule.
+def hiding_rules(css)
+  rules = []
+  scan_css_rules(css.gsub(%r{/\*.*?\*/}m, ''), rules, false)
+  rules
 end
 
-def scan_css_rules(css, subjects)
+def scan_css_rules(css, rules, in_at)
   index = 0
   while (brace = css.index('{', index))
     prelude = css[index...brace]
     body, finish = css_block(css, brace)
     if prelude.strip.start_with?('@')
-      scan_css_rules(body, subjects)
+      scan_css_rules(body, rules, true)
     elsif body !~ /\{/ && (body.match?(/display\s*:\s*none\b/i) || body.match?(/visibility\s*:\s*hidden\b/i))
       prelude.split(',').each do |selector|
         subject = selector_subject(selector)
-        subjects << subject if subject
+        next unless subject
+
+        rules << [subject[0], subject[1], !in_at && single_compound?(selector)]
       end
     end
     index = finish + 1
   end
+end
+
+def single_compound?(selector)
+  selector.strip.split(/\s*(?:>|\+|~)\s*|\s+/).reject(&:empty?).length == 1
 end
 
 def css_block(css, open_at)
@@ -1182,17 +1243,46 @@ def selector_subject(selector)
   [tag, classes]
 end
 
+# Local pages is behind origin/pages in this checkout. Read origin/pages
+# when the local branch is missing or is an ancestor of origin/pages.
+# Print a note and use assets/css only when neither ref exists.
 def stylesheet_texts
   texts = Dir[File.join(ROOT, 'assets/css/*.css')].sort.map { |path| File.read(path) }
-  listed, status = Open3.capture2('git', '-C', ROOT, 'ls-tree', '-r', '--name-only', 'pages')
+  ref = pages_tree_ref
+  if ref.nil?
+    warn 'note: stylesheet test skipped the pages branch (no pages or origin/pages ref)'
+    return texts
+  end
+
+  listed, status = Open3.capture2('git', '-C', ROOT, 'ls-tree', '-r', '--name-only', ref)
   return texts unless status.success?
 
   listed.each_line do |line|
     path = line.strip
     next unless path.end_with?('.css') && !path.start_with?('official/')
 
-    blob, blob_status = Open3.capture2('git', '-C', ROOT, 'show', "pages:#{path}")
+    blob, blob_status = Open3.capture2('git', '-C', ROOT, 'show', "#{ref}:#{path}")
     texts << blob if blob_status.success?
   end
   texts
+end
+
+def pages_tree_ref
+  local = git_commit('pages')
+  origin = git_commit('origin/pages')
+  if origin && (local.nil? || (local != origin && git_ancestor?(local, origin)))
+    'origin/pages'
+  elsif local
+    'pages'
+  end
+end
+
+def git_commit(ref)
+  out, status = Open3.capture2('git', '-C', ROOT, 'rev-parse', '--verify', '--quiet', "#{ref}^{commit}")
+  status.success? ? out.strip : nil
+end
+
+def git_ancestor?(ancestor, descendant)
+  _out, status = Open3.capture2('git', '-C', ROOT, 'merge-base', '--is-ancestor', ancestor, descendant)
+  status.success?
 end

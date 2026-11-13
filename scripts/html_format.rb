@@ -6,7 +6,10 @@
 # appear or disappear only at a free gap. A free gap has a visible block on
 # either side, or it is the parent edge of a structural container, and any
 # inline character beside it is in the safe set. A hidden element is never
-# one of those sides, and a gap is not created beside one. An inline run
+# one of those sides, and a gap is not created beside one. An uncertain
+# element is not one of those sides. Any hr, any h3, and any
+# release-separator is uncertain, because some hiding rule names that tag
+# or class. The whitespace on both sides of it stays byte for byte. An inline run
 # may change between one space and one line break only when both characters
 # are in the safe set from HtmlInlineNeighbors. A visible block or a visible
 # br may reshape a run only when the inline side is a safe character, a
@@ -112,6 +115,12 @@ module HtmlFormat
   def format!(doc)
     format_element(doc.root, 0)
     doc
+  ensure
+    # Neighbor results are valid for this pass only. Dropping the tables
+    # before returning keeps them out of the guard, which parses its own
+    # documents, and stops a later page from reusing an object id.
+    @nb = nil
+    @na = nil
   end
 
   def write(doc)
@@ -285,11 +294,16 @@ module HtmlFormat
   end
 
   def visible_block?(node)
-    node&.element? && block?(node) && !HtmlInlineNeighbors.hidden_element?(node)
+    node&.element? && block?(node) && !HtmlInlineNeighbors.hidden_element?(node) &&
+      !HtmlInlineNeighbors.uncertain_element?(node)
   end
 
   def hidden_element?(node)
     node&.element? && HtmlInlineNeighbors.hidden_element?(node)
+  end
+
+  def uncertain_element?(node)
+    node&.element? && HtmlInlineNeighbors.uncertain_element?(node)
   end
 
   # Freedom comes from a sibling block or a structural container, as before.
@@ -297,40 +311,56 @@ module HtmlFormat
   # blank inside a paragraph is not one either. An unsafe character or a
   # verbatim neighbor keeps the source run.
   def free_before?(parent, kids, index)
-    node = kids[index]
     prev = significant(kids, index, -1)
+    container = structural?(parent)
+    left_block = prev && visible_block?(prev)
+    # Statuses veto a gap that is already free. Most text is inside a
+    # paragraph, where neither side is a block, so the walk is skipped.
+    return false unless container || left_block
+
+    node = kids[index]
     char = node.text? ? HtmlInlineNeighbors.first_non_ws(node.content) : nil
     HtmlInlineNeighbors.boundary_gap_free?(
-      prev && visible_block?(prev),
+      left_block,
       false,
-      container: structural?(parent),
+      container: container,
       left_status: inline_neighbor_status(node, :before),
       right_status: char || inline_neighbor_status(node, :after)
     )
   end
 
   def free_after?(parent, kids, index)
-    node = kids[index]
     nxt = significant(kids, index, 1)
+    container = structural?(parent)
+    right_block = nxt && visible_block?(nxt)
+    return false unless container || right_block
+
+    node = kids[index]
     char = node.text? ? HtmlInlineNeighbors.last_non_ws(node.content) : nil
     HtmlInlineNeighbors.boundary_gap_free?(
       false,
-      nxt && visible_block?(nxt),
-      container: structural?(parent),
+      right_block,
+      container: container,
       left_status: char || inline_neighbor_status(node, :before),
       right_status: inline_neighbor_status(node, :after)
     )
   end
 
   def blank_gap_free?(parent, kids, index)
-    node = kids[index]
     prev = significant(kids, index, -1)
+    return false if prev&.element? && br?(prev)
+
     nxt = significant(kids, index, 1)
+    container = structural?(parent)
+    left_block = prev && visible_block?(prev)
+    right_block = nxt && visible_block?(nxt)
+    return false unless container || left_block || right_block
+
+    node = kids[index]
     HtmlInlineNeighbors.boundary_gap_free?(
-      prev && visible_block?(prev),
-      nxt && visible_block?(nxt),
-      after_br: prev&.element? && br?(prev),
-      container: structural?(parent),
+      left_block,
+      right_block,
+      container: container,
       left_status: inline_neighbor_status(node, :before),
       right_status: inline_neighbor_status(node, :after)
     )
@@ -456,9 +486,18 @@ module HtmlFormat
     nil
   end
 
-  # A character, :block, :br, :verbatim, or nil. See HtmlInlineNeighbors.
+  # A character, :block, :br, :verbatim, :uncertain, or nil.
+  # The tables live for one format! call. A whitespace edit does not change
+  # the character or the block marker on either side, and both tables are
+  # cleared before format! returns.
   def inline_neighbor_status(node, direction)
-    HtmlInlineNeighbors.neighbor_status(node, direction, self)
+    return nil unless node
+
+    cache = direction == :before ? (@nb ||= {}) : (@na ||= {})
+    id = node.object_id
+    return cache[id] if cache.key?(id)
+
+    cache[id] = HtmlInlineNeighbors.neighbor_status(node, direction, self)
   end
 
   # Extra characters the writer adds. &amp; is +4, &lt; and &gt; are +3,
@@ -510,7 +549,14 @@ module HtmlFormat
   end
 
   def layout_children(element, depth, recurse:)
-    element.children.to_a.each { |child| child.unlink if child.text? && blank?(child) }
+    # A blank beside an uncertain element is part of a frozen run. Dropping
+    # it here would delete source bytes that separate_before will not put back.
+    element.children.to_a.each do |child|
+      next unless child.text? && blank?(child)
+      next if uncertain_side?(child)
+
+      child.unlink
+    end
     kids = element.children.to_a
     return if kids.empty?
     kids.each do |child|
@@ -543,7 +589,12 @@ module HtmlFormat
   def place_block(child, parent, depth, last)
     # A hidden block is not a boundary. Normalize a gap that is already
     # there after a visible block, and do not invent one. Inventing one
-    # puts a line break into the visible text.
+    # puts a line break into the visible text. An uncertain block keeps the
+    # source bytes on both sides, so it is not reindented.
+    if uncertain_element?(child)
+      format_element(child, depth + 1)
+      return
+    end
     if !hidden_element?(child) || inter_block_gap?(child)
       separate_before(child, depth + 1)
     end
@@ -572,21 +623,24 @@ module HtmlFormat
     end
     lead_free = run_visible_block?(prev_run) || (prev_run.nil? && structural?(parent))
     trail_free = run_visible_block?(next_run) || (next_run.nil? && structural?(parent))
-    # A frozen edge is not a free gap. That includes a soft hyphen, a
-    # combining mark, and a verbatim neighbor such as MathML.
-    lead_free = false if edge_fixed?(nodes, :lead)
-    trail_free = false if edge_fixed?(nodes, :trail)
+    # One neighbor walk per edge. A frozen edge is not a free gap. That
+    # includes a soft hyphen, a combining mark, an uncertain element, and
+    # a verbatim neighbor such as MathML.
+    lead_fixed, lead_struct = edge_flags(nodes, :lead)
+    trail_fixed, trail_struct = edge_flags(nodes, :trail)
+    lead_free = false if lead_fixed
+    trail_free = false if trail_fixed
     lead = edge_whitespace?(nodes, :lead)
     trail = edge_whitespace?(nodes, :trail)
     # A parent block edge is still reindented when the inline character is
     # safe. A hidden block on the next side is not a structural edge: the
     # search would otherwise see the parent end and delete the space.
     next_hidden = next_run && next_run[0] == :block && hidden_element?(next_run[1][0])
-    lead_structural = lead_free || structural_edge?(nodes, :lead)
+    lead_structural = lead_free || lead_struct
     trail_structural = if next_hidden
                          false
                        else
-                         trail_free || structural_edge?(nodes, :trail)
+                         trail_free || trail_struct
                        end
     content = strip_edges(
       nodes,
@@ -616,17 +670,14 @@ module HtmlFormat
     run && run[0] == :block && visible_block?(run[1][0])
   end
 
-  def structural_edge?(nodes, side)
-    return false if edge_fixed?(nodes, side)
-
+  # [fixed, structural] for the lead or trail whitespace. structural is
+  # true when the outside status is a visible block or a visible br and
+  # the run is not frozen.
+  def edge_flags(nodes, side)
     left, right = edge_pair_statuses(nodes, side)
+    fixed = HtmlInlineNeighbors.fixed_inline_run?(left, right)
     outside = side == :lead ? left : right
-    outside == :block || outside == :br
-  end
-
-  def edge_fixed?(nodes, side)
-    left, right = edge_pair_statuses(nodes, side)
-    HtmlInlineNeighbors.fixed_inline_run?(left, right)
+    [fixed, !fixed && (outside == :block || outside == :br)]
   end
 
   # The statuses on the two sides of the lead or trail whitespace.
@@ -775,10 +826,24 @@ module HtmlFormat
         last.content = ' ' unless last.content.empty?
         return
       end
+      # The bytes after an uncertain element stay as they are.
+      return if prev && uncertain_element?(prev)
+
       last.content = text
     else
+      return if last && uncertain_element?(last)
+
       element.add_child(Nokogiri::XML::Text.new(text, element.document))
     end
+  end
+
+  def uncertain_side?(node)
+    prev = previous_significant(node)
+    return true if prev && uncertain_element?(prev)
+
+    nxt = node.next_sibling
+    nxt = nxt.next_sibling while nxt&.text? && blank?(nxt)
+    nxt&.element? && uncertain_element?(nxt)
   end
 
   def wrap(nodes, depth, start_col)

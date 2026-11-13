@@ -215,7 +215,10 @@ make_diff() {
     echo "build-site.sh: cannot point $d/scripts/Makefile at the diff stylesheet" >&2
     exit 1
   }
-  ( cd "$d" && ./cll_build -n -T xhtml_nochunks )
+  # A comparison page needs no offline worker (issue #205). Since #246, the
+  # HTML build writes one unless the make variable offline is "no", and its
+  # file checks could stop a comparison build.
+  ( cd "$d" && offline=no ./cll_build -n -T xhtml_nochunks )
   [ -s "$d/build/xhtml_no_chunks/index.html" ] || { echo "no diff output for $outname" >&2; exit 1; }
   rm -rf "$dest/$outname"
   python3 "$tools/docbook-diff.py" finish "$d/build/xhtml_no_chunks/index.html" "$dest/$outname" \

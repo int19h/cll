@@ -7,20 +7,33 @@
 # decision and the characters on each side of a run come from
 # HtmlInlineNeighbors, the same module the formatter uses. An inline run
 # may change between a space and a line break only when that module says
-# both sides are safe. Every other inline run must match byte for byte.
-# Inside a verbatim element the text must match byte for byte. The gap
-# after a br is never free, and a hidden element never makes a gap free.
+# both sides are safe. A block edge, a visible br, and a free gap may
+# reshape a run only when the inline character is safe or absent. Every
+# other inline run must match byte for byte. Inside a verbatim element the
+# text must match byte for byte. The gap after a br is never free, and a
+# hidden element never makes a gap free.
 #
 # The comparison covers the raw XML declaration, the doctype and the text
 # of its internal subset, the order of comments and processing instructions
 # around the doctype, and comments, processing instructions, and entity
 # references in the text. The guard loads the same local XHTML DTD as the
-# formatter, through the catalog, and does not use the network. An undefined
-# entity anywhere in the page is an error, and the message names it.
+# formatter, through the catalog, and does not use the network. That parse
+# is only for entities. Element and attribute namespaces come from a second
+# parse that does not apply DTD defaults, so removing xmlns from html is
+# visible. An undefined entity anywhere in the page is an error, and the
+# message names it.
+#
+# libxml2 reads XML_CATALOG_FILES when the catalog is first initialized.
+# Nokogiri's packaged libxml2 is linked into nokogiri.so, so
+# install_local_catalog calls xmlLoadCatalog on that extension. The call
+# adds this repository's catalog after an earlier parse. An empty catalog
+# loaded first does not hide the later entries. A catalog entry that
+# already matched the same identifier keeps that first match.
 #
 # Usage: ruby scripts/html_whitespace_guard.rb [--strict] BEFORE AFTER
 # BEFORE and AFTER are files, or directories of .html files with the same names.
 
+require 'fiddle'
 require 'nokogiri'
 require_relative 'html_inline_neighbors'
 
@@ -31,8 +44,6 @@ module HtmlWhitespaceGuard
   XHTML = 'http://www.w3.org/1999/xhtml'
   XMLNS = 'http://www.w3.org/2000/xmlns/'
   WS_RUN = /[ \t\n\r\f]+/
-  # One object for every ordinary whitespace run. Nothing mutates a token.
-  WS_TOKEN = [:ws].freeze
   ZWSP = HtmlInlineNeighbors::ZWSP
   WIDE_RANGES = HtmlInlineNeighbors::WIDE_RANGES
 
@@ -118,8 +129,13 @@ module HtmlWhitespaceGuard
     raise Unsafe, 'not well-formed XML' unless doc&.root
 
     reject_undefined_entities!(doc)
+    # DTD defaults would put the XHTML namespace back on html. Namespaces
+    # come from this parse. The DTD parse above is only for entities.
+    ns_doc = Nokogiri::XML(text) { |config| config.default_xml.strict.nonet }
+    raise Unsafe, 'not well-formed XML' unless ns_doc&.root
+
     tokens = []
-    walk_document(doc, tokens)
+    walk_document(doc, ns_doc, tokens)
     [doc, tokens, raw_declaration(text)]
   rescue Nokogiri::XML::SyntaxError => error
     message = error.message.strip
@@ -133,6 +149,7 @@ module HtmlWhitespaceGuard
   # repository. Relative entity files then resolve next to the DTD. NONET
   # blocks a network fetch when the catalog does not match.
   def with_local_catalog
+    install_local_catalog
     path = catalog_path
     previous = ENV['XML_CATALOG_FILES']
     ENV['XML_CATALOG_FILES'] = path if path
@@ -145,6 +162,67 @@ module HtmlWhitespaceGuard
         ENV.delete('XML_CATALOG_FILES')
       end
     end
+  end
+
+  # Set the catalog before the first DTD parse, and load it into an
+  # already initialized libxml2 catalog. xmlLoadCatalog adds the file even
+  # when an earlier parse initialized the catalog from a missing DTD.
+  # Each call adds the file again. libxml2 keeps the first match, so a
+  # repeated add does not replace the local DTD.
+  def install_local_catalog
+    path = catalog_path
+    return unless path
+
+    ENV['XML_CATALOG_FILES'] = path unless @catalog_installed
+    load_xml_catalog(path)
+    @catalog_installed = true
+  end
+
+  def load_xml_catalog(path)
+    function = xml_load_catalog
+    return unless function
+
+    function.call(path)
+  rescue StandardError
+    nil
+  end
+
+  def xml_load_catalog
+    return @xml_load_catalog if defined?(@xml_load_catalog)
+
+    lib = nokogiri_libxml
+    symbol = lib && lib['xmlLoadCatalog']
+    @xml_load_catalog = symbol && Fiddle::Function.new(symbol, [Fiddle::TYPE_VOIDP], Fiddle::TYPE_INT)
+  rescue StandardError
+    @xml_load_catalog = nil
+  end
+
+  # Packaged libxml2 has no libxml2.so of its own. The symbols are in the
+  # mapped Nokogiri extension. A separate libxml2.so is used when present.
+  def nokogiri_libxml
+    return @nokogiri_libxml if defined?(@nokogiri_libxml)
+
+    @nokogiri_libxml = mapped_xml_library
+  end
+
+  def mapped_xml_library
+    paths = []
+    File.foreach('/proc/self/maps') do |row|
+      path = row.split.last
+      next unless path&.end_with?('.so')
+      next unless path.include?('libxml2') || path.end_with?('nokogiri.so')
+
+      paths << path
+    end
+    paths.uniq.each do |path|
+      lib = Fiddle.dlopen(path)
+      return lib if lib['xmlLoadCatalog']
+    rescue StandardError
+      next
+    end
+    nil
+  rescue StandardError
+    nil
   end
 
   def catalog_path
@@ -168,39 +246,77 @@ module HtmlWhitespaceGuard
     match && match[0]
   end
 
-  def walk_document(doc, tokens)
-    doc.children.each do |child|
-      next if child.is_a?(Nokogiri::XML::DTD)
-      next if child.text? && child.content.match?(/\A[ \t\n\r\f]*\z/)
+  def walk_document(doc, ns_doc, tokens)
+    pair_nodes(doc.children, ns_doc.children, tokens, false, false, skip_blank: true)
+  end
 
-      take_node(child, tokens, false, false)
+  def pair_nodes(children, ns_children, tokens, region, inline_ancestor, skip_blank: false)
+    left = listed_nodes(children, skip_blank)
+    right = listed_nodes(ns_children, skip_blank)
+    unless left.length == right.length
+      raise Unsafe, 'namespace parse diverged'
+    end
+
+    left.each_with_index do |child, index|
+      take_node(child, right[index], tokens, region, inline_ancestor)
     end
   end
 
-  def walk(element, tokens, verbatim, inline_ancestor)
+  def listed_nodes(nodes, skip_blank)
+    nodes.reject { |child|
+      child.is_a?(Nokogiri::XML::DTD) ||
+        (skip_blank && child.text? && child.content.match?(/\A[ \t\n\r\f]*\z/))
+    }
+  end
+
+  def walk(element, ns_element, tokens, verbatim, inline_ancestor)
+    raise Unsafe, 'namespace parse diverged' unless same_node?(element, ns_element)
+
     inside_inline = inline_ancestor || inline?(element)
     region = verbatim || verbatim?(element) || (block?(element) && inline_ancestor)
-    tokens << start_token(element, region)
-    element.children.each do |child|
-      take_node(child, tokens, region, inside_inline)
-    end
+    first_edge = inline_edge(element, :first)
+    last_edge = inline_edge(element, :last)
+    tokens << start_token(element, ns_element, region, first_edge, last_edge)
+    pair_nodes(element.children, ns_element.children, tokens, region, inside_inline)
     tokens << [
-      :end, cached_name(element), element_kind(element), nil, region, href_of(element.namespace)
+      :end, cached_name(element), element_kind(element), nil, region, href_of(element.namespace),
+      last_edge
     ]
   end
 
-  def take_node(node, tokens, region, inline_ancestor)
+  def take_node(node, ns_node, tokens, region, inline_ancestor)
+    raise Unsafe, 'namespace parse diverged' unless same_node?(node, ns_node)
+
     if node.element?
       child_region = region || verbatim?(node) || (block?(node) && inline_ancestor)
-      walk(node, tokens, child_region, inline_ancestor)
+      walk(node, ns_node, tokens, child_region, inline_ancestor)
     elsif node.text? || node.cdata?
       take_text(node, tokens, region, node.cdata?)
     elsif node.is_a?(Nokogiri::XML::EntityReference)
-      tokens << [:entity, node.name]
+      tokens << [:entity, node.name, node.content.to_s]
     elsif node.comment?
       tokens << [:comment, node.content]
     elsif node.processing_instruction?
       tokens << [:pi, node.name, node.content]
+    end
+  end
+
+  def same_node?(node, other)
+    return false unless other
+    if node.element?
+      other.element? && other.name == node.name
+    elsif node.cdata?
+      other.cdata?
+    elsif node.text?
+      other.text? && !other.cdata?
+    elsif node.is_a?(Nokogiri::XML::EntityReference)
+      other.is_a?(Nokogiri::XML::EntityReference) && other.name == node.name
+    elsif node.comment?
+      other.comment?
+    elsif node.processing_instruction?
+      other.processing_instruction? && other.name == node.name
+    else
+      node.class == other.class
     end
   end
 
@@ -215,9 +331,14 @@ module HtmlWhitespaceGuard
       append_ws(tokens, node, raw, nil, nil)
       return
     end
-    if collapsible_ascii?(node, raw)
-      emit_collapsed(tokens, raw)
-      return
+    if raw.ascii_only?
+      lead = edge_pair(node, raw, :first)
+      trail = edge_pair(node, raw, :last)
+      if (lead.nil? || !HtmlInlineNeighbors.fixed_inline_run?(*lead)) &&
+         (trail.nil? || !HtmlInlineNeighbors.fixed_inline_run?(*trail))
+        emit_collapsed(tokens, raw, lead, trail)
+        return
+      end
     end
 
     parts = raw.split(/([ \t\n\r\f]+)/, -1)
@@ -230,36 +351,31 @@ module HtmlWhitespaceGuard
     end
   end
 
-  # An ASCII run whose edge whitespace is mutable can collapse. A frozen
-  # edge must stay a byte-for-byte token, so this fast path does not apply.
-  def collapsible_ascii?(node, raw)
-    return false unless raw.ascii_only?
+  # Statuses on one edge of an ASCII text node. nil when that edge has no
+  # whitespace. The caller has already rejected a frozen edge.
+  def edge_pair(node, raw, side)
+    return nil unless HtmlInlineNeighbors.boundary_ws?(raw, side)
 
-    if HtmlInlineNeighbors.boundary_ws?(raw, :first)
+    if side == :first
       left = HtmlInlineNeighbors.neighbor_status(node, :before, self)
       right = HtmlInlineNeighbors.first_non_ws(raw) || HtmlInlineNeighbors.neighbor_status(node, :after, self)
-      return false if HtmlInlineNeighbors.fixed_inline_run?(left, right)
-    end
-    if HtmlInlineNeighbors.boundary_ws?(raw, :last)
+    else
       left = HtmlInlineNeighbors.last_non_ws(raw) || HtmlInlineNeighbors.neighbor_status(node, :before, self)
       right = HtmlInlineNeighbors.neighbor_status(node, :after, self)
-      return false if HtmlInlineNeighbors.fixed_inline_run?(left, right)
     end
-    true
+    [left, right]
   end
 
-  def emit_collapsed(tokens, raw)
-    lead = HtmlInlineNeighbors.boundary_ws?(raw, :first)
-    trail = HtmlInlineNeighbors.boundary_ws?(raw, :last)
-    if !lead && !trail
+  def emit_collapsed(tokens, raw, lead, trail)
+    if lead.nil? && trail.nil?
       tokens << [:text, raw.match?(WS_RUN) ? raw.gsub(WS_RUN, ' ') : raw]
       return
     end
 
-    tokens << WS_TOKEN if lead
+    tokens << [:ws, *lead] if lead
     core = raw.gsub(WS_RUN, ' ').strip
     tokens << [:text, core] unless core.empty?
-    tokens << WS_TOKEN if trail
+    tokens << [:ws, *trail] if trail
   end
 
   def append_ws(tokens, node, run, left_inside, right_inside)
@@ -268,7 +384,7 @@ module HtmlWhitespaceGuard
     if HtmlInlineNeighbors.fixed_inline_run?(left, right)
       tokens << [:fixed, run]
     else
-      tokens << WS_TOKEN
+      tokens << [:ws, left, right]
     end
   end
 
@@ -283,13 +399,24 @@ module HtmlWhitespaceGuard
     run.include?("\n") || run.include?("\r")
   end
 
-  # [:start, name, kind, attrs, region, uri, decls, container_free]
-  # container_free is only for gap checks. content_tokens drops it.
-  def start_token(element, region)
+  # [:start, name, kind, attrs, region, uri, decls, container_free, first_edge, last_edge]
+  # content_tokens keeps the first seven fields. The edges and container_free
+  # are only for gap checks. An inline edge is the character inside the
+  # element, or nil when the element is empty. A block stores nil there.
+  def start_token(element, ns_element, region, first_edge, last_edge)
     [
       :start, cached_name(element), element_kind(element), attributes(element), region,
-      href_of(element.namespace), namespace_decls(element), container_free?(element)
+      href_of(element.namespace), namespace_decls(ns_element), container_free?(element),
+      first_edge, last_edge
     ]
+  end
+
+  # The character an inline element presents to a gap. Other kinds do not
+  # need one: the kind itself is the boundary.
+  def inline_edge(element, side)
+    return nil unless element_kind(element) == :inline
+
+    HtmlInlineNeighbors.read_status(element, side, self)
   end
 
   def html?(node)
@@ -317,6 +444,7 @@ module HtmlWhitespaceGuard
     return :br if (bits & G_BR) != 0
     return :hidden if HtmlInlineNeighbors.hidden_element?(element)
     return :block if (bits & G_BLOCK) != 0
+    return :verbatim if (bits & G_VERBATIM) != 0
 
     :inline
   end
@@ -363,6 +491,8 @@ module HtmlWhitespaceGuard
     }.compact
   end
 
+  # Declarations from the parse that did not apply DTD defaults. The XHTML
+  # DTD fixes xmlns on html, so the DTD parse cannot show that it was removed.
   def namespace_decls(element)
     element.namespace_definitions.map { |ns|
       [shared_string(ns.prefix), href_of(ns)]
@@ -489,22 +619,24 @@ module HtmlWhitespaceGuard
     problems
   end
 
-  # Each gap is [left, right, ws, parent, verbatim].
+  # Each gap is [left, right, ws, parent, verbatim, ws_token].
+  # ws_token is nil when this side has no whitespace there. Its fields are
+  # the neighbor statuses the formatter and the guard both use.
   def gaps(tokens)
     found = []
     stack = []
     previous = nil
-    pending_ws = false
+    pending = nil
     verbatim_depth = 0
     tokens.each do |token|
       if token[0] == :ws
-        pending_ws = true
+        pending = token
         next
       end
       if previous
-        found << [previous, token, pending_ws, stack.last, verbatim_depth.positive?]
+        found << [previous, token, !pending.nil?, stack.last, verbatim_depth.positive?, pending]
       end
-      pending_ws = false
+      pending = nil
       previous = token
       if token[0] == :start
         verbatim_depth += 1 if token[4]
@@ -523,12 +655,60 @@ module HtmlWhitespaceGuard
     left = gap[0]
     right = gap[1]
     parent = gap[3]
+    ws = gap[5]
+    if ws
+      left_status = ws[1]
+      right_status = ws[2]
+    else
+      left_status = token_status(left, :right)
+      right_status = token_status(right, :left)
+    end
     HtmlInlineNeighbors.boundary_gap_free?(
       left && left[0] == :end && left[2] == :block,
       right && right[0] == :start && right[2] == :block,
       after_br: br_edge?(left),
-      container: parent && parent[7]
+      container: parent && parent[7],
+      left_status: left_status,
+      right_status: right_status
     )
+  end
+
+  # The status a content token presents to the gap on :left or :right.
+  # A block or a br is that boundary. An empty inline element has no
+  # character. A hidden element contributes nothing. Anything else that is
+  # not a safe character fails closed.
+  def token_status(token, side)
+    return nil unless token
+
+    case token[0]
+    when :text
+      text = token[1].to_s
+      return nil if text.empty?
+
+      side == :right ? text[-1] : text[0]
+    when :entity
+      text = token[2].to_s
+      char = side == :right ? HtmlInlineNeighbors.last_non_ws(text) : HtmlInlineNeighbors.first_non_ws(text)
+      char || :entity
+    when :end
+      kind_status(token[2], token[6])
+    when :start
+      kind_status(token[2], token[8])
+    when :vtext, :fixed
+      :verbatim
+    else
+      nil
+    end
+  end
+
+  def kind_status(kind, inner)
+    case kind
+    when :block then :block
+    when :br then :br
+    when :verbatim then :verbatim
+    when :hidden then nil
+    else inner
+    end
   end
 
   def br_edge?(token)
@@ -568,6 +748,8 @@ module HtmlWhitespaceGuard
     %( #{chosen[1]}="#{chosen[2]}")
   end
 end
+
+HtmlWhitespaceGuard.install_local_catalog
 
 if $PROGRAM_NAME == __FILE__
   strict = ARGV.delete('--strict')

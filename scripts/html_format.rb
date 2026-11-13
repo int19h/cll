@@ -4,18 +4,20 @@
 #
 # The formatter only adds, removes, or reshapes whitespace text. A run may
 # appear or disappear only at a free gap. A free gap has a visible block on
-# either side, or it is the parent edge of a structural container. A hidden
-# element is never one of those sides, and a gap is not created beside one.
-# An inline run may change between one space and one line break only when
-# both characters are in the safe set from HtmlInlineNeighbors. Every other
-# inline run stays byte for byte. pre, script, style, textarea,
-# xml:space="preserve", MathML, other namespaces, and a block inside an
-# inline element stay byte for byte.
+# either side, or it is the parent edge of a structural container, and any
+# inline character beside it is in the safe set. A hidden element is never
+# one of those sides, and a gap is not created beside one. An inline run
+# may change between one space and one line break only when both characters
+# are in the safe set from HtmlInlineNeighbors. A visible block or a visible
+# br may reshape a run only when the inline side is a safe character, a
+# block, a br, or absent. Every other run stays byte for byte. pre, script,
+# style, textarea, xml:space="preserve", MathML, other namespaces, and a
+# block inside an inline element stay byte for byte.
 #
 # br.example-break, br.table-break, and any other hidden br are display:none
 # in assets/css/master.css. Whitespace after one of them stays one space,
 # unless that run is frozen. A normal br breaks the line only when
-# whitespace already follows it.
+# whitespace already follows it and the following character is safe.
 #
 # span.guibutton is verbatim: assets/scripts/sance-next.js reads it with
 # innerText while it is hidden.
@@ -290,32 +292,47 @@ module HtmlFormat
     node&.element? && HtmlInlineNeighbors.hidden_element?(node)
   end
 
+  # Freedom comes from a sibling block or a structural container, as before.
+  # The statuses only veto. A parent edge is not itself a free gap, and a
+  # blank inside a paragraph is not one either. An unsafe character or a
+  # verbatim neighbor keeps the source run.
   def free_before?(parent, kids, index)
+    node = kids[index]
     prev = significant(kids, index, -1)
+    char = node.text? ? HtmlInlineNeighbors.first_non_ws(node.content) : nil
     HtmlInlineNeighbors.boundary_gap_free?(
       prev && visible_block?(prev),
       false,
-      container: structural?(parent)
+      container: structural?(parent),
+      left_status: inline_neighbor_status(node, :before),
+      right_status: char || inline_neighbor_status(node, :after)
     )
   end
 
   def free_after?(parent, kids, index)
+    node = kids[index]
     nxt = significant(kids, index, 1)
+    char = node.text? ? HtmlInlineNeighbors.last_non_ws(node.content) : nil
     HtmlInlineNeighbors.boundary_gap_free?(
       false,
       nxt && visible_block?(nxt),
-      container: structural?(parent)
+      container: structural?(parent),
+      left_status: char || inline_neighbor_status(node, :before),
+      right_status: inline_neighbor_status(node, :after)
     )
   end
 
   def blank_gap_free?(parent, kids, index)
+    node = kids[index]
     prev = significant(kids, index, -1)
     nxt = significant(kids, index, 1)
     HtmlInlineNeighbors.boundary_gap_free?(
       prev && visible_block?(prev),
       nxt && visible_block?(nxt),
       after_br: prev&.element? && br?(prev),
-      container: structural?(parent)
+      container: structural?(parent),
+      left_status: inline_neighbor_status(node, :before),
+      right_status: inline_neighbor_status(node, :after)
     )
   end
 
@@ -555,12 +572,22 @@ module HtmlFormat
     end
     lead_free = run_visible_block?(prev_run) || (prev_run.nil? && structural?(parent))
     trail_free = run_visible_block?(next_run) || (next_run.nil? && structural?(parent))
+    # A frozen edge is not a free gap. That includes a soft hyphen, a
+    # combining mark, and a verbatim neighbor such as MathML.
+    lead_free = false if edge_fixed?(nodes, :lead)
+    trail_free = false if edge_fixed?(nodes, :trail)
     lead = edge_whitespace?(nodes, :lead)
     trail = edge_whitespace?(nodes, :trail)
-    # A parent block edge is still reindented. A hidden sibling is not, so
-    # the space before "word" in a<div class="display-none"> stays a space.
+    # A parent block edge is still reindented when the inline character is
+    # safe. A hidden block on the next side is not a structural edge: the
+    # search would otherwise see the parent end and delete the space.
+    next_hidden = next_run && next_run[0] == :block && hidden_element?(next_run[1][0])
     lead_structural = lead_free || structural_edge?(nodes, :lead)
-    trail_structural = trail_free || structural_edge?(nodes, :trail)
+    trail_structural = if next_hidden
+                         false
+                       else
+                         trail_free || structural_edge?(nodes, :trail)
+                       end
     content = strip_edges(
       nodes,
       keep_lead: lead && !lead_structural,
@@ -590,11 +617,43 @@ module HtmlFormat
   end
 
   def structural_edge?(nodes, side)
-    node = side == :lead ? nodes.first : nodes.last
-    return false unless node
+    return false if edge_fixed?(nodes, side)
 
-    status = inline_neighbor_status(node, side == :lead ? :before : :after)
-    status == :block || status == :br
+    left, right = edge_pair_statuses(nodes, side)
+    outside = side == :lead ? left : right
+    outside == :block || outside == :br
+  end
+
+  def edge_fixed?(nodes, side)
+    left, right = edge_pair_statuses(nodes, side)
+    HtmlInlineNeighbors.fixed_inline_run?(left, right)
+  end
+
+  # The statuses on the two sides of the lead or trail whitespace.
+  # A blank node is transparent, so a verbatim element beside that blank
+  # still freezes the run.
+  def edge_pair_statuses(nodes, side)
+    if side == :lead
+      [inline_neighbor_status(nodes.first, :before), forward_status(nodes)]
+    else
+      [backward_status(nodes), inline_neighbor_status(nodes.last, :after)]
+    end
+  end
+
+  def forward_status(nodes)
+    nodes.each do |node|
+      found = HtmlInlineNeighbors.edge_status(node, :first, self)
+      return found unless found.nil?
+    end
+    inline_neighbor_status(nodes.last, :after)
+  end
+
+  def backward_status(nodes)
+    nodes.reverse_each do |node|
+      found = HtmlInlineNeighbors.edge_status(node, :last, self)
+      return found unless found.nil?
+    end
+    inline_neighbor_status(nodes.first, :before)
   end
 
   def edge_whitespace?(nodes, side)
@@ -650,15 +709,44 @@ module HtmlFormat
   # whitespace that is already there, and do not create any. A hidden br
   # keeps a space, because a line break after it would show on the page.
   def separate_before(node, depth)
+    # An unsafe character on the inline side keeps the source run. A visible
+    # br still breaks when that character is safe.
+    return if unsafe_gap_before?(node) && !br_before?(node)
+
     prev = previous_significant(node)
     if prev && br?(prev)
       gap = node.previous_sibling
-      if gap&.text? && blank?(gap) && !gap.content.empty?
+      if gap&.text? && blank?(gap) && !gap.content.empty? && !gap_fixed?(gap)
         gap.content = hidden_br?(prev) ? ' ' : "\n" + ' ' * (INDENT * depth)
       end
       return
     end
+    # A visible block would normally reindent this gap. Keep the source
+    # bytes when the inline side is not a safe character, including a
+    # character that sits past a hidden element.
+    return if gap_fixed?(node)
+
     replace_gap(node, "\n" + ' ' * (INDENT * depth))
+  end
+
+  def br_before?(node)
+    prev = previous_significant(node)
+    prev&.element? && br?(prev)
+  end
+
+  # The character immediately before node, when that character is not safe.
+  def unsafe_gap_before?(node)
+    HtmlInlineNeighbors.unsafe_edge?(inline_neighbor_status(node, :before))
+  end
+
+  # The whitespace immediately before node. The right side is this node,
+  # not the sibling after it: a br or a block ends the gap. A hidden node
+  # has no edge, so the character after it is the right side.
+  def gap_fixed?(node)
+    left = inline_neighbor_status(node, :before)
+    right = HtmlInlineNeighbors.edge_status(node, :first, self)
+    right = inline_neighbor_status(node, :after) if right.nil?
+    HtmlInlineNeighbors.fixed_inline_run?(left, right)
   end
 
   def previous_significant(node)
@@ -765,14 +853,7 @@ module HtmlFormat
         chunk = 0
         br_state = item[:hidden] ? :hidden : :break
       when :ws
-        if br_state == :break
-          br_state = nil
-          column += chunk
-          chunk = 0
-          pending = nil
-          item[:decision] = :break
-          column = indent_col
-        elsif item[:fixed]
+        if item[:fixed]
           if pending
             decide.call(chunk)
           else
@@ -787,6 +868,13 @@ module HtmlFormat
           else
             column += item[:original].length
           end
+        elsif br_state == :break
+          br_state = nil
+          column += chunk
+          chunk = 0
+          pending = nil
+          item[:decision] = :break
+          column = indent_col
         elsif br_state == :hidden
           br_state = nil
           # A hidden br is not a rendered line. A frozen run kept its bytes

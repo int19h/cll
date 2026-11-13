@@ -506,6 +506,13 @@ class HtmlFormatContract < Minitest::Test
     hidden_br = assert_safe(page("<p>a#{zw}<br class=\"display-none\"/>\nword</p>"))
     assert_includes body_of(hidden_br), "display-none\" />\nword"
     refute_includes body_of(hidden_br), "\n      word"
+    # A visible block, a hidden block, then an unsafe character. The gap
+    # before the hidden block is not free, so the source newline stays.
+    shy = "\u00AD"
+    frozen = assert_safe(page("<div>  <hr/>\n<div class=\"display-none\">x</div>\n  漢#{shy}b</div>"))
+    assert_includes body_of(frozen), "<hr />\n<div class=\"display-none\">x</div>\n  漢#{shy}b"
+    safe = assert_safe(page("<div><hr/>\n<div class=\"display-none\">x</div>\nword</div>"))
+    assert_includes body_of(safe), "word"
   end
 
   def test_a_verbatim_neighbor_keeps_the_run
@@ -545,6 +552,106 @@ class HtmlFormatContract < Minitest::Test
       Process.clock_gettime(Process::CLOCK_MONOTONIC) - started
     end
     assert_operator elapsed, :<, 8, "large page took #{elapsed.round(2)}s"
+  end
+
+  def test_unsafe_edges_keep_the_source_run
+    shy = "\u00AD"
+    acu = "\u0301"
+    cases = {
+      'shy-end' => ["<p>a #{shy} </p>", "a #{shy} "],
+      'shy-end-long' => ["<p>#{'word ' * 22}a #{shy} </p>", "a #{shy} "],
+      'tab-mark-start' => ["<div>\t#{acu}a</div>", "\t#{acu}a"],
+      'tab-mark-after-br' => ["<p>x<br/>\t#{acu}b</p>", "<br />\t#{acu}b"]
+    }
+    cases.each do |name, (body, kept)|
+      pretty = assert_safe(page(body))
+      assert_includes body_of(pretty), kept, name
+    end
+
+    shy_gap = assert_safe(page("<div>a #{shy}<p>t</p></div>"))
+    assert_includes body_of(shy_gap), "#{shy}<p"
+    mark_gap = assert_safe(page("<div><p>t</p>#{acu}b</div>"))
+    assert_includes body_of(mark_gap), "</p>#{acu}b"
+
+    wide = assert_safe(page('<p>x<br/> 漢</p>'))
+    assert_includes body_of(wide), '<br /> 漢'
+    source = page('<div><a id="q"></a><p>t</p></div>')
+    assert_safe(source)
+    HtmlWhitespaceGuard.compare!(source, source.sub('</a><p>', "</a>\n<p>"), name: 'anchor')
+    math = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>'
+    kept_math = assert_safe(page("<div>#{math}\n<p>t</p></div>"))
+    assert_match(%r{</math>\n<p>t</p>}, body_of(kept_math))
+  end
+
+  def test_a_long_inline_run_keeps_the_space_before_a_hidden_block
+    words = 'word ' * 25
+    bodies = [
+      "<div>#{words}a <div class=\"display-none\">h</div></div>",
+      "<div>#{words}<em>a</em> <div class=\"display-none\">h</div></div>",
+      "<div>#{words}a <div class=\"display-none\">h</div> <a id=\"q\"></a></div>",
+      "<p>#{words}a <span class=\"display-none\">h</span></p>",
+      "<div><p>t</p>#{words}a <div class=\"display-none\">h</div> b</div>"
+    ]
+    bodies.each do |body|
+      pretty = assert_safe(page(body))
+      text = body_of(pretty)
+      assert_match(/a(?:<\/em>)?\s+<(?:div|span) class="display-none">/, text, body)
+      refute_match(/a(?:<\/em>)?<(?:div|span) class="display-none">/, text, body)
+    end
+  end
+
+  def test_stylesheet_hiding_subjects_fail_closed
+    sample = <<~CSS
+      /* h1 { display: none } */
+      @media screen {
+        span.only-media { display: none; }
+      }
+      @page { @bottom-left { content: "x"; } }
+      p.shown { display: block; }
+    CSS
+    assert_equal [['span', ['only-media']]], hiding_subjects(sample)
+
+    found = []
+    stylesheet_texts.each { |text| found.concat(hiding_subjects(text)) }
+    assert_includes found, ['hr', []]
+    assert_includes found, ['br', ['example-break']]
+    assert_includes found, ['br', ['table-break']]
+    assert_includes found, [nil, ['display-none']]
+    assert_includes found, [nil, ['guibutton']]
+    assert_includes found, [nil, ['release-separator']]
+    assert_includes found, ['h3', []]
+    found.uniq.each do |tag, classes|
+      visibility = HtmlInlineNeighbors.subject_visibility(tag, classes)
+      assert_includes [:hidden, :uncertain], visibility, "#{tag.inspect} #{classes.inspect} is #{visibility}"
+    end
+    assert_equal :uncertain, HtmlInlineNeighbors.subject_visibility('hr', [])
+    assert_equal :visible, HtmlInlineNeighbors.subject_visibility('h1', [])
+
+    article = parsed(page('<div class="article"><div class="titlepage"><hr/></div></div>'))
+    book = parsed(page('<div class="book"><div class="titlepage"><hr/></div></div>'))
+    body = parsed(page('<div><hr/></div>'))
+    assert HtmlInlineNeighbors.hidden_element?(article.at_xpath('//*[local-name()="hr"]'))
+    assert HtmlInlineNeighbors.hidden_element?(book.at_xpath('//*[local-name()="hr"]'))
+    refute HtmlInlineNeighbors.hidden_element?(body.at_xpath('//*[local-name()="hr"]'))
+    wrapped = parsed(page('<div class="book"><div><div class="titlepage"><hr/></div></div></div>'))
+    refute HtmlInlineNeighbors.hidden_element?(wrapped.at_xpath('//*[local-name()="hr"]'))
+  end
+
+  def test_titlepage_hr_keeps_the_space_through_cleanup
+    {
+      'article' => '<div class="article"><div class="titlepage">a<hr/> word</div></div>',
+      'book' => '<div class="book"><div class="titlepage">a<hr/> word</div></div>'
+    }.each do |kind, body|
+      Dir.mktmpdir do |dir|
+        File.write(File.join(dir, 'page.html'), page(body))
+        _out, err, status = Open3.capture3(File.join(ROOT, 'scripts/xhtml_postprocess_cleanup.sh'), dir)
+        assert status.success?, "#{kind}: #{err}"
+        text = File.read(File.join(dir, 'page.html'))
+        assert_match(%r{a\s*<hr[^>]*>\s+word}m, text, kind)
+        refute_includes text, 'aword'
+        assert_safe(page(body))
+      end
+    end
   end
 end
 
@@ -949,4 +1056,143 @@ class HtmlWhitespaceGuardContract < Minitest::Test
     )
     assert_match(/CHANGED doctype/, comment)
   end
+
+  def test_rejects_removing_or_changing_the_default_namespace
+    source = document('<p>a</p>')
+    removed = refute_safe(source, source.sub(' xmlns="http://www.w3.org/1999/xhtml"', ''))
+    assert_match(/CHANGED namespace/, removed)
+    changed = refute_safe(
+      source,
+      source.sub('xmlns="http://www.w3.org/1999/xhtml"', 'xmlns="http://www.w3.org/1999/xhtm"')
+    )
+    assert_match(/CHANGED namespace/, changed)
+  end
+
+  def test_rejects_a_free_gap_beside_an_unsafe_character
+    shy = "\u00AD"
+    acu = "\u0301"
+    added_shy = refute_safe(
+      wrap("<div>a #{shy}<p>t</p></div>"),
+      wrap("<div>a #{shy}\n<p>t</p></div>")
+    )
+    assert_match(/CHANGED/, added_shy)
+    added_mark = refute_safe(
+      wrap("<div><p>t</p>#{acu}b</div>"),
+      wrap("<div><p>t</p> #{acu}b</div>")
+    )
+    assert_match(/CHANGED/, added_mark)
+  end
+
+  def test_catalog_survives_an_earlier_parse
+    Dir.mktmpdir do |dir|
+      empty = File.join(dir, 'empty-catalog.xml')
+      File.write(empty, <<~XML)
+        <?xml version="1.0"?>
+        <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"/>
+      XML
+      probe = File.join(dir, 'probe.rb')
+      ids = [
+        DOCTYPE,
+        '<!DOCTYPE html SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
+        '<!DOCTYPE html SYSTEM "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'
+      ]
+      texts = ids.map { |id| document('<p title="a&nbsp;b">x</p>', doctype: id) }
+      File.write(probe, <<~RUBY)
+        require 'nokogiri'
+        empty = #{empty.dump}
+        guard = #{File.join(ROOT, 'scripts/html_whitespace_guard.rb').dump}
+        texts = #{texts.inspect}
+        if ARGV[0] == 'before'
+          ENV['XML_CATALOG_FILES'] = empty
+          Nokogiri::XML('<!DOCTYPE html SYSTEM "missing.dtd"><html/>') { |c| c.nonet.dtdload }
+          require guard
+        else
+          require guard
+          ENV['XML_CATALOG_FILES'] = empty
+          Nokogiri::XML('<!DOCTYPE html SYSTEM "missing.dtd"><html/>') { |c| c.nonet.dtdload }
+        end
+        texts.each do |text|
+          HtmlWhitespaceGuard.compare!(text, text, name: 'catalog')
+          doc = HtmlWhitespaceGuard.parse_tokens(text)[0]
+          puts doc.at_xpath('//*[local-name()="p"]')['title']
+        end
+      RUBY
+      %w[before after].each do |mode|
+        out, err, status = Open3.capture3('ruby', probe, mode, chdir: ROOT)
+        assert status.success?, "#{mode}: #{err}\n#{out}"
+        assert_equal ["a\u00A0b", "a\u00A0b", "a\u00A0b"], out.split("\n"), mode
+      end
+    end
+  end
+end
+
+def hiding_subjects(css)
+  subjects = []
+  scan_css_rules(css.gsub(%r{/\*.*?\*/}m, ''), subjects)
+  subjects
+end
+
+def scan_css_rules(css, subjects)
+  index = 0
+  while (brace = css.index('{', index))
+    prelude = css[index...brace]
+    body, finish = css_block(css, brace)
+    if prelude.strip.start_with?('@')
+      scan_css_rules(body, subjects)
+    elsif body !~ /\{/ && (body.match?(/display\s*:\s*none\b/i) || body.match?(/visibility\s*:\s*hidden\b/i))
+      prelude.split(',').each do |selector|
+        subject = selector_subject(selector)
+        subjects << subject if subject
+      end
+    end
+    index = finish + 1
+  end
+end
+
+def css_block(css, open_at)
+  depth = 0
+  cursor = open_at
+  while cursor < css.length
+    case css[cursor]
+    when '{'
+      depth += 1
+    when '}'
+      depth -= 1
+      return [css[(open_at + 1)...cursor], cursor] if depth.zero?
+    when '"', "'"
+      quote = css[cursor]
+      cursor += 1
+      while cursor < css.length && css[cursor] != quote
+        cursor += 1 if css[cursor] == '\\' && cursor + 1 < css.length
+        cursor += 1
+      end
+    end
+    cursor += 1
+  end
+  [css[(open_at + 1)..], css.length - 1]
+end
+
+def selector_subject(selector)
+  last = selector.strip.split(/\s*(?:>|\+|~)\s*|\s+/).last
+  return nil if last.nil? || last.empty? || last.start_with?('@')
+
+  classes = last.scan(/\.([_a-zA-Z][_a-zA-Z0-9-]*)/).flatten
+  tag = last.split(/[.#:\[\s>+~]/, 2).first
+  tag = nil if tag.nil? || tag.empty? || tag == '*'
+  [tag, classes]
+end
+
+def stylesheet_texts
+  texts = Dir[File.join(ROOT, 'assets/css/*.css')].sort.map { |path| File.read(path) }
+  listed, status = Open3.capture2('git', '-C', ROOT, 'ls-tree', '-r', '--name-only', 'pages')
+  return texts unless status.success?
+
+  listed.each_line do |line|
+    path = line.strip
+    next unless path.end_with?('.css') && !path.start_with?('official/')
+
+    blob, blob_status = Open3.capture2('git', '-C', ROOT, 'show', "pages:#{path}")
+    texts << blob if blob_status.success?
+  end
+  texts
 end

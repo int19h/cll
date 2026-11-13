@@ -7,25 +7,34 @@
 # An inline run may change between a space and a line break only when both
 # sides are characters in the safe set. The safe set is the scripts this
 # book uses: ASCII punctuation and letters, Latin, Greek, Cyrillic, and
-# general punctuation. A character is left out when it is wide, a control,
-# or in Unicode category Cf, Mn, Me, or Zs (format, mark, or space).
-# Every other inline run stays byte for byte. That includes a side that is
-# missing, a hidden element, a verbatim element, or a character outside the
-# safe set. A visible block or a visible br is a structural boundary, not
-# one of those frozen sides.
+# general punctuation. A character is left out when it is wide or in
+# Unicode category Cf, Mn, Me, Cc, Cs, Co, Cn, Zs, Zl, or Zp.
+# Every other inline run stays byte for byte. That includes a hidden
+# element, a verbatim element, or a character outside the safe set.
+#
+# A visible block or a visible br may reshape the run only when the other
+# side is a safe character, another block, a br, or absent. A soft hyphen,
+# a combining mark, or any other unsafe character freezes the run, including
+# at a block edge and beside a br.
 #
 # A gap is free when a visible block bounds it, on either side or as the
-# parent edge of a structural container. An empty anchor before a paragraph
-# is that shape. A hidden element is not a visible block, so it does not
-# make a gap free by itself. A visible block on the other side, or a
-# structural container, still does. The gap after a br is never free.
+# parent edge of a structural container, and any inline character beside
+# that gap is in the safe set. An empty anchor before a paragraph is that
+# shape: the anchor has no character. A hidden element is not a visible
+# block, so it does not make a gap free by itself. A visible block on the
+# other side, or a structural container, still does, when the inline
+# character is safe or there is none. The gap after a br is never free.
 #
-# An element the stylesheet hides (display-none, guibutton, a hidden br,
-# script, style) is skipped while looking for a character. A visible
+# An element is a visible block only when no display:none or visibility:hidden
+# rule in the stylesheets can match it. The rules are the subjects in
+# HIDING_RULES, taken from assets/css. A contextual subject is uncertain
+# until the whole selector matches. script and style are hidden as well.
+# A hidden element is skipped while looking for a character. A visible
 # verbatim element, such as MathML or xml:space="preserve", is not read.
 # Entity replacement text comes from the document. The formatter and the
 # guard both load the local XHTML DTD, so a DTD entity such as nbsp has the
-# same characters on both sides.
+# same characters on both sides. The guard reads namespace declarations
+# from a parse that does not apply DTD defaults.
 #
 # A head without a Content-Type meta element is formatted again on a second
 # pass. The pages of this book include that element.
@@ -35,6 +44,46 @@ module HtmlInlineNeighbors
 
   HIDDEN_CLASS = %w[display-none guibutton].freeze
   HIDDEN_BR = %w[example-break table-break].freeze
+
+  # display:none and visibility:hidden rules whose subjects the HTML
+  # stylesheets hide. Each compound is [combinator, tag or nil, classes].
+  # The combinator joins that compound to the one on its left. :hidden
+  # means the subject itself is enough. :uncertain means an ancestor
+  # combinator has to match before the element is hidden. The test parses
+  # assets/css and requires every such subject to be :hidden or :uncertain.
+  HIDING_RULES = [
+    { visibility: :uncertain, compounds: [
+      [nil, nil, %w[book]],
+      [:child, nil, %w[titlepage]],
+      [:descendant, nil, %w[release-separator]]
+    ] },
+    { visibility: :hidden, compounds: [
+      [nil, 'br', %w[example-break]]
+    ] },
+    { visibility: :uncertain, compounds: [
+      [nil, nil, %w[whole-index]],
+      [:descendant, 'h3', []]
+    ] },
+    { visibility: :hidden, compounds: [
+      [nil, nil, %w[guibutton]]
+    ] },
+    { visibility: :hidden, compounds: [
+      [nil, nil, %w[display-none]]
+    ] },
+    { visibility: :uncertain, compounds: [
+      [nil, nil, %w[article]],
+      [:child, nil, %w[titlepage]],
+      [:descendant, 'hr', []]
+    ] },
+    { visibility: :uncertain, compounds: [
+      [nil, nil, %w[book]],
+      [:child, nil, %w[titlepage]],
+      [:descendant, 'hr', []]
+    ] },
+    { visibility: :hidden, compounds: [
+      [nil, 'br', %w[table-break]]
+    ] }
+  ].freeze
 
   # East Asian wide and fullwidth characters. They are outside the safe set.
   # A space between two of them would be removed if a line break replaced it.
@@ -93,29 +142,47 @@ module HtmlInlineNeighbors
     safe_char?(left) && safe_char?(right)
   end
 
-  # True when an inline run must be copied unchanged. A visible block is
-  # not frozen: the formatter reindents there. A visible br is not frozen
-  # either: the br rule owns that run. A hidden br is not :br. The search
-  # skips it, and the characters on either side decide. Any other unsafe
-  # side freezes the run.
+  # True when an inline run must be copied unchanged. A visible block or a
+  # visible br may reshape it only when the other side is a safe character,
+  # a block, a br, or absent. An unsafe character, including a soft hyphen
+  # or a combining mark, freezes the run. A hidden br is not :br. The
+  # search skips it, and the characters on either side decide.
   def fixed_inline_run?(left, right)
     return false if mutable_run?(left, right)
-    return false if left == :block || right == :block
-    return false if left == :br || right == :br
+    return false if boundary_allows?(left, right)
+    return false if boundary_allows?(right, left)
 
     true
   end
 
-  # A gap may gain or lose whitespace when a visible block bounds it.
-  # Either side is enough: a paragraph after an empty anchor is that shape.
-  # A hidden element is not that block. The parent edge of a structural
-  # container counts, including beside a hidden child. The gap after a br
-  # does not.
-  def boundary_gap_free?(left_visible_block, right_visible_block, after_br: false, container: false)
-    return false if after_br
-    return true if container
+  def boundary_allows?(boundary, other)
+    return false unless boundary == :block || boundary == :br
+    return true if other.nil? || other == :block || other == :br
 
-    left_visible_block || right_visible_block
+    safe_char?(other)
+  end
+
+  # A status that is not a safe inline character. A block, a br, and an
+  # absent side are not unsafe. A verbatim element and any other marker are.
+  def unsafe_edge?(status)
+    return false if status.nil? || status == :block || status == :br
+    return !safe_char?(status) if status.is_a?(String)
+
+    true
+  end
+
+  # A gap may gain or lose whitespace when a visible block bounds it, or at
+  # the edge of a structural container. Either side is enough: a paragraph
+  # after an empty anchor is that shape. The inline character, when there
+  # is one, has to be safe. A hidden element is not a visible block. The
+  # gap after a br does not qualify.
+  def boundary_gap_free?(left_visible_block, right_visible_block, after_br: false, container: false,
+                         left_status: nil, right_status: nil)
+    return false if after_br
+    return false unless container || left_visible_block || right_visible_block
+    return false if unsafe_edge?(left_status) || unsafe_edge?(right_status)
+
+    true
   end
 
   # The status on the before or after side of node.
@@ -180,21 +247,85 @@ module HtmlInlineNeighbors
     nil
   end
 
-  # display:none in assets/css/master.css, plus script and style, which
-  # the browser does not render. A hidden br is display:none as well.
+  # True when a display:none or visibility:hidden rule matches node, or
+  # the element is script or style. The answer is cached on the node.
   def hidden_element?(node)
     return false unless node&.element?
+    return node.instance_variable_get(:@_hid) if node.instance_variable_defined?(:@_hid)
 
     name = node.name
-    return true if name == 'script' || name == 'style'
+    classes = class_tokens(node)
+    hidden = name == 'script' || name == 'style' || hiding_rule?(node, name, classes)
+    node.instance_variable_set(:@_hid, hidden)
+    hidden
+  end
 
+  def class_tokens(node)
     classes = node['class']
-    return false unless classes
+    return [] unless classes
 
-    tokens = classes.split(/[ \t\n\r\f]+/)
-    return true if tokens.any? { |token| HIDDEN_CLASS.include?(token) }
+    classes.split(/[ \t\n\r\f]+/)
+  end
 
-    name == 'br' && tokens.any? { |token| HIDDEN_BR.include?(token) }
+  # :hidden, :uncertain, or :visible for a selector subject. tag nil means
+  # the subject names no element. classes is the subject's class list.
+  # A new stylesheet rule fails the test until its subject is listed.
+  def subject_visibility(tag, classes)
+    wanted = Array(classes).map(&:to_s).sort
+    tag = nil if tag.nil? || tag == '*'
+    found = nil
+    HIDING_RULES.each do |rule|
+      subject = rule[:compounds].last
+      next unless subject[1] == tag && subject[2].sort == wanted
+
+      return :hidden if rule[:visibility] == :hidden
+
+      found = :uncertain
+    end
+    found || :visible
+  end
+
+  def hiding_rule?(node, name, classes)
+    return true if classes.any? { |token| HIDDEN_CLASS.include?(token) }
+    return true if name == 'br' && classes.any? { |token| HIDDEN_BR.include?(token) }
+
+    HIDING_RULES.any? do |rule|
+      subject = rule[:compounds].last
+      next false unless compound_match?(name, classes, subject)
+      next true if rule[:compounds].length == 1
+
+      rule_chain?(node, rule[:compounds])
+    end
+  end
+
+  def compound_match?(name, classes, compound)
+    return false if compound[1] && compound[1] != name
+
+    (compound[2] - classes).empty?
+  end
+
+  def compound_match_node?(node, compound)
+    return false unless node&.element?
+
+    compound_match?(node.name, class_tokens(node), compound)
+  end
+
+  # compounds[-1] already matches node. Walk toward the left.
+  def rule_chain?(node, compounds)
+    index = compounds.length - 2
+    current = node
+    while index >= 0
+      relation = compounds[index + 1][0]
+      current = current.parent
+      if relation == :descendant
+        current = current.parent while current&.element? && !compound_match_node?(current, compounds[index])
+      end
+      return false unless relation == :child || relation == :descendant
+      return false unless compound_match_node?(current, compounds[index])
+
+      index -= 1
+    end
+    true
   end
 
   def text_of(node)

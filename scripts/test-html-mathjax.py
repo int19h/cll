@@ -16,9 +16,8 @@ class HtmlMathJaxTest(unittest.TestCase):
         root = ET.parse(ROOT / 'xml/docbook2html_config_xhtml.xsl').getroot()
         head = root.find(f"{XSL}template[@name='user.head.content']")
         scripts = head.findall('script')
-        external = [node for node in scripts if node.get('src')]
-        self.assertEqual(len(external), 1)
-        script = external[0]
+        script = head.find('script[@id="MathJax-script"]')
+        self.assertIsNotNone(script)
         self.assertEqual(script.get('src'),
                          'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js')
         integrity = script.get('integrity', '')
@@ -27,6 +26,12 @@ class HtmlMathJaxTest(unittest.TestCase):
         self.assertEqual(script.get('crossorigin'), 'anonymous')
         configuration = next(node for node in scripts if 'MathJax =' in (node.text or ''))
         self.assertLess(scripts.index(configuration), scripts.index(script))
+        offline = [node for node in scripts if node.get('src') == 'assets/scripts/offline.js']
+        self.assertEqual(len(offline), 1)
+        self.assertEqual(offline[0].get('defer'), 'defer')
+        self.assertGreater(scripts.index(offline[0]), scripts.index(script))
+        external = [node for node in scripts if node.get('src')]
+        self.assertEqual(external, [script, offline[0]])
         if len(sys.argv) == 2:
             downloaded = Path(sys.argv[1]).read_bytes()
             actual = base64.b64encode(hashlib.sha384(downloaded).digest()).decode()

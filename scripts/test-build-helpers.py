@@ -18,7 +18,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 CLEANUP = ROOT / "scripts" / "xhtml_postprocess_cleanup.sh"
-APPCACHE = ROOT / "scripts" / "xhtml_postprocess_appcache.sh"
 UPDATER = ROOT / "scripts" / "update_jbovlaste_xml.sh"
 
 PAGE = """<?xml version="1.0" encoding="UTF-8"?>
@@ -125,7 +124,7 @@ class PostprocessFailures(unittest.TestCase):
         names = []
         for path in directory.rglob("*"):
             if path.is_file() and ".dtd" not in path.parts and path.parent != directory / "bin":
-                if path.name != "index.html" and path.name != "notes.txt" and path.name != "cll.appcache":
+                if path.name != "index.html" and path.name != "notes.txt":
                     if path.suffix not in {".html", ".txt"}:
                         names.append(path.name)
                     elif path.name not in {"index.html", "other.html", "notes.txt"}:
@@ -133,7 +132,7 @@ class PostprocessFailures(unittest.TestCase):
         return names
 
     def test_scripts_parse(self):
-        for path in (CLEANUP, APPCACHE, UPDATER, ROOT / "scripts" / "diff_official", ROOT / "cll_build"):
+        for path in (CLEANUP, UPDATER, ROOT / "scripts" / "diff_official", ROOT / "cll_build"):
             subprocess.run(["bash", "-n", str(path)], check=True)
 
     def test_missing_ruby_keeps_the_page(self):
@@ -169,17 +168,7 @@ class PostprocessFailures(unittest.TestCase):
             self.assertEqual(stat.S_IMODE(page.stat().st_mode), 0o640)
             self.assertEqual(self.leftovers(directory), [])
 
-    def test_failed_appcache_xmllint_keeps_the_page(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            directory = Path(temporary)
-            page = self.page(directory)
-            before = page.read_bytes()
-            result = self.run_script(APPCACHE, directory, {"xmllint": xmllint_fail()})
-            self.assertNotEqual(result.returncode, 0, result.stderr)
-            self.assertEqual(page.read_bytes(), before)
-            self.assertNotIn(b'manifest="cll.appcache"', page.read_bytes())
-
-    def test_cleanup_and_appcache_succeed(self):
+    def test_cleanup_succeeds(self):
         with tempfile.TemporaryDirectory() as temporary:
             directory = Path(temporary)
             shutil.copytree(ROOT / "dtd", directory / "dtd")
@@ -189,25 +178,17 @@ class PostprocessFailures(unittest.TestCase):
             notes_before = notes.read_bytes()
             result = self.run_script(CLEANUP, directory, {"ruby": ruby_cat()})
             self.assertEqual(result.returncode, 0, result.stderr)
-            result = self.run_script(APPCACHE, directory, {})
-            self.assertEqual(result.returncode, 0, result.stderr)
             text = page.read_text()
             self.assertIn('xml:lang="en"', text)
             self.assertIn('lang="en"', text)
-            self.assertIn('manifest="cll.appcache"', text)
+            self.assertNotIn("manifest=", text)
             self.assertIn("dtd/xhtml1-transitional.dtd", text)
             self.assertNotIn("http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd", text)
             self.assertIn("keep this sentence", text)
             self.assertIn("other sentence", other.read_text())
-            self.assertIn('manifest="cll.appcache"', other.read_text())
+            self.assertNotIn("manifest=", other.read_text())
             self.assertEqual(notes.read_bytes(), notes_before)
             self.assertEqual(stat.S_IMODE(page.stat().st_mode), 0o640)
-            manifest = (directory / "cll.appcache").read_text()
-            self.assertIn("CACHE MANIFEST", manifest)
-            self.assertIn("NETWORK:", manifest)
-            self.assertIn("index.html", manifest)
-            self.assertIn("other.html", manifest)
-            self.assertNotIn("cll.appcache", manifest.replace("CACHE MANIFEST", ""))
             self.assertGreater(page.stat().st_size, 0)
 
     def test_directory_argument_is_required(self):

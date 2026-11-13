@@ -68,8 +68,8 @@ To build all formats, run:
 The script builds the image `lojban/cll_build` from `Dockerfile`.
 It then runs `./cll_build` inside a container named `cll_build`, with your checkout mounted, and passes its own arguments to `cll_build`.
 Before it starts, it stops and removes any container with that name, so run only one such build at a time on a machine.
-The launchers pass `-i` when standard input is a terminal.
-They pass `-t` only when standard input and standard output are both terminals.
+If standard input is a terminal, the launchers pass `-i`.
+If standard input and standard output are both terminals, they pass `-t`.
 Each container uses `--init` to forward signals and clean up exited child processes.
 Signals also reach the build's child processes during non-terminal runs.
 The launchers also run from scripts and CI.
@@ -86,7 +86,7 @@ The launchers reject paths with whitespace before building an image because `scr
 | `-t` | Fast test build. The build changes cross-references so that the selected files build on their own, and it skips most of the glossary work. |
 | `-s` | Like `-t`, but with the full glossary |
 | `-T TARGET` | Build one target instead of `all` |
-| `-a DIRECTORY` | Copy the results to `DIRECTORY` as well. The launcher creates the directory if needed and resolves it to an absolute path before mounting it. Relative paths start from the current directory. |
+| `-a DIRECTORY` | Copy the results to `DIRECTORY` as well. The launcher creates a missing directory. It resolves the path to an absolute path before it mounts the directory. Relative paths start from the current directory. |
 | `-n` | Skip the comparison with `official/` |
 | `-j` | Fetch a fresh Jbovlaste export into `dictionary/all_words.xml`. Review that file before committing it. |
 | `-h` | Print the usage, including the list of targets. `./cll_build -h` prints it without a container. |
@@ -98,7 +98,7 @@ To build one or more chapters, give their files after `-t` or `-s`:
 ./run_container.sh -t -n chapters/05.xml chapters/06.xml
 ```
 
-The `-n` option skips the comparison with the copies in `official/`, which would compare these chapters with the whole book.
+The `-n` option skips the comparison with the copies in `official/`. That comparison pairs these chapters with the whole book.
 
 `-t` without chapter files builds the whole book faster than a full build:
 
@@ -124,8 +124,12 @@ The default target, `all`, builds the three HTML versions, the Prince PDF, and t
 | `clean`, `realclean` | Remove build output |
 
 Open `index.html` in an HTML folder to read that version.
+Each HTML folder also contains `sw.js`, a service worker.
+The build writes into it the list of pages and the files those pages use.
+After one online visit, the browser can open that copy of the book with no network.
 With `-a`, the HTML folders are copied as `cll-xhtml_chapter_chunks/`, `cll-xhtml_section_chunks/`, and `cll-xhtml_no_chunks/`, beside `cll.pdf` and `cll.epub`.
-The copy runs even when the build output is already up to date.
+A copy made with `-a` leaves `sw.js` out, so the copy loads each page from the files on disk.
+If the build output is already up to date, the copy still runs.
 To build all default formats and copy them to `output`, run:
 
 ```sh
@@ -150,7 +154,7 @@ Three other engines each have their own launcher, image, and guide:
 
 Each launcher accepts `-t` and `-s` with chapter files, as `run_container.sh` does.
 All four launchers accept `-a DIRECTORY`.
-They create the directory if needed and resolve it to an absolute path before mounting it.
+They create a missing directory. They resolve the path to an absolute path before they mount it.
 Relative paths start from the caller's current directory.
 The "Build selected formats" workflow runs the ConTeXt launcher with Docker.
 The Typst and ConTeXt PDFs are still experimental.

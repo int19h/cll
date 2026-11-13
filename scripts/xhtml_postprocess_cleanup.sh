@@ -15,7 +15,7 @@ trap '[[ -z "$list" ]] || rm -f -- "$list"; [[ -z "$tmp" ]] || rm -f -- "$tmp" "
 # Collect names first. A temporary file created while find is walking this
 # directory can otherwise be picked up and processed.
 list=$(mktemp)
-find . -type f ! -name '*.appcache*' -print0 > "$list"
+find . -type f -print0 > "$list"
 
 while IFS= read -r -d '' file; do
   rc=0

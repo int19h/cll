@@ -48,7 +48,7 @@ class MakefileTests(unittest.TestCase):
 '''+''.join(f'''{self.build}/xhtml_{kind}_chunks.done:
 	mkdir -p {self.build}/xhtml_{kind}_chunks
 	printf '{kind} fixture' > {self.build}/xhtml_{kind}_chunks/index.html
-	touch {self.build}/xhtml_{kind}_chunks/cll.appcache $@
+	touch {self.build}/xhtml_{kind}_chunks/sw.js $@
 ''' for kind in ('chapter', 'section', 'no')))
         previous = None
         for name in ('fresh', 'unchanged'):
@@ -61,7 +61,7 @@ class MakefileTests(unittest.TestCase):
             for kind in ('chapter', 'section', 'no'):
                 directory = archive / f'cll-xhtml_{kind}_chunks'
                 self.assertEqual((directory / 'index.html').read_text(), f'{kind} fixture')
-                self.assertFalse((directory / 'cll.appcache').exists())
+                self.assertFalse((directory / 'sw.js').exists())
             artifacts = [self.build / 'pdf.done', self.build / 'cll.epub'] + list(self.build.glob('*.done'))
             times = {str(p): p.stat().st_mtime_ns for p in artifacts}
             if previous is not None:
@@ -73,7 +73,7 @@ class MakefileTests(unittest.TestCase):
         html = self.build / 'xhtml_no_chunks'
         html.mkdir()
         (html / 'index.html').write_text('coverage HTML')
-        (html / 'cll.appcache').touch()
+        (html / 'sw.js').touch()
         for name in ('pdf.done', 'xhtml_no_chunks.done'):
             (self.build / name).touch()
         for name in ('first', 'second'):
@@ -81,7 +81,7 @@ class MakefileTests(unittest.TestCase):
             self.make('-o', 'clean', 'coverage', f'covcopydir={archive}')
             self.assertEqual((archive / 'cll.pdf').read_text(), 'coverage PDF')
             self.assertEqual((archive / 'cll-xhtml_no_chunks/index.html').read_text(), 'coverage HTML')
-            self.assertFalse((archive / 'cll-xhtml_no_chunks/cll.appcache').exists())
+            self.assertFalse((archive / 'cll-xhtml_no_chunks/sw.js').exists())
 
     def test_mobi_target_is_removed(self):
         result = subprocess.run(
@@ -119,6 +119,9 @@ class MakefileTests(unittest.TestCase):
             ('assets/media/logo.png', xhtml_done, 'xhtml_chapter_chunks', None),
             (mp3_rel, xhtml_done, 'xhtml_chapter_chunks', None),
             ('xml/docbook2html_config_common.xsl', xhtml_done, 'docbook2html_config_chapter_chunks.xsl', None),
+            ('scripts/xhtml_postprocess_offline.rb', xhtml_done, 'xhtml_postprocess_offline.rb', None),
+            ('scripts/sw.template.js', xhtml_done, 'sw.template.js', None),
+            ('assets/scripts/offline.js', xhtml_done, 'xhtml_chapter_chunks', None),
             ('assets/fonts/crisa-regular.otf', epub_html, 'epub-xhtml', None),
             ('assets/media/logo.png', epub_html, 'epub-xhtml', None),
         ]

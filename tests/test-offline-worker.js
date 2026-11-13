@@ -85,7 +85,12 @@ function boot(routes = new Map(), options = {}) {
     caches,
     async fetch(input, options) {
       const url = typeof input === 'string' ? input : input.url;
-      calls.push({ url, options, method: typeof input === 'string' ? 'GET' : input.method });
+      calls.push({
+        url,
+        options,
+        method: typeof input === 'string' ? 'GET' : input.method,
+        redirect: typeof input === 'string' ? 'follow' : input.redirect,
+      });
       const made = routes.get(url);
       const result = made ? await made() : response({});
       if (options && options.integrity && result && result.bodyText !== undefined
@@ -271,23 +276,58 @@ async function respond(worker, request) {
   assert.equal(poisoned.body.marker, newHtml);
   assert.equal(mixed.calls[0].options.cache, 'no-cache');
   assert.equal(mixed.calls[0].options.integrity, sri(oldHtml));
-  assert.equal(mixed.calls[1].options.cache, 'no-cache');
-  assert.equal(mixed.calls[1].options.integrity, undefined);
+  assert.equal(mixed.calls[1].options, undefined);
   if (poisoned.waited) await poisoned.waited;
   assert.equal(mixed.bucket(CACHE).has(indexUrl), false);
   assert.equal(mixed.bucket(CACHE).get(cssUrl).marker, oldCss);
 
+  // 11c. A redirect after a cache miss uses the original request and is not stored.
+  // The original navigation has redirect mode "manual", which the browser can follow.
+  let redirectCalls = 0;
+  const navigation = request(indexUrl, { redirect: 'manual' });
   const redirectedRepair = boot(new Map([
-    [indexUrl, () => response({ redirected: true, bodyText: oldHtml, marker: 'redir' })],
+    [indexUrl, () => {
+      redirectCalls += 1;
+      if (redirectCalls === 1) {
+        return response({ redirected: true, bodyText: oldHtml, marker: 'checked-redirect' });
+      }
+      return response({ type: 'opaqueredirect', status: 0, redirected: false, marker: 'browser-follows' });
+    }],
   ]), {
     precache: [['index.html', sri(oldHtml)], ['final.css', sri(oldCss)]],
     lazy: [],
   });
   redirectedRepair.bucket(CACHE).set(cssUrl, response({ marker: oldCss }));
-  const redirectedBody = await respond(redirectedRepair, request(indexUrl));
-  assert.equal(redirectedBody.body.marker, 'redir');
-  if (redirectedBody.waited) await redirectedBody.waited;
+  const redirectedBody = await respond(redirectedRepair, navigation);
+  assert.equal(redirectedBody.body.marker, 'browser-follows');
+  assert.equal(redirectedBody.body.type, 'opaqueredirect');
+  assert.equal(redirectedRepair.calls[0].options.cache, 'no-cache');
+  assert.equal(redirectedRepair.calls[0].options.integrity, sri(oldHtml));
+  assert.equal(redirectedRepair.calls[0].redirect, 'follow');
+  assert.equal(redirectedRepair.calls[1].options, undefined);
+  assert.equal(redirectedRepair.calls[1].redirect, 'manual');
+  assert.equal(redirectedBody.waited, null);
   assert.equal(redirectedRepair.bucket(CACHE).has(indexUrl), false);
+  assert.equal(redirectedRepair.bucket(CACHE).get(cssUrl).marker, oldCss);
+
+  // A non-200 checked response also falls through and is not stored.
+  let statusCalls = 0;
+  const notFound = boot(new Map([
+    [indexUrl, () => {
+      statusCalls += 1;
+      if (statusCalls === 1) return response({ status: 404, bodyText: oldHtml, marker: 'checked-404' });
+      return response({ status: 404, marker: 'plain-404' });
+    }],
+  ]), {
+    precache: [['index.html', sri(oldHtml)], ['final.css', sri(oldCss)]],
+    lazy: [],
+  });
+  notFound.bucket(CACHE).set(cssUrl, response({ marker: oldCss }));
+  const missingPage = await respond(notFound, request(indexUrl));
+  assert.equal(missingPage.body.marker, 'plain-404');
+  assert.equal(notFound.calls[1].options, undefined);
+  if (missingPage.waited) await missingPage.waited;
+  assert.equal(notFound.bucket(CACHE).has(indexUrl), false);
 
   // 12. A deleted cache is not opened again, so an old worker cannot recreate it.
   const retired = boot(new Map([[indexUrl, () => response({ marker: 'network' })]]));

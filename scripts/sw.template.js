@@ -93,17 +93,20 @@ self.addEventListener('fetch', (event) => {
     if (cache && integrity) {
       try {
         const checked = await fetch(SCOPE + path, { cache: 'no-cache', integrity });
+        // Return the checked response only when this build stores it. A
+        // redirect or any other result must use the original request, so
+        // the browser can follow a navigation redirect itself.
         if (checked.status === 200 && !checked.redirected && checked.type === 'basic') {
           event.waitUntil(cache.put(SCOPE + path, checked.clone()).catch(() => {}));
+          return checked;
         }
-        return checked;
       } catch (error) {
-        // The bytes do not belong to this build. Show the network page and do not store it.
-        return fetch(SCOPE + path, { cache: 'no-cache' });
+        // The integrity check or the network failed. Fall through.
       }
     }
     const response = await fetch(request);
-    if (cache && response.status === 200 && !response.redirected && response.type === 'basic') {
+    // A precached path is stored only from the checked fetch above.
+    if (cache && !integrity && response.status === 200 && !response.redirected && response.type === 'basic') {
       event.waitUntil(cache.put(SCOPE + path, response.clone()).catch(() => {}));
     }
     return response;

@@ -34,9 +34,6 @@ while IFS= read -r -d '' file; do
     "$original" > "$tmp"
   ruby "$cufile" "$tmp" > "$tmp.ruby"
   mv -- "$tmp.ruby" "$tmp"
-  file=$tmp
-  xmllint --format --loaddtd "$file" >"$file.tmp"
-  mv -- "$file.tmp" "$tmp"
   chmod --reference="$original" "$tmp"
   mv -- "$tmp" "$original"
   tmp=""

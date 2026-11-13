@@ -78,10 +78,6 @@ def ruby_fail():
     return "#!/bin/bash\necho 'ruby failed' >&2\nexit 1\n"
 
 
-def xmllint_fail():
-    return "#!/bin/bash\necho 'xmllint failed' >&2\nexit 1\n"
-
-
 def wget_fake():
     return """#!/bin/bash
 set -u
@@ -156,17 +152,8 @@ class PostprocessFailures(unittest.TestCase):
             self.assertEqual(page.read_bytes(), before)
             self.assertEqual(self.leftovers(directory), [])
 
-    def test_failed_xmllint_keeps_the_page(self):
-        with tempfile.TemporaryDirectory() as temporary:
-            directory = Path(temporary)
-            page = self.page(directory)
-            before = page.read_bytes()
-            result = self.run_script(
-                CLEANUP, directory, {"ruby": ruby_cat(), "xmllint": xmllint_fail()})
-            self.assertNotEqual(result.returncode, 0, result.stderr)
-            self.assertEqual(page.read_bytes(), before)
-            self.assertEqual(stat.S_IMODE(page.stat().st_mode), 0o640)
-            self.assertEqual(self.leftovers(directory), [])
+    def test_cleanup_does_not_call_xmllint(self):
+        self.assertNotIn("xmllint", CLEANUP.read_text())
 
     def test_cleanup_succeeds(self):
         with tempfile.TemporaryDirectory() as temporary:

@@ -1,3 +1,7 @@
+/* The HTML formatter treats block-level elements as blocks on the page.
+   If a rule here sets white-space to pre, pre-wrap, pre-line, or break-spaces,
+   add that element to the verbatim list in scripts/html_format.rb. */
+
 /********************
  * NB:
  *

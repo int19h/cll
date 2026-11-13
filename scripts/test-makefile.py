@@ -2,6 +2,7 @@
 """Exercise archive recipes and dependency scheduling without book renderers."""
 from pathlib import Path
 import os
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -142,6 +143,52 @@ class MakefileTests(unittest.TestCase):
                 self.assertTrue(
                     'Nothing to be done' in output or 'is up to date' in output,
                     output)
+
+    def test_epub_depends_on_the_epubcheck_scripts(self):
+        epub = self.build / 'cll.epub'
+        html = self.build / 'epub-xhtml/index.html'
+        self.touch_output(html)
+        self.touch_output(epub)
+        current = self.make('-n', epub)
+        self.assertTrue(
+            'Nothing to be done' in current or 'is up to date' in current, current)
+        for script in ('scripts/run-epubcheck.sh', 'scripts/install-epubcheck.sh'):
+            with self.subTest(script=script):
+                output = self.make('-n', f'-W{script}', epub)
+                self.assertIn('scripts/run-epubcheck.sh', output)
+                self.assertNotIn('is up to date', output)
+
+    def test_clean_keeps_the_epubcheck_install(self):
+        # Make reads PWD from the environment, not from the process cwd.
+        coverage = self.root / 'coverage/build'
+        coverage.mkdir(parents=True)
+        gone = coverage / 'gone.pdf'
+        gone.write_text('gone')
+        tool = self.build / 'tools/epubcheck'
+        tool.mkdir(parents=True)
+        jar = tool / 'epubcheck.jar'
+        jar.write_text('jar')
+        stamp = tool / '.sha256'
+        stamp.write_text('abc\n')
+        other = self.build / 'cll.epub'
+        other.write_text('epub')
+        outside = Path(tempfile.mkdtemp(prefix='cll-make-outside-'))
+        self.addCleanup(lambda: shutil.rmtree(outside, ignore_errors=True))
+        # The environment points PWD at a decoy checkout with its own build/.
+        # Only the command-line PWD keeps clean inside the temporary root, so
+        # this file is deleted if that argument is ever dropped.
+        (outside / 'build').mkdir()
+        (outside / 'coverage/build').mkdir(parents=True)
+        survivor = outside / 'build/survivor.epub'
+        survivor.write_text('keep')
+        env = os.environ.copy()
+        env['PWD'] = str(outside)
+        self.make(f'PWD={self.root}', 'clean', env=env)
+        self.assertEqual(jar.read_text(), 'jar')
+        self.assertEqual(stamp.read_text(), 'abc\n')
+        self.assertFalse(other.exists())
+        self.assertFalse(gone.exists())
+        self.assertEqual(survivor.read_text(), 'keep')
 
     def test_offline_no_skips_the_generator(self):
         done = self.build / 'xhtml_no_chunks.done'

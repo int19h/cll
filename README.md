@@ -18,7 +18,7 @@ Report errors and suggest changes in the [issues](https://github.com/int19h/cll/
 | `scripts/` | The build, the converters, the lints, and their tests |
 | `tests/` | Parser probes and test fixtures |
 | `typst/` | The Typst page layout, `book.typ` |
-| `epub/` | ePub templates and the bundled epubcheck |
+| `epub/` | ePub templates. EPUBCheck is installed by `scripts/install-epubcheck.sh` |
 | `dictionary/` | `all_words.xml`, the jbovlaste dictionary export that the glossary uses. If this file is missing or empty, the build downloads a new export. `cll_build -j` fetches a fresh export into that file. |
 | `official/` | Published builds of CLL 1.1 and of the upstream 1.2 versions, which the local comparison step uses. `official/gadri/` keeps the ratified text of the article reform. |
 | `orig/` | Files from the first edition, and the SVG source of the chapter 2 diagram |

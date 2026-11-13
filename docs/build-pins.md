@@ -24,6 +24,31 @@ These pins fix the recorded inputs while their hosts retain them.
 A missing input stops the build.
 The build does not substitute a newer version.
 
+## EPUBCheck
+
+`scripts/install-epubcheck.sh` installs EPUBCheck 5.4.0 from its official GitHub release.
+The archive is `https://github.com/w3c/epubcheck/releases/download/v5.4.0/epubcheck-5.4.0.zip`.
+Its SHA-256 hash is `33350c61038e71dfb3d45a76aed04bf5481e6d5500cb780f6e98db8bbd15a28c`.
+The script requires that hash before it extracts the archive.
+
+The container image installs the tool at `/usr/local/share/epubcheck`.
+It sets `EPUBCHECK_JAR` to `epubcheck.jar` in that directory.
+Ubuntu 24.04 `default-jre-headless` supplies Java 21. That runtime runs EPUBCheck 5.4.0.
+
+`scripts/build-selected-formats.sh` runs the installer before a native ePub build.
+If `EPUBCHECK_JAR` is set, `scripts/run-epubcheck.sh` uses that jar.
+If that variable is unset and the image has `/usr/local/share/epubcheck/epubcheck.jar`, the script uses that file.
+Otherwise it calls the installer for `build/tools/epubcheck`.
+If the stamp matches the pin, the installer does no work.
+The pages site builds an edition with that edition's `./cll_build`.
+If the image jar is absent, that command calls the installer.
+The site runner has network access and a Java runtime.
+`EPUBCHECK_ARCHIVE` can name a local copy of the same archive. The script still requires the pinned hash.
+
+If a publication has warnings and no errors, EPUBCheck exits with status 0.
+Those messages stay in the build log.
+An error exits with status 1 and stops the ePub build.
+
 ## ConTeXt distribution
 
 `scripts/install-context.sh` uses two archives from official ConTeXt repositories.
@@ -67,20 +92,23 @@ Update dependencies in a separate reviewed change:
 2. Select a matching Ubuntu archive timestamp in all three Dockerfiles.
 3. If the HTTPS bootstrap bundle changes, update its dated URL and hash in all three Dockerfiles.
 4. If Prince changes, update its versioned URLs and both architecture hashes.
-5. If ConTeXt changes, select fixed source and font commits in `scripts/install-context.sh`.
-6. Record the archive hashes and required ConTeXt version in that script.
-7. Update the dependency pin tests and this document.
-8. Build all three images locally.
-9. Build the complete book with each selected engine.
-10. Review the resulting PDFs and toolchain records.
+5. If EPUBCheck changes, update the version, the release URL, and the SHA-256 in `scripts/install-epubcheck.sh`.
+6. If ConTeXt changes, select fixed source and font commits in `scripts/install-context.sh`.
+7. Record the archive hashes and required ConTeXt version in that script.
+8. Update the dependency pin tests and this document.
+9. Build all three images locally.
+10. Build the complete book with each selected engine.
+11. Review the resulting PDFs and toolchain records.
 
 Run the inexpensive guards with Python 3:
 
 ```sh
 python3 scripts/test-build-pins.py
+python3 scripts/test-epubcheck.py
 ```
 
 The guards reject changing image references, missing snapshot selection, and the old ConTeXt installer.
+The EPUBCheck test rejects an archive whose hash does not match the pin.
 A fixture also supplies an incorrect archive and makes sure that installation stops before extraction.
 Another fixture requires the standalone configuration during engine startup.
 A full local build tests package availability, compilation, and rendering.

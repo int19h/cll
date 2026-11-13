@@ -46,8 +46,14 @@ It runs beside the Prince pipeline and writes `build/cll-context.pdf`.
   install the DejaVu and Linux Libertine system font packages
   (`fonts-dejavu`, `fonts-linuxlibertine`); the stylesheet loads its
   special-purpose faces from the repository's own `assets/`.
-- **EPUB**: `zip` (the EPUB is assembled by `scripts/build_epub.sh`)
-  and a Java runtime (`default-jre`) for the bundled epubcheck.
+- **EPUB**: `zip` (the package is assembled by `scripts/build_epub.sh`).
+  The installer needs `curl` and `unzip`.
+  The check needs a Java runtime (`default-jre-headless` or `default-jre`).
+  The ePub target runs EPUBCheck 5.4.0.
+  The container image includes that release.
+  If the image jar is absent, a native build calls `scripts/install-epubcheck.sh`.
+  If the stamp matches the pin, the installer keeps the existing copy.
+  See [build-pins.md](build-pins.md).
 
 A single-chapter test build that exercises most of the toolchain:
 

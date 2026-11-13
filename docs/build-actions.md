@@ -41,6 +41,8 @@ Typst and ConTeXt remain experimental PDF backends. See their build guides for l
 The workflow copies the setup block from the release-site workflow on `pages`.
 It installs Prince 16.2 only for `pdf`, and checks the package against the Dockerfile's SHA-256 hash.
 It installs Java only for EPUB validation.
+The ePub build then installs EPUBCheck 5.4.0 with `scripts/install-epubcheck.sh`.
+The script checks the pinned SHA-256 before extraction.
 WeasyPrint and Typst use the branch's pinned installers. ConTeXt uses the branch's container launcher.
 Native system packages can change with the runner image. See [build-pins.md](build-pins.md) for container dependency pins.
 

@@ -4,7 +4,7 @@ FROM ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884
 # Ruby 2.6 / Prince 12.5 image). The DocBook XSL stylesheets that drive
 # the layout are pinned in-tree (xml/docbook-xsl-1.78.1.zip). The
 # output also depends on xsltproc/libxslt, Ruby, xmllint, and fonts.
-# Fix the base image and signed APT archive below. Prince is pinned separately.
+# Fix the base image and signed APT archive below. Prince and EPUBCheck are pinned separately.
 ENV DEBIAN_FRONTEND=noninteractive LANG=en_US.UTF-8
 
 # Core toolchain:
@@ -76,5 +76,11 @@ RUN arch="$(dpkg --print-architecture)" \
     && rm -rf /var/lib/apt/lists/* \
     && rm -f "prince_16.2-1_ubuntu24.04_${arch}.deb" \
     && prince --version
+
+# EPUBCheck 5.4.0. scripts/install-epubcheck.sh pins the official archive and its SHA-256.
+# Ubuntu 24.04 default-jre-headless (Java 21) runs this release.
+COPY scripts/install-epubcheck.sh /usr/local/src/install-epubcheck.sh
+RUN bash /usr/local/src/install-epubcheck.sh /usr/local/share/epubcheck
+ENV EPUBCHECK_JAR=/usr/local/share/epubcheck/epubcheck.jar
 
 WORKDIR /srv/cll

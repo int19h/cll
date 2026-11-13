@@ -1,5 +1,6 @@
 #!/bin/bash
-# Same targets and optional installers as pages:scripts/build-site.sh.
+# Format targets match pages:scripts/build-site.sh.
+# The ePub target installs the pinned EPUBCheck before the book build.
 set -euo pipefail
 formats=${1:?Usage: build-selected-formats.sh 'FORMAT ...' OUTPUT_DIRECTORY}
 out=$(realpath -m "${2:?missing output directory}")
@@ -34,7 +35,12 @@ for f in $formats; do
 <p><a href="xhtml_no_chunks/index.html">Read on one page</a></p>
 HTML
       continue ;;
-    epub) target=epub; file=cll.epub ;;
+    epub)
+      ./scripts/install-epubcheck.sh build/tools/epubcheck
+      export EPUBCHECK_JAR="$PWD/build/tools/epubcheck/epubcheck.jar"
+      target=epub
+      file=cll.epub
+      ;;
     pdf) target=pdf; file=cll.pdf ;;
     pdf-weasyprint)
       ./scripts/install-weasyprint.sh

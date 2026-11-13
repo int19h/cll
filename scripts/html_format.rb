@@ -9,13 +9,13 @@
 # inline element stay byte for byte.
 #
 # br.example-break and br.table-break are display:none in assets/css/master.css.
-# A line break after one of them would show as a space, so whitespace that
-# follows them stays one space. A normal br breaks the line only when
-# whitespace already follows it.
+# Whitespace after one of them stays one space, unless the run is protected.
+# A normal br breaks the line only when whitespace already follows it.
 #
 # A space between two East Asian wide characters, or beside U+200B, stays a
-# space. A segment break there would be removed. span.guibutton is verbatim:
-# assets/scripts/sance-next.js reads it with innerText while it is hidden.
+# space. A segment break there would be removed. The neighbor search is
+# HtmlInlineNeighbors. span.guibutton is verbatim: assets/scripts/sance-next.js
+# reads it with innerText while it is hidden.
 #
 # Block-level elements are assumed to be blocks on the page. See the note
 # at the top of assets/css/master.css.
@@ -735,8 +735,16 @@ module HtmlFormat
           column = indent_col
         elsif br_state == :hidden
           br_state = nil
-          item[:decision] = :space
-          chunk += 1
+          # A hidden br is not a rendered line. A protected run keeps its
+          # newline; any other run stays one space.
+          if item[:protected] && item[:newline]
+            item[:decision] = :keep_nl
+            column = indent_col
+            chunk = 0
+          else
+            item[:decision] = :space
+            chunk += 1
+          end
         elsif item[:protected]
           if pending
             decide.call(chunk)

@@ -416,6 +416,69 @@ class HtmlFormatContract < Minitest::Test
     pretty = assert_safe(source)
     assert_includes body_of(pretty), '<span> word</span>'
   end
+
+  def test_verbatim_inline_edges_keep_protected_runs
+    zw = HtmlFormat::ZWSP
+    long = 'a' * 100
+    space = assert_safe(page(%(<p><span xml:space="preserve">#{long}#{zw}</span> word</p>)))
+    assert_includes body_of(space), "#{zw}</span> word"
+    refute_includes body_of(space), "#{zw}</span>\n"
+
+    newline = assert_safe(page(%(<p><span xml:space="preserve">#{zw}</span>\nword</p>)))
+    assert_match(%r{</span>\nword}, body_of(newline))
+
+    nested = assert_safe(page(%(<p><span xml:space="preserve">#{zw}</span><em>\nword</em></p>)))
+    assert_match(%r{<em>\nword</em>}, body_of(nested))
+
+    mirror = assert_safe(page(%(<p>#{long} <span xml:space="preserve">#{zw}word</span></p>)))
+    assert_includes body_of(mirror), " <span xml:space=\"preserve\">#{zw}word</span>"
+    refute_match(%r{<span xml:space="preserve">\n}, body_of(mirror))
+  end
+
+  def test_stops_that_are_not_line_boundaries_keep_the_run
+    zw = HtmlFormat::ZWSP
+    math = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>'
+    cases = {
+      'math after' => ["<p>a#{zw}\n#{math}</p>", %r{a#{zw}\n<math}],
+      'math before' => ["<p>#{math}\n#{zw}b</p>", %r{</math>\n#{zw}b}],
+      'preserve span' => [%(<p>a#{zw}\n<span xml:space="preserve">q</span></p>), %r{a#{zw}\n<span}],
+      'hidden br' => [%(<p>a#{zw}<br class="example-break"/>\nb</p>), %r{example-break" />\nb}],
+      'hidden br before' => [%(<p>a#{zw}\n<br class="example-break"/>b</p>), %r{a#{zw}\n<br}],
+      'guibutton' => [%(<p>a#{zw}<span class="guibutton">x</span>\nb</p>), %r{</span>\nb}],
+      'display-none' => [%(<p>a#{zw}<span class="display-none">x</span>\nb</p>), %r{</span>\nb}],
+      'script' => [%(<p>a#{zw}<script type="text/javascript">var q=1;</script>\nb</p>), %r{</script>\nb}]
+    }
+    cases.each do |name, (body, pattern)|
+      pretty = assert_safe(page(body))
+      assert_match pattern, body_of(pretty), name
+    end
+
+    hidden_wide = assert_safe(page("<p>漢<span class=\"display-none\">x</span>\n字</p>"))
+    assert_match(%r{</span>\n字}, body_of(hidden_wide))
+    wide_br = assert_safe(page("<p>漢<br class=\"example-break\"/>\n字</p>"))
+    assert_match(%r{example-break" />\n字}, body_of(wide_br))
+  end
+
+  def test_nbsp_from_the_dtd_does_not_protect_a_wide_pair
+    source = page("<p>漢&nbsp;\n字</p>")
+    Dir.chdir(ROOT) do
+      doc = Nokogiri::XML(source) do |config|
+        config.default_xml
+        config.strict
+        config.options = Nokogiri::XML::ParseOptions::DTDLOAD
+      end
+      before = HtmlFormat.write(doc)
+      HtmlFormat.format!(doc)
+      after = HtmlFormat.write(doc)
+      HtmlWhitespaceGuard.compare!(before, after, name: 'dtd-entity.html')
+      assert_match(/漢&nbsp;\n字/, body_of(after))
+      assert_equal after, HtmlFormat.write(HtmlFormat.format!(Nokogiri::XML(after) { |config|
+        config.default_xml
+        config.strict
+        config.options = Nokogiri::XML::ParseOptions::DTDLOAD
+      }))
+    end
+  end
 end
 
 class HtmlWhitespaceGuardContract < Minitest::Test
@@ -688,6 +751,67 @@ class HtmlWhitespaceGuardContract < Minitest::Test
       document("<p title=\"a&nbsp;b\">x\ny</p>"),
       name: 'same-entity'
     )
+    moved = refute_safe(
+      document('<p title="a&nbsp;b">x</p>'),
+      document('<p title="ab&nbsp;">x</p>')
+    )
+    assert_match(/CHANGED entity reference/, moved)
+    across = refute_safe(
+      document('<p title="a&nbsp;b" id="xy">x</p>'),
+      document('<p title="ab" id="x&nbsp;y">x</p>')
+    )
+    assert_match(/CHANGED entity reference/, across)
+    elements = refute_safe(
+      document('<p title="a&nbsp;b">x</p><p title="ab">y</p>'),
+      document('<p title="ab">x</p><p title="a&nbsp;b">y</p>')
+    )
+    assert_match(/CHANGED entity reference/, elements)
+    wide = refute_safe(
+      document('<p title="漢&nbsp;b">x</p>'),
+      document('<p title="漢b&nbsp;">x</p>')
+    )
+    assert_match(/CHANGED entity reference/, wide)
+    defined = '<!DOCTYPE html [<!ENTITY a "A"><!ENTITY b "A">]>'
+    HtmlWhitespaceGuard.compare!(
+      document('<p title="&a;">x</p>', doctype: defined),
+      document('<p title="&b;">x</p>', doctype: defined),
+      name: 'defined-attr'
+    )
+  end
+
+  def test_rejects_a_protected_run_beside_a_verbatim_or_hidden_element
+    zw = HtmlWhitespaceGuard::ZWSP
+    math = '<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>'
+    long = 'a' * 100
+    pairs = [
+      [page(%(<p><span xml:space="preserve">#{long}#{zw}</span> word</p>)),
+       page(%(<p><span xml:space="preserve">#{long}#{zw}</span>\nword</p>))],
+      [page(%(<p><span xml:space="preserve">#{zw}</span>\nword</p>)),
+       page(%(<p><span xml:space="preserve">#{zw}</span> word</p>))],
+      [page(%(<p><span xml:space="preserve">#{zw}</span><em>\nword</em></p>)),
+       page(%(<p><span xml:space="preserve">#{zw}</span><em> word</em></p>))],
+      [page(%(<p>#{long} <span xml:space="preserve">#{zw}word</span></p>)),
+       page(%(<p>#{long}\n<span xml:space="preserve">#{zw}word</span></p>))],
+      [page("<p>a#{zw}\n#{math}</p>"), page("<p>a#{zw} #{math}</p>")],
+      [page("<p>#{math}\n#{zw}b</p>"), page("<p>#{math} #{zw}b</p>")],
+      [page(%(<p>a#{zw}\n<span xml:space="preserve">q</span></p>)),
+       page(%(<p>a#{zw} <span xml:space="preserve">q</span></p>))],
+      [page(%(<p>a#{zw}<br class="example-break"/>\nb</p>)),
+       page(%(<p>a#{zw}<br class="example-break"/> b</p>))],
+      [page(%(<p>a#{zw}\n<br class="example-break"/>b</p>)),
+       page(%(<p>a#{zw} <br class="example-break"/>b</p>))],
+      [page(%(<p>a#{zw}<span class="guibutton">x</span>\nb</p>)),
+       page(%(<p>a#{zw}<span class="guibutton">x</span> b</p>))],
+      [page(%(<p>a#{zw}<span class="display-none">x</span>\nb</p>)),
+       page(%(<p>a#{zw}<span class="display-none">x</span> b</p>))],
+      [page(%(<p>a#{zw}<script type="text/javascript">var q=1;</script>\nb</p>)),
+       page(%(<p>a#{zw}<script type="text/javascript">var q=1;</script> b</p>))],
+      [page("<p>漢<span class=\"display-none\">x</span>\n字</p>"),
+       page('<p>漢<span class="display-none">x</span> 字</p>')],
+      [page("<p>漢<br class=\"example-break\"/>\n字</p>"),
+       page('<p>漢<br class="example-break"/> 字</p>')]
+    ]
+    pairs.each { |before, after| refute_safe(before, after) }
   end
 
   def test_compares_the_raw_declaration_and_the_prolog_order

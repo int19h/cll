@@ -190,6 +190,27 @@ class MakefileTests(unittest.TestCase):
         self.assertFalse(gone.exists())
         self.assertEqual(survivor.read_text(), 'keep')
 
+    def test_inline_neighbor_helper_rebuilds_formatted_html(self):
+        processed = self.build / 'cll_processed_xhtml.xml'
+        targets = [
+            self.build / 'xhtml_no_chunks.done',
+            self.build / 'pdf.done',
+            self.build / 'weasyprint/cll_processed_xhtml_pdf.html',
+            self.build / 'epub-xhtml/index.html',
+        ]
+        for path in [processed, *targets]:
+            self.touch_output(path)
+        helper = 'scripts/html_inline_neighbors.rb'
+        for target in targets:
+            with self.subTest(target=target.name):
+                current = self.make('-n', target)
+                self.assertTrue(
+                    'Nothing to be done' in current or 'is up to date' in current, current)
+                stale = self.make('-n', f'-W{helper}', target)
+                self.assertNotIn('Nothing to be done', stale)
+                self.assertNotIn('is up to date', stale)
+                self.assertIn('xhtml_postprocess_cleanup.sh', stale)
+
     def test_offline_no_skips_the_generator(self):
         done = self.build / 'xhtml_no_chunks.done'
         self.touch_output(done)

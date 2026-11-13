@@ -95,6 +95,9 @@ class EpubAssets(unittest.TestCase):
                 items = manifest.findall('{*}manifest/{*}item')
                 self.assertTrue(any(i.get('href') == 'assets/media/logo.png' for i in items))
                 self.assertFalse(any('context/' in i.get('href', '') for i in items))
+                self.assertFalse(any(name == 'sw.js' or name.endswith('/sw.js')
+                                     or name == 'offline.js' or name.endswith('/offline.js')
+                                     for name in names))
 
             # A page named by the stylesheet list must be in the package.
             (nav / 'spine.txt').write_text('index.html\nchapter.html\nmissing.html\n')

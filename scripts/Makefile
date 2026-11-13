@@ -64,12 +64,15 @@ ifdef copydir
 	mkdir -p "$(copydir)"
 	rm -rf "$(copydir)/cll-$(notdir $(basename $<))"
 	cp -pr "$(basename $<)" "$(copydir)/cll-$(notdir $(basename $<))"
-	# The appcache is supremely unhelpful when testing.
-	find "$(copydir)/cll-$(notdir $(basename $<))" -type f -name cll.appcache -delete
+	# A service worker keeps old pages in the browser. That is unhelpful when testing.
+	rm -f "$(copydir)/cll-$(notdir $(basename $<))/sw.js"
 endif
 
-# Do the actual chunking work
-$(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl xml/docbook2html_config_common.xsl $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_xhtml.xsl assets/css/master.css scripts/xhtml_postprocess_appcache.sh scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/util.rb xml/iso-pub.ent $(html_copied_files)
+# Do the actual chunking work.
+# offline=no skips sw.js. Any other value writes it.
+# cll_build does not forward arguments to make. Pass the variable in the environment:
+#   offline=no ./cll_build -n -T xhtml_nochunks
+$(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl xml/docbook2html_config_common.xsl $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_xhtml.xsl assets/css/master.css scripts/xhtml_postprocess_offline.rb scripts/sw.template.js assets/scripts/offline.js scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/util.rb xml/iso-pub.ent $(html_copied_files)
 	rm -rf $(builddir)/xhtml_$*_chunks
 	mkdir -p $(builddir)/xhtml_$*_chunks
 	cp -pr $(PWD)/dtd $(builddir)/xhtml_$*_chunks/
@@ -84,7 +87,9 @@ $(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl xml/docboo
 	cp -pr $(PWD)/assets $(builddir)/xhtml_$*_chunks/
 	cp -avr $(builddir)/sance.js $(builddir)/xhtml_$*_chunks/assets/scripts/sance.js
 	scripts/xhtml_postprocess_cleanup.sh $(builddir)/xhtml_$*_chunks/
-	scripts/xhtml_postprocess_appcache.sh $(builddir)/xhtml_$*_chunks/
+ifneq ($(offline),no)
+	scripts/xhtml_postprocess_offline.rb $(builddir)/xhtml_$*_chunks/ scripts/sw.template.js
+endif
 	touch $(builddir)/xhtml_$*_chunks.done
 
 
@@ -218,6 +223,6 @@ ifneq ($(covcopydir),)
 	cp $(builddir)/cll.pdf $(covcopydir)/cll.pdf
 	rm -rf $(covcopydir)/cll-xhtml_no_chunks
 	cp -pr $(builddir)/xhtml_no_chunks $(covcopydir)/cll-xhtml_no_chunks
-	# The appcache is supremely unhelpful when testing
-	find "$(covcopydir)/cll-xhtml_no_chunks" -type f -name cll.appcache -delete
+	# A service worker keeps old pages in the browser. That is unhelpful when testing.
+	rm -f "$(covcopydir)/cll-xhtml_no_chunks/sw.js"
 endif

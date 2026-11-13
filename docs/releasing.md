@@ -98,6 +98,12 @@ Make sure that the HTML archive contains the complete site for that version.
 Read the attached books and the release notes.
 Make sure that the tag, edition branch, branding, and comparisons agree.
 
+The first release that contains the service worker needs an offline test of the draft.
+Do this after the deployment finishes and before publication.
+Use current Chrome, Firefox, and Safari, and include one phone.
+Follow the eight steps in [Offline reading of a draft release](checks.md#offline-reading-of-a-draft-release).
+Do not publish the release until every step succeeds in each browser.
+
 While a Pages deployment runs, do not publish a release.
 The pipeline reads the draft state before each group of release changes.
 That read does not lock the release.

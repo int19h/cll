@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Keep inline text through the two production formatting commands."""
+"""Keep inline text through the production formatting command."""
 from pathlib import Path
 import re
 import shlex
@@ -29,14 +29,14 @@ def text_by_id(document):
 
 
 class XhtmlFormat(unittest.TestCase):
-    def test_both_production_passes_preserve_text(self):
+    def test_production_pass_preserves_text(self):
         with tempfile.TemporaryDirectory(prefix='cll-format-') as temporary:
             directory = Path(temporary)
             shutil.copytree(ROOT / 'dtd', directory / 'dtd')
             sample = directory / 'sample.html'
             sample.write_text(SAMPLE)
             self.assertEqual(text_by_id(SAMPLE), EXPECTED)
-            for name in ('cleanup', 'appcache'):
+            for name in ('cleanup',):
                 script = ROOT / f'scripts/xhtml_postprocess_{name}.sh'
                 commands = re.findall(r'^\s*(xmllint\s+[^\n]+)', script.read_text(), re.M)
                 self.assertEqual(len(commands), 1, script)

@@ -124,7 +124,11 @@ The default target, `all`, builds the three HTML versions, the Prince PDF, and t
 | `clean`, `realclean` | Remove build output |
 
 Open `index.html` in an HTML folder to read that version.
+Each HTML folder also contains `sw.js`, a service worker.
+The build writes into it the list of pages and the files those pages use.
+After one online visit, the browser can open that copy of the book with no network.
 With `-a`, the HTML folders are copied as `cll-xhtml_chapter_chunks/`, `cll-xhtml_section_chunks/`, and `cll-xhtml_no_chunks/`, beside `cll.pdf` and `cll.epub`.
+A copy made with `-a` leaves `sw.js` out, so the copy loads each page from the files on disk.
 The copy runs even when the build output is already up to date.
 To build all default formats and copy them to `output`, run:
 

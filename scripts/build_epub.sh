@@ -53,8 +53,6 @@ done
 cat build/epub/index.html | ruby -e 'puts STDIN.read.gsub(%r{</dt>\s*<dt>}m, "</dt><dd/><dt>").gsub(%r{</dt>\s*</dl>}m, "</dt><dd/></dl>")' > build/epub/index.html.new
 mv build/epub/index.html.new build/epub/index.html
 
-rm -f $epubbuilddir/cll.appcache
-
 # The stylesheet run wrote the finished navigation document (issue #208).
 navdir="$builddir/epub-nav"
 for navfile in toc.xhtml spine.txt

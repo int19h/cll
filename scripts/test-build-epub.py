@@ -19,8 +19,7 @@ class EpubAssets(unittest.TestCase):
                 '.env', 'scripts/build_epub.sh', 'scripts/epub_branding.rb',
                 'epub/mimetype', 'epub/META-INF/container.xml',
                 'epub/content.opf.s1', 'epub/content.opf.s2',
-                'epub/content.opf.s3', 'epub/toc.xhtml.s1',
-                'epub/toc.xhtml.s2', 'epub/cover.html',
+                'epub/content.opf.s3', 'epub/cover.html',
             ):
                 target = root / relative
                 target.parent.mkdir(parents=True, exist_ok=True)
@@ -42,6 +41,22 @@ class EpubAssets(unittest.TestCase):
 <p>Reader content.</p><dl><dt>First</dt><dd>One</dd></dl><dl><dt>Second</dt><dd>Two</dd></dl></body></html>''')
             (build / 'cll.xml').write_text('''<book xmlns="http://docbook.org/ns/docbook">
 <info><releaseinfo>fixture-version</releaseinfo></info></book>''')
+            # The stylesheets write these. The packager copies the navigation
+            # document and builds the spine from the page list (issue #208).
+            nav = build / 'epub-nav'
+            nav.mkdir()
+            toc_bytes = b'''<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+<head><title>Fixture</title></head>
+<body><nav id="toc" epub:type="toc"><ol>
+<li><a href="index.html">Contents</a></li>
+<li><a href="chapter.html">Chapter</a></li>
+</ol></nav></body>
+</html>
+'''
+            (nav / 'toc.xhtml').write_bytes(toc_bytes)
+            (nav / 'spine.txt').write_text('index.html\nchapter.html\n')
 
             def package():
                 return subprocess.run(
@@ -55,10 +70,10 @@ class EpubAssets(unittest.TestCase):
             with zipfile.ZipFile(build / 'cll.epub') as archive:
                 chapter = ET.fromstring(archive.read('chapter.html'))
                 self.assertEqual(len(chapter.findall('.//{*}ul')), 2)
-                toc = ET.fromstring(archive.read('toc.xhtml'))
-                links = toc.findall('.//{*}nav//{*}a')
-                self.assertEqual([(a.get('href'), a.text) for a in links],
-                                 [('chapter.html#c1', 'Chapter')])
+                self.assertEqual(archive.read('toc.xhtml'), toc_bytes)
+                manifest = ET.fromstring(archive.read('content.opf'))
+                refs = [item.get('idref') for item in manifest.findall('{*}spine/{*}itemref')]
+                self.assertEqual(refs, ['cover', 'indexhtml', 'chapterhtml'])
                 names = set(archive.namelist())
                 self.assertIn('chapter.html', names)
                 self.assertIn('assets/media/logo.png', names)
@@ -77,10 +92,16 @@ class EpubAssets(unittest.TestCase):
                                      and n != 'assets/media/chapter-2-diagram.svg.png'
                                      for n in names))
                 self.assertFalse(any(n.startswith('assets/context/') for n in names))
-                manifest = ET.fromstring(archive.read('content.opf'))
                 items = manifest.findall('{*}manifest/{*}item')
                 self.assertTrue(any(i.get('href') == 'assets/media/logo.png' for i in items))
                 self.assertFalse(any('context/' in i.get('href', '') for i in items))
+
+            # A page named by the stylesheet list must be in the package.
+            (nav / 'spine.txt').write_text('index.html\nchapter.html\nmissing.html\n')
+            result = package()
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('Spine file missing.html is not in the package', result.stdout)
+            (nav / 'spine.txt').write_text('index.html\nchapter.html\n')
 
             # Unknown reader assets must still fail instead of disappearing.
             (xhtml / 'assets/media/unknown.bin').write_bytes(b'unknown')

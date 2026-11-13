@@ -55,22 +55,9 @@ mv build/epub/index.html.new build/epub/index.html
 
 rm -f $epubbuilddir/cll.appcache
 
-$brand fill <$srcdir/toc.xhtml.s1 >$epubbuilddir/toc.xhtml
-# Restore the line layout only for the legacy TOC extractor.
-xmllint --format build/epub-xhtml/index.html | \
-  grep -P '^\s*(<a |(</?dl>|</?dt>)\s*$)' | \
-  sed -r -e 's/dt>\s*$/li>/g' -e 's/<dl>\s*$/<ol>/' -e 's;</dl>\s*$;</ol></li>;' | \
-  ruby -e 'puts STDIN.read.gsub(%r{</li>\s*<ol>}m, "<ol>")' >>$epubbuilddir/toc.xhtml
-cat $srcdir/toc.xhtml.s2 >>$epubbuilddir/toc.xhtml
-cat $epubbuilddir/toc.xhtml | ruby -e 'puts STDIN.read.gsub(%r{</ol>\s*</li>\s*</nav>}m, "</ol>\n</nav>")' >>$epubbuilddir/toc.xhtml.tmp
-mv $epubbuilddir/toc.xhtml.tmp $epubbuilddir/toc.xhtml
-
-for file in $(find build/epub-xhtml/ -type f -name '*.html' | xargs grep -l '<h1 class="title"><a')
-do
-  base="$(basename $file)"
-  id="$(grep '<h1 class="title"><a' $file | head -n 1 | sed -e 's;</h1>.*;;' -e 's/.* id="//' -e 's/".*//')"
-  sed -i "s/href=\"$base\"/href=\"$base#$id\"/" $epubbuilddir/toc.xhtml
-done
+# The stylesheet run wrote the finished navigation document (issue #208).
+navdir="$builddir/epub-nav"
+cp -p "$navdir/toc.xhtml" "$epubbuilddir/toc.xhtml"
 
 version="$(xmllint --nonet --loaddtd --xpath 'normalize-space(/*[local-name()="book"]/*[local-name()="info"]/*[local-name()="releaseinfo"])' "$builddir/cll.xml")"
 RELEASEINFO="$version" $brand fill <$srcdir/content.opf.s1 | \
@@ -119,11 +106,18 @@ done
 
 cat $srcdir/content.opf.s2 >>$epubbuilddir/content.opf
 
-for ref in $(grep '<a ' $epubbuilddir/toc.xhtml | grep -v '#section'  | sed -r -e 's/^\s*//' -e 's;.*<a href="([^"#]*)(#[^"]*)?">.*;\1;')
+# The spine is the stylesheet's own list of the pages, in reading order.
+while IFS= read -r ref
 do
+  [ -n "$ref" ] || continue
+  if [ ! -f "$epubbuilddir/$ref" ]
+  then
+    echo "Spine file $ref is not in the package ; bailing."
+    exit 1
+  fi
   id="$(echo $ref | tr -d '_./-')"
   echo "<itemref linear=\"yes\" idref=\"$id\"/>" >>$epubbuilddir/content.opf
-done
+done <"$navdir/spine.txt"
 
 cat $srcdir/content.opf.s3 >>$epubbuilddir/content.opf
 

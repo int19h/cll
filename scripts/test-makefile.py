@@ -174,10 +174,15 @@ class MakefileTests(unittest.TestCase):
         other.write_text('epub')
         outside = Path(tempfile.mkdtemp(prefix='cll-make-outside-'))
         self.addCleanup(lambda: shutil.rmtree(outside, ignore_errors=True))
-        survivor = outside / 'survivor.epub'
+        # The environment points PWD at a decoy checkout with its own build/.
+        # Only the command-line PWD keeps clean inside the temporary root, so
+        # this file is deleted if that argument is ever dropped.
+        (outside / 'build').mkdir()
+        (outside / 'coverage/build').mkdir(parents=True)
+        survivor = outside / 'build/survivor.epub'
         survivor.write_text('keep')
         env = os.environ.copy()
-        env['PWD'] = str(self.root)
+        env['PWD'] = str(outside)
         self.make(f'PWD={self.root}', 'clean', env=env)
         self.assertEqual(jar.read_text(), 'jar')
         self.assertEqual(stamp.read_text(), 'abc\n')

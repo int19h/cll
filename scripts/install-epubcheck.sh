@@ -29,7 +29,7 @@ archive="$scratch/epubcheck.zip"
 if [ -n "${EPUBCHECK_ARCHIVE:-}" ]; then
   cp "${EPUBCHECK_ARCHIVE}" "$archive"
 else
-  curl -fL -sS --retry 3 --retry-delay 2 --connect-timeout 20 --max-time 180 \
+  curl -fL -sS --retry 3 --retry-delay 2 --connect-timeout 20 --max-time 600 \
     "$url" -o "$archive"
 fi
 if ! (cd "$scratch" && echo "$sha256  epubcheck.zip" | sha256sum --check --status); then
@@ -42,8 +42,11 @@ if [ ! -f "$src/epubcheck.jar" ] || [ ! -d "$src/lib" ]; then
   echo 'EPUBCheck archive does not contain epubcheck.jar and lib/.' >&2
   exit 1
 fi
+# A marker keeps a killed copy from looking like an unrelated directory.
+# The real stamp is written only after the new jar runs.
+: > "$dest/.sha256"
 # Replace only the files this installer writes. Leave anything else in place.
-for name in epubcheck.jar lib licenses LICENSE.txt CHANGELOG.txt README.txt THIRD-PARTY.txt .sha256; do
+for name in epubcheck.jar lib licenses LICENSE.txt CHANGELOG.txt README.txt THIRD-PARTY.txt; do
   rm -rf "$dest/$name"
 done
 cp -a "$src/." "$dest/"

@@ -26,8 +26,10 @@ root=$(cd "$(dirname "$0")/.." && pwd)
     java --version || true
   fi
   epubcheck_jar=${EPUBCHECK_JAR:-}
-  if [ -z "$epubcheck_jar" ] && [ -f /usr/local/share/epubcheck/epubcheck.jar ]; then
-    epubcheck_jar=/usr/local/share/epubcheck/epubcheck.jar
+  # EPUBCHECK_SYSTEM_JAR is for tests. Production leaves it unset.
+  system_jar=${EPUBCHECK_SYSTEM_JAR:-/usr/local/share/epubcheck/epubcheck.jar}
+  if [ -z "$epubcheck_jar" ] && [ -f "$system_jar" ]; then
+    epubcheck_jar=$system_jar
   fi
   if [ -z "$epubcheck_jar" ] && [ -f "$root/build/tools/epubcheck/epubcheck.jar" ]; then
     epubcheck_jar=$root/build/tools/epubcheck/epubcheck.jar

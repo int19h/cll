@@ -2,6 +2,7 @@
 """Exercise archive recipes and dependency scheduling without book renderers."""
 from pathlib import Path
 import os
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -158,8 +159,11 @@ class MakefileTests(unittest.TestCase):
                 self.assertNotIn('is up to date', output)
 
     def test_clean_keeps_the_epubcheck_install(self):
-        coverage = SOURCE / 'coverage/build'
-        coverage.mkdir(parents=True, exist_ok=True)
+        # Make reads PWD from the environment, not from the process cwd.
+        coverage = self.root / 'coverage/build'
+        coverage.mkdir(parents=True)
+        gone = coverage / 'gone.pdf'
+        gone.write_text('gone')
         tool = self.build / 'tools/epubcheck'
         tool.mkdir(parents=True)
         jar = tool / 'epubcheck.jar'
@@ -168,12 +172,18 @@ class MakefileTests(unittest.TestCase):
         stamp.write_text('abc\n')
         other = self.build / 'cll.epub'
         other.write_text('epub')
-        self.make('clean')
+        outside = Path(tempfile.mkdtemp(prefix='cll-make-outside-'))
+        self.addCleanup(lambda: shutil.rmtree(outside, ignore_errors=True))
+        survivor = outside / 'survivor.epub'
+        survivor.write_text('keep')
+        env = os.environ.copy()
+        env['PWD'] = str(self.root)
+        self.make(f'PWD={self.root}', 'clean', env=env)
         self.assertEqual(jar.read_text(), 'jar')
         self.assertEqual(stamp.read_text(), 'abc\n')
         self.assertFalse(other.exists())
-        if coverage.exists() and not any(coverage.iterdir()):
-            coverage.rmdir()
+        self.assertFalse(gone.exists())
+        self.assertEqual(survivor.read_text(), 'keep')
 
     def test_offline_no_skips_the_generator(self):
         done = self.build / 'xhtml_no_chunks.done'

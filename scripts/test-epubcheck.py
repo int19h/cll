@@ -86,7 +86,9 @@ class EpubCheckTests(unittest.TestCase):
         self.assertIn('version=5.4.0', installer)
         self.assertIn(PINNED_SHA256, installer)
         self.assertLess(installer.index('sha256sum'), installer.index('unzip'))
-        self.assertIn('curl -fL -sS --retry 3 --retry-delay 2 --connect-timeout 20 --max-time 180', installer)
+        self.assertIn('curl -fL -sS --retry 3 --retry-delay 2 --connect-timeout 20 --max-time 600', installer)
+        self.assertLess(installer.index(': > "$dest/.sha256"'), installer.index('for name in epubcheck.jar'))
+        self.assertNotIn('.sha256', installer.split('for name in epubcheck.jar', 1)[1].split('done', 1)[0])
         self.assertNotIn('--failonwarnings', installer)
         runner = RUNNER.read_text()
         self.assertNotIn('--failonwarnings', runner)
@@ -264,6 +266,39 @@ class EpubCheckTests(unittest.TestCase):
             self.assertFalse((destination / 'epubcheck.jar').exists())
             self.assertFalse((destination / 'lib').exists())
 
+    def test_partial_copy_with_a_marker_is_replaced(self):
+        with tempfile.TemporaryDirectory(prefix='cll-epubcheck-') as temporary:
+            temporary = Path(temporary)
+            archive = temporary / 'good.zip'
+            zip_archive(archive, {
+                'epubcheck-5.4.0/epubcheck.jar': 'new jar',
+                'epubcheck-5.4.0/lib/note.txt': 'new library',
+            })
+            digest = subprocess.check_output(['sha256sum', str(archive)], text=True).split()[0]
+            script = temporary / 'install.sh'
+            script.write_text(INSTALLER.read_text().replace(PINNED_SHA256, digest))
+            script.chmod(0o755)
+            destination = temporary / 'dest'
+            (destination / 'lib').mkdir(parents=True)
+            (destination / 'lib/note.txt').write_text('partial library')
+            (destination / '.sha256').write_text('\n')
+            kept = destination / 'keep-me.txt'
+            kept.write_text('leave this')
+            stub_dir = temporary / 'bin'
+            stub_dir.mkdir()
+            write_executable(stub_dir / 'java', '#!/bin/bash\necho "EPUBCheck v5.4.0"\n')
+            environment = dict(os.environ, PATH=str(stub_dir) + os.pathsep + os.environ['PATH'],
+                               EPUBCHECK_ARCHIVE=str(archive))
+            result = subprocess.run(
+                ['bash', str(script), str(destination)],
+                capture_output=True, text=True, env=environment)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual((destination / 'epubcheck.jar').read_text(), 'new jar')
+            self.assertEqual((destination / 'lib/note.txt').read_text(), 'new library')
+            self.assertEqual((destination / '.sha256').read_text().strip(), digest)
+            self.assertEqual(kept.read_text(), 'leave this')
+            self.assertNotIn('unrelated files', result.stderr)
+
     def test_native_fallback_reinstalls_a_stale_or_unstamped_cache(self):
         for stamp in ('stale pin\n', None):
             with self.subTest(stamp=stamp):
@@ -341,7 +376,8 @@ class EpubCheckTests(unittest.TestCase):
                              'echo "EPUBCheck v5.4.0"\n')
             output = temporary / 'out'
             environment = dict(os.environ, PATH=str(stub_dir) + os.pathsep + os.environ['PATH'],
-                               JAVA_CALLS=str(calls))
+                               JAVA_CALLS=str(calls),
+                               EPUBCHECK_SYSTEM_JAR=str(temporary / 'missing-system.jar'))
             environment.pop('EPUBCHECK_JAR', None)
             result = subprocess.run(
                 ['bash', str(recorder), str(output)],
@@ -351,6 +387,9 @@ class EpubCheckTests(unittest.TestCase):
             recorded = calls.read_text()
             self.assertIn('--version', recorded)
             self.assertIn(str(jar), recorded)
+            self.assertNotIn('/usr/local/share/epubcheck/epubcheck.jar', recorded)
+            recorder_text = (ROOT / 'scripts/record-build-toolchain.sh').read_text()
+            self.assertIn('${EPUBCHECK_SYSTEM_JAR:-/usr/local/share/epubcheck/epubcheck.jar}', recorder_text)
 
 
 if __name__ == '__main__':

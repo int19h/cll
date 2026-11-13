@@ -2215,7 +2215,10 @@
       </indexterm>
       <indexterm type="lojban-word"><primary>su'e</primary><secondary>with elided number</secondary>
       </indexterm>
-      If no number follows one of these cmavo,
+      If no number follows
+      <valsi>su'o</valsi>,
+      <valsi>su'e</valsi>, or
+      <valsi>za'u</valsi>,
       <valsi>pa</valsi>
       is understood: therefore,
     </para>
@@ -2228,6 +2231,44 @@
       </interlinear-gloss>
     </example>
     <para role="noindent">is a meaningful claim.</para>
+    <para>
+      The exception is
+      <valsi>me'i</valsi>. On its own, it is short for
+      <jbophrase>me'i ro</jbophrase>,
+      <quote>fewer than all</quote>, so it says <quote>not all</quote>:
+    </para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-mHi7">
+      <title><anchor xml:id="c18e9d11" /></title>
+
+      <interlinear-gloss>
+        <jbo>me'i gerku cu klama lo cevzda</jbo>
+        <gloss>fewer-than-all dogs - go-to the heaven</gloss>
+        <natlang>Not all dogs go to heaven.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="status-note" condition="status:de-facto">
+      <indexterm type="lojban-word"><primary>me'i</primary><secondary>default number, status</secondary>
+      </indexterm>
+      The first edition understood
+      <valsi>pa</valsi>
+      after a bare
+      <valsi>me'i</valsi>
+      too, so that
+      <valsi>me'i</valsi>
+      alone meant <quote>fewer than one</quote>, the same as
+      <valsi>no</valsi>. The
+      <valsi>ro</valsi>
+      default follows <quote>Inexact Numbers</quote>, the BPFK draft that the rule for
+      <valsi>ro</valsi>
+      in
+      <xref linkend="section-any" />
+      also follows. The committee never checkpointed that draft, so the rule is de facto.
+      <xref linkend="appendix-changes" />
+      records the change. To say <quote>none</quote>, use
+      <valsi>no</valsi>
+      or
+      <jbophrase>me'i pa</jbophrase>.
+    </para>
     <para>
       <indexterm type="general"><primary>inexact portions with bounds</primary></indexterm>
       Like the numbers in

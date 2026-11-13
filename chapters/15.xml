@@ -173,13 +173,14 @@
       <quote>not</quote>
       may indicate either contradictory negation or another form of negation, depending on the sentence. Lojban's internal bridi negation, on the other hand, always applies to an entire bridi, and is always a contradictory negation; that is, it contradicts the claim of the whole bridi.
     </para>
-    <para role="status-note">
+    <para role="status-note" condition="status:unsettled">
       <indexterm type="general"><primary>na</primary><secondary>scope of, status</secondary>
       </indexterm>
       The scope of
       <valsi>na</valsi>
-      is officially unsettled. This rule for the whole bridi is the working account, and current semantic software implements it (see
-      <xref linkend="appendix-changes" />).
+      is officially unsettled. This book teaches the first edition's rule for the whole bridi;
+      <xref linkend="appendix-changes" />
+      lists the alternatives.
       <xref linkend="chapter-quantifiers" />
       discusses how
       <valsi>na</valsi>
@@ -375,10 +376,10 @@
       <xref linkend="example-random-id-nTg2" />
       claims a habit, and the habit is one of not going: staying away from the market is my custom. The second is a much stronger statement. You cannot casually interchange the two forms.
     </para>
-    <para role="status-note">
+    <para role="status-note" condition="status:de-facto">
       <indexterm type="general"><primary>na</primary><secondary>with tenses, status</secondary>
       </indexterm>
-      This resolution is de facto: current semantic software implements it (see
+      This resolution is de facto: tersmu, a program that translates Lojban into logical formulas, implements it (see
       <xref linkend="appendix-changes" />).
     </para>
 

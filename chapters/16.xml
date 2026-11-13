@@ -1395,8 +1395,8 @@
   <section xml:id="section-negation-boundaries">
     <title><anchor xml:id="c16s9" />Negation boundaries</title>
     <para><indexterm type="general"><primary>there is a Y</primary><secondary>expression &quot;there is a Y&quot; in English</secondary>        <tertiary>notation convention</tertiary>      </indexterm>This section, along with <xref linkend="section-connectives" /> through <xref linkend="section-demorgans-law" />, is in effect a continuation of <xref linkend="chapter-negation" />. It introduces features of Lojban negation that require an understanding of prenexes and variables. In the examples below, <quote>there is a Y</quote> and the like must be understood as <quote>there is at least one Y, possibly more</quote>.</para>
-    <para role="status-note"><indexterm type="general"><primary>na</primary><secondary>scope of, status</secondary>
-      </indexterm>The scope of <valsi>na</valsi> is officially unsettled. The working account is the rule for the whole bridi. Under this rule, <valsi>na</valsi> before the selbri equals <valsi>naku</valsi> at the left end of the prenex, so it has scope even over quantifiers that come before it. Current semantic software implements this rule. <xref linkend="appendix-changes" /> lists the alternatives.</para>
+    <para role="status-note" condition="status:unsettled"><indexterm type="general"><primary>na</primary><secondary>scope of, status</secondary>
+      </indexterm>The scope of <valsi>na</valsi> is officially unsettled. This book teaches the first edition's rule for the whole bridi. Under this rule, <valsi>na</valsi> before the selbri equals <valsi>naku</valsi> at the left end of the prenex, so it has scope even over quantifiers that come before it. <xref linkend="appendix-changes" /> lists the alternatives.</para>
     <para>
       <indexterm type="general"><primary>bridi negation</primary><secondary>two forms of</secondary>
       </indexterm>

@@ -36,9 +36,12 @@ It sets `EPUBCHECK_JAR` to `epubcheck.jar` in that directory.
 Ubuntu 24.04 `default-jre-headless` supplies Java 21. That runtime runs EPUBCheck 5.4.0.
 
 `scripts/build-selected-formats.sh` runs the installer before a native ePub build.
-If `EPUBCHECK_JAR` is unset and the image copy is absent, `scripts/run-epubcheck.sh` runs the installer.
+If `EPUBCHECK_JAR` is set, `scripts/run-epubcheck.sh` uses that jar.
+If that variable is unset and the image has `/usr/local/share/epubcheck/epubcheck.jar`, the script uses that file.
+Otherwise it calls the installer for `build/tools/epubcheck`.
+If the stamp matches the pin, the installer does no work.
 The pages site builds an edition with that edition's `./cll_build`.
-This edition's ePub target installs EPUBCheck during that build.
+If the image jar is absent, that command calls the installer.
 The site runner has network access and a Java runtime.
 `EPUBCHECK_ARCHIVE` can name a local copy of the same archive. The script still requires the pinned hash.
 

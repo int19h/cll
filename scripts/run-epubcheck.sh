@@ -14,13 +14,14 @@ elif [ -f /usr/local/share/epubcheck/epubcheck.jar ]; then
   jar=/usr/local/share/epubcheck/epubcheck.jar
 else
   dest=$root/build/tools/epubcheck
+  # The installer returns at once when the stamp matches the pin.
+  "$root/scripts/install-epubcheck.sh" "$dest"
   jar=$dest/epubcheck.jar
-  if [ ! -f "$jar" ] || [ ! -d "$dest/lib" ]; then
-    "$root/scripts/install-epubcheck.sh" "$dest"
-  fi
 fi
 if [ ! -f "$jar" ]; then
   echo "EPUBCheck jar not found: $jar" >&2
   exit 1
 fi
-exec java -jar "$jar" "$epub"
+# XML Resolver must not create .xmlresolver.org under Java's user.home.
+# Podman reports the checkout as that home.
+exec java -Dxml.catalog.cacheUnderHome=false -jar "$jar" "$epub"

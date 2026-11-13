@@ -75,9 +75,11 @@ jobs:
       - name: Running head and ePub name the edition from .env
         run: scripts/check-edition-branding.sh
       - name: Install ePub packaging tools
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils zip unzip
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils zip unzip curl default-jre-headless
       - name: Package ePub assets without renderer sources
         run: python3 scripts/test-build-epub.py
+      - name: Install pinned EPUBCheck
+        run: ./scripts/install-epubcheck.sh build/tools/epubcheck
       - name: EPUBCheck pin and error status
         run: python3 scripts/test-epubcheck.py
 

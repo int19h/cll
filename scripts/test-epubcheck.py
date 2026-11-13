@@ -86,10 +86,18 @@ class EpubCheckTests(unittest.TestCase):
         self.assertIn('version=5.4.0', installer)
         self.assertIn(PINNED_SHA256, installer)
         self.assertLess(installer.index('sha256sum'), installer.index('unzip'))
+        self.assertIn('curl -fL -sS --retry 3 --retry-delay 2 --connect-timeout 20 --max-time 180', installer)
         self.assertNotIn('--failonwarnings', installer)
         runner = RUNNER.read_text()
         self.assertNotIn('--failonwarnings', runner)
-        self.assertIn('exec java -jar "$jar" "$epub"', runner)
+        self.assertNotIn('[ ! -d "$dest/lib" ]', runner)
+        self.assertIn('"$root/scripts/install-epubcheck.sh" "$dest"', runner)
+        self.assertIn('exec java -Dxml.catalog.cacheUnderHome=false -jar "$jar" "$epub"', runner)
+        workflow = (ROOT / '.github/workflows/checks.yml').read_text()
+        self.assertLess(
+            workflow.index('./scripts/install-epubcheck.sh build/tools/epubcheck'),
+            workflow.index('python3 scripts/test-epubcheck.py'))
+        self.assertIn('default-jre-headless', workflow)
         makefile = (ROOT / 'scripts/Makefile').read_text()
         self.assertIn('scripts/run-epubcheck.sh $(builddir)/cll.tmp.epub', makefile)
         self.assertNotIn('epubcheck-4.0.1', makefile)
@@ -187,6 +195,7 @@ class EpubCheckTests(unittest.TestCase):
         self.assertIn('WARNING(CSS-019)', result.stdout)
         self.assertIn('CONTINUED', result.stdout)
         self.assertNotIn('failonwarnings', calls.read_text())
+        self.assertIn('-Dxml.catalog.cacheUnderHome=false', calls.read_text())
 
     def test_make_stops_when_epubcheck_reports_an_error(self):
         result, calls = self._make_check(
@@ -200,6 +209,7 @@ class EpubCheckTests(unittest.TestCase):
         self.assertIn('ERROR(RSC-001)', combined)
         self.assertNotIn('CONTINUED', combined)
         self.assertNotIn('failonwarnings', calls.read_text())
+        self.assertIn('-Dxml.catalog.cacheUnderHome=false', calls.read_text())
 
     def test_real_epubcheck_keeps_a_warning_and_fails_on_a_missing_spine_page(self):
         jar = os.environ.get('EPUBCHECK_JAR', '')
@@ -207,7 +217,10 @@ class EpubCheckTests(unittest.TestCase):
                       str(ROOT / 'build/tools/epubcheck/epubcheck.jar')]
         jar_path = next((Path(item) for item in candidates if item and Path(item).is_file()), None)
         if jar_path is None or shutil.which('java') is None:
-            self.skipTest('EPUBCheck jar or Java is not installed')
+            message = 'EPUBCheck jar or Java is not installed'
+            if os.environ.get('CI'):
+                self.fail(message)
+            self.skipTest(message)
         with tempfile.TemporaryDirectory(prefix='cll-epubcheck-live-') as temporary:
             temporary = Path(temporary)
             warning = temporary / 'warn.epub'
@@ -227,6 +240,117 @@ class EpubCheckTests(unittest.TestCase):
             self.assertNotEqual(failed.returncode, 0)
             self.assertIn('ERROR(RSC-001)', failed.stdout + failed.stderr)
             self.assertIn('gone.xhtml', failed.stdout + failed.stderr)
+            self.assertIn('-Dxml.catalog.cacheUnderHome=false', RUNNER.read_text())
+
+    def test_unrelated_destination_is_left_unchanged(self):
+        with tempfile.TemporaryDirectory(prefix='cll-epubcheck-') as temporary:
+            temporary = Path(temporary)
+            archive = temporary / 'good.zip'
+            zip_archive(archive, {
+                'epubcheck-5.4.0/epubcheck.jar': 'fixture jar',
+                'epubcheck-5.4.0/lib/note.txt': 'library',
+            })
+            destination = temporary / 'dest'
+            destination.mkdir()
+            kept = destination / 'keep-me.txt'
+            kept.write_text('leave this')
+            result = subprocess.run(
+                ['bash', str(INSTALLER), str(destination)],
+                capture_output=True, text=True,
+                env=dict(os.environ, EPUBCHECK_ARCHIVE=str(archive)))
+            self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn('unrelated files', result.stderr)
+            self.assertEqual(kept.read_text(), 'leave this')
+            self.assertFalse((destination / 'epubcheck.jar').exists())
+            self.assertFalse((destination / 'lib').exists())
+
+    def test_native_fallback_reinstalls_a_stale_or_unstamped_cache(self):
+        for stamp in ('stale pin\n', None):
+            with self.subTest(stamp=stamp):
+                with tempfile.TemporaryDirectory(prefix='cll-epubcheck-') as temporary:
+                    temporary = Path(temporary)
+                    root = temporary / 'root'
+                    scripts = root / 'scripts'
+                    scripts.mkdir(parents=True)
+                    archive = temporary / 'good.zip'
+                    zip_archive(archive, {
+                        'epubcheck-5.4.0/epubcheck.jar': 'new jar',
+                        'epubcheck-5.4.0/lib/note.txt': 'new library',
+                    })
+                    digest = subprocess.check_output(
+                        ['sha256sum', str(archive)], text=True).split()[0]
+                    installer = scripts / 'install-epubcheck.sh'
+                    installer.write_text(INSTALLER.read_text().replace(PINNED_SHA256, digest))
+                    installer.chmod(0o755)
+                    runner = scripts / 'run-epubcheck.sh'
+                    runner.write_text(RUNNER.read_text().replace(
+                        '/usr/local/share/epubcheck/epubcheck.jar',
+                        str(temporary / 'no-system-jar')))
+                    runner.chmod(0o755)
+                    destination = root / 'build/tools/epubcheck'
+                    destination.mkdir(parents=True)
+                    (destination / 'epubcheck.jar').write_text('old jar')
+                    (destination / 'lib').mkdir()
+                    (destination / 'lib/note.txt').write_text('old library')
+                    (destination / 'keep-me.txt').write_text('leave this')
+                    stale = destination / '.epubcheck-install.old'
+                    stale.mkdir()
+                    (stale / 'junk').write_text('junk')
+                    if stamp is not None:
+                        (destination / '.sha256').write_text(stamp)
+                    stub_dir = temporary / 'bin'
+                    stub_dir.mkdir()
+                    calls = temporary / 'java-calls'
+                    write_executable(stub_dir / 'java',
+                                     '#!/bin/bash\nprintf "%s\\n" "$*" >> "$JAVA_CALLS"\n'
+                                     'echo "EPUBCheck v5.4.0"\n')
+                    epub = temporary / 'book.epub'
+                    epub.write_text('fixture epub')
+                    environment = dict(os.environ, PATH=str(stub_dir) + os.pathsep + os.environ['PATH'],
+                                       EPUBCHECK_ARCHIVE=str(archive), JAVA_CALLS=str(calls))
+                    environment.pop('EPUBCHECK_JAR', None)
+                    result = subprocess.run(
+                        ['bash', str(runner), str(epub)],
+                        capture_output=True, text=True, env=environment)
+                    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                    self.assertEqual((destination / 'epubcheck.jar').read_text(), 'new jar')
+                    self.assertEqual((destination / 'lib/note.txt').read_text(), 'new library')
+                    self.assertEqual((destination / '.sha256').read_text().strip(), digest)
+                    self.assertEqual((destination / 'keep-me.txt').read_text(), 'leave this')
+                    self.assertFalse(stale.exists())
+                    self.assertIn('-Dxml.catalog.cacheUnderHome=false', calls.read_text())
+
+    def test_toolchain_record_tolerates_java_and_reads_the_fallback_jar(self):
+        with tempfile.TemporaryDirectory(prefix='cll-epubcheck-') as temporary:
+            temporary = Path(temporary)
+            scripts = temporary / 'scripts'
+            scripts.mkdir()
+            recorder = scripts / 'record-build-toolchain.sh'
+            shutil.copy(ROOT / 'scripts/record-build-toolchain.sh', recorder)
+            recorder.chmod(0o755)
+            (temporary / 'assets/fonts').mkdir(parents=True)
+            jar = temporary / 'build/tools/epubcheck/epubcheck.jar'
+            jar.parent.mkdir(parents=True)
+            jar.write_text('fixture jar')
+            stub_dir = temporary / 'bin'
+            stub_dir.mkdir()
+            calls = temporary / 'java-calls'
+            write_executable(stub_dir / 'java',
+                             '#!/bin/bash\nprintf "%s\\n" "$*" >> "$JAVA_CALLS"\n'
+                             'if [ "$1" = "--version" ]; then echo "java failed" >&2; exit 1; fi\n'
+                             'echo "EPUBCheck v5.4.0"\n')
+            output = temporary / 'out'
+            environment = dict(os.environ, PATH=str(stub_dir) + os.pathsep + os.environ['PATH'],
+                               JAVA_CALLS=str(calls))
+            environment.pop('EPUBCHECK_JAR', None)
+            result = subprocess.run(
+                ['bash', str(recorder), str(output)],
+                capture_output=True, text=True, env=environment, cwd=temporary)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn('EPUBCheck v5.4.0', (output / 'tools.txt').read_text())
+            recorded = calls.read_text()
+            self.assertIn('--version', recorded)
+            self.assertIn(str(jar), recorded)
 
 
 if __name__ == '__main__':

@@ -51,7 +51,8 @@ It runs beside the Prince pipeline and writes `build/cll-context.pdf`.
   The check needs a Java runtime (`default-jre-headless` or `default-jre`).
   The ePub target runs EPUBCheck 5.4.0.
   The container image includes that release.
-  If the jar is absent, a native build installs it with `scripts/install-epubcheck.sh`.
+  If the image jar is absent, a native build calls `scripts/install-epubcheck.sh`.
+  If the stamp matches the pin, the installer keeps the existing copy.
   See [build-pins.md](build-pins.md).
 
 A single-chapter test build that exercises most of the toolchain:

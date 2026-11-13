@@ -117,7 +117,7 @@ The status lint reports a `status-note` without `condition` as a warning, and th
 | --- | --- | --- |
 | Edition branding | The PDF running head and the ePub name this edition from `.env`, and never the first edition | `scripts/check-edition-branding.sh` |
 | ePub packaging | The ePub packager, run on a small book, keeps the reader's assets and leaves out the renderer sources | `python3 scripts/test-build-epub.py` |
-| EPUBCheck pin and status | The installer rejects a bad archive before extraction. A warning is printed and the build continues. An error stops the build. With Java and an installed jar, a missing spine page fails the real checker | `python3 scripts/test-epubcheck.py` |
+| EPUBCheck pin and status | The installer rejects a bad archive before extraction. A warning is printed and the build continues. An error stops the build. CI installs the pinned checker first. If `CI` is set and the jar is missing, the live check fails. A missing spine page fails the real checker | `./scripts/install-epubcheck.sh build/tools/epubcheck` and `python3 scripts/test-epubcheck.py` |
 
 ## epub-nav
 

@@ -143,6 +143,38 @@ class MakefileTests(unittest.TestCase):
                     'Nothing to be done' in output or 'is up to date' in output,
                     output)
 
+    def test_epub_depends_on_the_epubcheck_scripts(self):
+        epub = self.build / 'cll.epub'
+        html = self.build / 'epub-xhtml/index.html'
+        self.touch_output(html)
+        self.touch_output(epub)
+        current = self.make('-n', epub)
+        self.assertTrue(
+            'Nothing to be done' in current or 'is up to date' in current, current)
+        for script in ('scripts/run-epubcheck.sh', 'scripts/install-epubcheck.sh'):
+            with self.subTest(script=script):
+                output = self.make('-n', f'-W{script}', epub)
+                self.assertIn('scripts/run-epubcheck.sh', output)
+                self.assertNotIn('is up to date', output)
+
+    def test_clean_keeps_the_epubcheck_install(self):
+        coverage = SOURCE / 'coverage/build'
+        coverage.mkdir(parents=True, exist_ok=True)
+        tool = self.build / 'tools/epubcheck'
+        tool.mkdir(parents=True)
+        jar = tool / 'epubcheck.jar'
+        jar.write_text('jar')
+        stamp = tool / '.sha256'
+        stamp.write_text('abc\n')
+        other = self.build / 'cll.epub'
+        other.write_text('epub')
+        self.make('clean')
+        self.assertEqual(jar.read_text(), 'jar')
+        self.assertEqual(stamp.read_text(), 'abc\n')
+        self.assertFalse(other.exists())
+        if coverage.exists() and not any(coverage.iterdir()):
+            coverage.rmdir()
+
     def test_offline_no_skips_the_generator(self):
         done = self.build / 'xhtml_no_chunks.done'
         self.touch_output(done)

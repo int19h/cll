@@ -1,5 +1,6 @@
 #!/bin/bash
-# Same targets and optional installers as pages:scripts/build-site.sh.
+# Format targets match pages:scripts/build-site.sh.
+# The ePub target installs the pinned EPUBCheck before the book build.
 set -euo pipefail
 formats=${1:?Usage: build-selected-formats.sh 'FORMAT ...' OUTPUT_DIRECTORY}
 out=$(realpath -m "${2:?missing output directory}")

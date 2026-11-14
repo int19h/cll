@@ -50,7 +50,8 @@
 #   commit             the version's content commit (its git ref today)
 #   formats            the version's formats, in canonical order
 #   tools_sha256       sha256 of the site tooling: build-site.sh,
-#                      site-versions.sh, docbook-diff.py, docbook-diff.xsl
+#                      site-versions.sh, docbook-diff.py, docbook-diff.xsl,
+#                      docbook-diff-html5.xsl, docbook-diff-style.xsl
 #   previous_commit    the content commit of the version before it
 #                      (diff_from_previous)
 #   baseline_commit    the UnCLL baseline commit (diff_from_uncll)
@@ -79,7 +80,7 @@ baseline_commit="${BASELINE_COMMIT:?}"
 # shellcheck source=site-versions.sh
 . scripts/site-versions.sh
 rows="$(site_rows "$tsv")"
-bs_sha="$(cat scripts/build-site.sh scripts/site-versions.sh scripts/docbook-diff.py scripts/docbook-diff.xsl | sha256sum | cut -c1-64)"
+bs_sha="$(cat scripts/build-site.sh scripts/site-versions.sh scripts/docbook-diff.py scripts/docbook-diff.xsl scripts/docbook-diff-html5.xsl scripts/docbook-diff-style.xsl | sha256sum | cut -c1-64)"
 cache_tag="site-build-cache"
 dl="$(mktemp -d)"
 trap 'rm -rf "$dl"' EXIT

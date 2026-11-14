@@ -75,7 +75,7 @@ done
 # and makes the files of its formats, and gh and git are stubs that work
 # on a directory of fake releases.
 w="$t/bv"; mkdir -p "$w/scripts" "$w/bin" "$w/rel" "$w/log"
-cp "$here/build-versions.sh" "$here/site-versions.sh" "$here/docbook-diff.py" "$here/docbook-diff.xsl" "$w/scripts/"
+cp "$here/build-versions.sh" "$here/site-versions.sh" "$here/docbook-diff.py" "$here/docbook-diff.xsl" "$here/docbook-diff-html5.xsl" "$here/docbook-diff-style.xsl" "$w/scripts/"
 cat > "$w/scripts/build-site.sh" <<'EOF'
 #!/bin/bash
 set -euo pipefail
@@ -407,6 +407,8 @@ if sys.argv[1] == 'finish':
     (out / 'difference_prefixed.html').write_text('diff')
 EOF
 echo stylesheet > "$b/tools/docbook-diff.xsl"
+echo html5 > "$b/tools/docbook-diff-html5.xsl"
+echo style > "$b/tools/docbook-diff-style.xsl"
 echo 'xhtml_nochunks: xsl_file = original' > "$b/src/scripts/Makefile"
 chmod +x "$b/bin/"* "$b/src/cll_build" "$b/src/scripts/"*.sh "$b/src/run_context_container.sh"
 bs() {
@@ -431,6 +433,10 @@ done
 # Comparison builds skip the offline worker; the version's own HTML keeps it.
 : > "$b/log"; : > "$b/log.offline"
 bs html
+eq "an xhtml comparison uses the xhtml driver" yes \
+  "$(grep -F -q 'comparison driver for diff_from_official: docbook-diff.xsl' "$b/run.log" && echo yes || echo no)"
+eq "an xhtml comparison does not use the xhtml5 driver" no \
+  "$(grep -F -q 'docbook-diff-html5.xsl' "$b/run.log" && echo yes || echo no)"
 eq "comparison builds pass offline=no" yes "$(grep -qx 'xhtml_nochunks offline=no' "$b/log.offline" && echo yes || echo no)"
 eq "the version's section HTML keeps its worker" 0 "$(grep -c '^xhtml_sections offline=no$' "$b/log.offline" || true)"
 eq "the version's one-page HTML keeps its worker" yes "$(grep -qx 'xhtml_nochunks offline=' "$b/log.offline" && echo yes || echo no)"
@@ -472,6 +478,18 @@ echo -e '#!/bin/bash\nexit 1' > "$b/bin/git"
 bs pdf-weasyprint
 eq "PDF-only needs no git comparison commits" $'install-weasyprint\npdf_weasyprint' "$(cat "$b/log")"
 fails_with "HTML requires its comparison commit" bs html
+
+# A version whose Makefile names the xhtml5 base selects the other driver.
+# Restore the stub git first: the PDF-only case above replaced it with a failure.
+echo -e '#!/bin/bash\nexit 0' > "$b/bin/git"
+echo 'xhtml_nochunks: xsl_file = $(xsl_base)/xhtml5/docbook.xsl' > "$b/src/scripts/Makefile"
+: > "$b/log"
+bs html
+eq "an xhtml5 comparison uses the xhtml5 driver" yes \
+  "$(grep -F -q 'comparison driver for diff_from_official: docbook-diff-html5.xsl' "$b/run.log" && echo yes || echo no)"
+eq "an xhtml5 comparison does not use the xhtml driver" no \
+  "$(grep -F -q 'comparison driver for diff_from_official: docbook-diff.xsl' "$b/run.log" && echo yes || echo no)"
+echo 'xhtml_nochunks: xsl_file = original' > "$b/src/scripts/Makefile"
 
 if [ "$fails" -gt 0 ]; then echo "test-site-versions: $fails failures"; exit 1; fi
 echo "test-site-versions: all tests pass"

@@ -7,28 +7,16 @@
 # combinator. An ancestor in the selector is not affected by the rule.
 # Each member of a selector list is separate. ::before, ::after, and ::marker
 # style a generated box, so that member is skipped. Any other pseudo-element
-# is a rule on the element that remains in that member: it excludes, and a
-# preserving white-space value freezes that element. A member with no element
-# left fails the scan, and the message names the rule. A pseudo-class still
-# fails closed.
-# A rule whose display value is a block, a list item, or an internal or
-# block-level table box excludes nothing. Those values cannot turn a listed
-# block into an inline box. inline-table can, so it still excludes.
-# Every other known display value excludes, and so does every known
-# visibility or content-visibility value other than visible.
-# float excludes unless the winning value is none. position excludes unless
-# the winning value is static or relative. relative keeps the box in the
-# flow, so a gap beside it still collapses.
-# all excludes at initial, inherit, unset, revert, or revert-layer: it
-# resets display to inline. Any other all value is invalid and is dropped.
-# white-space freezes the subject for pre, pre-wrap, pre-line, and
-# break-spaces. normal and nowrap still collapse. white-space-collapse
-# freezes the subject unless the winning value is collapse. The property
-# is inherited, so the whole subtree is verbatim.
-# An invalid value is dropped, as a browser drops it, and does not replace
-# an earlier declaration. A value the scan cannot classify fails closed:
-# it excludes or freezes. The scan also fails closed when it cannot read a
-# construct that could hide such a rule, and the message names the rule.
+# on a relevant rule fails the scan, and the message names the rule. A
+# pseudo-class still fails closed.
+# For each relevant property, only the values in SAFE_VALUE are safe. Every
+# other well-formed value is unsafe: it excludes the subject, and for
+# white-space or white-space-collapse it also freezes the subtree. That
+# includes a keyword the list does not name, and every value of all.
+# A declaration is dropped only when its value is clearly malformed, such
+# as an empty value or unbalanced brackets. A dropped declaration does not
+# replace an earlier one. The scan also fails closed when it cannot read a
+# construct that could hide a rule, and the message names the rule.
 module HtmlStylesheetScan
   class Unreadable < StandardError; end
 
@@ -49,18 +37,21 @@ module HtmlStylesheetScan
     table-footer-group table-header-group table-row table-row-group
   ].freeze
   # These style a generated box. They do not change the gaps beside the element.
+  # Any other pseudo-element fails the scan.
   GENERATED_PSEUDO = %w[before after marker].freeze
-  WHITESPACE_EFFECT = %w[pre pre-wrap pre-line break-spaces].freeze
-  # collapse is the only safe longhand. normal and nowrap are shorthand
-  # keywords, so they are invalid here and must not win.
-  COLLAPSE_EFFECT = %w[discard preserve preserve-breaks preserve-spaces break-spaces].freeze
-  FLOAT_EFFECT = %w[left right inline-start inline-end].freeze
-  POSITION_EFFECT = %w[absolute fixed sticky].freeze
-  DISPLAY_EFFECT = %w[
-    inline inline-block inline-flex inline-grid inline-table
-    flex grid contents none flow-root
-    ruby ruby-base ruby-text run-in flow
-  ].freeze
+  # Known-safe values, shared with the inline style check in HtmlFormat.
+  # A well-formed value that is not listed is unsafe. all has no safe value:
+  # every CSS-wide keyword resets display to inline.
+  SAFE_VALUE = {
+    'white-space' => %w[normal nowrap].freeze,
+    'white-space-collapse' => %w[collapse].freeze,
+    'float' => %w[none].freeze,
+    'position' => %w[static relative].freeze,
+    'display' => HARMLESS_DISPLAY,
+    'visibility' => %w[visible].freeze,
+    'content-visibility' => %w[visible].freeze,
+    'all' => [].freeze
+  }.freeze
   PAGE_MARGINS = %w[
     top-left-corner top-left top-center top-right top-right-corner
     bottom-left-corner bottom-left bottom-center bottom-right bottom-right-corner
@@ -68,10 +59,62 @@ module HtmlStylesheetScan
   ].freeze
   # The last compound, then one or more trailing pseudo-elements.
   PSEUDO_SUBJECT = /\A((?:[A-Za-z][A-Za-z0-9_-]*)?(?:\.[A-Za-z_][A-Za-z0-9_-]*)*)((?:::[A-Za-z][A-Za-z0-9_-]*(?:\([^()]*\))?)+)\z/
-  IDENT = /\A[a-z][a-z0-9-]*\z/
-  RUNNING = /\Arunning\([a-z0-9_-]*\)\z/
 
   module_function
+
+  # :safe when value is listed for property. :drop when the value cannot be
+  # a CSS value (empty, or brackets that do not balance outside strings).
+  # :unsafe for every other value, including a keyword that is not listed.
+  def value_verdict(property, value)
+    return :drop if malformed_value?(value)
+    listed = SAFE_VALUE[property]
+    return :unsafe if listed.nil?
+    listed.include?(value) ? :safe : :unsafe
+  end
+
+  def malformed_value?(value)
+    return true if value.nil? || value.empty?
+    round = 0
+    square = 0
+    curly = 0
+    index = 0
+    while index < value.length
+      char = value[index]
+      if char == '"' || char == "'"
+        index += 1
+        while index < value.length
+          if value[index] == '\\'
+            index += 2
+            next
+          end
+          break if value[index] == char
+          index += 1
+        end
+        return true if index >= value.length
+        index += 1
+        next
+      end
+      case char
+      when '('
+        round += 1
+      when ')'
+        return true if round.zero?
+        round -= 1
+      when '['
+        square += 1
+      when ']'
+        return true if square.zero?
+        square -= 1
+      when '{'
+        curly += 1
+      when '}'
+        return true if curly.zero?
+        curly -= 1
+      end
+      index += 1
+    end
+    round != 0 || square != 0 || curly != 0
+  end
 
   def exclusion(css, source:)
     tags, classes, _preserve_tags, _preserve_classes = classify(css, source: source)
@@ -212,100 +255,33 @@ module HtmlStylesheetScan
           fail!("#{rule} { #{prop}: #{shown} }")
         end
       end
+      reject_disallowed_pseudos(selector, rule)
       extract(selector, @tags, @classes) if excludes?(relevant)
       extract(selector, @preserve_tags, @preserve_classes) if preserves?(relevant)
     end
 
-    # The last valid declaration of each importance wins. An invalid
-    # declaration is dropped and does not replace an earlier one. An
-    # !important declaration wins over one that is not.
-    # visibility and content-visibility hide the subject unless the winning
-    # value is exactly visible. position: relative stays in normal flow,
-    # like static. The book sets it on p.status-note, and excluding that
-    # subject would exclude every p.
+    # The last well-formed declaration of each importance wins. A malformed
+    # value is dropped and does not replace an earlier one. An !important
+    # declaration wins over one that is not. Unsafe means the value is not
+    # in SAFE_VALUE. position: relative stays in normal flow, like static.
+    # The book sets it on p.status-note, and excluding that subject would
+    # exclude every p.
     def excludes?(decls)
-      return true if dangerous?('visibility', winning_value(decls, 'visibility'))
-      return true if dangerous?('content-visibility', winning_value(decls, 'content-visibility'))
-      return true if dangerous?('float', winning_value(decls, 'float'))
-      return true if dangerous?('position', winning_value(decls, 'position'))
-      return true if dangerous?('all', winning_value(decls, 'all'))
-      return true if dangerous?('display', winning_value(decls, 'display'))
-      false
+      %w[visibility content-visibility float position all display].any? do |property|
+        winning_value(decls, property) == :unsafe
+      end
     end
 
-    # Inherited. collapse is safe for the longhand. normal and nowrap are
-    # not values of white-space-collapse, so a later one of those does not
-    # cancel an earlier preserving value.
+    # Inherited. Only normal and nowrap are safe for the shorthand, and
+    # only collapse is safe for the longhand. Any other well-formed value
+    # freezes the subject.
     def preserves?(decls)
-      dangerous?('white-space', winning_value(decls, 'white-space')) ||
-        dangerous?('white-space-collapse', winning_value(decls, 'white-space-collapse'))
+      winning_value(decls, 'white-space') == :unsafe ||
+        winning_value(decls, 'white-space-collapse') == :unsafe
     end
 
-    def dangerous?(property, value)
-      return false if value.nil?
-      return true if value == :unknown
-      verdict = classify_value(property, value)
-      verdict == :effect || verdict == :unknown
-    end
-
-    # :safe collapses or stays in flow. :effect excludes or freezes.
-    # :invalid is dropped. :unknown fails closed.
-    def classify_value(property, value)
-      wide = css_wide_verdict(property, value)
-      return wide if wide
-      case property
-      when 'white-space'
-        return :safe if value == 'normal' || value == 'nowrap'
-        return :effect if WHITESPACE_EFFECT.include?(value)
-      when 'white-space-collapse'
-        return :safe if value == 'collapse'
-        return :effect if COLLAPSE_EFFECT.include?(value)
-      when 'float'
-        return :safe if value == 'none'
-        return :effect if FLOAT_EFFECT.include?(value)
-      when 'position'
-        return :safe if value == 'static' || value == 'relative'
-        return :effect if POSITION_EFFECT.include?(value) || RUNNING.match?(value)
-      when 'display'
-        return :safe if HARMLESS_DISPLAY.include?(value)
-        return :effect if DISPLAY_EFFECT.include?(value)
-      when 'visibility'
-        return :safe if value == 'visible'
-        return :effect if value == 'hidden' || value == 'collapse'
-      when 'content-visibility'
-        return :safe if value == 'visible'
-        return :effect if value == 'auto' || value == 'hidden'
-      when 'all'
-        return :invalid if IDENT.match?(value)
-        return :unknown
-      else
-        return :unknown
-      end
-      return :invalid if IDENT.match?(value)
-      :unknown
-    end
-
-    # nil when value is not a CSS-wide keyword. initial and unset use the
-    # property's initial value when the property is not inherited. inherit,
-    # revert, and revert-layer depend on another stylesheet, so they fail
-    # closed, except all, which excludes at every CSS-wide keyword.
-    def css_wide_verdict(property, value)
-      return nil unless value == 'initial' || value == 'inherit' || value == 'unset' ||
-                        value == 'revert' || value == 'revert-layer'
-      return :effect if property == 'all'
-      inherited = property == 'white-space' || property == 'white-space-collapse' ||
-                  property == 'visibility'
-      case value
-      when 'initial'
-        property == 'display' ? :effect : :safe
-      when 'unset'
-        return :unknown if inherited
-        property == 'display' ? :effect : :safe
-      else
-        :unknown
-      end
-    end
-
+    # :safe, :unsafe, or nil when every declaration of this property was
+    # malformed. HtmlStylesheetScan.value_verdict is the shared table.
     def winning_value(decls, property)
       normal = nil
       important = nil
@@ -314,13 +290,12 @@ module HtmlStylesheetScan
         cleaned = value.strip.gsub(/\s+/, ' ')
         flagged = !cleaned.sub!(/\s*!important\z/i, '').nil?
         cleaned = cleaned.strip.downcase
-        verdict = classify_value(property, cleaned)
-        next if verdict == :invalid
-        chosen = verdict == :unknown ? :unknown : cleaned
+        verdict = HtmlStylesheetScan.value_verdict(property, cleaned)
+        next if verdict == :drop
         if flagged
-          important = chosen
+          important = verdict
         else
-          normal = chosen
+          normal = verdict
         end
       end
       important || normal
@@ -363,8 +338,19 @@ module HtmlStylesheetScan
       end
     end
 
+    # A relevant rule that uses any pseudo-element other than ::before,
+    # ::after, or ::marker cannot be scanned. The message names the rule.
+    def reject_disallowed_pseudos(selector, rule)
+      split_selector_list(selector).each do |part|
+        split_compounds(part).each do |token|
+          next unless token.include?('::')
+          next if generated_pseudo_only?(token)
+          fail!(rule)
+        end
+      end
+    end
+
     # nil skips a member whose pseudo-elements are all generated boxes.
-    # Any other pseudo-element leaves the originating element as the subject.
     def subject_token(part, selector)
       compounds = split_compounds(part)
       fail_selector!(part, selector) if compounds.empty?
@@ -372,15 +358,16 @@ module HtmlStylesheetScan
         fail_selector!(part, selector)
       end
       token = compounds.last
-      match = PSEUDO_SUBJECT.match(token)
-      if match
-        names = match[2].scan(/::([A-Za-z][A-Za-z0-9_-]*)/).flatten
-        return nil if names.all? { |name| GENERATED_PSEUDO.include?(name.downcase) }
-        fail_selector!(part, selector) if match[1].empty?
-        return match[1]
-      end
+      return nil if generated_pseudo_only?(token)
       fail_selector!(part, selector) if token.include?(':')
       token
+    end
+
+    def generated_pseudo_only?(token)
+      match = PSEUDO_SUBJECT.match(token)
+      return false unless match
+      names = match[2].scan(/::([A-Za-z][A-Za-z0-9_-]*)/).flatten
+      !names.empty? && names.all? { |name| GENERATED_PSEUDO.include?(name.downcase) }
     end
 
     def split_selector_list(selector)

@@ -48,7 +48,7 @@ def run_cleanup(source, freeze_classes: nil, freeze_tags: nil, exclusion_classes
     if freeze_classes || freeze_tags || exclusion_classes
       scripts = File.join(dir, 'scripts')
       Dir.mkdir(scripts)
-      %w[xhtml_postprocess_cleanup.sh xhtml_postprocess_cleanup_file.rb html_format.rb html_whitespace_guard.rb util.rb].each do |name|
+      %w[xhtml_postprocess_cleanup.sh xhtml_postprocess_cleanup_file.rb html_format.rb html_stylesheet_scan.rb html_whitespace_guard.rb util.rb].each do |name|
         FileUtils.cp(File.join(ROOT, 'scripts', name), File.join(scripts, name))
       end
       format_path = File.join(scripts, 'html_format.rb')
@@ -279,28 +279,32 @@ class StylesheetExclusion < Minitest::Test
     assert_sets('.probe { white-space: break-spaces }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space: nowrap }')
     assert_sets('.probe { white-space: normal }')
-    # collapse is the only safe longhand. normal and nowrap are invalid
-    # here, so a rule that sets only those keywords freezes nothing. They
-    # must not cancel an earlier preserving value either.
+    # Only collapse is safe for the longhand. Every other keyword, including
+    # normal and nowrap, freezes. A later safe collapse still clears.
     assert_sets('.probe { white-space-collapse: collapse }')
     assert_sets('.probe { white-space-collapse: preserve }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space-collapse: preserve-breaks }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space-collapse: preserve-spaces }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space-collapse: discard }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space-collapse: break-spaces }', preserve_classes: %w[probe])
-    assert_sets('.probe { white-space-collapse: normal }')
-    assert_sets('.probe { white-space-collapse: nowrap }')
-    assert_sets('.probe { white-space-collapse: pre }')
+    assert_sets('.probe { white-space-collapse: normal }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space-collapse: nowrap }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space-collapse: pre }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space-collapse: preserve; white-space-collapse: normal }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space-collapse: preserve; white-space-collapse: nowrap }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space-collapse: normal; white-space-collapse: preserve }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space-collapse: nowrap; white-space-collapse: preserve }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space-collapse: preserve; white-space-collapse: normal !important }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space-collapse: preserve; white-space-collapse: collapse !important }')
-    assert_sets('.probe { white-space: collapse }')
-    assert_sets('.probe { white-space: initial }')
+    assert_sets('.probe { white-space: collapse }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space: preserve }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space: preserve-breaks }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space: preserve-spaces }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space: initial }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space: inherit }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space: foo(bar) }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space: normal; white-space: preserve }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space: normal; white-space: made-up }', preserve_classes: %w[probe])
     assert_sets('.probe { float: left }', classes: %w[probe])
     assert_sets('.probe { float: right }', classes: %w[probe])
     assert_sets('.probe { float: inline-start }', classes: %w[probe])
@@ -323,31 +327,46 @@ class StylesheetExclusion < Minitest::Test
     assert_sets('.probe { white-space: pre !important; white-space: normal }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space: pre; white-space: nowrap !important }')
     assert_sets('p.probe { white-space: pre; float: left }', tags: %w[p], classes: %w[probe], preserve_tags: %w[p], preserve_classes: %w[probe])
-    # A plain ident outside the property grammar is invalid and is dropped.
-    # A value the scan cannot classify still excludes or freezes.
-    assert_sets('.probe { float: top }')
+    # A keyword that is not on the safe list is unsafe and wins. A malformed
+    # value is dropped and does not replace an earlier declaration.
+    assert_sets('.probe { float: top }', classes: %w[probe])
     assert_sets('.probe { float: left; float: top }', classes: %w[probe])
-    assert_sets('.probe { float: unset }')
+    assert_sets('.probe { float: none; float: top }', classes: %w[probe])
+    assert_sets('.probe { float: unset }', classes: %w[probe])
     assert_sets('.probe { float: inherit }', classes: %w[probe])
+    assert_sets('.probe { float: left; float: }', classes: %w[probe])
+    assert_sets('.probe { float: left; float: top) }', classes: %w[probe])
+    assert_sets('.probe { float: }')
     assert_sets('.probe { position: running(title-date) }', classes: %w[probe])
-    assert_sets('.probe { position: unset }')
+    assert_sets('.probe { position: unset }', classes: %w[probe])
     assert_sets('.probe { position: other() }', classes: %w[probe])
-    assert_sets('.probe { display: made-up }')
+    assert_sets('.probe { display: made-up }', classes: %w[probe])
+    assert_sets('.probe { display: math }', classes: %w[probe])
+    assert_sets('.probe { display: ruby-text-container }', classes: %w[probe])
+    assert_sets('.probe { display: inline-list-item }', classes: %w[probe])
     assert_sets('.probe { display: none; display: made-up }', classes: %w[probe])
-    assert_sets('.probe { display: block; display: made-up }')
+    assert_sets('.probe { display: block; display: made-up }', classes: %w[probe])
+    assert_sets('.probe { display: inline; display: bogus }', classes: %w[probe])
+    assert_sets('.probe { display: none; display: }', classes: %w[probe])
+    assert_sets('.probe { display: block; display: }')
+    assert_sets('.probe { display: none; display: block) }', classes: %w[probe])
     assert_sets('.probe { display: inline flex }', classes: %w[probe])
     assert_sets('.probe { display: unset }', classes: %w[probe])
     assert_sets('.probe { display: flow-root }', classes: %w[probe])
-    assert_sets('div.probe { all: block }')
+    assert_sets('div.probe { all: block }', tags: %w[div], classes: %w[probe])
     assert_sets('div.probe { all: initial; all: block }', tags: %w[div], classes: %w[probe])
     assert_sets('div.probe { all: revert-layer }', tags: %w[div], classes: %w[probe])
-    assert_sets('.probe { content-visibility: unset }')
+    assert_sets('.probe { content-visibility: unset }', classes: %w[probe])
     assert_sets('.probe { visibility: unset }', classes: %w[probe])
+    assert_sets('.probe { white-space: pre; white-space: }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space: pre; white-space: bar) }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space: }')
   end
 
   # ::before, ::after, and ::marker style a generated box and are skipped.
-  # Any other pseudo-element is a rule on the originating element. A member
-  # that leaves no element fails the scan.
+  # Any other pseudo-element on a relevant rule fails the scan. The message
+  # names the rule. A list that mixes an ordinary member with one of those
+  # pseudo-elements fails as a whole.
   def test_selector_list_members_are_separate
     ['.probe, p::before', 'p::before, .probe'].each do |selector|
       assert_sets("#{selector} { display: none }", classes: %w[probe])
@@ -360,14 +379,17 @@ class StylesheetExclusion < Minitest::Test
     assert_sets('.x::before { display: inline }')
     assert_sets('p::marker { display: none }')
     assert_sets('p.status-note::before { position: absolute }')
-    assert_sets('details::details-content { white-space: pre }', preserve_tags: %w[details])
-    assert_sets('.probe::first-line { white-space: pre }', preserve_classes: %w[probe])
-    assert_sets('.probe::first-letter { float: left }', classes: %w[probe])
-    assert_sets('div::part(label) { display: none }', tags: %w[div])
-    assert_sets('div::slotted(span) { white-space: pre }', preserve_tags: %w[div])
+    assert_unreadable('p::first-line { display: block }', 'p::first-line')
+    assert_unreadable('details::details-content { white-space: pre }', 'details::details-content')
+    assert_unreadable('.probe::first-line { white-space: pre }', '.probe::first-line')
+    assert_unreadable('.probe::first-letter { float: left }', '.probe::first-letter')
+    assert_unreadable('div::part(label) { display: none }', 'div::part(label)')
+    assert_unreadable('div::slotted(span) { white-space: pre }', 'div::slotted(span)')
     assert_unreadable('::part(label) { display: none }', '::part(label)')
     assert_unreadable('::slotted(span) { white-space: pre }', '::slotted(span)')
     assert_unreadable('::before > p { display: none }', '::before')
+    assert_unreadable('.probe, p::details-content { display: none }', '.probe, p::details-content')
+    assert_unreadable('p::first-line, .probe { white-space: normal }', 'p::first-line, .probe')
   end
 
   def test_a_missing_comparison_stylesheet_names_the_fetch
@@ -461,6 +483,28 @@ class VisibleBlocks < Minitest::Test
     assert HtmlFormat.verbatim?(kept)
     kept_wrap = element(page('<div style="white-space-collapse: preserve; white-space-collapse: nowrap">x</div>'), 'div')
     assert HtmlFormat.verbatim?(kept_wrap)
+    # normal is well-formed and not safe, so it wins and still preserves.
+    # made-up wins the same way. collapse is safe and clears. An empty
+    # value is malformed and does not replace pre.
+    made_up = element(page('<div style="white-space: normal; white-space: made-up">x</div>'), 'div')
+    assert HtmlFormat.verbatim?(made_up)
+    shorthand = element(page('<div style="white-space: preserve">x</div>'), 'div')
+    assert HtmlFormat.verbatim?(shorthand)
+    breaks = element(page('<div style="white-space: preserve-breaks">x</div>'), 'div')
+    assert HtmlFormat.verbatim?(breaks)
+    spaces = element(page('<div style="white-space: preserve-spaces">x</div>'), 'div')
+    assert HtmlFormat.verbatim?(spaces)
+    initial_ws = element(page('<div style="white-space: initial">x</div>'), 'div')
+    assert HtmlFormat.verbatim?(initial_ws)
+    cleared_longhand = element(page('<div style="white-space-collapse: preserve; white-space-collapse: collapse">x</div>'), 'div')
+    refute HtmlFormat.verbatim?(cleared_longhand)
+    dropped = element(page('<div style="white-space: pre; white-space: ">x</div>'), 'div')
+    assert HtmlFormat.verbatim?(dropped)
+    only_bad = element(page('<div style="white-space: )">x</div>'), 'div')
+    refute HtmlFormat.verbatim?(only_bad)
+    math = element(page('<div style="display: math">x</div>'), 'div')
+    refute HtmlFormat.visible_block?(math)
+    refute HtmlFormat.verbatim?(math)
     clear = element(page('<h2 style="clear: both">x</h2>'), 'h2')
     refute HtmlFormat.verbatim?(clear)
     refute block?('<div><colgroup></colgroup></div>', 'colgroup')
@@ -570,6 +614,24 @@ class VisibleBlocks < Minitest::Test
     refute HtmlFormat.free_gap?(head, sigs[0], sigs[1])
     refute HtmlFormat.free_gap?(head, sigs[1], sigs[2])
     assert_flags_match(head)
+
+    # A script or meta with no namespace is still head metadata. The
+    # generated pages write those elements that way. A title in another
+    # namespace, and non-whitespace text, are not.
+    scripted = parse(page('<p>a</p>', head: %(#{META}<script xmlns="" type="text/javascript">a</script>)))
+    script_head = scripted.at_xpath('//*[local-name()="head"]')
+    script_html = scripted.at_xpath('//*[local-name()="html"]')
+    assert HtmlFormat.free_gap?(script_html, nil, script_head)
+    foreign = parse(%(<html xmlns="http://www.w3.org/1999/xhtml"><head>#{META}<title xmlns="urn:probe">A</title></head><body><p>a</p></body></html>))
+    foreign_head = foreign.at_xpath('//*[local-name()="head"]')
+    foreign_html = foreign.at_xpath('//*[local-name()="html"]')
+    refute HtmlFormat.free_gap?(foreign_html, nil, foreign_head)
+    text = parse(page('<p>a</p>', head: %(#{META}<title>T</title>A<meta name="x" content="x" />B)))
+    text_head = text.at_xpath('//*[local-name()="head"]')
+    refute HtmlFormat.free_gap?(text.at_xpath('//*[local-name()="html"]'), nil, text_head)
+    prefixed = parse(page('<p>a</p>', head: %(#{META}<x:title xmlns:x="urn:probe">A</x:title>)))
+    prefixed_head = prefixed.at_xpath('//*[local-name()="head"]')
+    refute HtmlFormat.free_gap?(prefixed.at_xpath('//*[local-name()="html"]'), nil, prefixed_head)
   end
 
   # A span is not head metadata. HTML parsing moves it into the body, so
@@ -799,7 +861,7 @@ class CleanupIntegration < Minitest::Test
     Dir.mktmpdir do |dir|
       scripts = File.join(dir, 'scripts')
       Dir.mkdir(scripts)
-      %w[xhtml_postprocess_cleanup.sh xhtml_postprocess_cleanup_file.rb html_format.rb html_whitespace_guard.rb util.rb].each do |name|
+      %w[xhtml_postprocess_cleanup.sh xhtml_postprocess_cleanup_file.rb html_format.rb html_stylesheet_scan.rb html_whitespace_guard.rb util.rb].each do |name|
         FileUtils.cp(File.join(ROOT, 'scripts', name), File.join(scripts, name))
       end
       cleanup = File.join(scripts, 'xhtml_postprocess_cleanup_file.rb')
@@ -906,6 +968,15 @@ class ReviewerCases < Minitest::Test
     end
     inherited = '<div class="ws"><div><p>a</p><p>b</p></div></div>'
     assert_patched(page(inherited), inherited, freeze_classes: ['ws'])
+    # preserve, preserve-breaks, and preserve-spaces are not safe. The
+    # scanner records the same freeze set for each. Inline styles use that
+    # table directly; a stylesheet subject uses the freeze constant.
+    %w[preserve preserve-breaks preserve-spaces].each do |value|
+      nested = %(<div style="white-space: #{value}"><div><div>A</div><div>B</div></div></div>)
+      assert_cleanup(page(nested), nested)
+    end
+    styled = '<div class="probe"><div><p>a</p><p>b</p></div></div>'
+    assert_patched(page(styled), styled, freeze_classes: ['probe'])
   end
 
   def test_a_stylesheet_subject_is_not_a_gap_block
@@ -957,11 +1028,11 @@ class ReviewerCases < Minitest::Test
     assert_patched(page(frozen), frozen, freeze_classes: ['probe'])
     py = '<p class="y"><div>A</div><div>B</div></p>'
     assert_patched(page(py), py, freeze_tags: ['p'], freeze_classes: ['y'])
-    details = '<details open="open"><summary>T</summary><div>A</div><div>B</div></details>'
-    assert_patched(page(details), details, freeze_tags: ['details'])
   end
 
-  def test_an_invalid_collapse_value_does_not_open_a_preserved_subtree
+  # A later keyword that is not collapse still freezes. collapse clears.
+  # An empty value and an unbalanced bracket are dropped.
+  def test_an_unlisted_collapse_value_keeps_a_preserved_subtree
     body = '<div class="probe"><div>A</div><div>B</div></div>'
     assert_patched(page(body), body, freeze_classes: ['probe'])
     %w[normal nowrap].each do |value|
@@ -974,6 +1045,29 @@ class ReviewerCases < Minitest::Test
     ok, err, cleaned = run_cleanup(page(safe))
     assert ok, err
     assert_match(%r{<p>a</p>\n +<p>b</p>}, cleaned)
+    opened = '<div style="white-space-collapse: preserve; white-space-collapse: collapse"><div><p>a</p><p>b</p></div></div>'
+    opened_pretty = format_text(page(opened))
+    assert_match(%r{<p>a</p>\n +<p>b</p>}, opened_pretty)
+    ok, err, cleaned = run_cleanup(page(opened))
+    assert ok, err
+    assert_match(%r{<p>a</p>\n +<p>b</p>}, cleaned)
+    dropped = '<div style="white-space: )"><div><p>a</p><p>b</p></div></div>'
+    dropped_pretty = format_text(page(dropped))
+    assert_match(%r{<p>a</p>\n +<p>b</p>}, dropped_pretty)
+    ok, err, cleaned = run_cleanup(page(dropped))
+    assert ok, err
+    assert_match(%r{<p>a</p>\n +<p>b</p>}, cleaned)
+    kept = '<div style="white-space: pre; white-space: bar)"><p>a</p><p>b</p></div>'
+    assert_cleanup(page(kept), kept)
+  end
+
+  def test_an_unlisted_display_value_is_not_a_gap_block
+    %w[math ruby-text-container inline-list-item].each do |value|
+      body = %(<div><span>A</span><div style="display: #{value}">F</div><div style="display: #{value}">G</div><span>B</span></div>)
+      assert_cleanup(page(body), body)
+    end
+    styled = '<div><span>A</span><div class="probe">F</div><div class="probe">G</div><span>B</span></div>'
+    assert_patched(page(styled), styled, exclusion_classes: ['probe'])
   end
 
   def test_a_misplaced_table_subtree_stays_joined
@@ -1008,6 +1102,36 @@ class ReviewerCases < Minitest::Test
     assert_includes cleaned, 'lang="en"><head>'
     assert_includes cleaned, '<span>A</span><span>B</span>'
     assert_includes cleaned, '<title>T</title><link rel="stylesheet" href="final.css" /><span>A</span>'
+  end
+
+  # Non-whitespace text ends an HTML head. The metas after it are body
+  # content, so a gap between them would become a space.
+  def test_text_in_head_stays_joined
+    head = %(#{META}<title>T</title><link rel="stylesheet" href="final.css" />A<meta name="x" content="x" /><meta name="y" content="y" />B)
+    source = page('<p>Body</p>', head: head)
+    once = format_text(source)
+    assert_includes once, '<html xmlns="http://www.w3.org/1999/xhtml"><head>'
+    assert_includes once, '/>A<meta name="x" content="x" /><meta name="y" content="y" />B</head>'
+    assert_equal once, format_text(once)
+    ok, err, cleaned = run_cleanup(source)
+    assert ok, err
+    assert_includes cleaned, 'lang="en"><head>'
+    assert_includes cleaned, '/>A<meta name="x" content="x" /><meta name="y" content="y" />B</head>'
+  end
+
+  # HTML uses the qualified name. x:title is not a title element, even
+  # though its local name is title.
+  def test_a_prefixed_head_name_stays_joined
+    head = %(#{META}<title>T</title><link rel="stylesheet" href="final.css" /><x:title xmlns:x="urn:probe">A</x:title><x:title xmlns:x="urn:probe">B</x:title>)
+    source = page('<p>Body</p>', head: head)
+    once = format_text(source)
+    assert_includes once, '<html xmlns="http://www.w3.org/1999/xhtml"><head>'
+    assert_includes once, '<x:title xmlns:x="urn:probe">A</x:title><x:title xmlns:x="urn:probe">B</x:title>'
+    assert_equal once, format_text(once)
+    ok, err, cleaned = run_cleanup(source)
+    assert ok, err
+    assert_includes cleaned, 'lang="en"><head>'
+    assert_includes cleaned, '<x:title xmlns:x="urn:probe">A</x:title><x:title xmlns:x="urn:probe">B</x:title>'
   end
 end
 

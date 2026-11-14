@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'nokogiri'
+require_relative 'html_stylesheet_scan'
 
 # Indent-only formatter for the book's XHTML pages (issue #207).
 #
@@ -10,13 +11,16 @@ require 'nokogiri'
 # those gaps. Every other byte stays, including inline text and the inside
 # of a verbatim element.
 #
-# A plain head is not shown. The exception applies only when every element
-# child of head is one of title, meta, link, script, style, and base. A gap
-# in that head whose neighbors are plain elements, including the gap at
-# either edge, is free, so each head child starts on its own line. The ePub
-# packager reads those lines. Any other element child keeps every gap in
-# the head, and the gap between html and head. A class, id, style, or
-# hidden attribute, or an excluded tag or class, keeps the gap it bounds.
+# A plain head is not shown. The exception applies only when head has no
+# non-whitespace text, and every element child is an unprefixed title, meta,
+# link, script, style, or base in the XHTML namespace or in no namespace.
+# The generated pages put some head scripts in no namespace. A prefixed name
+# such as x:title is not metadata. A gap in a head that qualifies, whose
+# neighbors are plain elements, including the gap at either edge, is free,
+# so each head child starts on its own line. The ePub packager reads those
+# lines. Any other head keeps every gap in the head, and the gap between
+# html and head. A class, id, style, or hidden attribute, or an excluded
+# tag or class, keeps the gap it bounds.
 module HtmlFormat
   XHTML_NS = 'http://www.w3.org/1999/xhtml'
   XML_NS = 'http://www.w3.org/XML/1998/namespace'
@@ -92,9 +96,10 @@ module HtmlFormat
     'td' => %w[tr].freeze,
     'th' => %w[tr].freeze
   }.freeze
-  # Element children an HTML parser leaves in head. Any other element child
-  # ends the head. The check is by local name: a head script has no XHTML
-  # namespace, and plain_head_part? does not require one either.
+  # Element children an HTML parser leaves in head when the tag is unprefixed.
+  # head_metadata? also requires the XHTML namespace or no namespace. A head
+  # script in the generated pages has no namespace. A prefixed name does not
+  # match, and neither does an element in any other namespace.
   HEAD_CONTENT = %w[title meta link script style base].freeze
   BLOCK_TAG = BLOCK_TAGS.to_h { |tag| [tag, true] }.freeze
   EXCLUSION_TAG = EXCLUSION_TAGS.to_h { |tag| [tag, true] }.freeze
@@ -366,13 +371,13 @@ module HtmlFormat
     misplaced_table_part?(node)
   end
 
-  # nil when the element has no style attribute. :unreadable when a
-  # declaration cannot be checked against STYLE_ALLOW. Otherwise
-  # :preserve is true when the winning white-space value would keep an
-  # inserted gap. An invalid white-space value is ignored and does not
-  # replace an earlier one. The safe values match HtmlStylesheetScan:
-  # normal and nowrap for white-space, and only collapse for
-  # white-space-collapse.
+  # nil when the element has no style attribute. :unreadable when the
+  # attribute contains a character this check does not parse (a quote, an
+  # escape, !important, or a comment marker). Otherwise :preserve is true
+  # when the winning white-space or white-space-collapse value is not in
+  # HtmlStylesheetScan::SAFE_VALUE. A malformed declaration is dropped and
+  # does not replace an earlier one. Any declaration other than the
+  # STYLE_ALLOW pairs means the element is not a visible block.
   def style_info(element)
     cache = @style_cache
     if cache && cache.key?(element)
@@ -396,52 +401,29 @@ module HtmlFormat
       piece = part.strip
       next if piece.empty?
       colon = piece.index(':')
-      return :unreadable unless colon
+      next unless colon
       prop = piece[0...colon].strip.downcase
+      next if prop.empty?
       value = piece[(colon + 1)..].strip.downcase.gsub(/[ \t\r\n\f]+/, ' ')
-      return :unreadable if prop.empty? || value.empty?
-      if prop == 'white-space' || prop == 'white-space-collapse'
-        verdict = inline_whitespace_verdict(prop, value)
-        if verdict != :invalid
-          if prop == 'white-space'
-            whitespace = verdict
-          else
-            collapse = verdict
-          end
-        end
+      verdict = HtmlStylesheetScan.value_verdict(prop, value)
+      next if verdict == :drop
+      if prop == 'white-space'
+        whitespace = verdict
+      elsif prop == 'white-space-collapse'
+        collapse = verdict
       end
       allowed = false unless STYLE_ALLOW[prop] == value
     end
-    preserve = whitespace == :effect || whitespace == :unknown ||
-               collapse == :effect || collapse == :unknown
+    preserve = whitespace == :unsafe || collapse == :unsafe
     { allowed: allowed, preserve: preserve }
   end
 
-  # Same verdicts as HtmlStylesheetScan for these two properties. A later
-  # valid value replaces an earlier one. A known-invalid keyword does not.
-  def inline_whitespace_verdict(property, value)
-    return :unknown if value == 'inherit' || value == 'unset' || value == 'revert' ||
-                       value == 'revert-layer'
-    return :safe if value == 'initial'
-    case property
-    when 'white-space'
-      return :safe if value == 'normal' || value == 'nowrap'
-      return :effect if value == 'pre' || value == 'pre-wrap' || value == 'pre-line' ||
-                        value == 'break-spaces'
-    when 'white-space-collapse'
-      return :safe if value == 'collapse'
-      return :effect if value == 'discard' || value == 'preserve' ||
-                        value == 'preserve-breaks' || value == 'preserve-spaces' ||
-                        value == 'break-spaces'
-    end
-    return :invalid if value.match?(/\A[a-z][a-z0-9-]*\z/)
-    :unknown
-  end
-
+  # Quotes, escapes, !important, and comment markers can hide a value.
+  # Brackets are classified by HtmlStylesheetScan.value_verdict: a balanced
+  # value is safe or unsafe, and an unbalanced value is dropped.
   def style_unreadable?(text)
     text.each_char do |char|
-      return true if char == '\\' || char == '"' || char == "'" || char == '(' ||
-                     char == ')' || char == '{' || char == '}' || char == '!' ||
+      return true if char == '\\' || char == '"' || char == "'" || char == '!' ||
                      char == '/' || char == '*'
     end
     false
@@ -570,15 +552,36 @@ module HtmlFormat
     !equiv.nil? && equiv.casecmp('Content-Type').zero?
   end
 
-  # The head exception applies only when every element child is metadata.
-  # A span, or any other element, means no gap in that head is free.
+  # The head exception applies only when the head is plain metadata.
+  # Non-whitespace text, a prefixed name, or any other element means no
+  # gap in that head is free, and the gap before head is not free either.
   def head_exception?(node)
     plain_head_part?(node) && head_metadata?(node)
   end
 
   def head_metadata?(head)
     return false unless head&.element?
-    head.elements.all? { |child| HEAD_CONTENT_TAG[child.name] }
+    child = head.child
+    while child
+      if child.text?
+        return false unless whitespace_only?(child.content)
+      elsif child.element?
+        return false unless head_content_element?(child)
+      end
+      child = child.next
+    end
+    true
+  end
+
+  # Unprefixed, and in the XHTML namespace or in no namespace. HTML ignores
+  # an xmlns attribute and uses the qualified name, so x:title is not a
+  # title. The book's head scripts are unprefixed and have no namespace.
+  def head_content_element?(element)
+    return false unless HEAD_CONTENT_TAG[element.name]
+    prefix = element.namespace&.prefix
+    return false unless prefix.nil? || prefix.empty?
+    href = namespace_href(element)
+    href.nil? || href.empty? || href == XHTML_NS
   end
 
   # A plain head is not rendered. Each plain element child starts on its
@@ -592,8 +595,9 @@ module HtmlFormat
   private_class_method :format_element, :normalize_gaps, :indent_for, :gap_text,
                        :inside_verbatim?, :visible_block_uncached, :verbatim_uncached,
                        :subtree_frozen?, :style_info, :style_info_uncached,
-                       :inline_whitespace_verdict, :style_unreadable?,
+                       :style_unreadable?,
                        :table_parent_ok?, :misplaced_table_part?, :plain_head_part?,
-                       :head_exception?, :head_metadata?, :xml_space?, :gap_kind,
+                       :head_exception?, :head_metadata?, :head_content_element?,
+                       :xml_space?, :gap_kind,
                        :block_edges?, :head_gap?, :content_type_meta?
 end

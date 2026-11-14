@@ -32,7 +32,6 @@ xmllint --loaddtd --noent --noout book-assembled.xml; rm book-assembled.xml
 python3 scripts/test-build-actions.py
 ruby scripts/test-build-workflow.rb
 python3 scripts/test-makefile.py
-python3 scripts/test-xhtml-format.py
 python3 scripts/test-chapter-pictures.py
 python3 scripts/test-lint-undotted-cmevla.py
 python3 scripts/lint-undotted-cmevla.py chapters/*.xml
@@ -52,6 +51,7 @@ python3 scripts/test-epub-nav.py
 python3 scripts/test-xml-prince-postprocess.py
 python3 scripts/test-offline-list.py
 python3 scripts/test-nokogiri-spaces.py
+ruby scripts/test-html-format.rb
 ruby scripts/test-lint-gloss-columns.rb
 ruby scripts/lint-gloss-columns.rb chapters/*.xml
 ruby scripts/test-lint-index-types.rb
@@ -80,7 +80,6 @@ node tests/test-prince-index.js
 | --- | --- | --- |
 | Build workflow | The format selection, preview guard, and helper scripts of the "Build selected formats" workflow, and its action pins, permissions, and timeouts | `python3 scripts/test-build-actions.py` and `ruby scripts/test-build-workflow.rb` |
 | Build helpers | The XHTML post-processors stop after a tool fails. They keep the original page. `cll_build` reports a failed comparison and exits with that status. `cll_build -j` refreshes `dictionary/all_words.xml`. `Gemfile.lock` matches the Docker gem pins. | `python3 scripts/test-build-helpers.py` |
-| XHTML formatting | The HTML clean-up scripts keep the spaces between inline elements | `python3 scripts/test-xhtml-format.py` |
 | Chapter artwork | Each of chapters 1 to 21 references its own chapter picture, a large RGBA PNG in `assets/media/`, no unreferenced chapter picture is shipped, and the chapter 2 diagram keeps its size and padding | `python3 scripts/test-chapter-pictures.py` |
 | Well-formed book | The book header and all chapters together are well-formed XML, with no undefined entity and no duplicate ID | See [Quick run](#quick-run) |
 
@@ -134,6 +133,7 @@ The check needs `xsltproc` as well as Ruby and Nokogiri.
 | Prince postprocessor | `scripts/xml_prince_postprocess.rb`, the last step before Prince, on `tests/fixtures/xml-prince-postprocess.xhtml` | `python3 scripts/test-xml-prince-postprocess.py` |
 | Offline file list | `scripts/xhtml_postprocess_offline.rb` writes `sw.js` for one HTML folder. It stops for a missing file or an unsafe name. It stops for a path that starts with `/`. It stops for a reference in a form it does not read, or for a precache above 20 MiB | `python3 scripts/test-offline-list.py` |
 | Nokogiri spaces | The Ruby build scripts keep the spaces between inline elements | `python3 scripts/test-nokogiri-spaces.py` |
+| HTML formatter | The formatter indents only between visible blocks. The guard rejects every other change. The stylesheet test recomputes the exclusion set | `ruby scripts/test-html-format.rb` |
 | Gloss columns self-test | The lint below, on fixtures | `ruby scripts/test-lint-gloss-columns.rb` |
 | Gloss columns | Each gloss line has a column for every Lojban word, and structural words such as `cu` and terminators have suitable glosses (see [markup-tags.md](markup-tags.md#interlinear-gloss)) | `ruby scripts/lint-gloss-columns.rb chapters/*.xml` |
 | Index types self-test | The lint below, on fixtures | `ruby scripts/test-lint-index-types.rb` |

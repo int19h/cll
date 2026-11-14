@@ -190,6 +190,32 @@ class MakefileTests(unittest.TestCase):
         self.assertFalse(gone.exists())
         self.assertEqual(survivor.read_text(), 'keep')
 
+    def test_formatter_rebuilds_html_and_pdf_stays_unformatted(self):
+        processed = self.build / 'cll_processed_xhtml.xml'
+        targets = [
+            (self.build / 'xhtml_no_chunks.done', False),
+            (self.build / 'pdf.done', True),
+            (self.build / 'weasyprint/cll_processed_xhtml_pdf.html', True),
+            (self.build / 'epub-xhtml/index.html', False),
+        ]
+        self.touch_output(processed)
+        for path, _none in targets:
+            self.touch_output(path)
+        for helper in ('scripts/html_format.rb', 'scripts/html_whitespace_guard.rb'):
+            for target, unformatted in targets:
+                with self.subTest(helper=helper, target=target.name):
+                    current = self.make('-n', target)
+                    self.assertTrue(
+                        'Nothing to be done' in current or 'is up to date' in current, current)
+                    stale = self.make('-n', f'-W{helper}', target)
+                    self.assertIn('xhtml_postprocess_cleanup.sh', stale)
+                    self.assertNotIn('Nothing to be done', stale)
+                    self.assertNotIn('is up to date', stale)
+                    if unformatted:
+                        self.assertIn('CLL_HTML_FORMAT=none', stale)
+                    else:
+                        self.assertNotIn('CLL_HTML_FORMAT=none', stale)
+
     def test_offline_no_skips_the_generator(self):
         done = self.build / 'xhtml_no_chunks.done'
         self.touch_output(done)

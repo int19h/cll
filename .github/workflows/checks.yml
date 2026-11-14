@@ -23,8 +23,6 @@ jobs:
         run: python3 scripts/test-makefile.py
       - name: Build helper failure and dictionary refresh tests
         run: python3 scripts/test-build-helpers.py
-      - name: XHTML formatting preserves inline spaces
-        run: python3 scripts/test-xhtml-format.py
       - name: Chapter artwork references and PNGs
         run: python3 scripts/test-chapter-pictures.py
       - name: Assemble book (build header + chapters) and check well-formedness
@@ -127,6 +125,7 @@ jobs:
           python3 scripts/test-xml-prince-postprocess.py
           python3 scripts/test-offline-list.py
           python3 scripts/test-nokogiri-spaces.py
+          ruby scripts/test-html-format.rb
       - name: Gloss column lint self-test
         run: ruby scripts/test-lint-gloss-columns.rb
       - name: Interlinear gloss columns

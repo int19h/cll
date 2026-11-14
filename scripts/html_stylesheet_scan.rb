@@ -5,21 +5,30 @@
 #
 # Only the subject of a selector counts: the last compound, after the last
 # combinator. An ancestor in the selector is not affected by the rule.
+# Each member of a selector list is separate. ::before, ::after, and ::marker
+# style a generated box, so that member is skipped. Any other pseudo-element
+# is a rule on the element that remains in that member: it excludes, and a
+# preserving white-space value freezes that element. A member with no element
+# left fails the scan, and the message names the rule. A pseudo-class still
+# fails closed.
 # A rule whose display value is a block, a list item, or an internal or
 # block-level table box excludes nothing. Those values cannot turn a listed
 # block into an inline box. inline-table can, so it still excludes.
-# Every other display value excludes, and so does every visibility or
-# content-visibility value other than visible.
-# float other than none, and position other than static or relative, exclude
-# the subject: those values take the box out of normal flow. relative keeps
-# the box in the flow, so a gap beside it still collapses.
-# all, at any value, excludes the subject: it resets display to inline.
-# white-space and white-space-collapse, at any value other than normal or
-# nowrap, freeze the subject's tag and classes. The property is inherited,
-# so the whole subtree is verbatim. normal and nowrap still collapse.
-# A pseudo-element rule does not apply to the element. A pseudo-class still
-# fails closed. The scan fails closed when it cannot read a construct that
-# could hide such a rule, and the message names the rule.
+# Every other known display value excludes, and so does every known
+# visibility or content-visibility value other than visible.
+# float excludes unless the winning value is none. position excludes unless
+# the winning value is static or relative. relative keeps the box in the
+# flow, so a gap beside it still collapses.
+# all excludes at initial, inherit, unset, revert, or revert-layer: it
+# resets display to inline. Any other all value is invalid and is dropped.
+# white-space freezes the subject for pre, pre-wrap, pre-line, and
+# break-spaces. normal and nowrap still collapse. white-space-collapse
+# freezes the subject unless the winning value is collapse. The property
+# is inherited, so the whole subtree is verbatim.
+# An invalid value is dropped, as a browser drops it, and does not replace
+# an earlier declaration. A value the scan cannot classify fails closed:
+# it excludes or freezes. The scan also fails closed when it cannot read a
+# construct that could hide such a rule, and the message names the rule.
 module HtmlStylesheetScan
   class Unreadable < StandardError; end
 
@@ -39,11 +48,28 @@ module HtmlStylesheetScan
     table table-caption table-cell table-column table-column-group
     table-footer-group table-header-group table-row table-row-group
   ].freeze
+  # These style a generated box. They do not change the gaps beside the element.
+  GENERATED_PSEUDO = %w[before after marker].freeze
+  WHITESPACE_EFFECT = %w[pre pre-wrap pre-line break-spaces].freeze
+  # collapse is the only safe longhand. normal and nowrap are shorthand
+  # keywords, so they are invalid here and must not win.
+  COLLAPSE_EFFECT = %w[discard preserve preserve-breaks preserve-spaces break-spaces].freeze
+  FLOAT_EFFECT = %w[left right inline-start inline-end].freeze
+  POSITION_EFFECT = %w[absolute fixed sticky].freeze
+  DISPLAY_EFFECT = %w[
+    inline inline-block inline-flex inline-grid inline-table
+    flex grid contents none flow-root
+    ruby ruby-base ruby-text run-in flow
+  ].freeze
   PAGE_MARGINS = %w[
     top-left-corner top-left top-center top-right top-right-corner
     bottom-left-corner bottom-left bottom-center bottom-right bottom-right-corner
     left-top left-middle left-bottom right-top right-middle right-bottom
   ].freeze
+  # The last compound, then one or more trailing pseudo-elements.
+  PSEUDO_SUBJECT = /\A((?:[A-Za-z][A-Za-z0-9_-]*)?(?:\.[A-Za-z_][A-Za-z0-9_-]*)*)((?:::[A-Za-z][A-Za-z0-9_-]*(?:\([^()]*\))?)+)\z/
+  IDENT = /\A[a-z][a-z0-9-]*\z/
+  RUNNING = /\Arunning\([a-z0-9_-]*\)\z/
 
   module_function
 
@@ -186,46 +212,98 @@ module HtmlStylesheetScan
           fail!("#{rule} { #{prop}: #{shown} }")
         end
       end
-      # ::before and ::after boxes are not the element. A single-colon
-      # pseudo-class still fails above, because this scanner does not try
-      # to tell :hover from :before.
-      return if flags[:pseudo_element]
       extract(selector, @tags, @classes) if excludes?(relevant)
       extract(selector, @preserve_tags, @preserve_classes) if preserves?(relevant)
     end
 
-    # The last declaration of each importance wins, and an !important
-    # declaration wins over one that is not. visibility and content-visibility
-    # hide the subject unless the winning value is exactly visible.
-    # position: relative stays in normal flow, like static. The book sets it
-    # on p.status-note, and excluding that subject would exclude every p.
+    # The last valid declaration of each importance wins. An invalid
+    # declaration is dropped and does not replace an earlier one. An
+    # !important declaration wins over one that is not.
+    # visibility and content-visibility hide the subject unless the winning
+    # value is exactly visible. position: relative stays in normal flow,
+    # like static. The book sets it on p.status-note, and excluding that
+    # subject would exclude every p.
     def excludes?(decls)
-      display = winning_value(decls, 'display')
-      visibility = winning_value(decls, 'visibility')
-      content_visibility = winning_value(decls, 'content-visibility')
-      floated = winning_value(decls, 'float')
-      position = winning_value(decls, 'position')
-      all_value = winning_value(decls, 'all')
-      return true if visibility && visibility != 'visible'
-      return true if content_visibility && content_visibility != 'visible'
-      return true if floated && floated != 'none'
-      return true if position && position != 'static' && position != 'relative'
-      return true if all_value
-      return false if display.nil? || HARMLESS_DISPLAY.include?(display)
-      true
+      return true if dangerous?('visibility', winning_value(decls, 'visibility'))
+      return true if dangerous?('content-visibility', winning_value(decls, 'content-visibility'))
+      return true if dangerous?('float', winning_value(decls, 'float'))
+      return true if dangerous?('position', winning_value(decls, 'position'))
+      return true if dangerous?('all', winning_value(decls, 'all'))
+      return true if dangerous?('display', winning_value(decls, 'display'))
+      false
     end
 
-    # Inherited. Any value other than the two collapsing keywords freezes
-    # the subject. white-space-collapse: collapse is not the keyword normal,
-    # so it freezes too.
+    # Inherited. collapse is safe for the longhand. normal and nowrap are
+    # not values of white-space-collapse, so a later one of those does not
+    # cancel an earlier preserving value.
     def preserves?(decls)
-      preserving_value?(winning_value(decls, 'white-space')) ||
-        preserving_value?(winning_value(decls, 'white-space-collapse'))
+      dangerous?('white-space', winning_value(decls, 'white-space')) ||
+        dangerous?('white-space-collapse', winning_value(decls, 'white-space-collapse'))
     end
 
-    def preserving_value?(value)
+    def dangerous?(property, value)
       return false if value.nil?
-      value != 'normal' && value != 'nowrap'
+      return true if value == :unknown
+      verdict = classify_value(property, value)
+      verdict == :effect || verdict == :unknown
+    end
+
+    # :safe collapses or stays in flow. :effect excludes or freezes.
+    # :invalid is dropped. :unknown fails closed.
+    def classify_value(property, value)
+      wide = css_wide_verdict(property, value)
+      return wide if wide
+      case property
+      when 'white-space'
+        return :safe if value == 'normal' || value == 'nowrap'
+        return :effect if WHITESPACE_EFFECT.include?(value)
+      when 'white-space-collapse'
+        return :safe if value == 'collapse'
+        return :effect if COLLAPSE_EFFECT.include?(value)
+      when 'float'
+        return :safe if value == 'none'
+        return :effect if FLOAT_EFFECT.include?(value)
+      when 'position'
+        return :safe if value == 'static' || value == 'relative'
+        return :effect if POSITION_EFFECT.include?(value) || RUNNING.match?(value)
+      when 'display'
+        return :safe if HARMLESS_DISPLAY.include?(value)
+        return :effect if DISPLAY_EFFECT.include?(value)
+      when 'visibility'
+        return :safe if value == 'visible'
+        return :effect if value == 'hidden' || value == 'collapse'
+      when 'content-visibility'
+        return :safe if value == 'visible'
+        return :effect if value == 'auto' || value == 'hidden'
+      when 'all'
+        return :invalid if IDENT.match?(value)
+        return :unknown
+      else
+        return :unknown
+      end
+      return :invalid if IDENT.match?(value)
+      :unknown
+    end
+
+    # nil when value is not a CSS-wide keyword. initial and unset use the
+    # property's initial value when the property is not inherited. inherit,
+    # revert, and revert-layer depend on another stylesheet, so they fail
+    # closed, except all, which excludes at every CSS-wide keyword.
+    def css_wide_verdict(property, value)
+      return nil unless value == 'initial' || value == 'inherit' || value == 'unset' ||
+                        value == 'revert' || value == 'revert-layer'
+      return :effect if property == 'all'
+      inherited = property == 'white-space' || property == 'white-space-collapse' ||
+                  property == 'visibility'
+      case value
+      when 'initial'
+        property == 'display' ? :effect : :safe
+      when 'unset'
+        return :unknown if inherited
+        property == 'display' ? :effect : :safe
+      else
+        :unknown
+      end
     end
 
     def winning_value(decls, property)
@@ -236,10 +314,13 @@ module HtmlStylesheetScan
         cleaned = value.strip.gsub(/\s+/, ' ')
         flagged = !cleaned.sub!(/\s*!important\z/i, '').nil?
         cleaned = cleaned.strip.downcase
+        verdict = classify_value(property, cleaned)
+        next if verdict == :invalid
+        chosen = verdict == :unknown ? :unknown : cleaned
         if flagged
-          important = cleaned
+          important = chosen
         else
-          normal = cleaned
+          normal = chosen
         end
       end
       important || normal
@@ -275,12 +356,81 @@ module HtmlStylesheetScan
     end
 
     def extract(selector, tags, classes)
-      selector.split(',').each do |part|
-        compounds = part.strip.split(/\s*[>+~]\s*|\s+/)
-        token = compounds.reject(&:empty?).last
-        fail!("a selector #{part.strip[0, 60]}") if token.nil? || token.empty?
+      split_selector_list(selector).each do |part|
+        token = subject_token(part, selector)
+        next if token.nil?
         record_compound(token, selector, tags, classes)
       end
+    end
+
+    # nil skips a member whose pseudo-elements are all generated boxes.
+    # Any other pseudo-element leaves the originating element as the subject.
+    def subject_token(part, selector)
+      compounds = split_compounds(part)
+      fail_selector!(part, selector) if compounds.empty?
+      if compounds[0...-1].any? { |item| item.include?(':') }
+        fail_selector!(part, selector)
+      end
+      token = compounds.last
+      match = PSEUDO_SUBJECT.match(token)
+      if match
+        names = match[2].scan(/::([A-Za-z][A-Za-z0-9_-]*)/).flatten
+        return nil if names.all? { |name| GENERATED_PSEUDO.include?(name.downcase) }
+        fail_selector!(part, selector) if match[1].empty?
+        return match[1]
+      end
+      fail_selector!(part, selector) if token.include?(':')
+      token
+    end
+
+    def split_selector_list(selector)
+      parts = []
+      current = +''
+      depth = 0
+      selector.each_char do |char|
+        if char == '('
+          depth += 1
+          current << char
+        elsif char == ')'
+          depth -= 1 if depth.positive?
+          current << char
+        elsif char == ',' && depth.zero?
+          parts << current
+          current = +''
+        else
+          current << char
+        end
+      end
+      parts << current
+      parts
+    end
+
+    def split_compounds(part)
+      compounds = []
+      current = +''
+      depth = 0
+      part.each_char do |char|
+        if char == '('
+          depth += 1
+          current << char
+        elsif char == ')'
+          depth -= 1 if depth.positive?
+          current << char
+        elsif depth.zero? && (char == '>' || char == '+' || char == '~' || char.match?(/\s/))
+          compounds << current unless current.empty?
+          current = +''
+        else
+          current << char
+        end
+      end
+      compounds << current unless current.empty?
+      compounds
+    end
+
+    def fail_selector!(part, selector)
+      shown_part = part.strip.gsub(/\s+/, ' ')[0, 60]
+      shown_rule = selector.strip.gsub(/\s+/, ' ')[0, 80]
+      fail!("a selector #{shown_part} in #{shown_rule}")
     end
 
     def record_compound(token, selector, tags, classes)
@@ -350,7 +500,11 @@ module HtmlStylesheetScan
         end
         if char == '('
           paren += 1
-          flags[:call] = true if flags && paren == 1 && bracket.zero?
+          # ::part() and ::slotted() belong to the pseudo-element. :is() and
+          # :not() still fail closed.
+          if flags && paren == 1 && bracket.zero? && !text.match?(/::[A-Za-z][A-Za-z0-9_-]*\z/)
+            flags[:call] = true
+          end
           text << char
           @i += 1
           next
@@ -379,7 +533,6 @@ module HtmlStylesheetScan
         end
         if flags && paren.zero? && bracket.zero?
           if char == ':' && peek_at(2) == '::'
-            flags[:pseudo_element] = true
             text << '::'
             @i += 2
             next

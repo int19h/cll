@@ -3,11 +3,12 @@
    block out of block layout: the tag and classes of the last compound in
    the selector. A rule that only sets display to block, list-item, or a
    table box does not exclude its subject.
-   If a rule here sets white-space or white-space-collapse to anything
-   other than normal or nowrap, that subject's tag and classes belong in
-   the freeze constants in scripts/html_format.rb. The property is
-   inherited, so the whole subtree stays verbatim. normal and nowrap still
-   collapse whitespace. */
+   white-space values normal and nowrap still collapse. The only safe
+   white-space-collapse value is collapse. Any other preserving value
+   freezes that subject's tag and classes: the property is inherited, so
+   the whole subtree stays verbatim. An invalid value is ignored and does
+   not cancel an earlier preserving value. Put a preserving winning value
+   in the freeze constants in scripts/html_format.rb. */
 
 /********************
  * NB:

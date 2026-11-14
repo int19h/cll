@@ -10,10 +10,13 @@ require 'nokogiri'
 # those gaps. Every other byte stays, including inline text and the inside
 # of a verbatim element.
 #
-# A plain head is not shown. A gap in that head whose neighbors are plain
-# elements, including the gap at either edge, is free, so each head child
-# starts on its own line. The ePub packager reads those lines. A class, id,
-# style, or hidden attribute, or an excluded tag or class, keeps the gap.
+# A plain head is not shown. The exception applies only when every element
+# child of head is one of title, meta, link, script, style, and base. A gap
+# in that head whose neighbors are plain elements, including the gap at
+# either edge, is free, so each head child starts on its own line. The ePub
+# packager reads those lines. Any other element child keeps every gap in
+# the head, and the gap between html and head. A class, id, style, or
+# hidden attribute, or an excluded tag or class, keeps the gap it bounds.
 module HtmlFormat
   XHTML_NS = 'http://www.w3.org/1999/xhtml'
   XML_NS = 'http://www.w3.org/XML/1998/namespace'
@@ -32,10 +35,10 @@ module HtmlFormat
   # hr: a block by default. hr is excluded, because title-page rules hide that subject.
   # ul, ol, li, dl, dt, dd: lists. A list item is a block for whitespace.
   # figure, figcaption, fieldset, legend, form, details, summary: other HTML blocks.
-  # table through th: table parts. Whitespace between them is not rendered
-  # when the part sits in the parent an HTML parser keeps. A caption, row,
-  # or cell in any other parent is not a block: the HTML parser drops the
-  # tag, and a gap beside it would become a space.
+  # table through th: table parts. A part is a block only when every step
+  # from it up to a table element is a parent an HTML parser keeps. A part
+  # whose placement is not valid freezes its whole subtree: the parser
+  # drops the tags, and a gap inside them would become a space.
   #
   # Left off the list, because a line break beside them can be a space or
   # they are not boxes in the page:
@@ -75,8 +78,9 @@ module HtmlFormat
   INDENTS = (0..48).map { |depth| "\n#{'  ' * depth}" }.freeze
 
   VERBATIM_TAGS = %w[math pre script style svg textarea].freeze
-  # A table part is a block only in one of these parents. col is also a
-  # child of table in the XHTML tree; the HTML parser would wrap it.
+  # A table part is a block only when every step up to table is one of
+  # these parents. col is also a child of table in the XHTML tree; the
+  # HTML parser would wrap it.
   TABLE_PARENT = {
     'caption' => %w[table].freeze,
     'colgroup' => %w[table].freeze,
@@ -88,11 +92,16 @@ module HtmlFormat
     'td' => %w[tr].freeze,
     'th' => %w[tr].freeze
   }.freeze
+  # Element children an HTML parser leaves in head. Any other element child
+  # ends the head. The check is by local name: a head script has no XHTML
+  # namespace, and plain_head_part? does not require one either.
+  HEAD_CONTENT = %w[title meta link script style base].freeze
   BLOCK_TAG = BLOCK_TAGS.to_h { |tag| [tag, true] }.freeze
   EXCLUSION_TAG = EXCLUSION_TAGS.to_h { |tag| [tag, true] }.freeze
   EXCLUSION_CLASS = EXCLUSION_CLASSES.to_h { |name| [name, true] }.freeze
   FREEZE_TAG = FREEZE_TAGS.to_h { |tag| [tag, true] }.freeze
   FREEZE_CLASS = FREEZE_CLASSES.to_h { |name| [name, true] }.freeze
+  HEAD_CONTENT_TAG = HEAD_CONTENT.to_h { |tag| [tag, true] }.freeze
 
   module_function
 
@@ -147,8 +156,8 @@ module HtmlFormat
       # packager replaces the whole line that starts with <html, so a joined
       # <head> would be deleted with that line. Head is not a visible block,
       # and the ordinary rule would keep the join. This gap is the exception
-      # only while head itself is plain and not excluded.
-      return true if left.nil? && head?(right) && plain_head_part?(right)
+      # only while head itself is plain metadata.
+      return true if left.nil? && head?(right) && head_exception?(right)
       return false unless visible_block?(parent)
       block_edges?(left, right)
     when :block
@@ -343,7 +352,9 @@ module HtmlFormat
   end
 
   # A preserving white-space value is inherited, so the whole subtree is
-  # left as it was. An unreadable style might hide such a value.
+  # left as it was. An unreadable style might hide such a value. A table
+  # part in an invalid place freezes its subtree for the same reason: the
+  # HTML parser drops the tags and exposes the gaps.
   def subtree_frozen?(node)
     return true if FREEZE_TAG[node.name]
     class_tokens(node).each do |token|
@@ -352,13 +363,16 @@ module HtmlFormat
     info = style_info(node)
     return true if info == :unreadable
     return true if info && info[:preserve]
-    false
+    misplaced_table_part?(node)
   end
 
   # nil when the element has no style attribute. :unreadable when a
-  # declaration cannot be checked against STYLE_ALLOW. Otherwise the
-  # declarations are all on that list, and :preserve is true when a
-  # white-space value would keep an inserted gap.
+  # declaration cannot be checked against STYLE_ALLOW. Otherwise
+  # :preserve is true when the winning white-space value would keep an
+  # inserted gap. An invalid white-space value is ignored and does not
+  # replace an earlier one. The safe values match HtmlStylesheetScan:
+  # normal and nowrap for white-space, and only collapse for
+  # white-space-collapse.
   def style_info(element)
     cache = @style_cache
     if cache && cache.key?(element)
@@ -376,7 +390,8 @@ module HtmlFormat
     return { allowed: true, preserve: false } if raw.empty?
     return :unreadable if style_unreadable?(raw)
     allowed = true
-    preserve = false
+    whitespace = nil
+    collapse = nil
     raw.split(';').each do |part|
       piece = part.strip
       next if piece.empty?
@@ -385,13 +400,42 @@ module HtmlFormat
       prop = piece[0...colon].strip.downcase
       value = piece[(colon + 1)..].strip.downcase.gsub(/[ \t\r\n\f]+/, ' ')
       return :unreadable if prop.empty? || value.empty?
-      if (prop == 'white-space' || prop == 'white-space-collapse') &&
-         value != 'normal' && value != 'nowrap'
-        preserve = true
+      if prop == 'white-space' || prop == 'white-space-collapse'
+        verdict = inline_whitespace_verdict(prop, value)
+        if verdict != :invalid
+          if prop == 'white-space'
+            whitespace = verdict
+          else
+            collapse = verdict
+          end
+        end
       end
       allowed = false unless STYLE_ALLOW[prop] == value
     end
+    preserve = whitespace == :effect || whitespace == :unknown ||
+               collapse == :effect || collapse == :unknown
     { allowed: allowed, preserve: preserve }
+  end
+
+  # Same verdicts as HtmlStylesheetScan for these two properties. A later
+  # valid value replaces an earlier one. A known-invalid keyword does not.
+  def inline_whitespace_verdict(property, value)
+    return :unknown if value == 'inherit' || value == 'unset' || value == 'revert' ||
+                       value == 'revert-layer'
+    return :safe if value == 'initial'
+    case property
+    when 'white-space'
+      return :safe if value == 'normal' || value == 'nowrap'
+      return :effect if value == 'pre' || value == 'pre-wrap' || value == 'pre-line' ||
+                        value == 'break-spaces'
+    when 'white-space-collapse'
+      return :safe if value == 'collapse'
+      return :effect if value == 'discard' || value == 'preserve' ||
+                        value == 'preserve-breaks' || value == 'preserve-spaces' ||
+                        value == 'break-spaces'
+    end
+    return :invalid if value.match?(/\A[a-z][a-z0-9-]*\z/)
+    :unknown
   end
 
   def style_unreadable?(text)
@@ -403,11 +447,25 @@ module HtmlFormat
     false
   end
 
+  # True when this part is not a table part, or every parent from here up
+  # to a table element is a parent the HTML parser keeps.
   def table_parent_ok?(node)
-    parents = TABLE_PARENT[node.name]
-    return true unless parents
-    parent = node.parent
-    parent&.element? && xhtml?(parent) && parents.include?(parent.name)
+    return true unless TABLE_PARENT[node.name]
+    current = node
+    while TABLE_PARENT[current.name]
+      parent = current.parent
+      return false unless parent&.element? && xhtml?(parent)
+      return false unless TABLE_PARENT[current.name].include?(parent.name)
+      return true if parent.name == 'table'
+      current = parent
+    end
+    false
+  end
+
+  def misplaced_table_part?(node)
+    return false unless node&.element? && xhtml?(node)
+    return false unless TABLE_PARENT[node.name]
+    !table_parent_ok?(node)
   end
 
   # Head gaps stay free only while head and the elements that bound the gap
@@ -482,7 +540,7 @@ module HtmlFormat
     return flags if kind == :verbatim || kind == :other
     # The gap before <head> is free even though head is not a visible block.
     # A later pass may also mark it free. It must not be cleared.
-    flags[0] = true if kind == :html && count.positive? && head?(sigs[0]) && plain_head_part?(sigs[0])
+    flags[0] = true if kind == :html && count.positive? && head?(sigs[0]) && head_exception?(sigs[0])
     return flags if kind == :html && !visible_block?(parent)
     return flags unless kind == :block || kind == :html
     blocks = Array.new(count)
@@ -512,10 +570,21 @@ module HtmlFormat
     !equiv.nil? && equiv.casecmp('Content-Type').zero?
   end
 
+  # The head exception applies only when every element child is metadata.
+  # A span, or any other element, means no gap in that head is free.
+  def head_exception?(node)
+    plain_head_part?(node) && head_metadata?(node)
+  end
+
+  def head_metadata?(head)
+    return false unless head&.element?
+    head.elements.all? { |child| HEAD_CONTENT_TAG[child.name] }
+  end
+
   # A plain head is not rendered. Each plain element child starts on its
   # own line, including a child that is the first or the last.
   def head_gap?(head, left, right)
-    return false unless plain_head_part?(head)
+    return false unless head_exception?(head)
     left_ok = left.nil? || plain_head_part?(left)
     right_ok = right.nil? || plain_head_part?(right)
     left_ok && right_ok && !(left.nil? && right.nil?)
@@ -523,7 +592,8 @@ module HtmlFormat
   private_class_method :format_element, :normalize_gaps, :indent_for, :gap_text,
                        :inside_verbatim?, :visible_block_uncached, :verbatim_uncached,
                        :subtree_frozen?, :style_info, :style_info_uncached,
-                       :style_unreadable?, :table_parent_ok?, :plain_head_part?,
-                       :xml_space?, :gap_kind, :block_edges?, :head_gap?,
-                       :content_type_meta?
+                       :inline_whitespace_verdict, :style_unreadable?,
+                       :table_parent_ok?, :misplaced_table_part?, :plain_head_part?,
+                       :head_exception?, :head_metadata?, :xml_space?, :gap_kind,
+                       :block_edges?, :head_gap?, :content_type_meta?
 end

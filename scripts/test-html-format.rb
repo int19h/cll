@@ -40,12 +40,12 @@ def format_text(text)
   after
 end
 
-# The real cleanup shell. Optional class lists patch a copy of the formatter
+# The real cleanup shell. Optional lists patch a copy of the formatter
 # the way a stylesheet change updates the constants, then the shell runs.
-def run_cleanup(source, freeze_classes: nil, exclusion_classes: nil)
+def run_cleanup(source, freeze_classes: nil, freeze_tags: nil, exclusion_classes: nil)
   Dir.mktmpdir do |dir|
     shell = File.join(ROOT, 'scripts/xhtml_postprocess_cleanup.sh')
-    if freeze_classes || exclusion_classes
+    if freeze_classes || freeze_tags || exclusion_classes
       scripts = File.join(dir, 'scripts')
       Dir.mkdir(scripts)
       %w[xhtml_postprocess_cleanup.sh xhtml_postprocess_cleanup_file.rb html_format.rb html_whitespace_guard.rb util.rb].each do |name|
@@ -57,6 +57,12 @@ def run_cleanup(source, freeze_classes: nil, exclusion_classes: nil)
         replacement = "FREEZE_CLASSES = %w[#{freeze_classes.join(' ')}].freeze"
         rewritten = text.sub('FREEZE_CLASSES = [].freeze', replacement)
         raise 'freeze constant not patched' if rewritten == text
+        text = rewritten
+      end
+      if freeze_tags
+        replacement = "FREEZE_TAGS = %w[#{freeze_tags.join(' ')}].freeze"
+        rewritten = text.sub('FREEZE_TAGS = [].freeze', replacement)
+        raise 'freeze tag constant not patched' if rewritten == text
         text = rewritten
       end
       if exclusion_classes
@@ -83,6 +89,13 @@ end
 # (inside html or head, or between blocks) is omitted, so an indent at a
 # free gap compares equal. A run beside inline text stays, so "AB" and
 # "A B" differ.
+#
+# This is not an independent check of rendered text. ignorable_gap? drops
+# a gap in head or html, and a gap between elements whose tags are on the
+# block list, without asking a browser how it parses the page or which
+# CSS applies. A head child that HTML moves into the body, or a table part
+# in the wrong parent, can still compare equal. Formatter and guard tests
+# cover those cases.
 def collapsed_whitespace(text)
   document = parse(text)
   chunks = []
@@ -97,6 +110,7 @@ def collapsed_whitespace(text)
   chunks.join
 end
 
+# See collapsed_whitespace. This predicate does not model HTML parsing.
 def ignorable_gap?(node)
   parent = node.parent
   return false unless parent&.element?
@@ -265,12 +279,28 @@ class StylesheetExclusion < Minitest::Test
     assert_sets('.probe { white-space: break-spaces }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space: nowrap }')
     assert_sets('.probe { white-space: normal }')
-    assert_sets('.probe { white-space-collapse: collapse }', preserve_classes: %w[probe])
+    # collapse is the only safe longhand. normal and nowrap are invalid
+    # here, so a rule that sets only those keywords freezes nothing. They
+    # must not cancel an earlier preserving value either.
+    assert_sets('.probe { white-space-collapse: collapse }')
     assert_sets('.probe { white-space-collapse: preserve }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space-collapse: preserve-breaks }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space-collapse: preserve-spaces }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space-collapse: discard }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space-collapse: break-spaces }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space-collapse: normal }')
     assert_sets('.probe { white-space-collapse: nowrap }')
+    assert_sets('.probe { white-space-collapse: pre }')
+    assert_sets('.probe { white-space-collapse: preserve; white-space-collapse: normal }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space-collapse: preserve; white-space-collapse: nowrap }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space-collapse: normal; white-space-collapse: preserve }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space-collapse: nowrap; white-space-collapse: preserve }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space-collapse: preserve; white-space-collapse: normal !important }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space-collapse: preserve; white-space-collapse: collapse !important }')
+    assert_sets('.probe { white-space: collapse }')
+    assert_sets('.probe { white-space: initial }')
+    assert_sets('.probe { white-space: inherit }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space: foo(bar) }', preserve_classes: %w[probe])
     assert_sets('.probe { float: left }', classes: %w[probe])
     assert_sets('.probe { float: right }', classes: %w[probe])
     assert_sets('.probe { float: inline-start }', classes: %w[probe])
@@ -293,6 +323,51 @@ class StylesheetExclusion < Minitest::Test
     assert_sets('.probe { white-space: pre !important; white-space: normal }', preserve_classes: %w[probe])
     assert_sets('.probe { white-space: pre; white-space: nowrap !important }')
     assert_sets('p.probe { white-space: pre; float: left }', tags: %w[p], classes: %w[probe], preserve_tags: %w[p], preserve_classes: %w[probe])
+    # A plain ident outside the property grammar is invalid and is dropped.
+    # A value the scan cannot classify still excludes or freezes.
+    assert_sets('.probe { float: top }')
+    assert_sets('.probe { float: left; float: top }', classes: %w[probe])
+    assert_sets('.probe { float: unset }')
+    assert_sets('.probe { float: inherit }', classes: %w[probe])
+    assert_sets('.probe { position: running(title-date) }', classes: %w[probe])
+    assert_sets('.probe { position: unset }')
+    assert_sets('.probe { position: other() }', classes: %w[probe])
+    assert_sets('.probe { display: made-up }')
+    assert_sets('.probe { display: none; display: made-up }', classes: %w[probe])
+    assert_sets('.probe { display: block; display: made-up }')
+    assert_sets('.probe { display: inline flex }', classes: %w[probe])
+    assert_sets('.probe { display: unset }', classes: %w[probe])
+    assert_sets('.probe { display: flow-root }', classes: %w[probe])
+    assert_sets('div.probe { all: block }')
+    assert_sets('div.probe { all: initial; all: block }', tags: %w[div], classes: %w[probe])
+    assert_sets('div.probe { all: revert-layer }', tags: %w[div], classes: %w[probe])
+    assert_sets('.probe { content-visibility: unset }')
+    assert_sets('.probe { visibility: unset }', classes: %w[probe])
+  end
+
+  # ::before, ::after, and ::marker style a generated box and are skipped.
+  # Any other pseudo-element is a rule on the originating element. A member
+  # that leaves no element fails the scan.
+  def test_selector_list_members_are_separate
+    ['.probe, p::before', 'p::before, .probe'].each do |selector|
+      assert_sets("#{selector} { display: none }", classes: %w[probe])
+      assert_sets("#{selector} { white-space: pre }", preserve_classes: %w[probe])
+    end
+    ['p.y, .x::after', '.x::after, p.y'].each do |selector|
+      assert_sets("#{selector} { white-space: pre }", preserve_tags: %w[p], preserve_classes: %w[y])
+    end
+    assert_sets('.x::before, p.y { display: inline }', tags: %w[p], classes: %w[y])
+    assert_sets('.x::before { display: inline }')
+    assert_sets('p::marker { display: none }')
+    assert_sets('p.status-note::before { position: absolute }')
+    assert_sets('details::details-content { white-space: pre }', preserve_tags: %w[details])
+    assert_sets('.probe::first-line { white-space: pre }', preserve_classes: %w[probe])
+    assert_sets('.probe::first-letter { float: left }', classes: %w[probe])
+    assert_sets('div::part(label) { display: none }', tags: %w[div])
+    assert_sets('div::slotted(span) { white-space: pre }', preserve_tags: %w[div])
+    assert_unreadable('::part(label) { display: none }', '::part(label)')
+    assert_unreadable('::slotted(span) { white-space: pre }', '::slotted(span)')
+    assert_unreadable('::before > p { display: none }', '::before')
   end
 
   def test_a_missing_comparison_stylesheet_names_the_fetch
@@ -378,6 +453,14 @@ class VisibleBlocks < Minitest::Test
     assert HtmlFormat.verbatim?(pre_style)
     nowrap = element(page('<div style="white-space: nowrap">x</div>'), 'div')
     refute HtmlFormat.verbatim?(nowrap)
+    collapse = element(page('<div style="white-space-collapse: collapse">x</div>'), 'div')
+    refute HtmlFormat.verbatim?(collapse)
+    cleared = element(page('<div style="white-space: pre; white-space: nowrap">x</div>'), 'div')
+    refute HtmlFormat.verbatim?(cleared)
+    kept = element(page('<div style="white-space-collapse: preserve; white-space-collapse: normal">x</div>'), 'div')
+    assert HtmlFormat.verbatim?(kept)
+    kept_wrap = element(page('<div style="white-space-collapse: preserve; white-space-collapse: nowrap">x</div>'), 'div')
+    assert HtmlFormat.verbatim?(kept_wrap)
     clear = element(page('<h2 style="clear: both">x</h2>'), 'h2')
     refute HtmlFormat.verbatim?(clear)
     refute block?('<div><colgroup></colgroup></div>', 'colgroup')
@@ -401,6 +484,14 @@ class VisibleBlocks < Minitest::Test
     assert block?('<table><thead><tr><th>h</th></tr></thead></table>', 'tr')
     assert block?('<table><tr><td>a</td><th>b</th></tr></table>', 'td')
     assert block?('<table><tr><td>a</td><th>b</th></tr></table>', 'th')
+    refute block?('<div><tbody><tr><td>A</td></tr></tbody></div>', 'tr')
+    refute block?('<div><tbody><tr><td>A</td></tr></tbody></div>', 'td')
+    refute block?('<div><thead><tr><td>A</td></tr></thead></div>', 'td')
+    nested = element(page('<div><tbody><tr><td><p>a</p></td></tr></tbody></div>'), 'tbody')
+    assert HtmlFormat.verbatim?(nested)
+    inner = element(page('<table><tbody><tr><td><table><tr><td>A</td></tr></table></td></tr></tbody></table>'), 'td', "[text()='A']")
+    assert HtmlFormat.visible_block?(inner)
+    refute HtmlFormat.verbatim?(inner)
     foreign = parse(page('<div xmlns="">x</div>')).at_xpath('//*[local-name()="div" and namespace-uri()=""]')
     refute HtmlFormat.visible_block?(foreign)
     spaced = element(page('<div xml:space="preserve" class="chapter">x</div>'), 'div')
@@ -479,6 +570,23 @@ class VisibleBlocks < Minitest::Test
     refute HtmlFormat.free_gap?(head, sigs[0], sigs[1])
     refute HtmlFormat.free_gap?(head, sigs[1], sigs[2])
     assert_flags_match(head)
+  end
+
+  # A span is not head metadata. HTML parsing moves it into the body, so
+  # neither a gap inside that head nor the gap before head is free.
+  def test_a_non_metadata_head_child_keeps_every_head_gap
+    marked = parse(page('<p>Body</p>', head: %(#{META}<title>T</title><link rel="stylesheet" href="final.css" /><span>A</span><span>B</span>)))
+    head = marked.at_xpath('//*[local-name()="head"]')
+    sigs, = HtmlFormat.split_children(head)
+    (sigs.length + 1).times do |index|
+      left = index.zero? ? nil : sigs[index - 1]
+      right = index == sigs.length ? nil : sigs[index]
+      refute HtmlFormat.free_gap?(head, left, right)
+    end
+    html = marked.at_xpath('//*[local-name()="html"]')
+    refute HtmlFormat.free_gap?(html, nil, head)
+    assert_flags_match(head)
+    assert_flags_match(html)
   end
 
   def assert_flags_match(parent)
@@ -837,6 +945,69 @@ class ReviewerCases < Minitest::Test
     ok, err, cleaned = run_cleanup(page(table))
     assert ok, err
     assert_match(%r{<p>a</p>\n +<p>b</p>}, cleaned)
+  end
+
+  # The cleanup shell reads the freeze and exclusion constants, not the
+  # style element. The scanner tests record which constant a rule would
+  # set. These runs check that constant through the real shell.
+  def test_a_generated_pseudo_element_does_not_hide_another_selector
+    hidden = '<div><span>A</span><div class="probe"></div><div class="probe"></div><span>B</span></div>'
+    assert_patched(page(hidden), hidden, exclusion_classes: ['probe'])
+    frozen = '<div class="probe"><div>A</div><div>B</div></div>'
+    assert_patched(page(frozen), frozen, freeze_classes: ['probe'])
+    py = '<p class="y"><div>A</div><div>B</div></p>'
+    assert_patched(page(py), py, freeze_tags: ['p'], freeze_classes: ['y'])
+    details = '<details open="open"><summary>T</summary><div>A</div><div>B</div></details>'
+    assert_patched(page(details), details, freeze_tags: ['details'])
+  end
+
+  def test_an_invalid_collapse_value_does_not_open_a_preserved_subtree
+    body = '<div class="probe"><div>A</div><div>B</div></div>'
+    assert_patched(page(body), body, freeze_classes: ['probe'])
+    %w[normal nowrap].each do |value|
+      inline = %(<div style="white-space-collapse: preserve; white-space-collapse: #{value}"><div>A</div><div>B</div></div>)
+      assert_cleanup(page(inline), inline)
+    end
+    safe = '<div style="white-space-collapse: collapse"><div><p>a</p><p>b</p></div></div>'
+    pretty = format_text(page(safe))
+    assert_match(%r{<p>a</p>\n +<p>b</p>}, pretty)
+    ok, err, cleaned = run_cleanup(page(safe))
+    assert ok, err
+    assert_match(%r{<p>a</p>\n +<p>b</p>}, cleaned)
+  end
+
+  def test_a_misplaced_table_subtree_stays_joined
+    nested = '<div><span>L</span><tbody><tr><td>A</td><td>B</td></tr></tbody><span>R</span></div>'
+    assert_cleanup(page(nested), nested)
+    row = '<div><span>L</span><tr><td>A</td><td>B</td></tr><span>R</span></div>'
+    assert_cleanup(page(row), row)
+    %w[thead tbody tfoot].each do |tag|
+      body = %(<div><span>L</span><#{tag}><tr><td>A</td><td>B</td></tr></#{tag}><#{tag}><tr><td>A</td><td>B</td></tr></#{tag}><span>R</span></div>)
+      assert_cleanup(page(body), body)
+    end
+    inner = '<div><tbody><tr><td><p>a</p><p>b</p></td></tr></tbody></div>'
+    assert_cleanup(page(inner), inner)
+    nested_table = '<table><tbody><tr><td><table><tbody><tr><td><p>a</p><p>b</p></td></tr></tbody></table></td></tr></tbody></table>'
+    pretty = format_text(page(nested_table))
+    assert_match(%r{<p>a</p>\n +<p>b</p>}, pretty)
+    ok, err, cleaned = run_cleanup(page(nested_table))
+    assert ok, err
+    assert_match(%r{<p>a</p>\n +<p>b</p>}, cleaned)
+  end
+
+  def test_a_span_in_head_stays_joined
+    head = %(#{META}<title>T</title><link rel="stylesheet" href="final.css" /><span>A</span><span>B</span>)
+    source = page('<p>Body</p>', head: head)
+    once = format_text(source)
+    assert_includes once, '<html xmlns="http://www.w3.org/1999/xhtml"><head>'
+    assert_includes once, '<span>A</span><span>B</span>'
+    assert_includes once, "#{META}<title>T</title><link rel=\"stylesheet\" href=\"final.css\" /><span>A</span>"
+    assert_equal once, format_text(once)
+    ok, err, cleaned = run_cleanup(source)
+    assert ok, err
+    assert_includes cleaned, 'lang="en"><head>'
+    assert_includes cleaned, '<span>A</span><span>B</span>'
+    assert_includes cleaned, '<title>T</title><link rel="stylesheet" href="final.css" /><span>A</span>'
   end
 end
 

@@ -2,6 +2,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:fo="http://www.w3.org/1999/XSL/Format"
   xmlns:docbook="http://docbook.org/ns/docbook"
+  xmlns="http://www.w3.org/1999/xhtml"
+  exclude-result-prefixes="fo docbook"
   version="1.0">
 
   <xsl:param name="use.id.as.filename" select="'1'"/>
@@ -23,6 +25,30 @@
     <span xmlns="http://www.w3.org/1999/xhtml" class="publication-disclaimer"><xsl:apply-templates/></span>
   </xsl:template>
   <xsl:param name="html.stylesheet" select="'final.css'"/>
+  <!-- Keep the public file names. The xhtml5 base defaults to .xhtml. -->
+  <xsl:param name="html.ext">.html</xsl:param>
+  <!-- The book has its own stylesheet. Do not write or link docbook.css. -->
+  <xsl:param name="docbook.css.source"></xsl:param>
+  <xsl:param name="docbook.css.link" select="0"/>
+
+  <!-- lang and xml:lang together. The cleanup sed no longer adds them. -->
+  <xsl:template name="root.attributes">
+    <xsl:attribute name="lang">en</xsl:attribute>
+    <xsl:attribute name="xml:lang">en</xsl:attribute>
+  </xsl:template>
+
+  <xsl:template match="*" mode="html.lang.attribute">
+    <xsl:variable name="value">
+      <xsl:choose>
+        <xsl:when test="@xml:lang"><xsl:value-of select="@xml:lang"/></xsl:when>
+        <xsl:otherwise><xsl:value-of select="@lang"/></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:if test="$value != ''">
+      <xsl:attribute name="lang"><xsl:value-of select="$value"/></xsl:attribute>
+      <xsl:attribute name="xml:lang"><xsl:value-of select="$value"/></xsl:attribute>
+    </xsl:if>
+  </xsl:template>
   <xsl:param name="index.on.type" select="1"/>
   <xsl:param name="index.on.role" select="1"/>
   <xsl:param name="index.links.to.section" select="0"/>
@@ -108,7 +134,7 @@
   <xsl:template name="toc-link">
     <xsl:variable name="home" select="/*[1]"/>
 
-    <div class="toc-link" align="center">
+    <div class="toc-link">
       <a accesskey="h">
         <xsl:attribute name="href">
           <xsl:call-template name="href.target">
@@ -123,7 +149,7 @@
   </xsl:template>
 
   <xsl:template name="back-to-info-link">
-    <div class="back-to-info-link" align="center">
+    <div class="back-to-info-link">
       <a accesskey="b" href="http://www.lojban.org/cll">Book Info Page</a>
     </div>
   </xsl:template>

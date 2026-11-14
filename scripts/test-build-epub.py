@@ -17,6 +17,7 @@ class EpubAssets(unittest.TestCase):
             root = Path(temporary)
             for relative in (
                 '.env', 'scripts/build_epub.sh', 'scripts/epub_branding.rb',
+                'scripts/epub_pages.rb', 'scripts/util.rb',
                 'epub/mimetype', 'epub/META-INF/container.xml',
                 'epub/content.opf.s1', 'epub/content.opf.s2',
                 'epub/content.opf.s3', 'epub/cover.html',
@@ -31,14 +32,11 @@ class EpubAssets(unittest.TestCase):
             for excluded in ('css', 'scripts', 'media/examples', 'media/vreji'):
                 shutil.rmtree(xhtml / 'assets' / excluded, ignore_errors=True)
             (xhtml / 'final.css').write_text('body { color: black; }')
-            # The packager deletes a DOCTYPE, script, or meta that occupies
-            # its own line, and it rewrites an html start tag that occupies
-            # its own line (issue #207). Title and link must survive that.
-            (xhtml / 'index.html').write_text('''<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "dtd/xhtml1-transitional.dtd">
+            # Content pages are rewritten to the ePub contract. Title and link stay.
+            (xhtml / 'index.html').write_text('''<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Fixture</title>
 <link rel="stylesheet" href="final.css" type="text/css" />
 </head>
@@ -49,19 +47,19 @@ class EpubAssets(unittest.TestCase):
 </body>
 </html>
 ''')
-            (xhtml / 'chapter.html').write_text('''<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "dtd/xhtml1-transitional.dtd">
+            (xhtml / 'chapter.html').write_text('''<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Chapter</title>
 <link rel="stylesheet" href="final.css" type="text/css" />
+<script src="gone.js"></script>
 </head>
 <body>
 <h1 class="title"><a id="chapter"></a>Chapter <a id="c1"></a></h1>
 <p summary="drop"><a id="indexterm"></a>Reader text.</p>
 <p>Reader content.</p>
-<dl><dt>First</dt><dd>One</dd></dl>
+<dl><dt id="valsi-bridi">First</dt><dd></dd></dl>
 <dl><dt>Second</dt><dd>Two</dd></dl>
 </body>
 </html>
@@ -104,13 +102,23 @@ class EpubAssets(unittest.TestCase):
                 self.assertEqual(link.get('href'), 'final.css')
                 self.assertIsNone(chapter.find('.//{*}meta'))
                 chapter_text = chapter_bytes.decode()
-                self.assertNotIn('<!DOCTYPE', chapter_text)
-                self.assertNotIn('summary=', chapter_text)
+                self.assertTrue(chapter_text.startswith('<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html>\n'))
+                self.assertNotIn('http-equiv', chapter_text)
+                self.assertNotIn('<script', chapter_text)
+                self.assertIn('summary="drop"', chapter_text)
+                self.assertIn('<li id="valsi-bridi" class="dt">First</li>', chapter_text)
+                self.assertIn('<li class="dd"></li>', chapter_text)
+                self.assertNotIn('<dl', chapter_text)
+                self.assertNotIn('<dt', chapter_text)
+                self.assertNotIn('<dd', chapter_text)
                 index_text = archive.read('index.html').decode()
                 self.assertIn('<title>Fixture</title>', index_text)
                 self.assertIn('href="final.css"', index_text)
-                self.assertNotIn('<!DOCTYPE', index_text)
-                self.assertNotIn('<meta', index_text)
+                self.assertTrue(index_text.startswith('<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE html>\n'))
+                self.assertNotIn('http-equiv', index_text)
+                self.assertIn('<ul class="dl toc">', index_text)
+                self.assertIn('<li class="dt">', index_text)
+                self.assertNotIn('<dl', index_text)
                 self.assertEqual(archive.read('toc.xhtml'), toc_bytes)
                 manifest = ET.fromstring(archive.read('content.opf'))
                 refs = [item.get('idref') for item in manifest.findall('{*}spine/{*}itemref')]

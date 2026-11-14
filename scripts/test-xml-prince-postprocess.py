@@ -133,6 +133,10 @@ def main():
           "output is identical outside the repository working directory")
 
     # --- no marker survives anywhere, not just in element text --------------
+    check(text.startswith("<!DOCTYPE html>\n"),
+          "the output starts with the HTML5 doctype",
+          text[:80])
+    check("<?xml" not in text, "the output has no XML declaration")
     check(MARKER not in text,
           f"no {MARKER} survives anywhere in stdout",
           f"{text.count(MARKER)} occurrence(s) left")
@@ -198,22 +202,20 @@ def main():
           f"the xref's own link text is untouched ({EXPECTED_XREF_TEXT!r})",
           f"actual {xref_text!r}")
 
-    # --- example anchor moved inside the title paragraph --------------------
+    # --- example anchor stays inside the example title ----------------------
     examples = [d for d in root.iter("div") if "example" in classes(d)]
     if len(examples) != 1:
         die(f"expected exactly 1 example div in the output, found {len(examples)}")
     example = examples[0]
-    title_para = example.find("p[@class='title']")
-    if title_para is None:
-        die("the example div has no <p class=\"title\">")
-    check(len(title_para) > 0
-          and title_para[0].tag == "a"
-          and title_para[0].get("id") == "c1e1",
-          "the example anchor is the title paragraph's first element child",
-          f"first child was {title_para[0].tag if len(title_para) else None!r} "
-          f"id={title_para[0].get('id') if len(title_para) else None!r}")
+    title = example.find("div[@class='example-title']")
+    if title is None:
+        die('the example div has no <div class="example-title">')
+    anchor = title.find("a")
+    check(anchor is not None and anchor.get("id") == "c1e1",
+          "the example anchor stays inside the example title",
+          f"anchor was {None if anchor is None else anchor.get('id')!r}")
     check([c for c in example if c.tag == "a"] == [],
-          "the example anchor is no longer a sibling of the title paragraph",
+          "the example anchor is not a sibling of the title",
           "an <a> is still a direct child of the example div")
 
     # --- outer index renamed; the inner one left alone ----------------------

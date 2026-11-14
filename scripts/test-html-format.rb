@@ -15,13 +15,12 @@ require File.join(ROOT, 'scripts/html_whitespace_guard')
 require File.join(ROOT, 'scripts/html_stylesheet_scan')
 
 PARSE = Nokogiri::XML::ParseOptions::STRICT | Nokogiri::XML::ParseOptions::NONET
-DOCTYPE = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "dtd/xhtml1-transitional.dtd">'
-META = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'
+DOCTYPE = '<!DOCTYPE html>'
+META = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />'
 
 def page(body, head: "#{META}<title>T</title>")
   <<~XML
-    <?xml version="1.0" encoding="UTF-8"?>
-    #{DOCTYPE}
+    <!DOCTYPE html>
     <html xmlns="http://www.w3.org/1999/xhtml"><head>#{head}</head><body>#{body}</body></html>
   XML
 end
@@ -203,6 +202,12 @@ class StylesheetExclusion < Minitest::Test
     assert_unreadable('@page { position: absolute }', '@page')
     assert_unreadable('@font-face { all: initial }', '@font-face')
     assert_unreadable('p:first-child { white-space: pre }', 'p:first-child')
+    tags, classes, = HtmlStylesheetScan.classify(
+      'div.index dd:empty { display: none }', source: 'fixture.css'
+    )
+    assert_empty tags
+    assert_empty classes
+    assert_unreadable('dd:empty span { display: none }', 'dd:empty span')
     assert_unreadable('div { white-space: var(--w) }', 'var(--w)')
   end
 
@@ -411,7 +416,7 @@ class StylesheetExclusion < Minitest::Test
   def comparison_sets(refs: %w[origin/pages pages], fetch: true)
     text = nil
     refs.each do |ref|
-      shown, _err, status = Open3.capture3('git', 'show', "#{ref}:scripts/docbook-diff.xsl", chdir: ROOT)
+      shown, _err, status = Open3.capture3('git', 'show', "#{ref}:scripts/docbook-diff-style.xsl", chdir: ROOT)
       if status.success?
         text = shown
         break
@@ -423,7 +428,7 @@ class StylesheetExclusion < Minitest::Test
         unless status.success?
           raise 'the comparison stylesheet on origin/pages is not available. Fetch it with: git fetch origin pages'
         end
-        text, _err, status = Open3.capture3('git', 'show', 'FETCH_HEAD:scripts/docbook-diff.xsl', chdir: ROOT)
+        text, _err, status = Open3.capture3('git', 'show', 'FETCH_HEAD:scripts/docbook-diff-style.xsl', chdir: ROOT)
         unless status.success?
           raise 'the comparison stylesheet on origin/pages is not available. Fetch it with: git fetch origin pages'
         end
@@ -431,10 +436,9 @@ class StylesheetExclusion < Minitest::Test
         raise 'the comparison stylesheet on origin/pages is not available. Fetch it with: git fetch origin pages'
       end
     end
-    match = text.match(/<style\b[^>]*>(.*?)<\/style>/m)
-    raise 'the comparison page has no style element' unless match
-    css = match[1].gsub(%r{</?xsl:text>}, '')
-    HtmlStylesheetScan.classify(css, source: 'docbook-diff.xsl')
+    match = text.match(%r{<xsl:template name="cll.diff.styles">\s*<xsl:text>(.*?)</xsl:text>}m)
+    raise 'the comparison page has no cll.diff.styles text' unless match
+    HtmlStylesheetScan.classify(match[1], source: 'docbook-diff-style.xsl')
   end
 end
 
@@ -730,7 +734,7 @@ class FormatterOutput < Minitest::Test
     assert_match(%r{<html xmlns="http://www.w3.org/1999/xhtml">\n  <head>\n}, pretty)
     refute_match(%r{<html[^>]*><head>}, pretty)
     assert_includes pretty, "</head><body>"
-    assert_includes pretty, "<head>\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n"
+    assert_includes pretty, "<head>\n    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n"
     assert_includes pretty, "\n    <title>Chapter</title>\n    <link rel=\"stylesheet\" href=\"final.css\" type=\"text/css\" />\n  </head>"
   end
 
@@ -738,13 +742,24 @@ class FormatterOutput < Minitest::Test
     bare = page('<div class="chapter"><div class="section">x</div></div>', head: '<title>T</title>')
     once = format_text(bare)
     assert_equal 1, once.scan('Content-Type').length
+    meta = parse(once).at_xpath('/h:html/h:head/h:meta', 'h' => 'http://www.w3.org/1999/xhtml')
+    refute_nil meta
+    assert_equal 'http://www.w3.org/1999/xhtml', meta.namespace.href
+    assert_equal 'Content-Type', meta['http-equiv']
+    assert_equal 'text/html; charset=utf-8', meta['content']
     assert_equal once, format_text(once)
+    already = page('<p>a</p>')
+    again = format_text(already)
+    kept = parse(again).at_xpath('/h:html/h:head/h:meta', 'h' => 'http://www.w3.org/1999/xhtml')
+    assert_equal 'text/html; charset=utf-8', kept['content']
+    assert_equal 1, again.scan('Content-Type').length
   end
 
   def test_the_prolog_and_empty_elements_survive_a_second_format
     source = page('<p>a<br />b</p>')
     once = format_text(source)
-    assert once.start_with?("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n#{DOCTYPE}\n")
+    assert once.start_with?("<!DOCTYPE html>\n")
+    refute_includes once, '<?xml'
     assert_equal once, format_text(once)
     assert_includes rendered_chars(once), 'ab'
   end
@@ -816,11 +831,38 @@ class GuardMutations < Minitest::Test
 
   def test_prolog_changes_are_rejected
     source = page('<p>a</p>')
-    refute_guard(source, source.sub('UTF-8', 'utf-8'), 'XML declaration')
-    refute_guard(source, source.sub('xhtml1-transitional.dtd', 'xhtml1-strict.dtd'), 'DOCTYPE')
-    subset = source.sub('xhtml1-transitional.dtd">', 'xhtml1-transitional.dtd" [<!ELEMENT html ANY>]>')
+    declared = %(<?xml version="1.0" encoding="UTF-8"?>\n#{source})
+    refute_guard(source, declared, 'XML declaration')
+    refute_guard(source, source.sub('<!DOCTYPE html>', '<!DOCTYPE html SYSTEM "other.dtd">'), 'DOCTYPE')
+    subset = source.sub('<!DOCTYPE html>', '<!DOCTYPE html [<!ELEMENT html ANY>]>')
     refute_guard(source, subset, 'DOCTYPE')
     refute_guard("\uFEFF#{source}", source, 'XML declaration')
+    refute_guard(source, source.sub('<p>a</p>', '<a id="x"/>'), 'self-closed non-void element a')
+    refute_guard(source, source.sub('<p>a</p>', '<br></br>'), 'void element br has an end tag')
+  end
+
+  def test_a_tag_that_ends_on_the_last_byte_is_closed
+    source = page('<p>a</p>').delete_suffix("\n")
+    assert source.end_with?('</html>')
+    HtmlWhitespaceGuard.compare!(source, source, name: 'eof.html')
+    refute_guard(source.sub('</html>', '</htm'), source.sub('</html>', '</htm'), 'unclosed tag')
+    refute_guard(source.sub('<p>a</p>', '<p title="a>'), source.sub('<p>a</p>', '<p title="a>'), 'unclosed tag')
+  end
+
+  def test_a_multibyte_page_is_scanned_in_linear_time
+    piece = '<p>coi rò <a id="x"></a><span></span><br /></p>'
+    source = page(piece * 8000)
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    HtmlWhitespaceGuard.check_contract!(source, 'long.html', 'original')
+    elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started
+    assert_operator elapsed, :<, 3.0
+    broken = source.sub('<a id="x"></a>', '<a id="x"/>')
+    error = assert_raises(HtmlWhitespaceGuard::Unsafe) do
+      HtmlWhitespaceGuard.check_contract!(broken, 'long.html', 'formatted')
+    end
+    assert_includes error.message, 'self-closed non-void element a'
+    svg = source.sub('<br />', '<svg xmlns="http://www.w3.org/2000/svg"><br></br></svg>')
+    HtmlWhitespaceGuard.check_contract!(svg, 'long.html', 'original')
   end
 
   def test_named_entities_and_parse_errors_name_the_page
@@ -842,7 +884,7 @@ end
 
 class CleanupIntegration < Minitest::Test
   def test_none_mode_changes_no_gap_and_an_unknown_mode_fails
-    source = page('<p id="quotes"><a class="indexterm" id="index"/>the <span>lo\'ai</span> <span>sa\'ai</span></p>')
+    source = page('<p id="quotes"><a class="indexterm" id="index"></a>the <span>lo\'ai</span> <span>sa\'ai</span></p>')
     Dir.mktmpdir do |dir|
       file = File.join(dir, 'sample.html')
       File.write(file, source)
@@ -890,38 +932,51 @@ class CleanupIntegration < Minitest::Test
     end
   end
 
-  def test_formatter_output_satisfies_the_epub_line_contract
+  def test_epub_pages_follow_the_contract
     js = "\nkeep this line\n"
     head = %(#{META}<title>Chapter</title><link rel="stylesheet" href="final.css" type="text/css" /><script xmlns="" type="text/javascript">#{js}</script>)
-    body = '<p summary="drop">Reader</p>'
-    # DocBook puts the DOCTYPE, the html start tag, and head on one line.
-    source = %(<?xml version="1.0" encoding="UTF-8"?>\n#{DOCTYPE}<html xmlns="http://www.w3.org/1999/xhtml"><head>#{head}</head><body>#{body}</body></html>\n)
-    pretty = format_text(source)
-    lines = pretty.lines
-    assert lines[0].start_with?('<?xml'), lines[0, 3].inspect
-    assert lines[1].start_with?('<!DOCTYPE'), lines[0, 3].inspect
-    assert lines[2].start_with?('<html'), lines[0, 3].inspect
-    assert lines[2].strip.end_with?('>'), lines[2]
-    refute_includes lines[2], '<head'
-    text = File.read(File.join(ROOT, 'scripts/build_epub.sh'))
-    match = text.match(/for file in \$\(find \$epubbuilddir\/ -name '\*\.html'\)\ndo\n(.*?)\ndone\n/m)
-    raise 'packager HTML loop not found' unless match
+    body = '<p>Reader</p><dl class="toc"><dt id="valsi-bridi">Word</dt><dd></dd></dl>'
+    source = page(body, head: head)
     file = Tempfile.new(['epub-page', '.html'])
-    file.write(pretty)
+    file.write(source)
     file.close
-    script = "set -e\nfile=#{Shellwords.escape(file.path)}\n#{match[1]}\ntrue\n"
-    _out, err, status = Open3.capture3('bash', '-c', script)
+    _out, err, status = Open3.capture3('ruby', File.join(ROOT, 'scripts/epub_pages.rb'), file.path)
     assert status.success?, err
     edited = File.read(file.path)
+    assert edited.start_with?("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE html>\n")
     assert_includes edited, '<title>Chapter</title>'
     assert_includes edited, 'href="final.css"'
-    assert_includes edited, 'keep this line'
-    refute_includes edited, '<!DOCTYPE'
-    refute_includes edited, '<meta'
-    refute_includes edited, 'summary='
+    assert_includes edited, 'xmlns:epub="http://www.idpf.org/2007/ops"'
+    assert_includes edited, '<ul class="dl toc">'
+    assert_includes edited, '<li id="valsi-bridi" class="dt">Word</li>'
+    assert_includes edited, '<li class="dd"></li>'
+    refute_includes edited, 'http-equiv'
     refute_includes edited, '<script'
+    refute_includes edited, 'keep this line'
+    refute_includes edited, '<dl'
+    refute_includes edited, '<dt'
+    refute_includes edited, '<dd'
   ensure
     file&.unlink
+  end
+
+  def test_empty_elements_and_a_pre_survive_cleanup
+    body = "<p>coi rò <a id=\"x\"></a><span></span><br /></p><script></script><pre>\nline</pre>"
+    ok, err, cleaned = run_cleanup(page(body))
+    assert ok, err
+    assert_includes cleaned, 'coi rò'
+    assert_includes cleaned, '<a id="x"></a>'
+    assert_includes cleaned, '<span></span>'
+    assert_includes cleaned, '<script></script>'
+    assert_includes cleaned, "<pre>\nline</pre>"
+    assert_includes cleaned, '<br />'
+    assert_includes cleaned, '<!DOCTYPE html>'
+    refute_includes cleaned, '<?xml'
+    refute_includes cleaned, '<a id="x"/>'
+    refute_includes cleaned, '<span/>'
+    refute_includes cleaned, '<script/>'
+    refute_includes cleaned, '<br></br>'
+    refute_includes cleaned, '<br/>'
   end
 end
 
@@ -996,7 +1051,7 @@ class ReviewerCases < Minitest::Test
     assert_equal once, format_text(once)
     ok, err, cleaned = run_cleanup(source)
     assert ok, err
-    assert_includes cleaned, 'lang="en"><head class="tutci">'
+    assert_includes cleaned, '<html xmlns="http://www.w3.org/1999/xhtml"><head class="tutci">'
     assert_includes cleaned, '/*A*/</style><style type="text/css" class="tutci">/*B*/'
   end
 
@@ -1099,7 +1154,7 @@ class ReviewerCases < Minitest::Test
     assert_equal once, format_text(once)
     ok, err, cleaned = run_cleanup(source)
     assert ok, err
-    assert_includes cleaned, 'lang="en"><head>'
+    assert_includes cleaned, '<html xmlns="http://www.w3.org/1999/xhtml"><head>'
     assert_includes cleaned, '<span>A</span><span>B</span>'
     assert_includes cleaned, '<title>T</title><link rel="stylesheet" href="final.css" /><span>A</span>'
   end
@@ -1115,7 +1170,7 @@ class ReviewerCases < Minitest::Test
     assert_equal once, format_text(once)
     ok, err, cleaned = run_cleanup(source)
     assert ok, err
-    assert_includes cleaned, 'lang="en"><head>'
+    assert_includes cleaned, '<html xmlns="http://www.w3.org/1999/xhtml"><head>'
     assert_includes cleaned, '/>A<meta name="x" content="x" /><meta name="y" content="y" />B</head>'
   end
 
@@ -1130,7 +1185,7 @@ class ReviewerCases < Minitest::Test
     assert_equal once, format_text(once)
     ok, err, cleaned = run_cleanup(source)
     assert ok, err
-    assert_includes cleaned, 'lang="en"><head>'
+    assert_includes cleaned, '<html xmlns="http://www.w3.org/1999/xhtml"><head>'
     assert_includes cleaned, '<x:title xmlns:x="urn:probe">A</x:title><x:title xmlns:x="urn:probe">B</x:title>'
   end
 end

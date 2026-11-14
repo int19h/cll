@@ -1,4 +1,8 @@
 #!/bin/bash
+# Text comparison of the new HTML with an old HTML archive.
+# The HTML5 markup change makes every element differ, so this script is
+# not a check of that change. cll_build runs it unless -n is set.
+# The site build sets -n.
 
 set -euo pipefail
 

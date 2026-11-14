@@ -27,12 +27,10 @@ while IFS= read -r -d '' file; do
     exit "$rc"
   fi
   # Replace the original only after every tool succeeds.
+  # The stylesheet writes lang and xml:lang. There is no XHTML DTD to rewrite.
   original=$file
   tmp=$(mktemp "${file}.XXXXXX")
-  sed -r -e 's;<html xmlns=([^> ]*);<html xmlns=\1 xml:lang="en" lang="en";' \
-    -e 's; "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">; "dtd/xhtml1-transitional.dtd">;' \
-    "$original" > "$tmp"
-  ruby "$cufile" "$tmp" "$original" > "$tmp.ruby"
+  ruby "$cufile" "$original" "$original" > "$tmp.ruby"
   mv -- "$tmp.ruby" "$tmp"
   chmod --reference="$original" "$tmp"
   mv -- "$tmp" "$original"

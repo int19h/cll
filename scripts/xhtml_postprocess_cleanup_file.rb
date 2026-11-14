@@ -13,10 +13,8 @@ page_name = ARGV[1].to_s
 page_name = page_path if page_name.empty?
 
 begin
-  $document = Nokogiri::XML(File.open(page_path)) do |config|
-    config.default_xml
-    config.strict
-    config.options = Nokogiri::XML::ParseOptions::DTDLOAD   # Needed for the external DTD to be loaded
+  $document = Nokogiri::XML(File.read(page_path)) do |config|
+    config.options = Nokogiri::XML::ParseOptions::STRICT | Nokogiri::XML::ParseOptions::NONET
   end
 rescue Nokogiri::XML::SyntaxError => error
   warn "#{page_name}: parse error on the original side: #{error.message.to_s.strip}"

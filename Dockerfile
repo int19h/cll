@@ -11,7 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive LANG=en_US.UTF-8
 #  - xmlto pulls in xsltproc and libxml2-utils (xmllint)
 #  - ruby + build deps for native gems (nokogiri)
 #  - nodejs/npm for regenerator and the diff tooling
-#  - tidy, zip/unzip, wget, git, make
+#  - zip/unzip, wget, git, make
 #  - fonts + default-jre are for the PDF and EPUB targets
 # Bootstrap HTTPS before APT installs the snapshot's ca-certificates package.
 ADD https://curl.se/ca/cacert-2026-10-20.pem /etc/ssl/certs/ca-certificates.crt
@@ -24,7 +24,7 @@ RUN chmod 644 /etc/ssl/certs/ca-certificates.crt \
       'Check-Valid-Until: no' > /etc/apt/sources.list.d/ubuntu.sources
 RUN apt-get update -o APT::Update::Error-Mode=any && apt-get install -y --no-install-recommends \
       make bash wget curl git ca-certificates locales \
-      xmlto xsltproc libxml2-utils tidy zip unzip \
+      xmlto xsltproc libxml2-utils zip unzip \
       ruby ruby-dev build-essential pkg-config \
       libxml2-dev libxslt1-dev zlib1g-dev \
       nodejs npm \
@@ -82,5 +82,10 @@ RUN arch="$(dpkg --print-architecture)" \
 COPY scripts/install-epubcheck.sh /usr/local/src/install-epubcheck.sh
 RUN bash /usr/local/src/install-epubcheck.sh /usr/local/share/epubcheck
 ENV EPUBCHECK_JAR=/usr/local/share/epubcheck/epubcheck.jar
+
+# Nu Html Checker. scripts/install-vnu.sh pins the vnu-jar package and its SHA-256.
+COPY scripts/install-vnu.sh /usr/local/src/install-vnu.sh
+RUN bash /usr/local/src/install-vnu.sh /usr/local/share/vnu
+ENV VNU_JAR=/usr/local/share/vnu/vnu.jar
 
 WORKDIR /srv/cll

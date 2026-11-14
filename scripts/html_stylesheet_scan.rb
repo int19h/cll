@@ -8,7 +8,9 @@
 # Each member of a selector list is separate. ::before, ::after, and ::marker
 # style a generated box, so that member is skipped. Any other pseudo-element
 # on a relevant rule fails the scan, and the message names the rule. A
-# pseudo-class still fails closed.
+# pseudo-class still fails closed. :empty is the exception: the element has
+# no text, so the rule cannot change a gap, and the subject is skipped.
+# An ancestor that uses :empty still fails closed.
 # For each relevant property, only the values in SAFE_VALUE are safe. Every
 # other well-formed value is unsafe: it excludes the subject, and for
 # white-space or white-space-collapse it also freezes the subtree. That
@@ -359,8 +361,17 @@ module HtmlStylesheetScan
       end
       token = compounds.last
       return nil if generated_pseudo_only?(token)
+      return nil if empty_pseudo_only?(token)
       fail_selector!(part, selector) if token.include?(':')
       token
+    end
+
+    # :empty matches no element that contains text. Dropping the subject
+    # keeps the element in normal block layout. Any other pseudo stays.
+    def empty_pseudo_only?(token)
+      stripped = token.sub(/:empty\z/, '')
+      return false if stripped == token || stripped.empty? || stripped.include?(':')
+      true
     end
 
     def generated_pseudo_only?(token)
@@ -523,6 +534,15 @@ module HtmlStylesheetScan
             text << '::'
             @i += 2
             next
+          end
+          # :empty does not mark the rule unreadable. :emptyfoo still does.
+          if char == ':' && @css[@i, 6] == ':empty'
+            nxt = @css[@i + 6]
+            if nxt.nil? || nxt !~ /[A-Za-z0-9_-]/
+              text << ':empty'
+              @i += 6
+              next
+            end
           end
           flags[:id] = true if char == '#'
           flags[:pseudo] = true if char == ':'

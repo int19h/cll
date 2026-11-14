@@ -94,6 +94,15 @@ class BuildPinsTest(unittest.TestCase):
             self.assertIn('2026.10.25 20:06',
                           (directory / 'metadata/context-sources.txt').read_text())
 
+    def test_vnu_pin(self):
+        script = (ROOT / 'scripts/install-vnu.sh').read_text()
+        self.assertIn('3925f07364f5e5a111cef54a7baefa575b22d05c70f8ced048f0616d4579b7ab', script)
+        self.assertIn('version=26.10.12', script)
+        dockerfile = (ROOT / 'Dockerfile').read_text()
+        self.assertIn('bash /usr/local/src/install-vnu.sh /usr/local/share/vnu', dockerfile)
+        self.assertIn('ENV VNU_JAR=/usr/local/share/vnu/vnu.jar', dockerfile)
+        self.assertNotIn('tidy', dockerfile.lower())
+
     def test_context_sources(self):
         text = (ROOT / 'Dockerfile.context').read_text()
         self.assertNotIn('CONTEXT_INSTALLER_BASE', text)

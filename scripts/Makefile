@@ -12,12 +12,12 @@ pdf_copied_files := $(shell find assets/css assets/fonts assets/media dtd -type 
 epub_copied_files := $(shell find assets/fonts assets/media -type f ! -path 'assets/media/examples/*' ! -path 'assets/media/vreji/*' | LC_ALL=C sort)
 
 .PHONY: all
-all: xhtml_chapters xhtml_sections xhtml_nochunks pdf epub
+all: xhtml_chapters xhtml_sections xhtml_nochunks pdf epub html_check
 
 .PHONY: clean
 clean:
 	# Keep downloaded tools. realclean still removes them.
-	find $(PWD)/build/ $(PWD)/coverage/build/ $(builddir)/ \( -type d \( -name weasyprint-tools -o -path '*/tools/epubcheck' \) -prune \) -o \! -name 'jbovlaste*.xml' -type f -print0 | xargs -0 -r rm -f
+	find $(PWD)/build/ $(PWD)/coverage/build/ $(builddir)/ \( -type d \( -name weasyprint-tools -o -path '*/tools/epubcheck' -o -path '*/tools/vnu' \) -prune \) -o \! -name 'jbovlaste*.xml' -type f -print0 | xargs -0 -r rm -f
 
 .PHONY: realclean
 realclean: clean
@@ -50,13 +50,13 @@ $(builddir)/cll_processed_xhtml.xml: $(builddir)/cll.xml scripts/xml_preprocess.
 # Name the various chunking targets
 .PHONY: xhtml_chapters xhtml_sections xhtml_nochunks
 xhtml_chapters: $(builddir)/xhtml_chapter_chunks.done
-xhtml_chapters: xsl_file = $(xsl_base)/xhtml/chunk.xsl
+xhtml_chapters: xsl_file = $(xsl_base)/xhtml5/chunk.xsl
 
 xhtml_sections: $(builddir)/xhtml_section_chunks.done
-xhtml_sections: xsl_file = $(xsl_base)/xhtml/chunk.xsl
+xhtml_sections: xsl_file = $(xsl_base)/xhtml5/chunk.xsl
 
 xhtml_nochunks: nochunks = -nochunks
-xhtml_nochunks: xsl_file = $(xsl_base)/xhtml/docbook.xsl
+xhtml_nochunks: xsl_file = $(xsl_base)/xhtml5/docbook.xsl
 xhtml_nochunks: $(builddir)/xhtml_no_chunks.done
 
 # Archive on every request, including when the rendered files are current.
@@ -76,11 +76,7 @@ endif
 $(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl xml/docbook2html_config_common.xsl $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_xhtml.xsl assets/css/master.css scripts/xhtml_postprocess_offline.rb scripts/sw.template.js assets/scripts/offline.js scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb xml/iso-pub.ent $(html_copied_files)
 	rm -rf $(builddir)/xhtml_$*_chunks
 	mkdir -p $(builddir)/xhtml_$*_chunks
-	cp -pr $(PWD)/dtd $(builddir)/xhtml_$*_chunks/
 	xmlto -m xml/docbook2html_config_$*_chunks.xsl -x $(xsl_file) -o $(builddir)/xhtml_$*_chunks/ xhtml$(nochunks) $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
-	# We run tidy on the no-chunk version, because it's all in
-	# one place so it's easy
-	test -f $(builddir)/xhtml_$*_chunks/index.html || cat $(builddir)/xhtml_$*_chunks/cll_processed_xhtml.html | scripts/tidy -e - 2>&1 | grep -v '<table> lacks "summary" attribute'
 # Handle the no-chunk case; can't figure out how to set the
 # name of the output file, so move it to index.html
 	test -f $(builddir)/xhtml_$*_chunks/index.html || mv $(builddir)/xhtml_$*_chunks/cll_processed_xhtml.html $(builddir)/xhtml_$*_chunks/index.html
@@ -122,12 +118,11 @@ $(builddir)/pdf.done: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_confi
 	cp -pr $(PWD)/assets/css/master.css $(builddir)/pdf/final.css
 	
 	cp -pr $(PWD)/assets $(builddir)/pdf/
-	cp -pr $(PWD)/dtd $(builddir)/pdf/
 	rm -rf $(builddir)/pdf/assets/scripts
 	rm -rf $(builddir)/pdf/assets/media/examples
 	rm -rf $(builddir)/pdf/assets/media/vreji
 	
-	xmlto -m xml/docbook2html_config_prince.xsl -o $(builddir)/pdf/ -x $(xsl_base)/xhtml/docbook.xsl xhtml-nochunks $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
+	xmlto -m xml/docbook2html_config_prince.xsl -o $(builddir)/pdf/ -x $(xsl_base)/xhtml5/docbook.xsl xhtml-nochunks $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
 	CLL_HTML_FORMAT=none scripts/xhtml_postprocess_cleanup.sh $(builddir)/pdf/
 	ruby scripts/xml_prince_postprocess.rb $(builddir)/pdf/cll_processed_xhtml.html >$(builddir)/pdf/cll_processed_xhtml_pdf.html 2>$(builddir)/xml_prince_postprocess.out
 	
@@ -148,9 +143,9 @@ endif
 
 $(builddir)/weasyprint/cll_processed_xhtml_pdf.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl scripts/xml_prince_postprocess.rb scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb scripts/header.xml assets/css/master.css xml/iso-pub.ent $(dtd_files) $(WEASYPRINT_ASSETS)
 	mkdir -p $(builddir)/weasyprint
-	cp -pr $(PWD)/assets $(PWD)/dtd $(builddir)/weasyprint/
+	cp -pr $(PWD)/assets $(builddir)/weasyprint/
 	cp assets/css/master.css $(builddir)/weasyprint/final.css
-	xmlto -m xml/docbook2html_config_prince.xsl -o $(builddir)/weasyprint/ -x $(xsl_base)/xhtml/docbook.xsl xhtml-nochunks $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
+	xmlto -m xml/docbook2html_config_prince.xsl -o $(builddir)/weasyprint/ -x $(xsl_base)/xhtml5/docbook.xsl xhtml-nochunks $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
 	CLL_HTML_FORMAT=none scripts/xhtml_postprocess_cleanup.sh $(builddir)/weasyprint/
 	ruby scripts/xml_prince_postprocess.rb $(builddir)/weasyprint/cll_processed_xhtml.html >$@.tmp
 	mv $@.tmp $@
@@ -183,7 +178,7 @@ ifdef copydir
 	cp $(builddir)/cll.epub $(copydir)/cll.epub
 endif
 
-$(builddir)/cll.epub: $(builddir)/epub-xhtml/index.html scripts/build_epub.sh scripts/check_epub_nav.rb scripts/epub_branding.rb scripts/run-epubcheck.sh scripts/install-epubcheck.sh .env epub/mimetype epub/* epub/META-INF/container.xml
+$(builddir)/cll.epub: $(builddir)/epub-xhtml/index.html scripts/build_epub.sh scripts/epub_pages.rb scripts/check_epub_nav.rb scripts/epub_branding.rb scripts/run-epubcheck.sh scripts/install-epubcheck.sh .env epub/mimetype epub/* epub/META-INF/container.xml
 	scripts/build_epub.sh $(PWD)
 	mv $(builddir)/cll.epub $(builddir)/cll.tmp.epub
 	ruby scripts/check_epub_nav.rb $(builddir)/epub $(builddir)/epub-nav/spine.txt "$$(grep '^TITLE=' .env | head -n 1 | cut -d= -f2- | sed -e 's/^"//' -e 's/"$$//')"
@@ -202,8 +197,7 @@ epubnavdir = $(abspath $(builddir))/epub-nav
 $(builddir)/epub-xhtml/index.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_common.xsl xml/docbook2html_config_epub.xsl assets/css/master.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb xml/iso-pub.ent $(dtd_files) $(epub_copied_files)
 	rm -rf $(builddir)/epub-xhtml/ $(epubnavdir)/
 	mkdir -p $(builddir)/epub-xhtml/ $(epubnavdir)/
-	cp -pr $(PWD)/dtd $(builddir)/epub-xhtml/
-	xmlto -m xml/docbook2html_config_epub.xsl --stringparam cll.epub.nav.file=$(epubnavdir)/toc.xhtml --stringparam generate.manifest=1 --stringparam manifest=$(epubnavdir)/spine.txt -o $(builddir)/epub-xhtml/ -x $(xsl_base)/xhtml/chunk.xsl xhtml $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
+	xmlto -m xml/docbook2html_config_epub.xsl --stringparam cll.epub.nav.file=$(epubnavdir)/toc.xhtml --stringparam generate.manifest=1 --stringparam manifest=$(epubnavdir)/spine.txt -o $(builddir)/epub-xhtml/ -x $(xsl_base)/xhtml5/chunk.xsl xhtml $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
 	test -s $(epubnavdir)/toc.xhtml
 	test -s $(epubnavdir)/spine.txt
 	cp -p $(PWD)/assets/css/master.css $(builddir)/epub-xhtml/final.css
@@ -213,6 +207,14 @@ $(builddir)/epub-xhtml/index.html: $(builddir)/cll_processed_xhtml.xml xml/docbo
 	rm -rf $(builddir)/epub-xhtml/assets/media/examples/
 	rm -rf $(builddir)/epub-xhtml/assets/media/vreji/
 	scripts/xhtml_postprocess_cleanup.sh $(builddir)/epub-xhtml/
+
+#*******
+# HTML5 contract and the Nu Html Checker. Not part of the chunk recipe:
+# the site build runs that recipe and does not need the validator.
+#*******
+.PHONY: html_check
+html_check: $(builddir)/xhtml_no_chunks.done $(builddir)/xhtml_section_chunks.done
+	scripts/run-html-check.sh "$(builddir)"
 
 #*******
 # Testing

@@ -33,6 +33,14 @@ class MakefileTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout)
         return result.stdout
 
+    def fixture_page(self, kind):
+        return (
+            '<!DOCTYPE html>'
+            '<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">'
+            '<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />'
+            f'<title>{kind}</title></head><body><p>{kind} fixture</p></body></html>'
+        )
+
     def touch_output(self, path):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.touch()
@@ -49,7 +57,7 @@ class MakefileTests(unittest.TestCase):
 	printf 'EPUB fixture' > $@
 '''+''.join(f'''{self.build}/xhtml_{kind}_chunks.done:
 	mkdir -p {self.build}/xhtml_{kind}_chunks
-	printf '{kind} fixture' > {self.build}/xhtml_{kind}_chunks/index.html
+	printf '%s' '{self.fixture_page(kind)}' > {self.build}/xhtml_{kind}_chunks/index.html
 	touch {self.build}/xhtml_{kind}_chunks/sw.js $@
 ''' for kind in ('chapter', 'section', 'no')))
         previous = None
@@ -62,7 +70,7 @@ class MakefileTests(unittest.TestCase):
             self.assertEqual((archive / 'cll.epub').read_text(), 'EPUB fixture')
             for kind in ('chapter', 'section', 'no'):
                 directory = archive / f'cll-xhtml_{kind}_chunks'
-                self.assertEqual((directory / 'index.html').read_text(), f'{kind} fixture')
+                self.assertEqual((directory / 'index.html').read_text(), self.fixture_page(kind))
                 self.assertFalse((directory / 'sw.js').exists())
             artifacts = [self.build / 'pdf.done', self.build / 'cll.epub'] + list(self.build.glob('*.done'))
             times = {str(p): p.stat().st_mtime_ns for p in artifacts}

@@ -1,0 +1,23 @@
+# Nu Html Checker filters for the CLL HTML build.
+# A line that starts with # is a comment. Every other line is a Java regular
+# expression matched against one whole message. A pattern needs .* on both
+# sides, because the checker uses a full match. Add a pattern only for a
+# message that remains after the markup is fixed, and say why it is accepted.
+
+# Chapter 3 marks the Cyrillic letters with xml:lang="rus" (ISO 639-2).
+# An HTML lang value is a BCP 47 tag, and that tag for Russian is "ru".
+# The letters and their text stay as they are. Changing the source tag is
+# left to the later source cleanup.
+.*Bad value “rus” for attribute “lang”.*
+
+# The constants section has one paragraph with xml:lang="math", copied from
+# the DocBook source. "math" is a reserved BCP 47 tag, so the checker
+# rejects it. The paragraph text is unchanged. The source change is the
+# later cleanup, not this markup switch.
+.*Bad value “math” for attribute “lang”.*
+
+# DocBook's title page puts the author in an h3 under the book h1.
+# An index letter group is an h3 under the index h1.
+# The credits bridgehead renderas="sect3" is an h4 under that section's h2.
+# The stylesheets choose those levels. This switch does not.
+.*skipping [0-9]+ heading levels?.*

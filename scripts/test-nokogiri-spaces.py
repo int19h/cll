@@ -13,11 +13,11 @@ EXPECTED = {
     'quotes': "the error-correction quotes lo'ai, sa'ai, and le'ai",
     'connective': 'ga nai - gi',
 }
-XHTML = '''<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "dtd/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Spaces</title></head><body>
-<p id="quotes"><a class="indexterm" id="index"/>the <span><em>error-correction quotes</em></span> <span>lo'ai</span>, sa'ai, and le'ai</p>
+XHTML = '''<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title>Spaces</title></head><body>
+<p id="quotes"><a class="indexterm" id="index"></a>the <span><em>error-correction quotes</em></span> <span>lo'ai</span>, sa'ai, and le'ai</p>
 <table><tr><td id="connective"><span>ga</span> <span>nai</span> - <span>gi</span></td></tr></table>
+<p>line<br />break</p>
 </body></html>'''
 DOCBOOK = '''<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE book SYSTEM "dtd/docbook-5.0.dtd">
@@ -59,6 +59,14 @@ class NokogiriSpaces(unittest.TestCase):
                     )
                     self.assertEqual(samples(result.stdout), EXPECTED)
                     if name == 'xhtml_postprocess_cleanup_file.rb':
+                        text = result.stdout.decode('utf-8')
+                        self.assertTrue(text.startswith('<!DOCTYPE html>\n'))
+                        self.assertNotIn('<?xml', text)
+                        self.assertEqual(text.count('http-equiv="Content-Type"'), 1)
+                        self.assertIn('<a class="indexterm" id="index"></a>', text)
+                        self.assertIn('<br />', text)
+                        self.assertNotIn('<br/>', text)
+                        self.assertNotIn('<br></br>', text)
                         before = directory / 'before.html'
                         after = directory / 'after.html'
                         before.write_text(sample)

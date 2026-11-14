@@ -20,8 +20,7 @@ ROOT = Path(__file__).resolve().parent.parent
 CLEANUP = ROOT / "scripts" / "xhtml_postprocess_cleanup.sh"
 UPDATER = ROOT / "scripts" / "update_jbovlaste_xml.sh"
 
-PAGE = """<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+PAGE = """<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"><head><title>T</title></head><body>
 <p>keep this sentence</p>
 </body></html>
@@ -132,9 +131,11 @@ class PostprocessFailures(unittest.TestCase):
             subprocess.run(["bash", "-n", str(path)], check=True)
 
     def test_missing_ruby_keeps_the_page(self):
+        # A named entity other than the five XML ones fails the strict parse
+        # now that cleanup does not load a DTD. The original page stays.
         with tempfile.TemporaryDirectory() as temporary:
             directory = Path(temporary)
-            page = self.page(directory)
+            page = self.page(directory, text=PAGE.replace("keep this sentence", "keep &nbsp; this"))
             before = page.read_bytes()
             result = self.run_script(CLEANUP, directory, {})
             self.assertNotEqual(result.returncode, 0, result.stderr)
@@ -166,11 +167,9 @@ class PostprocessFailures(unittest.TestCase):
             result = self.run_script(CLEANUP, directory, {"ruby": ruby_cat()})
             self.assertEqual(result.returncode, 0, result.stderr)
             text = page.read_text()
-            self.assertIn('xml:lang="en"', text)
-            self.assertIn('lang="en"', text)
+            self.assertEqual(text, PAGE)
             self.assertNotIn("manifest=", text)
-            self.assertIn("dtd/xhtml1-transitional.dtd", text)
-            self.assertNotIn("http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd", text)
+            self.assertNotIn("xml:lang=", text)
             self.assertIn("keep this sentence", text)
             self.assertIn("other sentence", other.read_text())
             self.assertNotIn("manifest=", other.read_text())

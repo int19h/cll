@@ -74,6 +74,8 @@ jobs:
         run: scripts/check-edition-branding.sh
       - name: Install ePub packaging tools
         run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils zip unzip curl default-jre-headless
+      - name: Install the production Nokogiri version
+        run: gem install --no-document nokogiri:1.18.8
       - name: Package ePub assets without renderer sources
         run: python3 scripts/test-build-epub.py
       - name: Install pinned EPUBCheck

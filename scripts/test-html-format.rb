@@ -935,7 +935,7 @@ class CleanupIntegration < Minitest::Test
   def test_epub_pages_follow_the_contract
     js = "\nkeep this line\n"
     head = %(#{META}<title>Chapter</title><link rel="stylesheet" href="final.css" type="text/css" /><script xmlns="" type="text/javascript">#{js}</script>)
-    body = '<p>Reader</p><dl class="toc"><dt id="valsi-bridi">Word</dt><dd></dd></dl>'
+    body = '<p>Reader</p><dl class="toc"><dt id="valsi-bridi">Word</dt><dd></dd></dl><table style="border: 1; " class="simplelist"><tr><td>a</td></tr></table>'
     source = page(body, head: head)
     file = Tempfile.new(['epub-page', '.html'])
     file.write(source)
@@ -947,6 +947,7 @@ class CleanupIntegration < Minitest::Test
     assert_includes edited, '<title>Chapter</title>'
     assert_includes edited, 'href="final.css"'
     assert_includes edited, 'xmlns:epub="http://www.idpf.org/2007/ops"'
+    assert_includes edited, '<body class="epub">'
     assert_includes edited, '<ul class="dl toc">'
     assert_includes edited, '<li id="valsi-bridi" class="dt">Word</li>'
     assert_includes edited, '<li class="dd"></li>'
@@ -956,6 +957,8 @@ class CleanupIntegration < Minitest::Test
     refute_includes edited, '<dl'
     refute_includes edited, '<dt'
     refute_includes edited, '<dd'
+    refute_includes edited, 'border: 1'
+    assert_includes edited, 'class="simplelist"'
   ensure
     file&.unlink
   end

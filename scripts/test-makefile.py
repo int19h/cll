@@ -59,7 +59,10 @@ class MakefileTests(unittest.TestCase):
 	mkdir -p {self.build}/xhtml_{kind}_chunks
 	printf '%s' '{self.fixture_page(kind)}' > {self.build}/xhtml_{kind}_chunks/index.html
 	touch {self.build}/xhtml_{kind}_chunks/sw.js $@
-''' for kind in ('chapter', 'section', 'no')))
+''' for kind in ('chapter', 'section', 'no'))+'''
+html_check:
+	@true
+''')
         previous = None
         for name in ('fresh', 'unchanged'):
             archive = self.root / name
@@ -77,6 +80,15 @@ class MakefileTests(unittest.TestCase):
             if previous is not None:
                 self.assertEqual(times, previous, 'Archiving must not rerender current output')
             previous = times
+
+    def test_html_check_names_stylesheets_from_a_fresh_folder(self):
+        # A fresh output folder has no chunk files. The check target must
+        # still expand the xhtml5 stylesheets. An empty -x is the failure.
+        output = self.make('-n', 'html_check')
+        self.assertIn('xml/docbook-xsl-1.78.1/xhtml5/docbook.xsl', output)
+        self.assertIn('xml/docbook-xsl-1.78.1/xhtml5/chunk.xsl', output)
+        self.assertNotRegex(output, r'-x\s+-o')
+        self.assertIn('scripts/run-html-check.sh', output)
 
     def test_coverage_archive_unchanged(self):
         (self.build / 'cll.pdf').write_text('coverage PDF')

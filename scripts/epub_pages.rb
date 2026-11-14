@@ -28,6 +28,23 @@ ARGV.each do |path|
   html = document.at_xpath('/h:html', 'h' => XHTML)
   fail!("#{path}: page has no html element") unless html
   html.add_namespace_definition('epub', EPUB_NS)
+  body = document.at_xpath('/h:html/h:body', 'h' => XHTML)
+  fail!("#{path}: page has no body element") unless body
+  classes = body['class'].to_s.split
+  classes << 'epub' unless classes.include?('epub')
+  body['class'] = classes.join(' ')
+  # xhtml5 turns the HTML border attribute into "border: 1", which is not
+  # valid CSS. The ePub stylesheet draws the old inset rules instead.
+  document.xpath('//h:table', 'h' => XHTML).each do |table|
+    style = table['style']
+    next if style.nil?
+    cleaned = style.gsub(/border\s*:\s*1\s*(?:;|(?=\s|$))/, '').strip
+    if cleaned.empty?
+      table.remove_attribute('style')
+    elsif cleaned != style
+      table['style'] = cleaned
+    end
+  end
   listed = document.xpath('//h:dl|//h:dt|//h:dd', 'h' => XHTML).to_a
   listed.each do |node|
     old_name = node.name

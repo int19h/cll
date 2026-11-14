@@ -1,4 +1,12 @@
-/* Overrides for the optional WeasyPrint PDF backend. */
+/* Overrides for the optional WeasyPrint PDF backend.
+   WeasyPrint's old dd indent was 30pt. Prince's was 22.5pt.
+   WeasyPrint did not bold dt, so the print bold rule stays off here. */
+div.toc ul ul { padding-left: 30pt; }
+/* Match the print rule's specificity. WeasyPrint did not bold dt.
+   Leave the nested list's break alone: WeasyPrint's own stylesheet
+   already sets ul { break-before: avoid }, and an author value of
+   auto would override that and split a chapter title from its sections. */
+body:not(.epub) div.toc ul { font-weight: normal; }
 body { margin: 0; }
 h3 { font-size: 14pt; margin: 14pt 0; }
 h4 { font-size: 12pt; margin: 16pt 0; }

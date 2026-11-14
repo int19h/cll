@@ -7,8 +7,8 @@ SHELL=/bin/bash -o pipefail
 # Files a recipe reads or copies into the rendered tree. A later edit must
 # rebuild the same output a clean build would produce.
 dtd_files := $(shell find dtd -type f | LC_ALL=C sort)
-html_copied_files := $(shell find assets dtd -type f | LC_ALL=C sort)
-pdf_copied_files := $(shell find assets/css assets/fonts assets/media dtd -type f ! -path 'assets/media/examples/*' ! -path 'assets/media/vreji/*' | LC_ALL=C sort)
+html_copied_files := $(shell find assets -type f | LC_ALL=C sort)
+pdf_copied_files := $(shell find assets/css assets/fonts assets/media -type f ! -path 'assets/media/examples/*' ! -path 'assets/media/vreji/*' | LC_ALL=C sort)
 epub_copied_files := $(shell find assets/fonts assets/media -type f ! -path 'assets/media/examples/*' ! -path 'assets/media/vreji/*' | LC_ALL=C sort)
 
 .PHONY: all
@@ -58,6 +58,13 @@ xhtml_sections: xsl_file = $(xsl_base)/xhtml5/chunk.xsl
 xhtml_nochunks: nochunks = -nochunks
 xhtml_nochunks: xsl_file = $(xsl_base)/xhtml5/docbook.xsl
 xhtml_nochunks: $(builddir)/xhtml_no_chunks.done
+
+# The file targets need these variables too. html_check builds them from a
+# fresh output folder, and that path does not pass through the names above.
+$(builddir)/xhtml_chapter_chunks.done: xsl_file = $(xsl_base)/xhtml5/chunk.xsl
+$(builddir)/xhtml_section_chunks.done: xsl_file = $(xsl_base)/xhtml5/chunk.xsl
+$(builddir)/xhtml_no_chunks.done: nochunks = -nochunks
+$(builddir)/xhtml_no_chunks.done: xsl_file = $(xsl_base)/xhtml5/docbook.xsl
 
 # Archive on every request, including when the rendered files are current.
 xhtml_chapters xhtml_sections xhtml_nochunks:
@@ -213,7 +220,7 @@ $(builddir)/epub-xhtml/index.html: $(builddir)/cll_processed_xhtml.xml xml/docbo
 # the site build runs that recipe and does not need the validator.
 #*******
 .PHONY: html_check
-html_check: $(builddir)/xhtml_no_chunks.done $(builddir)/xhtml_section_chunks.done
+html_check: xhtml_nochunks xhtml_sections
 	scripts/run-html-check.sh "$(builddir)"
 
 #*******

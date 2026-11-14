@@ -79,6 +79,15 @@ print display
     border-bottom-style: none;
   }
 
+  /* Prince's default stylesheet bolds dt. The TOC entries are now li.
+     Prince also keeps a dt with the dd that follows it. */
+  body:not(.epub) div.toc ul {
+    font-weight: bold;
+  }
+  body:not(.epub) div.toc > ul > li > ul {
+    page-break-before: avoid;
+  }
+
   a.link,
   a.xref,
   a.glossterm {
@@ -368,6 +377,15 @@ section.glossary {
   font-size: 0.9em;
 }
 
+/* The ePub glossary was already a section, so the old div.glossary
+   rule did not apply to it. Keep that one-column, full-size layout. */
+body.epub section.glossary {
+  column-count: auto;
+  font-size: inherit;
+  page-break-before: auto;
+  page: auto;
+}
+
 div.whole-index {
   column-count: 2;
   font-size: 0.9em;
@@ -566,8 +584,9 @@ ul.dl {
   margin: 0pt;
 }
 
-/* The xhtml5 table of contents is a ul inside div.toc. Nested lists keep
-   the general ul padding. The top list does not add a second indent. */
+/* The xhtml5 table of contents is a ul inside div.toc. The top list is
+   flush, like the old dl. Nested lists use the old dd indent: 22.5pt in
+   Prince, and 40px on screen. WeasyPrint overrides the print value. */
 div.toc-title {
   font-weight: bold;
 }
@@ -578,12 +597,24 @@ div.toc ul {
 div.toc > ul {
   padding-left: 0;
 }
+div.toc ul ul {
+  padding-left: 22.5pt;
+}
+/* The packaged ePub rewrote dl to ul.dl, so its list kept the ul indent. */
+body.epub div.toc > ul,
+body.epub div.toc ul ul {
+  padding-left: 1.75em;
+}
 
 .formalpara-title,
 div.figure-title,
 div.example-title,
-div.table-title {
+div.table-title,
+div.toc-title {
   font-weight: bold;
+  /* The old titles were paragraphs, so they inherited the base p margin. */
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
 }
 
 .toc-link,
@@ -591,29 +622,36 @@ div.table-title {
   text-align: center;
 }
 
-/* The old header was two tables. These cells keep that split. */
+/* The old header was two tables. Outside screen they keep the table
+   margin. The title cell keeps the browser's 1px block padding. The
+   shared dotted border is the old collapsed cell border. */
 nav.navheader .nav-title {
   text-align: center;
   font-weight: bold;
+  margin: 0 0 0.4em 0;
+  padding: 1px 0.4em;
 }
 nav.navheader .nav-links {
   display: table;
   width: 100%;
-  margin: 0;
+  margin: 0 0 0.4em 0;
+  border-spacing: 0;
+  border-collapse: collapse;
 }
 nav.navheader .nav-prev,
 nav.navheader .nav-next {
   display: table-cell;
   width: 50%;
   vertical-align: top;
+  padding: 1px 0.4em;
 }
 nav.navheader .nav-prev {
   text-align: right;
-  padding-right: 0.5em;
+  border-right: 1px dotted grey;
 }
 nav.navheader .nav-next {
   text-align: left;
-  padding-left: 0.5em;
+  border-left: 1px dotted grey;
 }
 
 div.index dd:empty {
@@ -741,6 +779,15 @@ table.rotated table {
 
 table.simplelist tr td {
   text-align: center;
+}
+
+/* HTML border="1" on an ePub simplelist drew 1px inset rules on the
+   top and bottom of each cell. The side borders stay with the general
+   table rules. xhtml5 rewrites the attribute as invalid "border: 1". */
+body.epub table.simplelist td,
+body.epub table.simplelist th {
+  border-top: 1px inset;
+  border-bottom: 1px inset;
 }
 
 .selbri {
@@ -892,9 +939,15 @@ screen display
     padding: 1em;
   }
 
-  nav.navheader,
-  .nav-links {
+  /* The old screen rule zeroed .navheader table margins. */
+  nav.navheader .nav-title,
+  nav.navheader .nav-links {
     margin: 0;
+  }
+
+  nav.navheader .nav-prev,
+  nav.navheader .nav-next {
+    padding: 0.2em 0.4em;
   }
 
   hr {
@@ -923,6 +976,22 @@ screen display
   .formalpara-title {
     font-size: 110%;
     margin: 1em auto 0.5em auto;
+  }
+
+  /* The old table-of-contents title was a paragraph, so it used the
+     screen paragraph margin rather than the title margin above. */
+  div.toc-title {
+    margin: 1em auto;
+  }
+
+  /* The old online nested entries were dd elements. A browser indents
+     those by 40px. The ePub list was ul.dl, so it keeps the ul indent. */
+  div.toc ul ul {
+    padding-left: 40px;
+  }
+  body.epub div.toc > ul,
+  body.epub div.toc ul ul {
+    padding-left: 1.75em;
   }
 
   a {

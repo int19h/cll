@@ -103,6 +103,11 @@ class BuildPinsTest(unittest.TestCase):
         self.assertIn('ENV VNU_JAR=/usr/local/share/vnu/vnu.jar', dockerfile)
         self.assertNotIn('tidy', dockerfile.lower())
 
+    def test_images_do_not_install_tidy(self):
+        for name in ('Dockerfile', 'Dockerfile.weasyprint', 'Dockerfile.context'):
+            with self.subTest(file=name):
+                self.assertNotIn('tidy', (ROOT / name).read_text().lower())
+
     def test_context_sources(self):
         text = (ROOT / 'Dockerfile.context').read_text()
         self.assertNotIn('CONTEXT_INSTALLER_BASE', text)

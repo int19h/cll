@@ -117,10 +117,9 @@ class HtmlTableSpansTest < Minitest::Test
 
   def test_cleanup_writes_the_real_colspan
     source = <<~XML
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "dtd/xhtml1-transitional.dtd">
+      <!DOCTYPE html>
       <html xmlns="http://www.w3.org/1999/xhtml"><head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>T</title>
       </head><body>
         <table><tr><td>A</td><td>B</td><td>C</td></tr>

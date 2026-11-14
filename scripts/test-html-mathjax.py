@@ -15,8 +15,9 @@ class HtmlMathJaxTest(unittest.TestCase):
     def test_browser_dependency(self):
         root = ET.parse(ROOT / 'xml/docbook2html_config_xhtml.xsl').getroot()
         head = root.find(f"{XSL}template[@name='user.head.content']")
-        scripts = head.findall('script')
-        script = head.find('script[@id="MathJax-script"]')
+        xhtml = '{http://www.w3.org/1999/xhtml}'
+        scripts = head.findall(f'{xhtml}script')
+        script = head.find(f'{xhtml}script[@id="MathJax-script"]')
         self.assertIsNotNone(script)
         self.assertEqual(script.get('src'),
                          'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js')
@@ -32,6 +33,13 @@ class HtmlMathJaxTest(unittest.TestCase):
         self.assertGreater(scripts.index(offline[0]), scripts.index(script))
         external = [node for node in scripts if node.get('src')]
         self.assertEqual(external, [script, offline[0]])
+        for node in scripts:
+            if node.get('src'):
+                continue
+            text = node.text or ''
+            self.assertNotIn('<', text)
+            self.assertNotIn('>', text)
+            self.assertNotIn('&', text)
         if len(sys.argv) == 2:
             downloaded = Path(sys.argv[1]).read_bytes()
             actual = base64.b64encode(hashlib.sha384(downloaded).digest()).decode()

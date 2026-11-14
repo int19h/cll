@@ -65,7 +65,7 @@ function funcContentGloss(Node, sance, text) {
 }
 
 function funcExample(Node, sance, text) {
-	appendAudioControl(Node.parentNode, sance, 'tutci tutci-mupli');
+	appendAudioControl(Node, sance, 'tutci tutci-mupli');
 	return Node;
 }
 
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		loads.push(processNode(document.location.href.replace(/\/[^\/]+$/, '/') + "assets/media/vreji/" + encodeValsiForWeb(text) + ".mp3", Node, text, funcContentGloss));
 	}
 
-	var examples = Array.from(document.querySelectorAll(".example > .title > strong"));
+	var examples = Array.from(document.querySelectorAll(".example > .example-title"));
 	for (var i = 0; i < examples.length; i++) {
 		var Node = examples[i]
 		var text = Node.innerText.trim().replace(/ *Example (.*?)\. *$/, '$1');

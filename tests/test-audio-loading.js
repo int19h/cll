@@ -35,7 +35,7 @@ function setup(fetchImpl = async () => ({ status: 200 })) {
       createElement: () => new Element(),
       addEventListener: (name, callback) => { ready = callback; },
       querySelectorAll: selector => selector === 'em.glossterm' ? words
-        : selector === '.example > .title > strong' ? [example] : [term]
+        : selector === '.example > .example-title' ? [example] : [term]
     }
   };
   vm.createContext(context);
@@ -101,7 +101,8 @@ async function settles(promise) {
   await settles(loading);
   assert.equal(complete.term.parentNode, null);
   assert.equal(complete.box.children.filter(child => child.className === 'tutci').length, 1);
-  assert.equal(complete.example.parentNode.children.length, 3);
+  assert.equal(complete.example.children.length, 2);
+  assert.equal(complete.example.children[1].className, 'tutci tutci-mupli');
   assert.equal(complete.timers.size, 0);
   console.log('Audio loading tests passed');
 })().catch(error => { console.error(error); process.exitCode = 1; });

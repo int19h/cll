@@ -37,6 +37,30 @@ jobs:
           if echo "$err" | grep -q 'not defined\|parser error\|already defined'; then echo "$err"; exit 1; fi
           echo "book well-formed ($(ls chapters/*.xml | wc -l) chapters)"
 
+  # The polyglot comparer, the link checker, and the pinned Nu jar.
+  # The Makefile fixture test stays in xml-wellformed and does not run them.
+  html-contract:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
+        with:
+          ruby-version: '3.2'
+      - name: Install Nokogiri and Java
+        run: |
+          gem install --no-document nokogiri:1.18.8
+          sudo apt-get update -qq && sudo apt-get install -y -qq default-jre-headless
+      - name: Polyglot comparer and the page writer
+        run: ruby scripts/test-check-html-polyglot.rb
+      - name: Link and id checker
+        run: python3 scripts/test-check-html-links.py
+      - name: Pinned Nu Html Checker on a fixture page
+        run: |
+          ./scripts/install-vnu.sh "$RUNNER_TEMP/vnu"
+          dir=$(mktemp -d)
+          DIR="$dir" python3 -c 'import os; open(os.environ["DIR"] + "/ok.html", "w").write("<!DOCTYPE html>\n<html lang=\"en\">\n<head><title>T</title><meta charset=\"utf-8\"></head>\n<body><p>Hello</p></body>\n</html>\n")'
+          java -jar "$RUNNER_TEMP/vnu/vnu.jar" --errors-only "$dir/ok.html"
+
   cmevla-dot-lint:
     runs-on: ubuntu-latest
     steps:
@@ -74,6 +98,8 @@ jobs:
         run: scripts/check-edition-branding.sh
       - name: Install ePub packaging tools
         run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils zip unzip curl default-jre-headless
+      - name: Install the production Nokogiri version
+        run: gem install --no-document nokogiri:1.18.8
       - name: Package ePub assets without renderer sources
         run: python3 scripts/test-build-epub.py
       - name: Install pinned EPUBCheck

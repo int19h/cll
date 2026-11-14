@@ -34,24 +34,18 @@ rm -rf $epubbuilddir/dtd
 # Keep the ConTeXt renderer's source files out of the reader package.
 rm -rf "$epubbuilddir/assets/context"
 
-# Clean up HTML headers and crap to make epubchek happy
-for file in $(find $epubbuilddir/ -name '*.html')
+# Each content page: drop scripts, rename lists, and write the ePub contract.
+html_pages=()
+while IFS= read -r -d '' page
 do
-  sed -i -r -e '/^\s*(<!DOCTYPE|<script|<meta) /d' \
-    -e 's;^\s*<[?]xml .*;<?xml version="1.0" encoding="UTF-8"?>;' \
-    -e 's;^\s*<html .*;<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">;' \
-    -e 's;\s+summary="[^"]*";;' "$file"
-
-  # Kindle chokes badly on dl/dt/dd nesting, so we just replace it throughout and fake it with CSS
-  sed -i -r -e 's;<dl(( )class="([^"]*)")?>;<ul class="dl\2\3">;g' -e 's;</dl>;</ul>;g' \
-    -e 's;<d([dt])(( )class="([^"]*)")?>;<li class="d\1\3\4">;g' -e 's;</d[dt]>;</li>;g' \
-    "$file"
-
-  grep '<d[ltd]' "$file" && echo "BAD: $file still has dl/dt/dd elements!"
-done
-# More of the same, it really wants a dd for every dt
-cat build/epub/index.html | ruby -e 'puts STDIN.read.gsub(%r{</dt>\s*<dt>}m, "</dt><dd/><dt>").gsub(%r{</dt>\s*</dl>}m, "</dt><dd/></dl>")' > build/epub/index.html.new
-mv build/epub/index.html.new build/epub/index.html
+  html_pages+=("$page")
+done < <(find "$epubbuilddir" -name '*.html' -print0)
+if [ "${#html_pages[@]}" -eq 0 ]
+then
+  echo "No HTML pages in $epubbuilddir ; bailing."
+  exit 1
+fi
+ruby "$basedir/scripts/epub_pages.rb" "${html_pages[@]}"
 
 # The stylesheet run wrote the finished navigation document (issue #208).
 navdir="$builddir/epub-nav"

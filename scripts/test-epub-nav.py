@@ -107,7 +107,7 @@ class EpubNav(unittest.TestCase):
         wrapper.write_text(
             "<?xml version='1.0'?>\n"
             '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">\n'
-            f'<xsl:import href="{xsl}/xhtml/chunk.xsl"/>\n'
+            f'<xsl:import href="{xsl}/xhtml5/chunk.xsl"/>\n'
             f'<xsl:include href="{SOURCE / "xml" / "docbook2html_config_epub.xsl"}"/>\n'
             '</xsl:stylesheet>\n'
         )
@@ -155,6 +155,10 @@ class EpubNav(unittest.TestCase):
         text = nav.read_text(encoding='utf-8')
         self.assertIn('<!DOCTYPE html>', text)
         self.assertIn('<header>Table Of Contents</header>', text)
+        nav_root = load_xml(nav)
+        self.assertEqual(nav_root.tag, '{http://www.w3.org/1999/xhtml}html')
+        self.assertEqual(nav_root.get('lang'), 'en')
+        self.assertEqual(nav_root.get('{http://www.w3.org/XML/1998/namespace}lang'), 'en')
         entries = nav_entries(nav)
         self.assertEqual(entries, visible_entries(out / 'index.html'))
         self.assertGreater(len(entries), 0)

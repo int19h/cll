@@ -102,7 +102,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            xmlto xsltproc libxml2-utils tidy zip unzip locales \
+            xmlto xsltproc libxml2-utils zip unzip locales \
             build-essential pkg-config libxml2-dev libxslt1-dev zlib1g-dev
           sudo locale-gen en_US.UTF-8
           sudo ln -sf /bin/bash /bin/sh          # build scripts assume sh == bash

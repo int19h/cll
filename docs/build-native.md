@@ -40,7 +40,7 @@ EPUB targets alike — uses:
 The optional ConTeXt PDF has a [separate build guide](build-context.md).
 It runs beside the Prince pipeline and writes `build/cll-context.pdf`.
 
-- **XHTML (no-chunks path)**: `tidy` (wrapped by `scripts/tidy`).
+- **XHTML**: the Nu Html Checker (`scripts/install-vnu.sh`, Java).
 - **PDF**: `prince` (PrinceXML; download a package for your platform
   from princexml.com). For output parity with the container also
   install the DejaVu and Linux Libertine system font packages

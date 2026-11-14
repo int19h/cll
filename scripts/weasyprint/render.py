@@ -152,9 +152,6 @@ class RenderErrors(logging.Handler):
 def render(input_path, output_path, max_passes=6):
     tree = html.parse(str(input_path), parser=html.HTMLParser(encoding='utf-8')).getroot()
     directory = input_path.parent
-    # lxml's HTML serializer removes legacy http-equiv encoding declarations.
-    # Keep an HTML5 declaration for browsers and explicitly decode in WeasyPrint.
-    tree.find('head').insert(0, etree.Element('meta', charset='utf-8'))
     # The input is already processed XHTML. Do not fetch its old external DTD.
     for script in list(tree.iter('script')):
         script.getparent().remove(script)

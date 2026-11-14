@@ -9,10 +9,21 @@ require_relative 'html_format'
 #
 # Parsing loads no DTD and uses no network. A named entity other than
 # amp, lt, gt, quot, or apos is rejected, so the DTD is not required.
+#
+# The formatted page must also match the HTML5 contract: no XML declaration,
+# the DOCTYPE <!DOCTYPE html>, void elements self-closed, and every other
+# empty element written with an end tag. An XML parser cannot see that
+# difference, so it is checked on the text.
 module HtmlWhitespaceGuard
   class Unsafe < StandardError; end
 
   ALLOWED_ENTITIES = %w[amp lt gt quot apos].freeze
+  HTML_DOCTYPE = '<!DOCTYPE html>'
+  # HTML void elements. A self-closed tag of any other name is not XML-safe
+  # for an HTML parser, and an end tag on one of these is not the contract.
+  VOID_ELEMENTS = %w[
+    area base br col embed hr img input link meta param source track wbr
+  ].freeze
   PARSE = Nokogiri::XML::ParseOptions::STRICT | Nokogiri::XML::ParseOptions::NONET
 
   module_function
@@ -20,6 +31,8 @@ module HtmlWhitespaceGuard
   def compare!(before_text, after_text, name:, strict: false)
     check_entities(before_text, name, 'original')
     check_entities(after_text, name, 'formatted')
+    check_contract!(before_text, name, 'original')
+    check_contract!(after_text, name, 'formatted')
     compare_prolog(before_text, after_text, name)
     before_doc = parse_side(before_text, name, 'original')
     after_doc = parse_side(after_text, name, 'formatted')
@@ -52,6 +65,155 @@ module HtmlWhitespaceGuard
         raise Unsafe, "#{name}: entity reference #{snippet.inspect} on the #{side} side is not amp, lt, gt, quot, or apos"
       end
     end
+  end
+
+  def check_contract!(text, name, side)
+    declaration, doctype = prolog(text, name, side)
+    unless declaration.nil?
+      raise Unsafe, "#{name}: XML declaration on the #{side} side"
+    end
+    if doctype != HTML_DOCTYPE
+      shown = doctype.nil? ? 'missing' : doctype
+      raise Unsafe, "#{name}: DOCTYPE on the #{side} side is #{shown}"
+    end
+    check_empty_elements!(text, name, side)
+  end
+
+  def check_empty_elements!(text, name, side)
+    # Byte offsets. A character index on UTF-8 rescans from the start, so
+    # one non-ASCII character makes a book-length page take hours. The
+    # markers below are ASCII, and a UTF-8 tail byte is never one of them.
+    # The void-element rules apply to XHTML elements. A br in another
+    # namespace is an ordinary empty element, and the writer gives it an end tag.
+    raw = text.b
+    index = 0
+    length = raw.bytesize
+    frames = [{ element: nil, default: nil, prefixes: {} }]
+    while index < length
+      unless raw.getbyte(index) == 60
+        index += 1
+        next
+      end
+      if raw.byteslice(index, 4) == '<!--'.b
+        finish = raw.index('-->'.b, index + 4)
+        raise Unsafe, "#{name}: unclosed comment on the #{side} side" unless finish
+        index = finish + 3
+        next
+      end
+      if raw.byteslice(index, 9) == '<![CDATA['.b
+        finish = raw.index(']]>'.b, index + 9)
+        raise Unsafe, "#{name}: unclosed CDATA on the #{side} side" unless finish
+        index = finish + 3
+        next
+      end
+      if raw.byteslice(index, 2) == '<?'.b
+        finish = raw.index('?>'.b, index + 2)
+        raise Unsafe, "#{name}: unclosed processing instruction on the #{side} side" unless finish
+        index = finish + 2
+        next
+      end
+      if raw.byteslice(index, 2) == '<!'.b
+        index += 1
+        next
+      end
+      closing = raw.getbyte(index + 1) == 47
+      start = closing ? index + 2 : index + 1
+      qname = tag_name_at(raw, start, length)
+      if qname.nil?
+        index += 1
+        next
+      end
+      local = qname.split(':').last
+      cursor = start + qname.bytesize
+      quote = nil
+      closed = false
+      ended = false
+      while cursor < length
+        byte = raw.getbyte(cursor)
+        if quote
+          quote = nil if byte == quote
+          cursor += 1
+        elsif byte == 34 || byte == 39
+          quote = byte
+          cursor += 1
+        elsif byte == 62
+          look = cursor - 1
+          look -= 1 while look > index && ascii_space?(raw.getbyte(look))
+          closed = raw.getbyte(look) == 47
+          ended = true
+          cursor += 1
+          break
+        else
+          cursor += 1
+        end
+      end
+      # A tag whose ">" is the last byte still ended. Running off the end
+      # without that byte did not, even when the last byte happens to be ">".
+      unless ended
+        raise Unsafe, "#{name}: unclosed tag on the #{side} side"
+      end
+      if closing
+        opened = frames.length > 1 ? frames.pop : frames.last
+        element_ns = opened[:element]
+      else
+        raw_tag = raw.byteslice(start, cursor - start - 1).force_encoding(Encoding::UTF_8)
+        unless raw_tag.valid_encoding?
+          raise Unsafe, "#{name}: tag is not UTF-8 on the #{side} side"
+        end
+        info = element_frame(qname, raw_tag, frames.last)
+        frames.push(info) unless closed
+        element_ns = info[:element]
+      end
+      if element_ns.nil? || element_ns == XHTML_NS
+        if closing && VOID_ELEMENTS.include?(local)
+          raise Unsafe, "#{name}: void element #{local} has an end tag on the #{side} side"
+        elsif !closing && closed && !VOID_ELEMENTS.include?(local)
+          raise Unsafe, "#{name}: self-closed non-void element #{local} on the #{side} side"
+        end
+      end
+      index = cursor
+    end
+  end
+
+  # The name at this byte, or nil when the "<" is not a tag. The slice stops
+  # at the first ASCII delimiter. Those bytes cannot occur inside a UTF-8
+  # character, so the cut is the same as a character scan.
+  def tag_name_at(raw, start, length)
+    limit = start
+    while limit < length
+      byte = raw.getbyte(limit)
+      break if byte == 32 || byte == 9 || byte == 10 || byte == 13 || byte == 12 ||
+                byte == 47 || byte == 62 || byte == 61 || byte == 34 || byte == 39
+      limit += 1
+    end
+    return nil if limit == start
+    candidate = raw.byteslice(start, limit - start).force_encoding(Encoding::UTF_8)
+    return nil unless candidate.valid_encoding?
+    match = candidate.match(/\A([A-Za-z_:][\w:.-]*)/)
+    return nil unless match && !match[1].empty?
+    match[1]
+  end
+
+  def ascii_space?(byte)
+    byte == 32 || byte == 9 || byte == 10 || byte == 13 || byte == 12
+  end
+
+  def element_frame(qname, raw, parent)
+    default_ns = parent[:default]
+    prefixes = parent[:prefixes].dup
+    raw.scan(/xmlns(?::([A-Za-z_][\w.-]*))?\s*=\s*(["'])(.*?)\2/) do |prefix, _quote, value|
+      if prefix.nil? || prefix.empty?
+        default_ns = value
+      else
+        prefixes[prefix] = value
+      end
+    end
+    element_ns = if (colon = qname.index(':'))
+                   prefixes[qname[0, colon]]
+                 else
+                   default_ns
+                 end
+    { element: element_ns, default: default_ns, prefixes: prefixes }
   end
 
   def compare_prolog(before_text, after_text, name)

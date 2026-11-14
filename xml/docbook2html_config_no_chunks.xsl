@@ -3,6 +3,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:fo="http://www.w3.org/1999/XSL/Format"
   xmlns:docbook="http://docbook.org/ns/docbook"
+  xmlns="http://www.w3.org/1999/xhtml"
+  exclude-result-prefixes="fo docbook"
   version="1.0">
 
   <xsl:import href="docbook2html_config_common.xsl"/>

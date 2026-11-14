@@ -2,6 +2,7 @@
 
 require 'nokogiri'
 require_relative 'html_stylesheet_scan'
+require_relative 'util'
 
 # Indent-only formatter for the book's XHTML pages (issue #207).
 #
@@ -157,11 +158,10 @@ module HtmlFormat
     when :head
       head_gap?(parent, left, right)
     when :html
-      # DocBook writes <html...><head> with nothing between the tags. The ePub
-      # packager replaces the whole line that starts with <html, so a joined
-      # <head> would be deleted with that line. Head is not a visible block,
-      # and the ordinary rule would keep the join. This gap is the exception
-      # only while head itself is plain metadata.
+      # DocBook writes <html...><head> with nothing between the tags. Head is
+      # not a visible block, and the ordinary rule would keep the join. This
+      # gap stays free so head starts on its own line, only while head itself
+      # is plain metadata.
       return true if left.nil? && head?(right) && head_exception?(right)
       return false unless visible_block?(parent)
       block_edges?(left, right)
@@ -177,30 +177,21 @@ module HtmlFormat
     document
   end
 
-  # libxml inserts this meta while saving an XHTML document that lacks one.
-  # The inserted meta is not in the tree, so a second format would indent it
-  # and the bytes would change. Add it before either write when it is missing.
+  # libxml inserts an encoding meta while saving an XHTML document that
+  # lacks one. The inserted meta is not in the tree, so a second format
+  # would indent it and the bytes would change. Put the contract meta in
+  # the tree before either write.
   def ensure_content_type_meta!(document)
     root = document.root
     return document unless root
     head = root.elements.find { |element| head?(element) }
     return document unless head
-    return document if head.elements.any? { |element| content_type_meta?(element) }
-    meta = Nokogiri::XML::Element.new('meta', document)
-    meta.namespace = head.namespace
-    meta['http-equiv'] = 'Content-Type'
-    meta['content'] = 'text/html; charset=UTF-8'
-    first = head.children.first
-    if first
-      first.add_previous_sibling(meta)
-    else
-      head.add_child(meta)
-    end
+    ensure_contract_meta!(document, head)
     document
   end
 
   def write(document)
-    document.to_xml(save_with: Nokogiri::XML::Node::SaveOptions::AS_XML)
+    serialize_page(document, mode: :html)
   end
 
   def whitespace_text?(node)
@@ -352,6 +343,9 @@ module HtmlFormat
   def verbatim_uncached(node)
     return true if xml_space?(node)
     return true if subtree_frozen?(node)
+    # The XHTML 1.0 DTD fixed xml:space="preserve" on pre, script, and style.
+    # HTML5 pages have no DTD, so those elements stay verbatim by name.
+    return true if node.name == 'pre' || node.name == 'script' || node.name == 'style'
     return true unless xhtml?(node)
     VERBATIM_TAGS.include?(node.name)
   end

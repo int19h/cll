@@ -5,6 +5,7 @@
   xmlns:docbook="http://docbook.org/ns/docbook"
   xmlns:epub="http://www.idpf.org/2007/ops"
   xmlns:exsl="http://exslt.org/common"
+  xmlns="http://www.w3.org/1999/xhtml"
   exclude-result-prefixes="fo docbook exsl"
   version="1.0">
 
@@ -15,10 +16,8 @@
   <!-- The goal here is chunking with no navigation -->
   <xsl:param name="suppress.navigation" select="1"></xsl:param>
 
-  <!-- These things tell docbook to act like HTML5, which makes it
-       generate more <dd/>s to go with <dt>s, and other things that
-       make epubcheck happy -->
-  <xsl:param name="div.element">section</xsl:param>
+  <!-- xhtml5 already uses section for div.element. table.border.off
+       still keeps the presentational border attribute off the tables. -->
   <xsl:param name="table.border.off" select="1"></xsl:param>
 
   <!-- The ePub navigation document (issue #208).
@@ -49,7 +48,7 @@
       <xsl:with-param name="doctype-system" select="''"/>
       <xsl:with-param name="content">
         <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html&gt;&#10;</xsl:text>
-        <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+        <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" lang="en" xml:lang="en">
           <xsl:text>&#10;</xsl:text>
           <head>
             <title>

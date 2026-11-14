@@ -73,7 +73,7 @@ endif
 # offline=no skips sw.js. Any other value writes it.
 # cll_build does not forward arguments to make. Pass the variable in the environment:
 #   offline=no ./cll_build -n -T xhtml_nochunks
-$(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl xml/docbook2html_config_common.xsl $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_xhtml.xsl assets/css/master.css scripts/xhtml_postprocess_offline.rb scripts/sw.template.js assets/scripts/offline.js scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/util.rb xml/iso-pub.ent $(html_copied_files)
+$(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl xml/docbook2html_config_common.xsl $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_xhtml.xsl assets/css/master.css scripts/xhtml_postprocess_offline.rb scripts/sw.template.js assets/scripts/offline.js scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb xml/iso-pub.ent $(html_copied_files)
 	rm -rf $(builddir)/xhtml_$*_chunks
 	mkdir -p $(builddir)/xhtml_$*_chunks
 	cp -pr $(PWD)/dtd $(builddir)/xhtml_$*_chunks/
@@ -116,7 +116,7 @@ ifdef copydir
 	mkdir -p $(copydir)
 	cp $(builddir)/cll.pdf $(copydir)/cll.pdf
 endif
-$(builddir)/pdf.done: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl assets/css/master.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/util.rb scripts/header.xml scripts/xml_prince_postprocess.rb scripts/prince_check_margins.js scripts/prince_shave_index.js scripts/prince_check_index.js xml/iso-pub.ent $(pdf_copied_files)
+$(builddir)/pdf.done: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl assets/css/master.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb scripts/header.xml scripts/xml_prince_postprocess.rb scripts/prince_check_margins.js scripts/prince_shave_index.js scripts/prince_check_index.js xml/iso-pub.ent $(pdf_copied_files)
 	rm -rf $(builddir)/pdf
 	mkdir -p $(builddir)/pdf
 	cp -pr $(PWD)/assets/css/master.css $(builddir)/pdf/final.css
@@ -146,7 +146,7 @@ ifdef copydir
 	cp $(builddir)/cll-weasyprint.pdf $(copydir)/cll-weasyprint.pdf
 endif
 
-$(builddir)/weasyprint/cll_processed_xhtml_pdf.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl scripts/xml_prince_postprocess.rb scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/util.rb scripts/header.xml assets/css/master.css xml/iso-pub.ent $(dtd_files) $(WEASYPRINT_ASSETS)
+$(builddir)/weasyprint/cll_processed_xhtml_pdf.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl scripts/xml_prince_postprocess.rb scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb scripts/header.xml assets/css/master.css xml/iso-pub.ent $(dtd_files) $(WEASYPRINT_ASSETS)
 	mkdir -p $(builddir)/weasyprint
 	cp -pr $(PWD)/assets $(PWD)/dtd $(builddir)/weasyprint/
 	cp assets/css/master.css $(builddir)/weasyprint/final.css
@@ -199,7 +199,7 @@ $(builddir)/cll.epub: $(builddir)/epub-xhtml/index.html scripts/build_epub.sh sc
 # path would be resolved against that directory (issue #208).
 epubnavdir = $(abspath $(builddir))/epub-nav
 
-$(builddir)/epub-xhtml/index.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_common.xsl xml/docbook2html_config_epub.xsl assets/css/master.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/util.rb xml/iso-pub.ent $(dtd_files) $(epub_copied_files)
+$(builddir)/epub-xhtml/index.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_common.xsl xml/docbook2html_config_epub.xsl assets/css/master.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb xml/iso-pub.ent $(dtd_files) $(epub_copied_files)
 	rm -rf $(builddir)/epub-xhtml/ $(epubnavdir)/
 	mkdir -p $(builddir)/epub-xhtml/ $(epubnavdir)/
 	cp -pr $(PWD)/dtd $(builddir)/epub-xhtml/

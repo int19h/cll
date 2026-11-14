@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Keep inline spaces through the production Nokogiri parsers."""
 from pathlib import Path
+import os
 import shutil
 import subprocess
 import tempfile
@@ -14,7 +15,7 @@ EXPECTED = {
 }
 XHTML = '''<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "dtd/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Spaces</title></head><body>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Spaces</title></head><body>
 <p id="quotes"><a class="indexterm" id="index"/>the <span><em>error-correction quotes</em></span> <span>lo'ai</span>, sa'ai, and le'ai</p>
 <table><tr><td id="connective"><span>ga</span> <span>nai</span> - <span>gi</span></td></tr></table>
 </body></html>'''
@@ -47,11 +48,27 @@ class NokogiriSpaces(unittest.TestCase):
                     source = directory / 'sample.xml'
                     source.write_text(sample)
                     self.assertEqual(samples(sample), EXPECTED)
+                    env = os.environ.copy()
+                    if name == 'xhtml_postprocess_cleanup_file.rb':
+                        # This check is the unformatted write. Indent is tested
+                        # in scripts/test-html-format.rb (issue #207).
+                        env['CLL_HTML_FORMAT'] = 'none'
                     result = subprocess.run(
                         ['ruby', str(ROOT / 'scripts' / name), str(source)],
-                        cwd=ROOT, capture_output=True, check=True,
+                        cwd=ROOT, capture_output=True, check=True, env=env,
                     )
                     self.assertEqual(samples(result.stdout), EXPECTED)
+                    if name == 'xhtml_postprocess_cleanup_file.rb':
+                        before = directory / 'before.html'
+                        after = directory / 'after.html'
+                        before.write_text(sample)
+                        after.write_bytes(result.stdout)
+                        guard = subprocess.run(
+                            ['ruby', str(ROOT / 'scripts/html_whitespace_guard.rb'),
+                             '--strict', str(before), str(after)],
+                            cwd=ROOT, capture_output=True, text=True,
+                        )
+                        self.assertEqual(guard.returncode, 0, guard.stderr)
                     if name == 'xml_prince_postprocess.rb':
                         body = ET.fromstring(result.stdout).find('{*}body')
                         self.assertEqual(body.text, '\n')

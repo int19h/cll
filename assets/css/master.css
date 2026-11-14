@@ -1,3 +1,17 @@
+/* The HTML formatter indents only between visible blocks.
+   scripts/html_format.rb excludes the subject of a rule that can take a
+   block out of block layout: the tag and classes of the last compound in
+   the selector. A rule that only sets display to block, list-item, or a
+   table box does not exclude its subject.
+   white-space values normal and nowrap still collapse. The only safe
+   white-space-collapse value is collapse. Any other value of either
+   property, including a keyword that is not one of those, freezes that
+   subject's tag and classes: the property is inherited, so the whole
+   subtree stays verbatim. A malformed value is ignored and does not
+   cancel an earlier value. A well-formed value does replace an earlier
+   one. Put a preserving winning value in the freeze constants in
+   scripts/html_format.rb. */
+
 /********************
  * NB:
  *

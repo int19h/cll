@@ -52,8 +52,10 @@
 # scripts/docbook-diff.py writes annotated chapters into a copy of the
 # version's tree (DocBook revisionflag on changed words and blocks,
 # deleted material re-inserted, notes where moved material was), which is
-# then built as xhtml_no_chunks with scripts/docbook-diff.xsl, a driver
-# around DocBook XSL's xhtml/changebars.xsl. The diff pages load their
+# then built as xhtml_no_chunks. The driver is scripts/docbook-diff.xsl,
+# around DocBook XSL's xhtml/changebars.xsl, unless that version's
+# scripts/Makefile names xhtml5/docbook.xsl. Then the driver is
+# scripts/docbook-diff-html5.xsl (issue #209). The diff pages load their
 # images and CSS from the version's own xhtml_no_chunks/.
 #
 # Toolchain: the base XML/HTML build tools, Prince for pdf, and Java for
@@ -209,7 +211,17 @@ make_diff() {
   mkdir -p "$d/build"
   python3 "$tools/docbook-diff.py" --repo "$src" --stats "$d/build/dbdiff-stats.json" \
     "$oldref" "$src" "$d"
-  cp "$tools/docbook-diff.xsl" "$d/xml/docbook2html_diff.xsl"
+  # Choose the driver from the version's own Makefile, before the line
+  # below replaces it. A version that still imports xhtml/docbook.xsl
+  # keeps today's driver. Only a version that names the xhtml5 base
+  # uses the new one, so this can merge before that base does.
+  diff_driver=docbook-diff.xsl
+  if grep -q -F 'xhtml5/docbook.xsl' "$d/scripts/Makefile"; then
+    diff_driver=docbook-diff-html5.xsl
+  fi
+  cp "$tools/$diff_driver" "$d/xml/docbook2html_diff.xsl"
+  cp "$tools/docbook-diff-style.xsl" "$d/xml/docbook-diff-style.xsl"
+  echo "==> [$version] comparison driver for $outname: $diff_driver"
   sed -i 's|^\(xhtml_nochunks: xsl_file = \).*|\1xml/docbook2html_diff.xsl|' "$d/scripts/Makefile"
   grep -qx 'xhtml_nochunks: xsl_file = xml/docbook2html_diff.xsl' "$d/scripts/Makefile" || {
     echo "build-site.sh: cannot point $d/scripts/Makefile at the diff stylesheet" >&2

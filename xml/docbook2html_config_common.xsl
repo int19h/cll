@@ -68,12 +68,18 @@
     </l:l10n>
   </l:i18n>
 
-  <!-- deal with colspan=0, which doesn't actually work properly in
-       the HTML output from docbook; we turn it into 12321, since
-       that's an easy number to search for, "100%" doesn't work in
-       Prince, and we're *ahem* unlikely to have a table that large
+  <!-- An empty colgroup is a placeholder. HTML treats it as one column,
+       because span defaults to 1, and the rows are wider than that.
+       Drop it. A colgroup that has columns or attributes stays. -->
+  <xsl:template match="colgroup[not(*) and not(@*)]" mode="htmlTable"/>
 
-       Starter code stolen from /usr/share/sgml/docbook/xsl-ns-stylesheets/xhtml/htmltbl.xsl 
+  <!-- colspan="0" means "the rest of the row" in the book, and DocBook's
+       HTML table stylesheets do not honor it. Write 12321, a value no
+       real table uses. "100%" does not work in Prince. The shared HTML
+       cleanup (scripts/html_table_spans.rb) replaces 12321 with the
+       table's column count before any output is written.
+
+       Starter code stolen from /usr/share/sgml/docbook/xsl-ns-stylesheets/xhtml/htmltbl.xsl
   -->
   <xsl:template match="@colspan" mode="htmlTableAtt">
     <xsl:if test="number(.) != 1">

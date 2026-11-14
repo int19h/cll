@@ -16,20 +16,6 @@ spec.loader.exec_module(backend)
 
 
 class PreparationTests(unittest.TestCase):
-    def test_span_uses_column_width_and_row_spans(self):
-        tree = html.fromstring('''<table><tbody>
-          <tr><td rowspan="2">A</td><td colspan="2">B</td></tr>
-          <tr><td>C</td><td>D</td></tr>
-          <tr><td colspan="12321">translation</td></tr>
-          </tbody></table>''')
-        self.assertEqual(backend.normalize_spans(tree), 1)
-        self.assertEqual(tree.xpath('.//tr[last()]/td')[0].get('colspan'), '3')
-
-    def test_invalid_sentinel_fails(self):
-        tree = html.fromstring('<table><tr><td colspan="12321">A</td><td>B</td></tr></table>')
-        with self.assertRaises(ValueError):
-            backend.normalize_spans(tree)
-
     def test_index_keeps_markup_and_see_also(self):
         tree = html.fromstring('''<div class="whole-index"><dl><dt>
           <em>term</em>, <a class="indexterm" href="#c">C</a>,

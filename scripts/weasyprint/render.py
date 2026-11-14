@@ -21,42 +21,6 @@ def has_class(node, name):
     return name in node.get('class', '').split()
 
 
-def normalize_spans(tree):
-    """Replace the legacy 'span the entire table' sentinel with its width."""
-    changed = 0
-    for table in tree.iter('table'):
-        rows = table.xpath('./tr | ./thead/tr | ./tbody/tr | ./tfoot/tr')
-        if not any(cell.get('colspan') == '12321' for row in rows for cell in row):
-            continue
-        occupied = {}
-        width = 1
-        full = []
-        for row_number, row in enumerate(rows):
-            cells = [cell for cell in row if cell.tag in ('td', 'th')]
-            sentinels = [cell for cell in cells if cell.get('colspan') == '12321']
-            if sentinels:
-                if len(cells) != 1 or sentinels[0].get('rowspan', '1') != '1':
-                    raise ValueError('A full-width sentinel must occupy its own row')
-                full.extend(sentinels)
-                continue
-            column = 0
-            for cell in cells:
-                while occupied.get(column, 0) > row_number:
-                    column += 1
-                colspan = int(cell.get('colspan', '1'))
-                rowspan = int(cell.get('rowspan', '1')) or len(rows) - row_number
-                if colspan < 1 or rowspan < 1:
-                    raise ValueError('Invalid table span')
-                for offset in range(colspan):
-                    occupied[column + offset] = row_number + rowspan
-                column += colspan
-                width = max(width, column)
-        for cell in full:
-            cell.set('colspan', str(width))
-            changed += 1
-    return changed
-
-
 def typeset_math(tree, directory):
     nodes = list(tree.iter('math'))
     if not nodes:
@@ -194,7 +158,6 @@ def render(input_path, output_path, max_passes=6):
     # The input is already processed XHTML. Do not fetch its old external DTD.
     for script in list(tree.iter('script')):
         script.getparent().remove(script)
-    spans = normalize_spans(tree)
     hidden_anchors = preserve_hidden_index_anchors(tree)
     math = typeset_math(tree, directory)
     tree.find('head').append(etree.Element('link', rel='stylesheet', href='weasyprint.css'))
@@ -232,7 +195,7 @@ def render(input_path, output_path, max_passes=6):
                     'weasyprint': weasyprint_version,
                     'input_sha256': hashlib.sha256(input_path.read_bytes()).hexdigest(),
                     'prepared_sha256': hashlib.sha256(prepared.read_bytes()).hexdigest(),
-                    'normalized_spans': spans, 'mathjax': math,
+                    'mathjax': math,
                     'relocated_hidden_index_anchors': hidden_anchors,
                     'index_entries': len(indexes),
                     'index_targets': {target: pages[target] for _, targets in indexes for target in targets},

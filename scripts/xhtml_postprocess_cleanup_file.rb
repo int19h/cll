@@ -6,6 +6,7 @@ mydir=File.expand_path(File.dirname(__FILE__))
 require "#{mydir}/util.rb"
 require "#{mydir}/html_format.rb"
 require "#{mydir}/html_whitespace_guard.rb"
+require "#{mydir}/html_table_spans.rb"
 
 page_path = ARGV[0].to_s
 page_name = ARGV[1].to_s
@@ -30,6 +31,14 @@ $document.css('.whole-index h3').remove
 mode = ENV.fetch('CLL_HTML_FORMAT', 'pretty')
 unless %w[pretty none].include?(mode)
   warn "CLL_HTML_FORMAT must be pretty or none, not #{mode}"
+  $stderr.flush
+  exit! 1
+end
+
+begin
+  HtmlTableSpans.normalize!($document)
+rescue HtmlTableSpans::Error => error
+  warn "#{page_name}: #{error.message}"
   $stderr.flush
   exit! 1
 end

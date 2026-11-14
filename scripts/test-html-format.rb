@@ -963,6 +963,26 @@ class CleanupIntegration < Minitest::Test
     file&.unlink
   end
 
+  def test_epub_border_cleanup_matches_only_the_unitless_declaration
+    body = '<table style="border: 1; "></table>' \
+           '<table style="border: 1px solid"></table>' \
+           '<table style="border: 1 solid red"></table>' \
+           '<table style="color: red; border: 1; width: 2px"></table>'
+    file = Tempfile.new(['epub-border', '.html'])
+    file.write(page(body))
+    file.close
+    _out, err, status = Open3.capture3('ruby', File.join(ROOT, 'scripts/epub_pages.rb'), file.path)
+    assert status.success?, err
+    edited = File.read(file.path)
+    refute_includes edited, 'border: 1;'
+    assert_includes edited, 'border: 1px solid'
+    assert_includes edited, 'border: 1 solid red'
+    assert_includes edited, 'color: red;'
+    assert_includes edited, 'width: 2px'
+  ensure
+    file&.unlink
+  end
+
   def test_empty_elements_and_a_pre_survive_cleanup
     body = "<p>coi rò <a id=\"x\"></a><span></span><br /></p><script></script><pre>\nline</pre>"
     ok, err, cleaned = run_cleanup(page(body))

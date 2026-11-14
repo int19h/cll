@@ -38,7 +38,7 @@ ARGV.each do |path|
   document.xpath('//h:table', 'h' => XHTML).each do |table|
     style = table['style']
     next if style.nil?
-    cleaned = style.gsub(/border\s*:\s*1\s*(?:;|(?=\s|$))/, '').strip
+    cleaned = style.gsub(/border\s*:\s*1\s*;/, '').strip
     if cleaned.empty?
       table.remove_attribute('style')
     elsif cleaned != style

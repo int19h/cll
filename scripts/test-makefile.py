@@ -2,6 +2,7 @@
 """Exercise archive recipes and dependency scheduling without book renderers."""
 from pathlib import Path
 import os
+import re
 import shutil
 import subprocess
 import tempfile
@@ -89,6 +90,28 @@ html_check:
         self.assertIn('xml/docbook-xsl-1.78.1/xhtml5/chunk.xsl', output)
         self.assertNotRegex(output, r'-x\s+-o')
         self.assertIn('scripts/run-html-check.sh', output)
+
+    def test_site_comparison_edit_selects_the_diff_driver(self):
+        # pages commit 86ff2e46, scripts/build-site.sh line 225.
+        makefile = self.root / 'Makefile'
+        shutil.copy(SOURCE / 'scripts/Makefile', makefile)
+        sed = subprocess.run(
+            ['sed', '-i',
+             r's|^\(xhtml_nochunks: xsl_file = \).*|\1xml/docbook2html_diff.xsl|',
+             str(makefile)],
+            text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        self.assertEqual(sed.returncode, 0, sed.stdout)
+        text = makefile.read_text()
+        self.assertIn('xhtml_nochunks: xsl_file = xml/docbook2html_diff.xsl\n', text)
+        self.assertIsNotNone(re.search(
+            r'^\$\(builddir\)/xhtml_no_chunks\.done: nochunks = -nochunks$',
+            text, re.M))
+        self.assertIsNone(re.search(
+            r'^\$\(builddir\)/xhtml_no_chunks\.done: xsl_file =',
+            text, re.M))
+        output = self.make('-n', 'xhtml_nochunks', makefile=makefile)
+        self.assertIn('-x xml/docbook2html_diff.xsl', output)
+        self.assertNotIn('xhtml5/docbook.xsl', output)
 
     def test_coverage_archive_unchanged(self):
         (self.build / 'cll.pdf').write_text('coverage PDF')

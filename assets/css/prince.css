@@ -1,0 +1,13 @@
+/* Prince PDF only. The build appends this file to pdf/final.css.
+   Prince's default stylesheet bolds dt and indents dd by 22.5pt.
+   The TOC is now a list, so these rules restore that look.
+   Online pages do not load this file. A browser printing one keeps
+   the regular weight and the 40px indent. */
+@media print {
+  body:not(.epub) div.toc ul {
+    font-weight: bold;
+  }
+  div.toc ul ul {
+    padding-left: 22.5pt;
+  }
+}

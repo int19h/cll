@@ -41,7 +41,12 @@ print display
 *********/
 @media print {
   /* Avoid ligatures per http://www.princexml.com/forum/topic/1821/how-to-avoid-or-turn-off-ligatures */
-  p {
+  p,
+  .formalpara-title,
+  div.figure-title,
+  div.example-title,
+  div.table-title,
+  div.toc-title {
     font-variant: prince-opentype(ccmp);
   }
 
@@ -79,11 +84,9 @@ print display
     border-bottom-style: none;
   }
 
-  /* Prince's default stylesheet bolds dt. The TOC entries are now li.
-     Prince also keeps a dt with the dd that follows it. */
-  body:not(.epub) div.toc ul {
-    font-weight: bold;
-  }
+  /* The old dt + dd rule kept a chapter title with the sections
+     that follow it. Prince's bold entries and 22.5pt indent are in
+     prince.css, which the PDF build appends. A browser does not. */
   body:not(.epub) div.toc > ul > li > ul {
     page-break-before: avoid;
   }
@@ -585,8 +588,9 @@ ul.dl {
 }
 
 /* The xhtml5 table of contents is a ul inside div.toc. The top list is
-   flush, like the old dl. Nested lists use the old dd indent: 22.5pt in
-   Prince, and 40px on screen. WeasyPrint overrides the print value. */
+   flush, like the old dl. Nested lists use the old dd indent of 40px,
+   including when a browser prints the page. Prince and WeasyPrint
+   override that value for their own PDFs. */
 div.toc-title {
   font-weight: bold;
 }
@@ -598,7 +602,7 @@ div.toc > ul {
   padding-left: 0;
 }
 div.toc ul ul {
-  padding-left: 22.5pt;
+  padding-left: 40px;
 }
 /* The packaged ePub rewrote dl to ul.dl, so its list kept the ul indent. */
 body.epub div.toc > ul,

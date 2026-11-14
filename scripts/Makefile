@@ -59,12 +59,13 @@ xhtml_nochunks: nochunks = -nochunks
 xhtml_nochunks: xsl_file = $(xsl_base)/xhtml5/docbook.xsl
 xhtml_nochunks: $(builddir)/xhtml_no_chunks.done
 
-# The file targets need these variables too. html_check builds them from a
-# fresh output folder, and that path does not pass through the names above.
+# Chapter and section file targets name their stylesheet directly, so a
+# direct entry still has one. The one-page driver stays on xhtml_nochunks.
+# The site build replaces that public assignment, and a copy here would
+# hide the replacement. html_check builds through the public targets.
 $(builddir)/xhtml_chapter_chunks.done: xsl_file = $(xsl_base)/xhtml5/chunk.xsl
 $(builddir)/xhtml_section_chunks.done: xsl_file = $(xsl_base)/xhtml5/chunk.xsl
 $(builddir)/xhtml_no_chunks.done: nochunks = -nochunks
-$(builddir)/xhtml_no_chunks.done: xsl_file = $(xsl_base)/xhtml5/docbook.xsl
 
 # Archive on every request, including when the rendered files are current.
 xhtml_chapters xhtml_sections xhtml_nochunks:
@@ -119,10 +120,11 @@ ifdef copydir
 	mkdir -p $(copydir)
 	cp $(builddir)/cll.pdf $(copydir)/cll.pdf
 endif
-$(builddir)/pdf.done: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl assets/css/master.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb scripts/header.xml scripts/xml_prince_postprocess.rb scripts/prince_check_margins.js scripts/prince_shave_index.js scripts/prince_check_index.js xml/iso-pub.ent $(pdf_copied_files)
+$(builddir)/pdf.done: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl assets/css/master.css assets/css/prince.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb scripts/header.xml scripts/xml_prince_postprocess.rb scripts/prince_check_margins.js scripts/prince_shave_index.js scripts/prince_check_index.js xml/iso-pub.ent $(pdf_copied_files)
 	rm -rf $(builddir)/pdf
 	mkdir -p $(builddir)/pdf
 	cp -pr $(PWD)/assets/css/master.css $(builddir)/pdf/final.css
+	cat $(PWD)/assets/css/prince.css >> $(builddir)/pdf/final.css
 	
 	cp -pr $(PWD)/assets $(builddir)/pdf/
 	rm -rf $(builddir)/pdf/assets/scripts

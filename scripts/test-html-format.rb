@@ -48,7 +48,7 @@ def run_cleanup(source, freeze_classes: nil, freeze_tags: nil, exclusion_classes
     if freeze_classes || freeze_tags || exclusion_classes
       scripts = File.join(dir, 'scripts')
       Dir.mkdir(scripts)
-      %w[xhtml_postprocess_cleanup.sh xhtml_postprocess_cleanup_file.rb html_format.rb html_stylesheet_scan.rb html_whitespace_guard.rb util.rb].each do |name|
+      %w[xhtml_postprocess_cleanup.sh xhtml_postprocess_cleanup_file.rb html_table_spans.rb html_format.rb html_stylesheet_scan.rb html_whitespace_guard.rb util.rb].each do |name|
         FileUtils.cp(File.join(ROOT, 'scripts', name), File.join(scripts, name))
       end
       format_path = File.join(scripts, 'html_format.rb')
@@ -861,7 +861,7 @@ class CleanupIntegration < Minitest::Test
     Dir.mktmpdir do |dir|
       scripts = File.join(dir, 'scripts')
       Dir.mkdir(scripts)
-      %w[xhtml_postprocess_cleanup.sh xhtml_postprocess_cleanup_file.rb html_format.rb html_stylesheet_scan.rb html_whitespace_guard.rb util.rb].each do |name|
+      %w[xhtml_postprocess_cleanup.sh xhtml_postprocess_cleanup_file.rb html_table_spans.rb html_format.rb html_stylesheet_scan.rb html_whitespace_guard.rb util.rb].each do |name|
         FileUtils.cp(File.join(ROOT, 'scripts', name), File.join(scripts, name))
       end
       cleanup = File.join(scripts, 'xhtml_postprocess_cleanup_file.rb')

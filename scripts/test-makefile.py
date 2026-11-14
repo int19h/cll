@@ -201,7 +201,7 @@ class MakefileTests(unittest.TestCase):
         self.touch_output(processed)
         for path, _none in targets:
             self.touch_output(path)
-        for helper in ('scripts/html_format.rb', 'scripts/html_whitespace_guard.rb', 'scripts/html_stylesheet_scan.rb'):
+        for helper in ('scripts/html_format.rb', 'scripts/html_whitespace_guard.rb', 'scripts/html_stylesheet_scan.rb', 'scripts/html_table_spans.rb'):
             for target, unformatted in targets:
                 with self.subTest(helper=helper, target=target.name):
                     current = self.make('-n', target)

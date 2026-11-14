@@ -126,6 +126,7 @@ jobs:
           python3 scripts/test-offline-list.py
           python3 scripts/test-nokogiri-spaces.py
           ruby scripts/test-html-format.rb
+          ruby scripts/test-html-table-spans.rb
       - name: Gloss column lint self-test
         run: ruby scripts/test-lint-gloss-columns.rb
       - name: Interlinear gloss columns

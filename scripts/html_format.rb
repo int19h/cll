@@ -23,11 +23,12 @@ module HtmlFormat
   # set below says a stylesheet rule can change that.
   #
   # html, body: the page boxes.
-  # h1–h6: headings. h3 is excluded, because master.css hides some h3 elements.
-  # address, blockquote, p: blocks of text. p is excluded by `p { display: block }`.
+  # h1–h6: headings. h3 is excluded, because the subject of `.whole-index h3`
+  # is the h3, and that rule hides it.
+  # address, blockquote, p: blocks of text. `p { display: block }` does not exclude p.
   # div, section, article, aside, nav, header, footer, main, hgroup: grouping boxes.
   # pre: a block when it is a sibling. Its contents are verbatim and are not rewritten.
-  # hr: a block by default. hr is excluded, because some title-page rules hide it.
+  # hr: a block by default. hr is excluded, because title-page rules hide that subject.
   # ul, ol, li, dl, dt, dd: lists. A list item is a block for whitespace.
   # figure, figcaption, fieldset, legend, form, details, summary: other HTML blocks.
   # table through th: table parts. Whitespace between them is not rendered.
@@ -47,64 +48,85 @@ module HtmlFormat
     table caption colgroup col thead tbody tfoot tr td th
   ].freeze
 
-  # Every tag and class that appears in a selector of a rule that sets
-  # display, visibility, or content-visibility. scripts/test-html-format.rb
-  # recomputes this from assets/css and from the comparison-page style.
-  EXCLUSION_TAGS = %w[br h3 hr img p].freeze
+  # The subject (last compound) of a rule that can take a block out of
+  # block layout. scripts/test-html-format.rb recomputes this from assets/css
+  # and from the comparison-page style.
+  EXCLUSION_TAGS = %w[br h3 hr].freeze
   EXCLUSION_CLASSES = %w[
-    article book display-none example-break guibutton publication-notice
-    release-date release-separator release-version table-break titlepage
-    tutci whole-index
+    display-none example-break guibutton release-separator table-break tutci
   ].freeze
+  # "\n" plus two spaces per ancestor. Depths in this book stay far below 48.
+  INDENTS = (0..48).map { |depth| "\n#{'  ' * depth}" }.freeze
 
   VERBATIM_TAGS = %w[math pre script style svg textarea].freeze
+  BLOCK_TAG = BLOCK_TAGS.to_h { |tag| [tag, true] }.freeze
+  EXCLUSION_TAG = EXCLUSION_TAGS.to_h { |tag| [tag, true] }.freeze
+  EXCLUSION_CLASS = EXCLUSION_CLASSES.to_h { |name| [name, true] }.freeze
 
   module_function
 
   def visible_block?(node)
     return false unless node&.element?
-    return false unless xhtml?(node)
-    return false unless BLOCK_TAGS.include?(node.name)
-    return false if EXCLUSION_TAGS.include?(node.name)
-    class_tokens(node).each do |token|
-      return false if EXCLUSION_CLASSES.include?(token)
+    cache = @visible_cache
+    if cache && cache.key?(node)
+      return cache[node]
     end
-    true
+    result = visible_block_uncached(node)
+    cache[node] = result if cache
+    result
   end
 
   def verbatim?(node)
     return false unless node&.element?
-    return true if xml_space?(node)
-    return true unless xhtml?(node)
-    VERBATIM_TAGS.include?(node.name)
+    cache = @verbatim_cache
+    if cache && cache.key?(node)
+      return cache[node]
+    end
+    result = verbatim_uncached(node)
+    cache[node] = result if cache
+    result
+  end
+
+  # Remember block and verbatim answers for one walk. Nokogiri returns the
+  # same Ruby object for a node, so the node itself is a stable key.
+  def with_memo
+    previous = [@visible_cache, @verbatim_cache, @inside_cache, @kind_cache, @ns_href]
+    @visible_cache = {}
+    @verbatim_cache = {}
+    @inside_cache = {}
+    @kind_cache = {}
+    @ns_href = {}
+    yield
+  ensure
+    @visible_cache, @verbatim_cache, @inside_cache, @kind_cache, @ns_href = previous
   end
 
   # True when whitespace at this spot has no effect on the page.
   # left and right are the neighboring significant nodes, or nil at an edge.
   def free_gap?(parent, left, right)
     return false unless parent&.element?
-    return false if inside_verbatim?(parent)
-    if head?(parent)
-      return head_gap?(left, right)
+    case gap_kind(parent)
+    when :verbatim
+      false
+    when :head
+      head_gap?(left, right)
+    when :html
+      # DocBook writes <html...><head> with nothing between the tags. The ePub
+      # packager replaces the whole line that starts with <html, so a joined
+      # <head> would be deleted with that line. Head is not a visible block,
+      # and the ordinary rule would keep the join. This gap is the exception.
+      return true if left.nil? && head?(right)
+      return false unless visible_block?(parent)
+      block_edges?(left, right)
+    when :block
+      block_edges?(left, right)
+    else
+      false
     end
-    # DocBook writes <html...><head> with nothing between the tags. The ePub
-    # packager replaces the whole line that starts with <html, so a joined
-    # <head> would be deleted with that line. Head is not a visible block, and
-    # the ordinary rule would keep the join. This gap is the exception.
-    if parent.name == 'html' && xhtml?(parent) && left.nil? && head?(right)
-      return true
-    end
-    return false unless visible_block?(parent)
-    left_block = block_neighbor?(left)
-    right_block = block_neighbor?(right)
-    return true if left_block && right_block
-    return true if left.nil? && right_block
-    return true if right.nil? && left_block
-    false
   end
 
   def format!(document)
-    format_element(document.root) if document.root
+    with_memo { format_element(document.root, 0) if document.root }
     document
   end
 
@@ -137,21 +159,37 @@ module HtmlFormat
   def whitespace_text?(node)
     return false unless node&.text?
     return false if node.cdata?
+    # blank? is libxml's XML-space test and does not copy the text. A node
+    # that is only a form feed is whitespace here and is not blank there.
+    return true if node.blank?
     whitespace_only?(node.content)
   end
 
   def whitespace_only?(text)
-    return false if text.nil?
-    i = 0
-    while i < text.length
-      return false unless WHITESPACE.include?(text[i])
-      i += 1
+    return true if text.nil?
+    text.each_byte do |byte|
+      # space, tab, LF, CR, FF. A non-ASCII byte is not one of these.
+      return false unless byte == 32 || byte == 9 || byte == 10 || byte == 13 || byte == 12
     end
     true
   end
 
   def xhtml?(node)
-    node.namespace&.href == XHTML_NS
+    namespace_href(node) == XHTML_NS
+  end
+
+  # The namespace object is stable, but href allocates a new string. Keep one
+  # string for each namespace during a walk.
+  def namespace_href(node)
+    ns = node.namespace
+    return nil unless ns
+    cache = @ns_href
+    if cache
+      return cache[ns] if cache.key?(ns)
+      cache[ns] = ns.href
+    else
+      ns.href
+    end
   end
 
   def head?(node)
@@ -174,19 +212,26 @@ module HtmlFormat
     depth
   end
 
-  def format_element(element)
+  def format_element(element, depth)
     return if verbatim?(element)
-    element.elements.each { |child| format_element(child) }
-    normalize_gaps(element)
+    child_depth = depth + 1
+    child = element.child
+    while child
+      nxt = child.next
+      format_element(child, child_depth) if child.element?
+      child = nxt
+    end
+    normalize_gaps(element, depth)
   end
 
-  def normalize_gaps(element)
+  def normalize_gaps(element, depth)
     sigs, gaps = split_children(element)
-    sigs.length.downto(0) do |index|
-      left = index.zero? ? nil : sigs[index - 1]
-      right = index == sigs.length ? nil : sigs[index]
-      next unless free_gap?(element, left, right)
-      indent = gap_text(element, right)
+    flags = free_gap_flags(element, sigs)
+    last = sigs.length
+    last.downto(0) do |index|
+      next unless flags[index]
+      right = index == last ? nil : sigs[index]
+      indent = indent_for(right.nil? ? depth : depth + 1)
       nodes = gaps[index]
       next if nodes.length == 1 && nodes[0].content == indent
       # Remove the old gap before inserting. libxml merges a new text node
@@ -202,32 +247,61 @@ module HtmlFormat
     end
   end
 
+  def indent_for(depth)
+    INDENTS[depth] || "\n#{'  ' * depth}"
+  end
+
   def gap_text(parent, right)
     depth = right.nil? ? element_depth(parent) : element_depth(right)
-    "\n" + ('  ' * depth)
+    indent_for(depth)
   end
 
   def split_children(parent)
     sigs = []
     gaps = [[]]
-    parent.children.each do |child|
+    child = parent.child
+    while child
       if whitespace_text?(child)
         gaps.last << child
       else
         sigs << child
         gaps << []
       end
+      child = child.next
     end
     [sigs, gaps]
   end
 
   def inside_verbatim?(node)
-    current = node
-    while current&.element?
-      return true if verbatim?(current)
-      current = current.parent
+    return false unless node&.element?
+    cache = @inside_cache
+    if cache && cache.key?(node)
+      return cache[node]
     end
-    false
+    result = if verbatim?(node)
+               true
+             else
+               parent = node.parent
+               parent&.element? ? inside_verbatim?(parent) : false
+             end
+    cache[node] = result if cache
+    result
+  end
+
+  def visible_block_uncached(node)
+    return false unless xhtml?(node)
+    return false unless BLOCK_TAG[node.name]
+    return false if EXCLUSION_TAG[node.name]
+    class_tokens(node).each do |token|
+      return false if EXCLUSION_CLASS[token]
+    end
+    true
+  end
+
+  def verbatim_uncached(node)
+    return true if xml_space?(node)
+    return true unless xhtml?(node)
+    VERBATIM_TAGS.include?(node.name)
   end
 
   def xml_space?(element)
@@ -236,8 +310,80 @@ module HtmlFormat
     end
   end
 
-  def block_neighbor?(node)
-    !node.nil? && visible_block?(node)
+  # One answer per element for the whole walk: a verbatim subtree, head,
+  # the html element, some other visible block, or neither.
+  def gap_kind(parent)
+    cache = @kind_cache
+    if cache
+      found = cache[parent]
+      return found if found
+    end
+    kind = if inside_verbatim?(parent)
+             :verbatim
+           elsif head?(parent)
+             :head
+           elsif parent.name == 'html' && xhtml?(parent)
+             :html
+           elsif visible_block?(parent)
+             :block
+           else
+             :other
+           end
+    cache[parent] = kind if cache
+    kind
+  end
+
+  def block_edges?(left, right)
+    left_block = !left.nil? && visible_block?(left)
+    right_block = !right.nil? && visible_block?(right)
+    return true if left_block && right_block
+    return true if left.nil? && right_block
+    return true if right.nil? && left_block
+    false
+  end
+
+  # The same answers as free_gap?, one per gap, for a parent whose significant
+  # children are sigs. Gap 0 is the start of the parent. The last gap is the end.
+  def free_gap_flags(parent, sigs)
+    count = sigs.length
+    flags = Array.new(count + 1, false)
+    return flags unless parent&.element?
+    kind = gap_kind(parent)
+    if kind == :head
+      index = 0
+      while index <= count
+        left = index.zero? ? nil : sigs[index - 1]
+        right = index == count ? nil : sigs[index]
+        flags[index] = head_gap?(left, right)
+        index += 1
+      end
+      return flags
+    end
+    return flags if kind == :verbatim || kind == :other
+    # The gap before <head> is free even though head is not a visible block.
+    # A later pass may also mark it free. It must not be cleared.
+    flags[0] = true if kind == :html && count.positive? && head?(sigs[0])
+    return flags if kind == :html && !visible_block?(parent)
+    return flags unless kind == :block || kind == :html
+    blocks = Array.new(count)
+    index = 0
+    while index < count
+      node = sigs[index]
+      blocks[index] = node.element? && visible_block?(node)
+      index += 1
+    end
+    index = 0
+    while index <= count
+      left_nil = index.zero?
+      right_nil = index == count
+      left_block = left_nil ? false : blocks[index - 1]
+      right_block = right_nil ? false : blocks[index]
+      if (left_block && right_block) || (left_nil && right_block) || (right_nil && left_block)
+        flags[index] = true
+      end
+      index += 1
+    end
+    flags
   end
 
   def content_type_meta?(element)
@@ -253,7 +399,8 @@ module HtmlFormat
     right_ok = right.nil? || right.element?
     left_ok && right_ok && !(left.nil? && right.nil?)
   end
-  private_class_method :format_element, :normalize_gaps, :gap_text,
-                       :inside_verbatim?, :xml_space?, :block_neighbor?, :head_gap?,
+  private_class_method :format_element, :normalize_gaps, :indent_for, :gap_text,
+                       :inside_verbatim?, :visible_block_uncached, :verbatim_uncached,
+                       :xml_space?, :gap_kind, :block_edges?, :head_gap?,
                        :content_type_meta?
 end

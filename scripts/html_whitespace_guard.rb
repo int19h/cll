@@ -23,7 +23,9 @@ module HtmlWhitespaceGuard
     compare_prolog(before_text, after_text, name)
     before_doc = parse_side(before_text, name, 'original')
     after_doc = parse_side(after_text, name, 'formatted')
-    compare_children(before_doc, after_doc, name, strict)
+    HtmlFormat.with_memo do
+      compare_children(before_doc, after_doc, name, strict)
+    end
     nil
   end
 
@@ -32,20 +34,21 @@ module HtmlWhitespaceGuard
   end
 
   def check_entities(text, name, side)
-    scrubbed = text.gsub(/<!--.*?-->|<!\[CDATA\[.*?\]\]>|<\?.*?\?>/m, '')
+    # Byte offsets. A UTF-8 index would rescan the page for every '&'.
+    scrubbed = text.gsub(/<!--.*?-->|<!\[CDATA\[.*?\]\]>|<\?.*?\?>/m, '').b
     index = 0
     while (mark = scrubbed.index('&', index))
-      rest = scrubbed[mark..]
-      if (match = rest.match(/\A&#(?:[0-9]+|x[0-9A-Fa-f]+);/))
-        index = mark + match[0].length
-      elsif (match = rest.match(/\A&([A-Za-z][A-Za-z0-9.-]*);/))
+      window = scrubbed.byteslice(mark, 64)
+      if (match = window.match(/\A&#(?:[0-9]+|x[0-9A-Fa-f]+);/))
+        index = mark + match.end(0)
+      elsif (match = window.match(/\A&([A-Za-z][A-Za-z0-9.-]*);/))
         entity = match[1]
         unless ALLOWED_ENTITIES.include?(entity)
           raise Unsafe, "#{name}: named entity &#{entity}; on the #{side} side is not amp, lt, gt, quot, or apos"
         end
-        index = mark + match[0].length
+        index = mark + match.end(0)
       else
-        snippet = rest[0, 24].gsub(/\s+/, ' ')
+        snippet = window.to_s.gsub(/\s+/, ' ')[0, 24]
         raise Unsafe, "#{name}: entity reference #{snippet.inspect} on the #{side} side is not amp, lt, gt, quot, or apos"
       end
     end
@@ -143,16 +146,23 @@ module HtmlWhitespaceGuard
     unless sigs_a.length == sigs_b.length
       raise Unsafe, "#{name}: different nodes under #{place(parent_a)}"
     end
-    (sigs_a.length + 1).times do |index|
-      left = index.zero? ? nil : sigs_a[index - 1]
-      right = index == sigs_a.length ? nil : sigs_a[index]
-      free = !strict && parent_a.element? && HtmlFormat.free_gap?(parent_a, left, right)
-      next if free
-      next if gaps_a[index].map(&:content) == gaps_b[index].map(&:content)
-      raise Unsafe, "#{name}: whitespace changed under #{place(parent_a)} #{beside(left, right)}"
+    flags = strict || !parent_a.element? ? nil : HtmlFormat.free_gap_flags(parent_a, sigs_a)
+    last = sigs_a.length
+    index = 0
+    while index <= last
+      unless flags && flags[index]
+        unless gaps_a[index].map(&:content) == gaps_b[index].map(&:content)
+          left = index.zero? ? nil : sigs_a[index - 1]
+          right = index == last ? nil : sigs_a[index]
+          raise Unsafe, "#{name}: whitespace changed under #{place(parent_a)} #{beside(left, right)}"
+        end
+      end
+      index += 1
     end
-    sigs_a.zip(sigs_b).each do |node_a, node_b|
-      compare_node(node_a, node_b, name, strict)
+    index = 0
+    while index < last
+      compare_node(sigs_a[index], sigs_b[index], name, strict)
+      index += 1
     end
   end
 
@@ -182,16 +192,50 @@ module HtmlWhitespaceGuard
   end
 
   def compare_element(node_a, node_b, name, strict)
-    if expanded_name(node_a) != expanded_name(node_b)
+    href_a = HtmlFormat.namespace_href(node_a)
+    href_b = HtmlFormat.namespace_href(node_b)
+    if href_a != href_b || node_a.name != node_b.name
       raise Unsafe, "#{name}: element #{label(node_a)} became #{label(node_b)}"
     end
-    if namespace_signature(node_a) != namespace_signature(node_b)
+    unless same_namespaces?(node_a, node_b)
       raise Unsafe, "#{name}: namespace declarations differ on #{label(node_a)}"
     end
-    if attribute_signature(node_a) != attribute_signature(node_b)
+    unless same_attributes?(node_a, node_b)
       raise Unsafe, "#{name}: attributes differ on #{label(node_a)}"
     end
     compare_children(node_a, node_b, name, strict)
+  end
+
+  def same_namespaces?(node_a, node_b)
+    defs_a = node_a.namespace_definitions
+    defs_b = node_b.namespace_definitions
+    return false unless defs_a.length == defs_b.length
+    index = 0
+    while index < defs_a.length
+      left = defs_a[index]
+      right = defs_b[index]
+      return false unless left.prefix == right.prefix && left.href == right.href
+      index += 1
+    end
+    true
+  end
+
+  def same_attributes?(node_a, node_b)
+    attrs_a = node_a.attribute_nodes
+    attrs_b = node_b.attribute_nodes
+    return false unless attrs_a.length == attrs_b.length
+    index = 0
+    while index < attrs_a.length
+      left = attrs_a[index]
+      right = attrs_b[index]
+      left_ns = left.namespace
+      right_ns = right.namespace
+      left_prefix = left_ns ? left_ns.prefix : nil
+      right_prefix = right_ns ? right_ns.prefix : nil
+      return false unless left_prefix == right_prefix && left.name == right.name && left.value == right.value
+      index += 1
+    end
+    true
   end
 
   def node_kind(node)
@@ -202,18 +246,6 @@ module HtmlWhitespaceGuard
     return :pi if node.processing_instruction?
     return :dtd if node.type == Nokogiri::XML::Node::DTD_NODE
     node.type
-  end
-
-  def expanded_name(node)
-    [node.namespace&.href, node.name]
-  end
-
-  def namespace_signature(node)
-    node.namespace_definitions.map { |ns| [ns.prefix, ns.href] }
-  end
-
-  def attribute_signature(node)
-    node.attribute_nodes.map { |attr| [attr.namespace&.prefix, attr.name, attr.value] }
   end
 
   def place(node)

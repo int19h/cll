@@ -1,7 +1,8 @@
 /* The HTML formatter indents only between visible blocks.
-   A tag or a class in a selector of a rule that sets display, visibility,
-   or content-visibility belongs in the exclusion constants in
-   scripts/html_format.rb. */
+   scripts/html_format.rb excludes the subject of a rule that can take a
+   block out of block layout: the tag and classes of the last compound in
+   the selector. A rule that only sets display to block, list-item, or a
+   table box does not exclude its subject. */
 
 /********************
  * NB:

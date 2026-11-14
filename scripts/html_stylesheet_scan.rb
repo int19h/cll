@@ -2,13 +2,29 @@
 
 # Read the tags and classes that a stylesheet excludes from visible blocks.
 #
-# A rule that sets display, visibility, or content-visibility contributes
-# every tag and class in its selector. The scan fails closed when it cannot
-# read a construct that could hide such a rule, and the message names the rule.
+# Only the subject of a selector counts: the last compound, after the last
+# combinator. An ancestor in the selector is not affected by the rule.
+# A rule whose display value is a block, a list item, or an internal or
+# block-level table box excludes nothing. Those values cannot turn a listed
+# block into an inline box. inline-table can, so it still excludes.
+# Every other display value excludes, and so does every visibility or
+# content-visibility value other than visible.
+# The scan fails closed when it cannot read a construct that could hide
+# such a rule, and the message names the rule.
 module HtmlStylesheetScan
   class Unreadable < StandardError; end
 
   RELEVANT = %w[display visibility content-visibility].freeze
+  # list-item generates a block-level principal box. table and the table-*
+  # values other than inline-table generate a block-level table box or an
+  # internal table box. None of them is an inline-level box, so a line break
+  # beside one is not a word space. inline-table is inline-level and is absent
+  # from this list.
+  HARMLESS_DISPLAY = %w[
+    block list-item
+    table table-caption table-cell table-column table-column-group
+    table-footer-group table-header-group table-row table-row-group
+  ].freeze
   PAGE_MARGINS = %w[
     top-left-corner top-left top-center top-right top-right-corner
     bottom-left-corner bottom-left bottom-center bottom-right bottom-right-corner
@@ -148,7 +164,37 @@ module HtmlStylesheetScan
           fail!("#{rule} { #{prop}: #{shown} }")
         end
       end
-      extract(selector)
+      extract(selector) if excludes?(relevant)
+    end
+
+    # The last declaration of each importance wins, and an !important
+    # declaration wins over one that is not. visibility and content-visibility
+    # hide the subject unless the winning value is exactly visible.
+    def excludes?(decls)
+      display = winning_value(decls, 'display')
+      visibility = winning_value(decls, 'visibility')
+      content_visibility = winning_value(decls, 'content-visibility')
+      return true if visibility && visibility != 'visible'
+      return true if content_visibility && content_visibility != 'visible'
+      return false if display.nil? || HARMLESS_DISPLAY.include?(display)
+      true
+    end
+
+    def winning_value(decls, property)
+      normal = nil
+      important = nil
+      decls.each do |prop, value|
+        next unless prop == property
+        cleaned = value.strip.gsub(/\s+/, ' ')
+        flagged = !cleaned.sub!(/\s*!important\z/i, '').nil?
+        cleaned = cleaned.strip.downcase
+        if flagged
+          important = cleaned
+        else
+          normal = cleaned
+        end
+      end
+      important || normal
     end
 
     def note_relevant_declarations(decls, rule)
@@ -182,20 +228,24 @@ module HtmlStylesheetScan
 
     def extract(selector)
       selector.split(',').each do |part|
-        part.gsub(/[>+~]/, ' ').split(/\s+/).each do |token|
-          next if token.empty?
-          rest = token
-          if rest =~ /\A([A-Za-z][A-Za-z0-9_-]*)/
-            @tags << Regexp.last_match(1).downcase
-            rest = Regexp.last_match.post_match
-          end
-          while rest =~ /\A\.([A-Za-z_][A-Za-z0-9_-]*)/
-            @classes << Regexp.last_match(1)
-            rest = Regexp.last_match.post_match
-          end
-          fail!("a selector #{token} in #{selector.strip[0, 60]}") unless rest.empty?
-        end
+        compounds = part.strip.split(/\s*[>+~]\s*|\s+/)
+        token = compounds.reject(&:empty?).last
+        fail!("a selector #{part.strip[0, 60]}") if token.nil? || token.empty?
+        record_compound(token, selector)
       end
+    end
+
+    def record_compound(token, selector)
+      rest = token
+      if rest =~ /\A([A-Za-z][A-Za-z0-9_-]*)/
+        @tags << Regexp.last_match(1).downcase
+        rest = Regexp.last_match.post_match
+      end
+      while rest =~ /\A\.([A-Za-z_][A-Za-z0-9_-]*)/
+        @classes << Regexp.last_match(1)
+        rest = Regexp.last_match.post_match
+      end
+      fail!("a selector #{token} in #{selector.strip[0, 60]}") unless rest.empty?
     end
 
     def value_unreadable?(text)

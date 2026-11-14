@@ -102,9 +102,56 @@ class StylesheetExclusion < Minitest::Test
       @supports (display: flex) { span.box { display: block } }
     CSS
     tags, classes = HtmlStylesheetScan.exclusion(css, source: 'safe.css')
-    assert_equal %w[h1 span], tags.uniq.sort
-    assert_equal %w[box shown], classes.uniq.sort
+    assert_equal %w[h1], tags.uniq.sort
+    assert_empty classes
     refute_includes classes, 'secret'
+  end
+
+  # Only the last compound is the subject. display:block, list-item, and a
+  # table box exclude nothing. inline-table and every other display value
+  # exclude, and so does a visibility value other than visible.
+  def test_only_the_subject_is_excluded_and_block_display_is_harmless
+    css = <<~CSS
+      .article > .titlepage hr { display: none }
+      .whole-index h3 { display: none }
+      .book > .titlepage .release-version, .release-date { display: block }
+      p { display: block }
+      li { display: list-item }
+      div { display: table }
+      td { display: table-cell }
+      tr { display: table-row }
+      caption { display: table-caption }
+      col { display: table-column }
+      colgroup { display: table-column-group }
+      thead { display: table-header-group }
+      tbody { display: table-row-group }
+      tfoot { display: table-footer-group }
+      span.tutci { display: inline-block }
+      div.as-table { display: inline-table }
+      section.row { display: flex }
+      p.hidden { visibility: hidden }
+      p.collapsed { visibility: collapse }
+      div.skip { content-visibility: hidden; display: block }
+      div.auto { content-visibility: auto }
+      p.gone { display: none }
+      p.shown { visibility: visible }
+      p.clear { content-visibility: visible }
+      p.both { display: none; display: block }
+      p.hidden-again { display: block; display: none }
+      p.important { display: block; display: none !important }
+      p.early { display: none !important; display: block }
+      p.forced { display: none; display: block !important }
+    CSS
+    tags, classes = HtmlStylesheetScan.exclusion(css, source: 'subject.css')
+    assert_equal %w[div h3 hr p section span], tags.uniq.sort
+    assert_equal %w[as-table auto collapsed early gone hidden hidden-again important row skip tutci], classes.uniq.sort
+    refute_includes tags, 'li'
+    refute_includes classes, 'release-version'
+    refute_includes classes, 'release-date'
+    refute_includes classes, 'shown'
+    refute_includes classes, 'both'
+    refute_includes classes, 'forced'
+    refute_includes classes, 'clear'
   end
 
   def comparison_sets
@@ -140,11 +187,11 @@ class VisibleBlocks < Minitest::Test
     assert block?('<pre>x</pre>', 'pre')
     assert block?('<table><tr><td>x</td></tr></table>', 'td')
     assert block?('<div class="chapter extra">x</div>', 'div')
-    refute block?('<p>x</p>', 'p')
+    assert block?('<p>x</p>', 'p')
+    assert block?('<div class="book">x</div>', 'div')
+    assert block?('<div class="chapter book">x</div>', 'div')
     refute block?('<h3>x</h3>', 'h3')
     refute block?('<hr />', 'hr')
-    refute block?('<div class="book">x</div>', 'div')
-    refute block?('<div class="chapter book">x</div>', 'div')
     refute block?('<head><title>T</title></head>', 'head')
     refute block?('<br />', 'br')
     refute block?('<span class="tutci">x</span>', 'span')
@@ -160,8 +207,8 @@ class VisibleBlocks < Minitest::Test
     chapter = doc.at_xpath('//*[@class="chapter"]')
     sigs, = HtmlFormat.split_children(chapter)
     assert HtmlFormat.free_gap?(chapter, nil, sigs[0])
-    refute HtmlFormat.free_gap?(chapter, sigs[0], sigs[1])
-    refute HtmlFormat.free_gap?(chapter, sigs[1], sigs[2])
+    assert HtmlFormat.free_gap?(chapter, sigs[0], sigs[1])
+    assert HtmlFormat.free_gap?(chapter, sigs[1], sigs[2])
     assert HtmlFormat.free_gap?(chapter, sigs[2], nil)
 
     both = parse(page('<div class="chapter"><div class="section">a</div><div class="section">b</div></div>'))
@@ -187,10 +234,31 @@ class VisibleBlocks < Minitest::Test
     refute HtmlFormat.free_gap?(html, html_kids[0], html_kids[1])
     assert HtmlFormat.free_gap?(html, html_kids[1], nil)
 
+    ruled = parse(page('<div class="chapter"><div class="section">a</div><hr /><div class="section">b</div></div>'))
+    ruled_parent = ruled.at_xpath('//*[@class="chapter"]')
+    ruled_sigs, = HtmlFormat.split_children(ruled_parent)
+    refute HtmlFormat.free_gap?(ruled_parent, ruled_sigs[0], ruled_sigs[1])
+    refute HtmlFormat.free_gap?(ruled_parent, ruled_sigs[1], ruled_sigs[2])
+
     noted = parse(page('<div class="chapter"><div class="section">a</div><!-- n --><div class="section">b</div></div>'))
     noted_parent = noted.at_xpath('//*[@class="chapter"]')
     noted_sigs, = HtmlFormat.split_children(noted_parent)
     refute HtmlFormat.free_gap?(noted_parent, noted_sigs[0], noted_sigs[1])
+
+    [chapter, parent, pre, head, html, ruled_parent, noted_parent].each do |node|
+      assert_flags_match(node)
+    end
+  end
+
+  def assert_flags_match(parent)
+    sigs, = HtmlFormat.split_children(parent)
+    flags = HtmlFormat.free_gap_flags(parent, sigs)
+    assert_equal sigs.length + 1, flags.length
+    (sigs.length + 1).times do |index|
+      left = index.zero? ? nil : sigs[index - 1]
+      right = index == sigs.length ? nil : sigs[index]
+      assert_equal HtmlFormat.free_gap?(parent, left, right), flags[index]
+    end
   end
 
   def test_a_foreign_subtree_and_xml_space_are_verbatim
@@ -206,6 +274,8 @@ class FormatterOutput < Minitest::Test
   def test_blocks_are_indented_and_a_paragraph_is_not_wrapped
     pretty = format_text(page('<div class="chapter"> <div class="section">x</div><div class="section">y</div></div>'))
     assert_includes pretty, "<div class=\"section\">x</div>\n      <div class=\"section\">y</div>\n    </div>"
+    paras = format_text(page('<div class="chapter"><p>One</p><p>Two</p></div>'))
+    assert_includes paras, "<p>One</p>\n      <p>Two</p>"
     # Existing whitespace must be replaced, not merged and then deleted.
     messy = page("<div class=\"chapter\">\n <div class=\"section\">x</div>\n  <div class=\"section\">y</div>\n </div>")
     once = format_text(messy)
@@ -245,8 +315,12 @@ class FormatterOutput < Minitest::Test
   end
 
   def test_excluded_parents_keep_their_whitespace
-    source = page("<div class=\"book\">\t<div class=\"chapter\">x</div></div>")
-    assert_includes format_text(source), "<div class=\"book\">\t<div class=\"chapter\">x</div>"
+    book = page("<div class=\"book\">\t<div class=\"chapter\">x</div></div>")
+    assert_includes format_text(book), "<div class=\"book\">\n      <div class=\"chapter\">x</div>\n    </div>"
+    hidden = page("<div class=\"display-none\">\t<div class=\"chapter\">x</div></div>")
+    assert_includes format_text(hidden), "<div class=\"display-none\">\t<div class=\"chapter\">x</div>"
+    heading = page("<h3>\t<span>x</span></h3>")
+    assert_includes format_text(heading), "<h3>\t<span>x</span></h3>"
   end
 
   def test_head_children_each_start_a_line

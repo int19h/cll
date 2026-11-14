@@ -133,7 +133,7 @@ The check needs `xsltproc` as well as Ruby and Nokogiri.
 | Prince postprocessor | `scripts/xml_prince_postprocess.rb`, the last step before Prince, on `tests/fixtures/xml-prince-postprocess.xhtml` | `python3 scripts/test-xml-prince-postprocess.py` |
 | Offline file list | `scripts/xhtml_postprocess_offline.rb` writes `sw.js` for one HTML folder. It stops for a missing file or an unsafe name. It stops for a path that starts with `/`. It stops for a reference in a form it does not read, or for a precache above 20 MiB | `python3 scripts/test-offline-list.py` |
 | Nokogiri spaces | The Ruby build scripts keep the spaces between inline elements | `python3 scripts/test-nokogiri-spaces.py` |
-| HTML formatter | The formatter indents only between visible blocks. The guard rejects every other change. The stylesheet test recomputes the exclusion set | `ruby scripts/test-html-format.rb` |
+| HTML formatter | The formatter indents only between visible blocks. The guard rejects every other change. The stylesheet test recomputes the exclusion set and the whitespace-freeze set. If `origin/pages` is missing, that test fails and names `git fetch origin pages` | `ruby scripts/test-html-format.rb` |
 | Gloss columns self-test | The lint below, on fixtures | `ruby scripts/test-lint-gloss-columns.rb` |
 | Gloss columns | Each gloss line has a column for every Lojban word, and structural words such as `cu` and terminators have suitable glosses (see [markup-tags.md](markup-tags.md#interlinear-gloss)) | `ruby scripts/lint-gloss-columns.rb chapters/*.xml` |
 | Index types self-test | The lint below, on fixtures | `ruby scripts/test-lint-index-types.rb` |

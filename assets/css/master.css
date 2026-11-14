@@ -2,7 +2,12 @@
    scripts/html_format.rb excludes the subject of a rule that can take a
    block out of block layout: the tag and classes of the last compound in
    the selector. A rule that only sets display to block, list-item, or a
-   table box does not exclude its subject. */
+   table box does not exclude its subject.
+   If a rule here sets white-space or white-space-collapse to anything
+   other than normal or nowrap, that subject's tag and classes belong in
+   the freeze constants in scripts/html_format.rb. The property is
+   inherited, so the whole subtree stays verbatim. normal and nowrap still
+   collapse whitespace. */
 
 /********************
  * NB:

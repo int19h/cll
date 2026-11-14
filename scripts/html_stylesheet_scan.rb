@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# Read the tags and classes that a stylesheet excludes from visible blocks.
+# Read the tags and classes that a stylesheet excludes from visible blocks,
+# and the tags and classes whose whole subtree must stay verbatim.
 #
 # Only the subject of a selector counts: the last compound, after the last
 # combinator. An ancestor in the selector is not affected by the rule.
@@ -9,12 +10,25 @@
 # block into an inline box. inline-table can, so it still excludes.
 # Every other display value excludes, and so does every visibility or
 # content-visibility value other than visible.
-# The scan fails closed when it cannot read a construct that could hide
-# such a rule, and the message names the rule.
+# float other than none, and position other than static or relative, exclude
+# the subject: those values take the box out of normal flow. relative keeps
+# the box in the flow, so a gap beside it still collapses.
+# all, at any value, excludes the subject: it resets display to inline.
+# white-space and white-space-collapse, at any value other than normal or
+# nowrap, freeze the subject's tag and classes. The property is inherited,
+# so the whole subtree is verbatim. normal and nowrap still collapse.
+# A pseudo-element rule does not apply to the element. A pseudo-class still
+# fails closed. The scan fails closed when it cannot read a construct that
+# could hide such a rule, and the message names the rule.
 module HtmlStylesheetScan
   class Unreadable < StandardError; end
 
-  RELEVANT = %w[display visibility content-visibility].freeze
+  RELEVANT = %w[
+    display visibility content-visibility
+    white-space white-space-collapse
+    float position
+    all
+  ].freeze
   # list-item generates a block-level principal box. table and the table-*
   # values other than inline-table generate a block-level table box or an
   # internal table box. None of them is an inline-level box, so a line break
@@ -34,13 +48,19 @@ module HtmlStylesheetScan
   module_function
 
   def exclusion(css, source:)
+    tags, classes, _preserve_tags, _preserve_classes = classify(css, source: source)
+    [tags, classes]
+  end
+
+  # tags, classes, preserve_tags, preserve_classes
+  def classify(css, source:)
     scanner = Scanner.new(css, source)
     scanner.parse
-    [scanner.tags, scanner.classes]
+    [scanner.tags, scanner.classes, scanner.preserve_tags, scanner.preserve_classes]
   end
 
   class Scanner
-    attr_reader :tags, :classes
+    attr_reader :tags, :classes, :preserve_tags, :preserve_classes
 
     def initialize(css, source)
       @css = css
@@ -49,6 +69,8 @@ module HtmlStylesheetScan
       @n = css.length
       @tags = []
       @classes = []
+      @preserve_tags = []
+      @preserve_classes = []
     end
 
     def parse
@@ -164,20 +186,46 @@ module HtmlStylesheetScan
           fail!("#{rule} { #{prop}: #{shown} }")
         end
       end
-      extract(selector) if excludes?(relevant)
+      # ::before and ::after boxes are not the element. A single-colon
+      # pseudo-class still fails above, because this scanner does not try
+      # to tell :hover from :before.
+      return if flags[:pseudo_element]
+      extract(selector, @tags, @classes) if excludes?(relevant)
+      extract(selector, @preserve_tags, @preserve_classes) if preserves?(relevant)
     end
 
     # The last declaration of each importance wins, and an !important
     # declaration wins over one that is not. visibility and content-visibility
     # hide the subject unless the winning value is exactly visible.
+    # position: relative stays in normal flow, like static. The book sets it
+    # on p.status-note, and excluding that subject would exclude every p.
     def excludes?(decls)
       display = winning_value(decls, 'display')
       visibility = winning_value(decls, 'visibility')
       content_visibility = winning_value(decls, 'content-visibility')
+      floated = winning_value(decls, 'float')
+      position = winning_value(decls, 'position')
+      all_value = winning_value(decls, 'all')
       return true if visibility && visibility != 'visible'
       return true if content_visibility && content_visibility != 'visible'
+      return true if floated && floated != 'none'
+      return true if position && position != 'static' && position != 'relative'
+      return true if all_value
       return false if display.nil? || HARMLESS_DISPLAY.include?(display)
       true
+    end
+
+    # Inherited. Any value other than the two collapsing keywords freezes
+    # the subject. white-space-collapse: collapse is not the keyword normal,
+    # so it freezes too.
+    def preserves?(decls)
+      preserving_value?(winning_value(decls, 'white-space')) ||
+        preserving_value?(winning_value(decls, 'white-space-collapse'))
+    end
+
+    def preserving_value?(value)
+      return false if value.nil?
+      value != 'normal' && value != 'nowrap'
     end
 
     def winning_value(decls, property)
@@ -226,23 +274,23 @@ module HtmlStylesheetScan
       [prop_text.strip.downcase, value, stop]
     end
 
-    def extract(selector)
+    def extract(selector, tags, classes)
       selector.split(',').each do |part|
         compounds = part.strip.split(/\s*[>+~]\s*|\s+/)
         token = compounds.reject(&:empty?).last
         fail!("a selector #{part.strip[0, 60]}") if token.nil? || token.empty?
-        record_compound(token, selector)
+        record_compound(token, selector, tags, classes)
       end
     end
 
-    def record_compound(token, selector)
+    def record_compound(token, selector, tags, classes)
       rest = token
       if rest =~ /\A([A-Za-z][A-Za-z0-9_-]*)/
-        @tags << Regexp.last_match(1).downcase
+        tags << Regexp.last_match(1).downcase
         rest = Regexp.last_match.post_match
       end
       while rest =~ /\A\.([A-Za-z_][A-Za-z0-9_-]*)/
-        @classes << Regexp.last_match(1)
+        classes << Regexp.last_match(1)
         rest = Regexp.last_match.post_match
       end
       fail!("a selector #{token} in #{selector.strip[0, 60]}") unless rest.empty?
@@ -330,6 +378,12 @@ module HtmlStylesheetScan
           return [text, char]
         end
         if flags && paren.zero? && bracket.zero?
+          if char == ':' && peek_at(2) == '::'
+            flags[:pseudo_element] = true
+            text << '::'
+            @i += 2
+            next
+          end
           flags[:id] = true if char == '#'
           flags[:pseudo] = true if char == ':'
           flags[:universal] = true if char == '*'

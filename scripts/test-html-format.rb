@@ -40,6 +40,87 @@ def format_text(text)
   after
 end
 
+# The real cleanup shell. Optional class lists patch a copy of the formatter
+# the way a stylesheet change updates the constants, then the shell runs.
+def run_cleanup(source, freeze_classes: nil, exclusion_classes: nil)
+  Dir.mktmpdir do |dir|
+    shell = File.join(ROOT, 'scripts/xhtml_postprocess_cleanup.sh')
+    if freeze_classes || exclusion_classes
+      scripts = File.join(dir, 'scripts')
+      Dir.mkdir(scripts)
+      %w[xhtml_postprocess_cleanup.sh xhtml_postprocess_cleanup_file.rb html_format.rb html_whitespace_guard.rb util.rb].each do |name|
+        FileUtils.cp(File.join(ROOT, 'scripts', name), File.join(scripts, name))
+      end
+      format_path = File.join(scripts, 'html_format.rb')
+      text = File.read(format_path)
+      if freeze_classes
+        replacement = "FREEZE_CLASSES = %w[#{freeze_classes.join(' ')}].freeze"
+        rewritten = text.sub('FREEZE_CLASSES = [].freeze', replacement)
+        raise 'freeze constant not patched' if rewritten == text
+        text = rewritten
+      end
+      if exclusion_classes
+        rewritten = text.sub(/EXCLUSION_CLASSES = %w\[(.*?)\]\.freeze/m) do
+          "EXCLUSION_CLASSES = %w[#{Regexp.last_match(1)} #{exclusion_classes.join(' ')}].freeze"
+        end
+        raise 'exclusion constant not patched' if rewritten == text
+        text = rewritten
+      end
+      File.write(format_path, text)
+      shell = File.join(scripts, 'xhtml_postprocess_cleanup.sh')
+    end
+    pages = File.join(dir, 'pages')
+    Dir.mkdir(pages)
+    FileUtils.cp_r(File.join(ROOT, 'dtd'), File.join(pages, 'dtd'))
+    path = File.join(pages, 'page.html')
+    File.write(path, source)
+    _out, err, status = Open3.capture3('bash', shell, pages)
+    [status.success?, err, File.read(path)]
+  end
+end
+
+# Whitespace runs become one space. A whitespace-only node that CSS drops
+# (inside html or head, or between blocks) is omitted, so an indent at a
+# free gap compares equal. A run beside inline text stays, so "AB" and
+# "A B" differ.
+def collapsed_whitespace(text)
+  document = parse(text)
+  chunks = []
+  document.xpath('//text()').each do |node|
+    content = node.content
+    if HtmlFormat.whitespace_only?(content)
+      chunks << ' ' unless ignorable_gap?(node)
+    else
+      chunks << content.gsub(/[ \t\r\n\f]+/, ' ')
+    end
+  end
+  chunks.join
+end
+
+def ignorable_gap?(node)
+  parent = node.parent
+  return false unless parent&.element?
+  return true if parent.name == 'html' || parent.name == 'head'
+  return false unless HtmlFormat::BLOCK_TAG[parent.name]
+  left = neighbor_element(node, :previous)
+  right = neighbor_element(node, :next)
+  (left.nil? || block_element?(left)) && (right.nil? || block_element?(right))
+end
+
+def neighbor_element(node, direction)
+  current = node
+  loop do
+    current = direction == :previous ? current.previous : current.next
+    return nil unless current
+    next if current.text? && HtmlFormat.whitespace_only?(current.content)
+    return current
+  end
+end
+
+def block_element?(node)
+  node.element? && HtmlFormat::BLOCK_TAG[node.name]
+end
+
 def rendered_chars(text)
   parse(text).xpath('//text()').map { |node| node.content.gsub(/[ \t\r\n\f]/, '') }.join
 end
@@ -62,15 +143,24 @@ class StylesheetExclusion < Minitest::Test
   def test_real_stylesheets_match_the_constant
     tags = []
     classes = []
+    preserve_tags = []
+    preserve_classes = []
     Dir[File.join(ROOT, 'assets/css/*.css')].sort.each do |path|
-      found_tags, found_classes = HtmlStylesheetScan.exclusion(File.read(path), source: path)
-      tags.concat(found_tags)
-      classes.concat(found_classes)
+      found = HtmlStylesheetScan.classify(File.read(path), source: path)
+      tags.concat(found[0])
+      classes.concat(found[1])
+      preserve_tags.concat(found[2])
+      preserve_classes.concat(found[3])
     end
-    tags.concat(comparison_sets[0])
-    classes.concat(comparison_sets[1])
+    compared = comparison_sets
+    tags.concat(compared[0])
+    classes.concat(compared[1])
+    preserve_tags.concat(compared[2])
+    preserve_classes.concat(compared[3])
     assert_equal HtmlFormat::EXCLUSION_TAGS.sort, tags.uniq.sort
     assert_equal HtmlFormat::EXCLUSION_CLASSES.sort, classes.uniq.sort
+    assert_equal HtmlFormat::FREEZE_TAGS.sort, preserve_tags.uniq.sort
+    assert_equal HtmlFormat::FREEZE_CLASSES.sort, preserve_classes.uniq.sort
   end
 
   def test_each_unreadable_construct_names_the_rule
@@ -80,12 +170,26 @@ class StylesheetExclusion < Minitest::Test
     assert_unreadable('p[hidden] { display: none }', 'p[hidden]')
     assert_unreadable('#main { display: block }', '#main')
     assert_unreadable('p:first-child { display: block }', 'p:first-child')
-    assert_unreadable('p::before { display: block }', 'p::before')
+    assert_unreadable('p:before { display: block }', 'p:before')
+    # ::before is the pseudo-element box, not the element.
+    tags, classes, preserve_tags, preserve_classes = HtmlStylesheetScan.classify(
+      'p.status-note::before { position: absolute; display: block }', source: 'fixture.css'
+    )
+    assert_empty tags
+    assert_empty classes
+    assert_empty preserve_tags
+    assert_empty preserve_classes
     assert_unreadable('p { display: var(--d) }', 'var(--d)')
     assert_unreadable("p { display: block }\n/* oops", 'comment')
     assert_unreadable('p { display: \62 lock }', '\62')
     assert_unreadable('@page { display: block }', '@page')
     assert_unreadable('@font-face { display: block }', '@font-face')
+    assert_unreadable('@page { white-space: pre }', '@page')
+    assert_unreadable('@font-face { float: left }', '@font-face')
+    assert_unreadable('@page { position: absolute }', '@page')
+    assert_unreadable('@font-face { all: initial }', '@font-face')
+    assert_unreadable('p:first-child { white-space: pre }', 'p:first-child')
+    assert_unreadable('div { white-space: var(--w) }', 'var(--w)')
   end
 
   def test_a_comment_hides_a_display_rule_and_ordinary_constructs_parse
@@ -154,25 +258,86 @@ class StylesheetExclusion < Minitest::Test
     refute_includes classes, 'clear'
   end
 
-  def comparison_sets
+  def test_each_flow_and_whitespace_property
+    assert_sets('.probe { white-space: pre }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space: pre-wrap }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space: pre-line }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space: break-spaces }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space: nowrap }')
+    assert_sets('.probe { white-space: normal }')
+    assert_sets('.probe { white-space-collapse: collapse }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space-collapse: preserve }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space-collapse: preserve-breaks }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space-collapse: break-spaces }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space-collapse: normal }')
+    assert_sets('.probe { white-space-collapse: nowrap }')
+    assert_sets('.probe { float: left }', classes: %w[probe])
+    assert_sets('.probe { float: right }', classes: %w[probe])
+    assert_sets('.probe { float: inline-start }', classes: %w[probe])
+    assert_sets('.probe { float: none }')
+    assert_sets('.probe { position: absolute }', classes: %w[probe])
+    assert_sets('.probe { position: fixed }', classes: %w[probe])
+    assert_sets('.probe { position: sticky }', classes: %w[probe])
+    assert_sets('.probe { position: running(title-version) }', classes: %w[probe])
+    assert_sets('.probe { position: static }')
+    # relative stays in the flow. Excluding it would exclude the tag p
+    # from p.status-note in the book stylesheet.
+    assert_sets('p.status-note { position: relative }')
+    assert_sets('div.probe { all: initial }', tags: %w[div], classes: %w[probe])
+    assert_sets('div.probe { all: unset }', tags: %w[div], classes: %w[probe])
+    assert_sets('div.probe { all: revert }', tags: %w[div], classes: %w[probe])
+    assert_sets('.probe { display: block; float: left }', classes: %w[probe])
+    assert_sets('.probe { float: left !important; float: none }', classes: %w[probe])
+    assert_sets('.probe { float: left; float: none !important }')
+    assert_sets('.probe { white-space: normal; white-space: pre !important }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space: pre !important; white-space: normal }', preserve_classes: %w[probe])
+    assert_sets('.probe { white-space: pre; white-space: nowrap !important }')
+    assert_sets('p.probe { white-space: pre; float: left }', tags: %w[p], classes: %w[probe], preserve_tags: %w[p], preserve_classes: %w[probe])
+  end
+
+  def test_a_missing_comparison_stylesheet_names_the_fetch
+    error = assert_raises(RuntimeError) do
+      comparison_sets(refs: ['no-such-ref-207'], fetch: false)
+    end
+    assert_includes error.message, 'git fetch origin pages'
+    assert_includes error.message, 'origin/pages'
+  end
+
+  def assert_sets(css, tags: [], classes: [], preserve_tags: [], preserve_classes: [])
+    found = HtmlStylesheetScan.classify(css, source: 'fixture.css')
+    assert_equal tags.sort, found[0].uniq.sort, css
+    assert_equal classes.sort, found[1].uniq.sort, css
+    assert_equal preserve_tags.sort, found[2].uniq.sort, css
+    assert_equal preserve_classes.sort, found[3].uniq.sort, css
+  end
+
+  def comparison_sets(refs: %w[origin/pages pages], fetch: true)
     text = nil
-    %w[origin/pages pages].each do |ref|
-      shown, status = Open3.capture2('git', 'show', "#{ref}:scripts/docbook-diff.xsl", chdir: ROOT)
+    refs.each do |ref|
+      shown, _err, status = Open3.capture3('git', 'show', "#{ref}:scripts/docbook-diff.xsl", chdir: ROOT)
       if status.success?
         text = shown
         break
       end
     end
     if text.nil?
-      _fetch, status = Open3.capture2('git', 'fetch', '--depth=1', 'origin', 'pages', chdir: ROOT)
-      raise 'the comparison stylesheet on origin/pages is not available' unless status.success?
-      text, status = Open3.capture2('git', 'show', 'FETCH_HEAD:scripts/docbook-diff.xsl', chdir: ROOT)
-      raise 'the comparison stylesheet is missing' unless status.success?
+      if fetch
+        _fetched, _err, status = Open3.capture3('git', 'fetch', '--depth=1', 'origin', 'pages', chdir: ROOT)
+        unless status.success?
+          raise 'the comparison stylesheet on origin/pages is not available. Fetch it with: git fetch origin pages'
+        end
+        text, _err, status = Open3.capture3('git', 'show', 'FETCH_HEAD:scripts/docbook-diff.xsl', chdir: ROOT)
+        unless status.success?
+          raise 'the comparison stylesheet on origin/pages is not available. Fetch it with: git fetch origin pages'
+        end
+      else
+        raise 'the comparison stylesheet on origin/pages is not available. Fetch it with: git fetch origin pages'
+      end
     end
     match = text.match(/<style\b[^>]*>(.*?)<\/style>/m)
     raise 'the comparison page has no style element' unless match
     css = match[1].gsub(%r{</?xsl:text>}, '')
-    HtmlStylesheetScan.exclusion(css, source: 'docbook-diff.xsl')
+    HtmlStylesheetScan.classify(css, source: 'docbook-diff.xsl')
   end
 end
 
@@ -195,6 +360,47 @@ class VisibleBlocks < Minitest::Test
     refute block?('<head><title>T</title></head>', 'head')
     refute block?('<br />', 'br')
     refute block?('<span class="tutci">x</span>', 'span')
+    refute block?('<div hidden="hidden">x</div>', 'div')
+    refute block?('<p hidden="">x</p>', 'p')
+    assert block?('<h2 style="clear: both">x</h2>', 'h2')
+    assert block?('<ul style="list-style-type: disc; ">x</ul>', 'ul')
+    assert block?('<h2 style="clear: both; list-style-type: disc">x</h2>', 'h2')
+    refute block?('<div style="display:none">x</div>', 'div')
+    refute block?('<div style="display: inline">x</div>', 'div')
+    refute block?('<div style="float:left">x</div>', 'div')
+    refute block?('<div style="position:absolute">x</div>', 'div')
+    refute block?('<div style="all: initial">x</div>', 'div')
+    refute block?('<div style="white-space: pre">x</div>', 'div')
+    refute block?('<div style="white-space: nowrap">x</div>', 'div')
+    refute block?('<div style="clear: left">x</div>', 'div')
+    pre_style = element(page('<div style="white-space: pre-wrap">x</div>'), 'div')
+    refute HtmlFormat.visible_block?(pre_style)
+    assert HtmlFormat.verbatim?(pre_style)
+    nowrap = element(page('<div style="white-space: nowrap">x</div>'), 'div')
+    refute HtmlFormat.verbatim?(nowrap)
+    clear = element(page('<h2 style="clear: both">x</h2>'), 'h2')
+    refute HtmlFormat.verbatim?(clear)
+    refute block?('<div><colgroup></colgroup></div>', 'colgroup')
+    refute block?('<div><col /></div>', 'col')
+    refute block?('<div><thead></thead></div>', 'thead')
+    refute block?('<div><tbody></tbody></div>', 'tbody')
+    refute block?('<div><tfoot></tfoot></div>', 'tfoot')
+    refute block?('<div><tr></tr></div>', 'tr')
+    refute block?('<div><td></td></div>', 'td')
+    refute block?('<div><th></th></div>', 'th')
+    refute block?('<div><caption></caption></div>', 'caption')
+    refute block?('<table><td>x</td></table>', 'td')
+    assert block?('<table><caption>c</caption></table>', 'caption')
+    assert block?('<table><colgroup><col /></colgroup></table>', 'colgroup')
+    assert block?('<table><colgroup><col /></colgroup></table>', 'col')
+    assert block?('<table><col /></table>', 'col')
+    assert block?('<table><thead><tr><th>h</th></tr></thead></table>', 'thead')
+    assert block?('<table><tbody><tr><td>a</td></tr></tbody></table>', 'tbody')
+    assert block?('<table><tfoot><tr><td>a</td></tr></tfoot></table>', 'tfoot')
+    assert block?('<table><tr><td>a</td></tr></table>', 'tr')
+    assert block?('<table><thead><tr><th>h</th></tr></thead></table>', 'tr')
+    assert block?('<table><tr><td>a</td><th>b</th></tr></table>', 'td')
+    assert block?('<table><tr><td>a</td><th>b</th></tr></table>', 'th')
     foreign = parse(page('<div xmlns="">x</div>')).at_xpath('//*[local-name()="div" and namespace-uri()=""]')
     refute HtmlFormat.visible_block?(foreign)
     spaced = element(page('<div xml:space="preserve" class="chapter">x</div>'), 'div')
@@ -248,6 +454,31 @@ class VisibleBlocks < Minitest::Test
     [chapter, parent, pre, head, html, ruled_parent, noted_parent].each do |node|
       assert_flags_match(node)
     end
+  end
+
+  def test_a_marked_head_keeps_its_gaps
+    %w[class="tutci" id="x" style="display:inline" hidden="hidden"].each do |attr|
+      marked = parse(%(<html xmlns="http://www.w3.org/1999/xhtml"><head #{attr}><style>/*A*/</style><style>/*B*/</style></head><body><p>a</p></body></html>))
+      head = marked.at_xpath('//*[local-name()="head"]')
+      sigs, = HtmlFormat.split_children(head)
+      refute HtmlFormat.free_gap?(head, nil, sigs[0]), attr
+      refute HtmlFormat.free_gap?(head, sigs[0], sigs[1]), attr
+      refute HtmlFormat.free_gap?(head, sigs[1], nil), attr
+      html = marked.at_xpath('//*[local-name()="html"]')
+      refute HtmlFormat.free_gap?(html, nil, head), attr
+      assert_flags_match(head)
+      assert_flags_match(html)
+    end
+    styled = parse(page('<p>a</p>', head: '<style class="tutci">/*A*/</style><style class="tutci">/*B*/</style>'))
+    head = styled.at_xpath('//*[local-name()="head"]')
+    sigs, = HtmlFormat.split_children(head)
+    refute HtmlFormat.free_gap?(head, sigs[0], sigs[1])
+    broken = parse(page('<p>a</p>', head: '<title>T</title><br /><meta name="g" content="x" />'))
+    head = broken.at_xpath('//*[local-name()="head"]')
+    sigs, = HtmlFormat.split_children(head)
+    refute HtmlFormat.free_gap?(head, sigs[0], sigs[1])
+    refute HtmlFormat.free_gap?(head, sigs[1], sigs[2])
+    assert_flags_match(head)
   end
 
   def assert_flags_match(parent)
@@ -398,6 +629,11 @@ class GuardMutations < Minitest::Test
     pretty = format_text(page('<p id="i" class="plain">a <em>b</em></p>'))
     refute_guard(pretty, pretty.sub('>a <', '>z <'), 'text differs')
     refute_guard(pretty, pretty.sub('<em>', '<strong>').sub('</em>', '</strong>'), 'became')
+    moved_ns = page('<p>a</p>').sub('http://www.w3.org/1999/xhtml', 'urn:other')
+    refute_guard(page('<p>a</p>'), moved_ns, 'namespace http://www.w3.org/1999/xhtml became urn:other')
+    refute_guard(page('<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>'),
+                 page('<math xmlns="urn:math"><mi>x</mi></math>'),
+                 'namespace http://www.w3.org/1998/Math/MathML became urn:math')
     refute_guard(pretty, pretty.sub('id="i" class="plain"', 'class="plain" id="i"'), 'attributes')
     refute_guard(pretty, pretty.sub('class="plain"', 'class="other"'), 'attributes')
     refute_guard(page('<div xmlns:z="urn:z">t</div>'), page('<div xmlns:z="urn:other">t</div>'), 'namespace')
@@ -519,41 +755,132 @@ class CleanupIntegration < Minitest::Test
   end
 end
 
-class ReviewCorpus < Minitest::Test
-  def test_adversarial_pages_keep_rendered_text
-    roots = Dir['/build/cll/review-207-*']
-    skip 'the review corpus is not on this machine' if roots.empty?
-    failures = []
-    count = 0
-    roots.each do |root|
-      Dir.glob(File.join(root, '**/*-before.html')).each do |before_path|
-        parts = before_path.split('/')
-        next if parts.include?('pages') || parts.any? { |part| part.start_with?('mut-') }
-        count += 1
-        begin
-          check_page(before_path, failures)
-        rescue StandardError => error
-          failures << "#{before_path}: #{error}"
-        end
-      end
+class ReviewerCases < Minitest::Test
+  def assert_cleanup(source, snippet, **options)
+    once = format_text(source)
+    assert_includes once, snippet
+    assert_equal once, format_text(once)
+    ok, err, cleaned = run_cleanup(source, **options)
+    assert ok, err
+    assert_includes cleaned, snippet
+    assert_equal cleaned, format_text(cleaned)
+  end
+
+  def assert_patched(source, snippet, **options)
+    ok, err, cleaned = run_cleanup(source, **options)
+    assert ok, err
+    assert_includes cleaned, snippet
+  end
+
+  def test_hidden_and_inline_style_do_not_open_a_gap
+    hidden = '<div><span>A</span><div hidden="hidden"></div><div hidden="hidden"></div><span>B</span></div>'
+    assert_cleanup(page(hidden), hidden)
+    none = '<div><span>A</span><div style="display:none"></div><div style="display:none"></div><span>B</span></div>'
+    assert_cleanup(page(none), none)
+    inline = '<div><div style="display:inline">a</div><div style="display:inline">b</div></div>'
+    assert_cleanup(page(inline), inline)
+    floated = '<div><span>A</span><div style="float:left">F</div><div style="float:left">G</div><span>B</span></div>'
+    assert_cleanup(page(floated), floated)
+    pinned = '<div><span>A</span><div style="position:absolute">F</div><div style="position:absolute">G</div><span>B</span></div>'
+    assert_cleanup(page(pinned), pinned)
+    reset = '<div><span>A</span><div style="all: initial">F</div><div style="all: unset">G</div><span>B</span></div>'
+    assert_cleanup(page(reset), reset)
+  end
+
+  def test_preserving_white_space_freezes_the_subtree
+    direct = '<div style="white-space: pre-wrap"><p>a</p><p>b</p></div>'
+    assert_cleanup(page(direct), direct)
+    nested = '<div style="white-space: pre"><div><p>a</p><p>b</p></div></div>'
+    assert_cleanup(page(nested), nested)
+    %w[pre pre-line break-spaces].each do |value|
+      body = %(<div style="white-space: #{value}"><p>a</p><p>b</p></div>)
+      assert_cleanup(page(body), body)
     end
-    assert count > 100, "expected the review corpus, found #{count}"
-    assert_empty failures.take(30)
+    inherited = '<div class="ws"><div><p>a</p><p>b</p></div></div>'
+    assert_patched(page(inherited), inherited, freeze_classes: ['ws'])
+  end
+
+  def test_a_stylesheet_subject_is_not_a_gap_block
+    body = '<div><span>A</span><div class="probe">F</div><div class="probe">G</div><span>B</span></div>'
+    assert_patched(page(body), body, exclusion_classes: ['probe'])
+  end
+
+  def test_a_revealed_head_keeps_its_bytes
+    source = <<~XML
+      <?xml version="1.0" encoding="UTF-8"?>
+      #{DOCTYPE}
+      <html xmlns="http://www.w3.org/1999/xhtml"><head class="tutci"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>T</title><style type="text/css" class="tutci">/*A*/</style><style type="text/css" class="tutci">/*B*/</style></head><body><p>Body</p></body></html>
+    XML
+    once = format_text(source)
+    assert_includes once, '<html xmlns="http://www.w3.org/1999/xhtml"><head class="tutci">'
+    assert_includes once, '<style type="text/css" class="tutci">/*A*/</style><style type="text/css" class="tutci">/*B*/</style>'
+    assert_equal once, format_text(once)
+    ok, err, cleaned = run_cleanup(source)
+    assert ok, err
+    assert_includes cleaned, 'lang="en"><head class="tutci">'
+    assert_includes cleaned, '/*A*/</style><style type="text/css" class="tutci">/*B*/'
+  end
+
+  def test_misplaced_table_parts_stay_joined_and_a_real_table_indents
+    %w[colgroup col thead tbody tfoot tr td th caption].each do |tag|
+      empty = tag == 'col' ? '<col />' : "<#{tag}></#{tag}>"
+      body = "<div><span>A</span>#{empty}#{empty}<span>B</span></div>"
+      assert_cleanup(page(body), body)
+    end
+    table = '<div><table><caption>c</caption><colgroup><col /><col /></colgroup><thead><tr><th>h</th></tr></thead><tbody><tr><td><p>a</p><p>b</p></td><td>d</td></tr></tbody><tfoot><tr><td>f</td></tr></tfoot></table></div>'
+    pretty = format_text(page(table))
+    assert_includes pretty, "<caption>c</caption>\n        <colgroup>"
+    assert_includes pretty, "<col />\n          <col />"
+    assert_includes pretty, "<th>h</th>"
+    assert_match(%r{<p>a</p>\n +<p>b</p>}, pretty)
+    assert_equal pretty, format_text(pretty)
+    ok, err, cleaned = run_cleanup(page(table))
+    assert ok, err
+    assert_match(%r{<p>a</p>\n +<p>b</p>}, cleaned)
+  end
+end
+
+class ReviewCorpus < Minitest::Test
+  CORPUS = File.join(ROOT, 'tests/fixtures/html-format/corpus')
+  MUTATIONS = File.join(ROOT, 'tests/fixtures/html-format/mutations')
+
+  def test_corpus_pages_keep_collapsed_whitespace
+    paths = Dir[File.join(CORPUS, '*.html')].sort
+    assert paths.length > 100, "expected the copied review corpus, found #{paths.length}"
+    failures = []
+    paths.each do |path|
+      check_page(path, failures)
+    rescue StandardError => error
+      failures << "#{path}: #{error}"
+    end
+    assert_empty failures.take(20)
+  end
+
+  def test_a_whitespace_mutation_is_not_accepted
+    before_path = File.join(MUTATIONS, 'span-space-before.html')
+    after_path = File.join(MUTATIONS, 'span-space-after.html')
+    before_text = File.read(before_path)
+    after_text = File.read(after_path)
+    refute_equal collapsed_whitespace(before_text), collapsed_whitespace(after_text)
+    error = assert_raises(HtmlWhitespaceGuard::Unsafe) do
+      HtmlWhitespaceGuard.compare!(before_text, after_text, name: before_path)
+    end
+    assert_includes error.message, 'whitespace'
   end
 
   def check_page(path, failures)
     text = File.read(path)
     if entity_problem?(text, path)
-      check_after(path, text, failures)
       return
     end
     once = format_text(text)
     twice = format_text(once)
-    failures << "#{path}: a second format changed the bytes" unless once == twice
-    failures << "#{path}: rendered text changed" unless rendered_chars(text) == rendered_chars(once)
-    check_after(path, text, failures)
+    failures << "#{File.basename(path)}: a second format changed the bytes" unless once == twice
+    unless collapsed_whitespace(text) == collapsed_whitespace(once)
+      failures << "#{File.basename(path)}: collapsed whitespace changed"
+    end
   rescue HtmlWhitespaceGuard::Unsafe, Nokogiri::XML::SyntaxError => error
-    failures << "#{path}: #{error}"
+    failures << "#{File.basename(path)}: #{error}"
   end
 
   def entity_problem?(text, path)
@@ -561,17 +888,5 @@ class ReviewCorpus < Minitest::Test
     false
   rescue HtmlWhitespaceGuard::Unsafe
     true
-  end
-
-  def check_after(path, before_text, failures)
-    after_path = path.sub(/-before\.html\z/, '-after.html')
-    return unless File.file?(after_path)
-    after_text = File.read(after_path)
-    changed = rendered_chars(before_text) != rendered_chars(after_text)
-    return unless changed
-    HtmlWhitespaceGuard.compare!(before_text, after_text, name: path)
-    failures << "#{after_path}: the guard accepted a rendered-text change"
-  rescue HtmlWhitespaceGuard::Unsafe, Nokogiri::XML::SyntaxError
-    nil
   end
 end

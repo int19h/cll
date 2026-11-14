@@ -194,6 +194,9 @@ module HtmlWhitespaceGuard
   def compare_element(node_a, node_b, name, strict)
     href_a = HtmlFormat.namespace_href(node_a)
     href_b = HtmlFormat.namespace_href(node_b)
+    if node_a.name == node_b.name && href_a != href_b
+      raise Unsafe, "#{name}: element #{node_a.name} namespace #{namespace_text(href_a)} became #{namespace_text(href_b)}"
+    end
     if href_a != href_b || node_a.name != node_b.name
       raise Unsafe, "#{name}: element #{label(node_a)} became #{label(node_b)}"
     end
@@ -257,6 +260,11 @@ module HtmlWhitespaceGuard
   def label(node)
     return 'the document' if node.nil? || !node.element?
     node.name
+  end
+
+  def namespace_text(href)
+    return 'no namespace' if href.nil? || href.empty?
+    href
   end
 
   def beside(left, right)

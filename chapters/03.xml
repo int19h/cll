@@ -663,7 +663,7 @@
       </indexterm><indexterm type="general"><primary>syllable break</primary><secondary>representation in Lojban</secondary>
       </indexterm><indexterm type="general"><primary>comma</primary><secondary>definition of</secondary>
       </indexterm>The comma, by contrast, is only a reading aid. It marks a syllable break within a word, usually one that is not obvious to the reader. Unlike the period, a comma must never be pronounced as a pause or a glottal stop, because that would split the word into two words. Between two vowels, a comma shows that the vowels belong to separate syllables, which are pronounced in one smooth flow. Any slight transition between them is a fact of pronunciation, not an extra phoneme. The comma has no sound of its own, and so no two Lojban words can differ only by the presence or placement of a comma.</para>
-    <para role="status-note" condition="status:editorial;also:de-facto,unsettled">
+    <para role="status-note" condition="status:de-facto;also:historical">
       <indexterm type="general"><primary>comma</primary><secondary>change from first edition</secondary>
       </indexterm>
       If you want the

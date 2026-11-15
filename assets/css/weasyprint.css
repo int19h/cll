@@ -14,10 +14,15 @@ h3.bridgehead { font-size: 12pt; margin: 16pt 0; font-weight: bold; }
 /* The author is an h2. WeasyPrint's h3 rule gives the old author a 14pt
    bottom margin. The shared stylesheet uses 1em, which matches Prince. */
 .book > .titlepage h2.author { margin-bottom: 14pt; }
-/* The author is an h2. The other title-page credits stay h3.
-   One bookmark level keeps the three credits siblings under the book title. */
+/* The title-page credits are h2. The h3 rule above is the old credit size. */
+.book > .titlepage h2.othercredit {
+  font-size: 14pt;
+  margin: 14pt 0;
+  font-weight: bold;
+}
+/* One bookmark level keeps the three credits siblings under the book title. */
 .book > .titlepage h2.author,
-.book > .titlepage h3.othercredit { bookmark-level: 2; }
+.book > .titlepage h2.othercredit { bookmark-level: 2; }
 .indexdiv > h2 { bookmark-level: none; }
 h5 { font-size: 10pt; margin: 16.5pt 0; }
 h6 { font-size: 8pt; margin: 21pt 0; }

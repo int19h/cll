@@ -67,8 +67,8 @@ def write_fixture(directory, stylesheets):
   <div class="titlepage">
     <h1 class="title">{TITLE}</h1>
     <div class="author"><h2 class="author">{AUTHOR}</h2></div>
-    <div class="othercredit"><h3 class="othercredit">{REVISED}</h3></div>
-    <div class="othercredit"><h3 class="othercredit">{PUBLISHER}</h3></div>
+    <div class="othercredit"><h2 class="othercredit">{REVISED}</h2></div>
+    <div class="othercredit"><h2 class="othercredit">{PUBLISHER}</h2></div>
   </div>
 </div>
 <h1>{CHAPTER}</h1>

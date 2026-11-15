@@ -4,9 +4,10 @@
                 version="1.0">
 
   <!-- Outline levels for the HTML heading elements.
-       The title-page author is an h2. Index letter groups are h2.
+       The title-page author and the other title-page credits are h2.
+       Index letter groups are h2.
        A bridgehead is one level below its enclosing section's heading.
-       CSS keeps the previous sizes. Editor and othercredit stay h3. -->
+       CSS keeps the previous sizes. Editor stays h3. -->
 
   <xsl:template match="author[not(ancestor::revision)]" mode="titlepage.mode">
     <xsl:call-template name="credits.div">
@@ -14,8 +15,17 @@
     </xsl:call-template>
   </xsl:template>
 
+  <!-- The stock parameter othercredit.like.author.enabled is 0, so this
+       is the credits.div path. The two title-page credits are h2, like
+       the author. A revision credit keeps the h3 default. -->
+  <xsl:template match="othercredit[not(ancestor::revision)]" mode="titlepage.mode">
+    <xsl:call-template name="credits.div">
+      <xsl:with-param name="heading" select="'h2'"/>
+    </xsl:call-template>
+  </xsl:template>
+
   <!-- Copied from xhtml/titlepage.xsl. The heading parameter defaults to
-       h3, which is what editor and othercredit use. -->
+       h3, which is what editor uses. -->
   <xsl:template name="credits.div">
     <xsl:param name="heading" select="'h3'"/>
     <div>

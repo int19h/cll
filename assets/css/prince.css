@@ -19,10 +19,16 @@
    the author font is 16pt, so that 1em is 16pt and the line below moves. */
 .book > .titlepage h2.author { margin-bottom: 14pt; }
 
-/* The author is an h2. The other title-page credits stay h3.
+/* The title-page credits are h2. Prince's h3 is 14pt with 14pt margins.
+   The shared rule uses the browser h3 size, so put the Prince size back.
    One bookmark level keeps the three credits siblings under the book title. */
+.book > .titlepage h2.othercredit {
+  font-size: 14pt;
+  margin: 14pt 0;
+  font-weight: bold;
+}
 .book > .titlepage h2.author,
-.book > .titlepage h3.othercredit { prince-bookmark-level: 2; }
+.book > .titlepage h2.othercredit { prince-bookmark-level: 2; }
 
 /* Prince's own h4 is 12pt with 16pt margins. The credits bridgehead
    used to be that h4. The shared rule is 1em, which is 9pt here. */

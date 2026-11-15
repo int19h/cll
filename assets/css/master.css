@@ -242,7 +242,7 @@ print display
 
   /* Yes, absolute padding.  If you can think of something better to
    * put this stuff at the bottom of the page... */
-  h3.othercredit {
+  h2.othercredit {
     padding-top: 140pt;
   }
 
@@ -251,7 +251,7 @@ print display
    * after it goes to the bottom of the page. The two othercredits are
    * always followed by the release info, so the reviser credit is the
    * third wrapper from the end, with or without a subtitle. */
-  .book > .titlepage > div > div:nth-last-child(3) h3.othercredit {
+  .book > .titlepage > div > div:nth-last-child(3) h2.othercredit {
     padding-top: 0;
     margin-top: 1em;
     text-align: center;
@@ -903,6 +903,14 @@ hr {
   margin-right: 0;
 }
 
+/* The title-page credits are h2. This is a browser h3 outside the screen. */
+.book > .titlepage h2.othercredit {
+  string-set: none;
+  font-weight: bold;
+  font-size: 1.17em;
+  margin: 1em 0;
+}
+
 /* Index letter groups are h2. This matches a browser h3 outside the
    screen. The screen rule below matches the old screen h3. */
 .indexdiv > h2 {
@@ -1015,6 +1023,11 @@ screen display
     margin-bottom: 0.5em;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .book > .titlepage h2.othercredit {
+    font-size: 110%;
+    margin: 1em auto 0.5em auto;
   }
 
   .indexdiv > h2 {

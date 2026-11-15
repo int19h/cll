@@ -662,14 +662,16 @@
       </indexterm><indexterm type="general"><primary>syllable break</primary><secondary>contrasted with pause</secondary>
       </indexterm><indexterm type="general"><primary>syllable break</primary><secondary>representation in Lojban</secondary>
       </indexterm><indexterm type="general"><primary>comma</primary><secondary>definition of</secondary>
-      </indexterm>The comma, by contrast, is only a reading aid. It marks a syllable break within a word, usually one that is not obvious to the reader. Unlike the period, a comma must never be pronounced as a pause or a glottal stop, because that would split the word into two words. Between two vowels, a comma shows that the vowels belong to separate syllables, which are pronounced in one smooth flow. Any slight transition between them is a fact of pronunciation, not an extra phoneme. The comma has no sound of its own, and so no two Lojban words can differ only by the presence or placement of a comma.</para>
+      </indexterm>The comma, by contrast, is only a reading aid, and it has no sound of its own. It marks a syllable break within a word, usually one that is not obvious to the reader. Unlike the period, a comma must never be pronounced as a pause or a glottal stop, because that would split the word into two words. Nor does a comma change which vowel pairs a word may contain, or how a pair is pronounced: a pair that is not allowed without the comma is not allowed with it, and a pair that is allowed sounds the same either way. In content words and structural words (the brivla and cmavo described later in this chapter), the rules of word form allow only one division into syllables, so a comma there can only mark a break that already exists. Writing <valsi>klama</valsi> as <quote>kla,ma</quote> shows the reader where its two syllables meet, but the word is the same without the comma, and in such words the comma is always redundant. Lojbanized names (cmevla) are freer, since a name need not divide into syllables at all: <cmevla>.t.</cmevla> is a perfectly good name. In a name, a comma can show the reader where the intended syllable breaks fall, but it still cannot make an invalid sequence of letters valid. Because the comma adds no sound, no two Lojban words can differ only by the presence or placement of a comma.</para>
     <para role="status-note" condition="status:de-facto;also:historical">
       <indexterm type="general"><primary>comma</primary><secondary>change from first edition</secondary>
       </indexterm>
-      If you want the
+      This treatment of the comma is established usage. The PEG word-form grammar, the working definition of Lojban word forms (see
+      <xref linkend="section-peg-grammar" />), ignores commas, and so do Lojban parsers such as camxes and jbotci. The first edition gave the comma more work, including a sound like that of the apostrophe,
+      <phrase role="IPA">[h]</phrase>; its conventions are described in
+      <xref linkend="appendix-changes" />. If you want the
       <phrase role="IPA">[h]</phrase>
-      sound, write the apostrophe. Older conventions were different (see
-      <xref linkend="appendix-changes" />).
+      sound, write the apostrophe.
     </para>
 
     <para>

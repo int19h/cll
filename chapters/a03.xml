@@ -153,7 +153,7 @@
         </para>
       </listitem>
       <listitem>
-        <para><indexterm type="general"><primary>comma</primary><secondary>change summary</secondary></indexterm>This change is <emphasis>this edition's choice</emphasis>, and it follows the working grammar. The comma is only an aid to pronunciation, and it cannot make an otherwise invalid letter sequence valid. This reverses several lessons of the first edition that depended on it.</para>
+        <para><indexterm type="general"><primary>comma</primary><secondary>change summary</secondary></indexterm>This change is <emphasis>established usage</emphasis>: it follows the working grammar of word forms, and camxes and jbotci implement it. The comma is only an aid to pronunciation. It cannot make an otherwise invalid letter sequence valid, and it does not change how a word is pronounced. In brivla and cmavo it can only mark a syllable break that the rules of word form already fix, while in a name it can show the intended syllable breaks. This reverses several lessons of the first edition that depended on the comma.</para>
         <para>The first edition allowed a comma to sound like an apostrophe, <phrase role="IPA">[h]</phrase>. But it also said that commas never distinguish words, and no official decision ever settled that conflict. The working grammar of word forms resolves it: it ignores commas entirely.</para>
         <para>
           The first edition also allowed three other uses of the comma. It let a comma force a division between syllables, or another grouping of syllables. It let names contain commas with a sound, as in

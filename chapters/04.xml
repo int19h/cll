@@ -3189,7 +3189,8 @@
           </indexterm><indexterm type="general"><primary>names</primary><secondary>iy and uy syllables in</secondary>
           </indexterm><indexterm type="general"><primary>uy syllable</primary><secondary>in cmevla</secondary>
           </indexterm><indexterm type="general"><primary>iy syllable</primary><secondary>in cmevla</secondary>
-          </indexterm>They may contain the letter y as a normal, non-hyphenating vowel. In particular, they can contain the syllables <morphology>iy</morphology> and <morphology>uy</morphology>, in which a glide comes before <letteral>y</letteral>. No standard word of any other kind contains these syllables. As pure word forms, however, the PEG word-form grammar also counts them among the unassigned experimental cmavo forms.</para>
+          </indexterm>They may contain the letter y as a normal, non-hyphenating vowel. In particular, they can contain the syllables <morphology>iy</morphology> and <morphology>uy</morphology>, in which a glide comes before <letteral>y</letteral>. No standard word of any other kind contains these syllables.</para>
+        <para role="status-note" condition="status:de-facto;also:historical">As pure word forms, however, the PEG word-form grammar also counts them among the unassigned experimental cmavo forms. This is established usage: the grammar comes from a working document of the definition effort, and current parsers implement it. The first edition said that cmevla are the only words that may contain these syllables (see <xref linkend="appendix-changes" />).</para>
       </listitem>
       <listitem>
         <para><indexterm type="general"><primary>consonant-glide-vowel ban</primary><secondary>in cmevla</secondary>

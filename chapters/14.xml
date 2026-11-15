@@ -2912,8 +2912,12 @@
       </indexterm>
       The group account of
       <valsi>joi</valsi>
-      is part of the ratified reform of the articles. Older texts follow a different doctrine (see
-      <xref linkend="appendix-changes" />).
+      is established usage. It is not part of the ratified reform of the articles: that text defines groups for
+      <valsi>loi</valsi>,
+      <valsi>lei</valsi>, and
+      <valsi>lai</valsi>, but it never mentions
+      <valsi>joi</valsi>. The account comes from the BPFK's draft section on non-logical connectives, a working document that no official body adopted, and it agrees with the ratified account of groups. Older texts follow the first edition's doctrine of masses (see
+      <xref linkend="section-changes-gadri" />).
     </para>
     <para>
       <indexterm type="lojban-word"><primary>JA selma'o</primary><secondary>opposed to JOI</secondary>

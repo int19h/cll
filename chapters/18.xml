@@ -3351,7 +3351,7 @@
       , even though semantically none is needed or wanted.
     </para>
     <para role="status-note" condition="status:editorial;also:proposed"><indexterm type="lojban-word"><primary>tu'o</primary><secondary>contrasted with mo'e zo'e</secondary>
-      </indexterm>Sometimes, though, an operand is not a mere grammatical filler but a genuinely <emphasis>unspecified</emphasis> quantity: <quote>some number or other</quote>. Such an operand can be expressed with <jbophrase>mo'e zo'e</jbophrase>, the elliptical sumti converted to an operand (see <xref linkend="section-lojban-within-mekso" />). <valsi>tu'o</valsi>, by contrast, fills a truly vacuous slot, as here.</para>
+      </indexterm>Sometimes, though, an operand is not a mere grammatical filler but a genuinely <emphasis>unspecified</emphasis> quantity: <quote>some number or other</quote>. Such an operand can be expressed with <jbophrase>mo'e zo'e</jbophrase>, the elliptical sumti converted to an operand (see <xref linkend="section-lojban-within-mekso" />). <valsi>tu'o</valsi>, by contrast, fills a truly vacuous slot, as here. This contrast is this edition's choice. The official cmavo list gives <valsi>tu'o</valsi> both senses: a null operand, and a non-specific number. This edition follows a proposal by And Rosta, which no official body adopted, and narrows <valsi>tu'o</valsi> to the null operand (see <xref linkend="appendix-changes" />).</para>
     <para>
       <indexterm type="general"><primary>exponential notation</primary><secondary>with &quot;gei&quot;</secondary>
       </indexterm>

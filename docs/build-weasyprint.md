@@ -80,7 +80,8 @@ PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-we
 ## Rendering
 
 MathJax converts MathML to static CommonHTML before WeasyPrint renders the document.
-The build copies the mathematical fonts beside the generated HTML.
+The build copies the mathematical fonts beside the processed HTML in `build/weasyprint`.
+The renderer resolves relative references against that folder.
 The renderer fetches only local files and embedded data.
 The current mathematical font is New Computer Modern at the book's text size.
 Mathematical layout remains distinct from semantic accessibility.
@@ -94,7 +95,8 @@ The renderer repeats pagination until the index references stop changing.
 Missing index targets, missing assets, invalid mathematics, and nonconvergent pagination fail the build.
 The PDF replaces the previous output only after successful rendering.
 
-`build/weasyprint/cll-weasyprint.html` preserves the final rendering input.
+`build/weasyprint-work/cll-weasyprint.html` preserves the final rendering input.
+It sits outside `build/weasyprint` because the build's XML cleanup parses that folder, and this working copy is HTML, not XML.
 `build/weasyprint/render-report.json` records page counts, pagination passes, mathematical expressions, and index targets.
 `assets/css/weasyprint.css` contains the backend's layout overrides.
 The main stylesheet still supplies fonts, page dimensions, and most formatting.

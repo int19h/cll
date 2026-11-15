@@ -3,6 +3,7 @@
 import importlib.util
 import os
 from pathlib import Path
+import shutil
 import tempfile
 import unittest
 
@@ -43,9 +44,15 @@ class RenderingTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory(dir=base)
         self.directory = Path(self.temp.name)
         (self.directory / 'weasyprint.css').write_text('')
+        # The renderer writes its HTML working copy beside the input
+        # folder, not in it: the Makefile cleanup parses the input
+        # folder as XML, and the working copy is not XML.
+        self.work_directory = Path(str(self.directory) + '-work')
+        self.prepared = self.work_directory / 'cll-weasyprint.html'
 
     def tearDown(self):
         self.temp.cleanup()
+        shutil.rmtree(self.work_directory, ignore_errors=True)
 
     def test_math_and_converged_index(self):
         source = self.directory / 'input.html'
@@ -66,13 +73,14 @@ class RenderingTests(unittest.TestCase):
         self.assertEqual(report['passes'], 2)
         self.assertEqual(report['index_targets'], {'a': 1, 'b': 2, 'c': 3})
         self.assertEqual(report['mathjax']['expressions'], 1)
-        prepared = html.parse(str(self.directory / 'cll-weasyprint.html'))
+        self.assertFalse((self.directory / 'cll-weasyprint.html').exists())
+        prepared = html.parse(str(self.prepared))
         self.assertEqual(prepared.xpath('//span[@class="index-pages"]')[0].text_content(), '1–3')
         self.assertEqual(len(prepared.xpath('//mjx-mfrac')), 1)
         self.assertFalse(prepared.xpath('//math | //script'))
         self.assertTrue(list((self.directory / 'mathjax-fonts').glob('*.woff2')))
         # Exercise the consumer's encoding detection, not just lxml's decoding.
-        parsed = backend.HTML(filename=str(self.directory / 'cll-weasyprint.html'))
+        parsed = backend.HTML(filename=str(self.prepared))
         self.assertIn('“huáiyùn” 中文', ''.join(parsed.etree_element.itertext()))
 
     def test_missing_image_does_not_publish_pdf(self):
@@ -96,7 +104,7 @@ class RenderingTests(unittest.TestCase):
         report = backend.render(source, self.directory / 'result.pdf')
         self.assertEqual(report['relocated_hidden_index_anchors'], 1)
         self.assertEqual(report['index_targets']['word-marker'], 1)
-        prepared = html.parse(str(self.directory / 'cll-weasyprint.html'))
+        prepared = html.parse(str(self.prepared))
         self.assertEqual(len(prepared.xpath('//*[@id="word-marker"]')), 1)
         self.assertEqual(prepared.xpath('//div[@class="index-markers"]')[0].text_content(), '')
         self.assertIn('invisible-seed', prepared.xpath('//p[@class="display-none"]')[0].text_content())

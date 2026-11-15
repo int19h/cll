@@ -215,6 +215,9 @@ html_check:
         stamp.write_text('abc\n')
         other = self.build / 'cll.epub'
         other.write_text('epub')
+        work = self.build / 'weasyprint-work/cll-weasyprint.html'
+        work.parent.mkdir(parents=True)
+        work.write_text('working copy')
         outside_temporary = tempfile.TemporaryDirectory(prefix='cll-make-outside-')
         self.addCleanup(outside_temporary.cleanup)
         outside = Path(outside_temporary.name)
@@ -231,6 +234,7 @@ html_check:
         self.assertEqual(jar.read_text(), 'jar')
         self.assertEqual(stamp.read_text(), 'abc\n')
         self.assertFalse(other.exists())
+        self.assertFalse(work.exists())
         self.assertFalse(gone.exists())
         self.assertEqual(survivor.read_text(), 'keep')
 
@@ -259,6 +263,50 @@ html_check:
                         self.assertIn('CLL_HTML_FORMAT=none', stale)
                     else:
                         self.assertNotIn('CLL_HTML_FORMAT=none', stale)
+
+    @unittest.skipUnless(
+        shutil.which('ruby') and subprocess.run(
+            ['ruby', '-rnokogiri', '-e', ''], stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL).returncode == 0,
+        'the real cleanup recipe needs ruby with nokogiri')
+    def test_weasyprint_recipe_runs_twice_in_one_folder(self):
+        # Run the processed-XHTML recipe twice in one build folder. Only
+        # xmlto is stubbed; the cleanup and postprocess are the real ones.
+        # Between the runs, leave the file the renderer used to write into
+        # build/weasyprint/: HTML serialization, not XML. The cleanup parses
+        # every XHTML-namespace file in that folder as XML, so on the old
+        # layout the second run died on the leftover.
+        stub = self.root / 'bin'
+        stub.mkdir()
+        xmlto = stub / 'xmlto'
+        page = self.fixture_page('weasyprint')
+        xmlto.write_text(f'''#!/usr/bin/env python3
+import sys
+from pathlib import Path
+args = sys.argv[1:]
+out = Path(args[args.index('-o') + 1])
+out.mkdir(parents=True, exist_ok=True)
+source = Path(args[-1])
+(out / (source.stem + '.html')).write_text({page!r})
+print('xmlto fixture')
+''')
+        xmlto.chmod(0o755)
+        env = os.environ.copy()
+        env['PATH'] = f'{stub}:{env["PATH"]}'
+        env['PWD'] = str(SOURCE)
+        self.touch_output(self.build / 'cll_processed_xhtml.xml')
+        target = self.build / 'weasyprint/cll_processed_xhtml_pdf.html'
+        self.make(target, env=env)
+        self.assertIn('weasyprint fixture', target.read_text())
+        leftover = self.build / 'weasyprint/cll-weasyprint.html'
+        leftover.write_text(
+            '<!doctype html>\n'
+            '<html xmlns="http://www.w3.org/1999/xhtml"><head>'
+            '<meta charset="utf-8"></head><body><p>one<br>two</p>'
+            '</body></html>')
+        self.make('-Wassets/css/master.css', target, env=env)
+        self.assertIn('weasyprint fixture', target.read_text())
+        self.assertFalse(leftover.exists())
 
     def test_offline_no_skips_the_generator(self):
         done = self.build / 'xhtml_no_chunks.done'

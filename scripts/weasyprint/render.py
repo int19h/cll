@@ -149,7 +149,19 @@ class RenderErrors(logging.Handler):
         self.messages.append(record.getMessage())
 
 
+def prepared_path(directory):
+    """Working copy beside the input folder, never inside it.
+
+    The Makefile recipe runs an XML cleanup over the input folder. This
+    file is HTML serialization, not XML, so a copy inside that folder
+    makes the next build fail in the cleanup. A sibling folder keeps
+    the cleanup's input exactly what xmlto wrote.
+    """
+    return directory.with_name(directory.name + '-work') / 'cll-weasyprint.html'
+
+
 def render(input_path, output_path, max_passes=6):
+    input_path = Path(input_path).resolve()
     tree = html.parse(str(input_path), parser=html.HTMLParser(encoding='utf-8')).getroot()
     directory = input_path.parent
     # The input is already processed XHTML. Do not fetch its old external DTD.
@@ -159,7 +171,8 @@ def render(input_path, output_path, max_passes=6):
     math = typeset_math(tree, directory)
     tree.find('head').append(etree.Element('link', rel='stylesheet', href='weasyprint.css'))
     indexes = collect_indexes(tree)
-    prepared = directory / 'cll-weasyprint.html'
+    prepared = prepared_path(directory)
+    prepared.parent.mkdir(parents=True, exist_ok=True)
     font_config = FontConfiguration()
     errors = RenderErrors()
     logger = logging.getLogger('weasyprint')
@@ -171,7 +184,10 @@ def render(input_path, output_path, max_passes=6):
             prepared.write_bytes(html.tostring(tree, encoding='utf-8', doctype='<!doctype html>'))
             print(f'WeasyPrint pagination pass {pass_number}', flush=True)
             fetcher = URLFetcher(allowed_protocols=('file', 'data'), fail_on_errors=True)
-            document = HTML(filename=str(prepared), encoding='utf-8', url_fetcher=fetcher).render(font_config=font_config)
+            # Relative references name files beside the input, not beside
+            # the working copy, so keep the input folder as the base.
+            document = HTML(filename=str(prepared), base_url=directory.as_uri() + '/',
+                            encoding='utf-8', url_fetcher=fetcher).render(font_config=font_config)
             if errors.messages:
                 raise RuntimeError('WeasyPrint reported errors:\n' + '\n'.join(errors.messages))
             pages = {anchor: number for number, page in reversed(list(enumerate(document.pages, 1)))

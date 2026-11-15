@@ -16,7 +16,8 @@ class EpubAssets(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='cll-epub-') as temporary:
             root = Path(temporary)
             for relative in (
-                '.env', 'scripts/build_epub.sh', 'scripts/epub_branding.rb',
+                '.env', 'scripts/build_epub.sh', 'scripts/safe-rm-tree.sh',
+                'scripts/epub_branding.rb',
                 'scripts/epub_pages.rb', 'scripts/util.rb',
                 'epub/mimetype', 'epub/META-INF/container.xml',
                 'epub/content.opf.s1', 'epub/content.opf.s2',

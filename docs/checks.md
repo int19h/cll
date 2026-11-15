@@ -32,6 +32,7 @@ xmllint --loaddtd --noent --noout book-assembled.xml; rm book-assembled.xml
 python3 scripts/test-build-actions.py
 ruby scripts/test-build-workflow.rb
 python3 scripts/test-makefile.py
+python3 scripts/test-safe-rm-tree.py
 python3 scripts/test-chapter-pictures.py
 python3 scripts/test-lint-undotted-cmevla.py
 python3 scripts/lint-undotted-cmevla.py chapters/*.xml
@@ -81,6 +82,8 @@ node tests/test-prince-index.js
 | --- | --- | --- |
 | Build workflow | The format selection, preview guard, and helper scripts of the "Build selected formats" workflow, and its action pins, permissions, and timeouts | `python3 scripts/test-build-actions.py` and `ruby scripts/test-build-workflow.rb` |
 | Build helpers | The XHTML post-processors stop after a tool fails. They keep the original page. `cll_build` reports a failed comparison and exits with that status. `cll_build -j` refreshes `dictionary/all_words.xml`. `Gemfile.lock` matches the Docker gem pins. | `python3 scripts/test-build-helpers.py` |
+| Makefile | The archive recipes and incremental inputs, and the parse-time guard that stops `make` when `builddir` is empty, `/`, or outside the checkout build folder | `python3 scripts/test-makefile.py` |
+| Recursive deletes | `scripts/safe-rm-tree.sh` refuses an empty or glob path, `/`, the home folder, a repository root, and any path outside its `--root`; a symbolic link path is unlinked and its target kept | `python3 scripts/test-safe-rm-tree.py` |
 | Chapter artwork | Each of chapters 1 to 21 references its own chapter picture, a large RGBA PNG in `assets/media/`, no unreferenced chapter picture is shipped, and the chapter 2 diagram keeps its size and padding | `python3 scripts/test-chapter-pictures.py` |
 | Well-formed book | The book header and all chapters together are well-formed XML, with no undefined entity and no duplicate ID | See [Quick run](#quick-run) |
 

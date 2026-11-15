@@ -170,7 +170,7 @@ if [ -f xml/docbook-xsl-1.78.1.zip \
 then
   echo "xsl already downloaded; if you think this is in error, delete xml/docbook-xsl-1.78.1.zip"
 else
-  rm -rf xml/docbook-xsl-1.78.1*
+  scripts/safe-rm-tree.sh --root xml xml/docbook-xsl-1.78.1.zip xml/docbook-xsl-1.78.1
   # it would be best not to go to a specific mirror like this, but
   # it's not obivous how to fix that
   wget https://astuteinternet.dl.sourceforge.net/project/docbook/docbook-xsl/1.78.1/docbook-xsl-1.78.1.zip -O xml/docbook-xsl-1.78.1.zip
@@ -180,7 +180,7 @@ if [ -d xml/docbook-xsl-1.78.1 -a "$(find xml/docbook-xsl-1.78.1 | sort | wc -l 
 then
   echo "xsl already unpacked; if you think this is in error, delete xml/docbook-xsl-1.78.1/ and/or xml/docbook-xsl-1.78.1.zip"
 else
-  rm -rf xml/docbook-xsl-1.78.1/
+  scripts/safe-rm-tree.sh --root xml xml/docbook-xsl-1.78.1
   bash -c "cd xml/ ; unzip docbook-xsl-1.78.1.zip"
 fi
 
@@ -201,6 +201,13 @@ echo "target: $target"
 
 # See if we need to delete the cll.xml before we run make
 mkdir -p $builddir
+# An archive folder named with -a or -A is outside the build folder on
+# purpose; say so to the Makefile's parse-time guard (issue #271).
+allow_outside=""
+if [ -n "${archivedir:-}" -o -n "${covarchivedir:-}" ]
+then
+  allow_outside="ALLOW_OUTSIDE_BUILDDIR=yes"
+fi
 # The ePub recipe installs EPUBCheck during make when no jar is already
 # selected. Install it first so the pre-build record names that checker.
 # A second record after make would describe a tree the build had changed,
@@ -213,7 +220,7 @@ if [ -z "${EPUBCHECK_JAR:-}" ] \
   && [ ! -f "${EPUBCHECK_SYSTEM_JAR:-/usr/local/share/epubcheck/epubcheck.jar}" ]; then
   if epub_plan=$(make -n -f scripts/Makefile \
       builddir="$builddir" test="$optlist" chapters="$chapters" \
-      covcopydir="$covarchivedir" copydir="$archivedir" $target 2>/dev/null)
+      $allow_outside covcopydir="$covarchivedir" copydir="$archivedir" $target 2>/dev/null)
   then
     case "$epub_plan" in
       *scripts/run-epubcheck.sh*)
@@ -244,7 +251,7 @@ then
   scripts/update_jbovlaste_xml.sh "$builddir" --refresh || exit
 fi
 
-make -f scripts/Makefile builddir="$builddir" test="$optlist" chapters="$chapters" covcopydir="$covarchivedir" copydir="$archivedir" $target
+make -f scripts/Makefile builddir="$builddir" test="$optlist" chapters="$chapters" $allow_outside covcopydir="$covarchivedir" copydir="$archivedir" $target
 make_rc=$?
 
 if [ $make_rc -ne 0 ]

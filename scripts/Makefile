@@ -1,6 +1,66 @@
 chapters = $(if $(chapters), $(chapters), chapters/01.xml chapters/02.xml chapters/03.xml chapters/04.xml chapters/05.xml chapters/06.xml chapters/07.xml chapters/08.xml chapters/09.xml chapters/10.xml chapters/11.xml chapters/12.xml chapters/13.xml chapters/14.xml chapters/15.xml chapters/16.xml chapters/17.xml chapters/18.xml chapters/19.xml chapters/20.xml chapters/21.xml chapters/a01.xml)
-builddir = $(if $(builddir), $(builddir), $(PWD)/build)
+ifeq ($(origin builddir),undefined)
+builddir := $(PWD)/build
+endif
 xsl_base = xml/docbook-xsl-1.78.1
+epubnavdir = $(abspath $(builddir))/epub-nav
+
+# Folder variables reach recursive deletes, so check them at parse time,
+# before any recipe runs (issue #271). builddir must be the checkout's
+# build folder (or coverage/build), and epubnavdir must be inside it.
+# copydir and covcopydir are archive folders and are usually outside the
+# build folder: name one only together with ALLOW_OUTSIDE_BUILDDIR=yes,
+# which also allows a builddir outside the checkout (cll_build sets it
+# when -a or -A names an archive folder). Even then, /, the home folder
+# and the checkout itself are refused. An empty copydir or covcopydir
+# means "no archive folder", as before.
+SAFE_RM_TREE = scripts/safe-rm-tree.sh
+_checkout_build := $(abspath $(PWD)/build)
+_checkout_covbuild := $(abspath $(PWD)/coverage/build)
+_inside_build = $(filter $(_checkout_build) $(_checkout_build)/% $(_checkout_covbuild) $(_checkout_covbuild)/%,$(1))
+ifeq ($(strip $(builddir)),)
+$(error builddir is empty; give builddir=<the checkout build folder> or leave it unset)
+endif
+_builddir_abs := $(abspath $(builddir))
+ifeq ($(filter / $(PWD) $(HOME),$(_builddir_abs)),$(_builddir_abs))
+$(error builddir must not be /, the home folder, or the checkout itself: $(builddir))
+endif
+ifeq ($(call _inside_build,$(_builddir_abs)),)
+ifneq ($(ALLOW_OUTSIDE_BUILDDIR),yes)
+$(error builddir is outside the checkout build folder: $(builddir); set ALLOW_OUTSIDE_BUILDDIR=yes to allow it)
+endif
+endif
+_epubnavdir_abs := $(abspath $(epubnavdir))
+ifeq ($(filter / $(PWD) $(HOME),$(_epubnavdir_abs)),$(_epubnavdir_abs))
+$(error epubnavdir must not be /, the home folder, or the checkout itself: $(epubnavdir))
+endif
+ifeq ($(filter $(_builddir_abs)/%,$(_epubnavdir_abs)),)
+ifneq ($(ALLOW_OUTSIDE_BUILDDIR),yes)
+$(error epubnavdir is outside builddir: $(epubnavdir); set ALLOW_OUTSIDE_BUILDDIR=yes to allow it)
+endif
+endif
+ifneq ($(strip $(copydir)),)
+_copydir_abs := $(abspath $(copydir))
+ifeq ($(filter / $(PWD) $(HOME),$(_copydir_abs)),$(_copydir_abs))
+$(error copydir must not be /, the home folder, or the checkout itself: $(copydir))
+endif
+ifeq ($(call _inside_build,$(_copydir_abs)),)
+ifneq ($(ALLOW_OUTSIDE_BUILDDIR),yes)
+$(error copydir is outside the checkout build folder: $(copydir); set ALLOW_OUTSIDE_BUILDDIR=yes to allow it)
+endif
+endif
+endif
+ifneq ($(strip $(covcopydir)),)
+_covcopydir_abs := $(abspath $(covcopydir))
+ifeq ($(filter / $(PWD) $(HOME),$(_covcopydir_abs)),$(_covcopydir_abs))
+$(error covcopydir must not be /, the home folder, or the checkout itself: $(covcopydir))
+endif
+ifeq ($(call _inside_build,$(_covcopydir_abs)),)
+ifneq ($(ALLOW_OUTSIDE_BUILDDIR),yes)
+$(error covcopydir is outside the checkout build folder: $(covcopydir); set ALLOW_OUTSIDE_BUILDDIR=yes to allow it)
+endif
+endif
+endif
 
 SHELL=/bin/bash -o pipefail
 
@@ -36,7 +96,7 @@ $(builddir)/build-metadata: build_metadata_force
 
 $(builddir)/cll.xml: $(chapters) xml/iso-pub.ent xml/identity.xsl xml/docbook2html_config_common.xsl scripts/update_jbovlaste_xml.sh scripts/generate_glossary.rb scripts/util.rb scripts/header.xml scripts/merge.sh .env dictionary/all_words.xml assets/scripts/sance-next.js $(builddir)/build-metadata
 	regenerator --include-runtime $(PWD)/assets/scripts/sance-next.js > $(builddir)/sance.js
-	rm -rf $(builddir)/xml $(builddir)/dtd
+	$(SAFE_RM_TREE) --root "$(builddir)" "$(builddir)/xml" "$(builddir)/dtd"
 	cp -pr $(PWD)/xml $(builddir)/
 	cp -pr $(PWD)/dtd $(builddir)/
 	scripts/merge.sh -b "$(builddir)" $(test) $(chapters)
@@ -71,7 +131,7 @@ $(builddir)/xhtml_no_chunks.done: nochunks = -nochunks
 xhtml_chapters xhtml_sections xhtml_nochunks:
 ifdef copydir
 	mkdir -p "$(copydir)"
-	rm -rf "$(copydir)/cll-$(notdir $(basename $<))"
+	$(SAFE_RM_TREE) --root "$(copydir)" "$(copydir)/cll-$(notdir $(basename $<))"
 	cp -pr "$(basename $<)" "$(copydir)/cll-$(notdir $(basename $<))"
 	# A service worker keeps old pages in the browser. That is unhelpful when testing.
 	rm -f "$(copydir)/cll-$(notdir $(basename $<))/sw.js"
@@ -82,7 +142,7 @@ endif
 # cll_build does not forward arguments to make. Pass the variable in the environment:
 #   offline=no ./cll_build -n -T xhtml_nochunks
 $(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl xml/docbook2html_config_common.xsl $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_xhtml.xsl assets/css/master.css scripts/xhtml_postprocess_offline.rb scripts/sw.template.js assets/scripts/offline.js scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb xml/iso-pub.ent $(html_copied_files)
-	rm -rf $(builddir)/xhtml_$*_chunks
+	$(SAFE_RM_TREE) --root "$(builddir)" "$(builddir)/xhtml_$*_chunks"
 	mkdir -p $(builddir)/xhtml_$*_chunks
 	xmlto -m xml/docbook2html_config_$*_chunks.xsl -x $(xsl_file) -o $(builddir)/xhtml_$*_chunks/ xhtml$(nochunks) $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
 # Handle the no-chunk case; can't figure out how to set the
@@ -121,15 +181,15 @@ ifdef copydir
 	cp $(builddir)/cll.pdf $(copydir)/cll.pdf
 endif
 $(builddir)/pdf.done: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl assets/css/master.css assets/css/prince.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb scripts/header.xml scripts/xml_prince_postprocess.rb scripts/prince_check_margins.js scripts/prince_shave_index.js scripts/prince_check_index.js xml/iso-pub.ent $(pdf_copied_files)
-	rm -rf $(builddir)/pdf
+	$(SAFE_RM_TREE) --root "$(builddir)" "$(builddir)/pdf"
 	mkdir -p $(builddir)/pdf
 	cp -pr $(PWD)/assets/css/master.css $(builddir)/pdf/final.css
 	cat $(PWD)/assets/css/prince.css >> $(builddir)/pdf/final.css
 	
 	cp -pr $(PWD)/assets $(builddir)/pdf/
-	rm -rf $(builddir)/pdf/assets/scripts
-	rm -rf $(builddir)/pdf/assets/media/examples
-	rm -rf $(builddir)/pdf/assets/media/vreji
+	$(SAFE_RM_TREE) --root "$(builddir)/pdf" "$(builddir)/pdf/assets/scripts"
+	$(SAFE_RM_TREE) --root "$(builddir)/pdf" "$(builddir)/pdf/assets/media/examples"
+	$(SAFE_RM_TREE) --root "$(builddir)/pdf" "$(builddir)/pdf/assets/media/vreji"
 	
 	xmlto -m xml/docbook2html_config_prince.xsl -o $(builddir)/pdf/ -x $(xsl_base)/xhtml5/docbook.xsl xhtml-nochunks $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
 	CLL_HTML_FORMAT=none scripts/xhtml_postprocess_cleanup.sh $(builddir)/pdf/
@@ -201,20 +261,20 @@ $(builddir)/cll.epub: $(builddir)/epub-xhtml/index.html scripts/build_epub.sh sc
 # The navigation document and the page list are written beside the pages.
 # xmlto copies only *.*htm* out of its temporary directory, and a relative
 # path would be resolved against that directory (issue #208).
-epubnavdir = $(abspath $(builddir))/epub-nav
+# epubnavdir is defined and checked at the top of this file.
 
 $(builddir)/epub-xhtml/index.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_common.xsl xml/docbook2html_config_epub.xsl assets/css/master.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb xml/iso-pub.ent $(dtd_files) $(epub_copied_files)
-	rm -rf $(builddir)/epub-xhtml/ $(epubnavdir)/
+	$(SAFE_RM_TREE) --root "$(builddir)" "$(builddir)/epub-xhtml" "$(epubnavdir)"
 	mkdir -p $(builddir)/epub-xhtml/ $(epubnavdir)/
 	xmlto -m xml/docbook2html_config_epub.xsl --stringparam cll.epub.nav.file=$(epubnavdir)/toc.xhtml --stringparam generate.manifest=1 --stringparam manifest=$(epubnavdir)/spine.txt -o $(builddir)/epub-xhtml/ -x $(xsl_base)/xhtml5/chunk.xsl xhtml $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
 	test -s $(epubnavdir)/toc.xhtml
 	test -s $(epubnavdir)/spine.txt
 	cp -p $(PWD)/assets/css/master.css $(builddir)/epub-xhtml/final.css
 	cp -pr $(PWD)/assets $(builddir)/epub-xhtml/
-	rm -rf $(builddir)/epub-xhtml/assets/css
-	rm -rf $(builddir)/epub-xhtml/assets/scripts
-	rm -rf $(builddir)/epub-xhtml/assets/media/examples/
-	rm -rf $(builddir)/epub-xhtml/assets/media/vreji/
+	$(SAFE_RM_TREE) --root "$(builddir)/epub-xhtml" "$(builddir)/epub-xhtml/assets/css"
+	$(SAFE_RM_TREE) --root "$(builddir)/epub-xhtml" "$(builddir)/epub-xhtml/assets/scripts"
+	$(SAFE_RM_TREE) --root "$(builddir)/epub-xhtml" "$(builddir)/epub-xhtml/assets/media/examples"
+	$(SAFE_RM_TREE) --root "$(builddir)/epub-xhtml" "$(builddir)/epub-xhtml/assets/media/vreji"
 	scripts/xhtml_postprocess_cleanup.sh $(builddir)/epub-xhtml/
 
 #*******
@@ -233,7 +293,7 @@ coverage: clean xhtml_nochunks pdf
 ifneq ($(covcopydir),)
 	mkdir -p $(covcopydir)
 	cp $(builddir)/cll.pdf $(covcopydir)/cll.pdf
-	rm -rf $(covcopydir)/cll-xhtml_no_chunks
+	$(SAFE_RM_TREE) --root "$(covcopydir)" "$(covcopydir)/cll-xhtml_no_chunks"
 	cp -pr $(builddir)/xhtml_no_chunks $(covcopydir)/cll-xhtml_no_chunks
 	# A service worker keeps old pages in the browser. That is unhelpful when testing.
 	rm -f "$(covcopydir)/cll-xhtml_no_chunks/sw.js"

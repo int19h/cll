@@ -24,7 +24,8 @@ class MakefileTests(unittest.TestCase):
             old = [self.build / 'cll_processed_xhtml.xml', self.build / 'build-metadata']
         command = ['make', '--no-print-directory', '-f',
                    str(makefile or SOURCE / 'scripts/Makefile'),
-                   f'builddir={self.build}', 'chapters=chapters/01.xml']
+                   f'builddir={self.build}', 'ALLOW_OUTSIDE_BUILDDIR=yes',
+                   'chapters=chapters/01.xml']
         for path in old:
             command.extend(['-o', str(path)])
         command.extend(map(str, args))
@@ -128,10 +129,38 @@ html_check:
             self.assertEqual((archive / 'cll-xhtml_no_chunks/index.html').read_text(), 'coverage HTML')
             self.assertFalse((archive / 'cll-xhtml_no_chunks/sw.js').exists())
 
+    def test_bad_builddir_stops_before_any_recipe(self):
+        # Parse-time guards (issue #271): no recipe line may print or run.
+        for bad in ('', '/', str(self.root / 'elsewhere')):
+            with self.subTest(builddir=bad):
+                result = subprocess.run(
+                    ['make', '--no-print-directory', '-f',
+                     str(SOURCE / 'scripts/Makefile'),
+                     f'builddir={bad}', 'chapters=chapters/01.xml',
+                     'xhtml_nochunks'],
+                    cwd=SOURCE, text=True, stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT)
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                self.assertIn('builddir', result.stdout)
+                self.assertNotIn('scripts/merge.sh', result.stdout)
+                self.assertNotIn('mkdir -p', result.stdout)
+        for variable in ('copydir=/', 'covcopydir=/', 'epubnavdir=/tmp'):
+            with self.subTest(variable=variable):
+                result = subprocess.run(
+                    ['make', '--no-print-directory', '-f',
+                     str(SOURCE / 'scripts/Makefile'),
+                     'builddir=build', variable,
+                     'chapters=chapters/01.xml', 'xhtml_nochunks'],
+                    cwd=SOURCE, text=True, stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT)
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                self.assertNotIn('scripts/merge.sh', result.stdout)
+
     def test_mobi_target_is_removed(self):
         result = subprocess.run(
             ['make', '--no-print-directory', '-f', str(SOURCE / 'scripts/Makefile'),
-             f'builddir={self.build}', 'chapters=chapters/01.xml', 'mobi'],
+             f'builddir={self.build}', 'ALLOW_OUTSIDE_BUILDDIR=yes',
+             'chapters=chapters/01.xml', 'mobi'],
             cwd=SOURCE, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("No rule to make target 'mobi'", result.stdout)

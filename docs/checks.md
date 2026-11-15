@@ -84,7 +84,7 @@ node tests/test-prince-index.js
 | Build helpers | The XHTML post-processors stop after a tool fails. They keep the original page. `cll_build` reports a failed comparison and exits with that status. `cll_build -j` refreshes `dictionary/all_words.xml`. `Gemfile.lock` matches the Docker gem pins. | `python3 scripts/test-build-helpers.py` |
 | Makefile | The archive recipes and incremental inputs, and the parse-time guard that stops `make` when `builddir` is empty, `/`, or outside the checkout build folder | `python3 scripts/test-makefile.py` |
 | Recursive deletes | `scripts/safe-rm-tree.sh` refuses an empty or glob path, `/`, the home folder, a repository root, and any path outside its `--root`; a symbolic link path is unlinked and its target kept | `python3 scripts/test-safe-rm-tree.py` |
-| Chapter artwork | Each of chapters 1 to 21 references its own chapter picture, a large RGBA PNG in `assets/media/`, no unreferenced chapter picture is shipped, and the chapter 2 diagram keeps its size and padding | `python3 scripts/test-chapter-pictures.py` |
+| Chapter artwork | Chapters 1 to 21 each use one chapter picture. Each picture is a large RGBA PNG in `assets/media/`. No unreferenced chapter picture is shipped. The chapter 2 diagram keeps its size and padding. | `python3 scripts/test-chapter-pictures.py` |
 | Well-formed book | The book header and all chapters together are well-formed XML, with no undefined entity and no duplicate ID | See [Quick run](#quick-run) |
 
 The book check joins `scripts/header.xml`, every `chapters/*.xml` file, and a closing `</book>` into one file.
@@ -184,7 +184,11 @@ This job installs the pinned WeasyPrint and MathJax tools under `build/weasyprin
 ./scripts/install-weasyprint.sh
 python3 scripts/test-build-version.py
 PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-weasyprint.py
+PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-pdf-bookmarks.py
 ```
+
+The bookmark test renders a small title page with the print stylesheets and checks outline levels and parents.
+When `prince` and `pymupdf` are installed, the same test checks Prince.
 
 The installer needs Python 3 with `venv` and Node.js 22 or later.
 The renderer also needs Pango, HarfBuzz, and the fonts listed in [build-weasyprint.md](build-weasyprint.md#local-build).

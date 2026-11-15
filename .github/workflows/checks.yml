@@ -19,6 +19,8 @@ jobs:
         run: |
           python3 scripts/test-build-actions.py
           ruby scripts/test-build-workflow.rb
+      - name: Install the production Nokogiri version
+        run: gem install --no-document nokogiri:1.18.8
       - name: Makefile archives and incremental inputs
         run: python3 scripts/test-makefile.py
       - name: Recursive-delete helper refuses bad paths
@@ -216,6 +218,7 @@ jobs:
         run: |
           python3 scripts/test-build-version.py
           PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-weasyprint.py
+          PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-pdf-bookmarks.py
 
   context-converter:
     runs-on: ubuntu-24.04

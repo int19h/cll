@@ -1,17 +1,20 @@
 chapters = $(if $(chapters), $(chapters), chapters/01.xml chapters/02.xml chapters/03.xml chapters/04.xml chapters/05.xml chapters/06.xml chapters/07.xml chapters/08.xml chapters/09.xml chapters/10.xml chapters/11.xml chapters/12.xml chapters/13.xml chapters/14.xml chapters/15.xml chapters/16.xml chapters/17.xml chapters/18.xml chapters/19.xml chapters/20.xml chapters/21.xml chapters/a01.xml)
 ifeq ($(origin builddir),undefined)
-builddir := $(PWD)/build
+builddir := $(CURDIR)/build
 endif
 xsl_base = xml/docbook-xsl-1.78.1
 epubnavdir = $(abspath $(builddir))/epub-nav
 
 # Folder variables reach deletes, so check them at parse time, before any
-# recipe runs (issue #271). Every folder is resolved with realpath first,
-# so a build folder linked to the checkout, its parent, or the home folder
-# is caught, while the supported link from build/ to a separate folder
-# (for example on /build) keeps working. A resolved folder must not be /,
-# the home folder, the checkout, or a folder above the checkout, and it
-# must lie in the resolved build folder (or coverage/build).
+# recipe runs (issue #271). The checkout is $(CURDIR), make's working
+# folder, never the caller-supplied PWD; the two must agree. Every folder
+# is resolved with realpath first, so a build folder linked to the
+# checkout, its parent, the home folder, or a source folder inside the
+# checkout is caught, while the supported link from build/ to a separate
+# folder (for example on /build) keeps working. A resolved folder must
+# not be /, the home folder, the checkout, or a folder above the
+# checkout, must not point into the source tree, and must lie in the
+# resolved build folder (or coverage/build).
 # copydir and covcopydir are archive folders and are usually outside the
 # build folder: name one only together with ALLOW_OUTSIDE_BUILDDIR=yes,
 # which also allows a builddir outside the checkout (cll_build sets it
@@ -26,6 +29,7 @@ ifeq ($(strip $(builddir)),)
 $(error builddir is empty; give builddir=<the checkout build folder> or leave it unset)
 endif
 $(call _reject_words,PWD,$(PWD))
+$(call _reject_words,CURDIR,$(CURDIR))
 $(call _reject_words,builddir,$(builddir))
 $(call _reject_words,epubnavdir,$(epubnavdir))
 ifneq ($(strip $(copydir)),)
@@ -37,21 +41,53 @@ endif
 ifneq ($(strip $(HOME)),)
 $(call _reject_words,HOME,$(HOME))
 endif
-override _checkout_r := $(shell realpath -m -- '$(PWD)')
+override _checkout_r := $(shell realpath -m -- '$(CURDIR)')
+override _pwd_r := $(shell realpath -m -- '$(PWD)')
+ifneq ($(_pwd_r),$(_checkout_r))
+$(error PWD ($(PWD)) does not match the working folder ($(CURDIR)); run make from the checkout root)
+endif
 override _home_r := $(if $(strip $(HOME)),$(shell realpath -m -- '$(HOME)'),)
-override _defbuild_r := $(shell realpath -m -- '$(PWD)/build')
-override _covbuild_r := $(shell realpath -m -- '$(PWD)/coverage/build')
+override _defbuild_r := $(shell realpath -m -- '$(CURDIR)/build')
+override _covbuild_r := $(shell realpath -m -- '$(CURDIR)/coverage/build')
 override _builddir_r := $(shell realpath -m -- '$(builddir)')
 override _epubnavdir_r := $(shell realpath -m -- '$(epubnavdir)')
 override _copydir_r := $(if $(strip $(copydir)),$(shell realpath -m -- '$(copydir)'),)
 override _covcopydir_r := $(if $(strip $(covcopydir)),$(shell realpath -m -- '$(covcopydir)'),)
 override _reject_forbidden = $(if $(filter / $(_home_r) $(_checkout_r),$(2)),$(error $(1) resolves to /, the home folder, or the checkout itself: $(2)),$(if $(filter $(2)/%,$(_checkout_r)),$(error $(1) resolves to a folder above the checkout: $(2)),))
 override _reject_outside = $(if $(filter $(_defbuild_r) $(_defbuild_r)/% $(_covbuild_r) $(_covbuild_r)/%,$(2)),,$(if $(filter yes,$(ALLOW_OUTSIDE_BUILDDIR)),,$(error $(1) is outside the resolved build folder: $(2); set ALLOW_OUTSIDE_BUILDDIR=yes to allow it)))
-$(call _reject_forbidden,the build folder ($(PWD)/build),$(_defbuild_r))
-$(call _reject_forbidden,the coverage build folder ($(PWD)/coverage/build),$(_covbuild_r))
+override _reject_resolved = $(call _reject_words,$(1),$(2))$(if $(findstring *,$(2))$(findstring ?,$(2))$(findstring [,$(2)),$(error $(1) resolves to a folder with a glob character: $(2)),)
+override _reject_source_tree = $(if $(filter $(_checkout_r)/%,$(2)),$(if $(filter $(_defbuild_r) $(_defbuild_r)/% $(_covbuild_r) $(_covbuild_r)/%,$(2)),,$(error $(1) points into the source tree: $(2))),)
+$(call _reject_resolved,the checkout,$(_checkout_r))
+ifneq ($(strip $(HOME)),)
+$(call _reject_resolved,the home folder,$(_home_r))
+endif
+$(call _reject_resolved,the build folder,$(_defbuild_r))
+$(call _reject_resolved,the coverage build folder,$(_covbuild_r))
+$(call _reject_resolved,builddir,$(_builddir_r))
+$(call _reject_resolved,epubnavdir,$(_epubnavdir_r))
+ifneq ($(strip $(copydir)),)
+$(call _reject_resolved,copydir,$(_copydir_r))
+endif
+ifneq ($(strip $(covcopydir)),)
+$(call _reject_resolved,covcopydir,$(_covcopydir_r))
+endif
+$(call _reject_forbidden,the build folder ($(CURDIR)/build),$(_defbuild_r))
+ifneq ($(filter $(_checkout_r)/%,$(_defbuild_r)),)
+ifneq ($(_defbuild_r),$(_checkout_r)/build)
+$(error the build folder link points into the source tree: $(_defbuild_r))
+endif
+endif
+$(call _reject_forbidden,the coverage build folder ($(CURDIR)/coverage/build),$(_covbuild_r))
+ifneq ($(filter $(_checkout_r)/%,$(_covbuild_r)),)
+ifneq ($(_covbuild_r),$(_checkout_r)/coverage/build)
+$(error the coverage build folder link points into the source tree: $(_covbuild_r))
+endif
+endif
 $(call _reject_forbidden,builddir,$(_builddir_r))
+$(call _reject_source_tree,builddir,$(_builddir_r))
 $(call _reject_outside,builddir,$(_builddir_r))
 $(call _reject_forbidden,epubnavdir,$(_epubnavdir_r))
+$(call _reject_source_tree,epubnavdir,$(_epubnavdir_r))
 ifeq ($(filter $(_builddir_r)/%,$(_epubnavdir_r)),)
 ifneq ($(ALLOW_OUTSIDE_BUILDDIR),yes)
 $(error epubnavdir is outside the resolved builddir: $(_epubnavdir_r); set ALLOW_OUTSIDE_BUILDDIR=yes to allow it)
@@ -59,14 +95,14 @@ endif
 endif
 ifneq ($(strip $(copydir)),)
 $(call _reject_forbidden,copydir,$(_copydir_r))
+$(call _reject_source_tree,copydir,$(_copydir_r))
 $(call _reject_outside,copydir,$(_copydir_r))
 endif
 ifneq ($(strip $(covcopydir)),)
 $(call _reject_forbidden,covcopydir,$(_covcopydir_r))
+$(call _reject_source_tree,covcopydir,$(_covcopydir_r))
 $(call _reject_outside,covcopydir,$(_covcopydir_r))
 endif
-# The folders clean and realclean walk: resolved and checked above.
-override _clean_dirs := $(_defbuild_r) $(_covbuild_r) $(_builddir_r)
 
 SHELL=/bin/bash -o pipefail
 
@@ -80,20 +116,22 @@ epub_copied_files := $(shell find assets/fonts assets/media -type f ! -path 'ass
 .PHONY: all
 all: xhtml_chapters xhtml_sections xhtml_nochunks pdf epub html_check
 
-# clean and realclean walk only _clean_dirs: the default build folder,
-# coverage/build and builddir, each resolved with realpath and checked at
-# the top of this file. find gets no -L, so a link inside a build folder
-# is neither followed nor matched by -type f, and names move through
-# -print0, so a file name with a space cannot split into another path.
+# clean and realclean walk only the three folders named below: the
+# default build folder, coverage/build and builddir, each resolved with
+# realpath, checked at the top of this file, and quoted here so a name
+# cannot split into words or expand as a glob. find gets no -L, so a link
+# inside a build folder is neither followed nor matched by -type f, and
+# names move through -print0, so a file name with a space cannot split
+# into another path.
 .PHONY: clean
 clean:
 	# Keep downloaded tools. realclean still removes them.
-	for d in $(_clean_dirs); do if [ -d "$$d" ]; then find "$$d" \( -type d \( -name weasyprint-tools -o -path '*/tools/epubcheck' -o -path '*/tools/vnu' \) -prune \) -o \! -name 'jbovlaste*.xml' -type f -print0 | xargs -0 -r rm -f --; fi; done
+	for d in "$(_defbuild_r)" "$(_covbuild_r)" "$(_builddir_r)"; do if [ -d "$$d" ]; then find "$$d" \( -type d \( -name weasyprint-tools -o -path '*/tools/epubcheck' -o -path '*/tools/vnu' \) -prune \) -o \! -name 'jbovlaste*.xml' -type f -print0 | xargs -0 -r rm -f --; fi; done
 
 .PHONY: realclean
 realclean: clean
-	for d in $(_clean_dirs); do if [ -d "$$d" ]; then find "$$d" -type f -print0 | xargs -0 -r rm -f --; fi; done
-	for d in $(_clean_dirs); do if [ -d "$$d" ]; then find "$$d" -depth -mindepth 1 -type d -empty -print0 | xargs -0 -r rmdir --; fi; done
+	for d in "$(_defbuild_r)" "$(_covbuild_r)" "$(_builddir_r)"; do if [ -d "$$d" ]; then find "$$d" -type f -print0 | xargs -0 -r rm -f --; fi; done
+	for d in "$(_defbuild_r)" "$(_covbuild_r)" "$(_builddir_r)"; do if [ -d "$$d" ]; then find "$$d" -depth -mindepth 1 -type d -empty -print0 | xargs -0 -r rmdir --; fi; done
 
 #*******
 # Basic prep
@@ -152,7 +190,7 @@ endif
 # offline=no skips sw.js. Any other value writes it.
 # cll_build does not forward arguments to make. Pass the variable in the environment:
 #   offline=no ./cll_build -n -T xhtml_nochunks
-$(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl xml/docbook2html_config_common.xsl $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_xhtml.xsl assets/css/master.css scripts/xhtml_postprocess_offline.rb scripts/sw.template.js assets/scripts/offline.js scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb xml/iso-pub.ent $(html_copied_files)
+$(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl xml/docbook2html_config_common.xsl xml/docbook2html_config_headings.xsl $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_xhtml.xsl assets/css/master.css scripts/xhtml_postprocess_offline.rb scripts/sw.template.js assets/scripts/offline.js scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb xml/iso-pub.ent $(html_copied_files)
 	$(SAFE_RM_TREE) --root "$(builddir)" "$(builddir)/xhtml_$*_chunks"
 	mkdir -p $(builddir)/xhtml_$*_chunks
 	xmlto -m xml/docbook2html_config_$*_chunks.xsl -x $(xsl_file) -o $(builddir)/xhtml_$*_chunks/ xhtml$(nochunks) $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
@@ -191,7 +229,7 @@ ifdef copydir
 	mkdir -p $(copydir)
 	cp $(builddir)/cll.pdf $(copydir)/cll.pdf
 endif
-$(builddir)/pdf.done: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl assets/css/master.css assets/css/prince.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb scripts/header.xml scripts/xml_prince_postprocess.rb scripts/prince_check_margins.js scripts/prince_shave_index.js scripts/prince_check_index.js xml/iso-pub.ent $(pdf_copied_files)
+$(builddir)/pdf.done: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl xml/docbook2html_config_headings.xsl assets/css/master.css assets/css/prince.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb scripts/header.xml scripts/xml_prince_postprocess.rb scripts/prince_check_margins.js scripts/prince_shave_index.js scripts/prince_check_index.js xml/iso-pub.ent $(pdf_copied_files)
 	$(SAFE_RM_TREE) --root "$(builddir)" "$(builddir)/pdf"
 	mkdir -p $(builddir)/pdf
 	cp -pr $(PWD)/assets/css/master.css $(builddir)/pdf/final.css
@@ -221,8 +259,13 @@ ifdef copydir
 	cp $(builddir)/cll-weasyprint.pdf $(copydir)/cll-weasyprint.pdf
 endif
 
-$(builddir)/weasyprint/cll_processed_xhtml_pdf.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl scripts/xml_prince_postprocess.rb scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb scripts/header.xml assets/css/master.css xml/iso-pub.ent $(dtd_files) $(WEASYPRINT_ASSETS)
+# The renderer writes its HTML working copy to $(builddir)/weasyprint-work/,
+# outside this folder, because the cleanup below parses this folder as XML.
+# Remove a working copy left here by an older renderer so that build
+# folders from before that move rebuild instead of failing in the cleanup.
+$(builddir)/weasyprint/cll_processed_xhtml_pdf.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl xml/docbook2html_config_headings.xsl scripts/xml_prince_postprocess.rb scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb scripts/header.xml assets/css/master.css xml/iso-pub.ent $(dtd_files) $(WEASYPRINT_ASSETS)
 	mkdir -p $(builddir)/weasyprint
+	rm -f $(builddir)/weasyprint/cll-weasyprint.html
 	cp -pr $(PWD)/assets $(builddir)/weasyprint/
 	cp assets/css/master.css $(builddir)/weasyprint/final.css
 	xmlto -m xml/docbook2html_config_prince.xsl -o $(builddir)/weasyprint/ -x $(xsl_base)/xhtml5/docbook.xsl xhtml-nochunks $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
@@ -274,7 +317,7 @@ $(builddir)/cll.epub: $(builddir)/epub-xhtml/index.html scripts/build_epub.sh sc
 # path would be resolved against that directory (issue #208).
 # epubnavdir is defined and checked at the top of this file.
 
-$(builddir)/epub-xhtml/index.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_common.xsl xml/docbook2html_config_epub.xsl assets/css/master.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb xml/iso-pub.ent $(dtd_files) $(epub_copied_files)
+$(builddir)/epub-xhtml/index.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_common.xsl xml/docbook2html_config_headings.xsl xml/docbook2html_config_epub.xsl assets/css/master.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb xml/iso-pub.ent $(dtd_files) $(epub_copied_files)
 	$(SAFE_RM_TREE) --root "$(builddir)" "$(builddir)/epub-xhtml" "$(epubnavdir)"
 	mkdir -p $(builddir)/epub-xhtml/ $(epubnavdir)/
 	xmlto -m xml/docbook2html_config_epub.xsl --stringparam cll.epub.nav.file=$(epubnavdir)/toc.xhtml --stringparam generate.manifest=1 --stringparam manifest=$(epubnavdir)/spine.txt -o $(builddir)/epub-xhtml/ -x $(xsl_base)/xhtml5/chunk.xsl xhtml $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'

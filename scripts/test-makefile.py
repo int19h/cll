@@ -29,6 +29,8 @@ class MakefileTests(unittest.TestCase):
         for path in old:
             command.extend(['-o', str(path)])
         command.extend(map(str, args))
+        if env is None:
+            env = dict(os.environ, PWD=str(SOURCE))
         result = subprocess.run(
             command, cwd=SOURCE, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
             env=env)
@@ -156,11 +158,13 @@ html_check:
                 self.assertNotEqual(result.returncode, 0, result.stdout)
                 self.assertNotIn('scripts/merge.sh', result.stdout)
 
-    def make_in_scratch_checkout(self, checkout, *args, env=None):
+    def make_in_scratch_checkout(self, checkout, *args, env=None, builddir='build'):
+        if env is None:
+            env = dict(os.environ, PWD=str(checkout))
         return subprocess.run(
             ['make', '--no-print-directory', '-f',
              str(SOURCE / 'scripts/Makefile'), f'PWD={checkout}',
-             'builddir=build', 'chapters=chapters/01.xml', *args],
+             f'builddir={builddir}', 'chapters=chapters/01.xml', *args],
             cwd=checkout, text=True, stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT, env=env)
 
@@ -210,6 +214,83 @@ html_check:
         self.assertEqual(dictionary.read_text(), 'keep')
         self.assertEqual(source.read_text(), 'source')
 
+    def scratch_checkout(self, name):
+        checkout = self.root / name
+        (checkout / 'chapters').mkdir(parents=True)
+        source = checkout / 'chapters/source.xml'
+        source.write_text('source')
+        return checkout, source
+
+    def test_build_link_into_the_source_tree_is_refused(self):
+        # Round 3 (both reviewers, REAL): build -> chapters, and the same
+        # through coverage/build, stop before clean deletes a source.
+        checkout, source = self.scratch_checkout('link-inside-co')
+        (checkout / 'build').symlink_to('chapters', target_is_directory=True)
+        result = self.make_in_scratch_checkout(checkout, 'clean')
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn('points into the source tree', result.stdout)
+        self.assertEqual(source.read_text(), 'source')
+
+        checkout, source = self.scratch_checkout('covlink-inside-co')
+        (checkout / 'build').mkdir()
+        (checkout / 'coverage').mkdir()
+        (checkout / 'coverage/build').symlink_to(
+            '../chapters', target_is_directory=True)
+        result = self.make_in_scratch_checkout(checkout, 'clean')
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn('points into the source tree', result.stdout)
+        self.assertEqual(source.read_text(), 'source')
+
+    def test_pwd_that_disagrees_with_the_working_folder_stops(self):
+        checkout, source = self.scratch_checkout('pwd-co')
+        (checkout / 'build').mkdir()
+        decoy = self.root / 'pwd-decoy'
+        (decoy / 'build').mkdir(parents=True)
+        marker = decoy / 'build/marker.epub'
+        marker.write_text('keep')
+        env = dict(os.environ, PWD=str(decoy))
+        result = subprocess.run(
+            ['make', '--no-print-directory', '-f',
+             str(SOURCE / 'scripts/Makefile'), 'builddir=build',
+             'chapters=chapters/01.xml', 'clean'],
+            cwd=checkout, text=True, stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT, env=env)
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn('does not match the working folder', result.stdout)
+        self.assertEqual(marker.read_text(), 'keep')
+        self.assertEqual(source.read_text(), 'source')
+
+    def test_resolved_build_folder_with_space_or_glob_is_refused(self):
+        # Round 3 (Astra L2): a link target with a space or a wildcard
+        # must not split or expand in the cleanup recipes.
+        checkout, source = self.scratch_checkout('space-co')
+        (checkout / 'coverage/build').mkdir(parents=True)
+        external = self.root / 'external chapters'
+        external.mkdir()
+        junk = external / 'junk.pdf'
+        junk.write_text('junk')
+        (checkout / 'build').symlink_to(external, target_is_directory=True)
+        result = self.make_in_scratch_checkout(
+            checkout, 'clean', builddir='coverage/build')
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertEqual(source.read_text(), 'source')
+        self.assertEqual(junk.read_text(), 'junk')
+
+        checkout, source = self.scratch_checkout('glob-co')
+        (checkout / 'coverage/build').mkdir(parents=True)
+        starred = self.root / 'build*'
+        starred.mkdir()
+        secret = self.root / 'build-secret'
+        secret.mkdir()
+        marker = secret / 'marker.pdf'
+        marker.write_text('keep')
+        (checkout / 'build').symlink_to(starred, target_is_directory=True)
+        result = self.make_in_scratch_checkout(
+            checkout, 'clean', builddir='coverage/build')
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertEqual(source.read_text(), 'source')
+        self.assertEqual(marker.read_text(), 'keep')
+
     def test_guard_cannot_be_split_or_overridden(self):
         # Round 2 (Opus L1/L2, Astra L3): two-word folders and command-line
         # assignments to the guard's own variables must not get through.
@@ -234,7 +315,8 @@ html_check:
             with self.subTest(command=command[4:-2]):
                 result = subprocess.run(
                     command, cwd=SOURCE, text=True, stdout=subprocess.PIPE,
-                    stderr=subprocess.STDOUT)
+                    stderr=subprocess.STDOUT,
+                    env=dict(os.environ, PWD=str(SOURCE)))
                 self.assertNotEqual(result.returncode, 0, result.stdout)
 
     def test_mobi_target_is_removed(self):
@@ -269,11 +351,13 @@ html_check:
             ('scripts/prince_shave_index.js', pdf_done, 'prince', None),
             ('scripts/xml_prince_postprocess.rb', pdf_done, 'xml_prince_postprocess.rb', None),
             ('xml/docbook2html_config_common.xsl', pdf_done, 'docbook2html_config_prince.xsl', None),
+            ('xml/docbook2html_config_headings.xsl', pdf_done, 'docbook2html_config_prince.xsl', None),
             ('scripts/header.xml', pdf_done, 'xml_prince_postprocess.rb', None),
             ('assets/fonts/crisa-regular.otf', xhtml_done, 'xhtml_chapter_chunks', None),
             ('assets/media/logo.png', xhtml_done, 'xhtml_chapter_chunks', None),
             (mp3_rel, xhtml_done, 'xhtml_chapter_chunks', None),
             ('xml/docbook2html_config_common.xsl', xhtml_done, 'docbook2html_config_chapter_chunks.xsl', None),
+            ('xml/docbook2html_config_headings.xsl', xhtml_done, 'docbook2html_config_chapter_chunks.xsl', None),
             ('scripts/xhtml_postprocess_offline.rb', xhtml_done, 'xhtml_postprocess_offline.rb', None),
             ('scripts/sw.template.js', xhtml_done, 'sw.template.js', None),
             ('assets/scripts/offline.js', xhtml_done, 'xhtml_chapter_chunks', None),
@@ -312,7 +396,8 @@ html_check:
                 self.assertNotIn('is up to date', output)
 
     def test_clean_keeps_the_epubcheck_install(self):
-        # Make reads PWD from the environment, not from the process cwd.
+        # The checkout is make's working folder (CURDIR). Run in the
+        # scratch root; the decoy tree outside it is never walked.
         coverage = self.root / 'coverage/build'
         coverage.mkdir(parents=True)
         gone = coverage / 'gone.pdf'
@@ -325,21 +410,21 @@ html_check:
         stamp.write_text('abc\n')
         other = self.build / 'cll.epub'
         other.write_text('epub')
+        work = self.build / 'weasyprint-work/cll-weasyprint.html'
+        work.parent.mkdir(parents=True)
+        work.write_text('working copy')
         outside = Path(tempfile.mkdtemp(prefix='cll-make-outside-'))
         self.addCleanup(lambda: shutil.rmtree(outside, ignore_errors=True))
-        # The environment points PWD at a decoy checkout with its own build/.
-        # Only the command-line PWD keeps clean inside the temporary root, so
-        # this file is deleted if that argument is ever dropped.
         (outside / 'build').mkdir()
         (outside / 'coverage/build').mkdir(parents=True)
         survivor = outside / 'build/survivor.epub'
         survivor.write_text('keep')
-        env = os.environ.copy()
-        env['PWD'] = str(outside)
-        self.make(f'PWD={self.root}', 'clean', env=env)
+        result = self.make_in_scratch_checkout(self.root, 'clean')
+        self.assertEqual(result.returncode, 0, result.stdout)
         self.assertEqual(jar.read_text(), 'jar')
         self.assertEqual(stamp.read_text(), 'abc\n')
         self.assertFalse(other.exists())
+        self.assertFalse(work.exists())
         self.assertFalse(gone.exists())
         self.assertEqual(survivor.read_text(), 'keep')
 
@@ -368,6 +453,50 @@ html_check:
                         self.assertIn('CLL_HTML_FORMAT=none', stale)
                     else:
                         self.assertNotIn('CLL_HTML_FORMAT=none', stale)
+
+    @unittest.skipUnless(
+        shutil.which('ruby') and subprocess.run(
+            ['ruby', '-rnokogiri', '-e', ''], stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL).returncode == 0,
+        'the real cleanup recipe needs ruby with nokogiri')
+    def test_weasyprint_recipe_runs_twice_in_one_folder(self):
+        # Run the processed-XHTML recipe twice in one build folder. Only
+        # xmlto is stubbed; the cleanup and postprocess are the real ones.
+        # Between the runs, leave the file the renderer used to write into
+        # build/weasyprint/: HTML serialization, not XML. The cleanup parses
+        # every XHTML-namespace file in that folder as XML, so on the old
+        # layout the second run died on the leftover.
+        stub = self.root / 'bin'
+        stub.mkdir()
+        xmlto = stub / 'xmlto'
+        page = self.fixture_page('weasyprint')
+        xmlto.write_text(f'''#!/usr/bin/env python3
+import sys
+from pathlib import Path
+args = sys.argv[1:]
+out = Path(args[args.index('-o') + 1])
+out.mkdir(parents=True, exist_ok=True)
+source = Path(args[-1])
+(out / (source.stem + '.html')).write_text({page!r})
+print('xmlto fixture')
+''')
+        xmlto.chmod(0o755)
+        env = os.environ.copy()
+        env['PATH'] = f'{stub}:{env["PATH"]}'
+        env['PWD'] = str(SOURCE)
+        self.touch_output(self.build / 'cll_processed_xhtml.xml')
+        target = self.build / 'weasyprint/cll_processed_xhtml_pdf.html'
+        self.make(target, env=env)
+        self.assertIn('weasyprint fixture', target.read_text())
+        leftover = self.build / 'weasyprint/cll-weasyprint.html'
+        leftover.write_text(
+            '<!doctype html>\n'
+            '<html xmlns="http://www.w3.org/1999/xhtml"><head>'
+            '<meta charset="utf-8"></head><body><p>one<br>two</p>'
+            '</body></html>')
+        self.make('-Wassets/css/master.css', target, env=env)
+        self.assertIn('weasyprint fixture', target.read_text())
+        self.assertFalse(leftover.exists())
 
     def test_offline_no_skips_the_generator(self):
         done = self.build / 'xhtml_no_chunks.done'

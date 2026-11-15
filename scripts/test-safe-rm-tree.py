@@ -95,6 +95,51 @@ def main():
         res = run(root, good, outside)
         check("one bad PATH deletes nothing", res.returncode == 2 and good.exists())
 
+        # Inside a Git work tree, ROOT must be build/, coverage/build/
+        # or below one of them, however it was reached.
+        wt = t / "wt"
+        (wt / ".git").mkdir(parents=True)
+        (wt / "chapters").mkdir()
+        (wt / "chapters" / "source.xml").write_text("x")
+        (wt / "build").symlink_to("chapters", target_is_directory=True)
+        res = run(wt / "build", wt / "build" / "source.xml")
+        check("refuses ROOT via build -> chapters in a work tree",
+              res.returncode == 2 and (wt / "chapters" / "source.xml").exists())
+
+        other = t / "other-repo"
+        (other / ".git").mkdir(parents=True)
+        (other / "keep.txt").write_text("x")
+        (wt / "build2").symlink_to(other, target_is_directory=True)
+        res = run(wt / "build2", wt / "build2" / "keep.txt")
+        check("refuses ROOT via a link to another repository",
+              res.returncode == 2 and (other / "keep.txt").exists())
+
+        wt_plain = t / "wtplain"
+        (wt_plain / ".git").mkdir(parents=True)
+        (wt_plain / "build" / "junk").mkdir(parents=True)
+        (wt_plain / "coverage" / "build" / "junk").mkdir(parents=True)
+        res = run(wt_plain / "build", wt_plain / "build" / "junk")
+        check("accepts a plain build/ ROOT in a work tree",
+              res.returncode == 0 and not (wt_plain / "build" / "junk").exists())
+        res = run(wt_plain / "coverage" / "build",
+                  wt_plain / "coverage" / "build" / "junk")
+        check("accepts a coverage/build ROOT in a work tree",
+              res.returncode == 0
+              and not (wt_plain / "coverage" / "build" / "junk").exists())
+
+        (wt_plain / "build" / "site" / "junk").mkdir(parents=True)
+        res = run(wt_plain / "build" / "site", wt_plain / "build" / "site" / "junk")
+        check("accepts a ROOT below build/ in a work tree",
+              res.returncode == 0
+              and not (wt_plain / "build" / "site" / "junk").exists())
+
+        out_build = t / "outside-build"
+        (out_build / "junk").mkdir(parents=True)
+        (wt_plain / "buildlink").symlink_to(out_build, target_is_directory=True)
+        res = run(wt_plain / "buildlink", wt_plain / "buildlink" / "junk")
+        check("accepts ROOT via a link to a folder outside any work tree",
+              res.returncode == 0 and not (out_build / "junk").exists())
+
         # A missing PATH is fine.
         res = run(root, root / "missing")
         check("missing PATH succeeds", res.returncode == 0)

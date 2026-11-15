@@ -22,6 +22,13 @@ override _build_res := $(call _resolve,$(_checkout_res)/build)
 override _covbuild_res := $(call _resolve,$(_checkout_res)/coverage/build)
 override _inside_build = $(filter $(_build_res) $(_build_res)/% $(_covbuild_res) $(_covbuild_res)/%,$(1))
 override _forbidden = $(if $(filter / $(_home_res),$(1)),yes,$(if $(filter $(1) $(1)/%,$(_checkout_res)),yes,))
+override _reject_badname = $(if $(filter 1,$(words $(2))),,$(error $(1) must resolve to exactly one folder, not "$(2)"))$(if $(findstring ',$(2)),$(error $(1) must not contain a single quote: $(2)),)
+$(call _reject_badname,the checkout,$(_checkout_res))
+ifneq ($(strip $(HOME)),)
+$(call _reject_badname,the home folder,$(_home_res))
+endif
+$(call _reject_badname,the build folder,$(_build_res))
+$(call _reject_badname,the coverage build folder,$(_covbuild_res))
 ifneq ($(words $(CURDIR)),1)
 $(error the checkout path must not contain spaces: $(CURDIR))
 endif
@@ -57,6 +64,7 @@ ifneq ($(words $(builddir)),1)
 $(error builddir must be one folder: $(builddir))
 endif
 override _builddir_res := $(call _resolve,$(builddir))
+$(call _reject_badname,builddir,$(_builddir_res))
 ifneq ($(words $(_builddir_res)),1)
 $(error builddir does not resolve to one folder: $(builddir))
 endif
@@ -73,6 +81,7 @@ ifneq ($(words $(copydir)),1)
 $(error copydir must be one folder: $(copydir))
 endif
 override _copydir_res := $(call _resolve,$(copydir))
+$(call _reject_badname,copydir,$(_copydir_res))
 ifneq ($(words $(_copydir_res)),1)
 $(error copydir does not resolve to one folder: $(copydir))
 endif
@@ -90,6 +99,7 @@ ifneq ($(words $(covcopydir)),1)
 $(error covcopydir must be one folder: $(covcopydir))
 endif
 override _covcopydir_res := $(call _resolve,$(covcopydir))
+$(call _reject_badname,covcopydir,$(_covcopydir_res))
 ifneq ($(words $(_covcopydir_res)),1)
 $(error covcopydir does not resolve to one folder: $(covcopydir))
 endif
@@ -103,9 +113,6 @@ endif
 endif
 endif
 
-# The folders clean and realclean walk: resolved and checked above.
-override _clean_dirs := $(_build_res) $(_covbuild_res) $(_builddir_res)
-
 SHELL=/bin/bash -o pipefail
 
 .PHONY: all
@@ -116,12 +123,12 @@ clean:
 	# Walk only the resolved, checked folders. No -L, and names move
 	# through -print0, so a file name with a space cannot split into
 	# another path.
-	for d in $(_clean_dirs); do if [ -d "$$d" ]; then find "$$d" \! -name 'jbovlaste*.xml' -type f -print0 | xargs -0 -r rm -f --; fi; done
+	for d in '$(_build_res)' '$(_covbuild_res)' '$(_builddir_res)'; do if [ -d "$$d" ]; then find "$$d" \! -name 'jbovlaste*.xml' -type f -print0 | xargs -0 -r rm -f --; fi; done
 
 .PHONY: realclean
 realclean: clean
-	for d in $(_clean_dirs); do if [ -d "$$d" ]; then find "$$d" -type f -print0 | xargs -0 -r rm -f --; fi; done
-	for d in $(_clean_dirs); do if [ -d "$$d" ]; then find "$$d" -depth -mindepth 1 -type d -empty -print0 | xargs -0 -r rmdir --; fi; done
+	for d in '$(_build_res)' '$(_covbuild_res)' '$(_builddir_res)'; do if [ -d "$$d" ]; then find "$$d" -type f -print0 | xargs -0 -r rm -f --; fi; done
+	for d in '$(_build_res)' '$(_covbuild_res)' '$(_builddir_res)'; do if [ -d "$$d" ]; then find "$$d" -depth -mindepth 1 -type d -empty -print0 | xargs -0 -r rmdir --; fi; done
 
 #*******
 # Basic prep

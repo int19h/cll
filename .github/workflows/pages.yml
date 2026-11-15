@@ -119,20 +119,23 @@ jobs:
         # when it still matches. Draft releases get the files of the
         # version's formats; published releases never change (issue #128).
         # See scripts/build-versions.sh.
-        run: bash scripts/build-versions.sh pages/versions.tsv origin/baseline/uncll-1.2.16 "$PWD/_site_versions"
+        # The site folders live under build/: the guarded delete helper
+        # (scripts/safe-rm-tree.sh) only accepts a delete root inside a
+        # Git work tree under its build folders.
+        run: bash scripts/build-versions.sh pages/versions.tsv origin/baseline/uncll-1.2.16 "$PWD/build/_site_versions"
 
       - name: Assemble the site
         run: |
-          mkdir -p _site
-          cp -pr _site_versions/. _site/
+          mkdir -p build/_site
+          cp -pr build/_site_versions/. build/_site/
 
       - name: Generate landing pages
-        run: bash scripts/gen-site-index.sh _site
+        run: bash scripts/gen-site-index.sh build/_site
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
-          path: _site
+          path: build/_site
 
   deploy:
     permissions:

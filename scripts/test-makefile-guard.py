@@ -93,6 +93,14 @@ def main():
         cases.append(("build -> chapters link", root, s,
                       ["builddir=coverage/build"]))
 
+        # A build link whose target name contains a space must not
+        # split into a relative source path in the cleanup recipe.
+        spaced = t / "external chapters"
+        spaced.mkdir()
+        root, s = scratch(t, "linkspace", build_link=str(spaced))
+        cases.append(("build link to a folder with a space", root, s,
+                      ["builddir=coverage/build"]))
+
         root, s = scratch(t, "copyhome")
         cases.append(("copydir is home", root, s,
                       ["builddir=build", f"copydir={Path.home()}",
@@ -142,6 +150,22 @@ def main():
         res = make(root, f"builddir={ext}", "ALLOW_OUTSIDE_BUILDDIR=yes")
         check("clean walks a flagged outside builddir",
               res.returncode == 0 and s.exists() and not (ext / "junk").exists())
+
+        # A build link whose target name is a glob pattern must walk
+        # only that literal folder, not its glob siblings.
+        star_parent = t / "starparent"
+        star = star_parent / "build*"
+        star.mkdir(parents=True)
+        (star / "junk").write_text("junk")
+        secret = star_parent / "build-secret"
+        secret.mkdir()
+        (secret / "marker").write_text("keep")
+        root, s = scratch(t, "linkglob", build_link=str(star))
+        res = make(root, "builddir=coverage/build")
+        check("build link to a glob-named folder walks only it",
+              res.returncode == 0 and s.exists()
+              and not (star / "junk").exists()
+              and (secret / "marker").exists())
 
         root, s = scratch(t, "trailing")
         res = make(root, "builddir=build/", dry=True)

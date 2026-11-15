@@ -529,7 +529,7 @@
     </para>
     <para><indexterm type="general"><primary>shift word</primary><secondary>scope</secondary>
       </indexterm>How long does a shift word last? That depends on the letteral string, which is the unbroken sequence of lerfu words in which the shift occurs. A shift affects every later letteral in the same letteral string, and only those letterals. It expires when the string ends, that is, when a word other than a lerfu word arrives; it expires earlier if a later shift word of the same category replaces it within the string. A new letteral string starts with no shifts in effect.</para>
-    <para role="status-note"><indexterm type="general"><primary>shift word</primary><secondary>scope, status of</secondary>
+    <para role="status-note" condition="status:checkpointed;also:historical;date:2005-02-11"><indexterm type="general"><primary>shift word</primary><secondary>scope, status of</secondary>
       </indexterm>This rule, with its scope bounded by the string, is checkpointed, and so is the way <valsi>ce'a</valsi> replaces shifts per category. Older accounts read shifts more broadly (see <xref linkend="appendix-changes" />).</para>
     <para>
       <indexterm type="general"><primary>shift</primary><secondary>single-letter</secondary>
@@ -706,7 +706,7 @@
       <jbophrase>su bu</jbophrase>
       as a letteral. But that is an artifact of the parser, not a rule.
     </para>
-    <para role="status-note">
+    <para role="status-note" condition="status:editorial;also:checkpointed,de-facto">
       <indexterm type="lojban-word"><primary>bu</primary><secondary>rules, status of</secondary>
       </indexterm>
       The

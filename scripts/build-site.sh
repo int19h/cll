@@ -110,7 +110,7 @@ if has html; then
 fi
 
 dest="$outdir/$version"
-if [ -z "${DIFFS_ONLY:-}" ]; then rm -rf "$dest"; fi
+if [ -z "${DIFFS_ONLY:-}" ]; then "$tools/safe-rm-tree.sh" --root "$outdir" "$dest"; fi
 mkdir -p "$dest"
 cd "$src"
 # Annotated comparison trees have no Git metadata. Resolve the edition's
@@ -133,16 +133,18 @@ else
 echo "==> [$version] formats: $formats"
 if has html; then
   echo "==> [$version] building xhtml_section_chunks + xhtml_no_chunks in $src"
-  rm -rf build/xhtml_section_chunks build/xhtml_section_chunks.done \
-         build/xhtml_no_chunks build/xhtml_no_chunks.done \
-         build/cll.xml build/cll_processed_xhtml.xml
+  mkdir -p "$src/build"
+  "$tools/safe-rm-tree.sh" --root "$src/build" "$src/build/xhtml_section_chunks" \
+    "$src/build/xhtml_section_chunks.done" "$src/build/xhtml_no_chunks" \
+    "$src/build/xhtml_no_chunks.done" "$src/build/cll.xml" \
+    "$src/build/cll_processed_xhtml.xml"
   for target in $(site_format_field html 4); do
     ./cll_build -n -T "$target"
   done
   [ -s build/xhtml_section_chunks/index.html ] || { echo "no section-chunks output" >&2; exit 1; }
   [ -s build/xhtml_no_chunks/index.html ]      || { echo "no no-chunks output" >&2; exit 1; }
 
-  rm -rf "$dest/xhtml_section_chunks" "$dest/xhtml_no_chunks"
+  "$tools/safe-rm-tree.sh" --root "$dest" "$dest/xhtml_section_chunks" "$dest/xhtml_no_chunks"
   cp -pr build/xhtml_section_chunks "$dest/xhtml_section_chunks"
   cp -pr build/xhtml_no_chunks      "$dest/xhtml_no_chunks"
   find "$dest" -name 'sed*' -type f -delete 2>/dev/null || true
@@ -204,7 +206,8 @@ fi  # DIFFS_ONLY
 make_diff() {
   local oldref="$1" outname="$2" oldlabel="$3"
   local d="$src/build/site_diff/$outname"
-  rm -rf "$d"; mkdir -p "$d"
+  mkdir -p "$src/build/site_diff"
+  "$tools/safe-rm-tree.sh" --root "$src/build/site_diff" "$d"; mkdir -p "$d"
   # a copy of the version's tree, without what the HTML build does not use
   tar -C "$src" --exclude=./.git --exclude=./build --exclude=./official \
       --exclude=./orig --exclude=./epub --exclude=./coverage -cf - . | tar -C "$d" -xf -
@@ -232,16 +235,16 @@ make_diff() {
   # file checks could stop a comparison build.
   ( cd "$d" && offline=no ./cll_build -n -T xhtml_nochunks )
   [ -s "$d/build/xhtml_no_chunks/index.html" ] || { echo "no diff output for $outname" >&2; exit 1; }
-  rm -rf "$dest/$outname"
+  "$tools/safe-rm-tree.sh" --root "$dest" "$dest/$outname"
   python3 "$tools/docbook-diff.py" finish "$d/build/xhtml_no_chunks/index.html" "$dest/$outname" \
     --old-label "$oldlabel" --new-label "$version" --assets ../xhtml_no_chunks/ \
     --stats "$d/build/dbdiff-stats.json"
-  rm -rf "$d"
+  "$tools/safe-rm-tree.sh" --root "$src/build/site_diff" "$d"
 }
 
 # The diffs are HTML pages that load their assets from xhtml_no_chunks/,
 # so only a version with html has them.
-rm -rf "$dest/diff_from_official" "$dest/diff_from_uncll" "$dest/diff_from_previous"
+"$tools/safe-rm-tree.sh" --root "$dest" "$dest/diff_from_official" "$dest/diff_from_uncll" "$dest/diff_from_previous"
 if has html; then
   if [ -n "$baseline" ]; then
     echo "==> [$version] diffing vs UnCLL baseline ($baseline)"
@@ -259,7 +262,7 @@ if has html; then
   elif [ -d "$dest/diff_from_uncll" ]; then
     # oldest published version: its predecessor is the UnCLL baseline
     echo "==> [$version] no previous release; mirroring diff_from_uncll as diff_from_previous"
-    rm -rf "$dest/diff_from_previous"
+    "$tools/safe-rm-tree.sh" --root "$dest" "$dest/diff_from_previous"
     cp -pr "$dest/diff_from_uncll" "$dest/diff_from_previous"
   fi
 else

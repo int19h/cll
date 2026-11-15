@@ -34,7 +34,7 @@ if [ -n "$latest" ]; then
 fi
 
 # Remove an earlier redirect when the site contains only prereleases.
-rm -rf "$site/latest"
+"$(dirname "${BASH_SOURCE[0]}")/safe-rm-tree.sh" --root "$site" "$site/latest"
 if [ -n "$latest" ]; then
   # GitHub Pages has no symlinks, so use a meta-refresh redirect.
   mkdir -p "$site/latest"

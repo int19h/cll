@@ -11,7 +11,7 @@ set -euo pipefail
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . "$here/site-versions.sh"
 t="$(mktemp -d)"
-trap 'rm -rf "$t"' EXIT
+trap '"$here/safe-rm-tree.sh" --root "$(dirname "$t")" "$t"' EXIT
 fails=0
 eq() { # <what> <expected> <actual>
   if [ "$2" = "$3" ]; then echo "ok   $1"; else
@@ -75,7 +75,7 @@ done
 # and makes the files of its formats, and gh and git are stubs that work
 # on a directory of fake releases.
 w="$t/bv"; mkdir -p "$w/scripts" "$w/bin" "$w/rel" "$w/log"
-cp "$here/build-versions.sh" "$here/site-versions.sh" "$here/docbook-diff.py" "$here/docbook-diff.xsl" "$here/docbook-diff-html5.xsl" "$here/docbook-diff-style.xsl" "$w/scripts/"
+cp "$here/build-versions.sh" "$here/safe-rm-tree.sh" "$here/site-versions.sh" "$here/docbook-diff.py" "$here/docbook-diff.xsl" "$here/docbook-diff-html5.xsl" "$here/docbook-diff-style.xsl" "$w/scripts/"
 cat > "$w/scripts/build-site.sh" <<'EOF'
 #!/bin/bash
 set -euo pipefail
@@ -402,10 +402,10 @@ eq "landing page lists only final releases" \
   '1.3.6</a> <span class="muted">(latest)</span>|1.3.5</a>' \
   "$(grep -o '[0-9][0-9.rc-]*</a>.*'  "$s/index.html" | sed 's|<div>$||' | paste -sd'|')"
 eq "latest is the final release" 'url=../1.3.6/' "$(grep -o 'url=[^"]*' "$s/latest/index.html")"
-rm -rf "$s/1.3.6"
+"$here/safe-rm-tree.sh" --root "$s" "$s/1.3.6"
 bash "$here/gen-site-index.sh" "$s" >/dev/null
 eq "latest skips prereleases" 'url=../1.3.5/' "$(grep -o 'url=[^"]*' "$s/latest/index.html")"
-rm -rf "$s/1.3.5"
+"$here/safe-rm-tree.sh" --root "$s" "$s/1.3.5"
 bash "$here/gen-site-index.sh" "$s" >/dev/null
 eq "no latest redirect when no final exists" no "$([ -e "$s/latest" ] && echo yes || echo no)"
 eq "only prereleases gives an empty final index" 1 "$(grep -c 'No final releases are available' "$s/index.html")"
@@ -444,7 +444,7 @@ eq "top page omits unavailable Prince" 0 "$(grep -c 'href="[^"]*/cll.pdf"' "$s/i
 # Run the real build-site script with stub renderers. This tests dispatch,
 # removal of old output, native installers, fresh Prince markers, and links.
 b="$t/bs"; mkdir -p "$b/src/scripts" "$b/src/xml" "$b/bin" "$b/tools"
-cp "$here/build-site.sh" "$here/site-versions.sh" "$b/tools/"
+cp "$here/build-site.sh" "$here/safe-rm-tree.sh" "$here/site-versions.sh" "$b/tools/"
 cat > "$b/bin/git" <<'EOF'
 #!/bin/bash
 exit 0

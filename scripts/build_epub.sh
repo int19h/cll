@@ -11,14 +11,16 @@ basedir="$1"
 builddir="$basedir/build"
 epubbuilddir="$builddir/epub"
 srcdir="$basedir/epub"
+tools="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-rm -rf $epubbuilddir/
-mkdir $epubbuilddir/
+mkdir -p "$builddir"
+"$tools/safe-rm-tree.sh" --root "$builddir" "$epubbuilddir"
+mkdir -p $epubbuilddir/
 
 # cp -pr epub/META-INF epub/content.opf epub/mimetype epub/toc.xhtml epub-temp
 cp -pr $srcdir/META-INF $srcdir/mimetype $epubbuilddir/
 cp -pr $builddir/epub-xhtml/* $epubbuilddir/
-rm -rf $epubbuilddir/dtd
+"$tools/safe-rm-tree.sh" --root "$epubbuilddir" "$epubbuilddir/dtd"
 # Kindle doesn't like svg
 rm -f $basedir/build/epub/media/chapter-2-diagram.svg
 

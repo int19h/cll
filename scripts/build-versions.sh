@@ -90,7 +90,8 @@ rows="$(site_rows "$tsv")"
 bs_sha="$(cat scripts/build-site.sh scripts/site-versions.sh scripts/docbook-diff.py scripts/docbook-diff.xsl scripts/docbook-diff-html5.xsl scripts/docbook-diff-style.xsl | sha256sum | cut -c1-64)"
 cache_tag="site-build-cache"
 dl="$(mktemp -d)"
-trap 'rm -rf "$dl"' EXIT
+safe_rm="$PWD/scripts/safe-rm-tree.sh"
+trap '"$safe_rm" --root "$(dirname "$dl")" "$dl"' EXIT
 
 # The initial snapshot selects build inputs. Before any asset changes,
 # read that release again. The tag endpoint does not
@@ -143,10 +144,10 @@ fetch() { # <tag> <name> <dir>
 # Unpack an archive into <out-dir>. Returns 1, with nothing left behind,
 # when the archive is damaged.
 unpack() { # <file> <ver>
-  rm -rf "$outdir/$2"
+  scripts/safe-rm-tree.sh --root "$outdir" "$outdir/$2"
   if ! tar -tzf "$1" >/dev/null || ! tar -xzf "$1" -C "$outdir"; then
     echo "::warning::$(basename "$1") is damaged"
-    rm -rf "$outdir/$2"
+    scripts/safe-rm-tree.sh --root "$outdir" "$outdir/$2"
     return 1
   fi
 }
@@ -259,7 +260,7 @@ while IFS=$'\t' read -r ver ref formats; do
       from=cache
       echo "==> [$ver] restored from $cache_tag/$archive"
     else
-      rm -rf "$outdir/$ver"
+      scripts/safe-rm-tree.sh --root "$outdir" "$outdir/$ver"
     fi
   fi
 
@@ -273,9 +274,9 @@ while IFS=$'\t' read -r ver ref formats; do
         fetch "$tag" "$archive" "$dl"
         unpack "$dl/$archive" "$ver" || { echo "the release archive $tag/$archive is damaged" >&2; exit 1; }
       else
-        rm -rf "$outdir/$ver"; mkdir -p "$outdir/$ver"
+        scripts/safe-rm-tree.sh --root "$outdir" "$outdir/$ver"; mkdir -p "$outdir/$ver"
       fi
-      rm -rf "$outdir/$ver"/diff_from_* "$outdir/$ver/BUILD-INFO"
+      scripts/safe-rm-tree.sh --root "$outdir/$ver" "$outdir/$ver/diff_from_official" "$outdir/$ver/diff_from_uncll" "$outdir/$ver/diff_from_previous" "$outdir/$ver/BUILD-INFO"
       for f in $(site_download_files "$SITE_ALL_FORMATS" "$ver"); do
         rm -f "$outdir/$ver/$f"
       done

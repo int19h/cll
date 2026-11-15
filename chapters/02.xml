@@ -266,7 +266,7 @@
       Lojban also has three
       <quote>semi-letters</quote>;
       the period, the comma and the apostrophe. The period represents a glottal stop or a pause; it is a required stoppage of the flow of air in the speech stream. The apostrophe sounds just like the English letter
-      <quote>h</quote>. Unlike a regular consonant, it is not found at the beginning or end of a word, nor is it found adjacent to a consonant; it is only found between two vowels. The comma has no sound associated with it, and is used to separate syllables that might ordinarily run together. It is not used in this chapter.
+      <quote>h</quote>. Unlike a regular consonant, it is not found at the beginning or end of a word, nor is it found adjacent to a consonant; it is only found between two vowels. The comma has no sound associated with it, and is used only to show the reader where a syllable ends. It is not used in this chapter.
     </para>
     <para><indexterm type="general"><primary>stress</primary><secondary>quick-tour version</secondary>
       </indexterm>Stress normally falls on the next-to-the-last syllable. When you count the syllables, skip each syllable whose vowel is <letteral>y</letteral>, and each syllable with no vowel at all, since these never have stress. Strictly, only the content words (brivla) must follow this rule: names can mark stress on another syllable, and the little structure words can have stress on any syllable or on none (see <xref linkend="chapter-phonology" />). A structure word with one syllable usually has no stress.</para>

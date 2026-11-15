@@ -153,7 +153,7 @@
         </para>
       </listitem>
       <listitem>
-        <para><indexterm type="general"><primary>comma</primary><secondary>change summary</secondary></indexterm>This change is <emphasis>this edition's choice</emphasis>, and it follows the working grammar. The comma is only an aid to pronunciation, and it cannot make an otherwise invalid letter sequence valid. This reverses several lessons of the first edition that depended on it.</para>
+        <para><indexterm type="general"><primary>comma</primary><secondary>change summary</secondary></indexterm>This change is <emphasis>established usage</emphasis>: it follows the working grammar of word forms, and camxes and jbotci implement it. The comma is only an aid to pronunciation. It cannot make an otherwise invalid letter sequence valid, and it does not change how a word is pronounced. In brivla and cmavo it can only mark a syllable break that the rules of word form already fix, while in a name it can show the intended syllable breaks. This reverses several lessons of the first edition that depended on the comma.</para>
         <para>The first edition allowed a comma to sound like an apostrophe, <phrase role="IPA">[h]</phrase>. But it also said that commas never distinguish words, and no official decision ever settled that conflict. The working grammar of word forms resolves it: it ignores commas entirely.</para>
         <para>
           The first edition also allowed three other uses of the comma. It let a comma force a division between syllables, or another grouping of syllables. It let names contain commas with a sound, as in
@@ -165,6 +165,16 @@
         <para>
           All of these devices are gone: spell the pronunciation that you want (see
           <xref linkend="chapter-phonology" />).
+        </para>
+      </listitem>
+      <listitem>
+        <para><indexterm type="general"><primary>syllabication</primary><secondary>change summary</secondary></indexterm>This change is <emphasis>established usage</emphasis>: it follows the working grammar of word forms, which fixes the rafsi, hyphens, and fu'ivla syllables of each word, and jbotci divides the words that it recognizes the same way. Each brivla and cmavo now has exactly one division into syllables (see <xref linkend="section-stress" />). A consonant is syllabic only where the word forms make it so, as in a fu'ivla, and the consonantal hyphen of a lujvo (<letteral>r</letteral> or <letteral>n</letteral>) or of a Stage 3 fu'ivla is a consonant, not a syllable of its own. The hyphen <letteral>y</letteral> of a lujvo is a vowel, and it forms its own syllable.</para>
+        <para>
+          The first edition called its syllabication rules conventional only. It let some brivla divide in more than one way, and a comma could show the choice:
+          <valsi>klezba</valsi> could be <quote>klez,ba</quote> or <quote>kle,zba</quote>,
+          <valsi>da'udja</valsi> could be <quote>da'UD,ja</quote> or <quote>da'U,dja</quote>, and
+          <valsi>bisydja</valsi> could be <quote>BI,syd,ja</quote> or <quote>BI,sy,dja</quote>. The <letteral>r</letteral> of
+          <valsi>sairgoi</valsi> could be pronounced syllabically, as <quote>sai,r,goi</quote>, or not, as <quote>sair,goi</quote>, and in principle any <letteral>l</letteral>, <letteral>m</letteral>, <letteral>n</letteral>, or <letteral>r</letteral> could be pronounced syllabically. The first edition also set off the hyphen of a Stage 3 fu'ivla with commas, as in <quote>lerf,r,djamo</quote>, and said that it need not be pronounced as a separate syllable. Under the grammar, these words divide as <quote>kle,zba</quote>, <quote>da'U,dja</quote>, <quote>BI,sy,dja</quote>, <quote>sair,goi</quote>, and <quote>ler,fr,djamo</quote>.
         </para>
       </listitem>
     </itemizedlist>

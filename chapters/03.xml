@@ -662,14 +662,16 @@
       </indexterm><indexterm type="general"><primary>syllable break</primary><secondary>contrasted with pause</secondary>
       </indexterm><indexterm type="general"><primary>syllable break</primary><secondary>representation in Lojban</secondary>
       </indexterm><indexterm type="general"><primary>comma</primary><secondary>definition of</secondary>
-      </indexterm>The comma, by contrast, is only a reading aid. It marks a syllable break within a word, usually one that is not obvious to the reader. Unlike the period, a comma must never be pronounced as a pause or a glottal stop, because that would split the word into two words. Between two vowels, a comma shows that the vowels belong to separate syllables, which are pronounced in one smooth flow. Any slight transition between them is a fact of pronunciation, not an extra phoneme. The comma has no sound of its own, and so no two Lojban words can differ only by the presence or placement of a comma.</para>
-    <para role="status-note" condition="status:editorial;also:de-facto,unsettled">
+      </indexterm>The comma, by contrast, is only a reading aid, and it has no sound of its own. It marks a syllable break within a word, usually one that is not obvious to the reader. Unlike the period, a comma must never be pronounced as a pause or a glottal stop, because that would split the word into two words. Nor does a comma change which vowel pairs a word may contain, or how a pair is pronounced: a pair that is not allowed without the comma is not allowed with it, and a pair that is allowed sounds the same either way. In content words and structural words (the brivla and cmavo described later in this chapter), the rules of word form allow only one division into syllables (see <xref linkend="section-stress" />), so a comma there can only mark a break that already exists. Writing <valsi>klama</valsi> as <quote>kla,ma</quote> shows the reader where its two syllables meet, but the word is the same without the comma, and in such words the comma is always redundant. Lojbanized names (cmevla) are freer, since a name need not divide into syllables at all. The Nuxalk word for the northeast wind, <phrase role="IPA">[spʰs]</phrase>, makes the valid Lojban name <cmevla>.sps.</cmevla>, although neither <letteral>s</letteral> nor <letteral>p</letteral> can be the nucleus of a Lojban syllable. (By the same reasoning, <cmevla>.t.</cmevla> is a valid name too, and it even has a dictionary entry, as a name given to cats. Take that as a bit of fun, not as a naming convention; the cats were not consulted.) Where a name does divide into syllables, a comma can show the reader where the breaks fall. In <xref linkend="example-random-id-RxtI" />, the spelling <quote>.me,iin.</quote> marks the division that the spelling <cmevla>.meiin.</cmevla> already decides. A comma cannot split a diphthong, and it cannot make an invalid sequence of letters valid. Because the comma adds no sound, no two Lojban words can differ only by the presence or placement of a comma.</para>
+    <para role="status-note" condition="status:de-facto;also:historical">
       <indexterm type="general"><primary>comma</primary><secondary>change from first edition</secondary>
       </indexterm>
-      If you want the
+      This treatment of the comma is established usage. The PEG word-form grammar, the working definition of Lojban word forms (see
+      <xref linkend="section-peg-grammar" />), ignores commas, and so do Lojban parsers such as camxes and jbotci. The first edition gave the comma more work, including a sound like that of the apostrophe,
+      <phrase role="IPA">[h]</phrase>; its conventions are described in
+      <xref linkend="appendix-changes" />. If you want the
       <phrase role="IPA">[h]</phrase>
-      sound, write the apostrophe. Older conventions were different (see
-      <xref linkend="appendix-changes" />).
+      sound, write the apostrophe.
     </para>
 
     <para>
@@ -677,7 +679,7 @@
       </indexterm>
       <indexterm type="general"><primary>comma</primary><secondary>main use of</secondary>
       </indexterm>
-      Otherwise, a comma is usually only used to clarify the presence of syllabic
+      Otherwise, a comma is usually used to show where a syllabic
       <letteral>l</letteral>
       ,
       <letteral>m</letteral>
@@ -685,7 +687,7 @@
       <letteral>n</letteral>
       , or
       <letteral>r</letteral>
-      (discussed later). Commas are never required.
+      (discussed later) falls. A consonant is syllabic only where the rules of word form make it so, as in a fu'ivla: in <valsi>bangrkore'a</valsi>, the <letteral>r</letteral> is the nucleus of the syllable <morphology>gr</morphology>, and the spelling <quote>ban,gr,kore'a</quote> only shows that existing division. Commas are never required.
     </para>
     <para>
       <indexterm type="general"><primary>period</primary><secondary>example of</secondary>
@@ -1001,7 +1003,8 @@
       <phrase role="IPA">[n]</phrase>
       , and
       <phrase role="IPA">[r]</phrase>
-      respectively. They normally have only a limited distribution, appearing in Lojbanized names and borrowings, although in principle any
+      respectively. They appear only in Lojbanized names and in borrowings (fu'ivla and the lujvo built from them). <phrase role="status-mark" condition="status:de-facto;also:historical">In a fu'ivla, the rules of word form decide which consonants are syllabic</phrase> (see
+      <xref linkend="section-fuhivla" />), and an
       <letteral>l</letteral>
       ,
       <letteral>m</letteral>
@@ -1009,7 +1012,7 @@
       <letteral>n</letteral>
       , or
       <letteral>r</letteral>
-      may be pronounced syllabically. If a syllabic consonant appears next to a
+      anywhere else in a brivla or cmavo is an ordinary consonant. Names have more freedom. If a syllabic consonant appears next to a
       <letteral>l</letteral>
       ,
       <letteral>m</letteral>
@@ -2103,11 +2106,18 @@
   </section>
   <section xml:id="section-stress">
     <title><anchor xml:id="c3s9" />Syllabication and stress</title>
-    <para>      <indexterm type="general"><primary>syllabication</primary><secondary>definition of</secondary>      </indexterm>      A Lojban word has one syllable for each of its vowels, diphthongs, and syllabic consonants (referred to simply as      <quote>vowels</quote>      for the purposes of this section). Syllabication rules determine which of the consonants separating two vowels belong to the preceding vowel and which to the following vowel. These rules are conventional only; the phonetic facts of the matter about how utterances are syllabified in any language are always very complex.    </para>
+    <para>      <indexterm type="general"><primary>syllabication</primary><secondary>definition of</secondary>      </indexterm>      A Lojban word has one syllable for each of its vowels, diphthongs, and syllabic consonants (referred to simply as      <quote>vowels</quote>      for the purposes of this section). Syllabication rules determine which of the consonants separating two vowels belong to the preceding vowel and which to the following vowel. In brivla and cmavo, the rules of word form settle this, so each such word has exactly one division into syllables; names have more freedom, as described below. The division belongs to the form of the word, and it makes no claim about fine phonetics: the phonetic facts of the matter about how utterances are syllabified in any language are always very complex.    </para>
     <para>
       <indexterm type="general"><primary>syllabication</primary><secondary>rules for</secondary>
       </indexterm>
-      A single consonant always belongs to the following vowel. A consonant pair is normally divided between the two vowels; however, if the pair constitute a valid initial consonant pair, they are normally both assigned to the following vowel. A consonant triple is normally divided between the first and second consonants. If the whole triple could begin a fu'ivla, as <morphology>str</morphology> does in <valsi valid="maybe">tarmkastra</valsi>, it goes with the following vowel instead; and in a fu'ivla, the first two consonants can form a consonantal syllable of their own, as <morphology>rm</morphology> does in <valsi valid="maybe">tarmkani</valsi> (see <xref linkend="section-fuhivla" />). Apostrophes and commas, of course, also represent syllable breaks.
+      A single consonant always belongs to the following vowel. A consonant pair is divided between the two vowels, unless the pair is a valid initial consonant pair; then both consonants go with the following vowel. A consonant triple is divided between the first and second consonants. If the whole triple could begin a fu'ivla, as <morphology>str</morphology> does in <valsi valid="maybe">tarmkastra</valsi>, it goes with the following vowel instead; and in some fu'ivla, the rules of word form make the first two consonants a consonantal syllable of their own, as <morphology>rm</morphology> does in <valsi valid="maybe">tarmkani</valsi> (see <xref linkend="section-fuhivla" />). A consonantal hyphen, <letteral>r</letteral> or <letteral>n</letteral>, that joins two rafsi in a lujvo is a consonant like any other, and these rules place it; the hyphen <letteral>y</letteral> is a vowel, and it forms a syllable like any other vowel. An apostrophe always marks a syllable break. In a brivla or cmavo, a comma can only mark a break that these rules already put there.
+    </para>
+    <para role="status-note" condition="status:de-facto;also:historical">
+      <indexterm type="general"><primary>syllabication</primary><secondary>change from first edition</secondary>
+      </indexterm>
+      This single division is established usage. The PEG word-form grammar (see
+      <xref linkend="section-peg-grammar" />) fixes the parts of each brivla and cmavo: the rafsi of a lujvo, its hyphens, and the syllables of a fu'ivla, including any consonantal syllables. The jbotci parser divides the words that it recognizes into syllables in the same way. The first edition called its syllabication rules conventional only, and it let some words divide in more than one way, with a comma to show the choice; see
+      <xref linkend="appendix-changes" />.
     </para>
     <para>
       <indexterm type="general"><primary>syllabication</primary><secondary>and names</secondary>
@@ -2156,35 +2166,33 @@
       <pronunciation>
         <jbo>sairgoi</jbo>
         <jbo role="pronunciation">sair,goi</jbo>
-        <jbo role="pronunciation">sai,r,goi</jbo>
-
       </pronunciation>
     </example>
     <para role="indent">
-      This word contains the consonant pair
+      This lujvo is built from the rafsi
+      <rafsi>sai</rafsi>
+      and
+      <rafsi>goi</rafsi>, joined by the hyphen
+      <letteral>r</letteral>. The hyphen is a consonant, not a syllable of its own. The pair
       <morphology>rg</morphology>
-      ; the
+      is not a valid initial pair, so it is divided, and the
       <letteral>r</letteral>
-      may be pronounced syllabically or not.
+      closes the first syllable.
     </para>
     <example role="pronunciation-example" xml:id="example-random-id-nK5r">
       <title><anchor xml:id="c3e9d5" /></title>
 
       <pronunciation>
         <jbo>klezba</jbo>
-        <jbo role="pronunciation">klez,ba</jbo>
         <jbo role="pronunciation">kle,zba</jbo>
       </pronunciation>
     </example>
     <para role="indent">
-      This word contains the permissible initial pair
-      <morphology>zb</morphology>
-      , and so may be syllabicated either between
-      <letteral>z</letteral>
+      This lujvo is built from the rafsi
+      <rafsi>kle</rafsi>
       and
-      <letteral>b</letteral>
-      or before
-      <morphology>zb</morphology>.
+      <rafsi>zba</rafsi>. It contains the permissible initial pair
+      <morphology>zb</morphology>, so both consonants go with the following vowel, and the syllable break falls exactly at the boundary between the two rafsi.
     </para>
     <para>
       <indexterm type="general"><primary>stressed vowel</primary><secondary>compared with stressed syllable</secondary>
@@ -2342,7 +2350,6 @@
       <pronunciation>
         <jbo>bisydja</jbo>
         <jbo role="pronunciation">BI,sy,dja</jbo>
-        <jbo role="pronunciation">BI,syd,ja</jbo>
       </pronunciation>
     </example>
     <para role="indent">
@@ -2363,11 +2370,10 @@
 
       <pronunciation>
         <jbo>da'udja</jbo>
-        <jbo role="pronunciation">da'UD,ja</jbo>
         <jbo role="pronunciation">da'U,dja</jbo>
       </pronunciation>
     </example>
-    <para role="indent">  These two syllabications sound the same to a Lojban listener &ndash; the association of unbuffered consonants in syllables is of no import in recognizing the word.</para>
+    <para role="indent">This lujvo is built from the rafsi <rafsi>da'u</rafsi> and <rafsi>dja</rafsi>. The pair <morphology>dj</morphology> is a valid initial pair, and it begins the rafsi <rafsi>dja</rafsi>, so it goes with the following vowel.</para>
     <example role="pronunciation-example" xml:id="example-random-id-Ki4a">
       <title>
         <indexterm type="general"><primary>syllabication</primary><secondary>variants of</secondary>

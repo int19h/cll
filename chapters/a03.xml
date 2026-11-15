@@ -25,8 +25,20 @@
         <listitem><para>No official body voted on the rule. The entry states its class of evidence, which is a working document of the definition effort, implementation by the current tools that this edition surveyed, attested usage, or a combination. No single class proves consensus by itself.</para></listitem>
       </varlistentry>
       <varlistentry>
+        <term>Proposal</term>
+        <listitem><para>A written proposal states the rule, but usage has not taken it up, and no official body has adopted it.</para></listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>Open question</term>
+        <listitem><para>Sources, parsers or speakers disagree about the rule, and there is no final resolution. Where this edition makes a choice in order to teach the point, that choice does not settle the question for the language.</para></listitem>
+      </varlistentry>
+      <varlistentry>
         <term>This edition's choice</term>
         <listitem><para>This edition adopts a convention where the official texts are silent or unsettled. The entry always says so.</para></listitem>
+      </varlistentry>
+      <varlistentry>
+        <term>First-edition rule</term>
+        <listitem><para>The first edition taught the rule, and the entry records it as history.</para></listitem>
       </varlistentry>
     </variablelist>
     <para>In 2007, the LLG adopted the article reform as its working baseline. It made one promise at that time, and that promise extends in spirit to everything here: text written to the rules of the first edition is <emphasis>not incorrect</emphasis>. It is older Lojban. This appendix exists so that readers can move between the two.</para>

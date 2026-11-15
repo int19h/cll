@@ -2293,7 +2293,7 @@
       An unquantified description is a constant, and a quantifier applies only when the speaker actually says one (see
       <xref linkend="section-quantified-descriptions" />).
     </para>
-    <para role="status-note">
+    <para role="status-note" condition="status:llg-ratified;also:historical;date:2020-04-18">
       <indexterm type="general"><primary>implicit quantifiers</primary><secondary>abolition of, in mekso contexts</secondary>
       </indexterm>
       This rule is part of the ratified reform of the articles. Older texts follow a different convention here (see
@@ -3350,7 +3350,7 @@
       <valsi>va'a</valsi>
       , even though semantically none is needed or wanted.
     </para>
-    <para role="status-note"><indexterm type="lojban-word"><primary>tu'o</primary><secondary>contrasted with mo'e zo'e</secondary>
+    <para role="status-note" condition="status:editorial"><indexterm type="lojban-word"><primary>tu'o</primary><secondary>contrasted with mo'e zo'e</secondary>
       </indexterm>Sometimes, though, an operand is not a mere grammatical filler but a genuinely <emphasis>unspecified</emphasis> quantity: <quote>some number or other</quote>. Such an operand can be expressed with <jbophrase>mo'e zo'e</jbophrase>, the elliptical sumti converted to an operand (see <xref linkend="section-lojban-within-mekso" />). <valsi>tu'o</valsi>, by contrast, fills a truly vacuous slot, as here.</para>
     <para>
       <indexterm type="general"><primary>exponential notation</primary><secondary>with &quot;gei&quot;</secondary>

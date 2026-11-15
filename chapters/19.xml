@@ -1482,7 +1482,7 @@
     </para>
     <para>The metalinguistic erasers <valsi>si</valsi>, <valsi>sa</valsi>, and <valsi>su</valsi>, discussed in <xref linkend="section-erasure" />, do not operate in text between <valsi>lo'u</valsi> and <valsi>le'u</valsi>. In fact, <emphasis>nothing</emphasis> operates inside a <jbophrase>lo'u…le'u</jbophrase> quotation: the very first <valsi>le'u</valsi> ends it, unconditionally. There is no way to smuggle a <valsi>le'u</valsi> inside, not even with <valsi>zo</valsi>.</para>
     <para>As a result, <jbophrase>lo'u…le'u</jbophrase> quotations cannot nest, and a closed quotation cannot be reopened. If you want to add more quoted words, join a second quotation to the first with <valsi>joi</valsi>. If the text you want to quote itself contains <valsi>le'u</valsi>, use <valsi>zoi</valsi> instead (see <xref linkend="section-more-quotations" />). Note that <valsi>le'u</valsi> is not an elidable terminator; it is required.</para>
-    <para role="status-note">
+    <para role="status-note" condition="status:checkpointed;date:2005-02-11">
       <indexterm type="general"><primary>lo'u</primary><secondary>rules, status of</secondary>
       </indexterm>
       The
@@ -1715,7 +1715,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent">Using <valsi>la'o</valsi> for all names rather than Lojbanizing, however, makes for very cumbersome text. A rough equivalent of <valsi>la'o</valsi> might be <jbophrase>la me zoi</jbophrase>. Here <valsi>me</valsi> turns the <valsi>zoi</valsi> quotation into a selbri meaning <quote>is among the referents of the quoted thing</quote>, and then <valsi>la</valsi> builds a name from that selbri (see <xref linkend="chapter-selbri" /> for <valsi>me</valsi>).</para>
-    <para role="status-note">
+    <para role="status-note" condition="status:checkpointed;date:2005-02-11">
       <indexterm type="general"><primary>zoi</primary><secondary>delimiter rules, status of</secondary>
       </indexterm>
       The
@@ -2300,7 +2300,7 @@
       eats
       <jbophrase>cmene</jbophrase>, because there is no leftover half-quotation for it to trim. So the sentence collapses.
     </para>
-    <para role="status-note">
+    <para role="status-note" condition="status:de-facto">
       Modern Lojban parsers implement
       <valsi>si</valsi>
       erasure exactly as described here.
@@ -2373,7 +2373,7 @@
       <valsi>sa</valsi>
       asks only that the following word be a starting marker of the same kind (here, any cmavo of selma'o LE), not that it be the same word.
     </para>
-    <para role="status-note">
+    <para role="status-note" condition="status:unsettled;also:proposed">
       <indexterm type="general"><primary>sa</primary><secondary>unsettled status of</secondary>
       </indexterm>
       The word
@@ -2422,7 +2422,7 @@
       <jbophrase>susu</jbophrase>
       abandons the whole discussion.
     </para>
-    <para role="status-note">
+    <para role="status-note" condition="status:de-facto;also:unsettled">
       <indexterm type="general"><primary>su</primary><secondary>status of</secondary>
       </indexterm>
       The boundary rule above is de facto, and implementations are uneven. The standard camxes grammar erases back to the boundary and keeps the boundary, as described. But at least one other current parser mishandles the boundary itself. Erasure from the start of a text works everywhere (see
@@ -2456,7 +2456,7 @@
       has no grammatical significance: it can appear anywhere at all in a Lojban sentence except in the middle of a word.
     </para>
     <para>Even the word-level machinery of this chapter treats <valsi>.y.</valsi> as if it were silence. A hesitation between a word and an erasing <valsi>si</valsi>, for example, changes nothing. The single exception is the letteral <valsi>.ybu</valsi> (the name of the letter <letteral>y</letteral>), which that machinery recognizes as a unit before anything else happens (see <xref linkend="chapter-letterals" />).</para>
-    <para role="status-note">This<indexterm type="general"><primary>y</primary><secondary>word-level invisibility, status</secondary>
+    <para role="status-note" condition="status:checkpointed;date:2005-02-11">This<indexterm type="general"><primary>y</primary><secondary>word-level invisibility, status</secondary>
       </indexterm> invisibility of <valsi>.y.</valsi> to the word-level machinery is checkpointed, and so is the <valsi>.ybu</valsi> exception. The checkpoint includes even one consequence: <valsi>zo</valsi> cannot quote <valsi>.y.</valsi> at all.</para>
   </section>
   <section xml:id="section-faho">
@@ -2494,7 +2494,7 @@
         <para>A <valsi>zei</valsi> binds it into a compound.</para>
       </listitem>
     </itemizedlist>
-    <para role="status-note">
+    <para role="status-note" condition="status:checkpointed;date:2005-02-11">
       <indexterm type="general"><primary>fa'o</primary><secondary>status of</secondary>
       </indexterm>
       The
@@ -2597,7 +2597,7 @@
     </itemizedlist>
     <para>The frozen rules for each word and the uniform principle agree almost everywhere, and where they agree, the principle merely restates settled material. One corner is genuinely contested: whether <valsi>bu</valsi> can bind a preceding <valsi>ba'e</valsi> (see <xref linkend="chapter-letterals" />). Treat <jbophrase>ba'e bu</jbophrase> and similar exotica as curiosities, not tools.</para>
     <para>The metaphor of a <quote>single word</quote> has one more limit. A quotation still remembers the selma'o of the word that formed it: ZO for a <valsi>zo</valsi> quote, ZOI for <valsi>zoi</valsi> and <valsi>la'o</valsi>, and LOhU and LEhU for the two ends of a <jbophrase>lo'u…le'u</jbophrase> quote. So rules that match on selma'o can still work.</para>
-    <para role="status-note">
+    <para role="status-note" condition="status:editorial;also:checkpointed,unsettled">
       <indexterm type="general"><primary>magic words</primary><secondary>status of interaction rules</secondary>
       </indexterm>
       The uniform principle is a later synthesis by the community, and this edition adopts it. The frozen rules state each word separately, and

@@ -23,6 +23,7 @@
 set -u
 
 cd "$(dirname "$(readlink -f "$0")")/.."
+safe_rm_tree="scripts/safe-rm-tree.sh"
 
 upstream_url="https://github.com/lojban/cll.git"
 upstream_ref="docbook-prince"
@@ -67,7 +68,8 @@ in_container() { # <host-tree> <command...>
 # produced the output (the historical cll_build can exit 0 on failure).
 build_nochunks() { # <host-tree> <label>
   local tree="$1" label="$2"
-  rm -rf "$tree/build/xhtml_no_chunks" "$tree/build/xhtml_no_chunks.done" \
+  mkdir -p "$tree/build"
+  "$safe_rm_tree" --root "$tree/build" "$tree/build/xhtml_no_chunks" "$tree/build/xhtml_no_chunks.done" \
          "$tree/build/cll.xml" "$tree/build/cll_processed_xhtml.xml"
   in_container "$tree" "./cll_build -n -T xhtml_nochunks" \
     || die "$label build failed"
@@ -116,7 +118,7 @@ build_nochunks "." "local"
 # ---- normalize and diff (same pipeline as scripts/diff_official) ----
 tempdir=./build/diff_from_upstream
 type=xhtml_no_chunks
-rm -rf "$tempdir"                       # clear ALL stale output, incl. difference*.html
+"$safe_rm_tree" --root ./build "$tempdir"  # clear ALL stale output, incl. difference*.html
 mkdir -p "$tempdir"
 target_dir_old=$tempdir/diff_old_$type
 target_dir_new=$tempdir/diff_new_$type

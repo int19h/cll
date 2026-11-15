@@ -24,10 +24,13 @@ class MakefileTests(unittest.TestCase):
             old = [self.build / 'cll_processed_xhtml.xml', self.build / 'build-metadata']
         command = ['make', '--no-print-directory', '-f',
                    str(makefile or SOURCE / 'scripts/Makefile'),
-                   f'builddir={self.build}', 'chapters=chapters/01.xml']
+                   f'builddir={self.build}', 'ALLOW_OUTSIDE_BUILDDIR=yes',
+                   'chapters=chapters/01.xml']
         for path in old:
             command.extend(['-o', str(path)])
         command.extend(map(str, args))
+        if env is None:
+            env = dict(os.environ, PWD=str(SOURCE))
         result = subprocess.run(
             command, cwd=SOURCE, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
             env=env)
@@ -128,10 +131,199 @@ html_check:
             self.assertEqual((archive / 'cll-xhtml_no_chunks/index.html').read_text(), 'coverage HTML')
             self.assertFalse((archive / 'cll-xhtml_no_chunks/sw.js').exists())
 
+    def test_bad_builddir_stops_before_any_recipe(self):
+        # Parse-time guards (issue #271): no recipe line may print or run.
+        for bad in ('', '/', str(self.root / 'elsewhere')):
+            with self.subTest(builddir=bad):
+                result = subprocess.run(
+                    ['make', '--no-print-directory', '-f',
+                     str(SOURCE / 'scripts/Makefile'),
+                     f'builddir={bad}', 'chapters=chapters/01.xml',
+                     'xhtml_nochunks'],
+                    cwd=SOURCE, text=True, stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT)
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                self.assertIn('builddir', result.stdout)
+                self.assertNotIn('scripts/merge.sh', result.stdout)
+                self.assertNotIn('mkdir -p', result.stdout)
+        for variable in ('copydir=/', 'covcopydir=/', 'epubnavdir=/tmp'):
+            with self.subTest(variable=variable):
+                result = subprocess.run(
+                    ['make', '--no-print-directory', '-f',
+                     str(SOURCE / 'scripts/Makefile'),
+                     'builddir=build', variable,
+                     'chapters=chapters/01.xml', 'xhtml_nochunks'],
+                    cwd=SOURCE, text=True, stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT)
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                self.assertNotIn('scripts/merge.sh', result.stdout)
+
+    def make_in_scratch_checkout(self, checkout, *args, env=None, builddir='build'):
+        if env is None:
+            env = dict(os.environ, PWD=str(checkout))
+        return subprocess.run(
+            ['make', '--no-print-directory', '-f',
+             str(SOURCE / 'scripts/Makefile'), f'PWD={checkout}',
+             f'builddir={builddir}', 'chapters=chapters/01.xml', *args],
+            cwd=checkout, text=True, stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT, env=env)
+
+    def test_linked_build_folder_cannot_reach_the_checkout(self):
+        # Round 2 (Astra R1): the guard resolves links before clean walks
+        # the build folder, so build -> ., build -> .. and a link to the
+        # home folder all stop at parse time and the source file survives.
+        for name in ('dot', 'dotdot', 'home'):
+            with self.subTest(link=name):
+                scratch = self.root / f'link-{name}'
+                checkout = scratch / 'co'
+                (checkout / 'chapters').mkdir(parents=True)
+                source = checkout / 'chapters/source.xml'
+                source.write_text('source')
+                env = None
+                if name == 'dot':
+                    target = '.'
+                elif name == 'dotdot':
+                    target = '..'
+                else:
+                    fake_home = scratch / 'home'
+                    fake_home.mkdir()
+                    target = str(fake_home)
+                    env = dict(os.environ, HOME=str(fake_home))
+                (checkout / 'build').symlink_to(target, target_is_directory=True)
+                result = self.make_in_scratch_checkout(checkout, 'clean', env=env)
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                self.assertEqual(source.read_text(), 'source')
+
+    def test_linked_build_folder_to_a_separate_folder_still_works(self):
+        # The supported setup: build/ links to a separate folder, as on
+        # /build. clean empties that folder and leaves the checkout alone.
+        checkout = self.root / 'linked-co'
+        (checkout / 'chapters').mkdir(parents=True)
+        source = checkout / 'chapters/source.xml'
+        source.write_text('source')
+        real_build = self.root / 'linked-real-build'
+        real_build.mkdir()
+        junk = real_build / 'junk.pdf'
+        junk.write_text('junk')
+        dictionary = real_build / 'jbovlaste_fixture.xml'
+        dictionary.write_text('keep')
+        (checkout / 'build').symlink_to(real_build, target_is_directory=True)
+        result = self.make_in_scratch_checkout(checkout, 'clean')
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertFalse(junk.exists())
+        self.assertEqual(dictionary.read_text(), 'keep')
+        self.assertEqual(source.read_text(), 'source')
+
+    def scratch_checkout(self, name):
+        checkout = self.root / name
+        (checkout / 'chapters').mkdir(parents=True)
+        source = checkout / 'chapters/source.xml'
+        source.write_text('source')
+        return checkout, source
+
+    def test_build_link_into_the_source_tree_is_refused(self):
+        # Round 3 (both reviewers, REAL): build -> chapters, and the same
+        # through coverage/build, stop before clean deletes a source.
+        checkout, source = self.scratch_checkout('link-inside-co')
+        (checkout / 'build').symlink_to('chapters', target_is_directory=True)
+        result = self.make_in_scratch_checkout(checkout, 'clean')
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn('points into the source tree', result.stdout)
+        self.assertEqual(source.read_text(), 'source')
+
+        checkout, source = self.scratch_checkout('covlink-inside-co')
+        (checkout / 'build').mkdir()
+        (checkout / 'coverage').mkdir()
+        (checkout / 'coverage/build').symlink_to(
+            '../chapters', target_is_directory=True)
+        result = self.make_in_scratch_checkout(checkout, 'clean')
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn('points into the source tree', result.stdout)
+        self.assertEqual(source.read_text(), 'source')
+
+    def test_pwd_that_disagrees_with_the_working_folder_stops(self):
+        checkout, source = self.scratch_checkout('pwd-co')
+        (checkout / 'build').mkdir()
+        decoy = self.root / 'pwd-decoy'
+        (decoy / 'build').mkdir(parents=True)
+        marker = decoy / 'build/marker.epub'
+        marker.write_text('keep')
+        env = dict(os.environ, PWD=str(decoy))
+        result = subprocess.run(
+            ['make', '--no-print-directory', '-f',
+             str(SOURCE / 'scripts/Makefile'), 'builddir=build',
+             'chapters=chapters/01.xml', 'clean'],
+            cwd=checkout, text=True, stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT, env=env)
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertIn('does not match the working folder', result.stdout)
+        self.assertEqual(marker.read_text(), 'keep')
+        self.assertEqual(source.read_text(), 'source')
+
+    def test_resolved_build_folder_with_space_or_glob_is_refused(self):
+        # Round 3 (Astra L2): a link target with a space or a wildcard
+        # must not split or expand in the cleanup recipes.
+        checkout, source = self.scratch_checkout('space-co')
+        (checkout / 'coverage/build').mkdir(parents=True)
+        external = self.root / 'external chapters'
+        external.mkdir()
+        junk = external / 'junk.pdf'
+        junk.write_text('junk')
+        (checkout / 'build').symlink_to(external, target_is_directory=True)
+        result = self.make_in_scratch_checkout(
+            checkout, 'clean', builddir='coverage/build')
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertEqual(source.read_text(), 'source')
+        self.assertEqual(junk.read_text(), 'junk')
+
+        checkout, source = self.scratch_checkout('glob-co')
+        (checkout / 'coverage/build').mkdir(parents=True)
+        starred = self.root / 'build*'
+        starred.mkdir()
+        secret = self.root / 'build-secret'
+        secret.mkdir()
+        marker = secret / 'marker.pdf'
+        marker.write_text('keep')
+        (checkout / 'build').symlink_to(starred, target_is_directory=True)
+        result = self.make_in_scratch_checkout(
+            checkout, 'clean', builddir='coverage/build')
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertEqual(source.read_text(), 'source')
+        self.assertEqual(marker.read_text(), 'keep')
+
+    def test_guard_cannot_be_split_or_overridden(self):
+        # Round 2 (Opus L1/L2, Astra L3): two-word folders and command-line
+        # assignments to the guard's own variables must not get through.
+        cases = [
+            ['make', '--no-print-directory', '-f', str(SOURCE / 'scripts/Makefile'),
+             'builddir=build /etc', 'chapters=chapters/01.xml', 'clean'],
+            ['make', '--no-print-directory', '-f', str(SOURCE / 'scripts/Makefile'),
+             'builddir=build', 'copydir=/a /b', 'chapters=chapters/01.xml', 'clean'],
+            ['make', '--no-print-directory', '-f', str(SOURCE / 'scripts/Makefile'),
+             'builddir=/etc', '_builddir_r=build', 'chapters=chapters/01.xml', 'clean'],
+            ['make', '--no-print-directory', '-f', str(SOURCE / 'scripts/Makefile'),
+             'builddir=/etc', '_defbuild_r=/etc', '_reject_outside=yes',
+             'chapters=chapters/01.xml', 'clean'],
+            ['make', '--no-print-directory', '-f', str(SOURCE / 'scripts/Makefile'),
+             f'builddir={SOURCE}', 'ALLOW_OUTSIDE_BUILDDIR=yes',
+             '_checkout_r=/nonexistent', '_home_r=/nonexistent',
+             '_reject_forbidden=yes', 'chapters=chapters/01.xml', 'clean'],
+            ['make', '--no-print-directory', '-f', str(SOURCE / 'scripts/Makefile'),
+             'builddir=/etc', '_clean_dirs=build', 'chapters=chapters/01.xml', 'clean'],
+        ]
+        for command in cases:
+            with self.subTest(command=command[4:-2]):
+                result = subprocess.run(
+                    command, cwd=SOURCE, text=True, stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    env=dict(os.environ, PWD=str(SOURCE)))
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+
     def test_mobi_target_is_removed(self):
         result = subprocess.run(
             ['make', '--no-print-directory', '-f', str(SOURCE / 'scripts/Makefile'),
-             f'builddir={self.build}', 'chapters=chapters/01.xml', 'mobi'],
+             f'builddir={self.build}', 'ALLOW_OUTSIDE_BUILDDIR=yes',
+             'chapters=chapters/01.xml', 'mobi'],
             cwd=SOURCE, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("No rule to make target 'mobi'", result.stdout)
@@ -204,7 +396,8 @@ html_check:
                 self.assertNotIn('is up to date', output)
 
     def test_clean_keeps_the_epubcheck_install(self):
-        # Make reads PWD from the environment, not from the process cwd.
+        # The checkout is make's working folder (CURDIR). Run in the
+        # scratch root; the decoy tree outside it is never walked.
         coverage = self.root / 'coverage/build'
         coverage.mkdir(parents=True)
         gone = coverage / 'gone.pdf'
@@ -222,16 +415,12 @@ html_check:
         work.write_text('working copy')
         outside = Path(tempfile.mkdtemp(prefix='cll-make-outside-'))
         self.addCleanup(lambda: shutil.rmtree(outside, ignore_errors=True))
-        # The environment points PWD at a decoy checkout with its own build/.
-        # Only the command-line PWD keeps clean inside the temporary root, so
-        # this file is deleted if that argument is ever dropped.
         (outside / 'build').mkdir()
         (outside / 'coverage/build').mkdir(parents=True)
         survivor = outside / 'build/survivor.epub'
         survivor.write_text('keep')
-        env = os.environ.copy()
-        env['PWD'] = str(outside)
-        self.make(f'PWD={self.root}', 'clean', env=env)
+        result = self.make_in_scratch_checkout(self.root, 'clean')
+        self.assertEqual(result.returncode, 0, result.stdout)
         self.assertEqual(jar.read_text(), 'jar')
         self.assertEqual(stamp.read_text(), 'abc\n')
         self.assertFalse(other.exists())

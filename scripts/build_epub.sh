@@ -23,16 +23,17 @@ export PUBLISHER_DISCLAIMER="$(read_var PUBLISHER_DISCLAIMER)"
 export REVISER="$(read_var REVISER)"
 export AUTHOR="John Woldemar Cowan"
 brand="ruby $basedir/scripts/epub_branding.rb"
+safe_rm_tree="$basedir/scripts/safe-rm-tree.sh"
 
-rm -rf $epubbuilddir/
+"$safe_rm_tree" --root "$builddir" "$epubbuilddir"
 mkdir $epubbuilddir/
 
 # cp -pr epub/META-INF epub/content.opf epub/mimetype epub/toc.xhtml epub-temp
 cp -pr $srcdir/META-INF $srcdir/mimetype $epubbuilddir/
 cp -pr $builddir/epub-xhtml/* $epubbuilddir/
-rm -rf $epubbuilddir/dtd
+"$safe_rm_tree" --root "$epubbuilddir" "$epubbuilddir/dtd"
 # Keep the ConTeXt renderer's source files out of the reader package.
-rm -rf "$epubbuilddir/assets/context"
+"$safe_rm_tree" --root "$epubbuilddir" "$epubbuilddir/assets/context"
 
 # Each content page: drop scripts, rename lists, and write the ePub contract.
 html_pages=()

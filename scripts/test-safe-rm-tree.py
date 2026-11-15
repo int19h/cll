@@ -104,6 +104,62 @@ class SafeRmTreeTests(unittest.TestCase):
         self.assertTrue(leaf.exists())
         self.assertTrue((sibling / 'sub/file.txt').exists())
 
+    def make_repo(self, name):
+        repo = self.base / name
+        (repo / 'chapters').mkdir(parents=True)
+        (repo / '.git').write_text('gitdir: elsewhere')
+        (repo / 'chapters/source.xml').write_text('source')
+        return repo
+
+    def test_root_inside_a_work_tree_must_be_its_build_folder(self):
+        # Round 3: a build link into the source tree must not become a
+        # delete root, through any caller.
+        linked = self.make_repo('linked-repo')
+        (linked / 'build').symlink_to('chapters', target_is_directory=True)
+        self.assert_refused('--root', linked / 'build',
+                            linked / 'build/source.xml')
+        self.assertEqual((linked / 'chapters/source.xml').read_text(), 'source')
+
+        dotted = self.make_repo('dotted-repo')
+        (dotted / 'build').symlink_to('.', target_is_directory=True)
+        self.assert_refused('--root', dotted / 'build',
+                            dotted / 'build/chapters')
+        self.assertEqual((dotted / 'chapters/source.xml').read_text(), 'source')
+
+        direct = self.make_repo('direct-repo')
+        self.assert_refused('--root', direct / 'chapters',
+                            direct / 'chapters/source.xml')
+        self.assertEqual((direct / 'chapters/source.xml').read_text(), 'source')
+
+        other = self.make_repo('other-repo')
+        via_other = self.make_repo('via-other-repo')
+        (via_other / 'build').symlink_to(other, target_is_directory=True)
+        self.assert_refused('--root', via_other / 'build',
+                            via_other / 'build/chapters')
+        self.assertEqual((other / 'chapters/source.xml').read_text(), 'source')
+
+        outside_build = self.base / 'outside-build'
+        (outside_build / 'tree').mkdir(parents=True)
+        (outside_build / 'tree/file.txt').write_text('junk')
+        supported = self.make_repo('supported-repo')
+        (supported / 'build').symlink_to(outside_build, target_is_directory=True)
+        result = self.run_helper('--root', supported / 'build',
+                                 supported / 'build/tree')
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertFalse((outside_build / 'tree').exists())
+        self.assertEqual((supported / 'chapters/source.xml').read_text(), 'source')
+
+        for name, build in (('plain-repo', 'build'),
+                            ('coverage-repo', 'coverage/build')):
+            with self.subTest(build=build):
+                repo = self.make_repo(name)
+                tree = repo / build / 'tree'
+                tree.mkdir(parents=True)
+                (tree / 'file.txt').write_text('junk')
+                result = self.run_helper('--root', repo / build, tree)
+                self.assertEqual(result.returncode, 0, result.stdout)
+                self.assertFalse(tree.exists())
+
     def test_symlink_path_is_unlinked_and_target_kept(self):
         link = self.root / 'link'
         link.symlink_to(self.outside / 'victim.txt')

@@ -3581,7 +3581,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">а</phrase>
+              <phrase xml:lang="ru">а</phrase>
             </member>
             <member>
               <letteral>a</letteral>
@@ -3591,7 +3591,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">б</phrase>
+              <phrase xml:lang="ru">б</phrase>
             </member>
             <member>b</member>
           </simplelist>
@@ -3599,7 +3599,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">ш</phrase>
+              <phrase xml:lang="ru">ш</phrase>
             </member>
             <member>
               <letteral>c</letteral>
@@ -3609,7 +3609,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">д</phrase>
+              <phrase xml:lang="ru">д</phrase>
             </member>
             <member>d</member>
           </simplelist>
@@ -3619,7 +3619,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">е</phrase>
+              <phrase xml:lang="ru">е</phrase>
             </member>
             <member>e</member>
           </simplelist>
@@ -3627,7 +3627,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">ф</phrase>
+              <phrase xml:lang="ru">ф</phrase>
             </member>
             <member>
               <letteral>f</letteral>
@@ -3637,7 +3637,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">г</phrase>
+              <phrase xml:lang="ru">г</phrase>
             </member>
             <member>g</member>
           </simplelist>
@@ -3645,7 +3645,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">и</phrase>
+              <phrase xml:lang="ru">и</phrase>
             </member>
             <member>
               <letteral>i</letteral>
@@ -3657,7 +3657,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">ж</phrase>
+              <phrase xml:lang="ru">ж</phrase>
             </member>
             <member>
               <letteral>j</letteral>
@@ -3667,7 +3667,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">к</phrase>
+              <phrase xml:lang="ru">к</phrase>
             </member>
             <member>k</member>
           </simplelist>
@@ -3675,7 +3675,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">л</phrase>
+              <phrase xml:lang="ru">л</phrase>
             </member>
             <member>
               <letteral>l</letteral>
@@ -3685,7 +3685,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">м</phrase>
+              <phrase xml:lang="ru">м</phrase>
             </member>
             <member>
               <letteral>m</letteral>
@@ -3697,7 +3697,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">н</phrase>
+              <phrase xml:lang="ru">н</phrase>
             </member>
             <member>
               <letteral>n</letteral>
@@ -3707,7 +3707,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">о</phrase>
+              <phrase xml:lang="ru">о</phrase>
             </member>
             <member>
               <letteral>o</letteral>
@@ -3717,7 +3717,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">п</phrase>
+              <phrase xml:lang="ru">п</phrase>
             </member>
             <member>
               <letteral>p</letteral>
@@ -3727,7 +3727,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">р</phrase>
+              <phrase xml:lang="ru">р</phrase>
             </member>
             <member>
               <letteral>r</letteral>
@@ -3739,7 +3739,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">с</phrase>
+              <phrase xml:lang="ru">с</phrase>
             </member>
             <member>
               <letteral>s</letteral>
@@ -3749,7 +3749,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">т</phrase>
+              <phrase xml:lang="ru">т</phrase>
             </member>
             <member>
               <letteral>t</letteral>
@@ -3759,7 +3759,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">у</phrase>
+              <phrase xml:lang="ru">у</phrase>
             </member>
             <member>
               <letteral>u</letteral>
@@ -3769,7 +3769,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">в</phrase>
+              <phrase xml:lang="ru">в</phrase>
             </member>
             <member>v</member>
           </simplelist>
@@ -3779,7 +3779,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">х</phrase>
+              <phrase xml:lang="ru">х</phrase>
             </member>
             <member>
               <letteral>x</letteral>
@@ -3789,7 +3789,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">ъ</phrase>
+              <phrase xml:lang="ru">ъ</phrase>
             </member>
             <member>y</member>
           </simplelist>
@@ -3797,7 +3797,7 @@
         <td>
           <simplelist type="vert">
             <member>
-              <phrase xml:lang="rus">з</phrase>
+              <phrase xml:lang="ru">з</phrase>
             </member>
             <member>
               <letteral>z</letteral>

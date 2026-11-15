@@ -150,8 +150,13 @@ ifdef copydir
 	cp $(builddir)/cll-weasyprint.pdf $(copydir)/cll-weasyprint.pdf
 endif
 
+# The renderer writes its HTML working copy to $(builddir)/weasyprint-work/,
+# outside this folder, because the cleanup below parses this folder as XML.
+# Remove a working copy left here by an older renderer so that build
+# folders from before that move rebuild instead of failing in the cleanup.
 $(builddir)/weasyprint/cll_processed_xhtml_pdf.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl xml/docbook2html_config_headings.xsl scripts/xml_prince_postprocess.rb scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb scripts/header.xml assets/css/master.css xml/iso-pub.ent $(dtd_files) $(WEASYPRINT_ASSETS)
 	mkdir -p $(builddir)/weasyprint
+	rm -f $(builddir)/weasyprint/cll-weasyprint.html
 	cp -pr $(PWD)/assets $(builddir)/weasyprint/
 	cp assets/css/master.css $(builddir)/weasyprint/final.css
 	xmlto -m xml/docbook2html_config_prince.xsl -o $(builddir)/weasyprint/ -x $(xsl_base)/xhtml5/docbook.xsl xhtml-nochunks $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'

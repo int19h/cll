@@ -18,9 +18,19 @@ case $(uname -m) in
 esac
 mkdir -p "$1"
 dest=$(realpath "$1")
+script_dir=$(dirname "$(readlink -f "$0")")
+safe_rm_tree="$script_dir/safe-rm-tree.sh"
+# A copied installer (tests) finds the helper in the checkout instead.
+[ -x "$safe_rm_tree" ] || safe_rm_tree="scripts/safe-rm-tree.sh"
 # Keep the download and extraction next to the destination, not in a shared cache.
 scratch=$(mktemp -d "$dest/.typst-install.XXXXXX")
-trap 'rm -rf "$scratch"' EXIT
+cleanup_scratch() {
+  case ${scratch:-} in
+    "$dest"/.typst-install.*) "$safe_rm_tree" --root "$dest" "$scratch" ;;
+    *) echo "refusing to delete unexpected scratch folder: ${scratch:-}" >&2 ;;
+  esac
+}
+trap cleanup_scratch EXIT
 archive="typst-$arch-unknown-linux-musl"
 curl -fL --retry 3 "https://github.com/typst/typst/releases/download/v$version/$archive.tar.xz" -o "$scratch/typst.tar.xz"
 (cd "$scratch" && echo "$sha  typst.tar.xz" | sha256sum --check --status)

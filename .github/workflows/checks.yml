@@ -23,6 +23,8 @@ jobs:
         run: gem install --no-document nokogiri:1.18.8
       - name: Makefile archives and incremental inputs
         run: python3 scripts/test-makefile.py
+      - name: Recursive-delete helper refuses bad paths
+        run: python3 scripts/test-safe-rm-tree.py
       - name: Build helper failure and dictionary refresh tests
         run: python3 scripts/test-build-helpers.py
       - name: Guarded recursive delete for Python tests
@@ -218,6 +220,7 @@ jobs:
         run: |
           python3 scripts/test-build-version.py
           PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-weasyprint.py
+          PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-pdf-bookmarks.py
 
   context-converter:
     runs-on: ubuntu-24.04

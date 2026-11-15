@@ -3,9 +3,3 @@
 # expression matched against one whole message. A pattern needs .* on both
 # sides, because the checker uses a full match. Add a pattern only for a
 # message that remains after the markup is fixed, and say why it is accepted.
-
-# DocBook's title page puts the author in an h3 under the book h1.
-# An index letter group is an h3 under the index h1.
-# The credits bridgehead renderas="sect3" is an h4 under that section's h2.
-# The stylesheets choose those levels. This switch does not.
-.*skipping [0-9]+ heading levels?.*

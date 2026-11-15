@@ -2,7 +2,19 @@
 # Compile the engine shipped with the fixed ConTeXt source distribution.
 set -euo pipefail
 root=${1:?Usage: scripts/install-context.sh INSTALL_DIRECTORY [ARCHIVE_DIRECTORY]}
-archives=${2:-$(mktemp -d)}
+script_dir=$(dirname "$(readlink -f "$0")")
+safe_rm_tree="$script_dir/safe-rm-tree.sh"
+# A copied installer (tests) finds the helper in the checkout instead.
+[ -x "$safe_rm_tree" ] || safe_rm_tree="scripts/safe-rm-tree.sh"
+remove_mktemp_dir() {
+  # Only a folder this script made with the named mktemp template.
+  case ${1:-} in
+    "${TMPDIR:-/tmp}"/cll-context-"$2".*)
+      "$safe_rm_tree" --root "$(dirname "$1")" "$1" ;;
+    *) echo "refusing to delete unexpected scratch folder: ${1:-}" >&2; return 1 ;;
+  esac
+}
+archives=${2:-$(mktemp -d "${TMPDIR:-/tmp}/cll-context-archives.XXXXXX")}
 context_commit=5751e39641a5acae5ce3eb579386394a1ed5da07
 fonts_commit=3b96e7c03fd4d68e5339e580ab87bdd9721c24f2
 context_sha256=824257b46edc81c5d2b5cfb07959da9ebd247861ba4e0f526a8c922896a2849a
@@ -32,7 +44,7 @@ tar -xzf "$archives/context-fonts.tar.gz" --strip-components=1 -C "$root/tex/tex
 # The source tree supplies contextcnf.lua. Select it explicitly for the resolver.
 ln -s contextcnf.lua "$root/tex/texmf-context/web2c/texmfcnf.lua"
 grep -F "\\edef\\contextversion{$version}" "$root/tex/texmf-context/tex/context/base/mkiv/context.mkiv"
-compiler_build=$(mktemp -d)
+compiler_build=$(mktemp -d "${TMPDIR:-/tmp}/cll-context-build.XXXXXX")
 cmake -S "$root/tex/texmf-context/source/luametatex" -B "$compiler_build" \
   -DCMAKE_BUILD_TYPE=Release -DLMT_NOOPTIMIZE=ON
 cmake --build "$compiler_build" --parallel 4
@@ -51,7 +63,7 @@ context --version | grep -F "current version: $version"
 mkdir -p /usr/local/share/cll
 printf '%s\n' "ConTeXt $version" "context $context_commit $context_sha256" \
   "fonts $fonts_commit $fonts_sha256" > /usr/local/share/cll/context-sources.txt
-rm -rf "$compiler_build"
+remove_mktemp_dir "$compiler_build" build
 if [ "$#" -lt 2 ]; then
-  rm -rf "$archives"
+  remove_mktemp_dir "$archives" archives
 fi

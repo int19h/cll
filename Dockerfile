@@ -58,6 +58,7 @@ WORKDIR /srv/cll
 # Optional native PDF image. The default final stage still installs Prince.
 FROM build-base AS typst
 COPY scripts/install_typst.sh /usr/local/src/install_typst.sh
+COPY scripts/safe-rm-tree.sh /usr/local/src/safe-rm-tree.sh
 RUN bash /usr/local/src/install_typst.sh /usr/local/bin
 
 FROM build-base AS prince
@@ -80,11 +81,13 @@ RUN arch="$(dpkg --print-architecture)" \
 # EPUBCheck 5.4.0. scripts/install-epubcheck.sh pins the official archive and its SHA-256.
 # Ubuntu 24.04 default-jre-headless (Java 21) runs this release.
 COPY scripts/install-epubcheck.sh /usr/local/src/install-epubcheck.sh
+COPY scripts/safe-rm-tree.sh /usr/local/src/safe-rm-tree.sh
 RUN bash /usr/local/src/install-epubcheck.sh /usr/local/share/epubcheck
 ENV EPUBCHECK_JAR=/usr/local/share/epubcheck/epubcheck.jar
 
 # Nu Html Checker. scripts/install-vnu.sh pins the vnu-jar package and its SHA-256.
 COPY scripts/install-vnu.sh /usr/local/src/install-vnu.sh
+COPY scripts/safe-rm-tree.sh /usr/local/src/safe-rm-tree.sh
 RUN bash /usr/local/src/install-vnu.sh /usr/local/share/vnu
 ENV VNU_JAR=/usr/local/share/vnu/vnu.jar
 

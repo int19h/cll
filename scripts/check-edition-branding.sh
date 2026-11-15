@@ -36,8 +36,15 @@ export AUTHOR="John Woldemar Cowan"
 [ -n "$PUBLISHER" ] || bad ".env has no PUBLISHER"
 [ -n "$REVISER" ] || bad ".env has no REVISER"
 
-tmp="$(mktemp -d)"
-trap 'rm -rf "$tmp"' EXIT
+tmp="$(mktemp -d "${TMPDIR:-/tmp}/cll-branding.XXXXXX")"
+cleanup_tmp() {
+  case $tmp in
+    "${TMPDIR:-/tmp}"/cll-branding.*)
+      scripts/safe-rm-tree.sh --root "$(dirname "$tmp")" "$tmp" ;;
+    *) echo "refusing to delete unexpected scratch folder: $tmp" >&2 ;;
+  esac
+}
+trap cleanup_tmp EXIT
 # The navigation document is written by the stylesheets. Its title is
 # checked by scripts/check_epub_nav.rb during the ePub build (issue #208).
 for t in content.opf.s1 cover.html; do

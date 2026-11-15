@@ -70,8 +70,12 @@ class VersionTests(unittest.TestCase):
             runtime.write_text('keep')
             output = repo / 'build/cll-weasyprint.pdf'
             output.write_text('remove')
+            # The Makefile guard takes the checkout from make's working
+            # folder and stops when PWD disagrees (issue #271), so run
+            # make in the scratch tree instead of naming it with PWD=.
             subprocess.run(['make', '-f', str(ROOT / 'scripts/Makefile'),
-                            f'PWD={repo}', f'builddir={repo / "build"}', 'chapters=', 'clean'],
+                            f'builddir={repo / "build"}', 'chapters=', 'clean'],
+                           cwd=repo, env=dict(os.environ, PWD=str(repo)),
                            check=True, capture_output=True, text=True)
             self.assertEqual(runtime.read_text(), 'keep')
             self.assertFalse(output.exists())

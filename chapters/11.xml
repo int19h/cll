@@ -1015,7 +1015,7 @@
       <valsi>ka</valsi>
       property with an explicit scale.
     </para>
-    <para role="status-note">
+    <para role="status-note" condition="status:unsettled;also:proposed">
       <indexterm type="lojban-word"><primary>jei</primary><secondary>status of fuzzy interpretation</secondary>
       </indexterm>
       Nobody officially settled the question either way (see

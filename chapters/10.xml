@@ -97,7 +97,7 @@
       </indexterm><indexterm type="general"><primary>tense specification</primary><secondary>effect on &quot;cu&quot;</secondary>
       </indexterm><indexterm type="general"><primary>tense</primary><secondary>position of in sentence</secondary>
       </indexterm>The placement of a tense construct within a Lojban bridi is easy: right before the selbri. It goes immediately after the <valsi>cu</valsi>, and can in fact always replace the <valsi>cu</valsi>. A tense (or any tag) directly in front of a selbri binds to that selbri exactly as <valsi>cu</valsi> does. But an explicit <valsi>ku</valsi> between them breaks the binding. So <jbophrase>lo nu broda ba brode</jbophrase> is a complete bridi: the abstraction closes, and <valsi>ba</valsi> opens the main selbri.</para>
-    <para role="status-note">
+    <para role="status-note" condition="status:bpfk-approved;also:historical;date:2016-03-15">
       <indexterm type="general"><primary>tags</primary><secondary>binding to selbri, status</secondary>
       </indexterm>
       This rule for tag binding is committee-approved, and current parsers implement it. Older grammars group such tags differently (see
@@ -376,7 +376,7 @@
       </interlinear-gloss>
     </example>
 
-    <para role="status-note">
+    <para role="status-note" condition="status:proposed">
       <indexterm type="general"><primary>VA</primary><secondary>proposed regularization of</secondary>
       </indexterm>
       <indexterm type="general"><primary>ZI</primary><secondary>proposed regularization of</secondary>
@@ -2422,7 +2422,7 @@
       </interlinear-gloss>
     </example>
     <para role="noindent">indicates that by the time I eat, the store trip is already behind me.</para>
-    <para role="status-note">
+    <para role="status-note" condition="status:checkpointed;also:historical;date:2004-05-24">
       <indexterm type="general"><primary>ZAhO</primary><secondary>sumtcita interpretation, change of</secondary>
       </indexterm>
       The reading taught here is checkpointed. Older text reads a ZAhO sumtcita the other way around. A famous example is

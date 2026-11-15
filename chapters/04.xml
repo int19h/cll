@@ -2328,7 +2328,7 @@
           <xref linkend="section-peg-grammar" />;
         </para>
         <para role="status-note" condition="status:de-facto">
-          These rules for clusters at the start of a fu'ivla, and the rule for clusters inside one given after this list, follow the PEG word-form grammar and are de facto. <xref linkend="appendix-changes" /> gives their status and history.
+          These rules for clusters at the start of a fu'ivla, and the rule for clusters inside one given after this list, follow the PEG word-form grammar and are established usage. <xref linkend="appendix-changes" /> gives their status and history.
         </para>
       </listitem>
       <listitem>

@@ -178,7 +178,7 @@
       </indexterm>
       The scope of
       <valsi>na</valsi>
-      is officially unsettled. This book teaches the first edition's rule for the whole bridi;
+      is an open question. This book teaches the first edition's rule for the whole bridi;
       <xref linkend="appendix-changes" />
       lists the alternatives.
       <xref linkend="chapter-quantifiers" />
@@ -379,7 +379,7 @@
     <para role="status-note" condition="status:de-facto">
       <indexterm type="general"><primary>na</primary><secondary>with tenses, status</secondary>
       </indexterm>
-      This resolution is de facto: tersmu, a program that translates Lojban into logical formulas, implements it (see
+      This resolution is established usage: tersmu, a program that translates Lojban into logical formulas, implements it (see
       <xref linkend="appendix-changes" />).
     </para>
 

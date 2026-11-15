@@ -1487,7 +1487,7 @@
       </indexterm>
       The
       <jbophrase>lo'u&hellip;le'u</jbophrase>
-      rules of this section are checkpointed (see
+      rules of this section come from a BPFK checkpoint (see
       <xref linkend="appendix-changes" />).
     </para>
   </section>
@@ -1724,7 +1724,7 @@
       <valsi>la'o</valsi>
       delimiters in this section follow checkpointed rules. Under these rules, any single Lojban word can be the delimiter, and the quoted text runs to the next occurrence of the delimiter. The bracket words have no function, and the closing delimiter is required. The
       <valsi>zo</valsi>
-      rule of the previous section is also checkpointed (see
+      rule of the previous section also comes from a BPFK checkpoint (see
       <xref linkend="appendix-changes" />).
     </para>
   </section>
@@ -2425,7 +2425,7 @@
     <para role="status-note" condition="status:de-facto;also:unsettled">
       <indexterm type="general"><primary>su</primary><secondary>status of</secondary>
       </indexterm>
-      The boundary rule above is de facto, and implementations are uneven. The standard camxes grammar erases back to the boundary and keeps the boundary, as described. But at least one other current parser mishandles the boundary itself. Erasure from the start of a text works everywhere (see
+      The boundary rule above is established usage, and implementations are uneven. The standard camxes grammar erases back to the boundary and keeps the boundary, as described. But at least one other current parser mishandles the boundary itself. Erasure from the start of a text works everywhere (see
       <xref linkend="appendix-changes" />).
     </para>
 
@@ -2457,7 +2457,7 @@
     </para>
     <para>Even the word-level machinery of this chapter treats <valsi>.y.</valsi> as if it were silence. A hesitation between a word and an erasing <valsi>si</valsi>, for example, changes nothing. The single exception is the letteral <valsi>.ybu</valsi> (the name of the letter <letteral>y</letteral>), which that machinery recognizes as a unit before anything else happens (see <xref linkend="chapter-letterals" />).</para>
     <para role="status-note" condition="status:checkpointed;date:2005-02-11">This<indexterm type="general"><primary>y</primary><secondary>word-level invisibility, status</secondary>
-      </indexterm> invisibility of <valsi>.y.</valsi> to the word-level machinery is checkpointed, and so is the <valsi>.ybu</valsi> exception. The checkpoint includes even one consequence: <valsi>zo</valsi> cannot quote <valsi>.y.</valsi> at all.</para>
+      </indexterm> invisibility of <valsi>.y.</valsi> to the word-level machinery comes from a BPFK checkpoint, and so does the <valsi>.ybu</valsi> exception. The checkpoint includes even one consequence: <valsi>zo</valsi> cannot quote <valsi>.y.</valsi> at all.</para>
   </section>
   <section xml:id="section-faho">
     <title><anchor xml:id="c19s15" />No more to say: FAhO</title>
@@ -2499,7 +2499,7 @@
       </indexterm>
       The
       <valsi>fa'o</valsi>
-      rule and its exceptions for capture are checkpointed (see
+      rule and its exceptions for capture come from a BPFK checkpoint (see
       <xref linkend="appendix-changes" />).
     </para>
   </section>
@@ -2602,7 +2602,7 @@
       </indexterm>
       The uniform principle is a later synthesis by the community, and this edition adopts it. The frozen rules state each word separately, and
       <valsi>sa</valsi>
-      remains unsettled (see
+      remains an open question (see
       <xref linkend="section-erasure" />).
       <xref linkend="appendix-changes" />
       gives the provenance of the rule for each word.

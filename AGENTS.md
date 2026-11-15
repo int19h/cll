@@ -22,7 +22,7 @@ Use resolved editorial decisions to determine how this edition treats a subject.
 
 Prefer final decisions over older drafts and intermediate notes. Use frozen historical snapshots for rules fixed at a particular date. Do not substitute a live wiki page for an adopted snapshot. Treat parser output as evidence of implementation. Do not use it to override a rule's authority or meaning.
 
-The Logical Language Group (LLG) is Lojban's official organization. The BPFK is the language-definition committee. The status labels below record where each rule's authority comes from, not a claim that the language is frozen. A proposal keeps its PROPOSED or DE-FACTO status until an official body adopts it. Community use and dictionary entries do not constitute official adoption.
+The Logical Language Group (LLG) is Lojban's official organization. The BPFK is the language-definition committee. The status labels below record where each rule comes from, not a claim that the language is frozen, and not a ranking of a rule's standing. A label records where a rule comes from; a vote changes the label, not the rule's standing. Community use and dictionary entries do not by themselves give a rule a voted label.
 
 The LLG did not stop existing after its 2022 meeting. Its annual members' meetings lapsed and resumed on December 28, 2025. The 2025 minutes record no decision about the language. At the 2026 annual meeting, Robert LeChevalier (lojbab), an LLG founder and its president since that meeting, stated that the baseline is now a historical document, and that the LLG sees the language as continuing to evolve and its own role as documenting that evolution rather than prescribing it. The transcript of that meeting is not public yet. Until it is, do not cite or quote it. Word the book so that it stays true without it and can take the citation later. In particular, present the baseline as a historical record, and do not describe the language as frozen or final.
 
@@ -32,22 +32,22 @@ Existential import requires the relevant class to have members.
 
 Preserve these distinctions:
 
-- LLG-RATIFIED means approval through an LLG vote. Only xorlo has this status among the post-CLL changes covered here. Xorlo is the reform of Lojban articles. Its history includes the 2004 checkpoint, 2007 interim adoption, and 2020 ratification.
+- Ratified by the LLG (`status:llg-ratified`) means adoption through an LLG vote. Only xorlo has this status among the post-CLL changes covered here. Xorlo is the reform of Lojban articles. Its history includes the 2004 checkpoint, 2007 interim adoption, and 2020 ratification.
 
   The ratified text is wiki revision 123823 plus two corrections. The corrections concern a `moklu` typo and the unicorn example. See issue #7 for the exact adopted text.
-- BPFK-APPROVED means approval through a recorded BPFK vote. Dotside received approval on August 8, 2015. Dotside is the pause rule for Lojban name words. Tight binding of a tag to its following predicate received approval on March 15, 2016. Both decisions used the reauthorization charter.
+- Approved by the BPFK (`status:bpfk-approved`) means approval through a recorded BPFK vote. Dotside received approval on August 8, 2015. Dotside is the pause rule for Lojban name words. Tight binding of a tag to its following predicate received approval on March 15, 2016. Both decisions used the reauthorization charter.
 
   CGV means a consonant, glide, and vowel sequence. The CGV ban received approval on December 27, 2014, during the charter transition. That vote predates the reauthorization charter. That ban also has evidence of implementation.
-- CHECKPOINTED means fixed by an early BPFK checkpoint. The authoritative texts are frozen snapshots from 2004–2005. Gadri are Lojban articles. BAI contains modal tags. The snapshots cover Letterals, Aspect, gadri, Magic Words, and six BAI sections.
+- BPFK checkpoint (`status:checkpointed`) means fixed in an early BPFK checkpoint text. The authoritative texts are frozen snapshots from 2004–2005. Gadri are Lojban articles. BAI contains modal tags. The snapshots cover Letterals, Aspect, gadri, Magic Words, and six BAI sections.
 
   The Aspect checkpoint includes the reversal of ZAhO meanings when used as modal tags. The committee explicitly deferred `si`, `sa`, and `su`. Distance markers were outside the BAI checkpoint.
-- DE-FACTO means supported by a working document of the definition effort, practice, or implementation without official adoption. State the kind of evidence. This edition's non-importing `ro` follows the BPFK Inexact Numbers draft. That section was not checkpointed. Morphology describes how word forms are built. PEG morphology has both a working document and implementation. This includes combining forms from borrowed words. `VA`, `ZI`, `VEhA`, and `ZEhA` regularization also has a working document and implementation.
+- Established usage (`status:de-facto`) means the language as speakers and the parsers use it, with no vote: supported by a working document of the definition effort, practice, or implementation. State the kind of evidence. This edition's non-importing `ro` follows the BPFK Inexact Numbers draft. That section is not a BPFK checkpoint. Morphology describes how word forms are built. PEG morphology has both a working document and implementation. This includes combining forms from borrowed words. `VA`, `ZI`, `VEhA`, and `ZEhA` regularization also has a working document and implementation.
 
   The tested parsers implement `si` and `su` erasure. Camxes is the principal compatibility target across the surveyed tools.
-- PROPOSED means a concrete proposal without adoption. The e-series attitude markers belong here. Dictionary entries reflect the proposed senses, but they do not grant official status. This edition selects the directive account on editorial grounds. The BPFK drafted and discussed that account but never completed or adopted it.
-- UNSETTLED means that sources or implementations disagree without a final resolution. Subjects include `sa`, `na` scope, the comma, `lo'e`, `le'e`, `jei`, and `lo'i` of nothing. An editorial choice does not settle a dispute for the language as a whole. This edition teaches non-importing `ro` under DE-FACTO, following the BPFK Inexact Numbers draft.
+- Proposal (`status:proposed`) means a written proposal that usage has not taken up. The e-series attitude markers belong here. Dictionary entries reflect the proposed senses, but they do not change the label. This edition selects the directive account on editorial grounds. The BPFK drafted and discussed that account but never completed or adopted it.
+- Open question (`status:unsettled`) means that sources, parsers, or speakers disagree without a final resolution. Subjects include `sa`, `na` scope, the comma, `lo'e`, `le'e`, `jei`, and `lo'i` of nothing. An editorial choice does not settle a dispute for the language as a whole. This edition teaches non-importing `ro` as Established usage, following the BPFK Inexact Numbers draft.
 
-Do not teach an unsettled point as settled. Label de facto material and unadopted proposals. Preserve the 2007 promise that pre-xorlo CLL usage is "not incorrect." Describe changes without branding that older usage as an error.
+Do not teach an open question as settled. Label established-usage material and proposals. Preserve the 2007 promise that pre-xorlo CLL usage is "not incorrect." Describe changes without branding that older usage as an error.
 
 ## Editorial decisions
 
@@ -57,9 +57,9 @@ Apply the following decisions:
 
 1. Describe mainstream current Lojban with explicit status labels.
 2. Teach CLL's `na` rule with a status note. A prenex is a clause prefix containing terms or operators. `na` equals `naku` at the head of the prenex. Distinguish `na pu` from `pu na`.
-3. Teach `ro` without existential import. `ro da poi broda cu brode` is true when nothing brodas. Mark this reading DE-FACTO, from the BPFK Inexact Numbers draft, which was not checkpointed. Give a short status note in the main text. Record the first edition's importing rule and this change in the changes appendix. Preserve any separate reference requirement of explicit descriptions such as `ro lo broda`. Do not claim community usage or preference without evidence for that claim. See issue #230 and the November 11, 2026 decision on #1.
+3. Teach `ro` without existential import. `ro da poi broda cu brode` is true when nothing brodas. Mark this reading as Established usage, from the BPFK Inexact Numbers draft, which is not a BPFK checkpoint. Give a short status note in the main text. Record the first edition's importing rule and this change in the changes appendix. Preserve any separate reference requirement of explicit descriptions such as `ro lo broda`. Do not claim community usage or preference without evidence for that claim. See issue #230 and the November 11, 2026 decision on #1.
 4. Treat the comma as a writing convention with no sound value.
-5. Describe the intent of `sa` erasure. Mark its semantics as unsettled. State relevant differences between parsers. Do not prescribe unusual, unsupported behavior.
+5. Describe the intent of `sa` erasure. Mark its semantics as an Open question. State relevant differences between parsers. Do not prescribe unusual, unsupported behavior.
 6. Favor modern examples when choosing between `le` and `lo`. Use fully modern examples in chapters 2 and 6. Elsewhere, retain `le` when the example specifically teaches it. Do not replace every `le` mechanically.
 7. Keep the PEG grammar for word forms in chapter 21 beside the EBNF grammar. Keep the PEG grammars for syntax online. See issue #118 for this placement decision.
 8. Teach classical hyphen placement as the norm. Note the broader forms that parsers accept. Acknowledge the 2019 veto.
@@ -102,11 +102,11 @@ Preserve the following distinctions:
 
 - Magic Words received a checkpoint in 2005. The frozen quotation definitions include the left-to-right conflict rule. `si`, `sa`, and `su` did not receive that checkpoint. Later unified magic-word rules are a community synthesis.
 
-  BU forms letterals, symbols used as Lojban letters. The later synthesis conflicts with the frozen BU definition in some cases. The frozen text forbids `ba'e bu`, while the later synthesis and camxes allow it. Trace each rule to its source. Do not call the later synthesis checkpointed.
+  BU forms letterals, symbols used as Lojban letters. The later synthesis conflicts with the frozen BU definition in some cases. The frozen text forbids `ba'e bu`, while the later synthesis and camxes allow it. Trace each rule to its source. Do not call the later synthesis a BPFK checkpoint.
 - Distance markers `VA`, `ZI`, `VEhA`, and `ZEhA` were outside the 2005 BAI checkpoint.
 - The ratified article definitions equate `PA broda` with `PA da poi broda`. Do not substitute `PA lo broda`. They also equate `PA sumti` with `PA da poi ke'a me sumti`. This preserves the description's own reference requirement.
 - The 2020 article ratification covers wiki revision 123823 and the two named corrections. A live wiki page is not the ratified text.
-- The first edition's CLL 16.8 gives `ro` existential import. This edition teaches non-importing `ro`, following the uncheckpointed BPFK Inexact Numbers draft, with DE-FACTO status. Record the first edition's rule in the changes appendix. Non-importing `ro` preserves ordinary quantifier duality and contradictory `na` negation.
+- The first edition's CLL 16.8 gives `ro` existential import. This edition teaches non-importing `ro`, following the BPFK Inexact Numbers draft, labelled Established usage. Record the first edition's rule in the changes appendix. Non-importing `ro` preserves ordinary quantifier duality and contradictory `na` negation.
 - Jbovlaste is read-only. Lensisku is its de facto successor. Neither dictionary's content has official status merely because it appears there.
 - The 2025 minutes are at https://mw.lojban.org/papri/LLG_2025_Annual_Meeting_Minutes, and the current roster of members and directors is at https://mw.lojban.org/papri/LLG_members. The roster lists nine members who joined in 2026 and two directors whose terms began in 2026. Neither page records a decision about the language.
 

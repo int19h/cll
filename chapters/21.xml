@@ -16,7 +16,7 @@
       </indexterm><indexterm type="general"><primary>third baseline</primary></indexterm>The official grammar of Lojban syntax is the YACC grammar of the third baseline, which is the one the Logical Language Group adopted. The first edition of this book printed that grammar in full, alongside an EBNF form of the same grammar, and declared the YACC version authoritative should the two ever disagree. In 2014, however, an informal majority at the annual meeting of the LLG chose to print only the EBNF, in order to save pages. The YACC listing can still be found in the electronic supplements to this book, and the history of that decision is told in <xref linkend="appendix-changes" />.</para>
     <para role="status-note" condition="status:editorial"><indexterm type="general"><primary>EBNF grammar</primary><secondary>as the grammar of this edition</secondary></indexterm>The EBNF printed in this chapter is the grammar of the language that this book describes. It is the EBNF of the third baseline, with a small number of changes, each of which is marked where it is made and listed in <xref linkend="ebnf-changes" />. Some of the changes correct misprints of the first edition. Some state what this book teaches and the baseline grammar did not express, such as the committee's decision on tag binding. Wherever this grammar departs from the official grammar, the mark says so. A reader who wants the exact behavior of the official parser should consult the YACC grammar and the parser itself.</para>
     <para><indexterm type="general"><primary>camxes</primary><secondary>as de facto compatibility target</secondary>
-      </indexterm>Meanwhile, the working grammars of the community use a different formal system: parsing expression grammars (PEG). These cover morphology and syntax together, and they include the amendments that the language-definition committee adopted, which this book describes throughout. The standard camxes PEG is the principal de facto target for compatibility across the tools this edition surveyed. Some of those tools implement it directly, and others reimplement its behavior. All of this is de facto, not official.</para>
+      </indexterm>Meanwhile, the working grammars of the community use a different formal system: parsing expression grammars (PEG). These cover morphology and syntax together, and they include the amendments that the language-definition committee adopted, which this book describes throughout. The standard camxes PEG is the principal de facto target for compatibility across the tools this edition surveyed. Some of those tools implement it directly, and others reimplement its behavior. All of this is established usage, with no vote behind it.</para>
     <para>Of the camxes PEG, this chapter prints only the part that defines word forms (see <xref linkend="section-peg-grammar" />). That part is a precise, formal definition of how a stream of sounds breaks into words. For syntax we print the EBNF grammar instead, so the camxes PEG for syntax is not in this book.</para>
     <para role="status-note" condition="status:editorial">Sometimes the text of this book disagrees with the amendments. When that happens, the amendments prevail, and the book flags each one where it teaches it. The EBNF below already includes the amendments that change syntax, with their marks.</para>
     <para><indexterm type="general"><primary>tags</primary><secondary>binding to selbri, in the EBNF grammar</secondary>
@@ -38,7 +38,7 @@
     <para role="status-note" condition="status:de-facto;also:bpfk-approved">
       <indexterm type="general"><primary>PEG word-form grammar</primary><secondary>status of</secondary>
       </indexterm>
-      This grammar is the de facto standard definition of Lojban word forms, and current software implements it. Within it, the ban on a consonant followed by a glide is separately committee-approved. For the full history of its authority, see
+      This grammar is the de facto standard definition of Lojban word forms, and current software implements it. Within it, the ban on a consonant followed by a glide is separately approved by the BPFK. For the full history of its authority, see
       <xref linkend="appendix-changes" />.
     </para>
     <para>A parsing expression grammar differs from the more familiar grammar notations in one important way: the choice operator <quote>/</quote> is <emphasis>ordered</emphasis>. When there are several alternatives, the parser takes the first one that succeeds and never tries the rest. The grammar also has two lookahead operators, <quote>&amp;</quote> (the following material must be present) and <quote>!</quote> (the following material must be absent). Ordered choice and lookahead together make the grammar deterministic, so it divides any stream of Lojban sounds into words in exactly one way.</para>
@@ -3067,7 +3067,7 @@
     <section xml:id="ebnf-changes">
       <title>Changes from the third baseline</title>
     <para><indexterm type="general"><primary>EBNF grammar</primary><secondary>changes from the third baseline</secondary></indexterm>This grammar departs from the EBNF of the third baseline in the places listed here, and each departure is marked at the spot where it is made. <xref linkend="appendix-changes" /> lists them again among the changes from the first edition.</para>
-    <para>First come the corrections: places where the first edition's EBNF misprinted what the grammar meant, and where the YACC grammar shows the intended form (all editorial):</para>
+    <para>First come the corrections: places where the first edition's EBNF misprinted what the grammar meant, and where the YACC grammar shows the intended form (all this edition's choice):</para>
     <itemizedlist>
       <listitem><para>Rule 2: a text can begin with <valsi>.i</valsi> forms and then <valsi>ni'o</valsi> markers (<xref linkend="ebnf-text" />).</para></listitem>
       <listitem><para>Rule 54: a gek-sentence wrapped in <valsi>ke</valsi> requires the tense or modal before the <valsi>ke</valsi> (<xref linkend="ebnf-sentences" />).</para></listitem>
@@ -3076,20 +3076,20 @@
       <listitem><para>Rule 972: <valsi>na'e</valsi> and <valsi>ki</valsi> cover the whole tense (<xref linkend="ebnf-tenses" />).</para></listitem>
       <listitem><para>Rule 1100: several <valsi>ba'e</valsi> can stand before a single word (<xref linkend="ebnf-words" />).</para></listitem>
     </itemizedlist>
-    <para>The notation itself gains points 11 to 13 and the restriction in point 6 (editorial, <xref linkend="ebnf-about" />). They change no rule.</para>
+    <para>The notation itself gains points 11 to 13 and the restriction in point 6 (this edition's choice, <xref linkend="ebnf-about" />). They change no rule.</para>
     <para>Next, the changes that the text of this book requires:</para>
     <itemizedlist>
-      <listitem><para>Rule 83: a tense or modal before a termset governs the whole termset (editorial, <xref linkend="ebnf-terms" />).</para></listitem>
-      <listitem><para>A tense or modal placed directly before a selbri binds to that selbri (committee-approved in 2016, <xref linkend="ebnf-parses" />).</para></listitem>
+      <listitem><para>Rule 83: a tense or modal before a termset governs the whole termset (this edition's choice, <xref linkend="ebnf-terms" />).</para></listitem>
+      <listitem><para>A tense or modal placed directly before a selbri binds to that selbri (approved by the BPFK in 2016, <xref linkend="ebnf-parses" />).</para></listitem>
     </itemizedlist>
-    <para>Then come the departures from the official parser, which follow from this edition's reading of the rules (all editorial):</para>
+    <para>Then come the departures from the official parser, which follow from this edition's reading of the rules (all this edition's choice):</para>
     <itemizedlist>
       <listitem><para>The rule for elided terminators, and the choice among readings (<xref linkend="ebnf-parses" />).</para></listitem>
       <listitem><para>Texts that fit only the plain reading of a connective before <valsi>ke</valsi> are grammatical (<xref linkend="ebnf-connectives" />).</para></listitem>
       <listitem><para>A bare tense before a forethought connection is grammatical (<xref linkend="ebnf-sentences" />).</para></listitem>
       <listitem><para>When a tense is divided, the division takes a longer tense only where a reading remains, whereas the lexer of the official grammar forms the longest tense in every case; no known text shows the difference (<xref linkend="ebnf-tenses" />).</para></listitem>
     </itemizedlist>
-    <para>Two further choices of this edition carry their marks where they are made. Indicators after <valsi>to</valsi> and <valsi>to'i</valsi> attach to the opener (editorial, <xref linkend="ebnf-words" />), and the Y of rule 413 stays as a historical alternative (<xref linkend="ebnf-free" />).</para>
+    <para>Two further choices of this edition carry their marks where they are made. Indicators after <valsi>to</valsi> and <valsi>to'i</valsi> attach to the opener (this edition's choice, <xref linkend="ebnf-words" />), and the Y of rule 413 stays as a historical alternative (<xref linkend="ebnf-free" />).</para>
     </section>
   </section>
   <section xml:id="section-cross-reference">

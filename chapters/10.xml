@@ -100,7 +100,7 @@
     <para role="status-note" condition="status:bpfk-approved;also:historical;date:2016-03-15">
       <indexterm type="general"><primary>tags</primary><secondary>binding to selbri, status</secondary>
       </indexterm>
-      This rule for tag binding is committee-approved, and current parsers implement it. Older grammars group such tags differently (see
+      This rule for tag binding is approved by the BPFK, and current parsers implement it. Older grammars group such tags differently (see
       <xref linkend="appendix-changes" />).
     </para>
     <para>
@@ -2425,7 +2425,7 @@
     <para role="status-note" condition="status:checkpointed;also:historical;date:2004-05-24">
       <indexterm type="general"><primary>ZAhO</primary><secondary>sumtcita interpretation, change of</secondary>
       </indexterm>
-      The reading taught here is checkpointed. Older text reads a ZAhO sumtcita the other way around. A famous example is
+      The reading taught here comes from a BPFK checkpoint. Older text reads a ZAhO sumtcita the other way around. A famous example is
       <quote>mi morsi ba'o le nu mi jmive</quote>, from the first edition of this book. Reread such text accordingly (see
       <xref linkend="appendix-changes" />).
     </para>

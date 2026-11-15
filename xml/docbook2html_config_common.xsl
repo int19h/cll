@@ -154,4 +154,8 @@
     </div>
   </xsl:template>
 
+  <!-- Every HTML config imports this file, so the outline levels apply
+       to chunked HTML, the single page, PDF, and ePub. -->
+  <xsl:include href="docbook2html_config_headings.xsl"/>
+
 </xsl:stylesheet>

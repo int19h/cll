@@ -216,6 +216,7 @@ jobs:
         run: |
           python3 scripts/test-build-version.py
           PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-weasyprint.py
+          PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-pdf-bookmarks.py
 
   context-converter:
     runs-on: ubuntu-24.04

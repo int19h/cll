@@ -81,7 +81,7 @@ endif
 # offline=no skips sw.js. Any other value writes it.
 # cll_build does not forward arguments to make. Pass the variable in the environment:
 #   offline=no ./cll_build -n -T xhtml_nochunks
-$(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl xml/docbook2html_config_common.xsl $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_xhtml.xsl assets/css/master.css scripts/xhtml_postprocess_offline.rb scripts/sw.template.js assets/scripts/offline.js scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb xml/iso-pub.ent $(html_copied_files)
+$(builddir)/xhtml_%_chunks.done: xml/docbook2html_config_%_chunks.xsl xml/docbook2html_config_common.xsl xml/docbook2html_config_headings.xsl $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_xhtml.xsl assets/css/master.css scripts/xhtml_postprocess_offline.rb scripts/sw.template.js assets/scripts/offline.js scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb xml/iso-pub.ent $(html_copied_files)
 	rm -rf $(builddir)/xhtml_$*_chunks
 	mkdir -p $(builddir)/xhtml_$*_chunks
 	xmlto -m xml/docbook2html_config_$*_chunks.xsl -x $(xsl_file) -o $(builddir)/xhtml_$*_chunks/ xhtml$(nochunks) $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'
@@ -120,7 +120,7 @@ ifdef copydir
 	mkdir -p $(copydir)
 	cp $(builddir)/cll.pdf $(copydir)/cll.pdf
 endif
-$(builddir)/pdf.done: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl assets/css/master.css assets/css/prince.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb scripts/header.xml scripts/xml_prince_postprocess.rb scripts/prince_check_margins.js scripts/prince_shave_index.js scripts/prince_check_index.js xml/iso-pub.ent $(pdf_copied_files)
+$(builddir)/pdf.done: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl xml/docbook2html_config_headings.xsl assets/css/master.css assets/css/prince.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb scripts/header.xml scripts/xml_prince_postprocess.rb scripts/prince_check_margins.js scripts/prince_shave_index.js scripts/prince_check_index.js xml/iso-pub.ent $(pdf_copied_files)
 	rm -rf $(builddir)/pdf
 	mkdir -p $(builddir)/pdf
 	cp -pr $(PWD)/assets/css/master.css $(builddir)/pdf/final.css
@@ -154,7 +154,7 @@ endif
 # outside this folder, because the cleanup below parses this folder as XML.
 # Remove a working copy left here by an older renderer so that build
 # folders from before that move rebuild instead of failing in the cleanup.
-$(builddir)/weasyprint/cll_processed_xhtml_pdf.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl scripts/xml_prince_postprocess.rb scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb scripts/header.xml assets/css/master.css xml/iso-pub.ent $(dtd_files) $(WEASYPRINT_ASSETS)
+$(builddir)/weasyprint/cll_processed_xhtml_pdf.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_prince.xsl xml/docbook2html_config_common.xsl xml/docbook2html_config_headings.xsl scripts/xml_prince_postprocess.rb scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb scripts/header.xml assets/css/master.css xml/iso-pub.ent $(dtd_files) $(WEASYPRINT_ASSETS)
 	mkdir -p $(builddir)/weasyprint
 	rm -f $(builddir)/weasyprint/cll-weasyprint.html
 	cp -pr $(PWD)/assets $(builddir)/weasyprint/
@@ -208,7 +208,7 @@ $(builddir)/cll.epub: $(builddir)/epub-xhtml/index.html scripts/build_epub.sh sc
 # path would be resolved against that directory (issue #208).
 epubnavdir = $(abspath $(builddir))/epub-nav
 
-$(builddir)/epub-xhtml/index.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_common.xsl xml/docbook2html_config_epub.xsl assets/css/master.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb xml/iso-pub.ent $(dtd_files) $(epub_copied_files)
+$(builddir)/epub-xhtml/index.html: $(builddir)/cll_processed_xhtml.xml xml/docbook2html_config_common.xsl xml/docbook2html_config_headings.xsl xml/docbook2html_config_epub.xsl assets/css/master.css scripts/xhtml_postprocess_cleanup.sh scripts/xhtml_postprocess_cleanup_file.rb scripts/html_table_spans.rb scripts/html_format.rb scripts/html_whitespace_guard.rb scripts/html_stylesheet_scan.rb scripts/util.rb xml/iso-pub.ent $(dtd_files) $(epub_copied_files)
 	rm -rf $(builddir)/epub-xhtml/ $(epubnavdir)/
 	mkdir -p $(builddir)/epub-xhtml/ $(epubnavdir)/
 	xmlto -m xml/docbook2html_config_epub.xsl --stringparam cll.epub.nav.file=$(epubnavdir)/toc.xhtml --stringparam generate.manifest=1 --stringparam manifest=$(epubnavdir)/spine.txt -o $(builddir)/epub-xhtml/ -x $(xsl_base)/xhtml5/chunk.xsl xhtml $(builddir)/cll_processed_xhtml.xml 2>&1 | grep -v 'No localization exists'

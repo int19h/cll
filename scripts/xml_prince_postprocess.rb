@@ -19,6 +19,15 @@ if $document.css('div.index')
   end
 end
 
+# Letter-group headings are h2. Hide them in the PDF with the existing
+# display-none rule. The .whole-index h3 rule stays, because the
+# whitespace formatter excludes every h3 on the strength of that subject.
+$document.css('div.indexdiv > h2').each do |node|
+  classes = node['class'].to_s.split
+  classes << 'display-none' unless classes.include?('display-none')
+  node['class'] = classes.join(' ')
+end
+
 # Build the document. The writer keeps empty anchors as end tags, which is
 # what Prince's HTML parser requires.
 doc = serialize_page($document, mode: :html)

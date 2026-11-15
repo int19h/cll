@@ -1871,7 +1871,7 @@
       <quote>whatever I want it to mean but haven't bothered to figure out, or figure out how to express</quote>.
     </para>
     <para>The word <valsi>zo'e</valsi> looks like a mere convenience, but it is foundational. It is a constant that refers to whatever things the context supplies, one or many. The definitions of the descriptors build on it: the definition of <jbophrase>lo broda</jbophrase> is <jbophrase>zo'e noi ke'a broda</jbophrase>, <quote>the contextually-supplied things, which broda</quote>. The traditional gloss <quote>whatever I want it to mean</quote> is loose, but the looseness concerns how the context supplies the referents, or how the speaker politely leaves them unspoken. It does not concern the reference itself. There is no hidden quantifier, and once the context has supplied the referents, they stay fixed.</para>
-    <para role="status-note">
+    <para role="status-note" condition="status:llg-ratified;date:2020-04-18">
       <indexterm type="lojban-word"><primary>zo'e</primary><secondary>as constant in gadri expansion</secondary>
       </indexterm>
       This account, and the definitions of the descriptors that build on it, are part of the ratified reform of the articles (see

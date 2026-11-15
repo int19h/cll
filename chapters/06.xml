@@ -511,7 +511,7 @@
       <xref linkend="example-random-id-qKYf" />
       merely says that the author is human. This is a natural thing to say when the speaker knows nothing more about the author, or when nothing more is relevant.
     </para>
-    <para role="status-note">
+    <para role="status-note" condition="status:llg-ratified;date:2020-04-18">
       <indexterm type="general"><primary>xorlo</primary></indexterm>
       <indexterm type="general"><primary>gadri reform</primary></indexterm>
       The meaning of
@@ -805,7 +805,7 @@
   </section>
   <section xml:id="section-typicals">
     <title><anchor xml:id="c6s5" />Descriptors for typical objects</title>
-    <para role="status-note"><indexterm type="general"><primary>lo'e</primary><secondary>unsettled status of</secondary></indexterm><indexterm type="general"><primary>le'e</primary><secondary>unsettled status of</secondary></indexterm>A caution before anything else in this section: <valsi>lo'e</valsi> and <valsi>le'e</valsi> are the least settled words in this chapter. The process that defined the language never finalized their meanings. What follows is the traditional account, which is essentially that of the first edition. Not everyone accepts it: some speakers prefer to express typicality with ordinary generic <valsi>lo</valsi> (see <xref linkend="section-masses" />), or with the selbri <valsi>fadni</valsi>. So read this section as a description of a convention, not a settled rule.</para>
+    <para role="status-note" condition="status:unsettled"><indexterm type="general"><primary>lo'e</primary><secondary>unsettled status of</secondary></indexterm><indexterm type="general"><primary>le'e</primary><secondary>unsettled status of</secondary></indexterm>A caution before anything else in this section: <valsi>lo'e</valsi> and <valsi>le'e</valsi> are the least settled words in this chapter. The process that defined the language never finalized their meanings. What follows is the traditional account, which is essentially that of the first edition. Not everyone accepts it: some speakers prefer to express typicality with ordinary generic <valsi>lo</valsi> (see <xref linkend="section-masses" />), or with the selbri <valsi>fadni</valsi>. So read this section as a description of a convention, not a settled rule.</para>
     <para>The following cmavo are discussed in this section:</para>    <cmavo-list>      <cmavo-entry>        <cmavo>lo'e</cmavo>        <selmaho>LE</selmaho>
         <description>the typical</description>
       </cmavo-entry>
@@ -1075,7 +1075,7 @@
     </example>
     <para role="indent">In most contexts, <xref linkend="example-random-id-qL61" /> and <xref linkend="example-random-id-0qr0" /> come to the same thing, because people mostly walk one by one. But they are not synonyms. <xref linkend="example-random-id-0qr0" /> insists on the reading with one at a time, whereas <xref linkend="example-random-id-qL61" /> leaves the manner of walking entirely open: single file, arm in arm, or in a heap.</para>
     <para>Here is a rule that this book uses throughout: <emphasis>a sumti without an explicit quantifier has no quantifier at all</emphasis>. It is only a referring expression. In the language of logic, it is a <quote>constant</quote>, a term that names its referents directly. A quantified term like <jbophrase>re do</jbophrase> is different, because it selects from its referents. The distinction does real work in <xref linkend="chapter-quantifiers" />, where quantified terms interact with negation and with each other in ways that constants never do. Remember this rule now: no quantifier is present unless you say one.</para>
-    <para role="status-note">
+    <para role="status-note" condition="status:llg-ratified;date:2020-04-18">
       <indexterm type="general"><primary>implicit quantifiers</primary><secondary>abolition of</secondary>
       </indexterm>
       This rule is part of the ratified reform of the articles. Older texts follow a different convention here (see
@@ -1190,7 +1190,7 @@
       <xref linkend="chapter-quantifiers" />
       describes.
     </para>
-    <para role="status-note">
+    <para role="status-note" condition="status:llg-ratified;date:2020-04-18">
       <indexterm type="general"><primary>implicit quantifiers</primary><secondary>on descriptions, abolition of</secondary>
       </indexterm>
       <indexterm type="general"><primary>xorlo</primary><secondary>and quantified descriptions</secondary>
@@ -1293,7 +1293,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent"><xref linkend="example-random-id-gr7Y" /> quantifies over the referents of <jbophrase>lo gerku</jbophrase>: the dogs in question, whichever those are in the context. Suppose the dogs of the neighborhood are under discussion. Then <xref linkend="example-random-id-gr7Y" /> says that three of <emphasis>them</emphasis> are white. <xref linkend="example-random-id-EsVd" />, though, says only that the world contains exactly three white dogs in all. That is a much stronger and usually stranger claim, unless the context has already narrowed <quote>the world</quote> down to something small. If the listener takes the referents of <jbophrase>lo gerku</jbophrase> as broadly as possible, the two sentences coincide, but in everyday talk they generally do not.</para>
-    <para role="status-note">
+    <para role="status-note" condition="status:llg-ratified;date:2020-04-18">
       <indexterm type="general"><primary>indefinite descriptions</primary><secondary>change from first edition</secondary>
       </indexterm>
       Older texts follow a different convention here (see

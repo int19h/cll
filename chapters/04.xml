@@ -2061,7 +2061,7 @@
       This book teaches the classical rule: a hyphen appears exactly where it is needed, and nowhere else. The PEG word-form grammar is more liberal. It also accepts unneeded hyphens, for example in
       <jbophrase>naltosymabru</jbophrase>. Expect software to accept such hyphens, but write them only where the classical rule needs them.
     </para>
-    <para role="status-note">
+    <para role="status-note" condition="status:editorial;also:de-facto">
       <indexterm type="general"><primary>hyphens</primary><secondary>optional, status of</secondary>
       </indexterm>
       <xref linkend="appendix-changes" />
@@ -2365,7 +2365,7 @@
         </para>
       </listitem>
     </orderedlist>
-    <para role="status-note">
+    <para role="status-note" condition="status:de-facto">
       <indexterm type="general"><primary>fu'ivla</primary><secondary>cluster position, status of</secondary>
       </indexterm>
       <xref linkend="appendix-changes" />
@@ -5883,7 +5883,7 @@
   </section>
   <section xml:id="section-rafsi-fuhivla">
     <title><anchor xml:id="c4s16" />rafsi for fu'ivla</title>
-    <para role="status-note">
+    <para role="status-note" condition="status:de-facto">
       <indexterm type="general"><primary>fu'ivla</primary><secondary>in lujvo</secondary>
       </indexterm>
       <indexterm type="general"><primary>extended rafsi</primary></indexterm>

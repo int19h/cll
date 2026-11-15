@@ -2,6 +2,8 @@
 
 This repository updates the Complete Lojban Language (CLL) to describe current Lojban. It covers documented developments since the first edition. It preserves the authority of each rule and the status of each proposal. Many readers use CLL as their first book on Lojban. This edition aims to serve as the default reference, including for jbotci.
 
+This edition is an independent project of its maintainer. It is not an LLG publication, although it may later serve as the basis for an official edition. Write about the LLG as an outside body, cite its decisions as external sources, and do not speak for it.
+
 Use the role and scope assigned for the current task. State uncertainty explicitly. Support claims with evidence. Do not reopen resolved decisions without new evidence or an instruction to reconsider them.
 
 ## Repository
@@ -20,7 +22,9 @@ Use resolved editorial decisions to determine how this edition treats a subject.
 
 Prefer final decisions over older drafts and intermediate notes. Use frozen historical snapshots for rules fixed at a particular date. Do not substitute a live wiki page for an adopted snapshot. Treat parser output as evidence of implementation. Do not use it to override a rule's authority or meaning.
 
-The Logical Language Group (LLG) is Lojban's official organization. The BPFK is the language-definition committee. Official Lojban remains frozen under this edition's authority model. Deferred proposals remain deferred unless an official body adopts them. Community use and dictionary entries do not constitute official adoption.
+The Logical Language Group (LLG) is Lojban's official organization. The BPFK is the language-definition committee. The status labels below record where each rule's authority comes from, not a claim that the language is frozen. A proposal keeps its PROPOSED or DE-FACTO status until an official body adopts it. Community use and dictionary entries do not constitute official adoption.
+
+The LLG did not stop existing after its 2022 meeting. Its annual members' meetings lapsed and resumed on December 28, 2025. The 2025 minutes record no decision about the language. At the 2026 annual meeting, Robert LeChevalier (lojbab), an LLG founder and its president since that meeting, stated that the baseline is now a historical document, and that the LLG sees the language as continuing to evolve and its own role as documenting that evolution rather than prescribing it. The transcript of that meeting is not public yet. Until it is, do not cite or quote it. Word the book so that it stays true without it and can take the citation later. In particular, present the baseline as a historical record, and do not describe the language as frozen or final.
 
 A checkpoint fixes a committee definition at a date.
 
@@ -104,6 +108,7 @@ Preserve the following distinctions:
 - The 2020 article ratification covers wiki revision 123823 and the two named corrections. A live wiki page is not the ratified text.
 - The first edition's CLL 16.8 gives `ro` existential import. This edition teaches non-importing `ro`, following the uncheckpointed BPFK Inexact Numbers draft, with DE-FACTO status. Record the first edition's rule in the changes appendix. Non-importing `ro` preserves ordinary quantifier duality and contradictory `na` negation.
 - Jbovlaste is read-only. Lensisku is its de facto successor. Neither dictionary's content has official status merely because it appears there.
+- The 2025 minutes are at https://mw.lojban.org/papri/LLG_2025_Annual_Meeting_Minutes, and the current roster of members and directors is at https://mw.lojban.org/papri/LLG_members. The roster lists nine members and two directors who joined in 2026. Neither page records a decision about the language.
 
 ## Builds
 

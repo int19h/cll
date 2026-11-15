@@ -156,6 +156,87 @@ html_check:
                 self.assertNotEqual(result.returncode, 0, result.stdout)
                 self.assertNotIn('scripts/merge.sh', result.stdout)
 
+    def make_in_scratch_checkout(self, checkout, *args, env=None):
+        return subprocess.run(
+            ['make', '--no-print-directory', '-f',
+             str(SOURCE / 'scripts/Makefile'), f'PWD={checkout}',
+             'builddir=build', 'chapters=chapters/01.xml', *args],
+            cwd=checkout, text=True, stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT, env=env)
+
+    def test_linked_build_folder_cannot_reach_the_checkout(self):
+        # Round 2 (Astra R1): the guard resolves links before clean walks
+        # the build folder, so build -> ., build -> .. and a link to the
+        # home folder all stop at parse time and the source file survives.
+        for name in ('dot', 'dotdot', 'home'):
+            with self.subTest(link=name):
+                scratch = self.root / f'link-{name}'
+                checkout = scratch / 'co'
+                (checkout / 'chapters').mkdir(parents=True)
+                source = checkout / 'chapters/source.xml'
+                source.write_text('source')
+                env = None
+                if name == 'dot':
+                    target = '.'
+                elif name == 'dotdot':
+                    target = '..'
+                else:
+                    fake_home = scratch / 'home'
+                    fake_home.mkdir()
+                    target = str(fake_home)
+                    env = dict(os.environ, HOME=str(fake_home))
+                (checkout / 'build').symlink_to(target, target_is_directory=True)
+                result = self.make_in_scratch_checkout(checkout, 'clean', env=env)
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+                self.assertEqual(source.read_text(), 'source')
+
+    def test_linked_build_folder_to_a_separate_folder_still_works(self):
+        # The supported setup: build/ links to a separate folder, as on
+        # /build. clean empties that folder and leaves the checkout alone.
+        checkout = self.root / 'linked-co'
+        (checkout / 'chapters').mkdir(parents=True)
+        source = checkout / 'chapters/source.xml'
+        source.write_text('source')
+        real_build = self.root / 'linked-real-build'
+        real_build.mkdir()
+        junk = real_build / 'junk.pdf'
+        junk.write_text('junk')
+        dictionary = real_build / 'jbovlaste_fixture.xml'
+        dictionary.write_text('keep')
+        (checkout / 'build').symlink_to(real_build, target_is_directory=True)
+        result = self.make_in_scratch_checkout(checkout, 'clean')
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertFalse(junk.exists())
+        self.assertEqual(dictionary.read_text(), 'keep')
+        self.assertEqual(source.read_text(), 'source')
+
+    def test_guard_cannot_be_split_or_overridden(self):
+        # Round 2 (Opus L1/L2, Astra L3): two-word folders and command-line
+        # assignments to the guard's own variables must not get through.
+        cases = [
+            ['make', '--no-print-directory', '-f', str(SOURCE / 'scripts/Makefile'),
+             'builddir=build /etc', 'chapters=chapters/01.xml', 'clean'],
+            ['make', '--no-print-directory', '-f', str(SOURCE / 'scripts/Makefile'),
+             'builddir=build', 'copydir=/a /b', 'chapters=chapters/01.xml', 'clean'],
+            ['make', '--no-print-directory', '-f', str(SOURCE / 'scripts/Makefile'),
+             'builddir=/etc', '_builddir_r=build', 'chapters=chapters/01.xml', 'clean'],
+            ['make', '--no-print-directory', '-f', str(SOURCE / 'scripts/Makefile'),
+             'builddir=/etc', '_defbuild_r=/etc', '_reject_outside=yes',
+             'chapters=chapters/01.xml', 'clean'],
+            ['make', '--no-print-directory', '-f', str(SOURCE / 'scripts/Makefile'),
+             f'builddir={SOURCE}', 'ALLOW_OUTSIDE_BUILDDIR=yes',
+             '_checkout_r=/nonexistent', '_home_r=/nonexistent',
+             '_reject_forbidden=yes', 'chapters=chapters/01.xml', 'clean'],
+            ['make', '--no-print-directory', '-f', str(SOURCE / 'scripts/Makefile'),
+             'builddir=/etc', '_clean_dirs=build', 'chapters=chapters/01.xml', 'clean'],
+        ]
+        for command in cases:
+            with self.subTest(command=command[4:-2]):
+                result = subprocess.run(
+                    command, cwd=SOURCE, text=True, stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT)
+                self.assertNotEqual(result.returncode, 0, result.stdout)
+
     def test_mobi_target_is_removed(self):
         result = subprocess.run(
             ['make', '--no-print-directory', '-f', str(SOURCE / 'scripts/Makefile'),

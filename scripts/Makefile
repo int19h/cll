@@ -5,62 +5,68 @@ endif
 xsl_base = xml/docbook-xsl-1.78.1
 epubnavdir = $(abspath $(builddir))/epub-nav
 
-# Folder variables reach recursive deletes, so check them at parse time,
-# before any recipe runs (issue #271). builddir must be the checkout's
-# build folder (or coverage/build), and epubnavdir must be inside it.
+# Folder variables reach deletes, so check them at parse time, before any
+# recipe runs (issue #271). Every folder is resolved with realpath first,
+# so a build folder linked to the checkout, its parent, or the home folder
+# is caught, while the supported link from build/ to a separate folder
+# (for example on /build) keeps working. A resolved folder must not be /,
+# the home folder, the checkout, or a folder above the checkout, and it
+# must lie in the resolved build folder (or coverage/build).
 # copydir and covcopydir are archive folders and are usually outside the
 # build folder: name one only together with ALLOW_OUTSIDE_BUILDDIR=yes,
 # which also allows a builddir outside the checkout (cll_build sets it
-# when -a or -A names an archive folder). Even then, /, the home folder
-# and the checkout itself are refused. An empty copydir or covcopydir
-# means "no archive folder", as before.
-SAFE_RM_TREE = scripts/safe-rm-tree.sh
-_checkout_build := $(abspath $(PWD)/build)
-_checkout_covbuild := $(abspath $(PWD)/coverage/build)
-_inside_build = $(filter $(_checkout_build) $(_checkout_build)/% $(_checkout_covbuild) $(_checkout_covbuild)/%,$(1))
+# when -a or -A names an archive folder). The /, home, checkout and
+# above-the-checkout refusals apply even then. An empty copydir or
+# covcopydir means "no archive folder", as before. Internal names use
+# override, so a command-line assignment cannot replace the guard's own
+# calculations.
+override SAFE_RM_TREE := scripts/safe-rm-tree.sh
+override _reject_words = $(if $(filter 1,$(words $(2))),,$(error $(1) must be exactly one folder, not "$(2)"))$(if $(findstring ',$(2)),$(error $(1) must not contain a single quote: $(2)),)
 ifeq ($(strip $(builddir)),)
 $(error builddir is empty; give builddir=<the checkout build folder> or leave it unset)
 endif
-_builddir_abs := $(abspath $(builddir))
-ifeq ($(filter / $(PWD) $(HOME),$(_builddir_abs)),$(_builddir_abs))
-$(error builddir must not be /, the home folder, or the checkout itself: $(builddir))
+$(call _reject_words,PWD,$(PWD))
+$(call _reject_words,builddir,$(builddir))
+$(call _reject_words,epubnavdir,$(epubnavdir))
+ifneq ($(strip $(copydir)),)
+$(call _reject_words,copydir,$(copydir))
 endif
-ifeq ($(call _inside_build,$(_builddir_abs)),)
+ifneq ($(strip $(covcopydir)),)
+$(call _reject_words,covcopydir,$(covcopydir))
+endif
+ifneq ($(strip $(HOME)),)
+$(call _reject_words,HOME,$(HOME))
+endif
+override _checkout_r := $(shell realpath -m -- '$(PWD)')
+override _home_r := $(if $(strip $(HOME)),$(shell realpath -m -- '$(HOME)'),)
+override _defbuild_r := $(shell realpath -m -- '$(PWD)/build')
+override _covbuild_r := $(shell realpath -m -- '$(PWD)/coverage/build')
+override _builddir_r := $(shell realpath -m -- '$(builddir)')
+override _epubnavdir_r := $(shell realpath -m -- '$(epubnavdir)')
+override _copydir_r := $(if $(strip $(copydir)),$(shell realpath -m -- '$(copydir)'),)
+override _covcopydir_r := $(if $(strip $(covcopydir)),$(shell realpath -m -- '$(covcopydir)'),)
+override _reject_forbidden = $(if $(filter / $(_home_r) $(_checkout_r),$(2)),$(error $(1) resolves to /, the home folder, or the checkout itself: $(2)),$(if $(filter $(2)/%,$(_checkout_r)),$(error $(1) resolves to a folder above the checkout: $(2)),))
+override _reject_outside = $(if $(filter $(_defbuild_r) $(_defbuild_r)/% $(_covbuild_r) $(_covbuild_r)/%,$(2)),,$(if $(filter yes,$(ALLOW_OUTSIDE_BUILDDIR)),,$(error $(1) is outside the resolved build folder: $(2); set ALLOW_OUTSIDE_BUILDDIR=yes to allow it)))
+$(call _reject_forbidden,the build folder ($(PWD)/build),$(_defbuild_r))
+$(call _reject_forbidden,the coverage build folder ($(PWD)/coverage/build),$(_covbuild_r))
+$(call _reject_forbidden,builddir,$(_builddir_r))
+$(call _reject_outside,builddir,$(_builddir_r))
+$(call _reject_forbidden,epubnavdir,$(_epubnavdir_r))
+ifeq ($(filter $(_builddir_r)/%,$(_epubnavdir_r)),)
 ifneq ($(ALLOW_OUTSIDE_BUILDDIR),yes)
-$(error builddir is outside the checkout build folder: $(builddir); set ALLOW_OUTSIDE_BUILDDIR=yes to allow it)
-endif
-endif
-_epubnavdir_abs := $(abspath $(epubnavdir))
-ifeq ($(filter / $(PWD) $(HOME),$(_epubnavdir_abs)),$(_epubnavdir_abs))
-$(error epubnavdir must not be /, the home folder, or the checkout itself: $(epubnavdir))
-endif
-ifeq ($(filter $(_builddir_abs)/%,$(_epubnavdir_abs)),)
-ifneq ($(ALLOW_OUTSIDE_BUILDDIR),yes)
-$(error epubnavdir is outside builddir: $(epubnavdir); set ALLOW_OUTSIDE_BUILDDIR=yes to allow it)
+$(error epubnavdir is outside the resolved builddir: $(_epubnavdir_r); set ALLOW_OUTSIDE_BUILDDIR=yes to allow it)
 endif
 endif
 ifneq ($(strip $(copydir)),)
-_copydir_abs := $(abspath $(copydir))
-ifeq ($(filter / $(PWD) $(HOME),$(_copydir_abs)),$(_copydir_abs))
-$(error copydir must not be /, the home folder, or the checkout itself: $(copydir))
-endif
-ifeq ($(call _inside_build,$(_copydir_abs)),)
-ifneq ($(ALLOW_OUTSIDE_BUILDDIR),yes)
-$(error copydir is outside the checkout build folder: $(copydir); set ALLOW_OUTSIDE_BUILDDIR=yes to allow it)
-endif
-endif
+$(call _reject_forbidden,copydir,$(_copydir_r))
+$(call _reject_outside,copydir,$(_copydir_r))
 endif
 ifneq ($(strip $(covcopydir)),)
-_covcopydir_abs := $(abspath $(covcopydir))
-ifeq ($(filter / $(PWD) $(HOME),$(_covcopydir_abs)),$(_covcopydir_abs))
-$(error covcopydir must not be /, the home folder, or the checkout itself: $(covcopydir))
+$(call _reject_forbidden,covcopydir,$(_covcopydir_r))
+$(call _reject_outside,covcopydir,$(_covcopydir_r))
 endif
-ifeq ($(call _inside_build,$(_covcopydir_abs)),)
-ifneq ($(ALLOW_OUTSIDE_BUILDDIR),yes)
-$(error covcopydir is outside the checkout build folder: $(covcopydir); set ALLOW_OUTSIDE_BUILDDIR=yes to allow it)
-endif
-endif
-endif
+# The folders clean and realclean walk: resolved and checked above.
+override _clean_dirs := $(_defbuild_r) $(_covbuild_r) $(_builddir_r)
 
 SHELL=/bin/bash -o pipefail
 
@@ -74,15 +80,20 @@ epub_copied_files := $(shell find assets/fonts assets/media -type f ! -path 'ass
 .PHONY: all
 all: xhtml_chapters xhtml_sections xhtml_nochunks pdf epub html_check
 
+# clean and realclean walk only _clean_dirs: the default build folder,
+# coverage/build and builddir, each resolved with realpath and checked at
+# the top of this file. find gets no -L, so a link inside a build folder
+# is neither followed nor matched by -type f, and names move through
+# -print0, so a file name with a space cannot split into another path.
 .PHONY: clean
 clean:
 	# Keep downloaded tools. realclean still removes them.
-	find $(PWD)/build/ $(PWD)/coverage/build/ $(builddir)/ \( -type d \( -name weasyprint-tools -o -path '*/tools/epubcheck' -o -path '*/tools/vnu' \) -prune \) -o \! -name 'jbovlaste*.xml' -type f -print0 | xargs -0 -r rm -f
+	for d in $(_clean_dirs); do if [ -d "$$d" ]; then find "$$d" \( -type d \( -name weasyprint-tools -o -path '*/tools/epubcheck' -o -path '*/tools/vnu' \) -prune \) -o \! -name 'jbovlaste*.xml' -type f -print0 | xargs -0 -r rm -f --; fi; done
 
 .PHONY: realclean
 realclean: clean
-	find $(PWD)/build/ $(PWD)/coverage/build/ $(builddir)/ -type f | xargs -n 1 rm -f
-	find $(PWD)/build/ $(PWD)/coverage/build/ $(builddir)/ -depth -type d -empty -exec rmdir {} \;
+	for d in $(_clean_dirs); do if [ -d "$$d" ]; then find "$$d" -type f -print0 | xargs -0 -r rm -f --; fi; done
+	for d in $(_clean_dirs); do if [ -d "$$d" ]; then find "$$d" -depth -mindepth 1 -type d -empty -print0 | xargs -0 -r rmdir --; fi; done
 
 #*******
 # Basic prep

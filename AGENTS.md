@@ -108,7 +108,7 @@ Preserve the following distinctions:
 - The 2020 article ratification covers wiki revision 123823 and the two named corrections. A live wiki page is not the ratified text.
 - The first edition's CLL 16.8 gives `ro` existential import. This edition teaches non-importing `ro`, following the uncheckpointed BPFK Inexact Numbers draft, with DE-FACTO status. Record the first edition's rule in the changes appendix. Non-importing `ro` preserves ordinary quantifier duality and contradictory `na` negation.
 - Jbovlaste is read-only. Lensisku is its de facto successor. Neither dictionary's content has official status merely because it appears there.
-- The 2025 minutes are at https://mw.lojban.org/papri/LLG_2025_Annual_Meeting_Minutes, and the current roster of members and directors is at https://mw.lojban.org/papri/LLG_members. The roster lists nine members and two directors who joined in 2026. Neither page records a decision about the language.
+- The 2025 minutes are at https://mw.lojban.org/papri/LLG_2025_Annual_Meeting_Minutes, and the current roster of members and directors is at https://mw.lojban.org/papri/LLG_members. The roster lists nine members who joined in 2026 and two directors whose terms began in 2026. Neither page records a decision about the language.
 
 ## Builds
 

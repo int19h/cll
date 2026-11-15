@@ -70,8 +70,9 @@ The default build downloads both files and removes them after installation.
 
 The toolchain is the set of programs used to build the book.
 `cll_build` records it under `build/toolchain/` before the book build.
-When the target is `all` or `epub`, `cll_build` looks for a selected EPUBCheck jar.
-If `EPUBCHECK_JAR` is unset and the image jar is absent, `cll_build` installs the pinned EPUBCheck before the record.
+If `EPUBCHECK_JAR` is unset and the image jar is absent, `cll_build` asks `make -n` which recipes the requested goals run.
+When those recipes include the ePub checker, `cll_build` installs the pinned EPUBCheck before the record.
+When the dry run fails, `cll_build` installs the pinned EPUBCheck before the record.
 The record then names the checker that the ePub recipe will run.
 When a tool exists, the record contains its file:
 

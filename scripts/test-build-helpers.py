@@ -323,7 +323,22 @@ class CllBuildStatus(unittest.TestCase):
         bindir.mkdir()
         write_executable(
             bindir / "make",
-            "#!/bin/bash\nprintf '%s\\n' \"$*\" > \"$MAKE_LOG\"\nexit \"$MAKE_RC\"\n",
+            "#!/bin/bash\n"
+            "for arg in \"$@\"; do\n"
+            "  if [ \"$arg\" = \"-n\" ]; then\n"
+            "    for goal in \"$@\"; do\n"
+            "      case \"$goal\" in\n"
+            "        all|epub|*cll.epub)\n"
+            "          echo \"scripts/run-epubcheck.sh build/cll.tmp.epub\"\n"
+            "          exit 0\n"
+            "          ;;\n"
+            "      esac\n"
+            "    done\n"
+            "    exit 0\n"
+            "  fi\n"
+            "done\n"
+            "printf '%s\\n' \"$*\" > \"$MAKE_LOG\"\n"
+            "exit \"$MAKE_RC\"\n",
         )
         write_executable(bindir / "wget", "#!/bin/bash\necho 'wget should not run' >&2\nexit 99\n")
         env = os.environ.copy()
@@ -434,6 +449,85 @@ class CllBuildStatus(unittest.TestCase):
             result = self.run_build(root, env, "-n")
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             self.assertEqual(order.read_text().splitlines(), ["install", "record"])
+
+    def test_epub_file_goal_installs_the_checker_before_the_record(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root, env = self.stage(temporary, make_rc=0, diff_rc=0, update_rc=0)
+            order = root / "order.log"
+            write_executable(
+                root / "scripts" / "install-epubcheck.sh",
+                "#!/bin/bash\nprintf 'install %s\\n' \"$1\" >> \"$ORDER\"\n",
+            )
+            write_executable(
+                root / "scripts" / "record-build-toolchain.sh",
+                "#!/bin/bash\nmkdir -p \"$1\"\nprintf 'record\\n' >> \"$ORDER\"\n",
+            )
+            env["ORDER"] = str(order)
+            self._without_selected_jar(env, root)
+            result = self.run_build(root, env, "-n", "-T", "build/cll.epub")
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual(
+                order.read_text().splitlines(),
+                ["install build/tools/epubcheck", "record"],
+            )
+            self.assertTrue((root / "make.log").exists())
+
+    def test_combined_pdf_and_epub_goals_install_the_checker_before_the_record(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root, env = self.stage(temporary, make_rc=0, diff_rc=0, update_rc=0)
+            order = root / "order.log"
+            write_executable(
+                root / "scripts" / "install-epubcheck.sh",
+                "#!/bin/bash\nprintf 'install %s\\n' \"$1\" >> \"$ORDER\"\n",
+            )
+            write_executable(
+                root / "scripts" / "record-build-toolchain.sh",
+                "#!/bin/bash\nmkdir -p \"$1\"\nprintf 'record\\n' >> \"$ORDER\"\n",
+            )
+            env["ORDER"] = str(order)
+            self._without_selected_jar(env, root)
+            result = self.run_build(root, env, "-n", "-T", "pdf epub")
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual(
+                order.read_text().splitlines(),
+                ["install build/tools/epubcheck", "record"],
+            )
+            self.assertTrue((root / "make.log").exists())
+
+    def test_dry_run_failure_installs_the_checker_before_the_record(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root, env = self.stage(temporary, make_rc=0, diff_rc=0, update_rc=0)
+            order = root / "order.log"
+            write_executable(
+                root / "bin" / "make",
+                "#!/bin/bash\n"
+                "for arg in \"$@\"; do\n"
+                "  if [ \"$arg\" = \"-n\" ]; then\n"
+                "    echo dry-run-failed >&2\n"
+                "    exit 2\n"
+                "  fi\n"
+                "done\n"
+                "printf '%s\\n' \"$*\" > \"$MAKE_LOG\"\n"
+                "exit \"$MAKE_RC\"\n",
+            )
+            write_executable(
+                root / "scripts" / "install-epubcheck.sh",
+                "#!/bin/bash\nprintf 'install %s\\n' \"$1\" >> \"$ORDER\"\n",
+            )
+            write_executable(
+                root / "scripts" / "record-build-toolchain.sh",
+                "#!/bin/bash\nmkdir -p \"$1\"\nprintf 'record\\n' >> \"$ORDER\"\n",
+            )
+            env["ORDER"] = str(order)
+            self._without_selected_jar(env, root)
+            result = self.run_build(root, env, "-n", "-T", "pdf")
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertNotIn("dry-run-failed", result.stdout + result.stderr)
+            self.assertEqual(
+                order.read_text().splitlines(),
+                ["install build/tools/epubcheck", "record"],
+            )
+            self.assertTrue((root / "make.log").exists())
 
     def test_pdf_target_does_not_install_the_checker(self):
         with tempfile.TemporaryDirectory() as temporary:

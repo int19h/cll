@@ -205,14 +205,25 @@ mkdir -p $builddir
 # selected. Install it first so the pre-build record names that checker.
 # A second record after make would describe a tree the build had changed,
 # and would still miss the checker if make stopped before the ePub recipe.
-case "$target" in
-  all|epub)
-    if [ -z "${EPUBCHECK_JAR:-}" ] \
-      && [ ! -f "${EPUBCHECK_SYSTEM_JAR:-/usr/local/share/epubcheck/epubcheck.jar}" ]; then
-      scripts/install-epubcheck.sh build/tools/epubcheck || exit
-    fi
-    ;;
-esac
+# Ask make which recipes these goals would run, with the same arguments as
+# the build below. A fixed list of names misses a file goal and a combined
+# goal. If that dry run fails, install anyway so the record still names the
+# checker when the ePub recipe does run.
+if [ -z "${EPUBCHECK_JAR:-}" ] \
+  && [ ! -f "${EPUBCHECK_SYSTEM_JAR:-/usr/local/share/epubcheck/epubcheck.jar}" ]; then
+  if epub_plan=$(make -n -f scripts/Makefile \
+      builddir="$builddir" test="$optlist" chapters="$chapters" \
+      covcopydir="$covarchivedir" copydir="$archivedir" $target 2>/dev/null)
+  then
+    case "$epub_plan" in
+      *scripts/run-epubcheck.sh*)
+        scripts/install-epubcheck.sh build/tools/epubcheck || exit
+        ;;
+    esac
+  else
+    scripts/install-epubcheck.sh build/tools/epubcheck || exit
+  fi
+fi
 scripts/record-build-toolchain.sh "$builddir/toolchain" || exit 1
 echo "$optlist $chapters" >$builddir/chapter-list.new
 if [ ! -f $builddir/chapter-list ]

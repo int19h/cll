@@ -35,14 +35,16 @@ The optional ConTeXt PDF has a [separate build guide](build-context.md).
 It runs beside the Prince pipeline and writes `build/cll-context.pdf`.
 
 - **XHTML**: the Nu Html Checker (`scripts/install-vnu.sh`, Java).
-- **PDF**: `prince` (PrinceXML). Download a package for your platform from princexml.com. For the same fonts as the container, also install the DejaVu and Linux Libertine packages (`fonts-dejavu` and `fonts-linuxlibertine`). The stylesheet loads its special-purpose faces from the repository's own `assets/`.
+- **PDF**: `prince` (PrinceXML). Download a package for your platform from princexml.com. For output parity with the container, also install the DejaVu and Linux Libertine packages (`fonts-dejavu` and `fonts-linuxlibertine`). The stylesheet loads its special-purpose faces from the repository's own `assets/`.
 - **EPUB**: `zip` (the package is assembled by `scripts/build_epub.sh`).
   The installer needs `curl` and `unzip`.
   The check needs a Java runtime (`default-jre-headless` or `default-jre`).
   The ePub target runs EPUBCheck 5.4.0.
   The container image includes that release.
   If the image jar is absent, a native build calls `scripts/install-epubcheck.sh`.
-  When the target is `all` or `epub`, `cll_build` installs that checker before the toolchain record.
+  `cll_build` asks `make -n` which recipes the requested goals run.
+  When that plan includes the ePub checker, `cll_build` installs the checker before the toolchain record.
+  When the dry run fails, `cll_build` installs the checker before the record.
   If the stamp matches the pin, the installer keeps the existing copy.
   See [build-pins.md](build-pins.md).
 

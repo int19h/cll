@@ -2907,7 +2907,7 @@
       A group has properties of its own. They are not automatically the properties of its members, and the properties of the members are not automatically those of the group. For example, John-and-Alice can weigh two hundred kilograms together, although neither John nor Alice does. Groups are also discussed in
       <xref linkend="section-masses" />.
     </para>
-    <para role="status-note">
+    <para role="status-note" condition="status:de-facto;also:llg-ratified,historical">
       <indexterm type="general"><primary>groups</primary><secondary>status of collective satisfaction</secondary>
       </indexterm>
       The group account of
@@ -4583,7 +4583,7 @@
       is similar to
       <xref linkend="example-random-id-PMTu" />. There is no time relationship specified between the going and the buying; both are simply set in the past.
     </para>
-    <para role="status-note">
+    <para role="status-note" condition="status:de-facto">
       <indexterm type="general"><primary>tenses</primary><secondary>before forethought connectives, status</secondary>
       </indexterm>
       A bare leading tense on a forethought construction is de facto standard. Current grammars read it as a term with scope over the whole construction. That is exactly the meaning intended here: both events are in the past. For its history, see

@@ -1349,7 +1349,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent">Both <xref linkend="example-random-id-qmDS" /> and <xref linkend="example-random-id-qmdX" /> say the same thing. Some people go to the market, and, incidentally, they are white. These people are whichever people the context supplies as the referents of <jbophrase>lo prenu</jbophrase>. With no outer quantifier, there is no selection step for the two positions to straddle, so the place of the <valsi>ku</valsi> makes no difference here.</para>
-    <para role="status-note">
+    <para role="status-note" condition="status:llg-ratified;also:checkpointed,historical;date:2020-04-18">
       <indexterm type="general"><primary>relative clauses</primary><secondary>on lo, older analysis</secondary>
       </indexterm>
       Older texts draw a sharp contrast between these two examples (see

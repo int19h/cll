@@ -904,7 +904,7 @@
 
 
     <para>There is no current King of France, so the description <jbophrase>lo ca nolraitru be lo fasygu'e</jbophrase> has nothing to refer to. The word <valsi>lo</valsi> is veridical: whatever it picks out must really be a current King of France, and nothing is (see <xref linkend="section-basic-descriptors" />). The claim therefore fails, since there is nothing for it to be about.</para>
-    <para role="status-note">
+    <para role="status-note" condition="status:editorial;also:unsettled">
       <indexterm type="general"><primary>descriptions</primary><secondary>reference failure under negation</secondary>
       </indexterm>
       The official definitions do not settle what truth value such a failed claim gets. This book follows a convention: an affirmative claim about a failed description counts as false, and its contradictory negation counts as true.

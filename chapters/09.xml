@@ -3135,7 +3135,7 @@
       <xref linkend="example-random-id-ej84" />
       denies that the relationship between my liking you (which is asserted) and your liking me (which is not asserted) is one of motivation. Nothing is said about whether you like me or not, merely that that hypothetical liking is not the motivation for my liking you.
     </para>
-    <para role="status-note">
+    <para role="status-note" condition="status:checkpointed;date:2005-06-16">
       <indexterm type="general"><primary>BAI selma'o</primary><secondary>negation, status of</secondary>
       </indexterm>
       This reading of BAI plus
@@ -3560,7 +3560,7 @@
       </indexterm>
       It should be emphasized that the place structures of the gismu control the meanings of the BAI cmavo. The English phrases shown here are only suggestive, and are often too broad or too narrow to correctly specify what the acceptable range of uses for the modal tag are.
     </para>
-    <para role="status-note"><indexterm type="general"><primary>BAI selma'o</primary><secondary>status of definitions</secondary>
+    <para role="status-note" condition="status:checkpointed;also:historical;date:2005-06-16"><indexterm type="general"><primary>BAI selma'o</primary><secondary>status of definitions</secondary>
       </indexterm>The BAI definitions in this chapter are the checkpointed ones, and that includes every gloss in the table below. A few rows differ from older lists: <valsi>ti'u</valsi>, <valsi>ci'e</valsi>, and <valsi>tai</valsi> (see <xref linkend="appendix-changes" />).</para>
     <para role="allowbreaks" />
     <cmavo-list>

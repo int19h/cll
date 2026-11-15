@@ -1,7 +1,7 @@
-# Status markup: marking rule authority in the DocBook sources
+# Status markup: marking where a rule comes from in the DocBook sources
 
 Per editorial decision 11 (issue #1) and the design in issue #47, every rule or
-claim whose authority differs from the first edition's baseline carries
+claim that comes from somewhere other than the first edition's baseline carries
 **abstract, semantic** status markup in the DocBook source. Renderers decide
 presentation (margin marks in print, badges in HTML, native widgets in jbotci
 cukta); nothing presentational is baked into the XML.
@@ -25,10 +25,10 @@ standing.
 | `editorial` | This edition's choice | note kind | a convention this edition chooses where official texts are silent |
 | `historical` | First-edition rule | note kind | a rule the first edition taught |
 
-`status:` states the note's **primary disposition**: the standing of the rule
-*as this edition teaches it*. Many notes are composite (a first-edition rule, a
+`status:` states the note's **primary disposition**: where the rule *as this
+edition teaches it* comes from. Many notes are composite (a first-edition rule, a
 replacement in established usage, and a choice of this edition in one paragraph); the primary
-is the standing of what the reader is being told to use, and the optional
+is the source of what the reader is being told to use, and the optional
 `also:` key (comma-separated tokens from the same table) records the other
 strands machine-readably. The prose remains the full record; `also:` never
 substitutes for it.

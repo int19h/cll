@@ -3067,7 +3067,7 @@
     <section xml:id="ebnf-changes">
       <title>Changes from the third baseline</title>
     <para><indexterm type="general"><primary>EBNF grammar</primary><secondary>changes from the third baseline</secondary></indexterm>This grammar departs from the EBNF of the third baseline in the places listed here, and each departure is marked at the spot where it is made. <xref linkend="appendix-changes" /> lists them again among the changes from the first edition.</para>
-    <para>First come the corrections: places where the first edition's EBNF misprinted what the grammar meant, and where the YACC grammar shows the intended form (all this edition's choice):</para>
+    <para>First come the corrections: places where the first edition's EBNF misprinted what the grammar meant, and where the YACC grammar shows the intended form (all choices of this edition):</para>
     <itemizedlist>
       <listitem><para>Rule 2: a text can begin with <valsi>.i</valsi> forms and then <valsi>ni'o</valsi> markers (<xref linkend="ebnf-text" />).</para></listitem>
       <listitem><para>Rule 54: a gek-sentence wrapped in <valsi>ke</valsi> requires the tense or modal before the <valsi>ke</valsi> (<xref linkend="ebnf-sentences" />).</para></listitem>
@@ -3082,7 +3082,7 @@
       <listitem><para>Rule 83: a tense or modal before a termset governs the whole termset (this edition's choice, <xref linkend="ebnf-terms" />).</para></listitem>
       <listitem><para>A tense or modal placed directly before a selbri binds to that selbri (approved by the BPFK in 2016, <xref linkend="ebnf-parses" />).</para></listitem>
     </itemizedlist>
-    <para>Then come the departures from the official parser, which follow from this edition's reading of the rules (all this edition's choice):</para>
+    <para>Then come the departures from the official parser, which follow from this edition's reading of the rules (all choices of this edition):</para>
     <itemizedlist>
       <listitem><para>The rule for elided terminators, and the choice among readings (<xref linkend="ebnf-parses" />).</para></listitem>
       <listitem><para>Texts that fit only the plain reading of a connective before <valsi>ke</valsi> are grammatical (<xref linkend="ebnf-connectives" />).</para></listitem>

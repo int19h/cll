@@ -22,17 +22,27 @@ def safe_rmtree(path, root):
     Root must be non-empty, an existing directory after resolution, and
     not '/', the home folder, or a repository root (a folder holding
     '.git'). Path must be non-empty, contain no glob characters, and lie
-    strictly inside the resolved root. Path's parent is resolved and its
-    last component kept as written, so a symbolic-link path is judged by
-    its own location: the link is unlinked and its target is kept. A
-    missing path is fine. Every refusal raises ValueError and deletes
-    nothing. Each removal prints 'removing PATH' on stderr.
+    strictly inside the resolved root. Neither may contain a control
+    character. Path's parent is resolved and its last component kept as
+    written, so a symbolic-link path is judged by its own location: the
+    link is unlinked and its target is kept. A missing path is fine.
+    Every refusal raises ValueError and deletes nothing. Each removal
+    prints 'removing PATH' on stderr.
     """
-    if root is None or str(root) == '':
+    if root is None:
         _refuse('root is empty')
-    if path is None or str(path) == '':
+    if path is None:
         _refuse('path is empty')
-    if any(char in str(path) for char in _GLOB_CHARS):
+    root_text, path_text = str(root), str(path)
+    for label, text in (('root', root_text), ('path', path_text)):
+        if any(ord(char) < 32 or ord(char) == 127 for char in text):
+            _refuse(f'{label} contains a control character')
+    # Path('') becomes '.', the working folder; refuse it as empty.
+    if root_text.rstrip('/') in ('', '.'):
+        _refuse('root is empty')
+    if path_text.rstrip('/') in ('', '.'):
+        _refuse('path is empty')
+    if any(char in path_text for char in _GLOB_CHARS):
         _refuse(f'path contains a glob character: {path}')
 
     resolved_root = Path(root).resolve()
@@ -46,6 +56,11 @@ def safe_rmtree(path, root):
         _refuse(f'root is a repository root: {root}')
 
     raw_path = Path(path)
+    # Path drops a final '.' or '..' before .name can see it, so read the
+    # last component from the spelling as written, as the shell helper does.
+    written_name = path_text.rstrip('/').rsplit('/', 1)[-1]
+    if written_name in ('', '.', '..'):
+        _refuse(f'path has no final component to remove: {path}')
     name = raw_path.name
     if name in ('', '.', '..'):
         _refuse(f'path has no final component to remove: {path}')

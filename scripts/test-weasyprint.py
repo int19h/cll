@@ -3,9 +3,10 @@
 import importlib.util
 import os
 from pathlib import Path
-import shutil
 import tempfile
 import unittest
+
+from safe_rmtree import safe_rmtree
 
 from lxml import html
 from weasyprint.urls import FatalURLFetchingError
@@ -41,6 +42,7 @@ class RenderingTests(unittest.TestCase):
     def setUp(self):
         base = ROOT / 'build/weasyprint-tests'
         base.mkdir(parents=True, exist_ok=True)
+        self.base = base
         self.temp = tempfile.TemporaryDirectory(dir=base)
         self.directory = Path(self.temp.name)
         (self.directory / 'weasyprint.css').write_text('')
@@ -52,7 +54,7 @@ class RenderingTests(unittest.TestCase):
 
     def tearDown(self):
         self.temp.cleanup()
-        shutil.rmtree(self.work_directory, ignore_errors=True)
+        safe_rmtree(self.work_directory, self.base)
 
     def test_math_and_converged_index(self):
         source = self.directory / 'input.html'

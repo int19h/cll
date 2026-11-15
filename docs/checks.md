@@ -82,7 +82,7 @@ node tests/test-prince-index.js
 | --- | --- | --- |
 | Build workflow | The format selection, preview guard, and helper scripts of the "Build selected formats" workflow, and its action pins, permissions, and timeouts | `python3 scripts/test-build-actions.py` and `ruby scripts/test-build-workflow.rb` |
 | Build helpers | The XHTML post-processors stop after a tool fails. They keep the original page. `cll_build` reports a failed comparison and exits with that status. `cll_build -j` refreshes `dictionary/all_words.xml`. `Gemfile.lock` matches the Docker gem pins. | `python3 scripts/test-build-helpers.py` |
-| Guarded recursive delete | `scripts/safe_rmtree.py` refuses an empty root or path, `/`, the home folder, a repository root, a glob, a path outside the root, and a path that escapes through `..` or a symbolic link. A symbolic-link path is unlinked without touching its target. | `python3 scripts/test-safe-rmtree.py` |
+| Guarded recursive delete | `scripts/safe_rmtree.py` refuses an empty root or path, a root or path with a control character, `/`, the home folder, a repository root, a glob, a path outside the root, and a path that escapes through `..` or a symbolic link. A symbolic-link path is unlinked without touching its target. | `python3 scripts/test-safe-rmtree.py` |
 | Chapter artwork | Each of chapters 1 to 21 references its own chapter picture, a large RGBA PNG in `assets/media/`, no unreferenced chapter picture is shipped, and the chapter 2 diagram keeps its size and padding | `python3 scripts/test-chapter-pictures.py` |
 | Well-formed book | The book header and all chapters together are well-formed XML, with no undefined entity and no duplicate ID | See [Quick run](#quick-run) |
 

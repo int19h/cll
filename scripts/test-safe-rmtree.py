@@ -5,6 +5,7 @@ Run: python3 scripts/test-safe-rmtree.py
 """
 import contextlib
 import io
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -74,12 +75,21 @@ class SafeRmtreeTests(unittest.TestCase):
         link.symlink_to(self.outside, target_is_directory=True)
         cases = [
             ('empty root', tree, ''),
+            ('root is Path empty', tree, Path('')),
+            ('root is a dot', tree, '.'),
+            ('root has a newline', tree, f'{self.root}\n'),
+            ('root has a control character', tree, f'{self.root}\x07'),
             ('root is /', tree, '/'),
             ('root is home', tree, Path.home()),
             ('root is a repository root', repo_root / 'tree', repo_root),
             ('root does not exist', tree, self.root / 'missing-root'),
             ('root is a file', tree, tree / 'nested' / 'file.txt'),
             ('empty path', '', self.root),
+            ('path is Path empty', Path(''), self.root),
+            ('path ends in a dot', f'{tree}/.', self.root),
+            ('path ends in dot-dot', f'{tree}/..', self.root),
+            ('path has a newline', f'{tree}\n', self.root),
+            ('path has a control character', f'{self.root}/tr\x07ee', self.root),
             ('path is root', self.root, self.root),
             ('path outside root', outside_tree, self.root),
             ('dot-dot escape', self.root / '..' / self.outside.name / 'tree',
@@ -93,6 +103,15 @@ class SafeRmtreeTests(unittest.TestCase):
         self.assertTrue((tree / 'nested' / 'file.txt').exists())
         self.assertTrue((outside_tree / 'nested' / 'file.txt').exists())
         self.assertTrue((repo_root / 'tree').exists())
+
+    def test_empty_path_root_does_not_become_the_working_folder(self):
+        tree = self.make_tree(self.root)
+        previous = os.getcwd()
+        os.chdir(self.root)
+        self.addCleanup(os.chdir, previous)
+        with self.assertRaises(ValueError):
+            self.remove(tree, Path(''))
+        self.assertTrue((tree / 'nested' / 'file.txt').exists())
 
     def test_glob_paths_are_refused(self):
         tree = self.make_tree(self.root)

@@ -1,12 +1,11 @@
 # Building natively (outside the container)
 
-The supported build environment is the container (`Dockerfile`,
-`run_container.sh`); use it when you can. This note lists native
-prerequisites for running `./cll_build` directly, for cases where the
-container is impractical (quick single-chapter tests, debugging a
-build step). It is an inventory of what `scripts/Makefile` and its
-helper scripts actually invoke; the Dockerfile is the ground truth for
-the container toolset.
+The supported build environment is the container (`Dockerfile` and `run_container.sh`).
+When you can, use the container.
+This note lists the native prerequisites for `./cll_build`.
+Use a native build for a quick single-chapter test, or to debug one build step.
+The list is the tools that `scripts/Makefile` and its helper scripts invoke.
+The Dockerfile is the ground truth for the container toolset.
 
 `cll_build` exits with a nonzero status after `make` reports a failure.
 A missing tool in a recipe is one such failure. Examples are `regenerator` and `prince`.
@@ -19,17 +18,12 @@ They keep the original page. They do not write an empty file in its place.
 
 ## Shared by every target
 
-Building the merged `cll.xml` — a prerequisite of the XHTML, PDF, and
-EPUB targets alike — uses:
+The merged `cll.xml` is a prerequisite of the XHTML, PDF, and EPUB targets.
+The build uses these tools:
 
-- `bash`, `make`, `wget`, `unzip` (the DocBook XSL stylesheets are
-  downloaded and unpacked automatically on first run);
-- `xmlto` (which pulls in `xsltproc`) and `xmllint` (Debian/Ubuntu:
-  `libxml2-utils`, installed transitively with `xmlto`; listed here
-  because the postprocessing scripts call it directly);
-- `regenerator` from npm (`npm install -g regenerator`), used for the
-  ES5 transform of `assets/scripts/sance-next.js` while assembling
-  `cll.xml`;
+- `bash`, `make`, `wget`, and `unzip`. On the first run, the build downloads and unpacks the DocBook XSL stylesheets.
+- `xmlto` and `xmllint`. `xmlto` pulls in `xsltproc`. On Debian and Ubuntu, `xmllint` is in `libxml2-utils`, and that package is installed with `xmlto`. The postprocessing scripts call `xmllint` directly.
+- `regenerator` from npm (`npm install -g regenerator`). The build uses it for the ES5 transform of `assets/scripts/sance-next.js` while it assembles `cll.xml`.
 - Ruby 3.2 or later and Bundler 4.
   `Gemfile.lock` pins Nokogiri 1.18.8, Optimist 3.2.0, and htmlentities 4.3.4.
   The Nokogiri gem is precompiled for x86_64 Linux and for aarch64 Linux.
@@ -41,17 +35,16 @@ The optional ConTeXt PDF has a [separate build guide](build-context.md).
 It runs beside the Prince pipeline and writes `build/cll-context.pdf`.
 
 - **XHTML**: the Nu Html Checker (`scripts/install-vnu.sh`, Java).
-- **PDF**: `prince` (PrinceXML; download a package for your platform
-  from princexml.com). For output parity with the container also
-  install the DejaVu and Linux Libertine system font packages
-  (`fonts-dejavu`, `fonts-linuxlibertine`); the stylesheet loads its
-  special-purpose faces from the repository's own `assets/`.
+- **PDF**: `prince` (PrinceXML). Download a package for your platform from princexml.com. For output parity with the container, also install the DejaVu and Linux Libertine packages (`fonts-dejavu` and `fonts-linuxlibertine`). The stylesheet loads its special-purpose faces from the repository's own `assets/`.
 - **EPUB**: `zip` (the package is assembled by `scripts/build_epub.sh`).
   The installer needs `curl` and `unzip`.
   The check needs a Java runtime (`default-jre-headless` or `default-jre`).
   The ePub target runs EPUBCheck 5.4.0.
   The container image includes that release.
   If the image jar is absent, a native build calls `scripts/install-epubcheck.sh`.
+  `cll_build` asks `make -n` which recipes the requested goals run.
+  When that plan includes the ePub checker, `cll_build` installs the checker before the toolchain record.
+  When the dry run fails, `cll_build` installs the checker before the record.
   If the stamp matches the pin, the installer keeps the existing copy.
   See [build-pins.md](build-pins.md).
 

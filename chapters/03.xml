@@ -2110,13 +2110,13 @@
     <para>
       <indexterm type="general"><primary>syllabication</primary><secondary>rules for</secondary>
       </indexterm>
-      A single consonant always belongs to the following vowel. A consonant pair is divided between the two vowels, unless the pair is a valid initial consonant pair; then both consonants go with the following vowel. A consonant triple is divided between the first and second consonants. If the whole triple could begin a fu'ivla, as <morphology>str</morphology> does in <valsi valid="maybe">tarmkastra</valsi>, it goes with the following vowel instead; and in some fu'ivla, the rules of word form make the first two consonants a consonantal syllable of their own, as <morphology>rm</morphology> does in <valsi valid="maybe">tarmkani</valsi> (see <xref linkend="section-fuhivla" />). A consonantal hyphen, <letteral>r</letteral> or <letteral>n</letteral>, that joins two rafsi in a lujvo is a consonant like any other, and these rules place it; the hyphen <letteral>y</letteral> is a vowel, and it forms a syllable like any other vowel. An apostrophe always marks a syllable break. In a brivla or cmavo, a comma can only mark a break that these rules already put there.
+      Each vowel takes as many of the consonants before it as can begin a syllable together, and any consonants left over close the syllable before. Thus a single consonant always belongs to the following vowel. A consonant pair is divided between the two vowels, unless the pair is a valid initial consonant pair; then both consonants go with the following vowel. A consonant triple is divided between the first and second consonants, because apart from the fu'ivla described below and the lujvo built from them, the last two consonants of a triple always form a permissible initial pair. If the whole triple can begin a syllable, as <morphology>str</morphology> does in <valsi valid="maybe">tarmkastra</valsi>, it goes with the following vowel instead; and in some fu'ivla, the rules of word form make the first two consonants a consonantal syllable of their own, as <morphology>rm</morphology> does in <valsi valid="maybe">tarmkani</valsi> (see <xref linkend="section-fuhivla" />). A consonantal hyphen, <letteral>r</letteral> or <letteral>n</letteral>, that joins two rafsi in a lujvo is a consonant like any other, and these rules place it; the hyphen <letteral>y</letteral> is a vowel, and it forms a syllable like any other vowel. An apostrophe always marks a syllable break. In a brivla or cmavo, a comma can only mark a break that these rules already put there.
     </para>
     <para role="status-note" condition="status:de-facto;also:historical">
       <indexterm type="general"><primary>syllabication</primary><secondary>change from first edition</secondary>
       </indexterm>
       This single division is established usage. The PEG word-form grammar (see
-      <xref linkend="section-peg-grammar" />) fixes the parts of each brivla and cmavo: the rafsi of a lujvo, its hyphens, and the syllables of a fu'ivla, including any consonantal syllables. The jbotci parser divides the words that it recognizes into syllables in the same way. The first edition called its syllabication rules conventional only, and it let some words divide in more than one way, with a comma to show the choice; see
+      <xref linkend="section-peg-grammar" />) fixes the parts of each brivla and cmavo: the rafsi of a lujvo, its hyphens, and the syllables of a fu'ivla, including any consonantal syllables. The rafsi of a lujvo are its building blocks, not its syllables: the rules above place each syllable break, and a break need not fall where one rafsi meets the next. The jbotci parser gives the same divisions for the words that it recognizes. The first edition called its syllabication rules conventional only, and it let some words divide in more than one way, with a comma to show the choice; see
       <xref linkend="appendix-changes" />.
     </para>
     <para>
@@ -2192,7 +2192,14 @@
       <rafsi>kle</rafsi>
       and
       <rafsi>zba</rafsi>. It contains the permissible initial pair
-      <morphology>zb</morphology>, so both consonants go with the following vowel, and the syllable break falls exactly at the boundary between the two rafsi.
+      <morphology>zb</morphology>, which can begin a syllable, so both consonants go with the following vowel. The break happens to fall where the two rafsi meet, but the rafsi do not put it there:
+      <valsi>kasmlu</valsi>, built from
+      <rafsi>kas</rafsi>
+      and
+      <rafsi>mlu</rafsi>, divides as
+      <quote>ka,smlu</quote>, because the triple
+      <morphology>sml</morphology>
+      can begin a syllable.
     </para>
     <para>
       <indexterm type="general"><primary>stressed vowel</primary><secondary>compared with stressed syllable</secondary>
@@ -2373,7 +2380,7 @@
         <jbo role="pronunciation">da'U,dja</jbo>
       </pronunciation>
     </example>
-    <para role="indent">This lujvo is built from the rafsi <rafsi>da'u</rafsi> and <rafsi>dja</rafsi>. The pair <morphology>dj</morphology> is a valid initial pair, and it begins the rafsi <rafsi>dja</rafsi>, so it goes with the following vowel.</para>
+    <para role="indent">This lujvo is built from the rafsi <rafsi>da'u</rafsi> and <rafsi>dja</rafsi>. The pair <morphology>dj</morphology> is a valid initial pair, so it can begin a syllable, and both consonants go with the following vowel.</para>
     <example role="pronunciation-example" xml:id="example-random-id-Ki4a">
       <title>
         <indexterm type="general"><primary>syllabication</primary><secondary>variants of</secondary>

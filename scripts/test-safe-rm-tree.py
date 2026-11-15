@@ -86,6 +86,24 @@ class SafeRmTreeTests(unittest.TestCase):
         self.assert_refused('--root', self.root, self.root / 'link/victim.txt')
         self.assertEqual((self.outside / 'victim.txt').read_text(), 'keep')
 
+    def test_control_characters_are_refused(self):
+        # A trailing newline must not retarget the delete at the sibling
+        # without the newline (round 2, Astra L1).
+        plain = self.tree('plain')
+        newline_root = self.base / 'root\n'
+        (newline_root / 'plain').mkdir(parents=True)
+        (newline_root / 'plain/file.txt').write_text('data')
+        self.assert_refused('--root', newline_root, newline_root / 'plain')
+        self.assertTrue((newline_root / 'plain/file.txt').exists())
+        self.assertTrue((plain / 'sub/file.txt').exists())
+        leaf = self.root / 'leaf\n'
+        leaf.mkdir()
+        sibling = self.tree('leaf')
+        self.assert_refused('--root', self.root, leaf)
+        self.assert_refused('--root', self.root, f'{self.root}/tab\tname')
+        self.assertTrue(leaf.exists())
+        self.assertTrue((sibling / 'sub/file.txt').exists())
+
     def test_symlink_path_is_unlinked_and_target_kept(self):
         link = self.root / 'link'
         link.symlink_to(self.outside / 'victim.txt')

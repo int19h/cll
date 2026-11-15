@@ -90,7 +90,7 @@
     <para><indexterm type="general"><primary>masses</primary><secondary>first-edition doctrine</secondary>
       </indexterm>The <emphasis>mass</emphasis> of the first edition was also a stranger thing than the group of today. The first edition said that a mass inherits the properties of each of its components, where they are relevant to it, and also that a mass has properties of its own. So a mass of people with fair-skinned and dark-skinned members had fair skin <emphasis>and</emphasis> dark skin. (But the mass was not of molecular size merely because the molecules of its people are.) As a result, ordinary logical reasoning did not apply to statements about masses.</para>
     <para>
-      A group (<valsi>gunma</valsi>) has whatever properties it has, collectively satisfied or not, and logic applies as usual. The first edition also used
+      A group (<valsi>gunma</valsi>) has whatever properties it has, collectively satisfied or not, and logic applies as usual. The connective <valsi>joi</valsi>, which the first edition said forms a mass, now forms a group in the same sense. That account is <emphasis>established usage</emphasis>, not part of the ratified text, which never mentions <valsi>joi</valsi>. It comes from the BPFK's draft section on non-logical connectives, a working document that no official body adopted, and it agrees with the ratified account of groups (see <xref linkend="section-non-logical-connectives" />). The first edition also used
       <valsi>loi</valsi>
       for generic statements about kinds. It read
       <jbophrase>loi cinfo cu xabju le fi'ortu'a</jbophrase>,
@@ -251,12 +251,18 @@
         <para>
           Third, a list of exceptions fixed the
           <valsi>bu</valsi>
-          rules. The frozen list exempted the BAhE words and
-          <valsi>le'u</valsi>, among others. In two corners, this edition follows the later synthesis instead. The list forbade
+          rules. Under the frozen definition,
+          <valsi>bu</valsi>
+          cannot bind a quotation word (selma'o ZO, ZOI, LOhU, and LEhU), an erasure word (SI, SA, and SU),
+          <valsi>zei</valsi>, a BAhE word, or
+          <valsi>fa'o</valsi>. In two corners, this edition follows the later synthesis instead. The list forbade
           <jbophrase>ba'e bu</jbophrase>
           and
           <jbophrase>za'e bu</jbophrase>, but the synthesis and current parsers permit them. The same is true of
-          <jbophrase>le'u bu</jbophrase>.
+          <jbophrase>le'u bu</jbophrase>. The frozen record is not consistent on the first corner: the frozen definition of
+          <valsi>ba'e</valsi>, from the same checkpoint, gives
+          <jbophrase>me'o ba'e bu</jbophrase>
+          as an example, meaning <quote>the emphasis letter</quote>.
         </para>
         <para>
           See
@@ -268,6 +274,9 @@
       </listitem>
       <listitem>
         <para><indexterm type="lojban-word"><primary>me'i</primary><secondary>default number, change summary</secondary></indexterm>This change is <emphasis>established usage</emphasis>: it comes from the same draft section, <quote>Inexact Numbers</quote>. In the first edition, a bare <valsi>me'i</valsi> meant <jbophrase>me'i pa</jbophrase>, <quote>fewer than one</quote>, which is the same as <valsi>no</valsi>. This edition reads it as <jbophrase>me'i ro</jbophrase>, <quote>not all</quote>, and keeps <valsi>pa</valsi> as the default for <valsi>su'o</valsi>, <valsi>su'e</valsi>, and <valsi>za'u</valsi>. See <xref linkend="section-approximation" />.</para>
+      </listitem>
+      <listitem>
+        <para><indexterm type="lojban-word"><primary>tu'o</primary><secondary>change summary</secondary></indexterm>This change is <emphasis>this edition's choice</emphasis>. The official cmavo list gives <valsi>tu'o</valsi> two senses: a null operand, used in unary operations, and a non-specific number. This edition follows a proposal by And Rosta, which no official body adopted. It teaches <valsi>tu'o</valsi> only as the null operand, and it expresses an unspecified number with <jbophrase>mo'e zo'e</jbophrase>. See <xref linkend="section-infix-again" />.</para>
       </listitem>
       <listitem>
         <para>

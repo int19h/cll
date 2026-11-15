@@ -1,5 +1,7 @@
 #!/bin/bash
 
+tools="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 type=xhtml_no_chunks
 
 read_var() {
@@ -13,7 +15,8 @@ read_var() {
 
 tempdir=./build/diff_from_official
 
-rm -rf $tempdir
+mkdir -p ./build
+"$tools/safe-rm-tree.sh" --root ./build "$tempdir"
 mkdir -p $tempdir
 
 compare_with=$(read_var COMPARE_OFFICIAL .env)
@@ -28,7 +31,7 @@ source_dir_new=./build/$type
 
 target_dir_old=$tempdir/diff_old_$type
 target_dir_new=$tempdir/diff_new_$type
-rm -rf $target_dir_old $target_dir_new
+"$tools/safe-rm-tree.sh" --root "$tempdir" "$target_dir_old" "$target_dir_new"
 
 echo $source_dir_old
 echo $target_dir_old
@@ -52,7 +55,8 @@ echo "A visual HTML diff is placed in $tempdir/difference.html $tempdir/differen
 
 tempdir=./build/diff_from_previous
 
-rm -rf $tempdir
+mkdir -p ./build
+"$tools/safe-rm-tree.sh" --root ./build "$tempdir"
 mkdir -p $tempdir
 
 compare_with=$(read_var COMPARE_PREVIOUS .env)
@@ -67,7 +71,7 @@ source_dir_new=./build/$type
 
 target_dir_old=$tempdir/diff_old_$type
 target_dir_new=$tempdir/diff_new_$type
-rm -rf $target_dir_old $target_dir_new
+"$tools/safe-rm-tree.sh" --root "$tempdir" "$target_dir_old" "$target_dir_new"
 
 echo $source_dir_old
 echo $target_dir_old

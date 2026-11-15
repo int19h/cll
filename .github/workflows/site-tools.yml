@@ -19,8 +19,10 @@ jobs:
         run: python3 scripts/test-docbook-diff-deletions.py
       - name: Ligatures stay inside comparison changes
         run: python3 scripts/test-docbook-diff-style.py
+      - name: Guarded recursive delete helper
+        run: python3 scripts/test-safe-rm-tree.py
       - name: Check script syntax
-        run: bash -n scripts/site-versions.sh scripts/build-versions.sh scripts/build-site.sh scripts/gen-site-index.sh scripts/test-site-versions.sh
+        run: bash -n scripts/site-versions.sh scripts/build-versions.sh scripts/build-site.sh scripts/gen-site-index.sh scripts/test-site-versions.sh scripts/safe-rm-tree.sh scripts/build_epub.sh scripts/diff_official
       - name: Pages action pins and job permissions
         run: ruby scripts/test-pages-workflow.rb
       - name: Formats, version order, releases and landing pages

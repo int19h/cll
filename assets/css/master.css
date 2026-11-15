@@ -457,6 +457,9 @@ div.whole-index {
   margin-left: 0.8em;
 }
 
+/* Letter groups are h2 now. This subject stays h3: the whitespace
+   formatter excludes every h3 because of it. PDF letter headings are
+   hidden with class display-none in the Prince postprocess. */
 .whole-index h3 {
   display: none;
 }
@@ -890,6 +893,32 @@ hr {
   margin-top: 5em;
 }
 
+/* The author is an h2. Cancel the running header, and keep the h3
+   margin: 1em below on a page, 0.5em below on a screen. */
+.book > .titlepage h2.author {
+  string-set: none;
+  font-weight: bold;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Index letter groups are h2. This matches a browser h3 outside the
+   screen. The screen rule below matches the old screen h3. */
+.indexdiv > h2 {
+  string-set: none;
+  font-weight: bold;
+  font-size: 1.17em;
+  margin: 1em 0;
+}
+
+/* The credits bridgehead is an h3 in the place of an h4. */
+h3.bridgehead {
+  font-size: 1em;
+  font-weight: bold;
+  margin: 1.33em 0;
+}
+
 .book > .titlepage hr {
   display: none;
 }
@@ -978,6 +1007,17 @@ screen display
   div.table-title,
   div.figure-title,
   .formalpara-title {
+    font-size: 110%;
+    margin: 1em auto 0.5em auto;
+  }
+
+  .book > .titlepage h2.author {
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .indexdiv > h2 {
     font-size: 110%;
     margin: 1em auto 0.5em auto;
   }

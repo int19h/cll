@@ -11,3 +11,14 @@
     padding-left: 22.5pt;
   }
 }
+
+/* Index letter groups are h2. They are not outline entries. */
+.indexdiv > h2 { prince-bookmark-level: none; }
+
+/* Prince's own h3 margin is 14pt. The shared author rule uses 1em, and
+   the author font is 16pt, so that 1em is 16pt and the line below moves. */
+.book > .titlepage h2.author { margin-bottom: 14pt; }
+
+/* Prince's own h4 is 12pt with 16pt margins. The credits bridgehead
+   used to be that h4. The shared rule is 1em, which is 9pt here. */
+h3.bridgehead { font-size: 12pt; margin: 16pt 0; font-weight: bold; }

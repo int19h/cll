@@ -238,6 +238,16 @@ def main():
         check(whole[0].find(".//div[@class='index']") is inner[0],
               "the untouched index div is still nested inside the renamed one")
 
+    # Letter groups arrive as h2. The PDF hides them with display-none.
+    # The .whole-index h3 rule is left alone so the whitespace formatter
+    # still excludes every h3.
+    letters = [h for h in root.iter("h2") if "".join(h.itertext()) == "Symbols"]
+    if len(letters) != 1:
+        die(f"expected exactly 1 index letter heading, found {len(letters)}")
+    check("display-none" in classes(letters[0]),
+          "the index letter heading is hidden with class display-none",
+          f"class={letters[0].get('class')!r}")
+
     print()
     if failures:
         print(f"test-xml-prince-postprocess: {len(failures)} assertion(s) failed:")

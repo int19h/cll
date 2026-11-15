@@ -214,7 +214,13 @@ then
   rm xml/jbovlaste.xml
 fi
 
-make -f scripts/Makefile builddir="$builddir" test="$optlist" chapters="$chapters" covcopydir="$covarchivedir" copydir="$archivedir" $target
+allow_outside=""
+if [ -n "${archivedir:-}" -o -n "${covarchivedir:-}" ]
+then
+  allow_outside="ALLOW_OUTSIDE_BUILDDIR=yes"
+fi
+
+make -f scripts/Makefile builddir="$builddir" test="$optlist" chapters="$chapters" $allow_outside covcopydir="$covarchivedir" copydir="$archivedir" $target
 make_rc=$?
 
 if [ $make_rc -ne 0 ]

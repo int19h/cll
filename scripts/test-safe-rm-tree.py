@@ -57,10 +57,24 @@ def main():
             (".. escape", root, [root / ".." / "outside"]),
             ("PATH outside ROOT", root, [outside]),
             ("PATH equal to ROOT", root, [root]),
+            ("newline in PATH", root, [str(root / "victim\n")]),
+            ("newline in ROOT", str(root) + "\n", [victim]),
+            ("control character in PATH", root, [str(root / "vic\x01tim")]),
         ]:
             res = run(r, *paths)
             check(f"refuses {what}", res.returncode == 2 and victim.exists()
                   and (outside / "keep.txt").exists())
+
+        # A trailing newline must not retarget the delete at a sibling.
+        nl_root = t / "nlroot\n"
+        nl_root.mkdir()
+        (nl_root / "victim").mkdir()
+        plain = t / "nlroot"
+        (plain / "victim").mkdir(parents=True)
+        res = run(nl_root, nl_root / "victim")
+        check("newline ROOT does not delete in the plain sibling",
+              res.returncode == 2 and (plain / "victim").exists()
+              and (nl_root / "victim").exists())
 
         # The repo root (a folder holding .git) is refused as ROOT.
         repo = t / "repo"

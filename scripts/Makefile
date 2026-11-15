@@ -1,45 +1,110 @@
 chapters = $(if $(chapters), $(chapters), chapters/01.xml chapters/02.xml chapters/03.xml chapters/04.xml chapters/05.xml chapters/06.xml chapters/07.xml chapters/08.xml chapters/09.xml chapters/10.xml chapters/11.xml chapters/12.xml chapters/13.xml chapters/14.xml chapters/15.xml chapters/16.xml chapters/17.xml chapters/18.xml chapters/19.xml chapters/20.xml chapters/21.xml chapters/a01.xml)
-builddir = $(if $(builddir), $(builddir), $(PWD)/build)
+ifeq ($(origin builddir),undefined)
+builddir := $(PWD)/build
+endif
 xsl_base = xml/docbook-xsl-1.78.1
 safe_rm = scripts/safe-rm-tree.sh
 
-# Refuse dangerous folder variables at parse time, before any recipe runs.
-# The helper repeats these checks (and the strictly-inside-ROOT check) at
-# delete time; see scripts/safe-rm-tree.sh.
-ifeq ($(builddir),)
+# Folder variables reach recursive deletes, so check them at parse time,
+# before any recipe runs (issue #271). Every folder is resolved through
+# symbolic links first (realpath of the parent plus the final component,
+# like the helper). /, the home folder, the checkout and every parent of
+# the checkout are always refused. A folder outside the checkout's build
+# folders (build or coverage/build, after resolving their links, so a
+# build link to a separate folder still works) needs
+# ALLOW_OUTSIDE_BUILDDIR=yes; cll_build sets it when -a or -A names an
+# archive folder. An empty copydir or covcopydir means "no archive
+# folder", as before. The helper repeats the checks at delete time.
+override _checkout_res := $(realpath $(CURDIR))
+override _home_res := $(if $(realpath $(HOME)),$(realpath $(HOME)),$(HOME))
+override _resolve = $(if $(realpath $(1)),$(realpath $(1)),$(patsubst %/,%,$(realpath $(dir $(patsubst %/,%,$(1)))))/$(notdir $(patsubst %/,%,$(1))))
+override _build_res := $(call _resolve,$(_checkout_res)/build)
+override _covbuild_res := $(call _resolve,$(_checkout_res)/coverage/build)
+override _inside_build = $(filter $(_build_res) $(_build_res)/% $(_covbuild_res) $(_covbuild_res)/%,$(1))
+override _forbidden = $(if $(filter / $(_home_res),$(1)),yes,$(if $(filter $(1) $(1)/%,$(_checkout_res)),yes,))
+ifneq ($(words $(CURDIR)),1)
+$(error the checkout path must not contain spaces: $(CURDIR))
+endif
+ifneq ($(strip $(HOME)),)
+ifneq ($(words $(HOME)),1)
+$(error the home folder path must not contain spaces: $(HOME))
+endif
+endif
+
+# The two folders clean always traverses: a link to a separate build
+# folder is fine, a link into the source tree is not.
+ifneq ($(call _forbidden,$(_build_res)),)
+$(error the build folder resolves to a refused folder: $(_build_res))
+endif
+ifeq ($(filter $(_checkout_res)/%,$(_build_res))x,$(_build_res)x)
+ifneq ($(_build_res),$(_checkout_res)/build)
+$(error the build folder link points into the source tree: $(_build_res))
+endif
+endif
+ifneq ($(call _forbidden,$(_covbuild_res)),)
+$(error the coverage build folder resolves to a refused folder: $(_covbuild_res))
+endif
+ifeq ($(filter $(_checkout_res)/%,$(_covbuild_res))x,$(_covbuild_res)x)
+ifneq ($(_covbuild_res),$(_checkout_res)/coverage/build)
+$(error the coverage build folder link points into the source tree: $(_covbuild_res))
+endif
+endif
+
+ifeq ($(strip $(builddir)),)
 $(error builddir must not be empty)
 endif
-ifeq ($(builddir),/)
-$(error builddir must not be /)
+ifneq ($(words $(builddir)),1)
+$(error builddir must be one folder: $(builddir))
 endif
-ifeq ($(builddir),$(PWD))
-$(error builddir must not be the repository root)
+override _builddir_res := $(call _resolve,$(builddir))
+ifneq ($(words $(_builddir_res)),1)
+$(error builddir does not resolve to one folder: $(builddir))
 endif
-ifeq ($(builddir),$(HOME))
-$(error builddir must not be the home folder)
+ifneq ($(call _forbidden,$(_builddir_res)),)
+$(error builddir must not be /, the home folder, the checkout, or a parent of the checkout: $(builddir))
 endif
-builddir_abs := $(abspath $(builddir))
-ifeq ($(filter $(PWD)/%,$(builddir_abs)/),)
-ifndef CLL_ALLOW_EXTERNAL_BUILDDIR
-$(error builddir $(builddir_abs) is outside the checkout; set CLL_ALLOW_EXTERNAL_BUILDDIR=1 to allow it)
-endif
-endif
-ifneq ($(copydir),)
-ifeq ($(copydir),/)
-$(error copydir must not be /)
-endif
-ifeq ($(copydir),$(PWD))
-$(error copydir must not be the repository root)
+ifeq ($(call _inside_build,$(_builddir_res)),)
+ifneq ($(ALLOW_OUTSIDE_BUILDDIR),yes)
+$(error builddir is outside the checkout build folders: $(builddir); set ALLOW_OUTSIDE_BUILDDIR=yes to allow it)
 endif
 endif
-ifneq ($(covcopydir),)
-ifeq ($(covcopydir),/)
-$(error covcopydir must not be /)
+ifneq ($(strip $(copydir)),)
+ifneq ($(words $(copydir)),1)
+$(error copydir must be one folder: $(copydir))
 endif
-ifeq ($(covcopydir),$(PWD))
-$(error covcopydir must not be the repository root)
+override _copydir_res := $(call _resolve,$(copydir))
+ifneq ($(words $(_copydir_res)),1)
+$(error copydir does not resolve to one folder: $(copydir))
+endif
+ifneq ($(call _forbidden,$(_copydir_res)),)
+$(error copydir must not be /, the home folder, the checkout, or a parent of the checkout: $(copydir))
+endif
+ifeq ($(call _inside_build,$(_copydir_res)),)
+ifneq ($(ALLOW_OUTSIDE_BUILDDIR),yes)
+$(error copydir is outside the checkout build folders: $(copydir); set ALLOW_OUTSIDE_BUILDDIR=yes to allow it)
 endif
 endif
+endif
+ifneq ($(strip $(covcopydir)),)
+ifneq ($(words $(covcopydir)),1)
+$(error covcopydir must be one folder: $(covcopydir))
+endif
+override _covcopydir_res := $(call _resolve,$(covcopydir))
+ifneq ($(words $(_covcopydir_res)),1)
+$(error covcopydir does not resolve to one folder: $(covcopydir))
+endif
+ifneq ($(call _forbidden,$(_covcopydir_res)),)
+$(error covcopydir must not be /, the home folder, the checkout, or a parent of the checkout: $(covcopydir))
+endif
+ifeq ($(call _inside_build,$(_covcopydir_res)),)
+ifneq ($(ALLOW_OUTSIDE_BUILDDIR),yes)
+$(error covcopydir is outside the checkout build folders: $(covcopydir); set ALLOW_OUTSIDE_BUILDDIR=yes to allow it)
+endif
+endif
+endif
+
+# The folders clean and realclean walk: resolved and checked above.
+override _clean_dirs := $(_build_res) $(_covbuild_res) $(_builddir_res)
 
 SHELL=/bin/bash -o pipefail
 
@@ -48,12 +113,15 @@ all: xhtml_chapters xhtml_sections xhtml_nochunks pdf epub mobi
 
 .PHONY: clean
 clean:
-	find $(PWD)/build/ $(PWD)/coverage/build/ $(builddir)/ \! -name 'jbovlaste*.xml' -type f | xargs -n 1 rm -f
+	# Walk only the resolved, checked folders. No -L, and names move
+	# through -print0, so a file name with a space cannot split into
+	# another path.
+	for d in $(_clean_dirs); do if [ -d "$$d" ]; then find "$$d" \! -name 'jbovlaste*.xml' -type f -print0 | xargs -0 -r rm -f --; fi; done
 
 .PHONY: realclean
 realclean: clean
-	find $(PWD)/build/ $(PWD)/coverage/build/ $(builddir)/ -type f | xargs -n 1 rm -f
-	find $(PWD)/build/ $(PWD)/coverage/build/ $(builddir)/ -depth -type d -empty -exec rmdir {} \;
+	for d in $(_clean_dirs); do if [ -d "$$d" ]; then find "$$d" -type f -print0 | xargs -0 -r rm -f --; fi; done
+	for d in $(_clean_dirs); do if [ -d "$$d" ]; then find "$$d" -depth -mindepth 1 -type d -empty -print0 | xargs -0 -r rmdir --; fi; done
 
 #*******
 # Basic prep

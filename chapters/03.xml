@@ -663,7 +663,7 @@
       </indexterm><indexterm type="general"><primary>syllable break</primary><secondary>representation in Lojban</secondary>
       </indexterm><indexterm type="general"><primary>comma</primary><secondary>definition of</secondary>
       </indexterm>The comma, by contrast, is only a reading aid. It marks a syllable break within a word, usually one that is not obvious to the reader. Unlike the period, a comma must never be pronounced as a pause or a glottal stop, because that would split the word into two words. Between two vowels, a comma shows that the vowels belong to separate syllables, which are pronounced in one smooth flow. Any slight transition between them is a fact of pronunciation, not an extra phoneme. The comma has no sound of its own, and so no two Lojban words can differ only by the presence or placement of a comma.</para>
-    <para role="status-note">
+    <para role="status-note" condition="status:editorial;also:de-facto">
       <indexterm type="general"><primary>comma</primary><secondary>change from first edition</secondary>
       </indexterm>
       If you want the
@@ -730,7 +730,7 @@
     <title><anchor xml:id="c3s4" />Diphthongs, glides, and syllabic consonants</title>
     <para><indexterm type="general"><primary>diphthongs</primary><secondary>definition of</secondary>      </indexterm>Lojban has exactly four diphthongs: <diphthong>ai</diphthong>, <diphthong>ei</diphthong>, <diphthong>oi</diphthong>, and <diphthong>au</diphthong>. A glide is a vowel-like sound that never forms a syllable alone, like the English <quote>y</quote> or <quote>w</quote>. A diphthong is a vowel sound made of two elements, a main vowel and a glide after it. We call that glide an off-glide. It is either palatal (IPA <phrase role="IPA">[j]</phrase>, spelled <letteral>i</letteral>) or labial (IPA <phrase role="IPA">[w]</phrase>, spelled <letteral>u</letteral>). A diphthong is always a single syllable.</para>
     <para>The letters <letteral>i</letteral> and <letteral>u</letteral> can also come <emphasis>before</emphasis> another vowel, and there they are not vowels at all. They are the glide consonants <phrase role="IPA">[j]</phrase> and <phrase role="IPA">[w]</phrase>, and they begin the syllable. So <morphology>ia</morphology> sounds like <phrase role="IPA">[ja]</phrase>, as in English <quote>ya</quote>, and <morphology>ua</morphology> sounds like <phrase role="IPA">[wa]</phrase>, as in English <quote>wa</quote>. Treating these as a glide consonant plus a vowel, rather than as diphthongs, matters for a rule later in this section.</para>
-    <para role="status-note"><indexterm type="general"><primary>PEG word-form grammar</primary><secondary>status of</secondary>
+    <para role="status-note" condition="status:de-facto;also:bpfk-approved"><indexterm type="general"><primary>PEG word-form grammar</primary><secondary>status of</secondary>
       </indexterm>Like the other precise rules for word forms, this analysis with four diphthongs comes from a parsing expression grammar (PEG). This book calls it the PEG word-form grammar (see <xref linkend="section-peg-grammar" />). The grammar is the de facto standard definition of Lojban word forms, and current Lojban software implements it. <xref linkend="appendix-changes" /> explains what <quote>de facto</quote> means here. Within that grammar, the ban on a consonant followed by a glide (the <emphasis>consonant-glide-vowel ban</emphasis>) is separately committee-approved. The note at the end of this section gives the practical consequences.</para>
     <para>
       <indexterm type="general"><primary>vowels</primary><secondary>contrasted with consonants</secondary>
@@ -973,7 +973,7 @@
     </para>
     <para>As a result, the cmavo <valsi>ia</valsi> and names like <cmevla>.iolandas.</cmevla> are fine. But a form like <quote>kuarka</quote> is not a possible Lojban word. To borrow such a word, change the glide into a true vowel in its own syllable by putting an apostrophe at the transition. The result is <jbophrase>ku'arka</jbophrase>, with three syllables and no glide. (See <xref linkend="chapter-morphology" /> for how to form borrowings.)</para>
     <para>The combinations <morphology>iy</morphology> and <morphology>uy</morphology> (a glide before the vowel <letteral>y</letteral>) occur in practice only in Lojbanized names. As pure word forms, the formal definition also counts them among the unassigned cmavo forms (see <xref linkend="chapter-morphology" />), but no standard word uses them.</para>
-    <para role="status-note">
+    <para role="status-note" condition="status:bpfk-approved;also:de-facto;date:2014-12-27">
       <indexterm type="general"><primary>consonant-glide-vowel ban</primary></indexterm>
       The consonant-glide-vowel ban is committee-approved. Older texts contain words that people coined before the ban, like
       <quote>kuarka</quote>

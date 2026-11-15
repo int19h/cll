@@ -7,6 +7,8 @@ import subprocess
 import tempfile
 import unittest
 
+from safe_rmtree import safe_rmtree
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -49,7 +51,7 @@ class VersionTests(unittest.TestCase):
             self.assertEqual(run('scripts/build-version.sh'),
                              'colojban-1.3.5+' + run('git', 'rev-parse', '--short=7', 'HEAD'))
             # Stop Git from falling back to the enclosing worktree after export.
-            shutil.rmtree(repo / '.git')
+            safe_rmtree(repo / '.git', scratch)
             env['GIT_CEILING_DIRECTORIES'] = str(repo.parent)
             with self.assertRaises(subprocess.CalledProcessError):
                 run('scripts/build-version.sh')

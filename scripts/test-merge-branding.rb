@@ -3,7 +3,6 @@
 # Run from anywhere. Exits 1 on failure.
 
 require 'cgi'
-require 'fileutils'
 require 'nokogiri'
 require 'open3'
 require 'tmpdir'
@@ -15,9 +14,9 @@ check = lambda { |ok, msg| failures << msg unless ok }
 def run_merge(root, title_line)
   env_path = File.join(root, '.env')
   File.write(env_path, title_line)
-  build = File.join(root, 'build')
-  FileUtils.rm_rf(build)
-  FileUtils.mkdir_p(build)
+  # A fresh empty build folder per merge, inside the caller's Dir.mktmpdir
+  # root, so no recursive delete is needed to reset the previous one.
+  build = Dir.mktmpdir('build-', root)
   env = ENV.to_h.merge('CLL_BUILD_VERSION' => 'A & B')
   stdout, stderr, status = Open3.capture3(
     env, 'bash', 'scripts/merge.sh', '-t', '-b', build, 'chapter.xml', chdir: root

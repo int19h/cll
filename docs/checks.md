@@ -33,6 +33,7 @@ python3 scripts/test-build-actions.py
 ruby scripts/test-build-workflow.rb
 python3 scripts/test-makefile.py
 python3 scripts/test-safe-rm-tree.py
+python3 scripts/test-safe-rmtree.py
 python3 scripts/test-chapter-pictures.py
 python3 scripts/test-lint-undotted-cmevla.py
 python3 scripts/lint-undotted-cmevla.py chapters/*.xml
@@ -85,6 +86,8 @@ node tests/test-prince-index.js
 | Makefile | The archive recipes and incremental inputs, and the parse-time guard that stops `make` when `builddir` is empty, `/`, or outside the checkout build folder | `python3 scripts/test-makefile.py` |
 | Recursive deletes | `scripts/safe-rm-tree.sh` refuses an empty or glob path, `/`, the home folder, a repository root, and any path outside its `--root`; a symbolic link path is unlinked and its target kept | `python3 scripts/test-safe-rm-tree.py` |
 | Chapter artwork | Chapters 1 to 21 each use one chapter picture. Each picture is a large RGBA PNG in `assets/media/`. No unreferenced chapter picture is shipped. The chapter 2 diagram keeps its size and padding. | `python3 scripts/test-chapter-pictures.py` |
+| Guarded recursive delete | `scripts/safe_rmtree.py` refuses an empty root or path, a root or path with a control character, `/`, the home folder, a repository root, a glob, a path outside the root, and a path that escapes through `..` or a symbolic link. A symbolic-link path is unlinked without touching its target. | `python3 scripts/test-safe-rmtree.py` |
+| Chapter artwork | Each of chapters 1 to 21 references its own chapter picture, a large RGBA PNG in `assets/media/`, no unreferenced chapter picture is shipped, and the chapter 2 diagram keeps its size and padding | `python3 scripts/test-chapter-pictures.py` |
 | Well-formed book | The book header and all chapters together are well-formed XML, with no undefined entity and no duplicate ID | See [Quick run](#quick-run) |
 
 The book check joins `scripts/header.xml`, every `chapters/*.xml` file, and a closing `</book>` into one file.

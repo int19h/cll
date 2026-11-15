@@ -413,8 +413,9 @@ html_check:
         work = self.build / 'weasyprint-work/cll-weasyprint.html'
         work.parent.mkdir(parents=True)
         work.write_text('working copy')
-        outside = Path(tempfile.mkdtemp(prefix='cll-make-outside-'))
-        self.addCleanup(lambda: shutil.rmtree(outside, ignore_errors=True))
+        outside_temporary = tempfile.TemporaryDirectory(prefix='cll-make-outside-')
+        self.addCleanup(outside_temporary.cleanup)
+        outside = Path(outside_temporary.name)
         (outside / 'build').mkdir()
         (outside / 'coverage/build').mkdir(parents=True)
         survivor = outside / 'build/survivor.epub'

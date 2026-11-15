@@ -8,6 +8,8 @@ import unittest
 import xml.etree.ElementTree as ET
 import zipfile
 
+from safe_rmtree import safe_rmtree
+
 SOURCE = Path(__file__).resolve().parent.parent
 
 
@@ -31,7 +33,7 @@ class EpubAssets(unittest.TestCase):
             shutil.copytree(SOURCE / 'assets', xhtml / 'assets')
             # Use the same producer exclusions as scripts/Makefile's ePub target.
             for excluded in ('css', 'scripts', 'media/examples', 'media/vreji'):
-                shutil.rmtree(xhtml / 'assets' / excluded, ignore_errors=True)
+                safe_rmtree(xhtml / 'assets' / excluded, root)
             (xhtml / 'final.css').write_text('body { color: black; }')
             # Content pages are rewritten to the ePub contract. Title and link stay.
             (xhtml / 'index.html').write_text('''<!DOCTYPE html>

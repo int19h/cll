@@ -12,6 +12,8 @@ import unittest
 import xml.etree.ElementTree as ET
 import zipfile
 
+from safe_rmtree import safe_rmtree
+
 SOURCE = Path(__file__).resolve().parent.parent
 XHTML = '{http://www.w3.org/1999/xhtml}'
 XML_LANG = '{http://www.w3.org/XML/1998/namespace}lang'
@@ -276,8 +278,7 @@ class EpubNav(unittest.TestCase):
 
     def package(self, pages, nav, spine):
         destination = self.root / 'package'
-        if destination.exists():
-            shutil.rmtree(destination)
+        safe_rmtree(destination, self.root)
         destination.mkdir()
         for path in pages.glob('*.html'):
             text = re.sub(r'<!DOCTYPE[^>]*>\s*', '', path.read_text(encoding='utf-8'))

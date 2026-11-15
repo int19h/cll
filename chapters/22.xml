@@ -14,7 +14,7 @@
     <para><indexterm type="general"><primary>parsers</primary><secondary>dialect support in</secondary>
       </indexterm>The sections of this chapter document two different kinds of evidence, and it pays to keep them apart. The first is <emphasis>usage evidence</emphasis>: the feature appears in genuine text or in established community writing, and not only in a dictionary entry. The second is <emphasis>machine support</emphasis>: at least one maintained parser accepts it. They answer different questions. A parser that accepts a feature shows that someone implemented it, not that anyone uses it, so machine support alone is no proof of actual use. Not every section documents both.</para>
     <para>The standard camxes grammar accepts only standard Lojban. Its <quote>beta</quote> variant adds the popular experimental cmavo that are backward-compatible, and further variants add the genuine grammar changes described at the end of this chapter. Other tools go the opposite way: they accept the popular experimental cmavo by default, and keep explicit dialect switches for the true grammar changes. We made sure that at least one such parser accepts every example in this chapter, and each section says which.</para>
-    <para role="status-note" condition="status:proposed;also:de-facto"><indexterm type="general"><primary>experimental cmavo</primary><secondary>status of</secondary>
+    <para role="status-note" condition="status:de-facto;also:proposed"><indexterm type="general"><primary>experimental cmavo</primary><secondary>status of</secondary>
       </indexterm>All of these features are unofficial. None is ratified, committee-approved, or checkpointed. Where a section cites usage frequency, the evidence is a community survey of six corpora from 2015. Its counts give too much weight to chat logs and to individual authors, so treat it as a rough rank order, not as an endorsement.</para>
   </section>
   <section xml:id="section-dialects-quotation">
@@ -199,7 +199,7 @@
         <para>The abstractor <jbophrase>poi'i</jbophrase>, common in the plural-logic literature of <xref linkend="section-dialects-plural" /></para>
       </listitem>
     </itemizedlist>
-    <para role="status-note" condition="status:proposed;also:de-facto">
+    <para role="status-note" condition="status:de-facto;also:proposed">
       The camxes beta family and jbotci accept the error-correction set and
       <valsi>xo'e</valsi>. Only jbotci accepts
       <valsi>zo'ei</valsi>. The camxes beta family accepts the words that this section only names, but jbotci's support for them varies from word to word. Make sure that your parser accepts a word before you rely on it. None of these words is official.

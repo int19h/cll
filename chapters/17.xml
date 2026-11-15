@@ -706,7 +706,7 @@
       <jbophrase>su bu</jbophrase>
       as a letteral. But that is an artifact of the parser, not a rule.
     </para>
-    <para role="status-note" condition="status:editorial;also:checkpointed">
+    <para role="status-note" condition="status:editorial;also:checkpointed,de-facto">
       <indexterm type="lojban-word"><primary>bu</primary><secondary>rules, status of</secondary>
       </indexterm>
       The

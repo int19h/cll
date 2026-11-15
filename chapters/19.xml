@@ -2597,7 +2597,7 @@
     </itemizedlist>
     <para>The frozen rules for each word and the uniform principle agree almost everywhere, and where they agree, the principle merely restates settled material. One corner is genuinely contested: whether <valsi>bu</valsi> can bind a preceding <valsi>ba'e</valsi> (see <xref linkend="chapter-letterals" />). Treat <jbophrase>ba'e bu</jbophrase> and similar exotica as curiosities, not tools.</para>
     <para>The metaphor of a <quote>single word</quote> has one more limit. A quotation still remembers the selma'o of the word that formed it: ZO for a <valsi>zo</valsi> quote, ZOI for <valsi>zoi</valsi> and <valsi>la'o</valsi>, and LOhU and LEhU for the two ends of a <jbophrase>lo'u…le'u</jbophrase> quote. So rules that match on selma'o can still work.</para>
-    <para role="status-note" condition="status:editorial;also:checkpointed,unsettled">
+    <para role="status-note" condition="status:editorial;also:checkpointed,de-facto,unsettled">
       <indexterm type="general"><primary>magic words</primary><secondary>status of interaction rules</secondary>
       </indexterm>
       The uniform principle is a later synthesis by the community, and this edition adopts it. The frozen rules state each word separately, and

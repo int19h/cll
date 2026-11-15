@@ -215,8 +215,9 @@ html_check:
         stamp.write_text('abc\n')
         other = self.build / 'cll.epub'
         other.write_text('epub')
-        outside = Path(tempfile.mkdtemp(prefix='cll-make-outside-'))
-        self.addCleanup(lambda: shutil.rmtree(outside, ignore_errors=True))
+        outside_temporary = tempfile.TemporaryDirectory(prefix='cll-make-outside-')
+        self.addCleanup(outside_temporary.cleanup)
+        outside = Path(outside_temporary.name)
         # The environment points PWD at a decoy checkout with its own build/.
         # Only the command-line PWD keeps clean inside the temporary root, so
         # this file is deleted if that argument is ever dropped.

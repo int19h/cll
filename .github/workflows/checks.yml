@@ -23,6 +23,8 @@ jobs:
         run: python3 scripts/test-makefile.py
       - name: Build helper failure and dictionary refresh tests
         run: python3 scripts/test-build-helpers.py
+      - name: Guarded recursive delete for Python tests
+        run: python3 scripts/test-safe-rmtree.py
       - name: Chapter artwork references and PNGs
         run: python3 scripts/test-chapter-pictures.py
       - name: Assemble book (build header + chapters) and check well-formedness

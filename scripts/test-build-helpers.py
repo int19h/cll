@@ -16,6 +16,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from safe_rmtree import safe_rmtree
+
 ROOT = Path(__file__).resolve().parent.parent
 CLEANUP = ROOT / "scripts" / "xhtml_postprocess_cleanup.sh"
 UPDATER = ROOT / "scripts" / "update_jbovlaste_xml.sh"
@@ -52,8 +54,7 @@ def write_executable(path, text):
 def tool_bin(directory, overrides):
     """A PATH directory of real tools, with named commands replaced."""
     bindir = directory / "bin"
-    if bindir.exists():
-        shutil.rmtree(bindir)
+    safe_rmtree(bindir, directory)
     bindir.mkdir()
     names = list(TOOLS)
     for name in overrides:

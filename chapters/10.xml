@@ -376,7 +376,7 @@
       </interlinear-gloss>
     </example>
 
-    <para role="status-note" condition="status:proposed">
+    <para role="status-note" condition="status:proposed;body:bpfk">
       <indexterm type="general"><primary>VA</primary><secondary>proposed regularization of</secondary>
       </indexterm>
       <indexterm type="general"><primary>ZI</primary><secondary>proposed regularization of</secondary>

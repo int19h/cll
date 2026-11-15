@@ -2907,7 +2907,7 @@
       A group has properties of its own. They are not automatically the properties of its members, and the properties of the members are not automatically those of the group. For example, John-and-Alice can weigh two hundred kilograms together, although neither John nor Alice does. Groups are also discussed in
       <xref linkend="section-masses" />.
     </para>
-    <para role="status-note" condition="status:llg-ratified;also:historical;date:2020-04-18">
+    <para role="status-note" condition="status:de-facto;also:llg-ratified,historical">
       <indexterm type="general"><primary>groups</primary><secondary>status of collective satisfaction</secondary>
       </indexterm>
       The group account of

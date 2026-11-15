@@ -11,7 +11,7 @@ cukta); nothing presentational is baked into the XML.
 Six **status labels** defined in [AGENTS.md](../AGENTS.md), plus two **note kinds** specific
 to this edition's apparatus. The `token` is the machine-readable value in
 `status:<token>` and does not change when the displayed label changes. A label
-records where a rule comes from; a vote changes the label, not the rule's
+records where a rule comes from. A vote changes a rule's label, not its
 standing.
 
 | token | label | kind | meaning |

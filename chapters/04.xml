@@ -2476,7 +2476,7 @@
         <para>Remember that the stress necessarily appears on the penultimate (next-to-the-last) syllable.</para>
       </listitem>
     </orderedlist>
-    <para>  In this section, the hyphen is set off with commas in the examples, but these commas are not required in writing, and the hyphen need not be pronounced as a separate syllable.</para>
+    <para>In this section, the examples use commas to set off the syllable that contains the hyphen. These commas are not required in writing, and they add no sound. <phrase role="status-mark" condition="status:de-facto;also:historical">The hyphen is a consonant, not a syllable of its own</phrase> (see <xref linkend="section-stress" />). After a rafsi that ends in a consonant, the hyphen and that consonant form a consonantal syllable, with the hyphen as its syllabic nucleus: <valsi>lerfrdjamo</valsi>, below, has the four syllables <morphology>ler</morphology>, <morphology>fr</morphology>, <morphology>dja</morphology>, and <morphology>mo</morphology>. After a rafsi that ends in a vowel, the hyphen simply closes that vowel's syllable, as in <valsi>djarspageti</valsi>.</para>
     <para>Here are a few examples:</para>
     <example role="lojbanization-example" xml:id="example-random-id-ufin">
       <title>
@@ -2503,12 +2503,12 @@
           <comment>(Lojbanize)</comment>
         </jbo>
         <jbo>
-          cidj,r,spageti
+          cid,jr,spageti
           <comment>(prefix long rafsi)</comment>
         </jbo>
 
         <jbo>
-          dja,r,spageti
+          djar,spageti
           <comment>(prefix short rafsi)</comment>
         </jbo>
       </lojbanization>
@@ -2560,11 +2560,11 @@
           <comment>(add initial consonant and final vowel)</comment>
         </jbo>
         <jbo>
-          tric,r,xaceru
+          tri,cr,xaceru
           <comment>(prefix rafsi)</comment>
         </jbo>
         <jbo>
-          ric,r,xaceru
+          ri,cr,xaceru
           <comment>(prefix short rafsi)</comment>
         </jbo>
       </lojbanization>
@@ -2613,7 +2613,7 @@
           <comment>(Lojbanize)</comment>
         </jbo>
         <jbo>
-          cirl,r,bri
+          cir,lr,bri
           <comment>(prefix rafsi)</comment>
         </jbo>
       </lojbanization>
@@ -2648,7 +2648,7 @@
           <comment>(Lojbanize)</comment>
         </jbo>
         <jbo>
-          sinc,r,kobra
+          sin,cr,kobra
           <comment>(prefix rafsi)</comment>
         </jbo>
       </lojbanization>
@@ -2687,7 +2687,7 @@
           <comment>(add final vowel)</comment>
         </jbo>
         <jbo>
-          sask,r,ku'arka
+          sas,kr,ku'arka
           <comment>(prefix rafsi)</comment>
         </jbo>
       </lojbanization>
@@ -2736,11 +2736,11 @@
           <comment>(Lojbanize)</comment>
         </jbo>
         <jbo>
-          lerf,r,djamo
+          ler,fr,djamo
           <comment>(prefix rafsi)</comment>
         </jbo>
         <jbo>
-          ler,l,djamo
+          le,rl,djamo
           <comment>(prefix rafsi)</comment>
         </jbo>
       </lojbanization>
@@ -2837,7 +2837,7 @@
       </title>
 
       <lojbanization>
-        <jbo role="pronunciation">bang,r,blgari'a</jbo>
+        <jbo role="pronunciation">ban,gr,blgari'a</jbo>
         <natlang>
           Bulgarian
           <comment>(in language)</comment>
@@ -2856,7 +2856,7 @@
       </title>
 
       <lojbanization>
-        <jbo role="pronunciation">kuln,r,blgari'a</jbo>
+        <jbo role="pronunciation">kul,nr,blgari'a</jbo>
         <natlang>
           Bulgarian
           <comment>(in culture)</comment>
@@ -2879,7 +2879,7 @@
       </title>
 
       <lojbanization>
-        <jbo role="pronunciation">gugd,r,blgari'a</jbo>
+        <jbo role="pronunciation">gug,dr,blgari'a</jbo>
         <natlang>
           Bulgaria
           <comment>(the country)</comment>

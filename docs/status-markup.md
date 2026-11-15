@@ -1,31 +1,34 @@
-# Status markup: marking rule authority in the DocBook sources
+# Status markup: marking where a rule comes from in the DocBook sources
 
 Per editorial decision 11 (issue #1) and the design in issue #47, every rule or
-claim whose authority differs from the first edition's baseline carries
+claim that comes from somewhere other than the first edition's baseline carries
 **abstract, semantic** status markup in the DocBook source. Renderers decide
 presentation (margin marks in print, badges in HTML, native widgets in jbotci
 cukta); nothing presentational is baked into the XML.
 
-## Status levels
+## Status labels
 
-Six **authority levels** defined in [AGENTS.md](../AGENTS.md), plus two **note kinds** specific
-to this edition's apparatus:
+Six **status labels** defined in [AGENTS.md](../AGENTS.md), plus two **note kinds** specific
+to this edition's apparatus. The `token` is the machine-readable value in
+`status:<token>` and does not change when the displayed label changes. A label
+records where a rule comes from. A vote changes a rule's label, not its
+standing.
 
-| token | kind | meaning |
-|---|---|---|
-| `llg-ratified` | authority | ratified by an LLG vote (only xorlo) |
-| `bpfk-approved` | authority | adopted by a recorded BPFK vote, not LLG-ratified |
-| `checkpointed` | authority | fixed by an era-1 BPFK checkpoint; frozen snapshot authoritative |
-| `de-facto` | authority | never voted; working-document and/or implemented (state the evidence class in prose) |
-| `proposed` | authority | a concrete proposal without adoption |
-| `unsettled` | authority | genuinely open; sources or parsers disagree |
-| `editorial` | note kind | a convention this edition adopts where official texts are silent |
-| `historical` | note kind | describes an abolished first-edition rule |
+| token | label | kind | meaning |
+|---|---|---|---|
+| `llg-ratified` | Ratified by the LLG | status | adopted by an LLG vote (only xorlo) |
+| `bpfk-approved` | Approved by the BPFK | status | adopted by a recorded BPFK vote |
+| `checkpointed` | BPFK checkpoint | status | fixed in a BPFK checkpoint text; frozen snapshot authoritative |
+| `de-facto` | Established usage | status | the language as speakers and the parsers use it, with no vote; working-document and/or implemented (state the evidence class in prose) |
+| `proposed` | Proposal | status | a written proposal that usage has not taken up |
+| `unsettled` | Open question | status | sources, parsers, or speakers disagree |
+| `editorial` | This edition's choice | note kind | a convention this edition chooses where official texts are silent |
+| `historical` | First-edition rule | note kind | a rule the first edition taught |
 
-`status:` states the note's **primary disposition**: the standing of the rule
-*as this edition teaches it*. Many notes are composite (a historical rule, a
-de-facto replacement, and an editorial choice in one paragraph); the primary
-is the standing of what the reader is being told to use, and the optional
+`status:` states the note's **primary disposition**: where the rule *as this
+edition teaches it* comes from. Many notes are composite (a first-edition rule, a
+replacement in established usage, and a choice of this edition in one paragraph); the primary
+is the source of what the reader is being told to use, and the optional
 `also:` key (comma-separated tokens from the same table) records the other
 strands machine-readably. The prose remains the full record; `also:` never
 substitutes for it.

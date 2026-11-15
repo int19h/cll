@@ -255,7 +255,7 @@
     <para><indexterm type="general"><primary>diphthongs</primary><secondary>pronunciation of</secondary>
         <tertiary>quick-tour version</tertiary>
       </indexterm>The Lojban diphthongs <diphthong>ai</diphthong>, <diphthong>ei</diphthong>, <diphthong>oi</diphthong>, and <diphthong>au</diphthong> are pronounced much as in the English words <quote>sigh</quote>, <quote>say</quote>, <quote>boy</quote>, and <quote>how</quote>. These four are the only diphthongs in Lojban. A syllable can also begin with an <letteral>i</letteral> that sounds like English <quote>y</quote> (for example, <morphology>io</morphology> sounds like <quote>yo</quote>), or with a <letteral>u</letteral> that sounds like English <quote>w</quote> (for example, <morphology>ua</morphology> sounds like <quote>wa</quote>). Both kinds of syllable begin a word or follow a vowel; they never follow a consonant.</para>
-    <para role="status-note" condition="status:de-facto;also:bpfk-approved">The analysis with only four diphthongs is the de facto standard rule for word forms, and the ban on these syllables after a consonant is committee-approved. <xref linkend="chapter-phonology" /> tells the full story.</para>
+    <para role="status-note" condition="status:de-facto;also:bpfk-approved">The analysis with only four diphthongs is the de facto standard rule for word forms, and the ban on these syllables after a consonant is approved by the BPFK. <xref linkend="chapter-phonology" /> tells the full story.</para>
     <para>
       <indexterm type="general"><primary>period</primary><secondary>quick-tour version</secondary>
       </indexterm>

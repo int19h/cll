@@ -731,7 +731,7 @@
     <para><indexterm type="general"><primary>diphthongs</primary><secondary>definition of</secondary>      </indexterm>Lojban has exactly four diphthongs: <diphthong>ai</diphthong>, <diphthong>ei</diphthong>, <diphthong>oi</diphthong>, and <diphthong>au</diphthong>. A glide is a vowel-like sound that never forms a syllable alone, like the English <quote>y</quote> or <quote>w</quote>. A diphthong is a vowel sound made of two elements, a main vowel and a glide after it. We call that glide an off-glide. It is either palatal (IPA <phrase role="IPA">[j]</phrase>, spelled <letteral>i</letteral>) or labial (IPA <phrase role="IPA">[w]</phrase>, spelled <letteral>u</letteral>). A diphthong is always a single syllable.</para>
     <para>The letters <letteral>i</letteral> and <letteral>u</letteral> can also come <emphasis>before</emphasis> another vowel, and there they are not vowels at all. They are the glide consonants <phrase role="IPA">[j]</phrase> and <phrase role="IPA">[w]</phrase>, and they begin the syllable. So <morphology>ia</morphology> sounds like <phrase role="IPA">[ja]</phrase>, as in English <quote>ya</quote>, and <morphology>ua</morphology> sounds like <phrase role="IPA">[wa]</phrase>, as in English <quote>wa</quote>. Treating these as a glide consonant plus a vowel, rather than as diphthongs, matters for a rule later in this section.</para>
     <para role="status-note" condition="status:de-facto;also:bpfk-approved"><indexterm type="general"><primary>PEG word-form grammar</primary><secondary>status of</secondary>
-      </indexterm>Like the other precise rules for word forms, this analysis with four diphthongs comes from a parsing expression grammar (PEG). This book calls it the PEG word-form grammar (see <xref linkend="section-peg-grammar" />). The grammar is the de facto standard definition of Lojban word forms, and current Lojban software implements it. <xref linkend="appendix-changes" /> explains what <quote>de facto</quote> means here. Within that grammar, the ban on a consonant followed by a glide (the <emphasis>consonant-glide-vowel ban</emphasis>) is separately committee-approved. The note at the end of this section gives the practical consequences.</para>
+      </indexterm>Like the other precise rules for word forms, this analysis with four diphthongs comes from a parsing expression grammar (PEG). This book calls it the PEG word-form grammar (see <xref linkend="section-peg-grammar" />). The grammar is the de facto standard definition of Lojban word forms, and current Lojban software implements it. <xref linkend="appendix-changes" /> explains how this book labels rules like these. Within that grammar, the ban on a consonant followed by a glide (the <emphasis>consonant-glide-vowel ban</emphasis>) is separately approved by the BPFK. The note at the end of this section gives the practical consequences.</para>
     <para>
       <indexterm type="general"><primary>vowels</primary><secondary>contrasted with consonants</secondary>
       </indexterm>
@@ -975,7 +975,7 @@
     <para>The combinations <morphology>iy</morphology> and <morphology>uy</morphology> (a glide before the vowel <letteral>y</letteral>) occur in practice only in Lojbanized names. As pure word forms, the formal definition also counts them among the unassigned cmavo forms (see <xref linkend="chapter-morphology" />), but no standard word uses them.</para>
     <para role="status-note" condition="status:bpfk-approved;also:de-facto;date:2014-12-27">
       <indexterm type="general"><primary>consonant-glide-vowel ban</primary></indexterm>
-      The consonant-glide-vowel ban is committee-approved. Older texts contain words that people coined before the ban, like
+      The consonant-glide-vowel ban is approved by the BPFK. Older texts contain words that people coined before the ban, like
       <quote>kuarka</quote>
       or
       <quote>.niuport.</quote>. Today you must respell such words. Usually you change the glide to a full vowel with an apostrophe (<jbophrase>.ni'uport.</jbophrase>), or you double the glide letter. See
@@ -1931,7 +1931,7 @@
     </para>
 
     <para role="status-note" condition="status:de-facto">
-      The fu'ivla exception in rule 2 and the ban on <morphology>ndj</morphology>, <morphology>ndz</morphology>, <morphology>ntc</morphology>, and <morphology>nts</morphology> in names follow the PEG word-form grammar (see <xref linkend="section-peg-grammar" />) and are de facto. <xref linkend="appendix-changes" /> gives their status and history.
+      The fu'ivla exception in rule 2 and the ban on <morphology>ndj</morphology>, <morphology>ndz</morphology>, <morphology>ntc</morphology>, and <morphology>nts</morphology> in names follow the PEG word-form grammar (see <xref linkend="section-peg-grammar" />) and are established usage. <xref linkend="appendix-changes" /> gives their status and history.
     </para>
 
 

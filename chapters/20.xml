@@ -874,7 +874,7 @@
       <xref linkend="LUhU" />.
     </para>
     <interlinear-gloss>
-      <jbo>mi viska la'e zoi .kuuot. A--Tale--of--Two--Cities .kuuot</jbo>
+      <jbo>mi viska la'e zoi .kuuot. A--Tale--of--Two--Cities .kuuot.</jbo>
       <gloss>I see that-represented-by the-text “ A--Tale--of--Two--Cities ”.</gloss>
       <natlang>I see the book “A Tale of Two Cities”.</natlang>
     </interlinear-gloss>
@@ -1773,8 +1773,8 @@
 
     <para>Hesitation noise: content-free, but holds the floor or continues the conversation. It is different from silence in that silence may be interpreted as having nothing more to say.</para>
     <interlinear-gloss>
-      <jbo>doi .y. .y. .djan</jbo>
-      <gloss>O, uh, uh, John!</gloss>
+      <jbo>doi .yy. .djan.</jbo>
+      <gloss>O, uhh, John!</gloss>
     </interlinear-gloss>
     <bridgehead>
       <anchor xml:id="ZAhO" xreflabel="ZAhO" />

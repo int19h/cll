@@ -29,15 +29,17 @@ class DotsideTests(unittest.TestCase):
 
     def test_nested_elements_count_once(self):
         result = self.lint('<chapter><jbo><jbophrase>la djan</jbophrase></jbo></chapter>', '11.xml')
-        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        self.assertEqual(result.stdout.count('undotted cmevla?'), 1, result.stdout)
 
     def test_dotted_names_and_entities(self):
         result = self.lint('<chapter><jbo>la .djan. klama &ndash; la cribe</jbo></chapter>')
         self.assertEqual(result.returncode, 0, result.stderr)
 
-    def test_comments_do_not_consume_allowance(self):
+    def test_comments_are_not_counted(self):
         result = self.lint('<chapter><!-- <jbo>la djan</jbo> --><jbo>la djan</jbo></chapter>', '11.xml')
-        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        self.assertEqual(result.stdout.count('undotted cmevla?'), 1, result.stdout)
 
 
 if __name__ == '__main__':

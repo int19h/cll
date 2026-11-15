@@ -1191,7 +1191,7 @@
       <title><anchor xml:id="c11e7d8" /></title>
 
       <interlinear-gloss>
-        <jbo>la djan cusku lu</jbo>
+        <jbo>la .djan. cusku lu</jbo>
         <gloss>That-named John expresses, quote,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
@@ -1291,7 +1291,7 @@
       </indexterm>
       <indexterm type="general"><primary>indirect questions</primary><secondary>&quot;ma kau&quot; contrasted with &quot;la .djan. kau&quot;</secondary>
       </indexterm>
-      <indexterm type="lojban-word"><primary>kau</primary><secondary>&quot;ma kau&quot; contrasted with &quot;la djan. kau&quot;</secondary>
+      <indexterm type="lojban-word"><primary>kau</primary><secondary>&quot;ma kau&quot; contrasted with &quot;la .djan. kau&quot;</secondary>
       </indexterm>
       In
       <xref linkend="example-random-id-QUxG" />

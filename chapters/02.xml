@@ -1033,7 +1033,7 @@
           <sumti>mi</sumti>
           <elidable>cu</elidable>
           <selbri>sutra klama</selbri>
-          <sumti>la meris.</sumti>
+          <sumti>la .meris.</sumti>
         </jbo>
         <gloss>
           <sumti>I</sumti>
@@ -1063,7 +1063,7 @@
           <elidable>cu</elidable>
           <selbri>sutra</selbri>
           <selbri>se klama</selbri>
-          <sumti>la meris.</sumti>
+          <sumti>la .meris.</sumti>
         </jbo>
         <gloss>
           <sumti>I</sumti>
@@ -1085,10 +1085,10 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>la tam.</sumti>
+          <sumti>la .tam.</sumti>
           <elidable>cu</elidable>
           <selbri>melbi tavla</selbri>
-          <sumti>la meris.</sumti>
+          <sumti>la .meris.</sumti>
         </jbo>
         <gloss>
           <sumti>Tom</sumti>
@@ -1116,10 +1116,10 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>la meris.</sumti>
+          <sumti>la .meris.</sumti>
           <elidable>cu</elidable>
           <selbri>melbi se tavla</selbri>
-          <sumti>la tam.</sumti>
+          <sumti>la .tam.</sumti>
         </jbo>
         <gloss>
           <sumti>Mary</sumti>
@@ -1142,10 +1142,10 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>la tam.</sumti>
+          <sumti>la .tam.</sumti>
           <elidable>cu</elidable>
           <selbri>tavla melbi</selbri>
-          <sumti>la meris.</sumti>
+          <sumti>la .meris.</sumti>
         </jbo>
         <gloss>
           <sumti>Tom</sumti>
@@ -1161,10 +1161,10 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>la tam.</sumti>
+          <sumti>la .tam.</sumti>
           <elidable>cu</elidable>
           <selbri>se tavla melbi</selbri>
-          <sumti>la meris.</sumti>
+          <sumti>la .meris.</sumti>
         </jbo>
         <gloss>
           <sumti>Tom</sumti>
@@ -1790,7 +1790,7 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>la djan.</sumti>
+          <sumti>la .djan.</sumti>
         </jbo>
         <natlang>John (is talking to you about me).</natlang>
       </interlinear-gloss-itemized>
@@ -2268,7 +2268,7 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>la djan.</sumti>
+          <sumti>la .djan.</sumti>
           <elidable>cu</elidable>
           <selbri>klama</selbri>
           <sumti>lo zarci</sumti>
@@ -2287,7 +2287,7 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>la djan.</sumti>
+          <sumti>la .djan.</sumti>
           <cmavo>pu</cmavo>
           <selbri>klama</selbri>
           <sumti>lo zarci</sumti>
@@ -2310,7 +2310,7 @@
 
       <interlinear-gloss-itemized>
         <jbo>
-          <sumti>la djan.</sumti>
+          <sumti>la .djan.</sumti>
           <cmavo>ca</cmavo>
           <selbri>klama</selbri>
           <sumti>lo zarci</sumti>

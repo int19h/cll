@@ -22,6 +22,11 @@
 #   published release that lacks a file of its formats stops the run.
 #   Only its comparison pages (diff_from_*) and its landing page are made again,
 #   with the current tooling (build-site.sh with DIFFS_ONLY=1).
+#   Those pages are computed from the commit of the release tag v<version>,
+#   not from the edition branch. The workflow fetches branches with
+#   --no-tags, so this script fetches that one tag. An annotated tag is
+#   followed to its commit. A published version with no such tag fails
+#   the run. A draft, and a version with no release, still use the branch.
 # - A version without a published release is built from source. A draft
 #   release gets the files of its formats from each run, and loses the
 #   files of registered formats that its row no longer lists. Other draft
@@ -47,7 +52,9 @@
 # there costs at most one rebuild. A cache entry is used when its
 # BUILD-INFO matches this run in all of these fields:
 #
-#   commit             the version's content commit (its git ref today)
+#   commit             the version's content commit. A published version
+#                      uses the commit of its release tag. Any other
+#                      version uses its git ref.
 #   formats            the version's formats, in canonical order
 #   tools_sha256       sha256 of the site tooling: build-site.sh,
 #                      site-versions.sh, docbook-diff.py, docbook-diff.xsl,
@@ -191,14 +198,12 @@ fi
 
 cache_exists="$(release_field "$cache_tag" id)"
 prev=""; prevlabel=""; prev_commit=""
-# oldest first, so each final release's ref serves as the "previous
-# release" side of the diff_from_previous of the versions after it
+# oldest first. The content commit of each final release is the previous
+# side of diff_from_previous for the versions after it. A published
+# release contributes its tag commit. Any other release contributes its
+# branch.
 while IFS=$'\t' read -r ver ref formats; do
   echo "::group::$ver from $ref ($formats)"
-  commit="$(git rev-parse "origin/$ref")"
-  # Edition rows use their declared version before publication creates a
-  # tag. Validate even cache hits, and pass one label to every format.
-  build_version="$(site_edition_version "$ver" "$ref" "$commit")"
   tag="v$ver"
   archive="cll-$ver-html.tar.gz"
   mapfile -t want_files < <(site_release_files "$formats" "$ver")
@@ -226,6 +231,24 @@ while IFS=$'\t' read -r ver ref formats; do
       released="${released:+$released,}$f:$(asset_digest "$tag" "$f")"
     done
   fi
+  # Edition rows use their declared version. Validate even cache hits,
+  # and pass one label to every format. A published version reads .env
+  # from the tag commit. A draft still reads it from the branch.
+  if [ -n "$published" ]; then
+    if ! git fetch --no-tags origin "refs/tags/${tag}:refs/tags/${tag}"; then
+      echo "::error::published version $ver has no git tag $tag" >&2
+      exit 1
+    fi
+    if ! commit="$(git rev-parse "refs/tags/${tag}^{commit}")"; then
+      echo "::error::published version $ver tag $tag does not resolve to a commit" >&2
+      exit 1
+    fi
+    source_rev="$commit"
+  else
+    commit="$(git rev-parse "origin/$ref")"
+    source_rev="origin/$ref"
+  fi
+  build_version="$(site_edition_version "$ver" "$ref" "$commit")"
   want="$(expect "$ver" "$commit" "$prev_commit" "$released" "$formats")"
 
   from=""
@@ -241,7 +264,7 @@ while IFS=$'\t' read -r ver ref formats; do
   fi
 
   if [ -z "$from" ]; then
-    git worktree add --detach "_v_$ver" "origin/$ref"
+    git worktree add --detach "_v_$ver" "$source_rev"
     if [ -n "$published" ]; then
       # The book files of a published version come from its release: the
       # HTML from the archive, the other files from the release's own
@@ -320,7 +343,7 @@ while IFS=$'\t' read -r ver ref formats; do
 
   # A prerelease is never the previous release of another version.
   if ! site_is_prerelease "$ver"; then
-    prev="origin/$ref"
+    prev="$source_rev"
     prevlabel="v$ver"
     prev_commit="$commit"
   fi

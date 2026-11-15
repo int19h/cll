@@ -102,12 +102,47 @@ fi
 EOF
 cat > "$w/bin/git" <<'EOF'
 #!/bin/bash
+# Tag files under $REL/tags/ let a test move a published tag off its branch.
+# <tag>.missing fails the fetch. <tag>.object is the tag object. <tag>.peeled
+# is the commit, and it is returned only for a ^{commit} revision.
 case "$1 $2" in
   "rev-parse HEAD") echo pagescommit ;;
+  "rev-parse refs/tags/"*)
+    spec="$2"
+    peeled=no
+    case "$spec" in
+      *'^{commit}') peeled=yes; spec="${spec%'^{commit}'}" ;;
+    esac
+    tag="${spec#refs/tags/}"
+    if [ -f "$REL/tags/$tag.missing" ]; then
+      echo "missing tag $tag" >&2
+      exit 1
+    fi
+    if [ "$peeled" = yes ] && [ -f "$REL/tags/$tag.peeled" ]; then
+      cat "$REL/tags/$tag.peeled"
+    elif [ -f "$REL/tags/$tag.object" ]; then
+      cat "$REL/tags/$tag.object"
+    else
+      ver="${tag#v}"
+      echo "commit-of-edition/$ver"
+    fi
+    ;;
   "rev-parse "*) echo "commit-of-${2#origin/}" ;;
   "show commit-of-edition/"*)
     ver="${2#commit-of-edition/}"; ver="${ver%:.env}"
     printf 'VERSION="%s"\n' "${BAD_EDITION_VERSION:-colojban-$ver}" ;;
+  "show "*)
+    if [ -f "$REL/show/$2" ]; then cat "$REL/show/$2"; else echo "unexpected git show $2" >&2; exit 1; fi ;;
+  "fetch --no-tags")
+    echo "git $*" >> "$LOG/git"
+    refspec="$4"
+    tag="${refspec%%:*}"
+    tag="${tag#refs/tags/}"
+    if [ -f "$REL/tags/$tag.missing" ]; then
+      echo "fatal: couldn't find remote ref refs/tags/$tag" >&2
+      exit 1
+    fi
+    ;;
   "worktree add") echo "git $*" >> "$LOG/git" ;;
   *) echo "unexpected git $*" >&2; exit 1 ;;
 esac
@@ -166,8 +201,10 @@ run_bv() {
 }
 if run_bv; then echo "ok   build-versions.sh runs"; else echo "FAIL build-versions.sh"; cat "$w/log/run"; fails=$((fails + 1)); fi
 eq "order, formats and previous final release" \
-"1.3.5 formats=html,epub,pdf prev= label= diffs_only=1|1.3.6-rc1 formats=pdf-weasyprint prev=origin/edition/1.3.5 label=v1.3.5 diffs_only=1|1.3.6-rc2 formats=html,pdf-weasyprint prev=origin/edition/1.3.5 label=v1.3.5 diffs_only=|1.3.6 formats=html,epub,pdf,pdf-weasyprint prev=origin/edition/1.3.5 label=v1.3.5 diffs_only=|1.3.7 formats=html prev=origin/edition/1.3.6 label=v1.3.6 diffs_only=" \
+"1.3.5 formats=html,epub,pdf prev= label= diffs_only=1|1.3.6-rc1 formats=pdf-weasyprint prev=commit-of-edition/1.3.5 label=v1.3.5 diffs_only=1|1.3.6-rc2 formats=html,pdf-weasyprint prev=commit-of-edition/1.3.5 label=v1.3.5 diffs_only=|1.3.6 formats=html,epub,pdf,pdf-weasyprint prev=commit-of-edition/1.3.5 label=v1.3.5 diffs_only=|1.3.7 formats=html prev=origin/edition/1.3.6 label=v1.3.6 diffs_only=" \
   "$(paste -sd'|' "$w/log/build-site")"
+eq "published 1.3.5 records the same commit as its branch" "commit=commit-of-edition/1.3.5" \
+  "$(grep '^commit=' "$w/out/1.3.5/BUILD-INFO")"
 eq "published 1.3.5 serves its released PDF" "released cll.pdf" "$(cat "$w/out/1.3.5/cll.pdf")"
 eq "published 1.3.5 serves its released HTML" "released" "$(cat "$w/out/1.3.5/xhtml_no_chunks/index.html")"
 eq "published PDF-only prerelease has only its PDF" "BUILD-INFO cll-weasyprint.pdf index.html" "$(ls "$w/out/1.3.6-rc1" | paste -sd' ')"
@@ -221,7 +258,7 @@ tar -C "$t/stale-cache" -czf "$w/rel/site-build-cache/cll-1.3.6-rc2-html.tar.gz"
 : > "$w/log/build-site"; : > "$w/log/build-version"
 run_bv
 eq "old tooling rebuilds the draft without FORCE_REBUILD" \
-  "1.3.6-rc2 formats=html,pdf-weasyprint prev=origin/edition/1.3.5 label=v1.3.5 diffs_only=" "$(cat "$w/log/build-site")"
+  "1.3.6-rc2 formats=html,pdf-weasyprint prev=commit-of-edition/1.3.5 label=v1.3.5 diffs_only=" "$(cat "$w/log/build-site")"
 eq "rebuilt draft gets its plain edition version" "1.3.6-rc2=colojban-1.3.6-rc2" "$(cat "$w/log/build-version")"
 : > "$w/log/build-site"
 # A development row receives no release override.
@@ -302,6 +339,61 @@ cached_race() {
   eq "cached publication race changes no release" "" "$(cat "$w/log/gh")"
 }
 cached_race
+
+# A published version's comparison tree is the release tag's commit.
+main_w=$w
+# An annotated tag is followed. A missing tag fails. A draft keeps the branch.
+tag_world() { # <name>
+  local original="$w"
+  w="$t/tag-$1"
+  mkdir -p "$w/scripts" "$w/bin" "$w/rel/tags" "$w/rel/show" "$w/log"
+  cp "$original/scripts/"* "$w/scripts/"
+  cp "$original/bin/"* "$w/bin/"
+}
+html_archive() { # <version>
+  local arch="$w/arch/$1"
+  mkdir -p "$arch/xhtml_no_chunks" "$arch/xhtml_section_chunks"
+  echo released > "$arch/xhtml_no_chunks/index.html"
+  echo released > "$arch/xhtml_section_chunks/index.html"
+  tar -C "$w/arch" -czf "$w/rel/v$1/cll-$1-html.tar.gz" "$1"
+}
+
+tag_world moved
+peeled=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+tagobj=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+printf '%s\n' "$peeled" > "$w/rel/tags/v1.3.5.peeled"
+printf '%s\n' "$tagobj" > "$w/rel/tags/v1.3.5.object"
+mkdir -p "$w/rel/show"
+printf 'VERSION="colojban-1.3.5"\n' > "$w/rel/show/${peeled}:.env"
+rel v1.3.5 false false cll-1.3.5-html.tar.gz
+html_archive 1.3.5
+printf 'ccccddddccccddddccccddddccccddddccccdddd\n' > "$w/rel/tags/v1.3.6.peeled"
+rel v1.3.6 true false
+printf '1.3.5\tedition/1.3.5\thtml\n1.3.6\tedition/1.3.6\thtml\n' > "$w/versions.tsv"
+if run_bv; then echo "ok   moved tag builds"; else echo "FAIL moved tag builds"; cat "$w/log/run"; fails=$((fails + 1)); fi
+eq "published worktree uses the peeled tag commit" \
+  "git worktree add --detach _v_1.3.5 $peeled" "$(grep '_v_1.3.5' "$w/log/git" | grep worktree)"
+eq "published worktree does not use the tag object" 0 \
+  "$(grep -c "$tagobj" "$w/log/git" || true)"
+eq "published worktree does not use the branch" 0 \
+  "$(grep '_v_1.3.5' "$w/log/git" | grep -c 'origin/edition/1.3.5' || true)"
+eq "draft worktree keeps the branch" \
+  "git worktree add --detach _v_1.3.6 origin/edition/1.3.6" "$(grep '_v_1.3.6' "$w/log/git" | grep worktree)"
+eq "draft does not fetch its tag" 0 "$(grep -c 'refs/tags/v1.3.6' "$w/log/git" || true)"
+eq "later diff uses the published tag commit" \
+  "1.3.6 formats=html prev=$peeled label=v1.3.5 diffs_only=" "$(grep '^1.3.6 ' "$w/log/build-site")"
+eq "published BUILD-INFO commit is the tag commit" "commit=$peeled" \
+  "$(grep '^commit=' "$w/out/1.3.5/BUILD-INFO")"
+
+tag_world missing
+rel v1.3.5 false false cll-1.3.5-html.tar.gz
+html_archive 1.3.5
+: > "$w/rel/tags/v1.3.5.missing"
+printf '1.3.5\tedition/1.3.5\thtml\n' > "$w/versions.tsv"
+if run_bv; then echo "FAIL a published version with no tag must stop"; fails=$((fails + 1)); else
+  eq "a published version with no tag stops the run" 1 "$(grep -c 'published version 1.3.5 has no git tag v1.3.5' "$w/log/run")"; fi
+eq "a missing tag writes no release" "" "$(cat "$w/log/gh" 2>/dev/null || true)"
+w=$main_w
 
 # --- gen-site-index.sh
 s="$t/site"; mkdir -p "$s"/{1.3.5,1.3.6-rc1,1.3.6-rc2,1.3.6,notaversion}

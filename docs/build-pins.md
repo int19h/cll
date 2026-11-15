@@ -19,7 +19,7 @@ APT then installs the snapshot's `ca-certificates` package.
 The Prince packages also require architecture-specific SHA-256 hashes before installation.
 
 The [Ubuntu snapshot service](https://snapshot.ubuntu.com/) states that it intends to retain at least two years of snapshots.
-Keep the built image when preserving a release beyond that period.
+To preserve a release beyond that period, keep the built image.
 These pins fix the recorded inputs while their hosts retain them.
 A missing input stops the build.
 The build does not substitute a newer version.
@@ -70,12 +70,15 @@ The default build downloads both files and removes them after installation.
 
 The toolchain is the set of programs used to build the book.
 `cll_build` records it under `build/toolchain/` before the book build.
-The records contain the following files when the relevant tools exist:
+When the target is `all` or `epub`, `cll_build` looks for a selected EPUBCheck jar.
+If `EPUBCHECK_JAR` is unset and the image jar is absent, `cll_build` installs the pinned EPUBCheck before the record.
+The record then names the checker that the ePub recipe will run.
+When a tool exists, the record contains its file:
 
 - `system-packages.tsv` lists installed package versions and architectures.
 - `ubuntu.sources` records the package archive selection.
 - `tools.txt` lists program and Ruby gem versions.
-- `python-packages.txt` lists Python packages when `CLL_WEASYPRINT_PYTHON` selects the WeasyPrint environment.
+- When `CLL_WEASYPRINT_PYTHON` selects the WeasyPrint environment, `python-packages.txt` lists the Python packages.
 - `fonts.tsv` lists fonts known to Fontconfig.
 - `book-fonts.sha256` records hashes of the book's bundled fonts.
 - `context-sources.txt` records ConTeXt commits, archive hashes, and the required version.

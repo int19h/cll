@@ -201,6 +201,18 @@ echo "target: $target"
 
 # See if we need to delete the cll.xml before we run make
 mkdir -p $builddir
+# The ePub recipe installs EPUBCheck during make when no jar is already
+# selected. Install it first so the pre-build record names that checker.
+# A second record after make would describe a tree the build had changed,
+# and would still miss the checker if make stopped before the ePub recipe.
+case "$target" in
+  all|epub)
+    if [ -z "${EPUBCHECK_JAR:-}" ] \
+      && [ ! -f "${EPUBCHECK_SYSTEM_JAR:-/usr/local/share/epubcheck/epubcheck.jar}" ]; then
+      scripts/install-epubcheck.sh build/tools/epubcheck || exit
+    fi
+    ;;
+esac
 scripts/record-build-toolchain.sh "$builddir/toolchain" || exit 1
 echo "$optlist $chapters" >$builddir/chapter-list.new
 if [ ! -f $builddir/chapter-list ]

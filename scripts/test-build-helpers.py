@@ -301,6 +301,7 @@ class CllBuildStatus(unittest.TestCase):
         scripts = root / "scripts"
         scripts.mkdir()
         write_executable(scripts / "record-build-toolchain.sh", "#!/bin/bash\nmkdir -p \"$1\"\n")
+        write_executable(scripts / "install-epubcheck.sh", "#!/bin/bash\nexit 0\n")
         write_executable(
             scripts / "diff_official",
             "#!/bin/bash\necho called > \"$DIFF_LOG\"\nexit \"$DIFF_RC\"\n",
@@ -388,6 +389,105 @@ class CllBuildStatus(unittest.TestCase):
             result = self.run_build(root, env, "-j", "-n")
             self.assertEqual(result.returncode, 3, result.stderr)
             self.assertFalse((root / "make.log").exists())
+
+    def _without_selected_jar(self, env, root):
+        env.pop("EPUBCHECK_JAR", None)
+        env["EPUBCHECK_SYSTEM_JAR"] = str(root / "missing-system.jar")
+        return env
+
+    def test_epub_target_installs_the_checker_before_the_record(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root, env = self.stage(temporary, make_rc=0, diff_rc=0, update_rc=0)
+            order = root / "order.log"
+            write_executable(
+                root / "scripts" / "install-epubcheck.sh",
+                "#!/bin/bash\nprintf 'install %s\\n' \"$1\" >> \"$ORDER\"\n",
+            )
+            write_executable(
+                root / "scripts" / "record-build-toolchain.sh",
+                "#!/bin/bash\nmkdir -p \"$1\"\nprintf 'record\\n' >> \"$ORDER\"\n",
+            )
+            env["ORDER"] = str(order)
+            self._without_selected_jar(env, root)
+            result = self.run_build(root, env, "-n", "-T", "epub")
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual(
+                order.read_text().splitlines(),
+                ["install build/tools/epubcheck", "record"],
+            )
+            self.assertTrue((root / "make.log").exists())
+
+    def test_default_target_installs_the_checker_before_the_record(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root, env = self.stage(temporary, make_rc=0, diff_rc=0, update_rc=0)
+            order = root / "order.log"
+            write_executable(
+                root / "scripts" / "install-epubcheck.sh",
+                "#!/bin/bash\nprintf 'install\\n' >> \"$ORDER\"\n",
+            )
+            write_executable(
+                root / "scripts" / "record-build-toolchain.sh",
+                "#!/bin/bash\nmkdir -p \"$1\"\nprintf 'record\\n' >> \"$ORDER\"\n",
+            )
+            env["ORDER"] = str(order)
+            self._without_selected_jar(env, root)
+            result = self.run_build(root, env, "-n")
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual(order.read_text().splitlines(), ["install", "record"])
+
+    def test_pdf_target_does_not_install_the_checker(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root, env = self.stage(temporary, make_rc=0, diff_rc=0, update_rc=0)
+            write_executable(
+                root / "scripts" / "install-epubcheck.sh",
+                "#!/bin/bash\necho should-not-install >&2\nexit 9\n",
+            )
+            self._without_selected_jar(env, root)
+            result = self.run_build(root, env, "-n", "-T", "pdf")
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertNotIn("should-not-install", result.stderr)
+            self.assertTrue((root / "make.log").exists())
+
+    def test_selected_jar_skips_the_checker_install(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root, env = self.stage(temporary, make_rc=0, diff_rc=0, update_rc=0)
+            write_executable(
+                root / "scripts" / "install-epubcheck.sh",
+                "#!/bin/bash\necho should-not-install >&2\nexit 9\n",
+            )
+            env["EPUBCHECK_JAR"] = str(root / "chosen.jar")
+            env["EPUBCHECK_SYSTEM_JAR"] = str(root / "missing-system.jar")
+            result = self.run_build(root, env, "-n", "-T", "epub")
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertNotIn("should-not-install", result.stderr)
+
+    def test_image_jar_skips_the_checker_install(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root, env = self.stage(temporary, make_rc=0, diff_rc=0, update_rc=0)
+            image = root / "image-epubcheck.jar"
+            image.write_text("image jar\n")
+            write_executable(
+                root / "scripts" / "install-epubcheck.sh",
+                "#!/bin/bash\necho should-not-install >&2\nexit 9\n",
+            )
+            env.pop("EPUBCHECK_JAR", None)
+            env["EPUBCHECK_SYSTEM_JAR"] = str(image)
+            result = self.run_build(root, env, "-n", "-T", "all")
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertNotIn("should-not-install", result.stderr)
+
+    def test_checker_install_failure_stops_before_make(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root, env = self.stage(temporary, make_rc=0, diff_rc=0, update_rc=0)
+            write_executable(
+                root / "scripts" / "install-epubcheck.sh",
+                "#!/bin/bash\necho install failed >&2\nexit 3\n",
+            )
+            self._without_selected_jar(env, root)
+            result = self.run_build(root, env, "-n", "-T", "epub")
+            self.assertEqual(result.returncode, 3, result.stdout + result.stderr)
+            self.assertFalse((root / "make.log").exists())
+            self.assertFalse((root / "build" / "toolchain").exists())
 
     def test_usage_names_the_dictionary_file(self):
         result = subprocess.run(

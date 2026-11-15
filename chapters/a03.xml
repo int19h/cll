@@ -168,7 +168,7 @@
         </para>
       </listitem>
       <listitem>
-        <para><indexterm type="general"><primary>syllabication</primary><secondary>change summary</secondary></indexterm>This change is <emphasis>established usage</emphasis>: it follows the working grammar of word forms, which fixes the rafsi, hyphens, and fu'ivla syllables of each word, and jbotci divides words the same way. Each brivla and cmavo now has exactly one division into syllables (see <xref linkend="section-stress" />). A consonant is syllabic only where the word forms make it so, as in a fu'ivla, and the hyphen of a lujvo or of a Stage 3 fu'ivla is a consonant, not a syllable of its own.</para>
+        <para><indexterm type="general"><primary>syllabication</primary><secondary>change summary</secondary></indexterm>This change is <emphasis>established usage</emphasis>: it follows the working grammar of word forms, which fixes the rafsi, hyphens, and fu'ivla syllables of each word, and jbotci divides the words that it recognizes the same way. Each brivla and cmavo now has exactly one division into syllables (see <xref linkend="section-stress" />). A consonant is syllabic only where the word forms make it so, as in a fu'ivla, and the consonantal hyphen of a lujvo (<letteral>r</letteral> or <letteral>n</letteral>) or of a Stage 3 fu'ivla is a consonant, not a syllable of its own. The hyphen <letteral>y</letteral> of a lujvo is a vowel, and it forms its own syllable.</para>
         <para>
           The first edition called its syllabication rules conventional only. It let some brivla divide in more than one way, and a comma could show the choice:
           <valsi>klezba</valsi> could be <quote>klez,ba</quote> or <quote>kle,zba</quote>,

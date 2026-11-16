@@ -42,6 +42,7 @@ python3 scripts/check-cross-reference.py chapters/21.xml
 python3 scripts/test-check-cross-reference.py
 python3 scripts/lint-status-markup.py chapters/*.xml
 python3 scripts/test-lint-status-markup.py
+python3 scripts/test-status-rendering.py
 python3 scripts/test-html-mathjax.py
 python3 scripts/check-peg-grammar.py
 python3 scripts/test-check-peg-grammar.py
@@ -104,6 +105,7 @@ The book check joins `scripts/header.xml`, every `chapters/*.xml` file, and a cl
 | EBNF cross-reference self-test | The check above fails on planted defects | `python3 scripts/test-check-cross-reference.py` |
 | Status markup | The `role="status-note"` and `condition` markup follows [status-markup.md](status-markup.md) | `python3 scripts/lint-status-markup.py chapters/*.xml` |
 | Status markup self-test | The lint above, on fixtures | `python3 scripts/test-lint-status-markup.py` |
+| Status rendering | The XSL turns each `condition` into per-status classes, data attributes and the text label for every status; the CSS gives each status its own glyph; no stylesheet or build script sets a DocBook `profile.*` parameter, which would put status notes at risk of being profiled out | `python3 scripts/test-status-rendering.py` |
 | Browser MathJax | The HTML loads one pinned MathJax script with an integrity hash | `python3 scripts/test-html-mathjax.py` |
 | PEG grammar | The word-form grammar printed in chapter 21 matches `tests/fixtures/peg-morphology.peg` rule for rule | `python3 scripts/check-peg-grammar.py` |
 | PEG grammar self-test | The check above detects corrupted copies | `python3 scripts/test-check-peg-grammar.py` |

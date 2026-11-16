@@ -128,6 +128,309 @@
     <xsl:value-of select="'bullets'"/>
   </xsl:template>
 
+  <!-- Status notes and marks (docs/status-markup.md, issue #47).
+       This is the one source of truth for turning a status element's
+       @condition into rendering data: a status-<token> class, data-*
+       attributes, and a real-text label from the token table below.
+       Never set DocBook's profile.condition parameter anywhere in the
+       build: profiling keys off @condition and would drop these notes. -->
+
+  <!-- One field of the condition microsyntax (key:value;key:value). -->
+  <xsl:template name="cll.status.field">
+    <xsl:param name="condition" select="''"/>
+    <xsl:param name="key" select="''"/>
+    <xsl:variable name="padded"
+      select="concat(';', translate($condition, ' ', ''), ';')"/>
+    <xsl:variable name="needle" select="concat(';', $key, ':')"/>
+    <xsl:if test="contains($padded, $needle)">
+      <xsl:value-of
+        select="substring-before(substring-after($padded, $needle), ';')"/>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- The one token-to-label table. Keep it in step with AGENTS.md and
+       docs/status-markup.md. -->
+  <xsl:template name="cll.status.label">
+    <xsl:param name="token" select="''"/>
+    <xsl:choose>
+      <xsl:when test="$token = 'llg-ratified'">Ratified by the LLG</xsl:when>
+      <xsl:when test="$token = 'bpfk-approved'">Approved by the BPFK</xsl:when>
+      <xsl:when test="$token = 'checkpointed'">BPFK checkpoint</xsl:when>
+      <xsl:when test="$token = 'de-facto'">Established usage</xsl:when>
+      <xsl:when test="$token = 'proposed'">Proposal</xsl:when>
+      <xsl:when test="$token = 'unsettled'">Open question</xsl:when>
+      <xsl:when test="$token = 'editorial'">This edition's choice</xsl:when>
+      <xsl:when test="$token = 'historical'">First-edition rule</xsl:when>
+      <xsl:otherwise><xsl:value-of select="$token"/></xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- Default body per status, as in docs/status-markup.md. -->
+  <xsl:template name="cll.status.body.default">
+    <xsl:param name="token" select="''"/>
+    <xsl:choose>
+      <xsl:when test="$token = 'llg-ratified'">llg</xsl:when>
+      <xsl:when test="$token = 'bpfk-approved' or $token = 'checkpointed'">bpfk</xsl:when>
+      <xsl:when test="$token = 'de-facto' or $token = 'proposed' or $token = 'unsettled'">community</xsl:when>
+      <xsl:otherwise></xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="cll.status.body.label">
+    <xsl:param name="body" select="''"/>
+    <xsl:choose>
+      <xsl:when test="$body = 'llg'">LLG</xsl:when>
+      <xsl:when test="$body = 'bpfk'">BPFK</xsl:when>
+      <xsl:when test="$body = 'community'">Community</xsl:when>
+      <xsl:otherwise><xsl:value-of select="$body"/></xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- "Label[, date] [&#183; Body] [; also: ...]" for title tooltips. -->
+  <xsl:template name="cll.status.title">
+    <xsl:param name="label" select="''"/>
+    <xsl:param name="date" select="''"/>
+    <xsl:param name="body" select="''"/>
+    <xsl:param name="also" select="''"/>
+    <xsl:value-of select="$label"/>
+    <xsl:if test="$date != ''">, <xsl:value-of select="$date"/></xsl:if>
+    <xsl:if test="$body != ''">
+      <xsl:text> &#183; </xsl:text>
+      <xsl:call-template name="cll.status.body.label">
+        <xsl:with-param name="body" select="$body"/>
+      </xsl:call-template>
+    </xsl:if>
+    <xsl:if test="$also != ''">
+      <xsl:text>; also: </xsl:text>
+      <xsl:value-of select="$also"/>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- Comma-separated also-tokens as comma-separated labels. -->
+  <xsl:template name="cll.status.also.labels">
+    <xsl:param name="rest" select="''"/>
+    <xsl:choose>
+      <xsl:when test="contains($rest, ',')">
+        <xsl:call-template name="cll.status.label">
+          <xsl:with-param name="token" select="substring-before($rest, ',')"/>
+        </xsl:call-template>
+        <xsl:text>, </xsl:text>
+        <xsl:call-template name="cll.status.also.labels">
+          <xsl:with-param name="rest" select="substring-after($rest, ',')"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="cll.status.label">
+          <xsl:with-param name="token" select="$rest"/>
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- Link to the legend list (xml:id="status-legend") in the changes
+       appendix, resolved for chunked and unchunked outputs alike by
+       href.target on the list itself (appendix file plus fragment in
+       chunked output, bare fragment in one page). In a partial build
+       without that appendix, fall back to the bare fragment. The stock
+       stylesheets strip the DocBook namespace before these templates
+       run and turn @xml:id into @id (common/stripns.xsl), so accept
+       both spellings here and for the ids copied below. -->
+  <xsl:template name="cll.status.legend.href">
+    <xsl:variable name="legend"
+      select="//*[@xml:id = 'status-legend' or @id = 'status-legend']"/>
+    <xsl:choose>
+      <xsl:when test="$legend">
+        <xsl:call-template name="href.target">
+          <xsl:with-param name="object" select="$legend[1]"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>#status-legend</xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="para[@role = 'status-note']">
+    <xsl:variable name="token">
+      <xsl:call-template name="cll.status.field">
+        <xsl:with-param name="condition" select="@condition"/>
+        <xsl:with-param name="key" select="'status'"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="also">
+      <xsl:call-template name="cll.status.field">
+        <xsl:with-param name="condition" select="@condition"/>
+        <xsl:with-param name="key" select="'also'"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="date">
+      <xsl:call-template name="cll.status.field">
+        <xsl:with-param name="condition" select="@condition"/>
+        <xsl:with-param name="key" select="'date'"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="body.explicit">
+      <xsl:call-template name="cll.status.field">
+        <xsl:with-param name="condition" select="@condition"/>
+        <xsl:with-param name="key" select="'body'"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="body">
+      <xsl:choose>
+        <xsl:when test="$body.explicit != ''">
+          <xsl:value-of select="$body.explicit"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="cll.status.body.default">
+            <xsl:with-param name="token" select="$token"/>
+          </xsl:call-template>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="label">
+      <xsl:call-template name="cll.status.label">
+        <xsl:with-param name="token" select="$token"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="also.labels">
+      <xsl:if test="$also != ''">
+        <xsl:call-template name="cll.status.also.labels">
+          <xsl:with-param name="rest" select="$also"/>
+        </xsl:call-template>
+      </xsl:if>
+    </xsl:variable>
+    <xsl:variable name="title">
+      <xsl:call-template name="cll.status.title">
+        <xsl:with-param name="label" select="$label"/>
+        <xsl:with-param name="date" select="$date"/>
+        <xsl:with-param name="body" select="$body"/>
+        <xsl:with-param name="also" select="$also.labels"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <p xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:attribute name="class">
+        <xsl:text>status-note</xsl:text>
+        <xsl:if test="$token != ''">
+          <xsl:value-of select="concat(' status-', $token)"/>
+        </xsl:if>
+      </xsl:attribute>
+      <xsl:if test="@xml:id or @id">
+        <xsl:attribute name="id"><xsl:value-of select="(@xml:id|@id)[1]"/></xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates select="." mode="html.lang.attribute"/>
+      <xsl:if test="$token != ''">
+        <xsl:attribute name="data-status"><xsl:value-of select="$token"/></xsl:attribute>
+      </xsl:if>
+      <xsl:if test="$also != ''">
+        <xsl:attribute name="data-also"><xsl:value-of select="$also"/></xsl:attribute>
+      </xsl:if>
+      <xsl:if test="$date != ''">
+        <xsl:attribute name="data-date"><xsl:value-of select="$date"/></xsl:attribute>
+      </xsl:if>
+      <xsl:if test="$body != ''">
+        <xsl:attribute name="data-body"><xsl:value-of select="$body"/></xsl:attribute>
+      </xsl:if>
+      <xsl:if test="$token != ''">
+        <span xmlns="http://www.w3.org/1999/xhtml" class="status-label"><a xmlns="http://www.w3.org/1999/xhtml" class="status-legend-link"><xsl:attribute name="href"><xsl:call-template name="cll.status.legend.href"/></xsl:attribute><xsl:attribute name="title"><xsl:value-of select="$title"/></xsl:attribute><xsl:value-of select="$label"/><xsl:if test="$date != ''">, <xsl:value-of select="$date"/></xsl:if></a></span>
+        <xsl:text> </xsl:text>
+        <xsl:if test="$also != ''">
+          <span xmlns="http://www.w3.org/1999/xhtml" class="status-also">also: <xsl:value-of select="$also.labels"/></span>
+        </xsl:if>
+      </xsl:if>
+      <xsl:apply-templates/>
+    </p>
+  </xsl:template>
+
+  <!-- Inline marks get the lighter form: the clause keeps its place in
+       the sentence, a short real-text label follows it as a superscript,
+       and the title tooltip carries the date, body and also-strands.
+       A full badge inline would break the sentence it annotates. -->
+  <xsl:template match="phrase[@role = 'status-mark']">
+    <xsl:variable name="token">
+      <xsl:call-template name="cll.status.field">
+        <xsl:with-param name="condition" select="@condition"/>
+        <xsl:with-param name="key" select="'status'"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="also">
+      <xsl:call-template name="cll.status.field">
+        <xsl:with-param name="condition" select="@condition"/>
+        <xsl:with-param name="key" select="'also'"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="date">
+      <xsl:call-template name="cll.status.field">
+        <xsl:with-param name="condition" select="@condition"/>
+        <xsl:with-param name="key" select="'date'"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="body.explicit">
+      <xsl:call-template name="cll.status.field">
+        <xsl:with-param name="condition" select="@condition"/>
+        <xsl:with-param name="key" select="'body'"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="body">
+      <xsl:choose>
+        <xsl:when test="$body.explicit != ''">
+          <xsl:value-of select="$body.explicit"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="cll.status.body.default">
+            <xsl:with-param name="token" select="$token"/>
+          </xsl:call-template>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="label">
+      <xsl:call-template name="cll.status.label">
+        <xsl:with-param name="token" select="$token"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable name="also.labels">
+      <xsl:if test="$also != ''">
+        <xsl:call-template name="cll.status.also.labels">
+          <xsl:with-param name="rest" select="$also"/>
+        </xsl:call-template>
+      </xsl:if>
+    </xsl:variable>
+    <xsl:variable name="title">
+      <xsl:call-template name="cll.status.title">
+        <xsl:with-param name="label" select="$label"/>
+        <xsl:with-param name="date" select="$date"/>
+        <xsl:with-param name="body" select="$body"/>
+        <xsl:with-param name="also" select="$also.labels"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <span xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:attribute name="class">
+        <xsl:text>status-mark</xsl:text>
+        <xsl:if test="$token != ''">
+          <xsl:value-of select="concat(' status-', $token)"/>
+        </xsl:if>
+      </xsl:attribute>
+      <xsl:if test="@xml:id or @id">
+        <xsl:attribute name="id"><xsl:value-of select="(@xml:id|@id)[1]"/></xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates select="." mode="html.lang.attribute"/>
+      <xsl:if test="$token != ''">
+        <xsl:attribute name="data-status"><xsl:value-of select="$token"/></xsl:attribute>
+        <xsl:attribute name="title"><xsl:value-of select="$title"/></xsl:attribute>
+      </xsl:if>
+      <xsl:if test="$also != ''">
+        <xsl:attribute name="data-also"><xsl:value-of select="$also"/></xsl:attribute>
+      </xsl:if>
+      <xsl:if test="$date != ''">
+        <xsl:attribute name="data-date"><xsl:value-of select="$date"/></xsl:attribute>
+      </xsl:if>
+      <xsl:if test="$body != ''">
+        <xsl:attribute name="data-body"><xsl:value-of select="$body"/></xsl:attribute>
+      </xsl:if>
+      <xsl:apply-templates/>
+      <xsl:if test="$token != ''">
+        <span xmlns="http://www.w3.org/1999/xhtml" class="status-label-inline"> [<xsl:value-of select="$label"/>]</span>
+      </xsl:if>
+    </span>
+  </xsl:template>
+
   <!-- ==================================================================== -->
 
   <!-- Special navigation links -->

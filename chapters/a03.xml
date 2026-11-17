@@ -7,7 +7,7 @@
     <para>
       Every entry below, and every status note in the book, carries one of these labels for where the rule comes from:
     </para>
-    <variablelist>
+    <variablelist xml:id="status-legend">
       <varlistentry>
         <term>Ratified by the LLG</term>
         <listitem><para>An LLG vote adopted the rule. Only the reform of the article system has this status.</para></listitem>

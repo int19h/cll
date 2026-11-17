@@ -1145,36 +1145,153 @@ screen display
 p.monospace {
   font-family: monospace;
 }
-/* Status notes (docs/status-markup.md): authority marks for changed rules.
-   The DocBook role="status-note" propagates to p.status-note. */
-p.status-note,
-section.section > p.status-note {
+/* Status notes (docs/status-markup.md, issue #47): where a rule comes
+   from. The XSL (xml/docbook2html_config_common.xsl) writes the label
+   as real text in span.status-label, a status-<token> class, and
+   data-* attributes on the note, so the status reaches screen
+   readers, ePub readers and copied text even with no CSS. What CSS
+   adds is never colour alone: every status also has its own margin
+   glyph shape (in the book's Biolinum/DejaVu fonts), and three
+   statuses a distinct border style, so a black-and-white printing
+   still tells them apart. Badge colours are dark with white text;
+   the weakest pair (historical, #6e5a44 on white text reversed)
+   contrasts at 6.54:1, the rest at 7.38:1 or more. */
+/* No section.section > form here: it would outrank the per-status
+   border rules below (review O6). The text-indent !important in this
+   rule already beats section.section > p in print. */
+p.status-note {
   position: relative;
   margin-left: 1.5em;
   padding-left: 0.75em;
   border-left: 2px solid #8a7a4a;
   font-size: 0.92em;
-  color: #3d3320;
+  color: #1f1a12;
   text-indent: 0 !important; /* beat section.section > p { text-indent: 1em } in print */
 }
 p.status-note::before {
-  content: "\25C6"; /* black diamond margin mark */
+  content: "\25C6"; /* black diamond: the bare-note fallback */
+  font-family: "Linux Biolinum", "DejaVu Sans", sans-serif;
   position: absolute;
   left: -1.5em;
-  color: #8a7a4a;
+  color: #5a4a16;
+}
+p.status-note.status-llg-ratified::before { content: "\2605"; color: #7c2d12; }
+p.status-note.status-bpfk-approved::before { content: "\25CF"; color: #1e4a6b; }
+p.status-note.status-checkpointed::before { content: "\25A0"; color: #2e5a34; }
+p.status-note.status-de-facto::before { content: "\25C6"; color: #5a4a16; }
+p.status-note.status-proposed::before { content: "\25B3"; color: #1f5f5b; }
+p.status-note.status-unsettled::before { content: "?"; color: #8a1f1f; font-weight: bold; }
+p.status-note.status-editorial::before { content: "\25B2"; color: #3d3d3d; }
+p.status-note.status-historical::before { content: "\25C7"; color: #6e5a44; }
+p.status-note.status-llg-ratified { border-left-color: #7c2d12; }
+p.status-note.status-bpfk-approved { border-left-color: #1e4a6b; }
+p.status-note.status-checkpointed { border-left-color: #2e5a34; }
+p.status-note.status-de-facto { border-left-color: #5a4a16; }
+p.status-note.status-proposed { border-left-color: #1f5f5b; border-left-style: dashed; }
+p.status-note.status-unsettled { border-left-color: #8a1f1f; border-left-style: dotted; border-left-width: 3px; }
+p.status-note.status-editorial { border-left-color: #3d3d3d; }
+p.status-note.status-historical { border-left-color: #6e5a44; border-left-style: double; border-left-width: 4px; }
+/* The badge: light styling by default, so an ePub reading system that
+   applies little CSS still shows a distinct bold small-caps label.
+   Web HTML on screen adds the filled badge (below); the body.epub
+   rule keeps the packaged ePub on this light form. */
+span.status-label {
+  /* No display change: an inline-level display value here would make
+     scripts/html_stylesheet_scan.rb exclude every span from the
+     HTML formatter's visible blocks. Border and background on an
+     inline box still read as a badge. */
+  font-variant: small-caps;
+  font-weight: bold;
+  letter-spacing: 0.02em;
+  border: 1px solid #444;
+  border-radius: 3px;
+  padding: 0 0.35em;
+  margin-right: 0.25em;
+}
+span.status-label a.status-legend-link {
+  color: inherit;
+  text-decoration: none;
+}
+span.status-also {
+  display: block;
+  font-size: 0.9em;
+  color: #444;
 }
 span.status-mark {
   border-bottom: 1px dotted #8a7a4a;
 }
 span.status-mark::after {
-  content: "\25C7"; /* white diamond inline mark */
+  content: "\25C7"; /* white diamond: the generic inline mark */
+  font-family: "Linux Biolinum", "DejaVu Sans", sans-serif;
   font-size: 0.75em;
   vertical-align: super;
-  color: #8a7a4a;
+  color: #5a4a16;
+}
+span.status-mark.status-llg-ratified::after { content: "\2605"; color: #7c2d12; }
+span.status-mark.status-bpfk-approved::after { content: "\25CF"; color: #1e4a6b; }
+span.status-mark.status-checkpointed::after { content: "\25A0"; color: #2e5a34; }
+span.status-mark.status-de-facto::after { content: "\25C6"; color: #5a4a16; }
+span.status-mark.status-proposed::after { content: "\25B3"; color: #1f5f5b; }
+span.status-mark.status-unsettled::after { content: "?"; color: #8a1f1f; font-weight: bold; }
+span.status-mark.status-editorial::after { content: "\25B2"; color: #3d3d3d; }
+span.status-mark.status-historical::after { content: "\25C7"; color: #6e5a44; }
+span.status-label-inline {
+  font-size: 0.75em;
+  vertical-align: super;
+  font-variant: small-caps;
+}
+/* The filled badge is for web HTML only. An ePub reading system also
+   reports screen media, so the screen rules below would otherwise
+   fill the label in the packaged ePub too. scripts/epub_pages.rb
+   puts class "epub" on the body of every packaged page; restore the
+   light label there (this selector outranks the screen rules). */
+body.epub p.status-note span.status-label { background: none; border-color: #444; color: inherit; }
+@media screen {
+  p.status-note.status-llg-ratified span.status-label { background: #7c2d12; border-color: #7c2d12; color: #fff; }
+  p.status-note.status-bpfk-approved span.status-label { background: #1e4a6b; border-color: #1e4a6b; color: #fff; }
+  p.status-note.status-checkpointed span.status-label { background: #2e5a34; border-color: #2e5a34; color: #fff; }
+  p.status-note.status-de-facto span.status-label { background: #5a4a16; border-color: #5a4a16; color: #fff; }
+  p.status-note.status-proposed span.status-label { background: #1f5f5b; border-color: #1f5f5b; color: #fff; }
+  p.status-note.status-unsettled span.status-label { background: #8a1f1f; border-color: #8a1f1f; color: #fff; }
+  p.status-note.status-editorial span.status-label { background: #3d3d3d; border-color: #3d3d3d; color: #fff; }
+  p.status-note.status-historical span.status-label { background: #6e5a44; border-color: #6e5a44; color: #fff; }
 }
 @media print {
-  p.status-note { border-left-color: #666; color: inherit; }
-  p.status-note::before { color: #666; }
+  /* Black-and-white safe: no badge fill (some print paths drop
+     backgrounds); the small-caps text label, the glyph shape and
+     the border style carry the status. The label, the also-line and
+     the start of the prose stay together: a note does not break
+     across pages unless it is taller than a page, and even then its
+     first lines do not strand at a page foot (scripts/
+     test-status-pagination.py; review R1). */
+  p.status-note { color: inherit; break-inside: avoid; page-break-inside: avoid; orphans: 3; widows: 2; }
+  p.status-note::before,
+  p.status-note.status-llg-ratified::before,
+  p.status-note.status-bpfk-approved::before,
+  p.status-note.status-checkpointed::before,
+  p.status-note.status-de-facto::before,
+  p.status-note.status-proposed::before,
+  p.status-note.status-unsettled::before,
+  p.status-note.status-editorial::before,
+  p.status-note.status-historical::before { color: #333; }
+  p.status-note.status-llg-ratified,
+  p.status-note.status-bpfk-approved,
+  p.status-note.status-checkpointed,
+  p.status-note.status-de-facto,
+  p.status-note.status-proposed,
+  p.status-note.status-unsettled,
+  p.status-note.status-editorial,
+  p.status-note.status-historical { border-left-color: #666; }
+  span.status-label { border-color: #666; background: none; color: inherit; break-inside: avoid; break-after: avoid; page-break-after: avoid; }
+  span.status-also { color: #333; break-inside: avoid; break-after: avoid; page-break-after: avoid; }
   span.status-mark { border-bottom-color: #666; }
-  span.status-mark::after { color: #666; }
+  span.status-mark::after,
+  span.status-mark.status-llg-ratified::after,
+  span.status-mark.status-bpfk-approved::after,
+  span.status-mark.status-checkpointed::after,
+  span.status-mark.status-de-facto::after,
+  span.status-mark.status-proposed::after,
+  span.status-mark.status-unsettled::after,
+  span.status-mark.status-editorial::after,
+  span.status-mark.status-historical::after { color: #333; }
 }

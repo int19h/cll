@@ -77,13 +77,63 @@ Use sparingly; prefer the block form.
 
 ## Rendering
 
-- **Print (Prince)/HTML**: docbook-xsl propagates `para/@role` to `p/@class`,
-  so `p.status-note` styles the note; `assets/css/master.css` gives it a
-  margin mark (◆) and an inset border. Level-specific glyphs require the XSL
-  to propagate `condition` (future work; tracked in #47).
+The `condition` attribute is reserved for status notes (and status marks) in
+this book: never use it for DocBook effectivity profiling, and never set
+DocBook's `profile.condition` parameter (or any other `profile.*` parameter)
+in the build's stylesheets or scripts — profiling keys off `condition` and
+would drop status notes from the output. `scripts/test-status-rendering.py`
+enforces this.
+
+- **All DocBook-XSL outputs** (HTML, ePub, and the Prince and WeasyPrint PDF
+  inputs): `xml/docbook2html_config_common.xsl` is the one source of truth.
+  It turns each `condition` into a `status-note status-<token>` class (for
+  example `status-de-facto`), `data-status`, `data-also`, `data-date` and
+  `data-body` attributes (the body uses the defaults in the table above when
+  `body:` is absent), and a real-text label from its one token-to-label
+  table: `<span class="status-label">Established usage</span>` at the start
+  of the note, with the date appended where one exists (for example
+  "Approved by the BPFK, 2015-08-08") and the also-strands as a short second
+  line (`<span class="status-also">also: First-edition rule</span>`). An
+  explicit `body:` that the primary label does not already name joins the
+  label text too (for example "Proposal, BPFK" for `status:proposed;body:bpfk`,
+  distinct from "Approved by the BPFK"), because a print reader cannot see
+  `data-body` or the tooltip; a defaulted body stays in those two places
+  only. The templates match `@role` by token membership, so extra role
+  tokens keep the label and survive as extra classes. Because
+  the label is text, it reaches screen readers, ePub readers and copied text
+  with no CSS. A `status-note` without `condition` (the transitional bare
+  form) renders with the generic class and no label.
+- **Inline marks** get the lighter form: the same classes and data
+  attributes, a short real-text label in a superscript `status-label-inline`
+  span after the clause (for example "[Established usage]"), carrying the
+  same visible body and date suffixes as the block label, and a `title`
+  tooltip with the label, date, body and also-strands. A full badge inline
+  would break the sentence the mark annotates.
+- **HTML**: the label is a small filled badge, linked to the legend list
+  (`xml:id="status-legend"` in the changes appendix, `chapters/a03.xml`);
+  the link's `title` tooltip gives the label, date, body and also-strands.
+  Each status has a dark badge colour with white text (contrast 6.54:1 or
+  better), but colour is never the only signal: the text, the margin-glyph
+  shape and (for three statuses) the border style all differ.
+- **Print (Prince and WeasyPrint)**: the label stands in small caps at the
+  start of the note, with a margin mark whose shape differs by status —
+  ★ llg-ratified, ● bpfk-approved, ■ checkpointed, ◆ de-facto, △ proposed,
+  ? unsettled, ▲ editorial, ◇ historical, all in the book's Biolinum/DejaVu
+  fonts — never by colour alone, so a black-and-white printing still tells
+  the statuses apart. Proposed also gets a dashed rule, unsettled a dotted
+  rule, and historical a double rule. The print rules keep the label, the
+  also-line and the start of the prose on one page (`break-inside: avoid`
+  on the note, `break-after: avoid` on the label and also-line, checked by
+  `scripts/test-status-pagination.py`); a note taller than a page may still
+  break after its first lines.
+- **EPUB**: the label text with light styling only (bold small caps in a
+  thin border). Reading systems report screen media, so the filled web
+  badge would apply there too; a `body.epub` rule in `master.css` (the
+  class `scripts/epub_pages.rb` puts on packaged pages) restores the light
+  form in the packaged ePub, whose reading systems differ in the CSS they
+  apply.
 - **jbotci cukta**: consumes the XML directly; keys off `@role` and parses
   `@condition` with the microsyntax above. Unknown keys must be ignored.
-- **EPUB**: falls back to the same class-based styling.
 
 ## Appendix generation
 
@@ -126,8 +176,6 @@ CI beside the lint.
 
 Rendering note: the class-based renderers style `p.status-note` (block; the
 selector defeats the print pipeline's first-line indent) and
-`span.status-mark` (inline; dotted underline plus a superscript ◇). The
-`condition` attribute is not yet propagated to HTML classes; per-level glyphs
-remain future work (issue #47 stays open to track renderer refinement and
-the profiling-attribute reservation: `condition` is used for status only —
-do not overload it for DocBook effectivity profiling in this book).
+`span.status-mark` (inline; dotted underline plus a superscript glyph).
+The XSL propagates `condition` to per-status classes, data attributes and
+the text label described in [Rendering](#rendering) above.

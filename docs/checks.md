@@ -42,6 +42,7 @@ python3 scripts/check-cross-reference.py chapters/21.xml
 python3 scripts/test-check-cross-reference.py
 python3 scripts/lint-status-markup.py chapters/*.xml
 python3 scripts/test-lint-status-markup.py
+python3 scripts/test-status-rendering.py
 python3 scripts/test-html-mathjax.py
 python3 scripts/check-peg-grammar.py
 python3 scripts/test-check-peg-grammar.py
@@ -104,6 +105,7 @@ The book check joins `scripts/header.xml`, every `chapters/*.xml` file, and a cl
 | EBNF cross-reference self-test | The check above fails on planted defects | `python3 scripts/test-check-cross-reference.py` |
 | Status markup | The `role="status-note"` and `condition` markup follows [status-markup.md](status-markup.md) | `python3 scripts/lint-status-markup.py chapters/*.xml` |
 | Status markup self-test | The lint above, on fixtures | `python3 scripts/test-lint-status-markup.py` |
+| Status rendering | The XSL turns each `condition` into per-status classes, data attributes and the text label for every status; the CSS gives each status its own glyph; no stylesheet or build script sets a DocBook `profile.*` parameter, which would put status notes at risk of being profiled out | `python3 scripts/test-status-rendering.py` |
 | Browser MathJax | The HTML loads one pinned MathJax script with an integrity hash | `python3 scripts/test-html-mathjax.py` |
 | PEG grammar | The word-form grammar printed in chapter 21 matches `tests/fixtures/peg-morphology.peg` rule for rule | `python3 scripts/check-peg-grammar.py` |
 | PEG grammar self-test | The check above detects corrupted copies | `python3 scripts/test-check-peg-grammar.py` |
@@ -188,10 +190,12 @@ This job installs the pinned WeasyPrint and MathJax tools under `build/weasyprin
 python3 scripts/test-build-version.py
 PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-weasyprint.py
 PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-pdf-bookmarks.py
+PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-status-pagination.py
 ```
 
 The bookmark test renders a small title page with the print stylesheets and checks outline levels and parents.
 When `prince` and `pymupdf` are installed, the same test checks Prince.
+The status pagination test sweeps a status note across a page boundary and checks that its label and also-line stay on the page where its prose begins; it reads per-page text with `pdftotext` (poppler-utils), and checks Prince the same way when `prince` is installed.
 
 The installer needs Python 3 with `venv` and Node.js 22 or later.
 The renderer also needs Pango, HarfBuzz, and the fonts listed in [build-weasyprint.md](build-weasyprint.md#local-build).

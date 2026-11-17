@@ -99,6 +99,30 @@ function hidden_index_target(link)
   return false;
 }
 
+/* The "(see X)" and "(see also X)" text that
+ * xml/docbook2html_config_common.xsl marks with a class. An entry that
+ * carries one is a cross-reference, not an empty entry, so it stays.
+ */
+function index_cross_references(entry)
+{
+  var refs = [];
+  var spans = entry.getElementsByTagName('span');
+  for (var i = 0; i < spans.length; i++) {
+    var classes = ' ' + (spans[i].getAttribute('class') || '').replace(/\s+/g, ' ') + ' ';
+    if (classes.indexOf(' index-see ') !== -1 || classes.indexOf(' index-seealso ') !== -1) {
+      refs.push(spans[i]);
+    }
+  }
+  return refs;
+}
+
+function cross_reference_html(refs)
+{
+  var html = '';
+  for (var i = 0; i < refs.length; i++) html += ' ' + refs[i].outerHTML;
+  return html;
+}
+
 function prep_index()
 {
   var indexes = document.getElementsByClassName('indexdiv');
@@ -110,8 +134,9 @@ function prep_index()
       var allLinks = entry.getElementsByTagName('a');
       var following = entry.nextElementSibling;
       var hasDetails = following && following.nodeName.toLowerCase() === 'dd';
+      var refs = index_cross_references(entry);
       if (!allLinks.length) {
-        if (hasDetails && !following.textContent.trim()) {
+        if (!refs.length && hasDetails && !following.textContent.trim()) {
           entry.parentNode.removeChild(following);
           entry.parentNode.removeChild(entry);
         }
@@ -130,7 +155,9 @@ function prep_index()
       }
       if (!links.length) {
         // Retain a heading when its subentries still have page references.
-        if (hasDetails && following.textContent.trim()) {
+        if (refs.length) {
+          entry.innerHTML = firstText.replace(/[,:]\s*$/, '') + cross_reference_html(refs);
+        } else if (hasDetails && following.textContent.trim()) {
           entry.textContent = firstText.replace(/,\s*$/, '');
         } else {
           if (hasDetails) entry.parentNode.removeChild(following);
@@ -143,7 +170,7 @@ function prep_index()
         if (k) text += ', ';
         text += 'target-counter(url(' + links[k].getAttribute('href') + '), page)';
       }
-      entry.innerHTML = firstText + text + ')"></span>';
+      entry.innerHTML = firstText + text + ')"></span>' + cross_reference_html(refs);
     }
   }
 }

@@ -1156,8 +1156,10 @@ p.monospace {
    still tells them apart. Badge colours are dark with white text;
    the weakest pair (historical, #6e5a44 on white text reversed)
    contrasts at 6.54:1, the rest at 7.38:1 or more. */
-p.status-note,
-section.section > p.status-note {
+/* No section.section > form here: it would outrank the per-status
+   border rules below (review O6). The text-indent !important in this
+   rule already beats section.section > p in print. */
+p.status-note {
   position: relative;
   margin-left: 1.5em;
   padding-left: 0.75em;

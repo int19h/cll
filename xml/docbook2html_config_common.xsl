@@ -135,12 +135,14 @@
        Never set DocBook's profile.condition parameter anywhere in the
        build: profiling keys off @condition and would drop these notes. -->
 
-  <!-- One field of the condition microsyntax (key:value;key:value). -->
+  <!-- One field of the condition microsyntax (key:value;key:value).
+       Strip all XML whitespace, as the lint does: a tab written as a
+       character reference survives attribute normalization. -->
   <xsl:template name="cll.status.field">
     <xsl:param name="condition" select="''"/>
     <xsl:param name="key" select="''"/>
     <xsl:variable name="padded"
-      select="concat(';', translate($condition, ' ', ''), ';')"/>
+      select="concat(';', translate($condition, ' &#9;&#10;&#13;', ''), ';')"/>
     <xsl:variable name="needle" select="concat(';', $key, ':')"/>
     <xsl:if test="contains($padded, $needle)">
       <xsl:value-of
@@ -377,6 +379,10 @@
         <xsl:text> </xsl:text>
         <xsl:if test="$also != ''">
           <span xmlns="http://www.w3.org/1999/xhtml" class="status-also">also: <xsl:value-of select="$also.labels"/></span>
+          <!-- A separator for text without CSS, where the also-line
+               is no block box and would fuse with the first word of
+               the prose; after a block box the space collapses. -->
+          <xsl:text> </xsl:text>
         </xsl:if>
       </xsl:if>
       <xsl:apply-templates/>
@@ -478,7 +484,7 @@
       </xsl:if>
       <xsl:apply-templates/>
       <xsl:if test="$token != ''">
-        <span xmlns="http://www.w3.org/1999/xhtml" class="status-label-inline"> [<xsl:value-of select="$label"/><xsl:value-of select="$body.visible"/>]</span>
+        <span xmlns="http://www.w3.org/1999/xhtml" class="status-label-inline"> [<xsl:value-of select="$label"/><xsl:value-of select="$body.visible"/><xsl:if test="$date != ''">, <xsl:value-of select="$date"/></xsl:if>]</span>
       </xsl:if>
     </span>
   </xsl:template>

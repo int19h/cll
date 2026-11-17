@@ -105,7 +105,8 @@ enforces this.
   form) renders with the generic class and no label.
 - **Inline marks** get the lighter form: the same classes and data
   attributes, a short real-text label in a superscript `status-label-inline`
-  span after the clause (for example "[Established usage]"), and a `title`
+  span after the clause (for example "[Established usage]"), carrying the
+  same visible body and date suffixes as the block label, and a `title`
   tooltip with the label, date, body and also-strands. A full badge inline
   would break the sentence the mark annotates.
 - **HTML**: the label is a small filled badge, linked to the legend list

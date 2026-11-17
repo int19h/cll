@@ -43,7 +43,8 @@ BOOK = '''<?xml version="1.0" encoding="UTF-8"?>
     <para role="status-note" condition="status:proposed;body:bpfk">BPFK proposal prose.</para>
     <para role="status-note" condition="status:bpfk-approved;body:bpfk">Explicit named body prose.</para>
     <para role="extra status-note" condition="status:checkpointed">Extra role token prose.</para>
-    <para>Ordinary <phrase role="status-mark" condition="status:de-facto;also:historical">accepted by parsers</phrase> here, and <phrase role="status-mark extra" condition="status:proposed;body:bpfk">a BPFK proposal clause</phrase> too.</para>
+    <para role="status-note" condition="status:de-facto;&#9;date:2015-08-08">Tab separated date prose.</para>
+    <para>Ordinary <phrase role="status-mark" condition="status:de-facto;also:historical">accepted by parsers</phrase> here, and <phrase role="status-mark extra" condition="status:proposed;body:bpfk;date:2020-01-02">a BPFK proposal clause</phrase> too.</para>
   </chapter>
   <article xml:id="appendix-changes">
     <title>Changes</title>
@@ -57,6 +58,25 @@ BOOK = '''<?xml version="1.0" encoding="UTF-8"?>
   </article>
 </book>
 '''
+
+
+def reader_text(element):
+    """The element's text the way a reader gets it (textContent):
+    no whitespace is invented between elements. Joining with split()
+    would hide fused words (review O1)."""
+    return ''.join(element.itertext())
+
+
+def specificity(selector):
+    """(ids, classes, elements) for the simple selectors used here."""
+    ids = selector.count('#')
+    classes = selector.count('.') + selector.count('[')
+    classes += len(re.findall(r'(?<!:):(?!:)', selector))
+    elements = selector.count('::')
+    for compound in re.split(r'[\s>+~]+', selector):
+        if re.match(r'[A-Za-z][\w-]*', compound):
+            elements += 1
+    return (ids, classes, elements)
 
 
 class ProfilingReservation(unittest.TestCase):
@@ -113,6 +133,39 @@ class LabelTableAndCss(unittest.TestCase):
     def test_legend_anchor(self):
         a03 = (SOURCE / 'chapters' / 'a03.xml').read_text()
         self.assertIn('xml:id="status-legend"', a03)
+
+    def test_per_status_borders_outrank_any_base_border(self):
+        # Review O6: a base selector of higher specificity
+        # (section.section > p.status-note) silently cancelled every
+        # per-status border colour/style/width in the real book,
+        # where notes are direct children of section.section.
+        css = (SOURCE / 'assets' / 'css' / 'master.css').read_text()
+        css = re.sub(r'/\*.*?\*/', '', css, flags=re.S)
+        token_re = r'\.status-(' + '|'.join(LABELS) + r')\b'
+        base = []
+        per_status = {}
+        for selectors, body in re.findall(r'([^{}]+)\{([^{}]*)\}', css):
+            if 'border-left' not in body:
+                continue
+            for selector in selectors.split(','):
+                selector = ' '.join(selector.split())
+                if 'status-note' not in selector or '::' in selector:
+                    continue
+                m = re.search(token_re, selector)
+                if m:
+                    per_status.setdefault(m.group(1), []).append(
+                        specificity(selector))
+                else:
+                    base.append((selector, specificity(selector)))
+        self.assertTrue(base, 'no base status-note border rule found')
+        self.assertEqual(set(per_status), set(LABELS))
+        for selector, spec in base:
+            for token, specs in per_status.items():
+                for other in specs:
+                    self.assertLess(
+                        spec, other,
+                        f'base {selector!r} {spec} outranks or ties the '
+                        f'per-status border for {token} {other}')
 
     def test_epub_gets_the_light_label_not_the_filled_badge(self):
         # Review R3: an ePub reading system reports screen media, so
@@ -180,6 +233,11 @@ class Transform(unittest.TestCase):
         self.assertTrue(text.startswith('Approved by the BPFK, 2015-08-08'), text)
         self.assertIn('also: First-edition rule', text)
         self.assertIn('Dotside note prose.', text)
+        # Review O1: read as textContent, the also-line must not fuse
+        # with the first word of the prose when CSS is absent. This
+        # fixture's prose starts right after the start tag.
+        self.assertIn('also: First-edition rule Dotside note prose.',
+                      reader_text(note))
         link = next(a for a in note.iter(XHTML + 'a')
                     if a.get('class') == 'status-legend-link')
         self.assertTrue(link.get('href').endswith('#status-legend'), link.get('href'))
@@ -228,7 +286,18 @@ class Transform(unittest.TestCase):
         self.assertEqual(mark.get('data-body'), 'bpfk')
         text = ''.join(mark.itertext())
         self.assertIn('a BPFK proposal clause', text)
-        self.assertIn('[Proposal, BPFK]', text)
+        # Review O3: the inline label shows its date as real text,
+        # like the block label, not only in the tooltip.
+        self.assertIn('[Proposal, BPFK, 2020-01-02]', text)
+
+    def test_condition_whitespace_beyond_spaces(self):
+        # Review O4: a tab character reference in @condition survives
+        # XML attribute normalization; the lint strips all whitespace,
+        # so the renderer must find the key after it too.
+        note = self.notes[6]
+        self.assertEqual(note.get('data-date'), '2015-08-08')
+        self.assertTrue(reader_text(note).startswith(
+            'Established usage, 2015-08-08'), reader_text(note))
 
     def test_inline_mark(self):
         mark = next(s for s in self.doc.iter(XHTML + 'span')

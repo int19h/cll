@@ -40,7 +40,10 @@ BOOK = '''<?xml version="1.0" encoding="UTF-8"?>
     <para role="status-note" condition="status:bpfk-approved;also:historical;date:2015-08-08">Dotside note prose.</para>
     <para xml:id="note-usage" role="status-note" condition="status:de-facto">Usage note prose.</para>
     <para role="status-note">Bare note prose.</para>
-    <para>Ordinary <phrase role="status-mark" condition="status:de-facto;also:historical">accepted by parsers</phrase> here.</para>
+    <para role="status-note" condition="status:proposed;body:bpfk">BPFK proposal prose.</para>
+    <para role="status-note" condition="status:bpfk-approved;body:bpfk">Explicit named body prose.</para>
+    <para role="extra status-note" condition="status:checkpointed">Extra role token prose.</para>
+    <para>Ordinary <phrase role="status-mark" condition="status:de-facto;also:historical">accepted by parsers</phrase> here, and <phrase role="status-mark extra" condition="status:proposed;body:bpfk">a BPFK proposal clause</phrase> too.</para>
   </chapter>
   <article xml:id="appendix-changes">
     <title>Changes</title>
@@ -111,6 +114,29 @@ class LabelTableAndCss(unittest.TestCase):
         a03 = (SOURCE / 'chapters' / 'a03.xml').read_text()
         self.assertIn('xml:id="status-legend"', a03)
 
+    def test_epub_gets_the_light_label_not_the_filled_badge(self):
+        # Review R3: an ePub reading system reports screen media, so
+        # the filled screen badge must be undone for body.epub (the
+        # class scripts/epub_pages.rb puts on packaged pages).
+        css = (SOURCE / 'assets' / 'css' / 'master.css').read_text()
+        m = re.search(r'body\.epub p\.status-note span\.status-label '
+                      r'\{([^}]*)\}', css)
+        self.assertIsNotNone(m)
+        self.assertIn('background: none', m.group(1))
+        self.assertIn('color: inherit', m.group(1))
+
+    def test_print_keeps_the_label_with_the_prose_start(self):
+        # Review R1, static half (the pagination itself is in
+        # scripts/test-status-pagination.py): the print rules keep
+        # the note in one fragment and the also-line attached.
+        css = (SOURCE / 'assets' / 'css' / 'master.css').read_text()
+        m = re.search(r'p\.status-note \{ color: inherit;([^}]*)\}', css)
+        self.assertIsNotNone(m)
+        self.assertIn('break-inside: avoid', m.group(1))
+        m = re.search(r'span\.status-also \{ color: #333;([^}]*)\}', css)
+        self.assertIsNotNone(m)
+        self.assertIn('break-after: avoid', m.group(1))
+
 
 class Transform(unittest.TestCase):
     @classmethod
@@ -170,6 +196,39 @@ class Transform(unittest.TestCase):
         self.assertEqual(bare.get('class'), 'status-note')
         self.assertNotIn('data-status', bare.attrib)
         self.assertEqual(''.join(bare.itertext()).strip(), 'Bare note prose.')
+
+    def test_explicit_body_in_the_visible_label(self):
+        # Review R4: an explicit body: that the primary label does not
+        # name is real label text ("Proposal, BPFK", distinct from
+        # approval); one the label already names is not repeated;
+        # a defaulted body stays out of the visible label.
+        proposal, approved = self.notes[3], self.notes[4]
+        self.assertEqual(proposal.get('data-body'), 'bpfk')
+        text = ' '.join(''.join(proposal.itertext()).split())
+        self.assertTrue(text.startswith('Proposal, BPFK'), text)
+        self.assertIn('BPFK proposal prose.', text)
+        text = ' '.join(''.join(approved.itertext()).split())
+        self.assertTrue(
+            text.startswith('Approved by the BPFK Explicit'), text)
+        self.assertNotIn('BPFK, BPFK', text)
+        plain_text = ' '.join(''.join(self.notes[1].itertext()).split())
+        self.assertNotIn('Community', plain_text)
+
+    def test_role_matched_by_token_membership(self):
+        # Review L1: role is a token list; extra tokens must not lose
+        # the label or the metadata, and survive as classes.
+        extra = self.notes[5]
+        self.assertEqual(extra.get('class'),
+                         'extra status-note status-checkpointed')
+        self.assertEqual(extra.get('data-status'), 'checkpointed')
+        text = ' '.join(''.join(extra.itertext()).split())
+        self.assertTrue(text.startswith('BPFK checkpoint'), text)
+        mark = next(s for s in self.doc.iter(XHTML + 'span')
+                    if s.get('class') == 'status-mark extra status-proposed')
+        self.assertEqual(mark.get('data-body'), 'bpfk')
+        text = ''.join(mark.itertext())
+        self.assertIn('a BPFK proposal clause', text)
+        self.assertIn('[Proposal, BPFK]', text)
 
     def test_inline_mark(self):
         mark = next(s for s in self.doc.iter(XHTML + 'span')

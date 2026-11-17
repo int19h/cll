@@ -190,10 +190,12 @@ This job installs the pinned WeasyPrint and MathJax tools under `build/weasyprin
 python3 scripts/test-build-version.py
 PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-weasyprint.py
 PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-pdf-bookmarks.py
+PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-status-pagination.py
 ```
 
 The bookmark test renders a small title page with the print stylesheets and checks outline levels and parents.
 When `prince` and `pymupdf` are installed, the same test checks Prince.
+The status pagination test sweeps a status note across a page boundary and checks that its label and also-line stay on the page where its prose begins; it reads per-page text with `pdftotext` (poppler-utils), and checks Prince the same way when `prince` is installed.
 
 The installer needs Python 3 with `venv` and Node.js 22 or later.
 The renderer also needs Pango, HarfBuzz, and the fonts listed in [build-weasyprint.md](build-weasyprint.md#local-build).

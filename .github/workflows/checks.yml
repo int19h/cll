@@ -71,6 +71,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Install xsltproc
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq xsltproc
       - name: Test dotside lint input
         run: python3 scripts/test-lint-undotted-cmevla.py
       - name: Flag undotted cmevla after la/lai/la'i/doi in Lojban text
@@ -215,7 +217,7 @@ jobs:
       - name: Install PDF runtime libraries
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq python3-venv libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core fonts-linuxlibertine
+          sudo apt-get install -y -qq python3-venv libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core fonts-linuxlibertine poppler-utils
       - name: Install the pinned WeasyPrint and MathJax dependencies
         run: ./scripts/install-weasyprint.sh
       - name: Render math and linked index fixtures
@@ -223,6 +225,7 @@ jobs:
           python3 scripts/test-build-version.py
           PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-weasyprint.py
           PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-pdf-bookmarks.py
+          PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-status-pagination.py
 
   context-converter:
     runs-on: ubuntu-24.04

@@ -93,7 +93,13 @@ enforces this.
   table: `<span class="status-label">Established usage</span>` at the start
   of the note, with the date appended where one exists (for example
   "Approved by the BPFK, 2015-08-08") and the also-strands as a short second
-  line (`<span class="status-also">also: First-edition rule</span>`). Because
+  line (`<span class="status-also">also: First-edition rule</span>`). An
+  explicit `body:` that the primary label does not already name joins the
+  label text too (for example "Proposal, BPFK" for `status:proposed;body:bpfk`,
+  distinct from "Approved by the BPFK"), because a print reader cannot see
+  `data-body` or the tooltip; a defaulted body stays in those two places
+  only. The templates match `@role` by token membership, so extra role
+  tokens keep the label and survive as extra classes. Because
   the label is text, it reaches screen readers, ePub readers and copied text
   with no CSS. A `status-note` without `condition` (the transitional bare
   form) renders with the generic class and no label.
@@ -114,10 +120,17 @@ enforces this.
   ? unsettled, ▲ editorial, ◇ historical, all in the book's Biolinum/DejaVu
   fonts — never by colour alone, so a black-and-white printing still tells
   the statuses apart. Proposed also gets a dashed rule, unsettled a dotted
-  rule, and historical a double rule.
+  rule, and historical a double rule. The print rules keep the label, the
+  also-line and the start of the prose on one page (`break-inside: avoid`
+  on the note, `break-after: avoid` on the label and also-line, checked by
+  `scripts/test-status-pagination.py`); a note taller than a page may still
+  break after its first lines.
 - **EPUB**: the label text with light styling only (bold small caps in a
-  thin border); the filled badge is screen-only, because reading systems
-  differ in the CSS they apply.
+  thin border). Reading systems report screen media, so the filled web
+  badge would apply there too; a `body.epub` rule in `master.css` (the
+  class `scripts/epub_pages.rb` puts on packaged pages) restores the light
+  form in the packaged ePub, whose reading systems differ in the CSS they
+  apply.
 - **jbotci cukta**: consumes the XML directly; keys off `@role` and parses
   `@condition` with the microsyntax above. Unknown keys must be ignored.
 

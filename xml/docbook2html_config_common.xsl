@@ -186,6 +186,41 @@
     </xsl:choose>
   </xsl:template>
 
+  <!-- The body a primary label already names, if any: "Ratified by
+       the LLG", "Approved by the BPFK" and "BPFK checkpoint" name
+       theirs; the other labels name none. -->
+  <xsl:template name="cll.status.body.named">
+    <xsl:param name="token" select="''"/>
+    <xsl:choose>
+      <xsl:when test="$token = 'llg-ratified'">llg</xsl:when>
+      <xsl:when test="$token = 'bpfk-approved' or $token = 'checkpointed'">bpfk</xsl:when>
+      <xsl:otherwise></xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- ", Body" as visible label text for an explicit body: that the
+       primary label does not already name (for example "Proposal,
+       BPFK" for status:proposed;body:bpfk, distinct from "Approved
+       by the BPFK"). A print reader cannot see the data-body
+       attribute or the tooltip, so an explicit body: belongs in the
+       label text itself. A defaulted body stays in data-body and
+       the tooltip only. -->
+  <xsl:template name="cll.status.body.visible">
+    <xsl:param name="token" select="''"/>
+    <xsl:param name="body.explicit" select="''"/>
+    <xsl:variable name="named">
+      <xsl:call-template name="cll.status.body.named">
+        <xsl:with-param name="token" select="$token"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:if test="$body.explicit != '' and $body.explicit != $named">
+      <xsl:text>, </xsl:text>
+      <xsl:call-template name="cll.status.body.label">
+        <xsl:with-param name="body" select="$body.explicit"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+
   <!-- "Label[, date] [&#183; Body] [; also: ...]" for title tooltips. -->
   <xsl:template name="cll.status.title">
     <xsl:param name="label" select="''"/>
@@ -248,7 +283,10 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="para[@role = 'status-note']">
+  <!-- Match the semantic role by token membership, not exact
+       equality: role is a whitespace-separated list (the lint
+       treats it so), and extra tokens survive as extra classes. -->
+  <xsl:template match="para[contains(concat(' ', normalize-space(@role), ' '), ' status-note ')]">
     <xsl:variable name="token">
       <xsl:call-template name="cll.status.field">
         <xsl:with-param name="condition" select="@condition"/>
@@ -305,9 +343,15 @@
         <xsl:with-param name="also" select="$also.labels"/>
       </xsl:call-template>
     </xsl:variable>
+    <xsl:variable name="body.visible">
+      <xsl:call-template name="cll.status.body.visible">
+        <xsl:with-param name="token" select="$token"/>
+        <xsl:with-param name="body.explicit" select="$body.explicit"/>
+      </xsl:call-template>
+    </xsl:variable>
     <p xmlns="http://www.w3.org/1999/xhtml">
       <xsl:attribute name="class">
-        <xsl:text>status-note</xsl:text>
+        <xsl:value-of select="normalize-space(@role)"/>
         <xsl:if test="$token != ''">
           <xsl:value-of select="concat(' status-', $token)"/>
         </xsl:if>
@@ -329,7 +373,7 @@
         <xsl:attribute name="data-body"><xsl:value-of select="$body"/></xsl:attribute>
       </xsl:if>
       <xsl:if test="$token != ''">
-        <span xmlns="http://www.w3.org/1999/xhtml" class="status-label"><a xmlns="http://www.w3.org/1999/xhtml" class="status-legend-link"><xsl:attribute name="href"><xsl:call-template name="cll.status.legend.href"/></xsl:attribute><xsl:attribute name="title"><xsl:value-of select="$title"/></xsl:attribute><xsl:value-of select="$label"/><xsl:if test="$date != ''">, <xsl:value-of select="$date"/></xsl:if></a></span>
+        <span xmlns="http://www.w3.org/1999/xhtml" class="status-label"><a xmlns="http://www.w3.org/1999/xhtml" class="status-legend-link"><xsl:attribute name="href"><xsl:call-template name="cll.status.legend.href"/></xsl:attribute><xsl:attribute name="title"><xsl:value-of select="$title"/></xsl:attribute><xsl:value-of select="$label"/><xsl:value-of select="$body.visible"/><xsl:if test="$date != ''">, <xsl:value-of select="$date"/></xsl:if></a></span>
         <xsl:text> </xsl:text>
         <xsl:if test="$also != ''">
           <span xmlns="http://www.w3.org/1999/xhtml" class="status-also">also: <xsl:value-of select="$also.labels"/></span>
@@ -342,8 +386,10 @@
   <!-- Inline marks get the lighter form: the clause keeps its place in
        the sentence, a short real-text label follows it as a superscript,
        and the title tooltip carries the date, body and also-strands.
-       A full badge inline would break the sentence it annotates. -->
-  <xsl:template match="phrase[@role = 'status-mark']">
+       A full badge inline would break the sentence it annotates.
+       An explicit body: that the label does not name joins the
+       short label text, as in the block form. -->
+  <xsl:template match="phrase[contains(concat(' ', normalize-space(@role), ' '), ' status-mark ')]">
     <xsl:variable name="token">
       <xsl:call-template name="cll.status.field">
         <xsl:with-param name="condition" select="@condition"/>
@@ -400,9 +446,15 @@
         <xsl:with-param name="also" select="$also.labels"/>
       </xsl:call-template>
     </xsl:variable>
+    <xsl:variable name="body.visible">
+      <xsl:call-template name="cll.status.body.visible">
+        <xsl:with-param name="token" select="$token"/>
+        <xsl:with-param name="body.explicit" select="$body.explicit"/>
+      </xsl:call-template>
+    </xsl:variable>
     <span xmlns="http://www.w3.org/1999/xhtml">
       <xsl:attribute name="class">
-        <xsl:text>status-mark</xsl:text>
+        <xsl:value-of select="normalize-space(@role)"/>
         <xsl:if test="$token != ''">
           <xsl:value-of select="concat(' status-', $token)"/>
         </xsl:if>
@@ -426,7 +478,7 @@
       </xsl:if>
       <xsl:apply-templates/>
       <xsl:if test="$token != ''">
-        <span xmlns="http://www.w3.org/1999/xhtml" class="status-label-inline"> [<xsl:value-of select="$label"/>]</span>
+        <span xmlns="http://www.w3.org/1999/xhtml" class="status-label-inline"> [<xsl:value-of select="$label"/><xsl:value-of select="$body.visible"/>]</span>
       </xsl:if>
     </span>
   </xsl:template>

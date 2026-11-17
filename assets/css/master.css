@@ -1191,7 +1191,8 @@ p.status-note.status-editorial { border-left-color: #3d3d3d; }
 p.status-note.status-historical { border-left-color: #6e5a44; border-left-style: double; border-left-width: 4px; }
 /* The badge: light styling by default, so an ePub reading system that
    applies little CSS still shows a distinct bold small-caps label.
-   Screen adds the filled badge (below). */
+   Web HTML on screen adds the filled badge (below); the body.epub
+   rule keeps the packaged ePub on this light form. */
 span.status-label {
   /* No display change: an inline-level display value here would make
      scripts/html_stylesheet_scan.rb exclude every span from the
@@ -1237,6 +1238,12 @@ span.status-label-inline {
   vertical-align: super;
   font-variant: small-caps;
 }
+/* The filled badge is for web HTML only. An ePub reading system also
+   reports screen media, so the screen rules below would otherwise
+   fill the label in the packaged ePub too. scripts/epub_pages.rb
+   puts class "epub" on the body of every packaged page; restore the
+   light label there (this selector outranks the screen rules). */
+body.epub p.status-note span.status-label { background: none; border-color: #444; color: inherit; }
 @media screen {
   p.status-note.status-llg-ratified span.status-label { background: #7c2d12; border-color: #7c2d12; color: #fff; }
   p.status-note.status-bpfk-approved span.status-label { background: #1e4a6b; border-color: #1e4a6b; color: #fff; }
@@ -1250,8 +1257,12 @@ span.status-label-inline {
 @media print {
   /* Black-and-white safe: no badge fill (some print paths drop
      backgrounds); the small-caps text label, the glyph shape and
-     the border style carry the status. */
-  p.status-note { color: inherit; }
+     the border style carry the status. The label, the also-line and
+     the start of the prose stay together: a note does not break
+     across pages unless it is taller than a page, and even then its
+     first lines do not strand at a page foot (scripts/
+     test-status-pagination.py; review R1). */
+  p.status-note { color: inherit; break-inside: avoid; page-break-inside: avoid; orphans: 3; widows: 2; }
   p.status-note::before,
   p.status-note.status-llg-ratified::before,
   p.status-note.status-bpfk-approved::before,
@@ -1269,8 +1280,8 @@ span.status-label-inline {
   p.status-note.status-unsettled,
   p.status-note.status-editorial,
   p.status-note.status-historical { border-left-color: #666; }
-  span.status-label { border-color: #666; background: none; color: inherit; }
-  span.status-also { color: #333; }
+  span.status-label { border-color: #666; background: none; color: inherit; break-inside: avoid; break-after: avoid; page-break-after: avoid; }
+  span.status-also { color: #333; break-inside: avoid; break-after: avoid; page-break-after: avoid; }
   span.status-mark { border-bottom-color: #666; }
   span.status-mark::after,
   span.status-mark.status-llg-ratified::after,

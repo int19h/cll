@@ -116,11 +116,16 @@ function index_cross_references(entry)
   return refs;
 }
 
-function cross_reference_html(refs)
+/* Put the cross-reference spans back at the end of an entry whose
+ * content was just replaced. Prince has no outerHTML, so move the
+ * nodes themselves.
+ */
+function append_cross_references(entry, refs)
 {
-  var html = '';
-  for (var i = 0; i < refs.length; i++) html += ' ' + refs[i].outerHTML;
-  return html;
+  for (var i = 0; i < refs.length; i++) {
+    entry.appendChild(document.createTextNode(' '));
+    entry.appendChild(refs[i]);
+  }
 }
 
 function prep_index()
@@ -156,7 +161,8 @@ function prep_index()
       if (!links.length) {
         // Retain a heading when its subentries still have page references.
         if (refs.length) {
-          entry.innerHTML = firstText.replace(/[,:]\s*$/, '') + cross_reference_html(refs);
+          entry.textContent = firstText.replace(/[,:]?\s*$/, '');
+          append_cross_references(entry, refs);
         } else if (hasDetails && following.textContent.trim()) {
           entry.textContent = firstText.replace(/,\s*$/, '');
         } else {
@@ -170,7 +176,8 @@ function prep_index()
         if (k) text += ', ';
         text += 'target-counter(url(' + links[k].getAttribute('href') + '), page)';
       }
-      entry.innerHTML = firstText + text + ')"></span>' + cross_reference_html(refs);
+      entry.innerHTML = firstText + text + ')"></span>';
+      append_cross_references(entry, refs);
     }
   }
 }

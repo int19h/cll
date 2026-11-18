@@ -1397,7 +1397,7 @@
 
       <interlinear-gloss>
         <jbo>la .eivn. cu vecnu loi flira cinta ka'a mi</jbo>
-        <gloss>That-named Avon - sells a-mass-of face paint with-goer me.</gloss>
+        <gloss>That-named Avon - sells a-group-of face paint with-goer me.</gloss>
         <natlang>I am a traveling cosmetics salesperson for Avon.</natlang>
       </interlinear-gloss>
     </example>
@@ -1910,12 +1910,12 @@
 
       <interlinear-gloss>
         <jbo>mi jgari loi djacu</jbo>
-        <gloss>I grasp the-mass-of water</gloss>
+        <gloss>I grasp the-group-of water</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… .iri'abo mi jgari lo kabri</jbo>
         <gloss>… with-physical-cause I grasp the cup.</gloss>
-        <natlang>Causing the mass of water to be grasped by me, I grasped the cup.</natlang>
+        <natlang>Causing the water to be grasped by me, I grasped the cup.</natlang>
         <natlang>I grasp the water because I grasp the cup.</natlang>
       </interlinear-gloss>
     </example>
@@ -1957,7 +1957,7 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… mi jgari loi djacu</jbo>
-        <gloss>… I grasp the-mass-of water.</gloss>
+        <gloss>… I grasp the-group-of water.</gloss>
         <natlang>Because I grasp the cup, I grasp the water.</natlang>
       </interlinear-gloss>
     </example>
@@ -1970,7 +1970,7 @@
 
       <interlinear-gloss>
         <jbo>seri'agi mi jgari loi djacu gi</jbo>
-        <gloss>With-physical-effect I grasp the-mass-of water ,</gloss>
+        <gloss>With-physical-effect I grasp the-group-of water ,</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… mi jgari lo kabri</jbo>
@@ -2009,7 +2009,7 @@
 
       <interlinear-gloss>
         <jbo>mi jgari ri'agi lo kabri gi loi djacu</jbo>
-        <gloss>I grasp because the cup , the-mass-of water.</gloss>
+        <gloss>I grasp because the cup , the-group-of water.</gloss>
       </interlinear-gloss>
     </example>
     <para role="indent">
@@ -2031,7 +2031,7 @@
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… .imu'ibo la .djan. dunda loi jdini mi</jbo>
-        <gloss>… Motivated-by that-named John gave the-mass-of money to-me.</gloss>
+        <gloss>… Motivated-by that-named John gave the-group-of money to-me.</gloss>
         <natlang>I gave the book to John, because John gave money to me.</natlang>
       </interlinear-gloss>
     </example>
@@ -2045,7 +2045,7 @@
 
       <interlinear-gloss>
         <jbo>nu'i mu'igi la .djan. loi jdini mi gi</jbo>
-        <gloss>[start] because that-named John, the-mass-of money, me ;</gloss>
+        <gloss>[start] because that-named John, the-group-of money, me ;</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>… mi lo cukta la .djan. nu'u dunda</jbo>

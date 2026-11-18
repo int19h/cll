@@ -2509,7 +2509,7 @@
 
       <interlinear-gloss>
         <jbo>loi snime cu carvi</jbo>
-        <gloss>Some-of-the-mass-of snow - rains</gloss>
+        <gloss>A-group-of snow - rains</gloss>
       </interlinear-gloss>
       <interlinear-gloss>
         <jbo>ze'u lo ca dunra</jbo>
@@ -2527,7 +2527,7 @@
 
       <interlinear-gloss>
         <jbo>loi snime cu carvi ca lo ze'u dunra</jbo>
-        <gloss>Some-of-the-mass-of snow - rains [present] the [long-time] winter.</gloss>
+        <gloss>A-group-of snow - rains [present] the [long-time] winter.</gloss>
         <natlang>Snow falls in the long winter.</natlang>
       </interlinear-gloss>
     </example>
@@ -2857,7 +2857,7 @@
 
       <interlinear-gloss>
         <jbo>.i ko'a citka loi kanba rectu</jbo>
-        <gloss>- She-1 eat-(tenseless) some-of-the-mass-of goat flesh.</gloss>
+        <gloss>- She-1 eat-(tenseless) a-group-of goat flesh.</gloss>
         <natlang>She was eating goat's meat.</natlang>
       </interlinear-gloss>
     </example>
@@ -2875,7 +2875,7 @@
 
       <interlinear-gloss>
         <jbo>.i loi rectu cu zanglare</jbo>
-        <gloss>- The-mass-of flesh - is-(favorable)-warm.</gloss>
+        <gloss>- The-group-of flesh - is-(favorable)-warm.</gloss>
         <natlang>The meat was pleasantly warm.</natlang>
       </interlinear-gloss>
     </example>
@@ -2897,7 +2897,7 @@
 
       <interlinear-gloss>
         <jbo>.i ko'e lebna loi rectu ko'a</jbo>
-        <gloss>- It-2 takes-(tenseless) the-mass-of flesh from-her-1.</gloss>
+        <gloss>- It-2 takes-(tenseless) the-group-of flesh from-her-1.</gloss>
         <natlang>It took the meat from her.</natlang>
       </interlinear-gloss>
     </example>
@@ -3875,9 +3875,9 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="general"><primary>innate properties</primary><secondary>extension of from mass to individuals</secondary>
+      <indexterm type="general"><primary>innate properties</primary><secondary>extension of from kind to individuals</secondary>
       </indexterm>
-      Under some epistemologies, innate capability can be extended in order to apply the innate properties of a mass to which certain individuals belong to the individuals themselves, even if those individuals are themselves not capable of fulfilling the claim of the bridi. For example:
+      Under some epistemologies, innate capability can be extended in order to apply the innate properties of a kind to which certain individuals belong to the individuals themselves, even if those individuals are themselves not capable of fulfilling the claim of the bridi. For example:
     </para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-ebcg">

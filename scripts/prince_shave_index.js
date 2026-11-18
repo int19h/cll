@@ -99,6 +99,35 @@ function hidden_index_target(link)
   return false;
 }
 
+/* The "(see X)" and "(see also X)" text that
+ * xml/docbook2html_config_common.xsl marks with a class. An entry that
+ * carries one is a cross-reference, not an empty entry, so it stays.
+ */
+function index_cross_references(entry)
+{
+  var refs = [];
+  var spans = entry.getElementsByTagName('span');
+  for (var i = 0; i < spans.length; i++) {
+    var classes = ' ' + (spans[i].getAttribute('class') || '').replace(/\s+/g, ' ') + ' ';
+    if (classes.indexOf(' index-see ') !== -1 || classes.indexOf(' index-seealso ') !== -1) {
+      refs.push(spans[i]);
+    }
+  }
+  return refs;
+}
+
+/* Put the cross-reference spans back at the end of an entry whose
+ * content was just replaced. Prince has no outerHTML, so move the
+ * nodes themselves.
+ */
+function append_cross_references(entry, refs)
+{
+  for (var i = 0; i < refs.length; i++) {
+    entry.appendChild(document.createTextNode(' '));
+    entry.appendChild(refs[i]);
+  }
+}
+
 function prep_index()
 {
   var indexes = document.getElementsByClassName('indexdiv');
@@ -110,8 +139,9 @@ function prep_index()
       var allLinks = entry.getElementsByTagName('a');
       var following = entry.nextElementSibling;
       var hasDetails = following && following.nodeName.toLowerCase() === 'dd';
+      var refs = index_cross_references(entry);
       if (!allLinks.length) {
-        if (hasDetails && !following.textContent.trim()) {
+        if (!refs.length && hasDetails && !following.textContent.trim()) {
           entry.parentNode.removeChild(following);
           entry.parentNode.removeChild(entry);
         }
@@ -130,7 +160,10 @@ function prep_index()
       }
       if (!links.length) {
         // Retain a heading when its subentries still have page references.
-        if (hasDetails && following.textContent.trim()) {
+        if (refs.length) {
+          entry.textContent = firstText.replace(/[,:]?\s*$/, '');
+          append_cross_references(entry, refs);
+        } else if (hasDetails && following.textContent.trim()) {
           entry.textContent = firstText.replace(/,\s*$/, '');
         } else {
           if (hasDetails) entry.parentNode.removeChild(following);
@@ -144,6 +177,7 @@ function prep_index()
         text += 'target-counter(url(' + links[k].getAttribute('href') + '), page)';
       }
       entry.innerHTML = firstText + text + ')"></span>';
+      append_cross_references(entry, refs);
     }
   }
 }

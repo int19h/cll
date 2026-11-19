@@ -53,6 +53,17 @@ unless opts[:testing]
     defined_words = jbovlaste_tree.xpath('//valsi').select do |entry|
       !entry.xpath('.//definition').text.strip.empty?
     end.map { |entry| entry['word'] }.to_set
+    # A book spelling with no entry of its own may use the entry of a
+    # dictionary spelling that differs only in outer pause dots (bare
+    # "y" and ".y.", ".lojbangirz." and "lojbangirz"), so a partial build
+    # that uses only the book spelling still defines the ID its links
+    # point at. The two spellings must otherwise be the same string: an
+    # ID match alone is not enough, because slugify also drops the
+    # difference between an internal period and an internal comma, and
+    # ".i.ov" is not the name ".i,ov". This map keys each defined word
+    # by its spelling with outer dots removed.
+    bare_spelling = ->(word) { word.sub(/\A\.+/, '').sub(/\.+\z/, '') }
+    defined_by_bare = defined_words.group_by { |word| bare_spelling.(word) }
 end
 
 coder = HTMLEntities.new
@@ -81,13 +92,46 @@ else
     tree=Nokogiri::XML(open "#{builddir}/cll_preglossary.xml")
     words = find_lojban_words( tree ).select { |x| x.attributes['valid'].to_s != 'maybe' }.map { |x| x.text.to_s } + find_frame_words( tree )
     glossary_word_groups(words).each do |slug, spellings|
-      # Spellings that slugify to one ID, such as .y. and y, share one entry.
-      # Prefer a spelling that has a definition so an undefined alias cannot
-      # hide it. Every link still uses valsi- plus that same slug.
-      word = if opts[:testing]
-        spellings.first
+      # Spellings that slugify to one ID, such as .y. and y, share one
+      # entry, and every link uses valsi- plus that same slug. The match
+      # is decided per spelling, not per group: a spelling may use an
+      # entry only if it matches that dictionary word exactly or differs
+      # from it only in outer pause dots. If any spelling in the group
+      # has no match of its own, or the spellings match different
+      # dictionary words, the group gets no entry at all. Emitting one
+      # would define the shared ID and link the unmatched spelling to
+      # another word's definition; leaving it undefined fails validation
+      # loudly instead. (One ID can join different words: an internal
+      # period and an internal comma both become "_", so ".i.ov" and
+      # the name ".i,ov" share valsi-i_ov.)
+      word = nil
+      if opts[:testing]
+        word = spellings.first
       else
-        spellings.find { |spelling| defined_words.include?(spelling) }
+        own = {}
+        spellings.each do |spelling|
+          candidates = defined_by_bare.fetch(bare_spelling.(spelling), [])
+                                      .select { |candidate| slugify(candidate) == slug }
+          own[spelling] = candidates.include?(spelling) ? spelling : candidates.sort.first
+        end
+        missing = spellings.reject { |spelling| own[spelling] }
+        matched = own.values.compact.uniq
+        if missing.empty? && matched.size == 1
+          word = matched.first
+          spellings.each do |spelling|
+            if own[spelling] != spelling
+              $stderr.puts %Q{\nglossary: "#{spelling}" uses the dictionary spelling "#{word}"}
+            end
+          end
+        else
+          if spellings.size > 1
+            $stderr.puts %Q{\nglossary: spellings #{spellings.map { |spelling| %Q{"#{spelling}"} }.join(', ')} share the ID "valsi-#{slug}" but do not all match the same dictionary word; no entry emitted}
+          end
+          missing.each do |spelling|
+            $stderr.puts %Q{\n"NO JBOVLASTE DEFINITION FOUND FOR WORD "#{spelling}"}
+          end
+          next
+        end
       end
       unless word
         spellings.each do |spelling|

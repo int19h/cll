@@ -194,6 +194,27 @@ jobs:
       - name: Glossary cache and ids
         run: ruby scripts/test-generate-glossary.rb
 
+  # Issue #292: a <valsi> word with no dictionary entry links to a
+  # glossary ID that nothing defines, and only a whole-book build with
+  # the real glossary sees it (-t builds use a placeholder glossary).
+  # This job merges and preprocesses the whole book and runs xmlto's
+  # validation step, but renders nothing.
+  whole-book-validation:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
+        with:
+          ruby-version: '3.2'
+      - name: Install libxml2-utils
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils
+      - name: Install the production Nokogiri, Optimist, and HTMLEntities gems
+        run: gem install --no-document nokogiri:1.18.8 optimist:3.2.0 htmlentities:4.3.4
+      - name: Whole book validates with the real glossary
+        run: |
+          ruby -rnokogiri -e 'puts "Nokogiri #{Nokogiri::VERSION}"; abort "expected Nokogiri 1.18.8" unless Nokogiri::VERSION == "1.18.8"'
+          scripts/check-whole-book-validation.sh
+
   typst-smoke:
     runs-on: ubuntu-24.04
     steps:

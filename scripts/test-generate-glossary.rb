@@ -27,6 +27,8 @@ def stage_generator(repo, dir)
       <valsi word=".ia"><definition>belief</definition></valsi>
       <valsi word="klama"><definition>to come or go</definition></valsi>
       <valsi word="na'e"><definition>other than</definition></valsi>
+      <valsi word=".i,ov"><definition>Job (a name)</definition></valsi>
+      <valsi word="lojbangirz"><definition>Logical Language Group (LLG)</definition></valsi>
       <valsi word="y"><definition> </definition></valsi>
     </dictionary>
     EOF
@@ -96,7 +98,15 @@ Dir.mktmpdir do |dir|
     check.(by_id['valsi-y'] == ['.y.', 'hesitation noise'], "y entry is #{by_id['valsi-y'].inspect}")
     check.(by_id['valsi-ia'] == ['.ia', 'belief'], "ia entry is #{by_id['valsi-ia'].inspect}")
     check.(by_id['valsi-klama'] == ['klama', 'to come or go'], "klama entry is #{by_id['valsi-klama'].inspect}")
-    check.(by_id['valsi-nahe'] == ["na'e", 'other than'], "na'e entry is #{by_id['valsi-nahe'].inspect}")
+    # The match is per spelling: "nahe" shares the ID valsi-nahe with
+    # "na'e", but it differs from "na'e" inside the word, not only in
+    # outer pause dots, so it has no match of its own. The group gets no
+    # entry, "nahe" is reported missing, and the conflict is named, so
+    # validation fails instead of linking "nahe" to "na'e". (Testing mode
+    # above still collapses the spellings to the existing ID.)
+    check.(!ids.include?('valsi-nahe'), "\"nahe\" still took the entry of \"na'e\": #{by_id['valsi-nahe'].inspect}")
+    check.(stderr.include?('NO JBOVLASTE DEFINITION FOUND FOR WORD "nahe"'), '"nahe" was not reported missing')
+    check.(stderr.include?('share the ID "valsi-nahe"'), 'the valsi-nahe group conflict is silent')
     check.(!ids.include?('valsi-ui'), 'an undefined word still produced an entry')
     check.(stderr.include?('NO JBOVLASTE DEFINITION FOUND FOR WORD "ui"'), 'missing definitions are silent')
   end
@@ -143,6 +153,69 @@ Dir.mktmpdir do |dir|
   check.(stderr.include?('Generating new glossary file.'), "editing the generator reused the cache:\n#{stderr}")
   check.(stdout.include?('edited definition'), 'the edited generator did not reach the output')
   check.(!stdout.include?('placeholder definition'), 'the edited generator kept the old definition')
+end
+
+# Issue #292: a book spelling with no dictionary entry of its own still gets
+# the entry of a dictionary spelling that differs only in outer pause
+# dots, as bare "y" does with ".y.". A partial build whose chapters use
+# only the bare spelling otherwise links to a glossary entry that nothing
+# defines. The fallback goes no further: ".i.ov" shares the ID valsi-i_ov
+# with the name ".i,ov", but an internal period and an internal comma are
+# different words, so ".i.ov" must stay undefined and keep its warning.
+# The staged dictionary defines ".y.", ".ia", ".i,ov", and "lojbangirz",
+# and "y" with an empty definition.
+Dir.mktmpdir do |dir|
+  scripts = stage_generator(repo, dir)
+  build = File.join(dir, 'build')
+  FileUtils.mkdir_p(build)
+  File.write(File.join(build, 'cll_preglossary.xml'), <<~XML)
+    <?xml version="1.0"?>
+    <book><para><valsi>y</valsi><valsi>ia</valsi><valsi>.lojbangirz.</valsi><valsi>.i.ov</valsi><valsi>na'e</valsi></para></book>
+  XML
+
+  stdout, stderr, status = run_generator(scripts, build)
+  check.(status.success?, "alias-only glossary failed\n#{stderr}")
+  if status.success?
+    by_id = entry_map(stdout).map { |id, term, defn| [id, [term, defn]] }.to_h
+    check.(by_id['valsi-y'] == ['.y.', 'hesitation noise'], "bare y entry is #{by_id['valsi-y'].inspect}")
+    check.(by_id['valsi-ia'] == ['.ia', 'belief'], "bare ia entry is #{by_id['valsi-ia'].inspect}")
+    check.(by_id['valsi-lojbangirz'] == ['lojbangirz', 'Logical Language Group (LLG)'], "dotted .lojbangirz. entry is #{by_id['valsi-lojbangirz'].inspect}")
+    check.(by_id['valsi-nahe'] == ["na'e", 'other than'], "na'e alone lost its existing ID: #{by_id['valsi-nahe'].inspect}")
+    check.(!by_id.key?('valsi-i_ov'), ".i.ov took the entry of the name .i,ov: #{by_id['valsi-i_ov'].inspect}")
+    check.(stderr.include?('glossary: "y" uses the dictionary spelling ".y."'), 'the y fallback is silent')
+    check.(stderr.include?('glossary: ".lojbangirz." uses the dictionary spelling "lojbangirz"'), 'the .lojbangirz. fallback is silent')
+    check.(stderr.include?('NO JBOVLASTE DEFINITION FOUND FOR WORD ".i.ov"'), '.i.ov lost its missing-definition warning')
+  end
+end
+
+# Issue #292, round 3: the match is decided per book spelling, not per
+# ID group. "i,ov" matches the name ".i,ov" by its outer dot, and the
+# book spelling ".i,ov" matches it exactly, but ".i.ov" in the same
+# group matches nothing of its own. It must be reported missing and the
+# group must get no entry, so validation fails instead of linking
+# ".i.ov" to Job through its group mate. Bare "y" in the same input is
+# the positive control.
+Dir.mktmpdir do |dir|
+  scripts = stage_generator(repo, dir)
+  build = File.join(dir, 'build')
+  FileUtils.mkdir_p(build)
+  pre = File.join(build, 'cll_preglossary.xml')
+
+  [%w[i,ov .i.ov], %w[.i,ov .i.ov]].each do |mate, stray|
+    File.write(pre, <<~XML)
+      <?xml version="1.0"?>
+      <book><para><valsi>#{mate}</valsi><valsi>#{stray}</valsi><valsi>y</valsi></para></book>
+    XML
+    stdout, stderr, status = run_generator(scripts, build)
+    check.(status.success?, "mixed-group glossary (#{mate}) failed\n#{stderr}")
+    next unless status.success?
+    by_id = entry_map(stdout).map { |id, term, defn| [id, [term, defn]] }.to_h
+    check.(by_id['valsi-y'] == ['.y.', 'hesitation noise'], "control y entry is #{by_id['valsi-y'].inspect}")
+    check.(!by_id.key?('valsi-i_ov'), "\"#{stray}\" took the entry of the name .i,ov through \"#{mate}\": #{by_id['valsi-i_ov'].inspect}")
+    check.(stderr.include?('NO JBOVLASTE DEFINITION FOUND FOR WORD ".i.ov"'), "\"#{stray}\" was not reported missing beside \"#{mate}\"")
+    check.(stderr.include?('share the ID "valsi-i_ov"'), 'the valsi-i_ov group conflict is silent')
+    check.(!stderr.include?('glossary: ".i.ov" uses the dictionary spelling'), "\".i.ov\" still claims a dictionary spelling beside \"#{mate}\"")
+  end
 end
 
 if failures.empty?

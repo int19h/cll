@@ -436,14 +436,14 @@
       </indexterm>
       <indexterm type="general"><primary>lujvo</primary><secondary>symmetrical</secondary>
       </indexterm>
-      A common pattern, perhaps the most common pattern, of lujvo-making creates what is called a
+      One pattern of lujvo-making creates what is called a
       <quote>symmetrical lujvo</quote>. A symmetrical lujvo is one based on a tanru interpretation such that the first place of the seltau is equivalent to the first place of the tertau: each component of the tanru characterizes the same object. As an illustration of this, consider the lujvo
       <valsi>balsoi</valsi>
       : it is intended to mean
       <quote>both great and a soldier</quote>
       - that is,
       <quote>great soldier</quote>
-      , which is the interpretation we would tend to give its veljvo,
+      , which is one interpretation of its veljvo,
       <jbophrase>banli sonci</jbophrase>. The underlying gismu place structures are:
     </para>
     <example xml:id="example-random-id-7AFc">
@@ -1040,7 +1040,7 @@
   </section>
   <section xml:id="section-n-part-lujvo">
     <title><anchor xml:id="c12s8" />lujvo with more than two parts.</title>
-    <para>      <indexterm type="general"><primary>lujvo place order</primary><secondary>based on 3-or-more part veljvo</secondary>      </indexterm>      The theory we have outlined so far is an account of lujvo with two parts. But often lujvo are made containing more than two parts. An example is
+    <para>      <indexterm type="general"><primary>lujvo place order</primary><secondary>based on 3-or-more part veljvo</secondary>      </indexterm>      The theory we have outlined so far is an account of lujvo with two parts. But lujvo can contain more than two parts. An example is
       <valsi>bavlamdei</valsi>
       ,
       <quote>tomorrow</quote>
@@ -1156,12 +1156,12 @@
       <quote>knife</quote>
       , depends on the length of the blade (the legal limit varies in different jurisdictions). This fifth place of
       <valsi>cladakyxa'i</valsi>
-      may not often be explicitly filled, but it is still useful on occasion. Because it is so seldom important, it is best that it be last.
+      matters only when the standard of length does, but then it is useful. Because it matters only in such special cases, it is best that it be last.
     </para>
   </section>
   <section xml:id="section-seltau-SE">
     <title><anchor xml:id="c12s9" />Eliding SE rafsi from seltau</title>
-    <para>      <indexterm type="general"><primary>lujvo</primary><secondary>dropping SE rafsi</secondary>      </indexterm>      It is common to form lujvo that omit the rafsi based on cmavo of selma'o SE, as well as other cmavo rafsi. Doing so makes lujvo construction for common or useful constructions shorter. Since it puts more strain on the listener who has not heard the lujvo before, the shortness of the word should not necessarily outweigh ease in understanding, especially if the lujvo refers to a rare or unusual concept.    </para>    <para>
+    <para>      <indexterm type="general"><primary>lujvo</primary><secondary>dropping SE rafsi</secondary>      </indexterm>      A lujvo may omit the rafsi based on cmavo of selma'o SE, as well as other cmavo rafsi. Doing so makes lujvo construction for common or useful constructions shorter. Since it puts more strain on the listener who has not heard the lujvo before, the shortness of the word should not necessarily outweigh ease in understanding, especially if the lujvo refers to a rare or unusual concept.    </para>    <para>
       <indexterm type="general"><primary>proposed law</primary></indexterm>
       Consider as an example the lujvo
       <valsi valid="maybe">ti'ifla</valsi>
@@ -1304,9 +1304,8 @@
       </para>
     </example>
     <para role="indent">
-      We end up being most interested in talking about the second place, not the first (we talk much more of people than of their eyes), so
-      <valsi>se</valsi>
-      would almost always be required.
+      We end up being most interested in talking about the second place, not the first (the word is meant to describe people, not their eyes), so to put Jack in the first place, we use
+      <jbophrase>se blakanla</jbophrase>.
     </para>
     <para>
       What is happening here is that we are translating the tertau wrongly, under the influence of English. The English suffix
@@ -1325,7 +1324,7 @@
   </section>
   <section xml:id="section-eliding-ke-kehe">
     <title><anchor xml:id="c12s11" />Eliding KE and KEhE rafsi from lujvo</title>
-    <para>      <indexterm type="general"><primary>lujvo place structure</primary><secondary>dropping &quot;KEhE&quot;</secondary>      </indexterm>      <indexterm type="general"><primary>lujvo place structure</primary><secondary>dropping &quot;KE&quot;</secondary>      </indexterm>      People constructing lujvo usually want them to be as short as possible. To that end, they will discard any cmavo they regard as niceties. The first such cmavo to get thrown out are usually
+    <para>      <indexterm type="general"><primary>lujvo place structure</primary><secondary>dropping &quot;KEhE&quot;</secondary>      </indexterm>      <indexterm type="general"><primary>lujvo place structure</primary><secondary>dropping &quot;KE&quot;</secondary>      </indexterm>      To shorten a lujvo, a lujvo-maker can discard any cmavo that seem mere niceties. The first candidates for discarding are
       <valsi>ke</valsi>
       and
       <valsi>ke'e</valsi>
@@ -1460,7 +1459,7 @@
       <indexterm type="general"><primary>lujvo creation</primary><secondary>interaction of KE with SE</secondary>
       </indexterm>
       <indexterm type="general"><primary>misinterpretation</primary></indexterm>
-      Such misinterpretation is more likely than not in a lujvo starting with
+      Such misinterpretation is a particular risk in a lujvo starting with
       <rafsi>sel-</rafsi>
       (from
       <valsi>se</valsi>),
@@ -1469,7 +1468,7 @@
       <valsi>na'e</valsi>) or
       <rafsi>tol-</rafsi>
       (from
-      <valsi>to'e</valsi>): the scope of the rafsi will likeliest be presumed to be as narrow as possible, since all of these cmavo normally bind only to the following brivla or
+      <valsi>to'e</valsi>): in the veljvo, the scope of the cmavo is as narrow as possible, since all of these cmavo normally bind only to the following brivla or
       <valsi>ke</valsi>
       &hellip;
       <valsi>ke'e</valsi>
@@ -1654,7 +1653,7 @@
       </para>
     </example>
     <para role="indent">
-      It is not uncommon for abstractors to participate in the making of more complex lujvo as well. For example,
+      Abstractors can participate in the making of more complex lujvo as well. For example,
       <valsi valid="maybe">nunsoidji</valsi>
       , from the veljvo
     </para>
@@ -2438,15 +2437,13 @@
     </para>
 
     <para>
-      Because of their much simpler place structure, lujvo ending in
-      <rafsi>-mau</rafsi>
-      and
-      <rafsi>-me'a</rafsi>
-      are in fact used much more frequently than
+      In
+      <valsi>citmau</valsi>
+      , the word itself tells us that we are comparing by youth; with
       <valsi>zmadu</valsi>
       and
       <valsi>mleca</valsi>
-      themselves as selbri. It is highly unlikely for such lujvo to be construed as anything other than implicit-abstraction lujvo. But there is another type of ambiguity relevant to these lujvo, and which has to do with what is being compared.
+      , the property has a place of its own. It is highly unlikely for such lujvo to be construed as anything other than implicit-abstraction lujvo. But there is another type of ambiguity relevant to these lujvo, and which has to do with what is being compared.
     </para>
 
 
@@ -2726,7 +2723,7 @@
     </example>
     <para role="indent">
       <indexterm type="general"><primary>color standards</primary></indexterm>
-      Brevity was the most important goal here, reinforced by one interpretation of metaphysical necessity. There is no mention of color standards here, as many people have pointed out; like all color gismu,
+      Brevity was the most important goal here, reinforced by one interpretation of metaphysical necessity. There is no mention of color standards here; like all color gismu,
       <valsi>xekri</valsi>
       is explicitly subjective. Objective color standards can be brought in by an appropriate BAI tag such as
       <valsi>ci'u</valsi>
@@ -2806,22 +2803,22 @@
       <indexterm type="general"><primary>gismu</primary><secondary>place order</secondary>
         <tertiary>rationale</tertiary>
       </indexterm>
-      Less can be said about gismu place structure ordering, but some regularities are apparent. The places tend to appear in decreasing order of psychological saliency or importance. There is an implication within the place structure of
+      Less can be said about gismu place structure ordering, but some regularities are apparent. The first edition of this book suggested that the places tend to appear in decreasing order of psychological saliency or importance. In the place structure of
       <valsi>klama</valsi>
-      , for example, that
+      , for example,
       <jbophrase>lo klama</jbophrase>
-      (the one going) will be talked about more often, and is thus more important, than
+      (the one going) comes first,
       <jbophrase>lo se klama</jbophrase>
-      (the destination), which is in turn more important than
+      (the destination) second, and
       <jbophrase>lo xe klama</jbophrase>
-      (the means of transport).
+      (the means of transport) last.
     </para>
     <para>
       Some specific tendencies (not really rules) can also be observed. For example, when there is an agent place, it tends to be the first place. Similarly, when a destination and an origin point are mentioned, the destination is always placed just before the origin point. Places such as
       <quote>under conditions</quote>
       and
       <quote>by standard</quote>
-      , which often go unfilled, are moved to near the end of the place structure.
+      , which can be left unfilled whenever the conditions or the standard go without saying, are moved to near the end of the place structure.
     </para>
   </section>
 </chapter>

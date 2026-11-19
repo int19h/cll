@@ -695,7 +695,7 @@
       or
       <quote>far away</quote>), but we live only from past to future, and the idea of an event which happens
       <quote>nearby in time</quote>
-      is a peculiar one. Lojban provides lots of such possibilities that don't seem all that useful to English-speakers, even though you can put them together productively; this fact may be a limitation of English.
+      is a peculiar one. Lojban provides lots of such possibilities, and you can put them together productively; if some of them seem of little use, that may be a limitation of English.
     </para>
 
     <para>
@@ -1847,8 +1847,8 @@
       <xref linkend="example-random-id-qdwz" />
       refers to the speaker's future: in fact, no PU tense is given, so the prospective part of the event need not be coincident with the speaker's present:
       <valsi>pu'o</valsi>
-      is not necessarily, though in fact often is, the same as
-      <jbophrase>ca pu'o</jbophrase>.
+      is not necessarily the same as
+      <jbophrase>ca pu'o</jbophrase>, though the two coincide whenever the context places the prospective part of the event at the speaker's present.
     </para>
     <para>
       <indexterm type="general"><primary>event contours</primary><secondary>cessative</secondary>
@@ -2831,7 +2831,7 @@
       <indexterm type="general"><primary>tenseless sentences in story time</primary></indexterm>
       <indexterm type="general"><primary>story time</primary><secondary>as a convention for inferring tense</secondary>
       </indexterm>
-      Lojban speakers use a different set of conventions, commonly called
+      Lojban therefore uses a different set of conventions, called
       <quote>story time</quote>
       , for inferring tense within a story. It is presumed that the event described by each sentence takes place some time more or less after the previous ones. Therefore, tenseless sentences are implicitly tensed as
       <quote>what happens next</quote>. In particular, any sticky time setting is advanced by each sentence.
@@ -2921,7 +2921,7 @@
       , just like the sentence sequences in
       <xref linkend="section-sticky-tenses" />. No further space cmavo are used in the rest of the story, so the place is assumed to remain unchanged. The English translation of
       <xref linkend="example-random-id-qE94" />
-      is marked for past tense also, as the conventions of English storytelling require: consequently, all other English translation sentences are also in the past tense. (We don't notice how strange this is; even stories about the future are written in past tense!) This conventional use of past tense is not used in Lojban narratives.
+      is marked for past tense also, as the conventions of English storytelling require: consequently, all other English translation sentences are also in the past tense. (We don't notice how strange this is; even stories about the future are written in past tense!) Lojban story time has no such convention: once the time of the story is set, later sentences need no tense of their own.
     </para>
 
     <para>
@@ -2987,7 +2987,7 @@
     <para>
       <indexterm type="general"><primary>story time</primary><secondary>with no initial sticky time</secondary>
       </indexterm>
-      If no sticky time (or space) is set initially, the story is set at an unspecified time (or space): the effect is like that of choosing an arbitrary reference point and making it sticky. This style is common in stories that are jokes. The same convention may be used if the context specifies the sticky time sufficiently.
+      If no sticky time (or space) is set initially, the story is set at an unspecified time (or space): the effect is like that of choosing an arbitrary reference point and making it sticky. This style suits jokes and other stories that need no particular time or place. The same convention may be used if the context specifies the sticky time sufficiently.
     </para>
 
 

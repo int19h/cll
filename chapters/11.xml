@@ -43,7 +43,7 @@
       </indexterm>
       The bridi may be a simple selbri, or it may have associated sumti, as here. It is important to beware of eliding
       <valsi>kei</valsi>
-      improperly, as many of the common uses of abstraction selbri involve following them with words that would appear to be part of the abstraction if
+      improperly, as an abstraction selbri can be followed by words that would appear to be part of the abstraction if
       <valsi>kei</valsi>
       had been elided.
     </para>
@@ -105,7 +105,7 @@
     </example>
     <para role="indent"><indexterm type="general"><primary>abstractions</primary><secondary>le contrasted with lo before</secondary>
       </indexterm>The choice of descriptor matters for abstractions just as it does for anything else (see <xref linkend="section-basic-descriptors" />). The form <jbophrase>le nu</jbophrase> points to a particular event that the speaker has in mind. The form <jbophrase>lo nu</jbophrase> refers to whatever event really fits the description, and it is the usual choice when the speaker means no particular occasion.</para>
-    <para role="indent">We will most often use descriptions containing abstraction either at the end of a bridi, or just before the main selbri with its <valsi>cu</valsi>; in either of these circumstances, <valsi>kei</valsi> can normally be elided. The same holds when a <emphasis>bare</emphasis> tense or tag stands directly before the main selbri, in the place of the <valsi>cu</valsi>: by the binding rule above, the tag closes the abstraction exactly as <valsi>cu</valsi> does. A tag that heads a larger construction, however, does not close it. An example is the <jbophrase>ba bo</jbophrase> of a bridi-tail connective.</para>
+    <para role="indent">When a description containing an abstraction stands at the end of a bridi, or just before the main selbri with its <valsi>cu</valsi>, <valsi>kei</valsi> can normally be elided. The same holds when a <emphasis>bare</emphasis> tense or tag stands directly before the main selbri, in the place of the <valsi>cu</valsi>: by the binding rule above, the tag closes the abstraction exactly as <valsi>cu</valsi> does. A tag that heads a larger construction, however, does not close it. An example is the <jbophrase>ba bo</jbophrase> of a bridi-tail connective.</para>
     <para>
       <indexterm type="general"><primary>abstractions</primary><secondary>place structure</secondary>
       </indexterm>
@@ -143,12 +143,14 @@
       </indexterm>
       <indexterm type="lojban-word"><primary>nu</primary><secondary>definition</secondary>
       </indexterm>
-      <indexterm type="general"><primary>common abstractor</primary></indexterm>
+      <indexterm type="general"><primary>abstractor frequency</primary></indexterm>
       The examples in
       <xref linkend="section-syntax" />
       made use of
       <valsi>nu</valsi>
-      as the abstractor, and it is certainly the most common abstractor in Lojban text. Its purpose is to capture the event or state of the bridi considered as a whole. Do not confuse the
+      as the abstractor, and it is the most common one in the logs of #jbosnu, a chat channel for conversation in Lojban: from 2004 to 2026, it appears there more than twice as often as
+      <valsi>ka</valsi>
+      , the runner-up. Its purpose is to capture the event or state of the bridi considered as a whole. Do not confuse the
       <valsi>lo</valsi>
       description built on a
       <valsi>nu</valsi>
@@ -240,7 +242,7 @@
       is relatively brief by comparison (again, under normal circumstances).
     </para>
     <para><indexterm type="general"><primary>abstractions</primary><secondary>sumti ellipsis in</secondary>
-      </indexterm>We can see from <xref linkend="example-random-id-qf97" /> through <xref linkend="example-random-id-BPcI" /> that sumti may be ellipsized in the bridi of an abstraction selbri, just as in the main bridi of a sentence. Any sumti may be left out if the listener can work out from context what its proper value is, or else can recognize that the proper value is unimportant. It is extremely common for <valsi>nu</valsi> abstractions in descriptions to have the x<subscript>1</subscript> place ellipsized:</para>
+      </indexterm>We can see from <xref linkend="example-random-id-qf97" /> through <xref linkend="example-random-id-BPcI" /> that sumti may be ellipsized in the bridi of an abstraction selbri, just as in the main bridi of a sentence. Any sumti may be left out if the listener can work out from context what its proper value is, or else can recognize that the proper value is unimportant. For example, we can leave out the swimmer inside a <valsi>nu</valsi> abstraction:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-FRoP">
       <title><anchor xml:id="c11e2d9" /></title>
 
@@ -294,7 +296,7 @@
     <para>
       Event descriptions with
       <jbophrase>lo nu</jbophrase>
-      are commonly used to fill the
+      can fill the
       <quote>under conditions...</quote>
       places, among others, of gismu and lujvo place structures:
     </para>
@@ -629,9 +631,7 @@
     <para role="noindent">
       <indexterm type="general"><primary>having</primary><secondary>of properties</secondary>
       </indexterm>
-      (The English word
-      <quote>have</quote>
-      frequently appears in any discussion of Lojban properties: things are said to
+      (In English, things are said to
       <quote>have</quote>
       properties, but this is not the same sense of
       <quote>have</quote>
@@ -639,7 +639,7 @@
       <quote>I have money</quote>
       , which is possession.)
     </para>
-    <para>Property descriptions, like event descriptions, are often wanted to fill places in brivla place structures:</para>
+    <para>Property descriptions, like event descriptions, can fill places in brivla place structures:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-v3Ba">
       <title><anchor xml:id="c11e4d3" /></title>
 
@@ -1426,7 +1426,7 @@
       </indexterm>
       <indexterm type="general"><primary>experience abstraction</primary></indexterm>
       <indexterm type="general"><primary>experience abstractor</primary></indexterm>
-      There are three more abstractors in Lojban, all of them little used so far. The abstractor
+      There are three more abstractors in Lojban. The abstractor
       <valsi>li'i</valsi>
       expresses experience:
     </para>
@@ -1936,7 +1936,7 @@
 
       </interlinear-gloss>
     </example>
-    <para role="indent">This feature of Lojban has hardly ever been used, and nobody knows what uses it may eventually have.</para>
+    <para role="indent">The first edition of this book reported that this feature of Lojban had hardly ever been used.</para>
   </section>
   <section xml:id="section-summary">
     <title><anchor xml:id="c11s13" />Table of abstractors</title>

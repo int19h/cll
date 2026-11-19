@@ -82,7 +82,7 @@
     <para role="indent">
       <indexterm type="general"><primary>bridi</primary><secondary>building from selbri and sumti</secondary>
       </indexterm>
-      The most usual way of constructing a bridi from a selbri such as
+      The basic way of constructing a bridi from a selbri such as
       <valsi>klama</valsi>
       and an appropriate number of sumti is to place the sumti intended for the x<subscript>1</subscript> place before the selbri, and all the other sumti in order after the selbri, thus:
     </para>
@@ -158,7 +158,7 @@
       </indexterm>
       This ordering, with the x<subscript>1</subscript> place before the selbri and all other places in natural order after the selbri, is called
       <quote>standard bridi form</quote>
-      , and is found in the bulk of Lojban bridi, whether used in main sentences or in subordinate clauses. However, many other forms are possible, such as:
+      , and it serves equally in main sentences and in subordinate clauses. However, many other forms are possible, such as:
     </para>
 
 
@@ -203,7 +203,7 @@
       <xref linkend="example-random-id-vzNY" />
       emphasizes
       <jbophrase>la .bastn.</jbophrase>
-      , because it has been moved before the selbri. Moving more than one component may dilute this emphasis. It is permitted, but no stylistic significance has yet been established for drastic reordering.
+      , because it has been moved before the selbri. Moving more than one component may dilute this emphasis. It is permitted, but this book assigns no particular stylistic significance to drastic reordering.
     </para>
     <para>
       <indexterm type="lojban-word"><primary>cu</primary><secondary>effect on elidable terminators</secondary>
@@ -285,7 +285,7 @@
       is not a command, simply a normal statement with the x<subscript>1</subscript> place unspecified, causing the emphasis to fall on the selbri
       <valsi>klama</valsi>. Such a bridi, with empty x<subscript>1</subscript>, is called an
       <quote>observative</quote>
-      , because it usually calls on the listener to observe something in the environment which would belong in the x<subscript>1</subscript> place. The third translation above shows this observative nature. Sometimes it is the relationship itself which the listener is asked to observe.
+      , because it is suited to calling on the listener to observe something in the environment which would belong in the x<subscript>1</subscript> place. The third translation above shows this observative nature. Sometimes it is the relationship itself which the listener is asked to observe.
     </para>
 
     <para>
@@ -1141,7 +1141,7 @@
     <para>
       <indexterm type="general"><primary>conversion</primary><secondary>swapping non-first places</secondary>
       </indexterm>
-      (Although no one has made any real use of it, it is perhaps worth noting that compound conversions of the form
+      (It is perhaps worth noting that compound conversions of the form
       <jbophrase>setese</jbophrase>
       , where the first and third cmavo are the same, effectively swap the two given places while leaving the others, including x<subscript>1</subscript>, alone:
       <jbophrase>setese</jbophrase>
@@ -1259,17 +1259,17 @@
       <quote>modal place</quote>
       , as distinguished from the regular numbered places. (This use of the word
       <quote>modal</quote>
-      is specific to the Loglan Project, and does not agree with the standard uses in either logic or linguistics, but is now too entrenched to change easily.) The
+      is specific to the Loglan Project, and does not agree with the standard uses in either logic or linguistics, but was already too entrenched to change easily when the first edition of this book appeared.) The
       <valsi>fi'o</valsi>
       construction marking a modal place is called a
       <quote>modal tag</quote>
       , and the sumti which follows it a
       <quote>modal sumti</quote>
-      ; the purely Lojban terms
+      ; the corresponding purely Lojban terms are
       <jbophrase>sumtcita</jbophrase>
       and
       <jbophrase>seltcita sumti</jbophrase>
-      , respectively, are also commonly used. Modal sumti may be placed anywhere within the bridi, in any order; they have no effect whatever on the rules for assigning unmarked sumti to numbered places, and they may not be marked with FA cmavo.
+      , respectively. Modal sumti may be placed anywhere within the bridi, in any order; they have no effect whatever on the rules for assigning unmarked sumti to numbered places, and they may not be marked with FA cmavo.
     </para>
 
     <para>
@@ -2247,7 +2247,7 @@
       <valsi>ku</valsi>
       is to place the modal cmavo right before the selbri, following the
       <valsi>cu</valsi>
-      which often appears there. When a modal is present, the
+      which may appear there. When a modal is present, the
       <valsi>cu</valsi>
       is almost never necessary.
     </para>
@@ -2560,7 +2560,7 @@
       <indexterm type="general"><primary>more</primary><secondary>English word &quot;more&quot;</secondary>
         <tertiary>expressing with relative phrases</tertiary>
       </indexterm>
-      Modal relative phrases are often used with the BAI cmavo
+      Modal relative phrases can be used with the BAI cmavo
       <valsi>mau</valsi>
       and
       <valsi>me'a</valsi>
@@ -2731,8 +2731,8 @@
         <gloss>liking that-named Mary.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent"><indexterm type="general"><primary>modals often attached with relative phrases</primary><secondary>list</secondary>
-      </indexterm>The mechanisms explained in this section suit many modals other than <valsi>semau</valsi> and <valsi>seme'a</valsi>. Some other modals that are often associated with relative phrases are: <valsi>seba'i</valsi> (<quote>instead of</quote>), <valsi>ci'u</valsi> (<quote>on scale</quote>), <valsi>de'i</valsi> (<quote>dated</quote>), <valsi>du'i</valsi> (<quote>as much as</quote>). Some BAI tags can be used equally well in relative phrases or attached to bridi; others seem useful only attached to bridi. But it is also possible that the usefulness of particular BAI modals is an English-speaker bias, and that speakers of other languages may find other BAIs useful in divergent ways.</para>
+    <para role="indent"><indexterm type="general"><primary>modals in relative phrases</primary><secondary>list</secondary>
+      </indexterm>The mechanisms explained in this section suit many modals other than <valsi>semau</valsi> and <valsi>seme'a</valsi>. Some other modals that suit relative phrases are: <valsi>seba'i</valsi> (<quote>instead of</quote>), <valsi>ci'u</valsi> (<quote>on scale</quote>), <valsi>de'i</valsi> (<quote>dated</quote>), <valsi>du'i</valsi> (<quote>as much as</quote>). Some BAI tags can be used equally well in relative phrases or attached to bridi; others seem useful only attached to bridi. But it is also possible that the usefulness of particular BAI modals is an English-speaker bias, and that speakers of other languages may find other BAIs useful in divergent ways.</para>
     <para>
       Here is a useful convention for
       <valsi>de'i</valsi>. The tagged date or time is normally a number built with the numerical punctuation cmavo
@@ -3117,7 +3117,7 @@
       </indexterm>
       Contradictory negation involving BAI cmavo is performed by appending
       <jbophrase>-nai</jbophrase>
-      (of selma'o NAI) to the BAI. A common use of modals with
+      (of selma'o NAI) to the BAI. One use of modals with
       <jbophrase>-nai</jbophrase>
       is to deny a causal relationship:
     </para>

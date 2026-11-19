@@ -7,7 +7,7 @@
   </mediaobject>
   <section xml:id="section-structure-introduction">
     <title><anchor xml:id="c19s1" />Introductory</title>
-    <para>This chapter is incurably miscellaneous. It describes the cmavo that specify the structure of Lojban texts, from the largest scale (paragraphs) to the smallest (single words). There are fewer examples than are found in other chapters of this book, since many of the mechanisms described need the context of a conversation or a long document, which does not fit into a short example.</para>    <para>This chapter is also not very self-contained. It makes passing reference to a great many concepts which are explained in full only in other chapters. The alternative would be a chapter on text structure which was as complex as all the other chapters put together. Lojban is a unified language, and it is not possible to understand any part of it (in full) before understanding every part of it (to some degree).</para>  </section>  <section xml:id="section-i">    <title><anchor xml:id="c19s2" />Sentences: I</title>
+    <para>This chapter is incurably miscellaneous. It describes the cmavo that specify the structure of Lojban texts, from the largest scale (paragraphs) to the smallest (single words). There are fewer examples than are found in other chapters of this book, since the mechanisms described are easier to show across a conversation or a long document than in a short example.</para>    <para>This chapter is also not very self-contained. It makes passing reference to a great many concepts which are explained in full only in other chapters. The alternative would be a chapter on text structure which was as complex as all the other chapters put together. Lojban is a unified language, and it is not possible to understand any part of it (in full) before understanding every part of it (to some degree).</para>  </section>  <section xml:id="section-i">    <title><anchor xml:id="c19s2" />Sentences: I</title>
     <para>The following cmavo is discussed in this section:</para>
     <cmavo-list>
       <cmavo-entry>
@@ -40,8 +40,8 @@
       <valsi>.i</valsi>
       is not needed after the last sentence or before the first one, although both positions are technically grammatical.
       <valsi>.i</valsi>
-      signals a new sentence on the same topic, not necessarily by the same speaker. The relationship between the sentences is left vague, except in stories, where the conventions of story time (
-      <xref linkend="section-story-time" />) make the relationship temporal, and the following sentence states something that happened after the previous sentence.
+      signals a new sentence on the same topic, not necessarily by the same speaker. The relationship between the sentences is left vague, except in stories, where, under the conventions of story time (
+      <xref linkend="section-story-time" />), a sentence with no tense of its own is taken to state something that happened after the previous sentence.
     </para>
 
     <para>
@@ -135,12 +135,12 @@
       <valsi>ni'o</valsi>
       and
       <valsi>no'i</valsi>
-      , both of selma'o NIhO. Written Lojban can be broken into paragraphs just before any
+      , both of selma'o NIhO. One convention for written Lojban, given in the first edition of this book, is to break it into paragraphs just before any
       <valsi>ni'o</valsi>
       or
       <valsi>no'i</valsi>
       , but a very long passage on a single topic might be paragraphed before an
-      <valsi>.i</valsi>. On the other hand, it is conventional in English to start a new paragraph in dialogue when a new speaker starts, but Lojban dialogues need not follow it. Of course, none of these conventions affect meaning in any way.
+      <valsi>.i</valsi>. On the other hand, it is conventional in English to start a new paragraph in dialogue when a new speaker starts, but Lojban dialogues need not follow that convention. Of course, none of these conventions affect meaning in any way.
     </para>
     <para>
       <indexterm type="general"><primary>paragraphs</primary><secondary>separator</secondary>
@@ -156,7 +156,7 @@
       <valsi>ni'o</valsi>
       cmavo indicates a larger-scale change of topic. This feature allows complexly structured text, with topics, subtopics, and sub-subtopics, to be represented clearly and unambiguously in both spoken and written Lojban. However, the conventions described below treat
       <valsi>ni'o</valsi>
-      in writing and in conversation.
+      differently in writing and in conversation.
     </para>
     <para>
       <indexterm type="general"><primary>paragraph separation</primary><secondary>written text</secondary>
@@ -194,13 +194,13 @@
       <indexterm type="general"><primary>paragraph separation</primary><secondary>spoken text</secondary>
       </indexterm>
       <indexterm type="general"><primary>Arabian Nights</primary></indexterm>
-      In spoken text, which is inherently less structured, these levels are reduced by one, with
+      In spoken text, these levels are reduced by one, with
       <valsi>ni'o</valsi>
       indicating a change in context sufficient to cancel pro-sumti and pro-bridi assignment. On the other hand, in a book, or in stories within stories such as
       <quote>The Arabian Nights</quote>
       , further levels may be expressed by extending the
       <valsi>ni'o</valsi>
-      string as needed. Under these conventions, a written text begins with the number of
+      string as needed. Under these conventions, a written text normally begins with the number of
       <valsi>ni'o</valsi>
       cmavo needed to signal the largest scale division which the text contains.
       <valsi>ni'o</valsi>
@@ -1063,12 +1063,14 @@
       </indexterm>
       You can place a subscript on the word
       <valsi>ja'a</valsi>
-      , the bridi affirmative of selma'o NA, to express so-called fuzzy truths. Fuzzy logic (statements whose truth value is not merely
+      , the bridi affirmative of selma'o NA, to express so-called fuzzy truths. The first edition of this book proposed the abstractor
+      <valsi>jei</valsi>
+      as the mechanism for fuzzy logic (statements whose truth value is not merely
       <quote>true</quote>
       or
       <quote>false</quote>
-      , but is expressed by a number in the range 0 to 1) in Lojban is the abstractor
-      <valsi>jei</valsi>
+      , but is expressed by a number in the range 0 to 1; on the status of that proposal, see
+      <xref linkend="section-truth-values" />)
       :
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-NGGv">
@@ -1105,7 +1107,7 @@
       <valsi>no'i</valsi>
       cmavo with matching subscripts mark the start and the continuation of a given topic respectively. Different topics can be assigned to different subscripts.
     </para>
-    <para>Other uses of subscripts will doubtless be devised in future.</para>
+    <para>Other uses of subscripts can be devised.</para>
   </section>
   <section xml:id="section-utterance-ordinals">
     <title><anchor xml:id="c19s7" />Utterance ordinals: MAI</title>
@@ -1687,7 +1689,7 @@
       was separated from a preceding
       <valsi>zo</valsi>
       by a pause, thus:
-      <jbophrase>zo .bab.</jbophrase>. The reason for this extra pause is that all Lojban names must be separated by pause from any preceding word. The same pause is needed after any of the numerous other cmavo that may precede a name.)
+      <jbophrase>zo .bab.</jbophrase>. The reason for this extra pause is that a cmevla must be separated by a pause from any preceding word. The same pause is needed after any of the numerous other cmavo that may precede a cmevla.)
     </para>
     <para>
       The cmavo

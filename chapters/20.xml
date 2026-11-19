@@ -10,13 +10,13 @@
 
     <para><indexterm type="general"><primary>selma'o</primary><secondary>cross-reference list of</secondary>
         <tertiary>selma'o catalog</tertiary>
-      </indexterm>The following paragraphs list all the selma'o of Lojban, with a brief explanation of what each one is about, and a reference to the chapter number where each is explained more fully. As usual, all selma'o names are given in capital letters (with “h” serving as the capital of “'”) and are the names of a representative cmavo, often the most important or the first in alphabetical order. One example is given of each selma'o: for selma'o which have several uses, only one use is shown.</para>
+      </indexterm>The following paragraphs list all the selma'o of Lojban, with a brief explanation of what each one is about, and a reference to the chapter number where each is explained more fully. As usual, all selma'o names are given in capital letters (with “h” serving as the capital of “'”) and are the names of a representative cmavo, for example the most important or the first in alphabetical order. Each selma'o is given at least one example.</para>
     <bridgehead>
       <anchor xml:id="A" xreflabel="A" />
       selma'o A (
       <xref linkend="section-sumti-connection" />)
     </bridgehead>
-    <para>Specifies a logical connection (e.g. “and”, “or”, “if”), usually between sumti.</para>
+    <para>Specifies a logical connection (e.g. “and”, “or”, “if”), between sumti or between mekso operands.</para>
     <interlinear-gloss>
       <jbo>la--.djan. a la--.djein. klama lo zarci</jbo>
       <gloss>John and/or Jane goes-to the store</gloss>
@@ -171,7 +171,7 @@
       <xref linkend="section-bu" />)
     </bridgehead>
 
-    <para>A suffix which can be attached to any word, such as a word representing a letter of the alphabet or a name, to make a word for a symbol or a different letter of the alphabet. In particular, attached to single-vowel cmavo to make words for vowel letters.</para>
+    <para>A suffix which can be attached to almost any word (for the exceptions, see <xref linkend="section-bu" />), such as a word representing a letter of the alphabet or a name, to make a word for a symbol or a different letter of the alphabet. In particular, attached to single-vowel cmavo to make words for vowel letters.</para>
     <interlinear-gloss>
       <jbo>.abu .ebu .ibu .obu .ubu .ybu</jbo>
       <gloss>a, e, i, o, u, y.</gloss>

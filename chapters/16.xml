@@ -503,7 +503,7 @@
       <xref linkend="chapter-relative-clauses" />
       , but the kind we will need at present consist of
       <valsi>poi</valsi>
-      followed by a bridi (often just a selbri) terminated with
+      followed by a bridi (possibly just a selbri) terminated with
       <valsi>ku'o</valsi>
       or
       <valsi>vau</valsi>
@@ -1402,7 +1402,7 @@
       </indexterm>
       As explained in
       <xref linkend="section-bridi-negation" />
-      , the negation of a bridi is usually accomplished by inserting
+      , a bridi can be negated by inserting
       <valsi>na</valsi>
       at the beginning of the selbri:
     </para>

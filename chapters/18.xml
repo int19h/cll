@@ -975,7 +975,7 @@
       </indexterm>
       There are three solutions, and a speaker can use any of them. The first solution is to ignore the problem. A speaker can say
       <jbophrase>li ci su'i vo pi'i mu</jbophrase>
-      and mean 23 by it, relying on the mathematical convention, described above, that multiplication takes precedence over addition, which Lojban parsing, since it totally ignores semantics, does not apply. This convention essentially allows semantics to dominate syntax in this one area.
+      and mean 23 by it, relying on the mathematical convention, described above, that multiplication takes precedence over addition. Lojban parsing, which totally ignores semantics, does not apply that convention. This convention essentially allows semantics to dominate syntax in this one area.
     </para>
 
     <para>
@@ -2373,7 +2373,7 @@
       </indexterm>
       Here, the final
       <jbophrase>pa no</jbophrase>
-      is assumed to be base 10, as usual; so is the base specification. (The base may also be changed permanently by a metalinguistic specification; no standard way of doing so has as yet been worked out.)
+      is assumed to be base 10, as usual; so is the base specification. (The base may also be changed permanently by a metalinguistic specification; the first edition of this book reported that no standard way of doing so had been worked out.)
     </para>
     <para>
       <indexterm type="general"><primary>hexadecimal system</primary><secondary>specifying numbers in (see also base)</secondary>
@@ -2988,7 +2988,7 @@
       </indexterm>
       <indexterm type="general"><primary>standard for subjective numbers</primary><secondary>specifying</secondary>
       </indexterm>
-      When one of the subjective numbers is used directly as a number, there is no such place to fill, although a BAI tag such as <valsi>ma'i</valsi> can still supply a standard. Therefore,
+      When one of the subjective numbers is used directly as a number, there is no such place to fill. Therefore,
       <jbophrase>du'e ratcu</jbophrase>
       means
       <quote>too many rats</quote>
@@ -4206,7 +4206,7 @@
     <para><indexterm type="general"><primary>formulae</primary><secondary>expressing based on pure dimensions</secondary>
       </indexterm><indexterm type="general"><primary>conversion of selbri into operand</primary></indexterm><indexterm type="general"><primary>operand</primary><secondary>converting selbri into</secondary>
       </indexterm><indexterm type="general"><primary>selbri</primary><secondary>converting into an operand</secondary>
-      </indexterm>The cmavo <valsi>ni'e</valsi> makes a selbri into an operand. The x<subscript>1</subscript> place of the selbri generally represents a number, so a <valsi>ni</valsi> abstraction, which represents a number, suits it. The <valsi>ni'e</valsi> makes that number available as a mekso operand. One application is to make equations relating pure dimensions:</para>
+      </indexterm>The cmavo <valsi>ni'e</valsi> makes a selbri into an operand. The x<subscript>1</subscript> place of the selbri generally represents a number, so a <valsi>ni</valsi> abstraction, whose own x<subscript>1</subscript> is an amount (see <xref linkend="section-amounts" />), makes a suitable selbri. The <valsi>ni'e</valsi> makes that number available as a mekso operand. One application is to make equations relating pure dimensions:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-wCJQ">
       <title><anchor xml:id="c18e18d2" /><indexterm type="general"><primary>Length × Width × Depth = Volume</primary></indexterm></title>

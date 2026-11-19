@@ -123,7 +123,7 @@
   <section xml:id="section-bridi-negation">
     <title><anchor xml:id="c15s2" />bridi negation</title>
     <para>In discussing Lojban negation, we will call the form of logical negation that simply denies the truth of a statement <quote>bridi negation</quote>. Using bridi negation, we can say the equivalent of <quote>I haven't stopped beating my wife</quote> without implying that I ever started, nor even that I have a wife, meaning simply <quote>It isn't true that I have stopped beating my wife.</quote> Since Lojban uses bridi as smaller components of complex sentences, bridi negation is permitted in these components as well as at the sentence level.</para>
-    <para>For the bridi negation of a sentence to be true, the sentence being negated must be false. A major use of bridi negation is in making a negative response to a yes/no question; such responses are usually contradictory, denying the truth of the entire sentence. A negative answer to</para>
+    <para>For the bridi negation of a sentence to be true, the sentence being negated must be false. One use of bridi negation is in making a negative response to a yes/no question; such a response is contradictory, denying the truth of the entire sentence. A negative answer to</para>
 
     <example xml:id="example-random-id-sCNE">
       <title><anchor xml:id="c15e2d1" /></title>
@@ -1228,7 +1228,7 @@
       <valsi>to'e</valsi>
       to the selbri of the description.
     </para>
-    <para>It is not possible to transform sumti negations of either type into bridi negations or scalar selbri negations. Negations of sumti will be used in Lojban conversation. The inability to manipulate these negations logically will, it is hoped, prevent the logical errors that result when natural languages attempt corresponding manipulations.</para>
+    <para>It is not possible to transform sumti negations of either type into bridi negations or scalar selbri negations. Negations of sumti can be used in Lojban conversation. The inability to manipulate these negations logically will, it is hoped, prevent the logical errors that result when natural languages attempt corresponding manipulations.</para>
   </section>
   <section xml:id="section-other-negation">
     <title><anchor xml:id="c15s7" />Negation of minor grammatical constructs</title>
@@ -1325,7 +1325,11 @@
       Vocative cmavo of selma'o COI are considered a kind of indicator, but one which identifies the listener. Semantically, we could dispense with about half of the COI selma'o words based on the scalar paradigm. For example,
       <valsi>co'o</valsi>
       could be expressed as
-      <jbophrase>coinai</jbophrase>. However, in the logs of #jbosnu, a chat channel for conversation in Lojban, co'o appears 612 times from 2004 to 2026, and coinai only 4 times.
+      <jbophrase>coinai</jbophrase>. However, a search of the logs of #jbosnu, a chat channel for conversation in Lojban, from 2004 to 2026 finds
+      <valsi>co'o</valsi>
+      more than 600 times, but
+      <jbophrase>coinai</jbophrase>
+      (joined or written apart) on only four lines, not all of them farewells.
     </para>
     <para>
       Most of the COI cmavo are suited to what are called protocol situations. These protocols are used, for example, in radio conversations, which often take place in a noisy environment. The negatives of protocol words tend to convey diametrically opposite communications situations (as might be expected). Therefore, only one protocol vocative is dependent on
@@ -1808,7 +1812,7 @@
       is
       <quote>bad</quote>.
     </para>
-    <para>This mutual independence of gismu is only an ideal. In practice, people categorize things based on their world-views, and dictionary definitions that relate gismu can carry some of these world-view assumptions. Lojbanists should try to minimize these assumptions, but this may be an area where logical rules break down (or where Sapir-Whorf effects become evident). In terms of negation, however, it is vital that we clearly preserve the capability of denying a presumably obvious scale or category assumption.</para>
+    <para>This mutual independence of gismu is only an ideal. A speaker can assume a particular scale or category, and dictionary definitions that relate gismu can carry such assumptions. Lojbanists should try to minimize these assumptions, but this may be an area where logical rules break down (or where Sapir-Whorf effects become evident). In terms of negation, however, it is vital that we clearly preserve the capability of denying a presumably obvious scale or category assumption.</para>
 
     <para>
       Solecisms, grammatical and spelling errors will be marked by marking the offending word or phrase with
@@ -1830,7 +1834,7 @@
       at the beginning of a statement merely says that something is inappropriate about the statement, without specificity.
     </para>
 
-    <para>In normal use, metalinguistic negation requires that a corrected statement follow the negated statement. In Lojban, however, it is possible to completely and unambiguously specify metalinguistic errors without correcting them. No rule settles whether an uncorrected metalinguistic negation is an acceptable form in Lojban. In such a statement, metalinguistic expression would involve an ellipsis not unlike that of tenseless expression.</para>
+    <para>In normal use, metalinguistic negation requires that a corrected statement follow the negated statement. In Lojban, however, it is possible to completely and unambiguously specify metalinguistic errors without correcting them. The first edition of this book left it to usage to show whether an uncorrected metalinguistic negation would remain an acceptable form in Lojban. In such a statement, metalinguistic expression would involve an ellipsis not unlike that of tenseless expression.</para>
 
     <para>
       Note that metalinguistic negation gives us another kind of legitimate negative answer to a

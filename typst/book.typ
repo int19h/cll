@@ -103,13 +103,13 @@
   block(inset: (left: 1em), stroke: (left: (paint: gray, thickness: width, dash: dash)),
     above: 4.5pt, below: 4.5pt, breakable: true)[
     #set text(size: 0.92em)
-    #place(left + top, dx: -2.5em)[#text(fill: black)[#glyph]]
-    #if label != "" {
-      block(sticky: true, breakable: false)[
-        #smallcaps[#label]
-        #if also != "" { linebreak(); text(size: 0.9em, fill: rgb("#333"))[#also] }
-      ]
-    }
+    // The glyph lives in the same sticky block as the label, so a page
+    // break can never strand it on the previous page.
+    #block(sticky: true, breakable: false)[
+      #place(left + top, dx: -2.5em)[#text(fill: black)[#glyph]]
+      #if label != "" [#smallcaps[#label]]
+      #if also != "" { linebreak(); text(size: 0.9em, fill: rgb("#333"))[#also] }
+    ]
     #body
   ]
 }

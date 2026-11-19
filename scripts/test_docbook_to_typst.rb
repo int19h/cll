@@ -142,7 +142,8 @@ class DocBookTypstTest < Minitest::Test
 
   def test_status_mark_renders_short_label_and_glyph
     source = convert('<chapter><title>Status</title><para>Ordinary <phrase role="status-mark" condition="status:de-facto;also:historical">accepted by parsers</phrase> here.</para></chapter>')
-    assert_includes source, '#super[#smallcaps[" [Established usage]"]"◆"]'
+    # Code-mode strings: markup-mode "..." would print as smart quotes.
+    assert_includes source, '#super[#smallcaps(" [Established usage]")#text("◆")]'
   end
 
   def test_status_note_trims_leading_whitespace
@@ -152,12 +153,17 @@ class DocBookTypstTest < Minitest::Test
   end
 
   def test_status_unknown_token_keeps_raw_label_and_bare_glyph
-    source = convert('<chapter><title>Status</title><para role="status-note" condition="status:invented">Mystery prose.</para><para>Ordinary <phrase role="status-mark">clause</phrase>.</para></chapter>')
+    source = convert('<chapter><title>Status</title><para role="status-note" condition="status:invented">Mystery prose.</para><para>Ordinary <phrase role="status-mark" condition="status:invented">clause</phrase> and <phrase role="status-mark">bare</phrase>.</para></chapter>')
     assert_includes source, 'label: "invented"'
     assert_includes source, '#super[#text(" ◇")]'
+    assert_includes source, '#super[#smallcaps(" [invented]")#text("◇")]'
   end
 
   def test_native_compilation_with_outline_links_and_indexes
+    # Rendered text (no smart quotes, label and glyph on the same page as
+    # the note) is checked against full-book builds with pdftotext, which
+    # this smoke job does not install; the unit tests above pin the exact
+    # code-mode emission that renders cleanly.
     executable = ENV['TYPST']
     skip 'Set TYPST to run the native compilation test.' unless executable
     source = convert('<chapter id="c"><title><anchor id="alias"/>A chapter</title><section id="s"><title>Section</title><para><indexterm type="general"><primary>fraction</primary></indexterm><xref linkend="alias"/> <inlineequation><math><mfrac><mn>2</mn><mn>7</mn></mfrac></math></inlineequation></para><para role="status-note" condition="status:de-facto;also:historical;date:2015-08-08">Usage note prose.</para><para role="status-note">Bare note.</para><para>Ordinary <phrase role="status-mark" condition="status:de-facto">accepted by parsers</phrase> here.</para></section></chapter>')

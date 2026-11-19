@@ -140,9 +140,10 @@ class DocBookTypst
     body = "#text(size: 1.2em, weight: \"bold\")[#{body}]" if role == 'logical-vowel'
     body = "#text(font: \"DejaVu Sans Mono\")[#{body}]" if %w[monospace X-SAMPA].include?(role)
     if role.split.include?('status-mark')
-      mark = StatusLabels.describe(node['condition'])
+      mark = StatusLabels.describe(node['condition'], inline: true)
       if mark
-        short = "#super[#smallcaps[#{q(mark.inline_short)}]#{q(mark.glyph)}]"
+        # Code-mode strings: markup-mode "..." would print as smart quotes.
+        short = "#super[#smallcaps(#{q(mark.inline_short)})#text(#{q(mark.glyph)})]"
       else
         short = "#super[#text(#{q(" " + StatusLabels::BARE_MARK_GLYPH)})]"
       end

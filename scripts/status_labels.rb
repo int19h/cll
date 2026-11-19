@@ -69,9 +69,10 @@ module StatusLabels
 
   # A status note or mark as the renderers show it. Nil when there is
   # nothing to label (no condition, or an empty status value). An
-  # unknown token keeps the raw token as its label and the bare glyph,
-  # mirroring the XSL otherwise branch; the lint rejects such notes in
-  # real sources. Callers keep the generic mark when this is nil.
+  # unknown token keeps the raw token as its label with the bare glyph
+  # (the bare mark glyph for inline marks), mirroring the XSL otherwise
+  # branch; the lint rejects such notes in real sources. Callers keep
+  # the generic mark when this is nil.
   Note = Struct.new(:token, :label_text, :also_line, :inline_short, :glyph, keyword_init: true)
 
   def self.parse_condition(condition)
@@ -87,7 +88,7 @@ module StatusLabels
     fields
   end
 
-  def self.describe(condition)
+  def self.describe(condition, inline: false)
     fields = parse_condition(condition)
     token = fields['status'].to_s
     return nil if token.empty?
@@ -103,7 +104,7 @@ module StatusLabels
       label_text: label,
       also_line: also_labels.empty? ? '' : "also: #{also_labels}",
       inline_short: " [#{label}]",
-      glyph: GLYPHS.fetch(token, BARE_GLYPH)
+      glyph: GLYPHS.fetch(token, inline ? BARE_MARK_GLYPH : BARE_GLYPH)
     )
   end
 end

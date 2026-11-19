@@ -131,9 +131,11 @@ class ContextBook
     text = "{\\CLLkorean #{text}}" if language == 'ko'
     text = "{\\CLLchinese #{text}}" if language == 'zh'
     if role.split.include?('status-mark')
-      mark = StatusLabels.describe(node['condition'])
+      mark = StatusLabels.describe(node['condition'], inline: true)
       if mark
-        short = "{\\high{{\\sc#{esc(mark.inline_short)}}#{esc(mark.glyph)}}}"
+        # The space is explicit: TeX would swallow one after \sc as the
+        # control word's delimiter.
+        short = "{\\high{ {\\sc#{esc(mark.inline_short.strip)}}#{esc(mark.glyph)}}}"
       else
         short = "{\\high{ #{esc(StatusLabels::BARE_MARK_GLYPH)}}}"
       end
@@ -292,7 +294,9 @@ class ContextBook
         glyph = esc(note ? note.glyph : StatusLabels::BARE_GLYPH)
         margin = "{\\hbox to 0pt{\\hss #{glyph}\\hskip.75em}}"
         gap = head.empty? ? ' ' : "\\crlf "
-        "\n\\startCLLstatus #{margin}#{head}#{gap}#{body}\\stopCLLstatus\n"
+        # \dontleavehmode starts the paragraph, so the box rides on the
+        # label's line instead of forming a line of its own.
+        "\n\\startCLLstatus \\dontleavehmode#{margin}#{head}#{gap}#{body}\\stopCLLstatus\n"
       elsif node.ancestors.any? { |ancestor| %w[td th].include?(ancestor.name) }
         "#{body}\\par\n"
       else

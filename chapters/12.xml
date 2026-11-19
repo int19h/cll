@@ -436,14 +436,14 @@
       </indexterm>
       <indexterm type="general"><primary>lujvo</primary><secondary>symmetrical</secondary>
       </indexterm>
-      One basic pattern of lujvo-making creates what is called a
+      One pattern of lujvo-making creates what is called a
       <quote>symmetrical lujvo</quote>. A symmetrical lujvo is one based on a tanru interpretation such that the first place of the seltau is equivalent to the first place of the tertau: each component of the tanru characterizes the same object. As an illustration of this, consider the lujvo
       <valsi>balsoi</valsi>
       : it is intended to mean
       <quote>both great and a soldier</quote>
       - that is,
       <quote>great soldier</quote>
-      , which is the interpretation we would tend to give its veljvo,
+      , which is one interpretation of its veljvo,
       <jbophrase>banli sonci</jbophrase>. The underlying gismu place structures are:
     </para>
     <example xml:id="example-random-id-7AFc">
@@ -1156,7 +1156,7 @@
       <quote>knife</quote>
       , depends on the length of the blade (the legal limit varies in different jurisdictions). This fifth place of
       <valsi>cladakyxa'i</valsi>
-      matters only when the length of the blade does, but then it is useful. Because it matters only in such special cases, it is best that it be last.
+      matters only when the standard of length does, but then it is useful. Because it matters only in such special cases, it is best that it be last.
     </para>
   </section>
   <section xml:id="section-seltau-SE">
@@ -1304,9 +1304,8 @@
       </para>
     </example>
     <para role="indent">
-      We end up being most interested in talking about the second place, not the first (the word is meant to describe people, not their eyes), so
-      <valsi>se</valsi>
-      would almost always be required.
+      We end up being most interested in talking about the second place, not the first (the word is meant to describe people, not their eyes), so a sentence about a blue-eyed person, like the one about Jack, would need
+      <valsi>se</valsi>.
     </para>
     <para>
       What is happening here is that we are translating the tertau wrongly, under the influence of English. The English suffix
@@ -1325,7 +1324,7 @@
   </section>
   <section xml:id="section-eliding-ke-kehe">
     <title><anchor xml:id="c12s11" />Eliding KE and KEhE rafsi from lujvo</title>
-    <para>      <indexterm type="general"><primary>lujvo place structure</primary><secondary>dropping &quot;KEhE&quot;</secondary>      </indexterm>      <indexterm type="general"><primary>lujvo place structure</primary><secondary>dropping &quot;KE&quot;</secondary>      </indexterm>      A shorter lujvo is easier to say, so a lujvo-maker may discard any cmavo that seem mere niceties. The first candidates for discarding are
+    <para>      <indexterm type="general"><primary>lujvo place structure</primary><secondary>dropping &quot;KEhE&quot;</secondary>      </indexterm>      <indexterm type="general"><primary>lujvo place structure</primary><secondary>dropping &quot;KE&quot;</secondary>      </indexterm>      To shorten a lujvo, a lujvo-maker can discard any cmavo that seem mere niceties. The first candidates for discarding are
       <valsi>ke</valsi>
       and
       <valsi>ke'e</valsi>
@@ -1469,7 +1468,7 @@
       <valsi>na'e</valsi>) or
       <rafsi>tol-</rafsi>
       (from
-      <valsi>to'e</valsi>): the natural reading takes the scope of the rafsi to be as narrow as possible, since all of these cmavo normally bind only to the following brivla or
+      <valsi>to'e</valsi>): in the veljvo, the scope of the cmavo is as narrow as possible, since all of these cmavo normally bind only to the following brivla or
       <valsi>ke</valsi>
       &hellip;
       <valsi>ke'e</valsi>
@@ -2438,15 +2437,19 @@
     </para>
 
     <para>
-      Because of their much simpler place structure, lujvo ending in
+      Lujvo ending in
       <rafsi>-mau</rafsi>
       and
       <rafsi>-me'a</rafsi>
-      are often more convenient than
+      have a much simpler place structure than
       <valsi>zmadu</valsi>
       and
       <valsi>mleca</valsi>
-      themselves as selbri. It is highly unlikely for such lujvo to be construed as anything other than implicit-abstraction lujvo. But there is another type of ambiguity relevant to these lujvo, and which has to do with what is being compared.
+      themselves: in
+      <valsi>citmau</valsi>
+      , the seltau names the property being compared, which
+      <valsi>zmadu</valsi>
+      needs a separate place for. It is highly unlikely for such lujvo to be construed as anything other than implicit-abstraction lujvo. But there is another type of ambiguity relevant to these lujvo, and which has to do with what is being compared.
     </para>
 
 
@@ -2806,15 +2809,15 @@
       <indexterm type="general"><primary>gismu</primary><secondary>place order</secondary>
         <tertiary>rationale</tertiary>
       </indexterm>
-      Less can be said about gismu place structure ordering, but some regularities are apparent. The places tend to appear in decreasing order of psychological saliency or importance. The place structure of
+      Less can be said about gismu place structure ordering, but some regularities are apparent. The first edition of this book suggested that the places tend to appear in decreasing order of psychological saliency or importance. In the place structure of
       <valsi>klama</valsi>
-      , for example, implies that
+      , for example,
       <jbophrase>lo klama</jbophrase>
-      (the one going) is more important than
+      (the one going) comes first,
       <jbophrase>lo se klama</jbophrase>
-      (the destination), which is in turn more important than
+      (the destination) second, and
       <jbophrase>lo xe klama</jbophrase>
-      (the means of transport).
+      (the means of transport) last.
     </para>
     <para>
       Some specific tendencies (not really rules) can also be observed. For example, when there is an agent place, it tends to be the first place. Similarly, when a destination and an origin point are mentioned, the destination is always placed just before the origin point. Places such as

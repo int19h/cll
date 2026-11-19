@@ -10,7 +10,6 @@ the signal status.
 """
 
 import os
-import shlex
 import shutil
 import signal
 import stat
@@ -26,11 +25,17 @@ SCRATCH = ROOT / 'build/container-tests'
 
 # The stub engine below is written into the scratch directory by StubRun.
 # It logs each call, sleeps interruptibly in build and run, tracks one
-# marker per container ID, rejects an occupied container name, and fails
-# a test that calls the engine kill command (cleanup uses stop and rm).
+# marker per container ID, rejects an occupied container name, fails a test
+# that calls the engine kill command (cleanup uses stop and rm), and
+# simulates a tag store like Docker's containerd one: an image is dropped
+# as soon as its last tag moves, so removing a run tag only untags a shared
+# image. A test can hold a run at its start with STUB_RUN_HOLD until the
+# named gate file appears.
 STUB_ENGINE = """\
 #!/usr/bin/env bash
 log() { printf '%s\\n' "$*" >> "$STUB_LOG"; }
+tagkey() { printf '%s' "$1" | tr -c 'A-Za-z0-9' '_'; }
+have_image() { [ -e "$STUB_DIR/images/$1" ]; }
 log "call $*"
 op=$1
 shift || true
@@ -47,10 +52,12 @@ case "$op" in
   tag) exit 0 ;;
   kill) log "UNEXPECTED engine kill $*"; exit 1 ;;
   build)
-    iidfile=
+    iidfile=; tags=
     while [ $# -gt 0 ]; do
       case "$1" in
         --iidfile) iidfile=$2; shift 2 ;;
+        -t) tags="$tags $2"; shift 2 ;;
+        -*) shift ;;
         *) shift ;;
       esac
     done
@@ -60,20 +67,58 @@ case "$op" in
     wait "$sp"
     rc=$?
     log "build-end rc=$rc"
-    [ -n "$iidfile" ] && printf '%s' "${STUB_IMAGE_ID:-stub-image-id}" > "$iidfile"
+    iid="${STUB_IMAGE_ID:-stub-image-id}"
+    [ -n "$iidfile" ] && printf '%s' "$iid" > "$iidfile"
+    # Retagging moves each tag; an image whose last tag moves is dropped,
+    # as in Docker's containerd store.
+    for tag in $tags; do
+      key=$(tagkey "$tag")
+      if [ -e "$STUB_DIR/tags/$key" ] && [ "$(cat "$STUB_DIR/tags/$key")" != "$iid" ]; then
+        old=$(cat "$STUB_DIR/tags/$key")
+        other=
+        for f in "$STUB_DIR"/tags/*; do
+          [ -e "$f" ] || continue
+          [ "$(cat "$f")" = "$old" ] && [ "$f" != "$STUB_DIR/tags/$key" ] && other=1
+        done
+        if [ -z "$other" ]; then
+          log "image-dropped $old"
+          rm -f "$STUB_DIR/images/$old"
+        fi
+      fi
+      mkdir -p "$STUB_DIR/tags"
+      printf '%s' "$iid" > "$STUB_DIR/tags/$key"
+    done
+    mkdir -p "$STUB_DIR/images"
+    touch "$STUB_DIR/images/$iid"
     exit "$rc" ;;
   run)
-    name=; cidfile=
-    while [ $# -gt 0 ]; do
-      case "$1" in
-        --name) name=$2; shift 2 ;;
-        --cidfile) cidfile=$2; shift 2 ;;
-        *) shift ;;
+    if [ -n "${STUB_RUN_HOLD:-}" ]; then
+      while [ ! -e "$STUB_RUN_HOLD" ]; do sleep 0.2; done
+    fi
+    # The image is the argument right before the container command; flags
+    # and their values are never split or glob-expanded while scanning.
+    name=; cidfile=; image=; prev=; want=
+    for token in "$@"; do
+      case "$want" in
+        --name) name=$token; want=; prev=$token; continue ;;
+        --cidfile) cidfile=$token; want=; prev=$token; continue ;;
       esac
+      case "$token" in
+        --name|--cidfile) want=$token; continue ;;
+      esac
+      if [ "$token" = "./scripts/container-command.sh" ]; then
+        image=$prev
+        break
+      fi
+      prev=$token
     done
     id="cid-$name"
     if [ -e "$STUB_DIR/$id.marker" ]; then
       log "run-rejected-occupied $name"
+      exit 125
+    fi
+    if ! have_image "$image"; then
+      log "run-no-such-image $image"
       exit 125
     fi
     [ -n "$cidfile" ] && printf '%s' "$id" > "$cidfile"
@@ -110,6 +155,29 @@ case "$op" in
     done
     log "rm $id"
     rm -f "$STUB_DIR/$id.marker"
+    exit 0 ;;
+  rmi)
+    for token in "$@"; do
+      case "$token" in
+        -*) continue ;;
+      esac
+      key=$(tagkey "$token")
+      if [ -e "$STUB_DIR/tags/$key" ]; then
+        old=$(cat "$STUB_DIR/tags/$key")
+        rm -f "$STUB_DIR/tags/$key"
+        other=
+        for f in "$STUB_DIR"/tags/*; do
+          [ -e "$f" ] || continue
+          [ "$(cat "$f")" = "$old" ] && other=1
+        done
+        if [ -z "$other" ]; then
+          log "image-dropped $old"
+          rm -f "$STUB_DIR/images/$old"
+        else
+          log "image-untagged $old"
+        fi
+      fi
+    done
     exit 0 ;;
 esac
 exit 0
@@ -342,6 +410,8 @@ class SignalTests(unittest.TestCase):
         # Under a pseudoterminal the launcher passes -t, and the engine
         # must see a terminal on its own standard input rather than
         # /dev/null (Docker refuses -t with a non-terminal stdin).
+        # The environment travels through subprocess, never through a shell
+        # command string, so exported functions cannot break the command.
         if shutil.which('script') is None:
             self.skipTest('script(1) missing')
         with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
@@ -357,14 +427,13 @@ class SignalTests(unittest.TestCase):
                        STUB_LOG=str(log), STUB_DIR=str(work),
                        TMPDIR=str(work), STUB_BUILD_SLEEP='0',
                        STUB_RUN_SLEEP='1')
-            assignments = ' '.join(
-                '%s=%s' % (key, shlex.quote(value))
-                for key, value in env.items())
-            command = '%s bash %s' % (
-                assignments, shlex.quote(str(ROOT / 'run_container.sh')))
+            # An exported function must not break the command: it travels
+            # in the environment, not in a shell word.
+            env['BASH_FUNC_probe_fn%%'] = '() { :; }'
             result = subprocess.run(
-                ['script', '-qec', command, '/dev/null'],
-                cwd=str(ROOT), capture_output=True, text=True, timeout=120)
+                ['script', '-qec', 'bash run_container.sh', '/dev/null'],
+                cwd=str(ROOT), capture_output=True, text=True, timeout=120,
+                env=env)
             self.assertEqual(result.returncode, 0, result.stdout)
             run_calls = [line for line in log.read_text().splitlines()
                          if line.startswith('call run ')]
@@ -434,9 +503,10 @@ class SignalTests(unittest.TestCase):
                 self.assertEqual(rc, -signal.SIGTERM)
                 self.assertEqual(first.markers(), [])
 
-    def test_concurrent_runs_use_their_own_image_id(self):
-        # Two checkouts with different Dockerfiles share one image tag, but
-        # each run starts the container by the ID its own build returned.
+    def test_rebuilt_tag_keeps_other_run_image_alive(self):
+        # Docker's store drops an image as soon as its last tag moves.
+        # B rebuilds the shared tag while A waits to run; A's own run tag
+        # keeps its image alive, so A still starts it.
         with tempfile.TemporaryDirectory(dir=SCRATCH) as parent:
             a_tree = make_launcher_tree(
                 Path(parent) / 'a',
@@ -445,34 +515,37 @@ class SignalTests(unittest.TestCase):
                 Path(parent) / 'b',
                 ['FROM example/base\n', 'ENV TREE=b\n'])
             with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+                gate = Path(directory) / 'release-a'
                 first = StubRun(directory, tree=a_tree,
                                 STUB_BUILD_SLEEP='1',
-                                STUB_RUN_SLEEP='10',
+                                STUB_RUN_SLEEP='5',
                                 STUB_IMAGE_ID='img-aaa',
+                                STUB_RUN_HOLD=str(gate),
                                 CLL_CONTAINER_NAME='img-run-a')
+                self.assertTrue(first.wait_for('call run'),
+                                'first run never reached its container')
                 second = StubRun(directory, tree=b_tree,
                                  out_name='second-stdout.txt',
                                  truncate_log=False,
                                  STUB_BUILD_SLEEP='1',
-                                 STUB_RUN_SLEEP='10',
+                                 STUB_RUN_SLEEP='1',
                                  STUB_IMAGE_ID='img-bbb',
                                  CLL_CONTAINER_NAME='img-run-b')
-                self.assertTrue(first.wait_for('run-start'),
-                                'first run never started the container')
-                self.assertTrue(second.wait_for('run-start', count=2),
-                                'second run never started the container')
-                # Both containers run at the same time under one tag.
-                self.assertIsNone(first.proc.poll())
-                self.assertIsNone(second.proc.poll())
-                log = second.log_text()
-                for name, image in (('img-run-a', 'img-aaa'),
-                                    ('img-run-b', 'img-bbb')):
-                    own = [line for line in log.splitlines()
-                           if line.startswith('call run ') and name in line]
-                    self.assertEqual(len(own), 1, log)
-                    self.assertIn(' %s ' % image, own[0], own[0])
-                self.assertEqual(first.finish(), 0)
                 self.assertEqual(second.finish(), 0)
+                log = second.log_text()
+                own = [line for line in log.splitlines()
+                       if line.startswith('call run ') and 'img-run-b' in line]
+                self.assertEqual(len(own), 1, log)
+                self.assertIn(' img-bbb ', own[0], own[0])
+                self.assertNotIn('run-no-such-image', log, log)
+                gate.write_text('')
+                self.assertEqual(first.finish(), 0)
+                log = first.log_text()
+                own = [line for line in log.splitlines()
+                       if line.startswith('call run ') and 'img-run-a' in line]
+                self.assertEqual(len(own), 1, log)
+                self.assertIn(' img-aaa ', own[0], own[0])
+                self.assertNotIn('run-no-such-image', log, log)
                 self.assertEqual(first.markers(), [])
                 self.assertEqual(second.markers(), [])
 
@@ -493,6 +566,50 @@ class SignalTests(unittest.TestCase):
                           second.out_path.read_text())
             rc = first.finish(sig=signal.SIGTERM)
             self.assertEqual(rc, -signal.SIGTERM)
+
+    def test_missing_flock_warns_and_runs(self):
+        # Without flock on PATH the launcher warns instead of reporting a
+        # busy checkout, and the build still runs.
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            farm = Path(directory) / 'bin'
+            farm.mkdir()
+            for entry in Path('/usr/bin').iterdir():
+                if entry.name == 'flock':
+                    continue
+                try:
+                    os.symlink(entry, farm / entry.name)
+                except OSError:
+                    pass
+            work = Path(directory) / 'work'
+            work.mkdir()
+            stub = work / 'stub-engine.sh'
+            stub.write_text(STUB_ENGINE)
+            stub.chmod(stub.stat().st_mode | stat.S_IXUSR)
+            env = {k: v for k, v in os.environ.items()
+                   if k != 'CLL_CONTAINER_NAME'}
+            env['PATH'] = str(farm)
+            env['CONTAINER_BIN'] = str(stub)
+            env['CLL_BUILD_VERSION'] = 'test'
+            env['STUB_LOG'] = str(work / 'engine.log')
+            env['STUB_DIR'] = str(work)
+            env['TMPDIR'] = str(work)
+            env['STUB_BUILD_SLEEP'] = '0'
+            env['STUB_RUN_SLEEP'] = '1'
+            out_path = work / 'stdout.txt'
+            with out_path.open('w') as out:
+                proc = subprocess.Popen(
+                    ['bash', str(ROOT / 'run_container.sh')],
+                    stdout=out, stderr=subprocess.STDOUT,
+                    env=env, cwd=str(ROOT), start_new_session=True)
+                rc = proc.wait(timeout=60)
+            self.assertEqual(rc, 0, out_path.read_text())
+            self.assertIn('flock not found', out_path.read_text())
+            run_calls = [line for line in
+                         (work / 'engine.log').read_text().splitlines()
+                         if line.startswith('call run ')]
+            self.assertEqual(len(run_calls), 1)
+            self.assertEqual(
+                [p.name for p in work.glob('cll-run*')], [])
 
 
 if __name__ == '__main__':

@@ -68,6 +68,7 @@ done
 # nor miss this run's own. There is no startup removal: an occupied name is
 # the engine's error.
 child=0
+run_tag=
 rundir=$(mktemp -d "${TMPDIR:-/tmp}/cll-run.XXXXXXXX") || exit 1
 cidfile=$rundir/container-id
 iidfile=$rundir/image-id
@@ -84,6 +85,11 @@ cleanup_container() {
   id=$(container_id)
   if [ -n "$id" ]; then
     "${engine[@]}" rm -f "$id" >/dev/null 2>&1 || true
+  fi
+  # Remove only this run's extra tag, never any other tag. While a
+  # container or another tag still uses the image, this only untags it.
+  if [ -n "$run_tag" ]; then
+    "${engine[@]}" rmi "$run_tag" >/dev/null 2>&1 || true
   fi
 }
 on_signal() {
@@ -121,19 +127,28 @@ esac
 # from one checkout from stopping each other, but both would still write the
 # same intermediate files, so the second run fails fast instead.
 # run_weasyprint_container.sh guards its build folder the same way.
-exec 9>"$build_dir/.container.lock"
-flock -n 9 || {
-  echo "Another build already uses this checkout's build directory ($build_dir)." >&2
-  exit 1
-}
+# The lock needs the flock command; without it the launcher warns and runs
+# unguarded instead of reporting a busy checkout that does not exist.
+if command -v flock >/dev/null 2>&1; then
+  exec 9>"$build_dir/.container.lock"
+  flock -n 9 || {
+    echo "Another build already uses this checkout's build directory ($build_dir)." >&2
+    exit 1
+  }
+else
+  echo "Warning: flock not found; this run does not guard the build folder." >&2
+fi
 mounts=(-v "$dir:$dir" -v "$build_dir:$build_dir")
 build_version=$("$dir/scripts/build-version.sh") || exit 1
 
-# One fixed tag for every build (issue #297). Each run starts the container
-# by the immutable image ID its own build returned (see below), so another
-# checkout rebuilding the same tag under it is harmless, and equal builds
-# share the image cache. scripts/diff_upstream also names this tag.
+# One fixed tag for every build (issue #297). The build also attaches a
+# second tag that is unique to this run and keeps the image referenced
+# until this run's container exists, even if another checkout rebuilds the
+# shared tag in between (Docker's containerd store can otherwise drop the
+# image at once). Cleanup removes only the run tag, never any other tag.
+# scripts/diff_upstream names the shared tag.
 image="lojban/cll_build"
+run_tag="lojban/cll_build:run-$$"
 
 # FOR TESTING; forces complete container rebuild
 # "${engine[@]}" build --no-cache -t "$image" -f Dockerfile .
@@ -142,7 +157,7 @@ echo "Running container image build; this may take a while."
 echo "Image tag: $image"
 echo "Container name: $container_name"
 echo
-"${engine[@]}" build -t "$image" --iidfile "$iidfile" -f "$dir/Dockerfile" "$dir" >"$rclog" 2>&1 &
+"${engine[@]}" build -t "$image" -t "$run_tag" --iidfile "$iidfile" -f "$dir/Dockerfile" "$dir" >"$rclog" 2>&1 &
 child=$!
 build_rc=0
 wait "$child" || build_rc=$?

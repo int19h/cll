@@ -15,10 +15,10 @@ The sources disable the metadata expiration limit because the snapshot is histor
 Fresh Ubuntu images lack the certificates that HTTPS requires.
 Each Dockerfile first downloads the dated curl certificate bundle `cacert-2026-11-05.pem`.
 The build requires its SHA-256 hash before APT uses it.
-Each Dockerfile also tells APT 3.x to use that bundle through
-`Acquire::https::CaInfo /etc/apt/apt.conf.d/99-snapshot-ca`:
-resolute's APT does not fall back to the OpenSSL default bundle path,
-so HTTPS archive access fails without it.
+APT 3 in Ubuntu 26.04 uses OpenSSL for HTTPS. OpenSSL looks for certificates in `/usr/lib/ssl`, which a fresh image lacks.
+(The previous APT used GnuTLS, which reads the system bundle, so the bootstrap worked without this step.)
+Each Dockerfile therefore writes `/etc/apt/apt.conf.d/99-snapshot-ca`.
+That file sets `Acquire::https::CaInfo` to `/etc/ssl/certs/ca-certificates.crt`, the downloaded bundle.
 APT then installs the snapshot's `ca-certificates` package.
 The Prince packages also require architecture-specific SHA-256 hashes before installation.
 

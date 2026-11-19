@@ -63,5 +63,23 @@ end
 prince = steps.find { |s| s['name'] == 'Install Prince (PDF renderer)' }['run']
 sha = File.read(File.join(root, 'Dockerfile'))[/amd64\) prince_sha256=([0-9a-f]{64})/, 1]
 check.call(sha && prince.include?(sha + '  prince_16.2-1_ubuntu26.04_amd64.deb') && prince.index('sha256sum -c -') < prince.index('sudo apt-get install'), 'Prince must match the Dockerfile hash before installation.')
+pinned = {}
+{'build' => path, 'checks' => File.join(root, '.github/workflows/checks.yml')}.each do |file_name, file_path|
+  YAML.safe_load(File.read(file_path)).fetch('jobs').each do |job, body|
+    runner = body['runs-on']
+    pinned["#{file_name}.#{job}"] = runner if runner.is_a?(String) && runner.match?(/\Aubuntu-\d+\.\d+\z/)
+  end
+end
+check.call(pinned.any?, 'No pinned Ubuntu runner found.')
+check.call(pinned.values.uniq == ['ubuntu-26.04'], "Pinned runners must all match: #{pinned}.")
+rubies = []
+YAML.safe_load(File.read(File.join(root, '.github/workflows/checks.yml'))).fetch('jobs').each_value do |body|
+  (body['steps'] || []).each do |step|
+    version = step.dig('with', 'ruby-version')
+    rubies << version if version
+  end
+end
+check.call(rubies.any?, 'No pinned Ruby found.')
+check.call(rubies.uniq == ['3.3'], "Pinned Rubies must all match: #{rubies}.")
 abort errors.join("\n") unless errors.empty?
 puts 'Build workflow: direct pins, permissions, retention, timeouts, and guard/partial-output wiring pass.'

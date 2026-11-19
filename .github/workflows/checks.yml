@@ -142,7 +142,7 @@ jobs:
   # pure Python, and bolting a Ruby runtime plus a native gem onto it would
   # make both its name and its dependency profile misleading.
   prince-postprocess-smoke:
-    # ubuntu-26.04 to match the Dockerfile's base image and the Pages builder.
+    # ubuntu-26.04 to match the Dockerfile's base image.
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -200,12 +200,12 @@ jobs:
   # This job merges and preprocesses the whole book and runs xmlto's
   # validation step, but renders nothing.
   whole-book-validation:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
-          ruby-version: '3.2'
+          ruby-version: '3.3'
       - name: Install libxml2-utils
         run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils
       - name: Install the production Nokogiri, Optimist, and HTMLEntities gems

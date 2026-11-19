@@ -23,6 +23,7 @@ class BuildPinsTest(unittest.TestCase):
                 self.assertIn('https://snapshot.ubuntu.com/ubuntu/20261117T000000Z/', text)
                 self.assertIn('APT::Update::Error-Mode=any', text)
                 self.assertIn('Acquire::https::CaInfo "/etc/ssl/certs/ca-certificates.crt";', text)
+                self.assertIn('> /etc/apt/apt.conf.d/99-snapshot-ca', text)
                 self.assertNotIn('trusted=yes', text)
                 self.assertNotIn('Verify-Peer=false', text)
 

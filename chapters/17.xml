@@ -79,7 +79,7 @@
       </indexterm>
       <indexterm type="general"><primary>lerfu</primary><secondary>contrasted with lerfu word</secondary>
       </indexterm>
-      In earlier writings about Lojban, there has been a tendency to use the word
+      The first edition of this book noted a tendency in earlier writings about Lojban to use the word
       <valsi>lerfu</valsi>
       for both the letterals themselves and for the Lojban words which represent them. In this chapter, that tendency will be ruthlessly suppressed, and the term
       <quote>lerfu word</quote>
@@ -727,9 +727,9 @@
       </indexterm>
       <indexterm type="general"><primary>unusual characters</primary><secondary>words for</secondary>
       </indexterm>
-      The ability to attach
+      One use of the ability to attach
       <valsi>bu</valsi>
-      to words has been used primarily to make names for various logograms and other unusual characters. For example, the Lojban name for the
+      to words is to make names for various logograms and other unusual characters. For example, the Lojban name for the
       <quote>happy face</quote>
       is
       <jbophrase>me'o .uibu</jbophrase>
@@ -766,7 +766,7 @@
       , based on the cmavo
       <valsi>joi</valsi>
       meaning
-      <quote>mixed “and”</quote>. Many more such lerfu words will probably be invented in future.
+      <quote>mixed “and”</quote>. Many more such lerfu words can be made in the same way.
     </para>
     <para>
       <indexterm type="general"><primary>.</primary><secondary>word for &quot;.&quot;</secondary>
@@ -1027,7 +1027,7 @@
       </indexterm>
       The cmavo
       <valsi>zai</valsi>
-      (of selma'o LAU) is used to create shift words to still other alphabets. The BY word which must follow any LAU cmavo would typically be a name representing the alphabet with
+      (of selma'o LAU) is used to create shift words to still other alphabets. The lerfu word which must follow any LAU cmavo can be, for example, a name representing the alphabet with
       <valsi>bu</valsi>
       suffixed:
     </para>
@@ -1071,7 +1071,7 @@
 
       <indexterm type="general"><primary>language shift</primary><secondary>standardization of</secondary>
       </indexterm>
-      Unlike the cmavo above, these shift words have not been standardized and probably will not be until someone actually has a need for them. (Note the
+      Unlike the cmavo above, these shift words had not been standardized, as the first edition of this book reported. (Note the
       <letteral>.</letteral>
       characters marking leading and following pauses.)
     </para>
@@ -1215,7 +1215,7 @@
       <valsi>foi</valsi>
       grouping guarantees that the acute accent is associated with the correct lerfu. Of course, the level of precision represented by
       <xref linkend="example-random-id-NQgb" />
-      would rarely be required: it might be needed by a Lojban-speaker when spelling out a French word for exact transcription by another Lojban-speaker who did not know French.
+      is not always needed: it might be needed by a Lojban-speaker when spelling out a French word for exact transcription by another Lojban-speaker who did not know French.
     </para>
     <para>
       <indexterm type="general"><primary>diacritical marks</primary><secondary>problem with multiple on one lerfu</secondary>
@@ -1265,11 +1265,11 @@
   </section>
   <section xml:id="section-punctuation">
     <title><anchor xml:id="c17s7" />Punctuation marks</title>
-    <para>      <indexterm type="lojban-word"><primary>lau</primary><secondary>effect on following lerfu word</secondary>      </indexterm>      <indexterm type="general"><primary>punctuation lerfu words</primary><secondary>mechanism for creating</secondary>      </indexterm>      Lojban does not have punctuation marks as such: the denpa bu and the slaka bu are really a part of the alphabet. Other languages, however, use punctuation marks extensively. As yet, Lojban does not have any words for these punctuation marks, but a mechanism exists for devising them: the cmavo
+    <para>      <indexterm type="lojban-word"><primary>lau</primary><secondary>effect on following lerfu word</secondary>      </indexterm>      <indexterm type="general"><primary>punctuation lerfu words</primary><secondary>mechanism for creating</secondary>      </indexterm>      Lojban does not have punctuation marks as such: the denpa bu and the slaka bu are really a part of the alphabet. Other languages, however, use punctuation marks extensively. The first edition of this book reported that Lojban had no words for these punctuation marks, but a mechanism exists for devising them: the cmavo
       <valsi>lau</valsi>
       of selma'o LAU.
       <valsi>lau</valsi>
-      must always be followed by a BY word; the interpretation of the BY word is changed from a lerfu to a punctuation mark. Typically, this BY word would be a cmevla or brivla with a
+      must always be followed by a lerfu word; the interpretation of the lerfu word is changed from a lerfu to a punctuation mark. This lerfu word can be, for example, a cmevla or brivla with a
       <valsi>bu</valsi>
       suffix.
     </para>
@@ -1391,7 +1391,7 @@
       Alternatively, a really ambitious Lojbanist could assign lerfu words to the individual strokes used to write Chinese characters (there are about seven or eight of them if you are a flexible human being, or about 40 if you are a rigid computer program), and then represent each character with a
       <valsi>tei</valsi>
       , the stroke lerfu words in the order of writing (which is standardized for each character), and a
-      <valsi>foi</valsi>. No one has as yet attempted this project.
+      <valsi>foi</valsi>. The first edition of this book reported that no one had yet attempted this project.
     </para>
   </section>
   <section xml:id="section-lerfu-pro-sumti">
@@ -1916,7 +1916,7 @@
       </indexterm>
       <indexterm type="general"><primary>acronyms</primary><secondary>using names based on lerfu words</secondary>
       </indexterm>
-      In Lojban, a name is often represented by one cmevla (a word that ends in a consonant and is surrounded by pauses). The easiest way to Lojbanize acronym names is to glue the lerfu words together, using
+      In Lojban, a name can be represented by one cmevla (a word that ends in a consonant and is surrounded by pauses). One way to Lojbanize acronym names is to glue the lerfu words together, using
       <letteral>'</letteral>
       wherever two vowels would come together (pauses are illegal in cmevla) and adding a final consonant:
     </para>
@@ -2245,7 +2245,7 @@
     <para>
       <indexterm type="general"><primary>proposed lerfu words</primary><secondary>as working basis</secondary>
       </indexterm>
-      These tables are not meant to be authoritative (several authorities within the Lojban community have niggled over them extensively, disagreeing with each other and sometimes with themselves). They provide a working basis until actual usage is available, rather than a final resolution of lerfu word problems. Probably the system presented here will evolve somewhat before settling down into a final, conventional form.
+      These tables are not meant to be authoritative (the first edition of this book reported that several authorities within the Lojban community had niggled over them extensively, disagreeing with each other and sometimes with themselves). They provide a working basis, rather than a final resolution of lerfu word problems. The system presented here may evolve before settling down into a conventional form.
     </para>
 
     <para>

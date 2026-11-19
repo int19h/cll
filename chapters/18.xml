@@ -111,7 +111,7 @@
       </indexterm>
       <indexterm type="general"><primary>mekso chapter</primary><secondary>table notation convention</secondary>
       </indexterm>
-      The remainder of this chapter explains (in as much detail as is currently possible) the mekso system. This chapter is by intention complete as regards mekso components, but only suggestive about uses of those components &ndash; as of now, there has been no really comprehensive use made of mekso facilities, and many matters must await the test of usage to be fully clarified.
+      The remainder of this chapter explains (in as much detail as is currently possible) the mekso system. This chapter is by intention complete as regards mekso components, but only suggestive about uses of those components &ndash; the first edition of this book reported that no really comprehensive use had yet been made of mekso facilities, and it left many matters to the test of usage.
     </para>
   </section>
   <section xml:id="section-mekso-numbers">
@@ -973,9 +973,9 @@
       </indexterm>
       <indexterm type="general"><primary>mathematical notation</primary><secondary>and operator precedence</secondary>
       </indexterm>
-      There are three solutions, all of which will probably be used to some degree. The first solution is to ignore the problem. People will say
+      There are three solutions, and a speaker can use any of them. The first solution is to ignore the problem. A speaker can say
       <jbophrase>li ci su'i vo pi'i mu</jbophrase>
-      and mean 23 by it, because the notion that multiplication takes precedence over addition is too deeply ingrained to be eradicated by Lojban parsing, which totally ignores semantics. This convention essentially allows semantics to dominate syntax in this one area.
+      and mean 23 by it, relying on the mathematical convention, described above, that multiplication takes precedence over addition. Lojban parsing, which totally ignores semantics, does not apply that convention. This convention essentially allows semantics to dominate syntax in this one area.
     </para>
 
     <para>
@@ -1167,7 +1167,7 @@
     </cmavo-list>
     <para role="indent">The infix form explained so far is reasonable for many purposes, but it is limited and rigid. It works smoothly only where all operators have exactly two operands, and where precedences can either be assumed from context or are limited to just two levels, with some help from parentheses.</para>
     <para>
-      But there are many operators which do not have two operands, or which have a variable number of operands. The preferred form of expression in such cases is the use of
+      But there are many operators which do not have two operands, or which have a variable number of operands. The form of expression that suits such cases is the use of
       <quote>forethought operators</quote>
       , also known as Polish notation. In this style of writing mathematics, the operator comes first and the operands afterwards:
     </para>
@@ -2373,7 +2373,7 @@
       </indexterm>
       Here, the final
       <jbophrase>pa no</jbophrase>
-      is assumed to be base 10, as usual; so is the base specification. (The base may also be changed permanently by a metalinguistic specification; no standard way of doing so has as yet been worked out.)
+      is assumed to be base 10, as usual; so is the base specification. (The base may also be changed permanently by a metalinguistic specification; the first edition of this book reported that no standard way of doing so had been worked out.)
     </para>
     <para>
       <indexterm type="general"><primary>hexadecimal system</primary><secondary>specifying numbers in (see also base)</secondary>
@@ -2988,7 +2988,7 @@
       </indexterm>
       <indexterm type="general"><primary>standard for subjective numbers</primary><secondary>specifying</secondary>
       </indexterm>
-      This place is not normally explicit when using one of the subjective numbers directly as a number. Therefore,
+      When one of the subjective numbers is used directly as a number, there is no such place to fill. Therefore,
       <jbophrase>du'e ratcu</jbophrase>
       means
       <quote>too many rats</quote>
@@ -4206,7 +4206,7 @@
     <para><indexterm type="general"><primary>formulae</primary><secondary>expressing based on pure dimensions</secondary>
       </indexterm><indexterm type="general"><primary>conversion of selbri into operand</primary></indexterm><indexterm type="general"><primary>operand</primary><secondary>converting selbri into</secondary>
       </indexterm><indexterm type="general"><primary>selbri</primary><secondary>converting into an operand</secondary>
-      </indexterm>The cmavo <valsi>ni'e</valsi> makes a selbri into an operand. The x<subscript>1</subscript> place of the selbri generally represents a number, and so is often a <valsi>ni</valsi> abstraction, since <valsi>ni</valsi> abstractions represent numbers. The <valsi>ni'e</valsi> makes that number available as a mekso operand. A common application is to make equations relating pure dimensions:</para>
+      </indexterm>The cmavo <valsi>ni'e</valsi> makes a selbri into an operand. The x<subscript>1</subscript> place of the selbri generally represents a number, so a <valsi>ni</valsi> abstraction, whose own x<subscript>1</subscript> is an amount (see <xref linkend="section-amounts" />), makes a suitable selbri. The <valsi>ni'e</valsi> makes that number available as a mekso operand. One application is to make equations relating pure dimensions:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-wCJQ">
       <title><anchor xml:id="c18e18d2" /><indexterm type="general"><primary>Length × Width × Depth = Volume</primary></indexterm></title>

@@ -426,7 +426,7 @@
       </indexterm>
       <indexterm type="general"><primary>commutative truth functions</primary></indexterm>
       Note that exchanging the sentences is only necessary with
-      <phrase role="logical-vowel">U</phrase>. The three other basic truth functions are commutative; that is, they mean the same thing regardless of the order of the component sentences. There are other ways of getting some of these truth tables; these just happen to be the methods usually employed.
+      <phrase role="logical-vowel">U</phrase>. The three other basic truth functions are commutative; that is, they mean the same thing regardless of the order of the component sentences. There are other ways of getting some of these truth tables; these are the methods that this chapter uses.
     </para>
 
   </section>
@@ -891,7 +891,7 @@
       may be true or false is unfortunately rather remote from the bridi thus affected.
     </para>
     <para>
-      Perhaps the most important of the truth functions commonly expressed in forethought is TFTT, which can be paraphrased as
+      Perhaps the most important of the truth functions expressed in forethought is TFTT, which can be paraphrased as
       <quote>if ... then ...</quote>
       :
     </para>
@@ -1134,7 +1134,8 @@
       </indexterm>
       <indexterm type="general"><primary>sumti connection</primary><secondary>forethought</secondary>
       </indexterm>
-      What about forethought sumti connection? As is the case for bridi connection, geks are appropriate. They are not the only selma'o of forethought logical-connectives, but are the most commonly used ones.
+      What about forethought sumti connection? As is the case for bridi connection, geks are appropriate. They are not the only forethought logical connectives (guheks, built on selma'o GUhA, connect tanru, as explained in
+      <xref linkend="section-tanru" />), but geks, built on selma'o GA, are the ones that give forethought logical connection between sumti.
     </para>
 
 
@@ -1169,7 +1170,7 @@
     <para role="indent">
       Note the period in
       <valsi>na</valsi>
-      <valsi>.a</valsi>. The cmavo of A begin with vowels, and therefore must always be preceded by a pause. It is conventional to write all connective compounds as single words (with no spaces), but this pause must still be marked in writing as in speech; otherwise, the
+      <valsi>.a</valsi>. The cmavo of A begin with vowels, and therefore must always be preceded by a pause. Like other compound cmavo, a connective compound can be written as a single word (with no spaces), but this pause must still be marked in writing as in speech; otherwise, the
       <valsi>na</valsi>
       and
       <valsi>.a</valsi>
@@ -3293,7 +3294,7 @@
       </indexterm>
       Likewise,
       <valsi>fa'u</valsi>
-      can be used to put two individuals together where order matters. Typically, there will be another
+      can be used to put two individuals together where order matters. As in the following example, there can be another
       <valsi>fa'u</valsi>
       somewhere else in the same bridi:
     </para>
@@ -4807,7 +4808,7 @@
       </indexterm>
       <indexterm type="general"><primary>truth functions</primary><secondary>table of logical connectives</secondary>
       </indexterm>
-      The following table specifies, for each truth function, the most-often used cmavo or compound cmavo which expresses it for each of the six types of logical connective. (Other compound cmavo are often possible: for example,
+      The following table specifies, for each of the 14 truth functions other than TTTT and FFFF, one cmavo or compound cmavo which expresses it for each type of logical connective; ijeks are formed from the jeks as noted after the table. (Other compound cmavo are often possible: for example,
       <valsi>se</valsi>
       <valsi>.a</valsi>
       means the same as

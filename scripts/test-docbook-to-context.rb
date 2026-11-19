@@ -218,6 +218,39 @@ class ContextBookTest < Minitest::Test
     assert_includes output, '\\seeCLLgeneral[{alias}]{alias}{hiddenword}'
   end
 
+  def test_index_see_target_in_publication_notice_passes
+    input = book(<<~XML)
+      <info><title>Test</title>
+        <othercredit><orgname role="publication-notice">Notice<indexterm type="general"><primary>hiddenword</primary></indexterm></orgname></othercredit>
+      </info>
+      <chapter><title>Targets</title>
+        <para><indexterm type="general"><primary>alias</primary><see>hiddenword</see></indexterm></para>
+      </chapter>
+    XML
+    output = input.to_tex
+    assert_includes output, '\\seeCLLgeneral[{alias}]{alias}{hiddenword}'
+    assert_empty input.report['missing_references']
+  end
+
+  def test_index_see_target_in_chapter_info_title_passes
+    input = book(<<~XML)
+      <chapter><info><title>Targets<indexterm type="general"><primary>hiddenword</primary></indexterm></title></info>
+        <para><indexterm type="general"><primary>alias</primary><see>hiddenword</see></indexterm></para>
+      </chapter>
+    XML
+    output = input.to_tex
+    assert_includes output, '\\seeCLLgeneral[{alias}]{alias}{hiddenword}'
+    assert_empty input.report['missing_references']
+  end
+
+  def test_index_see_target_in_literallayout_fails
+    assert_raises(RuntimeError) do
+      book('<chapter><title>Targets</title>' \
+           '<para><indexterm type="general"><primary>alias</primary><see>hiddenword</see></indexterm></para>' \
+           '<literallayout>Hidden<indexterm type="general"><primary>hiddenword</primary></indexterm></literallayout></chapter>').to_tex
+    end
+  end
+
   def test_index_two_seealso_targets_keep_page_entry_and_flag
     output = book('<para><indexterm type="general"><primary>related</primary><seealso>alpha</seealso><seealso>beta</seealso></indexterm>' \
                   '<indexterm type="general"><primary>alpha</primary></indexterm>' \

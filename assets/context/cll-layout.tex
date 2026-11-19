@@ -53,10 +53,13 @@
 \definecolor[CLLrule][s=.6]
 \definecolor[CLLmuted][h=555555]
 \definecolor[CLLstatusbackground][s=.96]
+% A status note keeps its label with the start of its prose: testpage
+% moves a note that would strand its first lines to the next page
+% (docs/status-markup.md, issue #47).
 \defineframedtext[CLLstatus][width=broad,frame=off,leftframe=on,
   rulethickness=1bp,framecolor=CLLrule,background=color,
   backgroundcolor=CLLstatusbackground,offset=.5em,
-  style={\switchtobodyfont[8.28bp]},before={\blank[small]},after={\blank[small]}]
+  style={\switchtobodyfont[8.28bp]},before={\blank[small]\testpage[3]},after={\blank[small]}]
 \defineregister[CLLgeneral]
 \defineregister[CLLlojban]
 \setupregister[CLLgeneral,CLLlojban][n=2,style={\switchtobodyfont[8.1bp]},

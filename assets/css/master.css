@@ -1170,19 +1170,20 @@ p.status-note {
 }
 p.status-note::before {
   content: "\25C6"; /* black diamond: the bare-note fallback */
+  content: "\25C6" / ""; /* decorative: the real-text label carries the status for speech */
   font-family: "Linux Biolinum", "DejaVu Sans", sans-serif;
   position: absolute;
   left: -1.5em;
   color: #5a4a16;
 }
-p.status-note.status-llg-ratified::before { content: "\2605"; color: #7c2d12; }
-p.status-note.status-bpfk-approved::before { content: "\25CF"; color: #1e4a6b; }
-p.status-note.status-checkpointed::before { content: "\25A0"; color: #2e5a34; }
-p.status-note.status-de-facto::before { content: "\25C6"; color: #5a4a16; }
-p.status-note.status-proposed::before { content: "\25B3"; color: #1f5f5b; }
-p.status-note.status-unsettled::before { content: "?"; color: #8a1f1f; font-weight: bold; }
-p.status-note.status-editorial::before { content: "\25B2"; color: #3d3d3d; }
-p.status-note.status-historical::before { content: "\25C7"; color: #6e5a44; }
+p.status-note.status-llg-ratified::before { content: "\2605"; content: "\2605" / ""; color: #7c2d12; }
+p.status-note.status-bpfk-approved::before { content: "\25CF"; content: "\25CF" / ""; color: #1e4a6b; }
+p.status-note.status-checkpointed::before { content: "\25A0"; content: "\25A0" / ""; color: #2e5a34; }
+p.status-note.status-de-facto::before { content: "\25C6"; content: "\25C6" / ""; color: #5a4a16; }
+p.status-note.status-proposed::before { content: "\25B3"; content: "\25B3" / ""; color: #1f5f5b; }
+p.status-note.status-unsettled::before { content: "?"; content: "?" / ""; color: #8a1f1f; font-weight: bold; }
+p.status-note.status-editorial::before { content: "\25B2"; content: "\25B2" / ""; color: #3d3d3d; }
+p.status-note.status-historical::before { content: "\25C7"; content: "\25C7" / ""; color: #6e5a44; }
 p.status-note.status-llg-ratified { border-left-color: #7c2d12; }
 p.status-note.status-bpfk-approved { border-left-color: #1e4a6b; }
 p.status-note.status-checkpointed { border-left-color: #2e5a34; }
@@ -1222,19 +1223,20 @@ span.status-mark {
 }
 span.status-mark::after {
   content: "\25C7"; /* white diamond: the generic inline mark */
+  content: "\25C7" / ""; /* decorative: the inline label carries the status for speech */
   font-family: "Linux Biolinum", "DejaVu Sans", sans-serif;
   font-size: 0.75em;
   vertical-align: super;
   color: #5a4a16;
 }
-span.status-mark.status-llg-ratified::after { content: "\2605"; color: #7c2d12; }
-span.status-mark.status-bpfk-approved::after { content: "\25CF"; color: #1e4a6b; }
-span.status-mark.status-checkpointed::after { content: "\25A0"; color: #2e5a34; }
-span.status-mark.status-de-facto::after { content: "\25C6"; color: #5a4a16; }
-span.status-mark.status-proposed::after { content: "\25B3"; color: #1f5f5b; }
-span.status-mark.status-unsettled::after { content: "?"; color: #8a1f1f; font-weight: bold; }
-span.status-mark.status-editorial::after { content: "\25B2"; color: #3d3d3d; }
-span.status-mark.status-historical::after { content: "\25C7"; color: #6e5a44; }
+span.status-mark.status-llg-ratified::after { content: "\2605"; content: "\2605" / ""; color: #7c2d12; }
+span.status-mark.status-bpfk-approved::after { content: "\25CF"; content: "\25CF" / ""; color: #1e4a6b; }
+span.status-mark.status-checkpointed::after { content: "\25A0"; content: "\25A0" / ""; color: #2e5a34; }
+span.status-mark.status-de-facto::after { content: "\25C6"; content: "\25C6" / ""; color: #5a4a16; }
+span.status-mark.status-proposed::after { content: "\25B3"; content: "\25B3" / ""; color: #1f5f5b; }
+span.status-mark.status-unsettled::after { content: "?"; content: "?" / ""; color: #8a1f1f; font-weight: bold; }
+span.status-mark.status-editorial::after { content: "\25B2"; content: "\25B2" / ""; color: #3d3d3d; }
+span.status-mark.status-historical::after { content: "\25C7"; content: "\25C7" / ""; color: #6e5a44; }
 span.status-label-inline {
   font-size: 0.75em;
   vertical-align: super;

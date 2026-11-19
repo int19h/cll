@@ -178,6 +178,62 @@ class LabelTableAndCss(unittest.TestCase):
         self.assertIn('background: none', m.group(1))
         self.assertIn('color: inherit', m.group(1))
 
+    def test_margin_glyphs_are_decorative_only(self):
+        # Screen readers may announce CSS-generated content, while the
+        # real-text label already carries the status. Every status margin
+        # glyph keeps its visible content declaration and adds an
+        # identical one with an empty alternative text, so engines that
+        # understand alt text skip the decorative glyph; older engines
+        # fall back to the plain glyph. The legend link templates are
+        # untouched.
+        css = (SOURCE / 'assets' / 'css' / 'master.css').read_text()
+        css = re.sub(r'/\*.*?\*/', '', css, flags=re.S)
+        count = 0
+        for m in re.finditer(
+                r'(p\.status-note[^{]*?::before|span\.status-mark[^{]*?::after)'
+                r'\s*\{([^}]*)\}', css):
+            selector, body = m.group(1), m.group(2)
+            if 'content:' not in body:
+                continue
+            count += 1
+            self.assertIn('/ "";', body, selector)
+        self.assertEqual(count, 2 + 2 * len(LABELS), count)
+
+    def test_ruby_label_table_matches_xsl(self):
+        # scripts/status_labels.rb is the one Ruby copy the Typst and
+        # ConTeXt converters share; it must match the XSL token table.
+        ruby = (SOURCE / 'scripts' / 'status_labels.rb').read_text()
+        xsl = (SOURCE / 'xml' / 'docbook2html_config_common.xsl').read_text()
+        label_block = ruby.split('LABELS = {', 1)[1].split('}.freeze', 1)[0]
+        for token, label in LABELS.items():
+            m = re.search(r"'" + re.escape(token) + r"' => \"([^\"]+)\"",
+                          label_block)
+            self.assertIsNotNone(m, token)
+            self.assertEqual(m.group(1), label, token)
+            self.assertIn(f"$token = '{token}'", xsl, token)
+            self.assertIn(label, xsl, token)
+
+    def test_ruby_glyphs_match_css(self):
+        css = (SOURCE / 'assets' / 'css' / 'master.css').read_text()
+        ruby = (SOURCE / 'scripts' / 'status_labels.rb').read_text()
+        glyph_block = ruby.split('GLYPHS = {', 1)[1].split('}.freeze', 1)[0]
+
+        def decode(s):
+            s = re.sub(r'\\u([0-9A-Fa-f]{4})',
+                       lambda m: chr(int(m.group(1), 16)), s)
+            return re.sub(r'\\([0-9A-Fa-f]{4})(?![0-9A-Fa-f])',
+                          lambda m: chr(int(m.group(1), 16)), s)
+
+        for token in LABELS:
+            m = re.search(r'p\.status-note\.status-' + re.escape(token) +
+                          r'::before \{ content: "([^"]+)"', css)
+            self.assertIsNotNone(m, token)
+            glyph = decode(m.group(1))
+            r = re.search(r"'" + re.escape(token) + r"' => \"([^\"]+)\"",
+                          glyph_block)
+            self.assertIsNotNone(r, token)
+            self.assertEqual(decode(r.group(1)), glyph, token)
+
     def test_print_keeps_the_label_with_the_prose_start(self):
         # Review R1, static half (the pagination itself is in
         # scripts/test-status-pagination.py): the print rules keep

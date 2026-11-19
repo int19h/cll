@@ -126,6 +126,25 @@ class DocBookTypstTest < Minitest::Test
     refute_includes source, '#text("  ")'
   end
 
+  def test_status_note_renders_label_also_date_and_glyph
+    source = convert('<chapter><title>Status</title><para role="status-note" condition="status:bpfk-approved;also:historical;date:2015-08-08">Dotside note prose.</para><para role="status-note">Bare note prose.</para></chapter>')
+    assert_includes source, '#cll-status(token: "bpfk-approved", glyph: "●", label: "Approved by the BPFK, 2015-08-08", also: "also: First-edition rule")'
+    assert_includes source, 'Dotside note prose.'
+    assert_includes source, '#cll-status[#text("Bare note prose.")]'
+  end
+
+  def test_status_note_explicit_body_and_extra_role_token
+    source = convert('<chapter><title>Status</title><para role="status-note" condition="status:proposed;body:bpfk">BPFK proposal prose.</para><para role="extra status-note" condition="status:checkpointed">Extra role prose.</para></chapter>')
+    assert_includes source, 'label: "Proposal, BPFK"'
+    assert_includes source, 'glyph: "■"'
+    assert_includes source, 'token: "checkpointed"'
+  end
+
+  def test_status_mark_renders_short_label_and_glyph
+    source = convert('<chapter><title>Status</title><para>Ordinary <phrase role="status-mark" condition="status:de-facto;also:historical">accepted by parsers</phrase> here.</para></chapter>')
+    assert_includes source, '#super[#text("[Established usage]◆")]'
+  end
+
   def test_native_compilation_with_outline_links_and_indexes
     executable = ENV['TYPST']
     skip 'Set TYPST to run the native compilation test.' unless executable

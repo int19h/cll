@@ -73,7 +73,7 @@ The shared merge step retains its existing chapter-numbering behavior for excerp
 
 ## Layout and files
 
-The template preserves the 159 × 240 mm pages, margins, Linux Libertine text, heading styles, examples, illustrations, and status marks.
+The template preserves the 159 × 240 mm pages, margins, Linux Libertine text, heading styles, examples, illustrations, and status notes with their real-text labels and per-status margin marks.
 It uses native tables for word-by-word glosses and native mathematics for the source MathML subset.
 The glossary and both indexes use two columns.
 Indexes combine duplicate page references and consecutive page ranges.

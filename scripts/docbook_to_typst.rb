@@ -4,6 +4,7 @@ require 'json'
 require 'nokogiri'
 require 'fileutils'
 require 'optparse'
+require_relative 'status_labels'
 
 class DocBookTypst
   attr_reader :document, :references, :stats
@@ -122,7 +123,11 @@ class DocBookTypst
     body = "#strong[#{body}]" if %w[selbri gloss bold].include?(role)
     body = "#text(size: 1.2em, weight: \"bold\")[#{body}]" if role == 'logical-vowel'
     body = "#text(font: \"DejaVu Sans Mono\")[#{body}]" if %w[monospace X-SAMPA].include?(role)
-    body = "#underline(stroke: (paint: gray, dash: \"dotted\"))[#{body}]#super[◇]" if role == 'status-mark'
+    if role.split.include?('status-mark')
+      mark = StatusLabels.describe(node['condition'])
+      short = mark ? "#{mark.inline_short}#{mark.glyph}" : StatusLabels::BARE_GLYPH
+      body = "#underline(stroke: (paint: gray, dash: \"dotted\"))[#{body}]#super[#text(#{q(short)})]"
+    end
     body
   end
 
@@ -251,8 +256,14 @@ class DocBookTypst
         ''
       else
         body = anchor(node) + styled(node, children(node))
-        if node['role'] == 'status-note'
-          "#cll-status[#{body}]\n"
+        if node['role'].to_s.split.include?('status-note')
+          note = StatusLabels.describe(node['condition'])
+          if note
+            "#cll-status(token: #{q(note.token)}, glyph: #{q(note.glyph)}, " \
+              "label: #{q(note.label_text)}, also: #{q(note.also_line)})[#{body}]\n"
+          else
+            "#cll-status[#{body}]\n"
+          end
         else
           indent = node.parent.name == 'section' && node['role'] != 'noindent' && node.previous_element&.name != 'title'
           "#cll-par(indent: #{indent})[#{body}]\n"

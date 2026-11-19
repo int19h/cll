@@ -3,6 +3,7 @@
 require 'nokogiri'
 require 'digest'
 require 'json'
+require_relative 'status_labels'
 
 class ContextBook
   ESCAPES = {
@@ -129,7 +130,11 @@ class ContextBook
     text = "{\\CLLcrisa #{text}}" if language == 'zlm'
     text = "{\\CLLkorean #{text}}" if language == 'ko'
     text = "{\\CLLchinese #{text}}" if language == 'zh'
-    text += '{\\high{◇}}' if role.split.include?('status-mark')
+    if role.split.include?('status-mark')
+      mark = StatusLabels.describe(node['condition'])
+      short = mark ? "#{mark.inline_short}#{mark.glyph}" : StatusLabels::BARE_GLYPH
+      text += "{\\high{#{esc(short)}}}"
+    end
     text
   end
 
@@ -271,8 +276,15 @@ class ContextBook
     when 'para'
       in_list = node.ancestors.any? { |ancestor| ancestor.name == 'listitem' }
       body = styled(node, children(node, trim_leading: in_list))
-      if node['role'] == 'status-note'
-        "\n\\startCLLstatus ◇ #{body}\\stopCLLstatus\n"
+      if node['role'].to_s.split.include?('status-note')
+        note = StatusLabels.describe(node['condition'])
+        if note
+          head = "#{esc(note.glyph)} {\\sc #{esc(note.label_text)}}"
+          head += "\\crlf {\\tfx #{esc(note.also_line)}}" unless note.also_line.empty?
+          "\n\\startCLLstatus #{head}\\crlf #{body}\\stopCLLstatus\n"
+        else
+          "\n\\startCLLstatus ◇ #{body}\\stopCLLstatus\n"
+        end
       elsif node.ancestors.any? { |ancestor| %w[td th].include?(ancestor.name) }
         "#{body}\\par\n"
       else

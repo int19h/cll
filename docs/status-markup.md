@@ -132,6 +132,22 @@ enforces this.
   class `scripts/epub_pages.rb` puts on packaged pages) restores the light
   form in the packaged ePub, whose reading systems differ in the CSS they
   apply.
+- **Typst and ConTeXt** (experimental formats, not release formats): the
+  converters (`scripts/docbook_to_typst.rb` and
+  `scripts/docbook_to_context.rb`) read `@condition` from the DocBook
+  sources and render the same real-text label as the print PDFs (label,
+  explicit body, date and also-strands) with the same per-status margin
+  glyph, in black and white. The label stays with the start of the note
+  (a sticky label block in Typst, `\testpage` in ConTeXt). The token
+  table lives once in `scripts/status_labels.rb`, checked against the
+  XSL table, the CSS glyphs and this file by
+  `scripts/test-status-rendering.py`.
+- **Screen readers**: the CSS margin glyphs are decorative. Every glyph
+  rule keeps its visible `content` declaration and adds an identical one
+  with an empty alternative text (`content: "◆" / "";`), so readers that
+  understand alternative text skip the glyph while the real-text label
+  stays readable; older engines use the plain fallback. The glyphs add
+  no XSL output, so the legend link templates are untouched.
 - **jbotci cukta**: consumes the XML directly; keys off `@role` and parses
   `@condition` with the microsyntax above. Unknown keys must be ignored.
 

@@ -393,7 +393,7 @@
       refers to someone whose naming predicate is
       <valsi>cribe</valsi>
       , i.e.
-      <quote>Bear</quote>. In English, most names don't mean anything, or at least not anything obvious. The name
+      <quote>Bear</quote>. In English, a name need not mean anything, or at least not anything obvious. The name
       <quote>Frank</quote>
       coincides with the English word
       <quote>frank</quote>
@@ -416,7 +416,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      English-speakers typically would not do this, as we tend to be more attached to the sound of our names than their meaning, even if the meaning (etymological or current) is known. Speakers of other languages may feel differently. (In point of fact,
+      Such a translation uses an association that the name happens to have in English, and gives up its sound. Whether that is a fair trade is a matter of taste. (In point of fact,
       <quote>Frank</quote>
       originally meant
       <quote>the free one</quote>
@@ -1507,7 +1507,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent">The x<subscript>2</subscript> place of <jbophrase>selsinxa</jbophrase> (the x<subscript>1</subscript> place of <valsi>sinxa</valsi>) is a sign or symbol, and the x<subscript>1</subscript> place of <jbophrase>selsinxa</jbophrase> (the x<subscript>2</subscript> place of <valsi>sinxa</valsi>) is the thing represented by the sign. <xref linkend="example-random-id-MSVK" /> lets us use a symbol (namely the title of a book) to stand for the thing it is a symbol of (namely the book itself).</para>
-    <para>This operation is needed often enough that it's handy to be able to say:</para>
+    <para>It is handy to have a shorter way of saying this:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-Ajty">
       <title><anchor xml:id="c6e10d3" /></title>
 
@@ -1526,7 +1526,7 @@
           <jbophrase>le selsinxa be</jbophrase>
         </secondary>
       </indexterm>So when <valsi>la'e</valsi> is prefixed to a sumti referring to a symbol, the result is a sumti referring to the referent of that symbol. (In computer jargon, <valsi>la'e</valsi> dereferences a pointer.)</para>
-    <para>By bringing in a sumti qualifier, we turn a false sentence (<xref linkend="example-random-id-6W3v" />), one that follows its literal English equivalent too closely, into a true sentence (<xref linkend="example-random-id-Ajty" />), and we don't have to change it much to do so; in particular, the structure stays the same. Most uses of sumti qualifiers are of this general kind.</para>
+    <para>By bringing in a sumti qualifier, we turn a false sentence (<xref linkend="example-random-id-6W3v" />), one that follows its literal English equivalent too closely, into a true sentence (<xref linkend="example-random-id-Ajty" />), and we don't have to change it much to do so; in particular, the structure stays the same. Most sumti qualifiers do this general kind of job.</para>
     <para><indexterm type="general"><primary>symbol</primary><secondary>referring to with &quot;lu'e&quot;</secondary>
       </indexterm><indexterm type="lojban-word"><primary>lu'e</primary><secondary>effect of on meaning</secondary>
       </indexterm>The sumti qualifier <valsi>lu'e</valsi> provides the converse operation: prefixed to a sumti referring to some thing, it produces a sumti referring to a sign or symbol for that thing. For example,<indexterm type="lojban-word"><primary>lu'e</primary><secondary>as short for &quot;le sinxa be&quot;</secondary>
@@ -1631,7 +1631,7 @@
         <natlang>The set of you and me is a set. The group of you and me is a group. The sequence of you and me is a sequence.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="noindent">(Yes, I know these examples are a bit silly. This set was introduced for completeness, and practical examples are as yet hard to come by.)</para>
+    <para role="noindent">(Yes, I know these examples are a bit silly. This set was introduced for completeness, and when the first edition of this book appeared, practical examples were hard to come by.)</para>
     <para>
       <indexterm type="general"><primary>negation sumti qualifiers</primary><secondary>meanings of</secondary>
       </indexterm>
@@ -1654,7 +1654,7 @@
         </interlinear-gloss>
       </example>
     </para>
-    <para>This compound, <jbophrase>na'ebo</jbophrase>, is the most common of the four negation sumti qualifiers. The others usually make sense only in the context of repeating, with modifications, something already referred to:</para>
+    <para>This compound, <jbophrase>na'ebo</jbophrase>, says only that something other than the sumti is meant. The compounds <jbophrase>to'ebo</jbophrase> and <jbophrase>no'ebo</jbophrase> say more about the intended alternative, so the context must make clear what counts as the opposite or the neutral value. One way to supply that context is to repeat, with modifications, something already referred to:</para>
 
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-JwCb">
@@ -1719,7 +1719,7 @@
       <valsi>doi</valsi>
       , or else just
       <valsi>doi</valsi>
-      by itself) can be followed by one of several kinds of phrases, all of which are intended to indicate the addressee. The most common case is a cmevla (name-word):
+      by itself) can be followed by one of several kinds of phrases, all of which are intended to indicate the addressee. The simplest case is a cmevla (name-word):
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-Bega">
       <title><anchor xml:id="c6e11d3" /><indexterm type="lojban-word"><primary>coi</primary></indexterm></title>
@@ -1960,7 +1960,7 @@
 
       <indexterm type="general"><primary>names</primary><secondary>using rafsi</secondary>
       </indexterm>
-      Names may be borrowed from other languages or created arbitrarily. Another common practice is to use one or more rafsi, arranged to end with a consonant, to form a name: thus the rafsi
+      Names may be borrowed from other languages or created arbitrarily. Another way is to use one or more rafsi, arranged to end with a consonant, to form a name: thus the rafsi
       <rafsi>loj-</rafsi>
       for
       <valsi>logji</valsi>
@@ -1979,15 +1979,15 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="general"><primary>names from vowel-final base</primary><secondary>commonly used consonant endings</secondary>
+      <indexterm type="general"><primary>names from vowel-final base</primary><secondary>added consonant endings</secondary>
       </indexterm>
       <indexterm type="general"><primary>names</primary><secondary>borrowing from other languages</secondary>
       </indexterm>
-      When borrowing names from another language which end in a vowel, or when turning a Lojban brivla (all of which end in vowels) into a cmevla, the vowel may be removed or an arbitrary consonant added. It is common (but not required) to use the consonants
+      When borrowing names from another language which end in a vowel, or when turning a Lojban brivla (all of which end in vowels) into a cmevla, the vowel may be removed or an arbitrary consonant added. One choice (but not a required one) is to add the consonant
       <rafsi>s</rafsi>
       or
       <rafsi>n</rafsi>
-      when borrowing vowel-final names from English; speakers of other languages may wish to use other consonant endings.
+      when borrowing vowel-final names from English; any other consonant ending is just as correct.
     </para>
 
   </section>

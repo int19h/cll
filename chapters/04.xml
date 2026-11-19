@@ -839,7 +839,7 @@
       </indexterm>
       <indexterm type="general"><primary>cmavo</primary><secondary>stress on</secondary>
       </indexterm>
-      There is no particular stress required in cmavo or their compounds. Some conventions do exist that are not mandatory. For two-syllable cmavo, for example, stress is typically placed on the first vowel; an example is
+      There is no particular stress required in cmavo or their compounds. Some conventions do exist that are not mandatory. For two-syllable cmavo, for example, one convention places the stress on the first vowel; an example is
     </para>
     <example role="pronunciation-example" xml:id="example-random-id-pdGY">
       <title><anchor xml:id="c4e2d6" /></title>
@@ -849,7 +849,7 @@
         <jbo role="pronunciation">.E'o ko ko KURji</jbo>
       </pronunciation>
     </example>
-    <para role="indent">This convention results in a consistent rhythm to the language, since brivla are required to have penultimate stress; some find this esthetically pleasing.</para>
+    <para role="indent">This convention results in a consistent rhythm to the language, since brivla are required to have penultimate stress.</para>
     <para>
       <indexterm type="general"><primary>pause</primary><secondary>requirement between stressed syllables</secondary>
       </indexterm>
@@ -908,7 +908,7 @@
         <jbo role="pronunciation">lo re NANmu</jbo>
       </pronunciation>
     </example>
-    <para role="indent">This would probably be the most common usage.</para>
+    <para role="indent">This pronunciation needs no pause, since no two stressed syllables meet.</para>
   </section>
   <section xml:id="section-morphology-brivla">
     <title><anchor xml:id="c4s3" />brivla</title>
@@ -1209,7 +1209,7 @@
     <para>      <indexterm type="general"><primary>modifying brivla (see also seltau)</primary></indexterm>      <indexterm type="general"><primary>seltau</primary><secondary>compared with English adverb</secondary>      </indexterm>      <indexterm type="general"><primary>seltau</primary><secondary>compared with English adjective</secondary>      </indexterm>
       <indexterm type="general"><primary>tanru</primary><secondary>explanation of</secondary>
       </indexterm>
-      When specifying a concept that is not found among the gismu (or, more specifically, when the relevant gismu seems too general in meaning), a Lojbanist generally attempts to express the concept as a tanru. Lojban tanru are an elaboration of the concept of
+      When specifying a concept that is not found among the gismu (or, more specifically, when the relevant gismu seems too general in meaning), the first step is to express the concept as a tanru. Lojban tanru are an elaboration of the concept of
       <quote>metaphor</quote>
       used in English. In Lojban, any brivla can be used to modify another brivla. The first of the pair modifies the second. This modification is usually restrictive &ndash; the modifying brivla reduces the broader sense of the modified brivla to form a more narrow, concrete, or specific concept. Modifying brivla may thus be seen as acting like English adverbs or adjectives. For example,
     </para>
@@ -1617,9 +1617,9 @@
       (in addition to its unreduced rafsi
       <rafsi>zmad</rafsi>
       and
-      <valsi>zmadu</valsi>), because a vast number of lujvo have been created based on
+      <valsi>zmadu</valsi>), because
       <valsi>zmadu</valsi>
-      , corresponding in general to English comparative adjectives ending in
+      is useful in a great many lujvo, corresponding in general to English comparative adjectives ending in
       <quote>-er</quote>
       such as
       <quote>whiter</quote>
@@ -1627,7 +1627,7 @@
       <valsi valid="maybe">labmau</valsi>). On the other hand,
       <valsi>bakri</valsi>
       (
-      <quote>chalk</quote>) has no short rafsi and few lujvo.
+      <quote>chalk</quote>) has no short rafsi, and the dictionary lists only a few lujvo built on it.
     </para>
     <para>There are at most one CVC-form, one CCV-form, and one CVV-form rafsi per gismu. In fact, only a tiny handful of gismu have both a CCV-form and a CVV-form rafsi assigned, and still fewer have all three forms of short rafsi. However, gismu with both a CVC-form and another short rafsi are fairly common, partly because more possible CVC-form rafsi exist. Yet CVC-form rafsi, even though they are fairly easy to remember, cannot be used at the end of a lujvo (because lujvo must end in vowels), so that justifies assigning an additional short rafsi to many gismu.</para>
 
@@ -2277,7 +2277,7 @@
     <para><indexterm type="general"><primary>borrowings</primary><secondary>most common form for</secondary>
       </indexterm><indexterm type="general"><primary>fu'ivla</primary><secondary>uniqueness of meaning in</secondary>
       </indexterm><indexterm type="general"><primary>rafsi</primary><secondary>as fu'ivla categorizer</secondary>
-      </indexterm><indexterm type="general"><primary>fu'ivla categorizer</primary></indexterm>The rafsi categorizes or limits the meaning of the fu'ivla. Without it, a word having several different jargon meanings in other languages would force the word-inventor to choose which meaning should be assigned to the fu'ivla, since fu'ivla (like other brivla) are not permitted to have more than one definition. Such a Stage 3 borrowing is the most common kind of fu'ivla.</para>
+      </indexterm><indexterm type="general"><primary>fu'ivla categorizer</primary></indexterm>The rafsi categorizes or limits the meaning of the fu'ivla. Without it, a word having several different jargon meanings in other languages would force the word-inventor to choose which meaning should be assigned to the fu'ivla, since fu'ivla (like other brivla) are not permitted to have more than one definition.</para>
 
 
     <para>
@@ -2290,7 +2290,7 @@
       <indexterm type="lojban-word"><primary>zi'evla</primary></indexterm>
       <indexterm type="general"><primary>zi'evla</primary><secondary>as term for Stage 4 fu'ivla</secondary>
       </indexterm>
-      Finally, Stage 4 fu'ivla do not have any rafsi classifier, and are used where a fu'ivla has become so common or so important that it must be made as short as possible. This book also calls these free-form borrowings
+      Finally, Stage 4 fu'ivla do not have any rafsi classifier. That makes them as short as a borrowing can be, which suits a concept so common or so important that its word must be made as short as possible. This book also calls these free-form borrowings
       <jbophrase>zi'evla</jbophrase>
       (<quote>free words</quote>). (See
       <xref linkend="section-rafsi-fuhivla" />
@@ -3871,7 +3871,7 @@
       <indexterm type="general"><primary>lujvo</primary><secondary>dropping elements of</secondary>
       </indexterm>
       <indexterm type="general"><primary>Zipf's Law</primary></indexterm>
-      The third complication is also simple, but tends to scare new Lojbanists with its implications. It is based on Zipf's Law, which says that the length of words is inversely proportional to their usage. The shortest words are those which are used more; the longest ones are used less. Conversely, commonly used concepts will be tend to be abbreviated. In English, we have abbreviations and acronyms and jargon, all of which represent complex ideas that are used often by small groups of people, so they shortened them to convey more information more rapidly.
+      The third complication is also simple, but its implications can look alarming at first. It is based on Zipf's Law, which says that the length of words is inversely proportional to their usage. The shortest words are those which are used more; the longest ones are used less. Conversely, commonly used concepts tend to be abbreviated. In English, we have abbreviations and acronyms and jargon, all of which represent complex ideas that are used often by small groups of people, so they shortened them to convey more information more rapidly.
     </para>
 
 
@@ -3890,7 +3890,7 @@
       </indexterm>
       <indexterm type="general"><primary>lujvo</primary><secondary>considerations for retaining elements of</secondary>
       </indexterm>
-      If the lujvo made by a shorter form of tanru is in use, or is likely to be useful for another meaning, the decider then retains one or more of the cmavo, preferably ones that set this meaning apart from the shorter form meaning that is used or anticipated. As a rule, therefore, the shorter lujvo will be used for a more general concept, possibly even instead of a more frequent word. If both words are needed, the simpler one should be shorter. It is easier to add a cmavo to clarify the meaning of the more complex term than it is to find a good alternate tanru for the simpler term.
+      If the lujvo made by a shorter form of tanru is in use, or is likely to be useful for another meaning, the decider then retains one or more of the cmavo, preferably ones that set this meaning apart from the shorter form meaning that is used or anticipated. As a rule, therefore, the shorter lujvo should go to the more general concept, possibly even when the more specific concept is the more frequent one. If both words are needed, the simpler one should be shorter. It is easier to add a cmavo to clarify the meaning of the more complex term than it is to find a good alternate tanru for the simpler term.
     </para>
 
     <para>
@@ -3981,7 +3981,7 @@
   <section xml:id="section-lujvo-scoring">
     <title><anchor xml:id="c4s12" />The lujvo scoring algorithm</title>
 
-    <para>This algorithm was devised by Bob and Nora LeChevalier in 1989. It is not the only possible algorithm, but it usually gives a choice that people find preferable. The algorithm may be changed in the future. The lowest-scoring variant will usually be the dictionary form of the lujvo. (In previous versions, it was the highest-scoring variant.)</para>
+    <para>This algorithm was devised by Bob and Nora LeChevalier in 1989. It is not the only possible algorithm; the priorities that it encodes are explained after the score formula. The algorithm may be changed in the future. The lowest-scoring variant is the one that the algorithm recommends as the dictionary form of the lujvo. (In previous versions, it was the highest-scoring variant.)</para>
     <orderedlist>
       <listitem>
         <para>

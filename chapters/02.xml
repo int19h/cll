@@ -448,8 +448,8 @@
       <indexterm type="general"><primary>words not in the dictionary</primary></indexterm>
       Like the table in
       <xref linkend="section-sumti-cmavo" />,
-      this table is far from complete: in fact, no complete table can exist, because Lojban allows new words to be created (in specified ways) whenever a speaker or writer finds the existing supply of words inadequate. This notion is a basic difference between Lojban (and some other languages such as German and Chinese) and English; in English, most people are very leery of using words that
-      <quote>aren't in the dictionary</quote>. Lojbanists are encouraged to invent new words; doing so is a major way of participating in the development of the language.
+      this table is far from complete: in fact, no complete table can exist, because Lojban allows new words to be created (in specified ways) whenever a speaker or writer finds the existing supply of words inadequate. This notion is a basic difference between Lojban (and some other languages such as German and Chinese) and English: a Lojban word that
+      <quote>isn't in the dictionary</quote> is still a proper word if it is made by the rules. Lojbanists are encouraged to invent new words; doing so is a major way of participating in the development of the language.
       <xref linkend="chapter-morphology" />
       explains how to make new words, and
       <xref linkend="chapter-lujvo" />
@@ -739,7 +739,7 @@
       <xref linkend="example-random-id-k068" />
       through
       <xref linkend="example-random-id-k0Bm" />
-      mean the same thing. Usually, placing more than one sumti before the selbri is done for style or for emphasis on the sumti that are out-of-place from their normal position. (Native speakers of languages other than English may prefer such orders.)
+      mean the same thing. Placing more than one sumti before the selbri is a matter of style, or of emphasis on the sumti that are out-of-place from their normal position. (Many languages other than English put the verb last, as <xref linkend="example-random-id-k0Bm" /> does.)
     </para>
     <para>
       <indexterm type="general"><primary>observatives</primary><secondary>quick-tour version</secondary>
@@ -794,7 +794,7 @@
       </interlinear-gloss-itemized>
     </example>
     <para role="indent">
-      Omitting the x<subscript>1</subscript> adds emphasis to the selbri relation, which has become first in the sentence. This kind of sentence is termed an observative, because it is often used when someone first observes or takes note of the relationship, and wishes to quickly communicate it to someone else. Commonly understood English observatives include
+      Omitting the x<subscript>1</subscript> adds emphasis to the selbri relation, which has become first in the sentence. This kind of sentence is termed an observative, because it suits the moment when someone first observes or takes note of the relationship, and wishes to quickly communicate it to someone else. Commonly understood English observatives include
       <quote>Smoke!</quote>
       upon seeing smoke or smelling the odor, or
       <quote>Car!</quote>
@@ -891,7 +891,7 @@
       <valsi>xe</valsi>
       cmavo are said to convert the selbri.
     </para>
-    <para>More than one of these operators may be used on a given selbri at one time, and in such a case they are evaluated from left to right. In practice, though, they are used one at a time, since there are better tools for complex manipulation of the sumti places. See <xref linkend="section-SE" /> for details.</para>
+    <para>More than one of these operators may be used on a given selbri at one time, and in such a case they are evaluated from left to right. Stacking them, though, is seldom the clearest choice, since there are better tools for complex manipulation of the sumti places. See <xref linkend="section-SE" /> for details.</para>
     <para><indexterm type="general"><primary>passive voice</primary></indexterm>The effect is similar to what in English is called the <quote>passive voice</quote>. In Lojban, the converted selbri has a new place structure that is renumbered to reflect the place reversal, and this has consequences when such a conversion is used in combination with other constructs such as <jbophrase>lo selbri [ku]</jbophrase> (see <xref linkend="section-description-sumti" />).</para>
   </section>
   <section xml:id="section-structure-of-utterances">
@@ -919,7 +919,7 @@
       <valsi>xu</valsi>,
       discussed in
       <xref linkend="section-basic-questions" />,
-      is one such word &ndash; it turns the sentence from a statement to a question about truth.) When more than one person is talking, a new speaker will usually omit the
+      is one such word &ndash; it turns the sentence from a statement to a question about truth.) When more than one person is talking, a new speaker may omit the
       <valsi>.i</valsi>
       even though she/he may be continuing on the same topic.
     </para>
@@ -1564,7 +1564,7 @@
 
       </interlinear-gloss-itemized>
     </example>
-    <para role="indent"><indexterm type="general"><primary>pleases</primary></indexterm><xref linkend="example-random-id-k0YS" /> uses one sumti to point to or refer to another by inference. It is common to write <valsi>la'edi'u</valsi> as a single word, and it is used more often than <valsi>di'u</valsi> by itself.</para>
+    <para role="indent"><indexterm type="general"><primary>pleases</primary></indexterm><xref linkend="example-random-id-k0YS" /> uses one sumti to point to or refer to another by inference. Like other cmavo compounds, <valsi>la'edi'u</valsi> may be written as a single word.</para>
   </section>
   <section xml:id="section-possession">
     <title><anchor xml:id="c2s13" />Possession</title>

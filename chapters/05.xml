@@ -298,7 +298,7 @@
       <quote>goer type of table</quote>,
       but the ambiguous
       <quote>type of</quote>
-      relationship can mean one of many things. A speaker who uses tanru (and pragmatically all speakers must) takes the risk of being misunderstood. Using tanru is convenient because they are short and expressive; the circumlocution required to squeeze out all ambiguity can require too much effort.
+      relationship can mean one of many things. A speaker who uses tanru takes the risk of being misunderstood. Using tanru is convenient because they are short and expressive; the circumlocution required to squeeze out all ambiguity can require too much effort.
     </para>
     <para>
       <indexterm type="general"><primary>tanru</primary><secondary>meaning of</secondary>
@@ -1554,7 +1554,7 @@
       <valsi>fe</valsi>
       tells us that
       <valsi>do</valsi>
-      is the x<subscript>2</subscript> place). Changing the order of sumti is often done to match the order of another language, or for emphasis or rhythm.
+      is the x<subscript>2</subscript> place). Changing the order of sumti can serve to match the order of another language, or to add emphasis or rhythm.
     </para>
     <para>Of course, using FA cmavo makes it easy to specify one place while omitting a previous place:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-9b37">
@@ -2338,11 +2338,11 @@
     <para role="indent">
       <indexterm type="lojban-word"><primary>me</primary><secondary>used with names</secondary>
       </indexterm>
-      It is common to use
+      A
       <valsi>me</valsi>
-      selbri, especially those based on name sumti using
+      selbri, especially one based on a name sumti using
       <valsi>la</valsi>,
-      as seltau. For example:
+      can serve as a seltau. For example:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-raQG">
       <title>

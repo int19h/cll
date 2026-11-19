@@ -62,7 +62,7 @@
       <indexterm type="general"><primary>relative clause</primary><secondary>use for reference</secondary>
       </indexterm>
       To help solve this problem, Lojban uses a construction called a
-      <quote>relative clause</quote>. Relative clauses are usually attached to the end of sumti, but there are other places where they can go as well, as explained later in this chapter. A relative clause begins with a word of selma'o NOI, and ends with the elidable terminator
+      <quote>relative clause</quote>. The basic place for a relative clause is at the end of a sumti, but there are other places where it can go as well, as explained later in this chapter. A relative clause begins with a word of selma'o NOI, and ends with the elidable terminator
       <valsi>ku'o</valsi>
       (of selma'o KUhO). As you might suppose,
       <valsi>noi</valsi>
@@ -490,7 +490,7 @@
       </indexterm>
       <indexterm type="general"><primary>relative phrase</primary><secondary>rationale for</secondary>
       </indexterm>
-      There are types of relative clauses (those which have a certain selbri) which are frequently wanted in Lojban, and can be expressed using a shortcut called a relative phrase. Relative phrases are introduced by cmavo of selma'o GOI, and consist of a GOI cmavo followed by a single sumti.
+      Some types of relative clauses (those which have a certain selbri) can be expressed using a shortcut called a relative phrase. Relative phrases are introduced by cmavo of selma'o GOI, and consist of a GOI cmavo followed by a single sumti.
     </para>
     <para>
       <indexterm type="general"><primary>loose association</primary><secondary>expressing with &quot;pe&quot;</secondary>
@@ -1175,7 +1175,7 @@
   </section>
   <section xml:id="section-descriptors">
     <title><anchor xml:id="c8s6" />Relative clauses and descriptors</title>
-    <para>So far, this chapter has described the various kinds of relative clauses (including relative phrases). The list is now complete, and the rest of the chapter will be concerned with the syntax of sumti that include relative clauses. Up to now, every relative clause has appeared directly after the sumti to which it is attached. This is the most common position (and originally the only one), but a variety of other placements are also possible, and they produce a variety of semantic effects.</para>    <para>      There are actually three places where a relative clause can be attached to a description sumti: after the descriptor (      <valsi>le</valsi>      ,      <valsi>lo</valsi>
+    <para>So far, this chapter has described the various kinds of relative clauses (including relative phrases). The list is now complete, and the rest of the chapter will be concerned with the syntax of sumti that include relative clauses. Up to now, every relative clause has appeared directly after the sumti to which it is attached. This is the basic position (and originally the only one), but a variety of other placements are also possible, and they produce a variety of semantic effects.</para>    <para>      There are actually three places where a relative clause can be attached to a description sumti: after the descriptor (      <valsi>le</valsi>      ,      <valsi>lo</valsi>
       , or whatever), after the embedded selbri but before the elidable terminator (which is
       <valsi>ku</valsi>), and after the
       <valsi>ku</valsi>. The relative clauses attached to descriptors that we have seen have occupied the second position. Thus
@@ -1230,7 +1230,7 @@
         <gloss>The (dog ) which is-white -- goes.</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent"><xref linkend="example-random-id-UmLX" /> will seem most natural to speakers of languages like English, which always puts relative clauses after the noun phrases they are attached to; <xref linkend="example-random-id-qmCQ" />, on the other hand, may seem more natural to Finnish or Chinese speakers, who put the relative clause first. Note the elidable terminator <valsi>ku'o</valsi> in <xref linkend="example-random-id-qmCQ" />. Without it, the selbri of the relative clause (<valsi>blabi</valsi>) and the selbri of the description (<valsi>gerku</valsi>) run together on the page, and a reader cannot easily see where one ends and the other begins. The grammar will still give the sentence its intended structure, because no other structure fits the whole text (see <xref linkend="ebnf-parses" />), but the parser of the first edition did not look that far ahead and rejected the sentence. So write the <valsi>ku'o</valsi>. The purpose of the form appearing in <xref linkend="example-random-id-qMct" /> will be apparent shortly.</para>
+    <para role="indent"><xref linkend="example-random-id-UmLX" /> follows the order of languages like English, which always puts relative clauses after the noun phrases they are attached to; <xref linkend="example-random-id-qmCQ" />, on the other hand, follows the order of languages like Chinese, which puts the relative clause first. Note the elidable terminator <valsi>ku'o</valsi> in <xref linkend="example-random-id-qmCQ" />. Without it, the selbri of the relative clause (<valsi>blabi</valsi>) and the selbri of the description (<valsi>gerku</valsi>) run together on the page, and a reader cannot easily see where one ends and the other begins. The grammar will still give the sentence its intended structure, because no other structure fits the whole text (see <xref linkend="ebnf-parses" />), but the parser of the first edition did not look that far ahead and rejected the sentence. So write the <valsi>ku'o</valsi>. The purpose of the form appearing in <xref linkend="example-random-id-qMct" /> will be apparent shortly.</para>
     <para>
       As is explained in detail in
       <xref linkend="section-quantified-descriptions" />
@@ -1584,7 +1584,7 @@
       <valsi>ku</valsi>
       at the end of the possessor sumti, which keeps the selbri of the possessor sumti from merging with the selbri of the main description sumti. Without it the two selbri simply run together on the page, and a reader has a hard time seeing where one ends and the other begins. The grammar still assigns the sentence its intended structure, since no other structure fits the text as a whole (see <xref linkend="ebnf-parses" />), but the parser of the first edition rejected the sentence outright. Because this
       <valsi>ku</valsi>
-      is needed for clarity, the most common kind of possessor sumti are pro-sumti, especially personal pro-sumti, which require no elidable terminator. Descriptions are more likely to be attached with relative phrases.
+      is needed for clarity, pro-sumti make the most convenient possessor sumti, especially personal pro-sumti, which require no elidable terminator. A description is more easily attached with a relative phrase.
     </para>
 
     <para>And here is a number used as a possessor sumti:</para>

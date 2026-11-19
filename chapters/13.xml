@@ -1706,7 +1706,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent"><indexterm type="general"><primary>attitudinals</primary><secondary>complexity</secondary>
-      </indexterm>Some of the emotional expressions may seem too complicated to use. Nobody is obliged to use every combination. But if one person uses one of these expressions, another person can understand (as unambiguously as the expresser intends) what emotion is being expressed, by the rules for compound indicators in <xref linkend="section-compound-attitudinals" />. If speakers reuse particular attitudinal combinations, those combinations may become standard expressions (if not cliches) of emotion.</para>
+      </indexterm>Some of the emotional expressions may seem too complicated to use. Nobody is obliged to use every combination. But if one person uses one of these expressions, another person can use the rules for compound indicators in <xref linkend="section-compound-attitudinals" /> to understand (as unambiguously as the expresser intends) what emotion is being expressed. If speakers reuse particular attitudinal combinations, those combinations may become standard expressions (if not cliches) of emotion.</para>
   </section>
   <section xml:id="section-compound-attitudinals">
     <title><anchor xml:id="c13s8" />Compound indicators</title>
@@ -4220,7 +4220,7 @@
       </indexterm>
       <indexterm type="general"><primary>Kzinti</primary><secondary>communication with</secondary>
       </indexterm>
-      The first edition of this book described the exact ramifications of the indicator system in actual usage as unknown. The system provides great potential for emotional expression and transcription, from which significant Sapir-Whorf effects can be anticipated. When communicating across cultural boundaries, where different signals can be used for the same emotion, accidental offense can be avoided. If we ever ran into an alien race, a culturally neutral language of emotion could be vital. (A classic example, taken from the science fiction of Larry Niven, is to imagine speaking Lojban to the carnivorous warriors called Kzinti, noting that a human smile bares the teeth, and could be seen as an intent to attack.) And for communicating emotions to computers, when we cannot identify all of the signals involved in subliminal human communication (things like body language are also cultural), a system like this is needed.
+      The first edition of this book described the exact ramifications of the indicator system in actual usage as unknown. The system provides great potential for emotional expression and transcription, and the first edition of this book anticipated significant Sapir-Whorf effects from it. When communicating across cultural boundaries, where different signals can be used for the same emotion, accidental offense can be avoided. If we ever ran into an alien race, a culturally neutral language of emotion could be vital. (A classic example, taken from the science fiction of Larry Niven, is to imagine speaking Lojban to the carnivorous warriors called Kzinti, noting that a human smile bares the teeth, and could be seen as an intent to attack.) And for communicating emotions to computers, when we cannot identify all of the signals involved in subliminal human communication (things like body language are also cultural), a system like this is needed.
     </para>
 
 

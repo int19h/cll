@@ -78,6 +78,7 @@ It preserves the 159 × 240 mm page size and the existing heading and body sizes
 It includes running headers, double-sided pages, chapter openings, a contents list, PDF bookmarks, links, and page references.
 It generates the glossary and both indexes from the source markup.
 The indexes use ConTeXt registers, which collect and combine page references.
+DocBook `see` and `seealso` entries become the register's own see cross-references.
 
 The converter maps fractions, powers, and square roots to native mathematics.
 It preserves the interlinear word and gloss columns from the shared preprocessing stage.
@@ -112,6 +113,15 @@ python3 scripts/test-context-indexes.py build/cll-context.pdf
 
 This rendering test requires PyMuPDF in the selected Python environment.
 It detects split headwords, case-ordering errors, and misplaced entries with leading spaces.
+
+After a full build, test the printed cross-references:
+
+```sh
+python3 scripts/test-context-references.py build/cll-context.pdf
+```
+
+This rendering test also requires PyMuPDF.
+It detects empty page references, section numbers in place of custom reference labels, and grammar-rule references without rule numbers.
 
 The container uses ConTeXt `2026.10.25 20:06` from a fixed commit of the official source repository.
 It compiles the bundled LuaMetaTeX source with the fixed Ubuntu toolchain.

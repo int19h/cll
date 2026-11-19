@@ -36,7 +36,8 @@ class ContextBook
     @ids.each do |id, node|
       owner = node
       owner = owner.parent while owner.element? && !@labels.key?(owner.path) && owner.parent&.element?
-      @labels[id] = @labels[owner.path] || plain(node)
+      # A target's own xreflabel wins over its containing section's number.
+      @labels[id] = node['xreflabel'] || @labels[owner.path] || plain(node)
     end
   end
 
@@ -172,7 +173,17 @@ class ContextBook
       value = term.text.gsub(/\s+/, ' ').strip.downcase.tr('’', "'").gsub('!', '!!').gsub(/(?<!\A)'/, '!a')
       esc(value).gsub('+', '\\char43{}')
     end
-    "\\#{register}[{#{keys.join('+')}}]{#{terms.join('+')}}"
+    base = "\\#{register}[{#{keys.join('+')}}]{#{terms.join('+')}}"
+    # DocBook see/seealso cross-references become the register's own see
+    # entries (for example \seeCLLgeneral). A see entry points at another
+    # headword instead of carrying page references; seealso points as well
+    # but keeps its own page entry.
+    sees = node.xpath('./see|./seealso').map do |target|
+      text = children(target).strip.gsub('+', '\\char43{}')
+      "\\see#{register}[{#{keys.join('+')}}]{#{terms.join('+')}}{#{text}}"
+    end.join
+    return sees if node.at_xpath('./see')
+    sees + base
   end
 
   def math(node)
@@ -323,7 +334,16 @@ class ContextBook
       body = node.xpath('./listitem').map { |item| children(item) }.join
       "\n\\noindentation{\\bf #{terms}}\\par\\startnarrower[left]#{body}\\stopnarrower\n"
     when 'blockquote' then "\n\\startnarrower[left]#{children(node)}\\stopnarrower\n"
-    when 'bridgehead' then "\n\\subsubject[title={#{children(node)}}]\n"
+    when 'bridgehead'
+      # Anchors cannot stay in the title argument: ConTeXt processes it
+      # more than once, and cross-references to them lose their page
+      # numbers. Pass them through the heading's reference field instead,
+      # as chapter and section titles already do.
+      refs = node.xpath('.//anchor').map { |item| item['id'] }.compact.map { |id| key(id) }
+      clean = node.dup
+      clean.xpath('.//anchor').remove
+      ref = refs.empty? ? '' : ",reference={#{refs.join(',')}}"
+      "\n\\subsubject[title={#{children(clean)}}#{ref}]\n"
     when 'glossary'
       "\n\\startchapter[title={#{title(node)}},number=no]\n" +
         node.xpath('./para').map { |item| render(item) }.join +

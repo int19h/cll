@@ -41,6 +41,13 @@ class ContextIndexTest(unittest.TestCase):
         self.assertNotRegex(self.general, r'(?m)^!$')
         self.assertNotRegex(self.lojban, r'(?m)^!$')
 
+    def test_see_entry_has_target_and_no_page_number(self):
+        line = re.search(r'^masses[^\n]*', self.general, re.M)
+        self.assertIsNotNone(line, 'masses entry missing from the general index')
+        line = line.group(0)
+        self.assertIn('see groups', line)
+        self.assertNotRegex(line, r'\d')
+
 
 if __name__ == '__main__':
     unittest.main()

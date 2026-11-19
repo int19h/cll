@@ -144,6 +144,55 @@ class ContextBookTest < Minitest::Test
     assert_match(/\\bTD[^\n]*\n?\{\n\\begingroup/, output)
   end
 
+  def test_cross_references_use_custom_labels
+    input = book(<<~XML)
+      <chapter id="c"><title>Grammar</title><section id="s"><title>Rules</title>
+        <bridgehead><anchor id="rule" xreflabel="BNF rule #42"/>Rule 42</bridgehead>
+        <para><xref linkend="rule"/> and <xref linkend="s"/>.</para>
+      </section></chapter>
+    XML
+    output = input.to_tex
+    assert_includes output, '\\goto{BNF rule \\letterhash{}42}'
+    assert_includes output, '\\goto{Section 1.1}'
+    assert_empty input.report['missing_references']
+  end
+
+  def test_selmao_catalog_references_use_names
+    input = book(<<~XML)
+      <chapter><title>Catalog</title>
+        <bridgehead><anchor id="BE" xreflabel="BE"/>selma'o BE</bridgehead>
+        <para>Attach with <xref linkend="BE"/>.</para>
+      </chapter>
+    XML
+    output = input.to_tex
+    assert_includes output, '\\goto{BE}'
+    refute_includes output, '\\goto{Chapter 1}'
+  end
+
+  def test_bridgehead_anchors_leave_the_title_for_the_reference_field
+    input = book(<<~XML)
+      <chapter><title>Catalog</title>
+        <bridgehead><anchor id="BE" xreflabel="BE"/>selma'o BE</bridgehead>
+        <para>Attach with <xref linkend="BE"/>.</para>
+      </chapter>
+    XML
+    output = input.to_tex
+    key = "cll-#{Digest::SHA256.hexdigest('BE')[0, 24]}"
+    assert_includes output, "\\subsubject[title={selma'o BE},reference={#{key}}]"
+    refute_includes output, "\\reference[#{key}]"
+    assert_includes output, "\\goto{BE}[#{key}]"
+    assert_empty input.report['missing_references']
+  end
+
+  def test_index_see_entries_point_at_their_target
+    output = book('<para><indexterm type="general"><primary>masses</primary><see>groups</see></indexterm>Body</para>').to_tex
+    assert_includes output, '\\seeCLLgeneral[{masses}]{masses}{groups}'
+    refute_match(/\\CLLgeneral\[\{masses\}\]\{masses\}(?!\{)/, output)
+    output = book('<para><indexterm type="general"><primary>terms</primary><seealso>words</seealso></indexterm>Body</para>').to_tex
+    assert_includes output, '\\seeCLLgeneral[{terms}]{terms}{words}'
+    assert_match(/\\CLLgeneral\[\{terms\}\]\{terms\}(?!\{)/, output)
+  end
+
   def test_unsupported_content_fails_instead_of_disappearing
     assert_raises(RuntimeError) { book('<new-semantic-element>Important</new-semantic-element>').to_tex }
     assert_raises(RuntimeError) { book('<mediaobject><imageobject><imagedata fileref="../../secret"/></imageobject></mediaobject>').to_tex }

@@ -3873,7 +3873,7 @@
       <indexterm type="general"><primary>lujvo</primary><secondary>dropping elements of</secondary>
       </indexterm>
       <indexterm type="general"><primary>Zipf's Law</primary></indexterm>
-      The third complication is also simple, but its implications can look alarming at first. It is based on Zipf's Law, which says that the length of words is inversely proportional to their usage. The shortest words are those which are used more; the longest ones are used less. Conversely, commonly used concepts tend to be abbreviated. In English, abbreviations, acronyms, and jargon do the same job: a shorter form conveys more information more rapidly.
+      The third complication is also simple, but its implications can look alarming at first. It is based on Zipf's Law, which says that the length of words is inversely proportional to their usage. The shortest words are those which are used more; the longest ones are used less. Conversely, commonly used concepts tend to be abbreviated. An English abbreviation can save us some writing: think of <quote>Jan.</quote> for <quote>January</quote>.
     </para>
 
 

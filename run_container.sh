@@ -11,11 +11,16 @@ dir=${dir:-/}
 # must not stop each other. A caller can set CLL_CONTAINER_NAME for a stable
 # name of its own; sharing one reintroduces the collision, so that is the
 # caller's choice. The name becomes an engine argument, so reject anything
-# that is not a plain container name before calling the engine.
-container_name=$(cll_container_name "$dir")
-if ! cll_valid_container_name "$container_name"; then
-  echo "Invalid container name '$container_name'. Set CLL_CONTAINER_NAME to letters, digits, '_', '.' and '-', starting with a letter or digit." >&2
-  exit 2
+# that is not a plain container name before calling the engine. Validate the
+# raw override: command substitution would silently drop trailing newlines.
+if [ -n "${CLL_CONTAINER_NAME:-}" ]; then
+  if ! cll_valid_container_name "$CLL_CONTAINER_NAME"; then
+    echo "Invalid container name '$CLL_CONTAINER_NAME'. Set CLL_CONTAINER_NAME to letters, digits, '_', '.' and '-', starting with a letter or digit." >&2
+    exit 2
+  fi
+  container_name=$CLL_CONTAINER_NAME
+else
+  container_name=$(cll_container_name "$dir")
 fi
 
 # Select one engine; do not fall back when the selected engine is unavailable.
@@ -58,16 +63,21 @@ do
 done
 
 # This run's container is tracked by its immutable ID, recorded by the
-# engine in a private file. Cleanup uses only that ID, never the name, so
-# it can neither touch another run's container nor miss this run's own.
-# There is no startup removal: an occupied name is the engine's error.
+# engine in a private directory made just for this run. Cleanup uses only
+# that ID, never the name, so it can neither touch another run's container
+# nor miss this run's own. There is no startup removal: an occupied name is
+# the engine's error.
 child=0
-cidfile=$(mktemp "${TMPDIR:-/tmp}/cll-container.XXXXXXXX") || exit 1
-rm -f "$cidfile"
-iidfile=$(mktemp "${TMPDIR:-/tmp}/cll-image.XXXXXXXX") || exit 1
-rm -f "$iidfile"
+rundir=$(mktemp -d "${TMPDIR:-/tmp}/cll-run.XXXXXXXX") || exit 1
+cidfile=$rundir/container-id
+iidfile=$rundir/image-id
+rclog=$rundir/build.log
 container_id() {
   cat "$cidfile" 2>/dev/null || true
+}
+remove_run_files() {
+  rm -f "$cidfile" "$iidfile" "$rclog"
+  rmdir "$rundir" 2>/dev/null || true
 }
 cleanup_container() {
   local id
@@ -88,14 +98,15 @@ on_signal() {
   cleanup_container
   # Remove the private files here as well as in the EXIT trap: bash can
   # skip the EXIT trap when the shell dies inside this handler.
-  rm -f "$cidfile" "$iidfile"
+  remove_run_files
   # Exit with the signal status: reset the handler and re-raise the signal.
   trap - "$sig"
   kill -s "$sig" "$$"
 }
 for sig in INT TERM HUP; do trap "on_signal $sig" "$sig"; done
-# The double quotes expand the file paths now, while they are known.
-trap "cleanup_container; rm -f \"$cidfile\" \"$iidfile\"" EXIT
+# Single quotes: the paths expand when the trap runs, from variables that
+# never change, so no directory name is ever parsed as shell syntax again.
+trap 'cleanup_container; remove_run_files' EXIT
 mkdir -p "$dir/build"
 # Preserve trailing newlines so the whitespace check sees the full path.
 build_dir=$(realpath "$dir/build" && printf .)
@@ -131,25 +142,24 @@ echo "Running container image build; this may take a while."
 echo "Image tag: $image"
 echo "Container name: $container_name"
 echo
-"${engine[@]}" build -t "$image" --iidfile "$iidfile" -f "$dir/Dockerfile" "$dir" >/tmp/rc.$$ 2>&1 &
+"${engine[@]}" build -t "$image" --iidfile "$iidfile" -f "$dir/Dockerfile" "$dir" >"$rclog" 2>&1 &
 child=$!
 build_rc=0
 wait "$child" || build_rc=$?
 child=0
+# The build log lives in the private run directory, so an interrupted build
+# leaves no file behind either: the traps remove it.
 if [ "$build_rc" -ne 0 ]; then
   echo "Container image build failed.  Here's the output: "
   echo
-  cat /tmp/rc.$$
+  cat "$rclog"
   echo
   echo
   echo "Container image build failed.  Output is above."
   echo
   echo
-  rm -f /tmp/rc.$$
   exit 1
 fi
-
-rm -f /tmp/rc.$$
 
 # Run the immutable image this build produced, not the tag: another checkout
 # can retag the name under this run between the build and the run.
@@ -183,11 +193,13 @@ fi
 # The run stays in the foreground but off exec: the traps above must stay in
 # place so a signal stops this run's own container at once, and the EXIT
 # trap removes that container however the build ends (--rm removes it too).
+# <&0 hands the background engine the launcher's own standard input: without
+# it, the engine would read /dev/null even when the launcher has a terminal.
 "${engine[@]}" run --init --rm --name "$container_name" --cidfile "$cidfile" \
   "${user_args[@]}" "${mounts[@]}" "${extra_vols[@]}" -w "$dir" \
   -e HOME=/tmp -e XDG_CACHE_HOME=/tmp/.cache \
   -e CLL_BUILD_VERSION="$build_version" "${terminal[@]}" "$image_id" \
-  ./scripts/container-command.sh ./cll_build "${args[@]}" &
+  ./scripts/container-command.sh ./cll_build "${args[@]}" <&0 &
 child=$!
 run_rc=0
 wait "$child" || run_rc=$?

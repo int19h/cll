@@ -51,22 +51,26 @@ cll_valid_container_name() {
 # JSON-array form, no quoted names. Anything else fails loudly instead of
 # returning a tag, and so does any missing source or unreadable file.
 # Supported lines name their sources exactly as the engine resolves them:
-# relative to the context directory, with Dockerfile globs expanded there,
-# and backslash continuations joined before parsing.
+# relative to the context directory, with Dockerfile globs (including
+# hidden files) expanded there, backslash continuations joined before
+# parsing, and full-line comments skipped first. Directory copies record
+# symlink targets as well as file contents, modes, and ownership.
 cll_image_tag() {
-  local dockerfile context tmp line logical stripped verb rest srcs src
-  local match matches found frel n i from_stage token glob_off mode extra
+  local dockerfile context tmp listfile line logical stripped verb rest srcs src
+  local match matches found frel n i from_stage token glob_off dotglob_on
+  local mode linktext extra find_status digest
   dockerfile=$1
   context=$2
   shift 2 || return 1
   tmp=$(mktemp "${TMPDIR:-/tmp}/cll-imagetag.XXXXXXXX") || return 1
+  listfile=$tmp.list
   sha256sum < "$dockerfile" > "$tmp" || { rm -f "$tmp"; return 1; }
   for extra in "$@"; do
-    printf '%s\0' "$extra" >> "$tmp" || { rm -f "$tmp"; return 1; }
+    printf '%s\0' "$extra" >> "$tmp" || { rm -f "$tmp" "$listfile"; return 1; }
   done
   fail() {
     echo "cll_image_tag: $1" >&2
-    rm -f "$tmp"
+    rm -f "$tmp" "$listfile"
     return 1
   }
   hash_one() {
@@ -76,9 +80,27 @@ cll_image_tag() {
     printf '%s\0' "$mode" >> "$tmp" || return 1
     sha256sum < "$2" >> "$tmp" || return 1
   }
+  hash_link() {
+    # $1 is a context-relative path of a symlink; $2 its absolute path.
+    # The engine copies the link itself, so its text is the content. When
+    # it points at a readable regular file, hash those bytes too: they can
+    # also reach the image, depending on the engine.
+    linktext=$(readlink "$2") || return 1
+    printf 'l\0%s\0%s\0' "$1" "$linktext" >> "$tmp" || return 1
+    if [ -f "$2" ] && [ -r "$2" ]; then
+      hash_one "$1" "$2" || return 1
+    fi
+  }
   logical=
   while IFS= read -r line || [ -n "$line" ]; do
     line=${line%$'\r'}
+    # Full-line comments end at the line: they never continue an
+    # instruction and never contribute a source, even between the lines of
+    # a continued COPY or ADD.
+    stripped=${line#"${line%%[![:space:]]*}"}
+    case "$stripped" in
+      \#*|"") continue ;;
+    esac
     # A trailing backslash continues the instruction on the next line.
     logical=$logical$line
     case "$logical" in
@@ -123,8 +145,11 @@ cll_image_tag() {
       case "$src" in
         *://*) i=$((i + 1)); continue ;;
       esac
-      # Expand Dockerfile globs against the context directory only.
+      # Expand Dockerfile globs against the context directory only. The
+      # engine also matches hidden files, so enable dotglob for this.
+      if shopt -q dotglob; then dotglob_on=1; else shopt -s dotglob; dotglob_on=; fi
       matches=( "$context"/$src )
+      if [ -z "$dotglob_on" ]; then shopt -u dotglob; fi
       if [ "${#matches[@]}" -eq 0 ]; then
         fail "no such $verb source in context $context: $src"; return 1
       fi
@@ -132,10 +157,19 @@ cll_image_tag() {
         if [ ! -e "$match" ] && [ ! -L "$match" ]; then
           fail "no such $verb source in context $context: $src"; return 1
         fi
-        if [ -d "$match" ] && [ ! -L "$match" ]; then
+        if [ -L "$match" ]; then
+          hash_link "${match#"$context"/}" "$match" || { fail "cannot hash link $src"; return 1; }
+        elif [ -d "$match" ]; then
+          find "$match" -print0 | LC_ALL=C sort -z > "$listfile"
+          find_status=("${PIPESTATUS[@]}")
+          if [ "${find_status[0]}" -ne 0 ] || [ "${find_status[1]}" -ne 0 ]; then
+            fail "cannot list $src in context $context"; return 1
+          fi
           while IFS= read -r -d '' found; do
             frel=${found#"$context"/}
-            if [ -d "$found" ] && [ ! -L "$found" ]; then
+            if [ -L "$found" ]; then
+              hash_link "$frel" "$found" || { fail "cannot hash link $frel"; return 1; }
+            elif [ -d "$found" ]; then
               printf 'd\0%s\0' "$frel" >> "$tmp" || { fail "cannot write hash"; return 1; }
               mode=$(stat -c '%a %u %g' "$found" 2>/dev/null || stat -f '%Lp %u %g' "$found") || { fail "cannot stat $frel"; return 1; }
               printf '%s\0' "$mode" >> "$tmp" || { fail "cannot write hash"; return 1; }
@@ -144,7 +178,8 @@ cll_image_tag() {
             else
               fail "cannot read $frel"; return 1
             fi
-          done < <(find "$match" -print0 | LC_ALL=C sort -z)
+          done < "$listfile"
+          rm -f "$listfile"
         elif [ -r "$match" ]; then
           hash_one "${match#"$context"/}" "$match" || { fail "cannot hash $src"; return 1; }
         else
@@ -160,6 +195,7 @@ cll_image_tag() {
     fail "unterminated continued line in $dockerfile"
     return 1
   fi
-  sha256sum "$tmp" | cut -c1-16
-  rm -f "$tmp"
+  digest=$(sha256sum "$tmp") || { fail "cannot digest build input from $dockerfile"; return 1; }
+  rm -f "$tmp" "$listfile"
+  printf '%s\n' "$digest" | cut -c1-16
 }

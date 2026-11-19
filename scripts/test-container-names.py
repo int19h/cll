@@ -10,6 +10,7 @@ and exits with the signal status.
 
 import os
 import re
+import shlex
 import shutil
 import signal
 import stat
@@ -80,6 +81,7 @@ case "$op" in
     [ -n "$cidfile" ] && printf '%s' "$id" > "$cidfile"
     trap 'on_engine_signal run' TERM INT HUP
     log run-start
+    if [ -t 0 ]; then log run-stdin-tty; else log run-stdin-notty; fi
     touch "$STUB_DIR/$id.marker"
     sleep "${STUB_RUN_SLEEP:-20}" & sp=$!
     wait "$sp"
@@ -306,6 +308,57 @@ class ContainerNamesTests(unittest.TestCase):
             self.assertNotEqual(
                 tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a'))
 
+    def test_hidden_files_count(self):
+        # A glob also matches the files the shell would hide: changing
+        # one changes the tag.
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            scratch = Path(directory)
+            make_context(scratch / 'a',
+                         ['FROM example/base\n', 'COPY inputs/* /dest/\n'],
+                         {'inputs/a.txt': 'a\n', 'inputs/.hidden': 'h1\n'})
+            tag_a = image_tag(scratch / 'a/Dockerfile', scratch / 'a')
+            self.assertRegex(tag_a, HEX16)
+            (scratch / 'a/inputs/.hidden').write_text('h2\n')
+            self.assertNotEqual(
+                tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a'))
+
+    def test_symlink_targets_count(self):
+        # A copied directory records its links: retargeting a link changes
+        # the tag even when every file's bytes stay the same.
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            scratch = Path(directory)
+            make_context(scratch / 'a',
+                         ['FROM example/base\n', 'COPY data/ /dest/\n'],
+                         {'data/a': 'same\n', 'data/b': 'same\n'})
+            os.symlink('a', scratch / 'a/data/link')
+            tag_a = image_tag(scratch / 'a/Dockerfile', scratch / 'a')
+            self.assertRegex(tag_a, HEX16)
+            (scratch / 'a/data/link').unlink()
+            os.symlink('b', scratch / 'a/data/link')
+            self.assertNotEqual(
+                tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a'))
+
+    def test_comment_lines_ignored(self):
+        # A full-line comment ends at its line: one ending in a backslash
+        # does not swallow the next COPY, and one between the lines of a
+        # continued COPY does not break it.
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            scratch = Path(directory)
+            make_context(scratch / 'a',
+                         ['FROM example/base\n',
+                          '# a comment \\\n',
+                          'COPY one.txt /dest/\n',
+                          'COPY two.txt \\\n',
+                          '# in the middle\n',
+                          '  three.txt /dest2/\n'],
+                         {'one.txt': '1\n', 'two.txt': '2\n',
+                          'three.txt': '3\n'})
+            tag_a = image_tag(scratch / 'a/Dockerfile', scratch / 'a')
+            self.assertRegex(tag_a, HEX16)
+            (scratch / 'a/three.txt').write_text('3 changed\n')
+            self.assertNotEqual(
+                tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a'))
+
     def test_file_modes_count(self):
         with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
             scratch = Path(directory)
@@ -425,8 +478,10 @@ class StubRun:
         return sorted(p.name for p in self.work.glob('*.marker'))
 
     def temp_files(self):
-        names = sorted(p.name for p in self.work.glob('cll-container*'))
-        names += sorted(p.name for p in self.work.glob('cll-image*'))
+        # The launcher keeps its container ID, image ID and build log in
+        # one private directory; the helper keeps its own digest input.
+        # Both must be gone when the run ends.
+        names = sorted(p.name for p in self.work.glob('cll-run*'))
         names += sorted(p.name for p in self.work.glob('cll-imagetag*'))
         return names
 
@@ -537,6 +592,40 @@ class SignalTests(unittest.TestCase):
             self.assertIn('stop cid-%s' % name, run.log_text(),
                           run.log_text())
 
+    def test_run_gets_terminal_stdin(self):
+        # Under a pseudoterminal the launcher passes -t, and the engine
+        # must see a terminal on its own standard input rather than
+        # /dev/null (Docker refuses -t with a non-terminal stdin).
+        if shutil.which('script') is None:
+            self.skipTest('script(1) missing')
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            work = Path(directory)
+            stub = work / 'stub-engine.sh'
+            stub.write_text(STUB_ENGINE)
+            stub.chmod(stub.stat().st_mode | stat.S_IXUSR)
+            log = work / 'engine.log'
+            log.write_text('')
+            env = {k: v for k, v in os.environ.items()
+                   if k != 'CLL_CONTAINER_NAME'}
+            env.update(CONTAINER_BIN=str(stub), CLL_BUILD_VERSION='test',
+                       STUB_LOG=str(log), STUB_DIR=str(work),
+                       TMPDIR=str(work), STUB_BUILD_SLEEP='0',
+                       STUB_RUN_SLEEP='1')
+            assignments = ' '.join(
+                '%s=%s' % (key, shlex.quote(value))
+                for key, value in env.items())
+            command = '%s bash %s' % (
+                assignments, shlex.quote(str(ROOT / 'run_container.sh')))
+            result = subprocess.run(
+                ['script', '-qec', command, '/dev/null'],
+                cwd=str(ROOT), capture_output=True, text=True, timeout=120)
+            self.assertEqual(result.returncode, 0, result.stdout)
+            run_calls = [line for line in log.read_text().splitlines()
+                         if line.startswith('call run ')]
+            self.assertEqual(len(run_calls), 1, log.read_text())
+            self.assertIn(' -t ', run_calls[0], run_calls[0])
+            self.assertIn('run-stdin-tty', log.read_text())
+
     def test_failed_run_exits_with_its_status(self):
         with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
             run = StubRun(directory, STUB_BUILD_SLEEP='0',
@@ -546,7 +635,8 @@ class SignalTests(unittest.TestCase):
             self.assertEqual(run.markers(), [])
 
     def test_invalid_override_rejected_before_engine(self):
-        for bad in ('-leading-hyphen', 'has space', 'has/slash'):
+        for bad in ('-leading-hyphen', 'has space', 'has/slash',
+                    'review-name\n', 'review-name\n\n'):
             with self.subTest(name=bad):
                 with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
                     run = StubRun(directory, CLL_CONTAINER_NAME=bad)

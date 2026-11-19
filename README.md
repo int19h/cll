@@ -72,7 +72,7 @@ It then runs `./cll_build` inside a container with your checkout mounted, and pa
 The container name is unique to the run (from the checkout path and the process ID), so builds from different checkouts run at the same time without stopping each other.
 Set `CLL_CONTAINER_NAME` to choose the name yourself; sharing one name between runs reintroduces the collision, and the second run's container fails to start.
 A signal (`INT`, `TERM`, or `HUP`) to the launcher stops the build at once and exits with the signal status; the script stops and removes only that run's own container, tracked by its immutable ID rather than its name.
-A second build in the same checkout fails fast instead of sharing its `build/` folder; concurrent builds need one checkout each.
+A second Prince build in the same checkout fails fast instead of sharing its `build/` folder; concurrent builds need one checkout each. (This lock belongs to `run_container.sh`: the WeasyPrint launcher guards its own build paths with its own lock, and the Typst launcher takes no lock, so give each Typst build its own checkout too.)
 The other launchers run unnamed containers that are removed after the build: `run_weasyprint_container.sh` and `run_typst_container.sh` tag their images the same content-derived way and also run the returned image ID, and `run_context_container.sh` runs its freshly built image by ID.
 
 Each new Dockerfile or copied file leaves its old `:<content-hash>` tag behind, and the Typst and WeasyPrint launchers previously used per-checkout tags that also stay.

@@ -205,6 +205,10 @@ jobs:
         run: gem install --no-document nokogiri:1.18.8
       - name: Install the pinned Typst compiler
         run: bash scripts/install_typst.sh "$RUNNER_TEMP/typst"
+      - name: Install pdftotext for the rendered-text check
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq poppler-utils
       - name: Test DocBook conversion and native math spacing
         run: TYPST="$RUNNER_TEMP/typst/typst" ruby scripts/test_docbook_to_typst.rb
 

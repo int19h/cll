@@ -123,6 +123,9 @@ To include native compilation, set `TYPST`:
 TYPST="$PWD/build/tools/typst" ruby scripts/test_docbook_to_typst.rb
 ```
 
+The rendered-text check in that suite needs `pdftotext` on `PATH`
+(poppler-utils); without it, only that check skips.
+
 The tests cover literal text, entities, identifier uniqueness, reference labels, native math, column spans, indexes, and unsupported input.
 The compilation test includes a table of contents and linked heading aliases to detect duplicated anchors.
 For a layout change, also build the full book and inspect its examples, mathematical formulas, glossary, and indexes.

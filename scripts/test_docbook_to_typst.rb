@@ -160,10 +160,6 @@ class DocBookTypstTest < Minitest::Test
   end
 
   def test_native_compilation_with_outline_links_and_indexes
-    # Rendered text (no smart quotes, label and glyph on the same page as
-    # the note) is checked against full-book builds with pdftotext, which
-    # this smoke job does not install; the unit tests above pin the exact
-    # code-mode emission that renders cleanly.
     executable = ENV['TYPST']
     skip 'Set TYPST to run the native compilation test.' unless executable
     source = convert('<chapter id="c"><title><anchor id="alias"/>A chapter</title><section id="s"><title>Section</title><para><indexterm type="general"><primary>fraction</primary></indexterm><xref linkend="alias"/> <inlineequation><math><mfrac><mn>2</mn><mn>7</mn></mfrac></math></inlineequation></para><para role="status-note" condition="status:de-facto;also:historical;date:2015-08-08">Usage note prose.</para><para role="status-note">Bare note.</para><para>Ordinary <phrase role="status-mark" condition="status:de-facto">accepted by parsers</phrase> here.</para></section></chapter>')
@@ -175,6 +171,29 @@ class DocBookTypstTest < Minitest::Test
       assert status.success?, err
       assert_empty err
       assert File.size(File.join(dir, 'cll.pdf')) > 1000
+    end
+  end
+
+  def test_compiled_inline_mark_has_plain_label_text
+    # Markup-mode "..." in the super would print as smart quotes around
+    # the label and glyph; the converter must emit code-mode strings.
+    # Needs pdftotext, which the CI smoke job installs.
+    executable = ENV['TYPST']
+    skip 'Set TYPST to run the native compilation test.' unless executable
+    skip 'Install poppler-utils to check rendered text.' unless system('command -v pdftotext >/dev/null 2>&1')
+    source = convert('<chapter><title>Status</title><para>Ordinary <phrase role="status-mark" condition="status:de-facto">accepted by parsers</phrase> here.</para></chapter>')
+    Dir.mktmpdir('compile-', TMP) do |dir|
+      File.write(File.join(dir, 'cll.typ'), source)
+      FileUtils.cp(File.expand_path('../typst/book.typ', __dir__), dir)
+      fonts = File.expand_path('../assets/fonts', __dir__)
+      pdf = File.join(dir, 'cll.pdf')
+      _, err, status = Open3.capture3(executable, 'compile', '--ignore-system-fonts', '--font-path', fonts, File.join(dir, 'cll.typ'), pdf)
+      assert status.success?, err
+      text, serr, tstatus = Open3.capture3('pdftotext', '-layout', pdf, '-')
+      assert tstatus.success?, serr
+      text = text.gsub(/\s+/, ' ')
+      assert_includes text, 'accepted by parsers [Established usage]◆'
+      refute_match(/[“”]/, text)
     end
   end
 end

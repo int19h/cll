@@ -179,6 +179,8 @@ TYPST="$PWD/build/tools/typst" ruby scripts/test_docbook_to_typst.rb
 ```
 
 Without `TYPST`, the tests skip the compilation step.
+The rendered-text check also needs `pdftotext` (CI installs poppler-utils);
+without it, only that check skips.
 See [typst-pdf.md](typst-pdf.md#tests).
 
 ## weasyprint-smoke

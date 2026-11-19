@@ -1574,7 +1574,7 @@
       <title>About this grammar</title>
     <para>Lojban Machine Grammar, EBNF Version, third baseline (the first edition called this
       <quote>Final Baseline</quote>: see the note on the governance of the language in
-      <xref linkend="chapter-about" />)</para>
+      <xref linkend="chapter-about" />, and <xref linkend="section-changes-how-to-read" /> for the title)</para>
     <para>This EBNF document is explicitly dedicated to the public domain by its author, The Logical Language Group, Inc. Contact that organization at: 2904 Beau Lane, Fairfax VA 22031 USA 703-385-0273 (intl: +1 703 385 0273)</para>
     <para role="status-note" condition="status:editorial"><indexterm type="general"><primary>EBNF grammar</primary><secondary>relation to the official grammar</secondary></indexterm>This section prints the EBNF grammar of the language that this book describes, which is the EBNF of the third baseline plus the changes listed in <xref linkend="ebnf-changes" />. Each change is marked where it is made, along with its status. The official grammar of Lojban syntax is the YACC grammar of the third baseline, as <xref linkend="section-grammars-introduction" /> explains; wherever this grammar departs from it, the departure belongs to this edition, and the mark says so.</para>
     <para>Explanation of notation: All rules have the form:</para>

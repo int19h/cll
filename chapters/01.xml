@@ -86,10 +86,12 @@
       <indexterm type="general"><primary>linguistic drift</primary></indexterm>
       <indexterm type="general"><primary>Lojban</primary><secondary>stability of</secondary>
       </indexterm>
-      Nevertheless, the publication of the first edition of this book in 1997 was, in one sense, the completion of a long period of language evolution. The Logical Language Group declared the language baselined: its official definition became a fixed reference point. Even the consideration of a revision had to wait for five years. Later events roughly followed that plan, but not its spirit of finality.
+      Nevertheless, the publication of the first edition of this book in 1997 was, in one sense, the completion of a long period of language evolution. The Logical Language Group, the organization responsible for the language, declared the language baselined and frozen: its official definition became a fixed reference point. The Group promised not to consider any change to it for at least five years, counted from the publication of this book and of the word lists that were to follow it. The first edition put it plainly: apart from a revision that might be considered after five years, and the correction of outright errors, the language it described <quote>will not be changing by deliberate act of its creators any more.</quote> Later events roughly followed that plan, but not its spirit of finality.
     </para>
     <para>
-      A baseline statement in 2002 started the plan. In 2003 the Logical Language Group, the organization responsible for the language, chartered a language-definition committee. Its Lojban name is
+      <indexterm type="general"><primary>baseline</primary><secondary>statement of 2002</secondary>
+      </indexterm>
+      Five years after the book appeared, in 2002, the Group issued a new baseline statement. It noted that the planned collection of word lists had still not been published, so its earlier claim that the design was complete had been premature. It also explained that a baseline need not be frozen: it changes only under formal procedures, and every change is documented. It planned a fresh freeze for the day when a completed definition was approved, and that day has not come. The same statement created a language-definition committee, which began its work in 2003. Its Lojban name is
       <indexterm type="general"><primary>BPFK</primary><secondary>language-definition committee</secondary>
       </indexterm>
       <jbophrase>baupla fuzykamni</jbophrase>, or BPFK for short. Its task was to produce a definitive specification of the language. Along the way, the BPFK and the Group adopted a small number of deliberate changes to the language that this book describes. The changes with the largest consequences are these:
@@ -106,13 +108,17 @@
       </listitem>
     </itemizedlist>
     <para>
-      This edition teaches the language with these changes. Where it teaches a changed rule, a note tells you who adopted the rule, when, and how firmly. With these notes, you can always tell settled rules from community practice that is still in motion.
+      The committee worked through the language one area at a time. In 2004 and 2005 it fixed its first finished texts, which it called checkpoints; the reformed articles were one of them. In 2007 the Group added the reformed articles to an interim baseline, so that learners could be taught them while the rest of the work went on, and it promised that usage following the first edition would not be considered incorrect. In December 2014 the committee voted to forbid a consonant directly followed by a glide inside a word. (A glide is a sound like the first sound of English <quote>yes</quote> or <quote>we</quote>; in this rule, it is an <letteral>i</letteral> or <letteral>u</letteral> before another vowel.) In 2015 the Group renewed the committee's charter, and under it the committee approved two more changes by recorded vote, in 2015 and 2016. In 2020 a vote of the Group made one exact text of the article rules official. No other change of this period has that standing.
+    </para>
+    <para>
+      This edition teaches the language with these changes. Where it teaches a changed rule, a note tells you where the rule comes from, such as a vote, a committee text, established usage, or a choice of this edition. <xref linkend="section-changes-how-to-read" /> lists these labels. With these notes, you can always tell settled rules from community practice that is still in motion.
     </para>
     <para><indexterm type="general"><primary>Logical Language Group</primary><secondary>status of</secondary>
       </indexterm><indexterm type="general"><primary>Lojban</primary><secondary>governance of</secondary>
-      </indexterm>Later, deliberate change stopped, and this time it stopped without a proclamation. The BPFK made its last decision in 2016. In 2019 the Logical Language Group replaced it with a successor committee, the LFK, whose work came to a halt in 2020. The questions that the BPFK left open are still open. The Logical Language Group itself still exists, but it is mostly dormant; it keeps the printed edition of version 1.1 of this book, from 2016, available. As of October 2026, its most recent published meeting minutes are those of the 2022 Annual Meeting, which ended in 2023.</para>
+      </indexterm>The BPFK made its last decision in 2016. In 2019 the Group dissolved it and chartered a successor committee, the LFK, whose work came to a halt in 2020 before it had changed any rule. Some questions that the BPFK left open are still open, such as exactly how much the word <valsi>sa</valsi> erases. The book went on being revised all the same. Version 1.1, from 2016, corrected errors in the first edition without changing the language, and the Group still keeps its printed form available. From 2017 a community version, UnCLL, carried the corrections further. This edition, begun in 2026, starts from that version. It is not a publication of the Logical Language Group. It reports the decisions of the official bodies from their public records, and it marks the source of each rule that it teaches differently from the first edition.
+    </para>
     <para>
-      In practice, the established core of the language is frozen. This core is the old baseline plus the later decisions that this book describes, each at its own level of authority. The language itself is not frozen.
+      So the official record of Lojban is the old baseline together with the later decisions that this book describes, each at its own level of authority. Under the charter of 2015, the BPFK could propose standards. A vote of the Group's members made a standard official, and between meetings the Group's Board could approve one as an interim standard. The published records through the Group's meeting of December 2025 show no official decision that changed a rule of the language after the vote of 2020. The language that people speak and write is another matter.
     </para>
     <para>
       Lojban still grows the way living languages do: through use, new vocabulary, and consensus in usage and in the tools that everyone shares. After the first edition, the community coined thousands of words by the processes that
@@ -120,7 +126,7 @@
       describes, and it submitted them to the community dictionaries. All of this growth is fully decentralized. (Teach your children Lojban!)
     </para>
     <para>
-      You can learn the language that this book describes with reasonable assurance that its core will not change under you. Nobody forbids further changes, but any official change would have to come from the Logical Language Group, deliberately and on the record.
+      You can learn the language that this book describes with reasonable assurance that it will not shift under you overnight. The baseline statement of 2002 provided for further official changes under formal procedures. For each official change described in this book, <xref linkend="appendix-changes" /> tells you who adopted it and when.
     </para>
     <para>
       <indexterm type="general"><primary>this book</primary><secondary>structure of</secondary>

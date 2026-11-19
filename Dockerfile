@@ -1,4 +1,4 @@
-FROM ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55 AS build-base
+FROM ubuntu:26.04@sha256:d66b366dac61b575bee2aef07e9c26e8070096fbe84a3d4d3eb0da069b5d76db AS build-base
 
 # Modern build environment for the book (replaces the old Fedora 30 /
 # Ruby 2.6 / Prince 12.5 image). The DocBook XSL stylesheets that drive
@@ -14,14 +14,15 @@ ENV DEBIAN_FRONTEND=noninteractive LANG=en_US.UTF-8
 #  - zip/unzip, wget, git, make
 #  - fonts + default-jre are for the PDF and EPUB targets
 # Bootstrap HTTPS before APT installs the snapshot's ca-certificates package.
-ADD https://curl.se/ca/cacert-2026-10-20.pem /etc/ssl/certs/ca-certificates.crt
+ADD https://curl.se/ca/cacert-2026-11-05.pem /etc/ssl/certs/ca-certificates.crt
 RUN chmod 644 /etc/ssl/certs/ca-certificates.crt \
-    && echo '796f1389bfea13c0ed78f663b765baaff54a508e5483786bd6ece73c5e3e3cbe  /etc/ssl/certs/ca-certificates.crt' | sha256sum -c - \
+    && echo '427c064216761a1e72a8b30f0d954d08cb6e4435a82091fb865afd20c8497285  /etc/ssl/certs/ca-certificates.crt' | sha256sum -c - \
     && printf '%s\n' 'Types: deb' \
-      'URIs: https://snapshot.ubuntu.com/ubuntu/20261027T000000Z/' \
-      'Suites: noble noble-updates noble-security' 'Components: main universe' \
+      'URIs: https://snapshot.ubuntu.com/ubuntu/20261117T000000Z/' \
+      'Suites: resolute resolute-updates resolute-security' 'Components: main universe' \
       'Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg' \
-      'Check-Valid-Until: no' > /etc/apt/sources.list.d/ubuntu.sources
+      'Check-Valid-Until: no' > /etc/apt/sources.list.d/ubuntu.sources \
+    && printf '%s\n' 'Acquire::https::CaInfo "/etc/ssl/certs/ca-certificates.crt";' > /etc/apt/apt.conf.d/99-snapshot-ca
 RUN apt-get update -o APT::Update::Error-Mode=any && apt-get install -y --no-install-recommends \
       make bash wget curl git ca-certificates locales \
       xmlto xsltproc libxml2-utils zip unzip \
@@ -62,24 +63,24 @@ COPY scripts/safe-rm-tree.sh /usr/local/src/safe-rm-tree.sh
 RUN bash /usr/local/src/install_typst.sh /usr/local/bin
 
 FROM build-base AS prince
-# Prince XML (PDF target). Arch-aware Ubuntu 24.04 build.
+# Prince XML (PDF target). Arch-aware Ubuntu 26.04 build.
 RUN arch="$(dpkg --print-architecture)" \
     && case "$arch" in \
-      amd64) prince_sha256=305d755ff6437e855c151920d1363970d8cc7bff1ea4006290c36ad5d8e06c69 ;; \
-      arm64) prince_sha256=c8f411c0a06fef8522ae17cdcabfb1992379f017dcd213812154ca6e3cb762bc ;; \
+      amd64) prince_sha256=40b31c21895956a277c2849b7609a377c5fae5c3554c8c0a712e71535633fd68 ;; \
+      arm64) prince_sha256=763d632da24e3b63fa1119c5e1f3be70aa13e96a50e1fd92168aeb9f143d67be ;; \
       *) exit 1 ;; \
     esac \
     && cd /usr/src \
-    && wget -q "https://www.princexml.com/download/prince_16.2-1_ubuntu24.04_${arch}.deb" \
-    && echo "$prince_sha256  prince_16.2-1_ubuntu24.04_${arch}.deb" | sha256sum -c - \
+    && wget -q "https://www.princexml.com/download/prince_16.2-1_ubuntu26.04_${arch}.deb" \
+    && echo "$prince_sha256  prince_16.2-1_ubuntu26.04_${arch}.deb" | sha256sum -c - \
     && apt-get update -o APT::Update::Error-Mode=any \
-    && apt-get install -y ./prince_16.2-1_ubuntu24.04_${arch}.deb \
+    && apt-get install -y ./prince_16.2-1_ubuntu26.04_${arch}.deb \
     && rm -rf /var/lib/apt/lists/* \
-    && rm -f "prince_16.2-1_ubuntu24.04_${arch}.deb" \
+    && rm -f "prince_16.2-1_ubuntu26.04_${arch}.deb" \
     && prince --version
 
 # EPUBCheck 5.4.0. scripts/install-epubcheck.sh pins the official archive and its SHA-256.
-# Ubuntu 24.04 default-jre-headless (Java 21) runs this release.
+# Ubuntu 26.04 default-jre-headless (Java 25) runs this release.
 COPY scripts/install-epubcheck.sh /usr/local/src/install-epubcheck.sh
 COPY scripts/safe-rm-tree.sh /usr/local/src/safe-rm-tree.sh
 RUN bash /usr/local/src/install-epubcheck.sh /usr/local/share/epubcheck

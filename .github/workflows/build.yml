@@ -44,7 +44,7 @@ jobs:
       actions: read # Read github-pages environment deployment rules
       pages: read # GET /repos/{owner}/{repo}/pages, including private repositories
     timeout-minutes: 150
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     outputs:
       preview: ${{ steps.branch_rules.outputs.preview }}
     steps:
@@ -136,9 +136,9 @@ jobs:
         if: contains(format(' {0} ', steps.formats.outputs.list), ' pdf ')
         run: |
           # same version as the reviewed build container (Dockerfile)
-          wget -q "https://www.princexml.com/download/prince_16.2-1_ubuntu24.04_amd64.deb"
-          echo '305d755ff6437e855c151920d1363970d8cc7bff1ea4006290c36ad5d8e06c69  prince_16.2-1_ubuntu24.04_amd64.deb' | sha256sum -c -
-          sudo apt-get install -y ./prince_16.2-1_ubuntu24.04_amd64.deb
+          wget -q "https://www.princexml.com/download/prince_16.2-1_ubuntu26.04_amd64.deb"
+          echo '40b31c21895956a277c2849b7609a377c5fae5c3554c8c0a712e71535633fd68  prince_16.2-1_ubuntu26.04_amd64.deb' | sha256sum -c -
+          sudo apt-get install -y ./prince_16.2-1_ubuntu26.04_amd64.deb
           prince --version
 
       - name: Build prerequisites ready
@@ -285,7 +285,7 @@ jobs:
     concurrency:
       group: book-pages-preview
       cancel-in-progress: false
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

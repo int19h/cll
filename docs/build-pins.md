@@ -1,11 +1,11 @@
 # Build dependency pins
 
-`Dockerfile`, `Dockerfile.weasyprint`, and `Dockerfile.context` use the same Ubuntu 24.04 image digest.
+`Dockerfile`, `Dockerfile.weasyprint`, and `Dockerfile.context` use the same Ubuntu 26.04 image digest.
 A digest identifies image contents.
 The digest selects images for multiple processor types.
 The local build tests cover ARM64.
 
-All APT installations use the signed Ubuntu snapshot at `20261027T000000Z`.
+All APT installations use the signed Ubuntu snapshot at `20261117T000000Z`.
 A snapshot preserves the package archive at a date and time.
 This fixes direct packages and their dependencies, including system fonts and layout libraries.
 The sources exclude other archives and stop on an index download error.
@@ -13,8 +13,12 @@ APT still requires valid archive signatures and package hashes.
 The sources disable the metadata expiration limit because the snapshot is historical.
 
 Fresh Ubuntu images lack the certificates that HTTPS requires.
-Each Dockerfile first downloads the dated curl certificate bundle `cacert-2026-10-20.pem`.
+Each Dockerfile first downloads the dated curl certificate bundle `cacert-2026-11-05.pem`.
 The build requires its SHA-256 hash before APT uses it.
+APT 3 in Ubuntu 26.04 uses OpenSSL for HTTPS. OpenSSL looks for certificates in `/usr/lib/ssl`, which a fresh image lacks.
+(The previous APT used GnuTLS, which reads the system bundle, so the bootstrap worked without this step.)
+Each Dockerfile therefore writes `/etc/apt/apt.conf.d/99-snapshot-ca`.
+That file sets `Acquire::https::CaInfo` to `/etc/ssl/certs/ca-certificates.crt`, the downloaded bundle.
 APT then installs the snapshot's `ca-certificates` package.
 The Prince packages also require architecture-specific SHA-256 hashes before installation.
 
@@ -33,7 +37,7 @@ The script requires that hash before it extracts the archive.
 
 The container image installs the tool at `/usr/local/share/epubcheck`.
 It sets `EPUBCHECK_JAR` to `epubcheck.jar` in that directory.
-Ubuntu 24.04 `default-jre-headless` supplies Java 21. That runtime runs EPUBCheck 5.4.0.
+Ubuntu 26.04 `default-jre-headless` supplies Java 25. That runtime runs EPUBCheck 5.4.0.
 
 `scripts/build-selected-formats.sh` runs the installer before a native ePub build.
 If `EPUBCHECK_JAR` is set, `scripts/run-epubcheck.sh` uses that jar.

@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-# The book builds with Ruby 3.2 (Ubuntu 24.04 and the checks workflow).
+# The book builds with Ruby 3.3 (Ubuntu 26.04 and the checks workflow).
 # Nokogiri 1.18.8 requires Ruby 3.1 or newer. Bundler 4 requires Ruby 3.2.
 ruby '>= 3.2'
 

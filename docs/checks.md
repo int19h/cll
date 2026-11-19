@@ -12,7 +12,7 @@ Install the tools for the checks that you want to run.
 
 - Python 3 and Pillow. On Debian and Ubuntu, Pillow is `python3-pil`.
 - `xmllint` and `zip`. On Debian and Ubuntu, `xmllint` is in `libxml2-utils`.
-- Ruby 3.2 with Nokogiri 1.18.8: `gem install --no-document nokogiri:1.18.8`.
+- Ruby 3.3 with Nokogiri 1.18.8: `gem install --no-document nokogiri:1.18.8`.
 - `xsltproc`, for the ePub navigation check. On Debian and Ubuntu, it is in the `xsltproc` package.
 - Node.js 24.
 - For the parser checks, a checkout of [ilmentufa](https://github.com/lojban/ilmentufa) at the commit that the workflow pins (see [Parser probes](#parser-probes)).

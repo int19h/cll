@@ -62,6 +62,71 @@ check.call(upload['if'] == "${{ success() && steps.guard.outputs.preview == 'tru
 end
 prince = steps.find { |s| s['name'] == 'Install Prince (PDF renderer)' }['run']
 sha = File.read(File.join(root, 'Dockerfile'))[/amd64\) prince_sha256=([0-9a-f]{64})/, 1]
-check.call(sha && prince.include?(sha + '  prince_16.2-1_ubuntu24.04_amd64.deb') && prince.index('sha256sum -c -') < prince.index('sudo apt-get install'), 'Prince must match the Dockerfile hash before installation.')
+check.call(sha && prince.include?(sha + '  prince_16.2-1_ubuntu26.04_amd64.deb') && prince.index('sha256sum -c -') < prince.index('sudo apt-get install'), 'Prince must match the Dockerfile hash before installation.')
+base = File.read(File.join(root, 'Dockerfile'))[/^FROM ubuntu:(\d+\.\d+)@/, 1]
+check.call(base, 'Dockerfile must pin an ubuntu:NN.NN base image.')
+collect = ->(node, releases) do
+  case node
+  when String
+    node.scan(/ubuntu-(\d+\.\d+)/) { |release| releases << release[0] }
+  when Array
+    node.each { |entry| collect.call(entry, releases) }
+  when Hash
+    node.each_value { |entry| collect.call(entry, releases) }
+  end
+end
+labels = {}
+{'build' => path, 'checks' => File.join(root, '.github/workflows/checks.yml')}.each do |file_name, file_path|
+  YAML.safe_load(File.read(file_path)).fetch('jobs').each do |job, body|
+    runners = body['runs-on']
+    runners = [runners] unless runners.is_a?(Array)
+    runners.each do |runner|
+      found = []
+      if runner.is_a?(Hash)
+        collect.call(runner['labels'], found)
+      else
+        collect.call(runner, found)
+      end
+      (labels["#{file_name}.#{job}"] ||= []).concat(found)
+    end
+    refs = []
+    collect_refs = ->(node) do
+      case node
+      when String
+        node.scan(/matrix\.([A-Za-z_][A-Za-z0-9_]*)/) { |field| refs << field[0] }
+      when Array
+        node.each { |entry| collect_refs.call(entry) }
+      when Hash
+        node.each_value { |entry| collect_refs.call(entry) }
+      end
+    end
+    collect_refs.call(runners)
+    strategy = body['strategy']
+    if strategy.is_a?(Hash) && strategy['matrix'].is_a?(Hash)
+      matrix = strategy['matrix']
+      refs.uniq.each do |field|
+        found = []
+        collect.call(matrix[field], found) if matrix.key?(field)
+        (matrix['include'] || []).each do |entry|
+          collect.call(entry[field], found) if entry.is_a?(Hash) && entry.key?(field)
+        end
+        (labels["#{file_name}.#{job} (matrix:#{field})"] ||= []).concat(found)
+      end
+    end
+  end
+end
+labels.reject! { |_job, releases| releases.empty? }
+check.call(labels.any?, 'No pinned Ubuntu runner found.')
+mismatched = labels.reject { |_job, releases| releases.uniq == [base] }
+check.call(mismatched.empty?, "Pinned runners must match the Dockerfile base ubuntu-#{base}: #{mismatched}.")
+rubies = []
+YAML.safe_load(File.read(File.join(root, '.github/workflows/checks.yml'))).fetch('jobs').each_value do |body|
+  (body['steps'] || []).each do |step|
+    version = step.dig('with', 'ruby-version')
+    rubies << version if version
+  end
+end
+check.call(rubies.any?, 'No pinned Ruby found.')
+check.call(rubies.uniq == ['3.3'], "Pinned Rubies must all match: #{rubies}.")
 abort errors.join("\n") unless errors.empty?
 puts 'Build workflow: direct pins, permissions, retention, timeouts, and guard/partial-output wiring pass.'

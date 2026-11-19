@@ -142,13 +142,25 @@ class DocBookTypstTest < Minitest::Test
 
   def test_status_mark_renders_short_label_and_glyph
     source = convert('<chapter><title>Status</title><para>Ordinary <phrase role="status-mark" condition="status:de-facto;also:historical">accepted by parsers</phrase> here.</para></chapter>')
-    assert_includes source, '#super[#text("[Established usage]◆")]'
+    assert_includes source, '#super[#smallcaps[" [Established usage]"]"◆"]'
+  end
+
+  def test_status_note_trims_leading_whitespace
+    source = convert("<chapter><title>Status</title><para role=\"status-note\" condition=\"status:de-facto\">\n  <indexterm type=\"general\"><primary>entry</primary></indexterm>\n  Padded prose.</para></chapter>")
+    assert_includes source, '#text("Padded prose.")]'
+    refute_includes source, '#text(" '
+  end
+
+  def test_status_unknown_token_keeps_raw_label_and_bare_glyph
+    source = convert('<chapter><title>Status</title><para role="status-note" condition="status:invented">Mystery prose.</para><para>Ordinary <phrase role="status-mark">clause</phrase>.</para></chapter>')
+    assert_includes source, 'label: "invented"'
+    assert_includes source, '#super[#text(" ◇")]'
   end
 
   def test_native_compilation_with_outline_links_and_indexes
     executable = ENV['TYPST']
     skip 'Set TYPST to run the native compilation test.' unless executable
-    source = convert('<chapter id="c"><title><anchor id="alias"/>A chapter</title><section id="s"><title>Section</title><para><indexterm type="general"><primary>fraction</primary></indexterm><xref linkend="alias"/> <inlineequation><math><mfrac><mn>2</mn><mn>7</mn></mfrac></math></inlineequation></para></section></chapter>')
+    source = convert('<chapter id="c"><title><anchor id="alias"/>A chapter</title><section id="s"><title>Section</title><para><indexterm type="general"><primary>fraction</primary></indexterm><xref linkend="alias"/> <inlineequation><math><mfrac><mn>2</mn><mn>7</mn></mfrac></math></inlineequation></para><para role="status-note" condition="status:de-facto;also:historical;date:2015-08-08">Usage note prose.</para><para role="status-note">Bare note.</para><para>Ordinary <phrase role="status-mark" condition="status:de-facto">accepted by parsers</phrase> here.</para></section></chapter>')
     Dir.mktmpdir('compile-', TMP) do |dir|
       File.write(File.join(dir, 'cll.typ'), source)
       FileUtils.cp(File.expand_path('../typst/book.typ', __dir__), dir)

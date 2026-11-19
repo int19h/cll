@@ -157,8 +157,8 @@ class ContextBookTest < Minitest::Test
       <para role="status-note">Bare note prose.</para>
       </chapter>
     XML
-    assert_includes output, '\\startCLLstatus ● {\\sc Approved by the BPFK, 2015-08-08}\\crlf {\\tfx also: First-edition rule}\\crlf Dotside note prose.'
-    assert_includes output, '\\startCLLstatus ◇ Bare note prose.'
+    assert_includes output, '\\startCLLstatus {\\hbox to 0pt{\\hss ●\\hskip.75em}}{\\sc Approved by the BPFK, 2015-08-08}\\crlf {\\tfx also: First-edition rule}\\crlf Dotside note prose.'
+    assert_includes output, '\\startCLLstatus {\\hbox to 0pt{\\hss ◆\\hskip.75em}} Bare note prose.'
   end
 
   def test_status_note_explicit_body_and_extra_role_token
@@ -169,12 +169,33 @@ class ContextBookTest < Minitest::Test
       </chapter>
     XML
     assert_includes output, '{\\sc Proposal, BPFK}'
-    assert_includes output, '\\startCLLstatus ■ {\\sc BPFK checkpoint}\\crlf Extra role prose.'
+    assert_includes output, '\\startCLLstatus {\\hbox to 0pt{\\hss ■\\hskip.75em}}{\\sc BPFK checkpoint}\\crlf Extra role prose.'
+  end
+
+  def test_status_note_trims_leading_whitespace_and_metadata_gap
+    output = book(<<~XML).to_tex
+      <chapter><title>Status</title>
+      <para role="status-note" condition="status:de-facto">
+        <indexterm type="general"><primary>entry</primary></indexterm>
+        Padded prose.</para>
+      </chapter>
+    XML
+    assert_includes output, '{entry}]{entry}Padded prose.'
+  end
+
+  def test_unknown_status_token_keeps_raw_label_and_bare_glyph
+    output = book('<para role="status-note" condition="status:invented">Mystery prose.</para>').to_tex
+    assert_includes output, '\\startCLLstatus {\\hbox to 0pt{\\hss ◆\\hskip.75em}}{\\sc invented}\\crlf Mystery prose.'
+    output = book('<para role="status-note" condition="status:de-facto;status:proposed">First wins.</para>').to_tex
+    assert_includes output, '{\\sc Established usage}'
+    output = book('<para role="status-note">Bare mark <phrase role="status-mark">clause</phrase>.</para>').to_tex
+    assert_includes output, '\\underdots{clause}{\\high{ ◇}}'
   end
 
   def test_status_mark_renders_short_label_and_glyph
     output = book('<chapter><title>Status</title><para>Ordinary <phrase role="status-mark" condition="status:de-facto;also:historical">accepted by parsers</phrase> here.</para></chapter>').to_tex
-    assert_includes output, '{\\high{[Established usage]◆}}'
+    assert_includes output, '\\underdots{accepted by parsers}'
+    assert_includes output, '{\\high{{\\sc [Established usage]}◆}}'
   end
 
   def test_status_and_special_fonts_and_missing_reference_report

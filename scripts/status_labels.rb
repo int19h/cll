@@ -14,6 +14,8 @@
 #   - label: token label, plus ", Body" for an explicit body: the primary
 #     label does not already name, plus ", date" where one exists;
 #   - also: comma-separated tokens rendered as comma-separated labels;
+#   - unknown tokens: the raw token as the label with the bare glyph
+#     (the XSL otherwise branch);
 #   - glyph: the same per-status margin mark the print CSS uses, so the
 #     experimental PDFs match the Prince and WeasyPrint PDFs in black
 #     and white (docs/status-markup.md lists the shapes).
@@ -61,9 +63,15 @@ module StatusLabels
 
   BARE_GLYPH = "\u25C6".freeze
 
+  # A bare inline mark keeps the generic inline glyph (mirrors the CSS
+  # generic status-mark rule).
+  BARE_MARK_GLYPH = "\u25C7".freeze
+
   # A status note or mark as the renderers show it. Nil when there is
-  # nothing to label (no condition, or an unknown token, which the lint
-  # rejects in real sources); callers keep the generic mark then.
+  # nothing to label (no condition, or an empty status value). An
+  # unknown token keeps the raw token as its label and the bare glyph,
+  # mirroring the XSL otherwise branch; the lint rejects such notes in
+  # real sources. Callers keep the generic mark when this is nil.
   Note = Struct.new(:token, :label_text, :also_line, :inline_short, :glyph, keyword_init: true)
 
   def self.parse_condition(condition)
@@ -71,7 +79,9 @@ module StatusLabels
     condition.to_s.delete(" \t\n\r").split(';').each do |part|
       next if part.empty?
       key, value = part.split(':', 2)
-      next if value.nil? || value.empty?
+      next if value.nil?
+      # First occurrence wins and an empty value stays empty, as the
+      # XSL field template takes the text before the first ';'.
       fields[key] = value unless fields.key?(key)
     end
     fields
@@ -80,22 +90,20 @@ module StatusLabels
   def self.describe(condition)
     fields = parse_condition(condition)
     token = fields['status'].to_s
-    return nil unless LABELS.key?(token)
+    return nil if token.empty?
 
-    also = fields['also'].to_s.split(',').reject(&:empty?)
-    return nil unless also.all? { |t| LABELS.key?(t) }
-
+    also = fields['also'].to_s.split(',')
     date = fields['date'].to_s
     explicit = fields['body'].to_s
     visible = (!explicit.empty? && explicit != NAMED_BODIES[token] ? ", #{BODY_LABELS.fetch(explicit, explicit)}" : '')
-    label = LABELS[token] + visible + (date.empty? ? '' : ", #{date}")
-    also_labels = also.map { |t| LABELS[t] }.join(', ')
+    label = LABELS.fetch(token, token) + visible + (date.empty? ? '' : ", #{date}")
+    also_labels = also.map { |t| LABELS.fetch(t, t) }.join(', ')
     Note.new(
       token: token,
       label_text: label,
       also_line: also_labels.empty? ? '' : "also: #{also_labels}",
-      inline_short: "[#{label}]",
-      glyph: GLYPHS[token]
+      inline_short: " [#{label}]",
+      glyph: GLYPHS.fetch(token, BARE_GLYPH)
     )
   end
 end

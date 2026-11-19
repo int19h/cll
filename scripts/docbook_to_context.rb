@@ -132,8 +132,12 @@ class ContextBook
     text = "{\\CLLchinese #{text}}" if language == 'zh'
     if role.split.include?('status-mark')
       mark = StatusLabels.describe(node['condition'])
-      short = mark ? "#{mark.inline_short}#{mark.glyph}" : StatusLabels::BARE_GLYPH
-      text += "{\\high{#{esc(short)}}}"
+      if mark
+        short = "{\\high{{\\sc#{esc(mark.inline_short)}}#{esc(mark.glyph)}}}"
+      else
+        short = "{\\high{ #{esc(StatusLabels::BARE_MARK_GLYPH)}}}"
+      end
+      text = "\\underdots{#{text}}#{short}"
     end
     text
   end
@@ -275,16 +279,20 @@ class ContextBook
     when 'indexterm' then indexterm(node)
     when 'para'
       in_list = node.ancestors.any? { |ancestor| ancestor.name == 'listitem' }
-      body = styled(node, children(node, trim_leading: in_list))
-      if node['role'].to_s.split.include?('status-note')
+      roles = node['role'].to_s.split
+      body = styled(node, children(node, trim_leading: in_list || roles.include?('status-note')))
+      if roles.include?('status-note')
         note = StatusLabels.describe(node['condition'])
         if note
-          head = "#{esc(note.glyph)} {\\sc #{esc(note.label_text)}}"
+          head = "{\\sc #{esc(note.label_text)}}"
           head += "\\crlf {\\tfx #{esc(note.also_line)}}" unless note.also_line.empty?
-          "\n\\startCLLstatus #{head}\\crlf #{body}\\stopCLLstatus\n"
         else
-          "\n\\startCLLstatus ◇ #{body}\\stopCLLstatus\n"
+          head = ''
         end
+        glyph = esc(note ? note.glyph : StatusLabels::BARE_GLYPH)
+        margin = "{\\hbox to 0pt{\\hss #{glyph}\\hskip.75em}}"
+        gap = head.empty? ? ' ' : "\\crlf "
+        "\n\\startCLLstatus #{margin}#{head}#{gap}#{body}\\stopCLLstatus\n"
       elsif node.ancestors.any? { |ancestor| %w[td th].include?(ancestor.name) }
         "#{body}\\par\n"
       else

@@ -60,6 +60,87 @@ BOOK = '''<?xml version="1.0" encoding="UTF-8"?>
 '''
 
 
+# The same chapter without the changes appendix: a partial build whose
+# sources have no status-legend element must leave the labels unlinked
+# (issue #290). The chapter prose is identical to BOOK's, so the two
+# outputs must agree in everything but the link.
+BOOK_NO_LEGEND = '''<?xml version="1.0" encoding="UTF-8"?>
+<book xmlns="http://docbook.org/ns/docbook" xml:lang="en">
+  <info><title>Fixture</title></info>
+  <chapter xml:id="chapter-one">
+    <title>First</title>
+    <para role="status-note" condition="status:bpfk-approved;also:historical;date:2015-08-08">Dotside note prose.</para>
+    <para xml:id="note-usage" role="status-note" condition="status:de-facto">Usage note prose.</para>
+    <para role="status-note">Bare note prose.</para>
+    <para role="status-note" condition="status:proposed;body:bpfk">BPFK proposal prose.</para>
+    <para role="status-note" condition="status:bpfk-approved;body:bpfk">Explicit named body prose.</para>
+    <para role="extra status-note" condition="status:checkpointed">Extra role token prose.</para>
+    <para role="status-note" condition="status:de-facto;&#9;date:2015-08-08">Tab separated date prose.</para>
+    <para>Ordinary <phrase role="status-mark" condition="status:de-facto;also:historical">accepted by parsers</phrase> here, and <phrase role="status-mark extra" condition="status:proposed;body:bpfk;date:2020-01-02">a BPFK proposal clause</phrase> too.</para>
+  </chapter>
+</book>
+'''
+
+
+def run_unchunked(book_xml, prefix):
+    """Transform book_xml to a single page; return (temporary, document).
+
+    The caller owns the TemporaryDirectory and must close it.
+    """
+    temporary = tempfile.TemporaryDirectory(prefix=prefix)
+    root = Path(temporary.name)
+    with zipfile.ZipFile(SOURCE / 'xml' / 'docbook-xsl-1.78.1.zip') as z:
+        z.extractall(root / 'xsl')
+    xsl = root / 'xsl' / 'docbook-xsl-1.78.1'
+    wrapper = root / 'wrapper.xsl'
+    wrapper.write_text(
+        "<?xml version='1.0'?>\n"
+        '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">\n'
+        f'<xsl:import href="{xsl}/xhtml5/docbook.xsl"/>\n'
+        f'<xsl:include href="{SOURCE / "xml" / "docbook2html_config_prince.xsl"}"/>\n'
+        '</xsl:stylesheet>\n')
+    book = root / 'book.xml'
+    book.write_text(book_xml)
+    out = root / 'out.html'
+    r = subprocess.run(['xsltproc', '-o', str(out), str(wrapper), str(book)],
+                       capture_output=True, text=True)
+    if r.returncode != 0:
+        raise AssertionError(f'xsltproc failed: {r.stderr[:2000]}')
+    text = re.sub(r'<!DOCTYPE[^>]*>', '', out.read_text())
+    return temporary, ET.fromstring(text)
+
+
+def run_chunked(book_xml, prefix):
+    """Transform book_xml to chunked pages; return (temporary, outdir).
+
+    The caller owns the TemporaryDirectory and must close it.
+    """
+    temporary = tempfile.TemporaryDirectory(prefix=prefix)
+    root = Path(temporary.name)
+    with zipfile.ZipFile(SOURCE / 'xml' / 'docbook-xsl-1.78.1.zip') as z:
+        z.extractall(root / 'xsl')
+    xsl = root / 'xsl' / 'docbook-xsl-1.78.1'
+    wrapper = root / 'wrapper.xsl'
+    wrapper.write_text(
+        "<?xml version='1.0'?>\n"
+        '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">\n'
+        f'<xsl:import href="{xsl}/xhtml5/chunk.xsl"/>\n'
+        f'<xsl:include href="{SOURCE / "xml" / "docbook2html_config_epub.xsl"}"/>\n'
+        '</xsl:stylesheet>\n')
+    book = root / 'book.xml'
+    book.write_text(book_xml)
+    out = root / 'out'
+    out.mkdir()
+    r = subprocess.run(
+        ['xsltproc', '--stringparam', 'base.dir', str(out) + '/',
+         '--stringparam', 'chunk.section.depth', '8',
+         str(wrapper), str(book)],
+        capture_output=True, text=True, cwd=root)
+    if r.returncode != 0:
+        raise AssertionError(f'xsltproc failed: {r.stderr[:2000]}')
+    return temporary, out
+
+
 def reader_text(element):
     """The element's text the way a reader gets it (textContent):
     no whitespace is invented between elements. Joining with split()
@@ -359,6 +440,98 @@ class ChunkedTransform(unittest.TestCase):
         self.assertTrue(hrefs)
         for href in hrefs:
             self.assertEqual(href, 'appendix-changes.html#status-legend')
+
+
+class NoLegendTransform(unittest.TestCase):
+    """Without the legend in the build, labels stay plain text (issue
+    #290): no dangling status-legend-link for EPUBCheck to reject, with
+    the same classes, data attributes and label text."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.temporary, cls.doc = run_unchunked(BOOK_NO_LEGEND,
+                                               'cll-status-nolegend-')
+        cls.notes = [p for p in cls.doc.iter(XHTML + 'p')
+                     if 'status-note' in (p.get('class') or '')]
+        cls.linked_temporary, cls.linked = run_unchunked(BOOK,
+                                                         'cll-status-keep-')
+        cls.linked_notes = [p for p in cls.linked.iter(XHTML + 'p')
+                            if 'status-note' in (p.get('class') or '')]
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.temporary.cleanup()
+        cls.linked_temporary.cleanup()
+
+    def test_no_legend_links(self):
+        links = [a for a in self.doc.iter(XHTML + 'a')
+                 if a.get('class') == 'status-legend-link']
+        self.assertEqual(links, [])
+
+    def test_no_legend_id_in_output(self):
+        ids = {el.get('id') for el in self.doc.iter() if el.get('id')}
+        self.assertNotIn('status-legend', ids)
+
+    def test_unlinked_notes_match_linked_notes_but_for_the_link(self):
+        self.assertEqual(len(self.notes), len(self.linked_notes))
+        for plain, linked in zip(self.notes, self.linked_notes):
+            self.assertEqual(plain.get('class'), linked.get('class'))
+            for attr in ('id', 'data-status', 'data-also',
+                         'data-date', 'data-body'):
+                self.assertEqual(plain.attrib.get(attr),
+                                 linked.attrib.get(attr), attr)
+            self.assertEqual(reader_text(plain), reader_text(linked))
+
+    def test_unlinked_label_text(self):
+        labels = [s for s in self.doc.iter(XHTML + 'span')
+                  if s.get('class') == 'status-label']
+        self.assertEqual(len(labels), 6)
+        texts = [reader_text(label) for label in labels]
+        self.assertEqual(texts[0], 'Approved by the BPFK, 2015-08-08')
+        self.assertEqual(texts[1], 'Established usage')
+        self.assertEqual(texts[2], 'Proposal, BPFK')
+        self.assertEqual(texts[3], 'Approved by the BPFK')
+        self.assertEqual(texts[4], 'BPFK checkpoint')
+        self.assertEqual(texts[5], 'Established usage, 2015-08-08')
+        for label in labels:
+            self.assertEqual(list(label.iter(XHTML + 'a')), [])
+
+    def test_inline_marks_unchanged(self):
+        mark = next(s for s in self.doc.iter(XHTML + 'span')
+                    if s.get('class') == 'status-mark status-de-facto')
+        self.assertEqual(mark.get('data-also'), 'historical')
+        self.assertIn('Established usage', mark.get('title'))
+        text = ''.join(mark.itertext())
+        self.assertIn('accepted by parsers', text)
+        self.assertIn('[Established usage]', text)
+
+
+class NoLegendChunkedTransform(unittest.TestCase):
+    """Chunked output without the legend: label spans stay, legend
+    links go (issue #290)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.temporary, cls.out = run_chunked(BOOK_NO_LEGEND,
+                                             'cll-status-nolegend-chunk-')
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.temporary.cleanup()
+
+    def test_chunked_pages_have_labels_but_no_legend_links(self):
+        labels = []
+        for page in sorted(self.out.glob('*.html')):
+            text = re.sub(r'<!DOCTYPE[^>]*>', '', page.read_text())
+            doc = ET.fromstring(text)
+            labels.extend(s for s in doc.iter(XHTML + 'span')
+                          if s.get('class') == 'status-label')
+            links = [a for a in doc.iter(XHTML + 'a')
+                     if a.get('class') == 'status-legend-link']
+            self.assertEqual(links, [], page.name)
+        self.assertTrue(labels)
+        self.assertIn('Approved by the BPFK, 2015-08-08',
+                      [reader_text(label) for label in labels])
 
 
 if __name__ == '__main__':

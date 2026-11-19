@@ -112,6 +112,10 @@ enforces this.
 - **HTML**: the label is a small filled badge, linked to the legend list
   (`xml:id="status-legend"` in the changes appendix, `chapters/a03.xml`);
   the link's `title` tooltip gives the label, date, body and also-strands.
+  In a partial build without the changes appendix (for example a single
+  chapter without `chapters/a03.xml`), the legend is absent, so the label
+  stays plain text — the same classes, data attributes and label text,
+  but no link — instead of dangling (issue #290).
   Each status has a dark badge colour with white text (contrast 6.54:1 or
   better), but colour is never the only signal: the text, the margin-glyph
   shape and (for three statuses) the border style all differ.

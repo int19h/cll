@@ -309,11 +309,13 @@
     </xsl:choose>
   </xsl:template>
 
-  <!-- Link to the legend list (xml:id="status-legend") in the changes
-       appendix, resolved for chunked and unchunked outputs alike by
-       href.target on the list itself (appendix file plus fragment in
-       chunked output, bare fragment in one page). In a partial build
-       without that appendix, fall back to the bare fragment. The stock
+  <!-- Whether the legend list (xml:id="status-legend") in the changes
+       appendix is in this build: link the label only then. A partial
+       build without that appendix would leave the links dangling,
+       which EPUBCheck rejects, so the label stays plain text there.
+       The href itself resolves for chunked and unchunked outputs
+       alike by href.target on the list (appendix file plus fragment in
+       chunked output, bare fragment in one page). The stock
        stylesheets strip the DocBook namespace before these templates
        run and turn @xml:id into @id (common/stripns.xsl), so accept
        both spellings here and for the ids copied below. -->
@@ -328,6 +330,15 @@
       </xsl:when>
       <xsl:otherwise>#status-legend</xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+
+  <!-- The visible label text, shared by the linked and unlinked forms
+       so the two never drift apart. -->
+  <xsl:template name="cll.status.label.text">
+    <xsl:param name="label" select="''"/>
+    <xsl:param name="body.visible" select="''"/>
+    <xsl:param name="date" select="''"/>
+    <xsl:value-of select="$label"/><xsl:value-of select="$body.visible"/><xsl:if test="$date != ''">, <xsl:value-of select="$date"/></xsl:if>
   </xsl:template>
 
   <!-- Match the semantic role by token membership, not exact
@@ -420,7 +431,7 @@
         <xsl:attribute name="data-body"><xsl:value-of select="$body"/></xsl:attribute>
       </xsl:if>
       <xsl:if test="$token != ''">
-        <span xmlns="http://www.w3.org/1999/xhtml" class="status-label"><a xmlns="http://www.w3.org/1999/xhtml" class="status-legend-link"><xsl:attribute name="href"><xsl:call-template name="cll.status.legend.href"/></xsl:attribute><xsl:attribute name="title"><xsl:value-of select="$title"/></xsl:attribute><xsl:value-of select="$label"/><xsl:value-of select="$body.visible"/><xsl:if test="$date != ''">, <xsl:value-of select="$date"/></xsl:if></a></span>
+        <span xmlns="http://www.w3.org/1999/xhtml" class="status-label"><xsl:choose><xsl:when test="//*[@xml:id = 'status-legend' or @id = 'status-legend']"><a xmlns="http://www.w3.org/1999/xhtml" class="status-legend-link"><xsl:attribute name="href"><xsl:call-template name="cll.status.legend.href"/></xsl:attribute><xsl:attribute name="title"><xsl:value-of select="$title"/></xsl:attribute><xsl:call-template name="cll.status.label.text"><xsl:with-param name="label" select="$label"/><xsl:with-param name="body.visible" select="$body.visible"/><xsl:with-param name="date" select="$date"/></xsl:call-template></a></xsl:when><xsl:otherwise><xsl:call-template name="cll.status.label.text"><xsl:with-param name="label" select="$label"/><xsl:with-param name="body.visible" select="$body.visible"/><xsl:with-param name="date" select="$date"/></xsl:call-template></xsl:otherwise></xsl:choose></span>
         <xsl:text> </xsl:text>
         <xsl:if test="$also != ''">
           <span xmlns="http://www.w3.org/1999/xhtml" class="status-also">also: <xsl:value-of select="$also.labels"/></span>

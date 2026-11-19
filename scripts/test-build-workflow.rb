@@ -63,15 +63,23 @@ end
 prince = steps.find { |s| s['name'] == 'Install Prince (PDF renderer)' }['run']
 sha = File.read(File.join(root, 'Dockerfile'))[/amd64\) prince_sha256=([0-9a-f]{64})/, 1]
 check.call(sha && prince.include?(sha + '  prince_16.2-1_ubuntu26.04_amd64.deb') && prince.index('sha256sum -c -') < prince.index('sudo apt-get install'), 'Prince must match the Dockerfile hash before installation.')
-pinned = {}
+base = File.read(File.join(root, 'Dockerfile'))[/^FROM ubuntu:(\d+\.\d+)@/, 1]
+check.call(base, 'Dockerfile must pin an ubuntu:NN.NN base image.')
+labels = {}
 {'build' => path, 'checks' => File.join(root, '.github/workflows/checks.yml')}.each do |file_name, file_path|
   YAML.safe_load(File.read(file_path)).fetch('jobs').each do |job, body|
-    runner = body['runs-on']
-    pinned["#{file_name}.#{job}"] = runner if runner.is_a?(String) && runner.match?(/\Aubuntu-\d+\.\d+\z/)
+    runners = body['runs-on']
+    runners = [runners] unless runners.is_a?(Array)
+    runners.each do |runner|
+      next unless runner.is_a?(String)
+      release = runner[/ubuntu-(\d+\.\d+)/, 1]
+      labels["#{file_name}.#{job}"] = release if release
+    end
   end
 end
-check.call(pinned.any?, 'No pinned Ubuntu runner found.')
-check.call(pinned.values.uniq == ['ubuntu-26.04'], "Pinned runners must all match: #{pinned}.")
+check.call(labels.any?, 'No pinned Ubuntu runner found.')
+mismatched = labels.reject { |_job, release| release == base }
+check.call(mismatched.empty?, "Pinned runners must match the Dockerfile base ubuntu-#{base}: #{mismatched}.")
 rubies = []
 YAML.safe_load(File.read(File.join(root, '.github/workflows/checks.yml'))).fetch('jobs').each_value do |body|
   (body['steps'] || []).each do |step|

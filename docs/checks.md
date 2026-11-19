@@ -84,6 +84,7 @@ node tests/test-prince-index.js
 | --- | --- | --- |
 | Build workflow | The format selection, preview guard, and helper scripts of the "Build selected formats" workflow, and its action pins, permissions, and timeouts | `python3 scripts/test-build-actions.py` and `ruby scripts/test-build-workflow.rb` |
 | Build helpers | The XHTML post-processors stop after a tool fails. They keep the original page. `cll_build` reports a failed comparison and exits with that status. `cll_build -j` refreshes `dictionary/all_words.xml`. `Gemfile.lock` matches the Docker gem pins. | `python3 scripts/test-build-helpers.py` |
+| Container names | Each container run uses a name unique to the run, only its own container is removed on interruption, and each image tag follows its Dockerfile and copied files. | `python3 scripts/test-container-names.py` |
 | Makefile | The archive recipes and incremental inputs, and the parse-time guard that stops `make` when `builddir` is empty, `/`, or outside the checkout build folder | `python3 scripts/test-makefile.py` |
 | Recursive deletes | `scripts/safe-rm-tree.sh` refuses an empty or glob path, `/`, the home folder, a repository root, and any path outside its `--root`; a symbolic link path is unlinked and its target kept | `python3 scripts/test-safe-rm-tree.py` |
 | Chapter artwork | Chapters 1 to 21 each use one chapter picture. Each picture is a large RGBA PNG in `assets/media/`. No unreferenced chapter picture is shipped. The chapter 2 diagram keeps its size and padding. | `python3 scripts/test-chapter-pictures.py` |
@@ -217,7 +218,7 @@ The renderer also needs Pango, HarfBuzz, and the fonts listed in [build-weasypri
 
 | Check | What it tests | Command |
 | --- | --- | --- |
-| Script syntax | The build scripts parse as Bash | `bash -n cll_build run_context_container.sh scripts/build_context.sh` |
+| Script syntax | The build scripts parse as Bash | `bash -n cll_build run_container.sh run_weasyprint_container.sh run_typst_container.sh run_context_container.sh scripts/build_context.sh scripts/container-names.sh` |
 | ConTeXt converter | `scripts/docbook_to_context.rb` on small books | `ruby scripts/test-docbook-to-context.rb` |
 | ConTeXt assets | `scripts/context_assets.py`, which prepares images for the ConTeXt PDF | `python3 scripts/test-context-assets.py` |
 

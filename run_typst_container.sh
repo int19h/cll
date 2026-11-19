@@ -35,8 +35,12 @@ case "$repo:$builddir" in
     printf 'Checkout: %s\nBuild directory: %s\n' "$repo" "$builddir" >&2
     exit 2 ;;
 esac
-key=$(printf '%s' "$repo" | sha256sum | cut -c 1-16)
-image="localhost/cll-typst:$key"
+. "$repo/scripts/container-names.sh"
+# The tag follows the build context's content (issue #297): different
+# Dockerfiles never share a tag, equal ones share the image cache. The build
+# target is part of the hash because one Dockerfile builds several images.
+image_tag=$(cll_image_tag "$repo/Dockerfile" "$repo" typst) || exit 1
+image="localhost/cll-typst:$image_tag"
 args=()
 volumes=(-v "$repo:$repo" -v "$builddir:$builddir")
 while getopts ':nstSha:' opt; do

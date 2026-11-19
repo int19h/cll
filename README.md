@@ -65,9 +65,12 @@ To build all formats, run:
 ./run_container.sh
 ```
 
-The script builds the image `lojban/cll_build` from `Dockerfile`.
-It then runs `./cll_build` inside a container named `cll_build`, with your checkout mounted, and passes its own arguments to `cll_build`.
-Before it starts, it stops and removes any container with that name, so run only one such build at a time on a machine.
+The script builds the image `lojban/cll_build:<content-hash>` from `Dockerfile`, where the tag follows the Dockerfile and the files it copies, so different checkouts never share a tag while equal ones share the image cache.
+It also tags that image as `lojban/cll_build` for callers that name it.
+It then runs `./cll_build` inside a container with your checkout mounted, and passes its own arguments to `cll_build`.
+The container name is unique to the run (from the checkout path and the process ID), so builds from different checkouts run at the same time without stopping each other.
+Set `CLL_CONTAINER_NAME` to choose the name yourself; the script removes only that run's own container, also when the build is interrupted.
+The other launchers run unnamed containers that are removed after the build: `run_weasyprint_container.sh` and `run_typst_container.sh` tag their images the same content-derived way, and `run_context_container.sh` runs its freshly built image by ID.
 The launchers pass `-i` when standard input is a terminal.
 They pass `-t` only when standard input and standard output are both terminals.
 Each container uses `--init` to forward signals and clean up exited child processes.

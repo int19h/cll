@@ -47,6 +47,7 @@ for ((i=0; i<${#args[@]}; i++)); do
   esac
 done
 cd "$repo_dir"
+. "$repo_dir/scripts/container-names.sh"
 mkdir -p build
 # Preserve trailing newlines so the whitespace check sees the full path.
 build_dir=$(readlink -f build && printf .)
@@ -61,8 +62,10 @@ build_version=$(scripts/build-version.sh)
 mkdir -p "$build_dir/tmp" "$build_dir/cache"
 exec 9>"$build_dir/.weasyprint.lock"
 flock -n 9 || { echo 'A WeasyPrint build already uses this build directory.' >&2; exit 1; }
-workspace_id=$(printf '%s' "$repo_dir" | sha256sum | cut -c1-16)
-image="localhost/cll-weasyprint:$workspace_id"
+# The tag follows the build context's content (issue #297): different
+# Dockerfiles never share a tag, equal ones share the image cache.
+image_tag=$(cll_image_tag "$repo_dir/Dockerfile.weasyprint" "$repo_dir/scripts/weasyprint") || exit 1
+image="localhost/cll-weasyprint:$image_tag"
 "${engine[@]}" build -t "$image" -f "$repo_dir/Dockerfile.weasyprint" "$repo_dir/scripts/weasyprint"
 user_args=(--user "$(id -u):$(id -g)")
 if "${engine[@]}" --version | grep -qi podman; then

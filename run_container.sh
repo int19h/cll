@@ -45,6 +45,17 @@ done
 script_path=$(readlink -f "$0")
 dir=${script_path%/*}
 dir=${dir:-/}
+. "$dir/scripts/container-names.sh"
+# A name unique to this run (issue #297): two builds from different checkouts
+# or from two shells in one checkout must not stop each other. A caller can
+# set CLL_CONTAINER_NAME for a stable name of its own; only that run's own
+# container is ever stopped or removed, and a trap does it on interruption.
+container_name=$(cll_container_name "$dir")
+cleanup_container() {
+  "${engine[@]}" rm -f "$container_name" >/dev/null 2>&1 || true
+}
+trap cleanup_container INT TERM HUP EXIT
+"${engine[@]}" rm -f "$container_name" >/dev/null 2>&1 || true
 mkdir -p "$dir/build"
 # Preserve trailing newlines so the whitespace check sees the full path.
 build_dir=$(realpath "$dir/build" && printf .)
@@ -55,18 +66,22 @@ case "$dir:$build_dir" in
     printf 'Checkout: %s\nBuild directory: %s\n' "$dir" "$build_dir" >&2
     exit 2 ;;
 esac
-"${engine[@]}" kill cll_build >/dev/null 2>&1 || true
-"${engine[@]}" rm cll_build >/dev/null 2>&1 || true
-
 mounts=(-v "$dir:$dir" -v "$build_dir:$build_dir")
 build_version=$("$dir/scripts/build-version.sh") || exit 1
 
+# The tag follows the build context's content (issue #297): different
+# Dockerfiles never share a tag, equal ones share the image cache.
+# lojban/cll_build stays as an alias for callers that name it.
+image_tag=$(cll_image_tag "$dir/Dockerfile" "$dir" prince) || exit 1
+image="lojban/cll_build:$image_tag"
+
 # FOR TESTING; forces complete container rebuild
-# "${engine[@]}" build --no-cache -t lojban/cll_build -f Dockerfile .
-# "${engine[@]}" rmi lojban/cll_build
+# "${engine[@]}" build --no-cache -t "$image" -f Dockerfile .
+# "${engine[@]}" rmi "$image"
 echo "Running container image build; this may take a while."
+echo "Image tag: $image"
 echo
-"${engine[@]}" build -t lojban/cll_build -f "$dir/Dockerfile" "$dir" >/tmp/rc.$$ 2>&1 || {
+"${engine[@]}" build -t "$image" -f "$dir/Dockerfile" "$dir" >/tmp/rc.$$ 2>&1 || {
   echo "Container image build failed.  Here's the output: "
   echo
   cat /tmp/rc.$$
@@ -80,6 +95,8 @@ echo
 }
 
 rm -f /tmp/rc.$$
+
+"${engine[@]}" tag "$image" lojban/cll_build
 
 user_args=(--user "$(id -u):$(id -g)")
 if "${engine[@]}" --version | grep -qi podman; then
@@ -99,8 +116,10 @@ if [ -t 0 ]; then
 fi
 
 # Numeric Docker users may have no passwd entry or writable home directory.
-exec "${engine[@]}" run --init --name cll_build \
+# No exec here: the EXIT trap above must stay in place so this run's own
+# container is removed however the build ends, and --rm removes it as well.
+"${engine[@]}" run --init --rm --name "$container_name" \
   "${user_args[@]}" "${mounts[@]}" "${extra_vols[@]}" -w "$dir" \
   -e HOME=/tmp -e XDG_CACHE_HOME=/tmp/.cache \
-  -e CLL_BUILD_VERSION="$build_version" "${terminal[@]}" lojban/cll_build \
+  -e CLL_BUILD_VERSION="$build_version" "${terminal[@]}" "$image" \
   ./scripts/container-command.sh ./cll_build "${args[@]}"

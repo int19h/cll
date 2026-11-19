@@ -10,13 +10,13 @@
 
     <para><indexterm type="general"><primary>selma'o</primary><secondary>cross-reference list of</secondary>
         <tertiary>selma'o catalog</tertiary>
-      </indexterm>The following paragraphs list all the selma'o of Lojban, with a brief explanation of what each one is about, and a reference to the chapter number where each is explained more fully. As usual, all selma'o names are given in capital letters (with “h” serving as the capital of “'”) and are the names of a representative cmavo, for example the most important or the first in alphabetical order. Each selma'o is given at least one example.</para>
+      </indexterm>The following paragraphs list all the selma'o of Lojban, with a brief explanation of what each one is about, and a reference to the chapter number where each is explained more fully. As usual, all selma'o names are given in capital letters (with “h” serving as the capital of “'”) and are the names of a representative cmavo. Most entries also give an example.</para>
     <bridgehead>
       <anchor xml:id="A" xreflabel="A" />
       selma'o A (
       <xref linkend="section-sumti-connection" />)
     </bridgehead>
-    <para>Specifies a logical connection (e.g. “and”, “or”, “if”), between sumti or between mekso operands.</para>
+    <para>Specifies a logical connection (e.g. “and”, “or”, “if”) between sumti or between mekso operands.</para>
     <interlinear-gloss>
       <jbo>la--.djan. a la--.djein. klama lo zarci</jbo>
       <gloss>John and/or Jane goes-to the store</gloss>

@@ -41,7 +41,7 @@
       is not needed after the last sentence or before the first one, although both positions are technically grammatical.
       <valsi>.i</valsi>
       signals a new sentence on the same topic, not necessarily by the same speaker. The relationship between the sentences is left vague, except in stories, where, under the conventions of story time (
-      <xref linkend="section-story-time" />), a sentence with no tense of its own is taken to state something that happened after the previous sentence.
+      <xref linkend="section-story-time" />), a sentence with no tense of its own tells what happens next at the current point in the story.
     </para>
 
     <para>

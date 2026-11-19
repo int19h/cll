@@ -27,6 +27,8 @@ def stage_generator(repo, dir)
       <valsi word=".ia"><definition>belief</definition></valsi>
       <valsi word="klama"><definition>to come or go</definition></valsi>
       <valsi word="na'e"><definition>other than</definition></valsi>
+      <valsi word=".i,ov"><definition>Job (a name)</definition></valsi>
+      <valsi word="lojbangirz"><definition>Logical Language Group (LLG)</definition></valsi>
       <valsi word="y"><definition> </definition></valsi>
     </dictionary>
     EOF
@@ -146,17 +148,21 @@ Dir.mktmpdir do |dir|
 end
 
 # Issue #292: a book spelling with no dictionary entry of its own still gets
-# the entry of the dictionary spelling that shares its slug, as bare "y"
-# does with ".y.". A partial build whose chapters use only the bare spelling
-# otherwise links to a glossary entry that nothing defines. The staged
-# dictionary defines ".y." and ".ia", and "y" with an empty definition.
+# the entry of a dictionary spelling that differs only in outer pause
+# dots, as bare "y" does with ".y.". A partial build whose chapters use
+# only the bare spelling otherwise links to a glossary entry that nothing
+# defines. The fallback goes no further: ".i.ov" shares the ID valsi-i_ov
+# with the name ".i,ov", but an internal period and an internal comma are
+# different words, so ".i.ov" must stay undefined and keep its warning.
+# The staged dictionary defines ".y.", ".ia", ".i,ov", and "lojbangirz",
+# and "y" with an empty definition.
 Dir.mktmpdir do |dir|
   scripts = stage_generator(repo, dir)
   build = File.join(dir, 'build')
   FileUtils.mkdir_p(build)
   File.write(File.join(build, 'cll_preglossary.xml'), <<~XML)
     <?xml version="1.0"?>
-    <book><para><valsi>y</valsi><valsi>ia</valsi></para></book>
+    <book><para><valsi>y</valsi><valsi>ia</valsi><valsi>.lojbangirz.</valsi><valsi>.i.ov</valsi></para></book>
   XML
 
   stdout, stderr, status = run_generator(scripts, build)
@@ -165,6 +171,11 @@ Dir.mktmpdir do |dir|
     by_id = entry_map(stdout).map { |id, term, defn| [id, [term, defn]] }.to_h
     check.(by_id['valsi-y'] == ['.y.', 'hesitation noise'], "bare y entry is #{by_id['valsi-y'].inspect}")
     check.(by_id['valsi-ia'] == ['.ia', 'belief'], "bare ia entry is #{by_id['valsi-ia'].inspect}")
+    check.(by_id['valsi-lojbangirz'] == ['lojbangirz', 'Logical Language Group (LLG)'], "dotted .lojbangirz. entry is #{by_id['valsi-lojbangirz'].inspect}")
+    check.(!by_id.key?('valsi-i_ov'), ".i.ov took the entry of the name .i,ov: #{by_id['valsi-i_ov'].inspect}")
+    check.(stderr.include?('glossary: "y" uses the dictionary spelling ".y."'), 'the y fallback is silent')
+    check.(stderr.include?('glossary: ".lojbangirz." uses the dictionary spelling "lojbangirz"'), 'the .lojbangirz. fallback is silent')
+    check.(stderr.include?('NO JBOVLASTE DEFINITION FOUND FOR WORD ".i.ov"'), '.i.ov lost its missing-definition warning')
   end
 end
 

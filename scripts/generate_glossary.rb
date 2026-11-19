@@ -53,12 +53,17 @@ unless opts[:testing]
     defined_words = jbovlaste_tree.xpath('//valsi').select do |entry|
       !entry.xpath('.//definition').text.strip.empty?
     end.map { |entry| entry['word'] }.to_set
-    # Book spellings and dictionary spellings that slugify alike are the
-    # same word (bare "y" and ".y."), and no two defined dictionary words
-    # share a slug. This map lets a book spelling with no entry of its own
-    # use the dictionary spelling's entry, so a partial build that uses
-    # only the book spelling still defines the ID its links point at.
-    defined_by_slug = defined_words.group_by { |word| slugify(word) }
+    # A book spelling with no entry of its own may use the entry of a
+    # dictionary spelling that differs only in outer pause dots (bare
+    # "y" and ".y.", ".lojbangirz." and "lojbangirz"), so a partial build
+    # that uses only the book spelling still defines the ID its links
+    # point at. The two spellings must otherwise be the same string: an
+    # ID match alone is not enough, because slugify also drops the
+    # difference between an internal period and an internal comma, and
+    # ".i.ov" is not the name ".i,ov". This map keys each defined word
+    # by its spelling with outer dots removed.
+    bare_spelling = ->(word) { word.sub(/\A\.+/, '').sub(/\.+\z/, '') }
+    defined_by_bare = defined_words.group_by { |word| bare_spelling.(word) }
 end
 
 coder = HTMLEntities.new
@@ -90,11 +95,22 @@ else
       # Spellings that slugify to one ID, such as .y. and y, share one entry.
       # Prefer a spelling that has a definition so an undefined alias cannot
       # hide it. Every link still uses valsi- plus that same slug.
-      word = if opts[:testing]
-        spellings.first
+      word = nil
+      if opts[:testing]
+        word = spellings.first
       else
-        spellings.find { |spelling| defined_words.include?(spelling) } ||
-          defined_by_slug.fetch(slug, []).sort.first
+        word = spellings.find { |spelling| defined_words.include?(spelling) }
+        unless word
+          # Differ only in outer pause dots, and keep this group's ID.
+          word = spellings.flat_map { |spelling| defined_by_bare.fetch(bare_spelling.(spelling), []) }
+                          .select { |candidate| slugify(candidate) == slug }
+                          .sort.first
+          if word
+            spellings.each do |spelling|
+              $stderr.puts %Q{\nglossary: "#{spelling}" uses the dictionary spelling "#{word}"}
+            end
+          end
+        end
       end
       unless word
         spellings.each do |spelling|

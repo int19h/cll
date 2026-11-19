@@ -14,18 +14,23 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class BuildPinsTest(unittest.TestCase):
     def test_base_images_and_packages(self):
+        bases = {}
         for name in ['Dockerfile', 'Dockerfile.weasyprint', 'Dockerfile.context']:
             with self.subTest(file=name):
                 text = (ROOT / name).read_text()
                 for source in re.findall(r'^FROM (\S+)', text, re.M):
                     if source != 'build-base':
                         self.assertRegex(source, r'@sha256:[0-9a-f]{64}$')
+                    if source.startswith('ubuntu:'):
+                        bases[name] = source
                 self.assertIn('https://snapshot.ubuntu.com/ubuntu/20261117T000000Z/', text)
                 self.assertIn('APT::Update::Error-Mode=any', text)
                 self.assertIn('Acquire::https::CaInfo "/etc/ssl/certs/ca-certificates.crt";', text)
                 self.assertIn('> /etc/apt/apt.conf.d/99-snapshot-ca', text)
                 self.assertNotIn('trusted=yes', text)
                 self.assertNotIn('Verify-Peer=false', text)
+        self.assertEqual(len(bases), 3)
+        self.assertEqual(len(set(bases.values())), 1, bases)
 
     def test_context_rejects_wrong_archive_before_extraction(self):
         with tempfile.TemporaryDirectory() as directory:

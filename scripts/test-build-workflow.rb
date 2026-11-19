@@ -71,14 +71,25 @@ labels = {}
     runners = body['runs-on']
     runners = [runners] unless runners.is_a?(Array)
     runners.each do |runner|
-      next unless runner.is_a?(String)
-      release = runner[/ubuntu-(\d+\.\d+)/, 1]
-      labels["#{file_name}.#{job}"] = release if release
+      if runner.is_a?(Hash)
+        group_labels = runner['labels']
+        group_labels = [group_labels] unless group_labels.is_a?(Array)
+        group_labels.each do |label|
+          next unless label.is_a?(String)
+          label.scan(/ubuntu-(\d+\.\d+)/) do |release|
+            (labels["#{file_name}.#{job}"] ||= []) << release[0]
+          end
+        end
+      elsif runner.is_a?(String)
+        runner.scan(/ubuntu-(\d+\.\d+)/) do |release|
+          (labels["#{file_name}.#{job}"] ||= []) << release[0]
+        end
+      end
     end
   end
 end
 check.call(labels.any?, 'No pinned Ubuntu runner found.')
-mismatched = labels.reject { |_job, release| release == base }
+mismatched = labels.reject { |_job, releases| releases.uniq == [base] }
 check.call(mismatched.empty?, "Pinned runners must match the Dockerfile base ubuntu-#{base}: #{mismatched}.")
 rubies = []
 YAML.safe_load(File.read(File.join(root, '.github/workflows/checks.yml'))).fetch('jobs').each_value do |body|

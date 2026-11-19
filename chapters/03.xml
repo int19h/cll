@@ -687,7 +687,7 @@
       <letteral>n</letteral>
       , or
       <letteral>r</letteral>
-      (discussed later) falls. A consonant is syllabic only where the rules of word form make it so, as in a fu'ivla: in <valsi>bangrkore'a</valsi>, the <letteral>r</letteral> is the nucleus of the syllable <morphology>gr</morphology>, and the spelling <quote>ban,gr,kore'a</quote> only shows that existing division. Commas are never required.
+      (discussed later) falls. A consonant is syllabic only where the rules of word form make it so, as in a fu'ivla: in <valsi valid="maybe">bangrkore'a</valsi>, the <letteral>r</letteral> is the nucleus of the syllable <morphology>gr</morphology>, and the spelling <quote>ban,gr,kore'a</quote> only shows that existing division. Commas are never required.
     </para>
     <para>
       <indexterm type="general"><primary>period</primary><secondary>example of</secondary>
@@ -2193,7 +2193,7 @@
       and
       <rafsi>zba</rafsi>. It contains the permissible initial pair
       <morphology>zb</morphology>, which can begin a syllable, so both consonants go with the following vowel. The break happens to fall where the two rafsi meet, but the rafsi do not put it there:
-      <valsi>kasmlu</valsi>, built from
+      <valsi valid="maybe">kasmlu</valsi>, built from
       <rafsi>kas</rafsi>
       and
       <rafsi>mlu</rafsi>, divides as

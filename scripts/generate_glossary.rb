@@ -53,6 +53,12 @@ unless opts[:testing]
     defined_words = jbovlaste_tree.xpath('//valsi').select do |entry|
       !entry.xpath('.//definition').text.strip.empty?
     end.map { |entry| entry['word'] }.to_set
+    # Book spellings and dictionary spellings that slugify alike are the
+    # same word (bare "y" and ".y."), and no two defined dictionary words
+    # share a slug. This map lets a book spelling with no entry of its own
+    # use the dictionary spelling's entry, so a partial build that uses
+    # only the book spelling still defines the ID its links point at.
+    defined_by_slug = defined_words.group_by { |word| slugify(word) }
 end
 
 coder = HTMLEntities.new
@@ -87,7 +93,8 @@ else
       word = if opts[:testing]
         spellings.first
       else
-        spellings.find { |spelling| defined_words.include?(spelling) }
+        spellings.find { |spelling| defined_words.include?(spelling) } ||
+          defined_by_slug.fetch(slug, []).sort.first
       end
       unless word
         spellings.each do |spelling|

@@ -145,6 +145,29 @@ Dir.mktmpdir do |dir|
   check.(!stdout.include?('placeholder definition'), 'the edited generator kept the old definition')
 end
 
+# Issue #292: a book spelling with no dictionary entry of its own still gets
+# the entry of the dictionary spelling that shares its slug, as bare "y"
+# does with ".y.". A partial build whose chapters use only the bare spelling
+# otherwise links to a glossary entry that nothing defines. The staged
+# dictionary defines ".y." and ".ia", and "y" with an empty definition.
+Dir.mktmpdir do |dir|
+  scripts = stage_generator(repo, dir)
+  build = File.join(dir, 'build')
+  FileUtils.mkdir_p(build)
+  File.write(File.join(build, 'cll_preglossary.xml'), <<~XML)
+    <?xml version="1.0"?>
+    <book><para><valsi>y</valsi><valsi>ia</valsi></para></book>
+  XML
+
+  stdout, stderr, status = run_generator(scripts, build)
+  check.(status.success?, "alias-only glossary failed\n#{stderr}")
+  if status.success?
+    by_id = entry_map(stdout).map { |id, term, defn| [id, [term, defn]] }.to_h
+    check.(by_id['valsi-y'] == ['.y.', 'hesitation noise'], "bare y entry is #{by_id['valsi-y'].inspect}")
+    check.(by_id['valsi-ia'] == ['.ia', 'belief'], "bare ia entry is #{by_id['valsi-ia'].inspect}")
+  end
+end
+
 if failures.empty?
   puts 'test-generate-glossary: cache key and glossary IDs are stable'
 else

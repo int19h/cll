@@ -3,7 +3,7 @@
 The `checks` workflow (`.github/workflows/checks.yml`) runs on every pull request to `main` and on every push to `main`.
 This page lists each check that it runs, what the check tests, and the command that runs it locally.
 Run the commands from the repository root.
-None of them builds the book.
+None of them builds the book, except [whole-book-validation](#whole-book-validation), which merges and preprocesses the whole book and validates it, but renders nothing.
 
 ## Tools
 
@@ -150,7 +150,7 @@ The check needs `xsltproc` as well as Ruby and Nokogiri.
 | Index types | Every hand-written `indexterm` has the type `general` or `lojban-word`, the only two indexes that the build makes | `ruby scripts/lint-index-types.rb chapters/*.xml` |
 | Branding values | `.env` values with `&`, `'`, `=` and quotes reach the title page unchanged and as well-formed XML | `ruby scripts/test-merge-branding.rb` |
 | Partial builds | With `-t` and `-s`, every cross-reference to an omitted target is replaced, so a single chapter passes validation | `ruby scripts/test-partial-references.rb` |
-| Glossary | If the generator, `scripts/util.rb`, or the pronunciation recordings change, the glossary cache changes. Spellings with the same ID share one entry | `ruby scripts/test-generate-glossary.rb` |
+| Glossary | If the generator, `scripts/util.rb`, or the pronunciation recordings change, the glossary cache changes. Spellings with the same ID share one entry, and a book spelling with no entry of its own (bare `y`) uses the dictionary spelling that shares its ID (`.y.`) | `ruby scripts/test-generate-glossary.rb` |
 | Word spellings self-test | The lint below, on fixtures | `ruby scripts/test-lint-word-spellings.rb` |
 | Word spellings | Lojban text has no CGV sequence (a consonant, a glide, and a vowel). Every word with a comma between two vowels appears in `scripts/reviewed-comma-words.json`. It does not check commas next to consonants. It reads only Lojban elements such as `jbo`, `valsi`, and `jbophrase`. It skips text marked `valid="false"` or `valid="maybe"`. It also skips the quoted text of `zoi` and `la'o`. | `ruby scripts/lint-word-spellings.rb chapters/*.xml` |
 | jbophrase frames | A frame such as `lu ... li'u` links each of its words to the glossary, and the glossary collects those words | `ruby scripts/test-jbophrase-frames.rb` |
@@ -168,6 +168,16 @@ It will use this command:
 ```sh
 offline=no ./cll_build -n -T xhtml_nochunks
 ```
+
+## whole-book-validation
+
+| Check | What it tests | Command |
+| --- | --- | --- |
+| Whole-book validation | The whole book, merged with the real glossary and preprocessed, passes the validation that `xmlto` runs before it transforms anything (`xmllint --noout --nonet --xinclude --postvalid --noent`). A `<valsi>` word with no entry in `dictionary/all_words.xml` links to a glossary ID that nothing defines, and only this check sees it: single-chapter `-t` builds use a placeholder glossary that defines every ID (issue #292). A well-formed example word with no dictionary entry belongs in `<valsi valid="maybe">`, which prints it without a glossary link. | `scripts/check-whole-book-validation.sh` |
+
+The check takes about two minutes, most of it generating the glossary.
+It needs Ruby with Nokogiri, Optimist, and HTMLEntities, and `xmllint`.
+Its output stays in `build/whole-book-validation` (name another build folder as the argument).
 
 ## typst-smoke
 

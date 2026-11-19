@@ -126,10 +126,43 @@ class DocBookTypstTest < Minitest::Test
     refute_includes source, '#text("  ")'
   end
 
+  def test_status_note_renders_label_also_date_and_glyph
+    source = convert('<chapter><title>Status</title><para role="status-note" condition="status:bpfk-approved;also:historical;date:2015-08-08">Dotside note prose.</para><para role="status-note">Bare note prose.</para></chapter>')
+    assert_includes source, '#cll-status(token: "bpfk-approved", glyph: "●", label: "Approved by the BPFK, 2015-08-08", also: "also: First-edition rule")'
+    assert_includes source, 'Dotside note prose.'
+    assert_includes source, '#cll-status[#text("Bare note prose.")]'
+  end
+
+  def test_status_note_explicit_body_and_extra_role_token
+    source = convert('<chapter><title>Status</title><para role="status-note" condition="status:proposed;body:bpfk">BPFK proposal prose.</para><para role="extra status-note" condition="status:checkpointed">Extra role prose.</para></chapter>')
+    assert_includes source, 'label: "Proposal, BPFK"'
+    assert_includes source, 'glyph: "■"'
+    assert_includes source, 'token: "checkpointed"'
+  end
+
+  def test_status_mark_renders_short_label_and_glyph
+    source = convert('<chapter><title>Status</title><para>Ordinary <phrase role="status-mark" condition="status:de-facto;also:historical">accepted by parsers</phrase> here.</para></chapter>')
+    # Code-mode strings: markup-mode "..." would print as smart quotes.
+    assert_includes source, '#super[#smallcaps(" [Established usage]")#text("◆")]'
+  end
+
+  def test_status_note_trims_leading_whitespace
+    source = convert("<chapter><title>Status</title><para role=\"status-note\" condition=\"status:de-facto\">\n  <indexterm type=\"general\"><primary>entry</primary></indexterm>\n  Padded prose.</para></chapter>")
+    assert_includes source, '#text("Padded prose.")]'
+    refute_includes source, '#text(" '
+  end
+
+  def test_status_unknown_token_keeps_raw_label_and_bare_glyph
+    source = convert('<chapter><title>Status</title><para role="status-note" condition="status:invented">Mystery prose.</para><para>Ordinary <phrase role="status-mark" condition="status:invented">clause</phrase> and <phrase role="status-mark">bare</phrase>.</para></chapter>')
+    assert_includes source, 'label: "invented"'
+    assert_includes source, '#super[#text(" ◇")]'
+    assert_includes source, '#super[#smallcaps(" [invented]")#text("◇")]'
+  end
+
   def test_native_compilation_with_outline_links_and_indexes
     executable = ENV['TYPST']
     skip 'Set TYPST to run the native compilation test.' unless executable
-    source = convert('<chapter id="c"><title><anchor id="alias"/>A chapter</title><section id="s"><title>Section</title><para><indexterm type="general"><primary>fraction</primary></indexterm><xref linkend="alias"/> <inlineequation><math><mfrac><mn>2</mn><mn>7</mn></mfrac></math></inlineequation></para></section></chapter>')
+    source = convert('<chapter id="c"><title><anchor id="alias"/>A chapter</title><section id="s"><title>Section</title><para><indexterm type="general"><primary>fraction</primary></indexterm><xref linkend="alias"/> <inlineequation><math><mfrac><mn>2</mn><mn>7</mn></mfrac></math></inlineequation></para><para role="status-note" condition="status:de-facto;also:historical;date:2015-08-08">Usage note prose.</para><para role="status-note">Bare note.</para><para>Ordinary <phrase role="status-mark" condition="status:de-facto">accepted by parsers</phrase> here.</para></section></chapter>')
     Dir.mktmpdir('compile-', TMP) do |dir|
       File.write(File.join(dir, 'cll.typ'), source)
       FileUtils.cp(File.expand_path('../typst/book.typ', __dir__), dir)
@@ -138,6 +171,29 @@ class DocBookTypstTest < Minitest::Test
       assert status.success?, err
       assert_empty err
       assert File.size(File.join(dir, 'cll.pdf')) > 1000
+    end
+  end
+
+  def test_compiled_inline_mark_has_plain_label_text
+    # Markup-mode "..." in the super would print as smart quotes around
+    # the label and glyph; the converter must emit code-mode strings.
+    # Needs pdftotext, which the CI smoke job installs.
+    executable = ENV['TYPST']
+    skip 'Set TYPST to run the native compilation test.' unless executable
+    skip 'Install poppler-utils to check rendered text.' unless system('command -v pdftotext >/dev/null 2>&1')
+    source = convert('<chapter><title>Status</title><para>Ordinary <phrase role="status-mark" condition="status:de-facto">accepted by parsers</phrase> here.</para></chapter>')
+    Dir.mktmpdir('compile-', TMP) do |dir|
+      File.write(File.join(dir, 'cll.typ'), source)
+      FileUtils.cp(File.expand_path('../typst/book.typ', __dir__), dir)
+      fonts = File.expand_path('../assets/fonts', __dir__)
+      pdf = File.join(dir, 'cll.pdf')
+      _, err, status = Open3.capture3(executable, 'compile', '--ignore-system-fonts', '--font-path', fonts, File.join(dir, 'cll.typ'), pdf)
+      assert status.success?, err
+      text, serr, tstatus = Open3.capture3('pdftotext', '-layout', pdf, '-')
+      assert tstatus.success?, serr
+      text = text.gsub(/\s+/, ' ')
+      assert_includes text, 'accepted by parsers [Established usage]◆'
+      refute_match(/[“”]/, text)
     end
   end
 end

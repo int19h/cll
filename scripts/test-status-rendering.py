@@ -259,6 +259,114 @@ class LabelTableAndCss(unittest.TestCase):
         self.assertIn('background: none', m.group(1))
         self.assertIn('color: inherit', m.group(1))
 
+    def test_margin_glyphs_are_decorative_only(self):
+        # Screen readers may announce CSS-generated content, while the
+        # real-text label already carries the status. Every status margin
+        # glyph keeps its visible content declaration and adds an
+        # identical one with an empty alternative text, so engines that
+        # understand alt text skip the decorative glyph; older engines
+        # fall back to the plain glyph. The legend link templates are
+        # untouched.
+        css = (SOURCE / 'assets' / 'css' / 'master.css').read_text()
+        css = re.sub(r'/\*.*?\*/', '', css, flags=re.S)
+        count = 0
+        for m in re.finditer(
+                r'(p\.status-note[^{]*?::before|span\.status-mark[^{]*?::after)'
+                r'\s*\{([^}]*)\}', css):
+            selector, body = m.group(1), m.group(2)
+            if 'content:' not in body:
+                continue
+            count += 1
+            self.assertIn('/ "";', body, selector)
+        self.assertEqual(count, 2 + 2 * len(LABELS), count)
+
+    @staticmethod
+    def ruby_hash(source, name):
+        block = source.split(name + ' = {', 1)[1].split('}.freeze', 1)[0]
+        # Values may use either quote style (NAMED_BODIES is single-quoted).
+        out = {}
+        for line in block.splitlines():
+            key, sep, value = line.partition('=>')
+            if not sep:
+                continue
+            token = key.strip().strip("'")
+            value = value.strip().rstrip(",").strip().strip("'").strip('"')
+            out[token] = value
+        return out
+
+    @staticmethod
+    def decode_ruby_escapes(value):
+        # The Ruby table writes non-ASCII glyphs as \uXXXX escapes.
+        return re.sub(r'\\u([0-9A-Fa-f]{4})',
+                      lambda m: chr(int(m.group(1), 16)), value)
+
+    @staticmethod
+    def decode_css_escapes(value):
+        return re.sub(r'\\([0-9A-Fa-f]{4})(?![0-9A-Fa-f])',
+                      lambda m: chr(int(m.group(1), 16)), value)
+
+    @staticmethod
+    def xsl_choose(xsl, name, var):
+        # Every token the template names, with the label it assigns:
+        # handles alternatives joined by 'or' (body.named names two).
+        block = xsl.split(f'<xsl:template name="{name}">', 1)[1]
+        block = block.split('</xsl:template>', 1)[0]
+        out = {}
+        for cond, text in re.findall(
+                r'<xsl:when test="([^"]+)">([^<]*)</xsl:when>', block):
+            for token in re.findall(rf"\${var} = '([a-z-]+)'", cond):
+                out[token] = text
+        return out
+
+    def test_ruby_tables_match_xsl(self):
+        # scripts/status_labels.rb is the one Ruby copy the Typst and
+        # ConTeXt converters share. Compare the whole token-to-label
+        # mapping, keys included, so a swapped pair of XSL labels fails
+        # this test; compare the body tables too, and require the same
+        # token sets so an extra entry on either side fails as well.
+        ruby = (SOURCE / 'scripts' / 'status_labels.rb').read_text()
+        xsl = (SOURCE / 'xml' / 'docbook2html_config_common.xsl').read_text()
+        self.assertEqual(self.ruby_hash(ruby, 'LABELS'),
+                         self.xsl_choose(xsl, 'cll.status.label', 'token'))
+        self.assertEqual(self.ruby_hash(ruby, 'BODY_LABELS'),
+                         self.xsl_choose(xsl, 'cll.status.body.label', 'body'))
+        self.assertEqual(self.ruby_hash(ruby, 'NAMED_BODIES'),
+                         self.xsl_choose(xsl, 'cll.status.body.named', 'token'))
+
+    def test_ruby_glyphs_match_css(self):
+        css = (SOURCE / 'assets' / 'css' / 'master.css').read_text()
+        ruby = (SOURCE / 'scripts' / 'status_labels.rb').read_text()
+        css_glyphs = {}
+        for token in LABELS:
+            m = re.search(r'p\.status-note\.status-' + re.escape(token) +
+                          r'::before \{ content: "([^"]+)"', css)
+            self.assertIsNotNone(m, token)
+            css_glyphs[token] = self.decode_css_escapes(m.group(1))
+        ruby_glyphs = {token: self.decode_ruby_escapes(value)
+                       for token, value in
+                       self.ruby_hash(ruby, 'GLYPHS').items()}
+        self.assertEqual(ruby_glyphs, css_glyphs)
+
+    def test_ruby_tables_match_docs(self):
+        # The docs claim the table is checked against docs/status-markup.md:
+        # parse its label table and glyph list and require the same maps.
+        docs = (SOURCE / 'docs' / 'status-markup.md').read_text()
+        ruby = (SOURCE / 'scripts' / 'status_labels.rb').read_text()
+        docs_labels = dict(re.findall(
+            r"^\| `([a-z-]+)` \| ([^|]+?) \|", docs, re.M))
+        self.assertEqual(docs_labels, self.ruby_hash(ruby, 'LABELS'))
+        bullet = docs.split('differs by status', 1)[1].split('fonts', 1)[0]
+        pairs = []
+        for chunk in re.split(r'[,\n]', bullet):
+            m = re.match(r'\s*(\S+)\s+([a-z-]+)\s*$', chunk)
+            if m:
+                pairs.append((m.group(2), m.group(1)))
+        docs_glyphs = dict(pairs)
+        ruby_glyphs = {token: self.decode_ruby_escapes(value)
+                       for token, value in
+                       self.ruby_hash(ruby, 'GLYPHS').items()}
+        self.assertEqual(docs_glyphs, ruby_glyphs)
+
     def test_print_keeps_the_label_with_the_prose_start(self):
         # Review R1, static half (the pagination itself is in
         # scripts/test-status-pagination.py): the print rules keep

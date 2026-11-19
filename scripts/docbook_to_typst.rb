@@ -4,6 +4,7 @@ require 'json'
 require 'nokogiri'
 require 'fileutils'
 require 'optparse'
+require_relative 'status_labels'
 
 class DocBookTypst
   attr_reader :document, :references, :stats
@@ -81,6 +82,22 @@ class DocBookTypst
     node.children.reject { |n| (n.element? && except.include?(n.name)) || (block && n.text? && n.text.strip.empty?) }.map { |n| render(n) }.join
   end
 
+  # Strip leading whitespace (and the gap after leading metadata nodes) so
+  # the prose starts flush, as in print where HTML collapses the space.
+  def trim_note_leading_edge(node)
+    leading = true
+    node.children.each do |child|
+      break unless leading
+      if child.text?
+        child.content = child.text.lstrip
+        leading = false unless child.text.empty?
+      elsif child.element?
+        invisible = %w[indexterm anchor].include?(child.name) || child['role'] == 'display-none' || child.name == 'guibutton'
+        leading = false unless invisible
+      end
+    end
+  end
+
   def anchor(node)
     node['id'] ? "#metadata(none)#label(#{q(node['id'])})" : ''
   end
@@ -122,7 +139,16 @@ class DocBookTypst
     body = "#strong[#{body}]" if %w[selbri gloss bold].include?(role)
     body = "#text(size: 1.2em, weight: \"bold\")[#{body}]" if role == 'logical-vowel'
     body = "#text(font: \"DejaVu Sans Mono\")[#{body}]" if %w[monospace X-SAMPA].include?(role)
-    body = "#underline(stroke: (paint: gray, dash: \"dotted\"))[#{body}]#super[◇]" if role == 'status-mark'
+    if role.split.include?('status-mark')
+      mark = StatusLabels.describe(node['condition'], inline: true)
+      if mark
+        # Code-mode strings: markup-mode "..." would print as smart quotes.
+        short = "#super[#smallcaps(#{q(mark.inline_short)})#text(#{q(mark.glyph)})]"
+      else
+        short = "#super[#text(#{q(" " + StatusLabels::BARE_MARK_GLYPH)})]"
+      end
+      body = "#underline(stroke: (paint: gray, dash: \"dotted\"))[#{body}]#{short}"
+    end
     body
   end
 
@@ -250,9 +276,16 @@ class DocBookTypst
       if %w[allowbreaks twocolumn].include?(node['role']) && plain(node).empty?
         ''
       else
+        trim_note_leading_edge(node) if node['role'].to_s.split.include?('status-note')
         body = anchor(node) + styled(node, children(node))
-        if node['role'] == 'status-note'
-          "#cll-status[#{body}]\n"
+        if node['role'].to_s.split.include?('status-note')
+          note = StatusLabels.describe(node['condition'])
+          if note
+            "#cll-status(token: #{q(note.token)}, glyph: #{q(note.glyph)}, " \
+              "label: #{q(note.label_text)}, also: #{q(note.also_line)})[#{body}]\n"
+          else
+            "#cll-status[#{body}]\n"
+          end
         else
           indent = node.parent.name == 'section' && node['role'] != 'noindent' && node.previous_element&.name != 'title'
           "#cll-par(indent: #{indent})[#{body}]\n"

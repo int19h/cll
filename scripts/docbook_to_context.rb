@@ -3,6 +3,7 @@
 require 'nokogiri'
 require 'digest'
 require 'json'
+require_relative 'status_labels'
 
 class ContextBook
   ESCAPES = {
@@ -169,7 +170,17 @@ class ContextBook
     text = "{\\CLLcrisa #{text}}" if language == 'zlm'
     text = "{\\CLLkorean #{text}}" if language == 'ko'
     text = "{\\CLLchinese #{text}}" if language == 'zh'
-    text += '{\\high{◇}}' if role.split.include?('status-mark')
+    if role.split.include?('status-mark')
+      mark = StatusLabels.describe(node['condition'], inline: true)
+      if mark
+        # The space is explicit: TeX would swallow one after \sc as the
+        # control word's delimiter.
+        short = "{\\high{ {\\sc#{esc(mark.inline_short.strip)}}#{esc(mark.glyph)}}}"
+      else
+        short = "{\\high{ #{esc(StatusLabels::BARE_MARK_GLYPH)}}}"
+      end
+      text = "\\underdots{#{text}}#{short}"
+    end
     text
   end
 
@@ -326,9 +337,22 @@ class ContextBook
     when 'indexterm' then indexterm(node)
     when 'para'
       in_list = node.ancestors.any? { |ancestor| ancestor.name == 'listitem' }
-      body = styled(node, children(node, trim_leading: in_list))
-      if node['role'] == 'status-note'
-        "\n\\startCLLstatus ◇ #{body}\\stopCLLstatus\n"
+      roles = node['role'].to_s.split
+      body = styled(node, children(node, trim_leading: in_list || roles.include?('status-note')))
+      if roles.include?('status-note')
+        note = StatusLabels.describe(node['condition'])
+        if note
+          head = "{\\sc #{esc(note.label_text)}}"
+          head += "\\crlf {\\tfx #{esc(note.also_line)}}" unless note.also_line.empty?
+        else
+          head = ''
+        end
+        glyph = esc(note ? note.glyph : StatusLabels::BARE_GLYPH)
+        margin = "{\\hbox to 0pt{\\hss #{glyph}\\hskip.75em}}"
+        gap = head.empty? ? ' ' : "\\crlf "
+        # \dontleavehmode starts the paragraph, so the box rides on the
+        # label's line instead of forming a line of its own.
+        "\n\\startCLLstatus \\dontleavehmode#{margin}#{head}#{gap}#{body}\\stopCLLstatus\n"
       elsif node.ancestors.any? { |ancestor| %w[td th].include?(ancestor.name) }
         "#{body}\\par\n"
       else

@@ -136,8 +136,30 @@ enforces this.
   class `scripts/epub_pages.rb` puts on packaged pages) restores the light
   form in the packaged ePub, whose reading systems differ in the CSS they
   apply.
-- **jbotci cukta**: consumes the XML directly; keys off `@role` and parses
-  `@condition` with the microsyntax above. Unknown keys must be ignored.
+- **Typst and ConTeXt** (experimental formats, not release formats): the
+  converters (`scripts/docbook_to_typst.rb` and
+  `scripts/docbook_to_context.rb`) read `@condition` from the DocBook
+  sources and render the same real-text label as the print PDFs (label,
+  explicit body, date and also-strands) with the same per-status margin
+  glyph, in black and white. The glyph sits in the margin, left of the
+  rule, and the label aligns with the note text; inline marks get a
+  breakable dotted underline with a superscript small-caps label, as in
+  print. ConTeXt keeps a uniform left rule (its framed notes have no
+  direct equivalent of the dashed, dotted and double print rules), and
+  Typst uses a thicker solid rule where print doubles it. The label stays
+  with the start of the note (a sticky label block in Typst, `\testpage`
+  in ConTeXt). The token table lives once in
+  `scripts/status_labels.rb`, checked against the XSL table, the CSS
+  glyphs and this file by `scripts/test-status-rendering.py`.
+- **Screen readers**: the CSS margin glyphs are decorative. Every glyph
+  rule keeps its visible `content` declaration and adds an identical one
+  with an empty alternative text (`content: "◆" / "";`), so readers that
+  understand alternative text skip the glyph while the real-text label
+  stays readable; older engines use the plain fallback. The glyphs add
+  no XSL output, so the legend link templates are untouched.
+- **jbotci cukta**: should consume the XML directly, key off `@role` and
+  parse `@condition` with the microsyntax above, ignoring unknown keys.
+  The renderer does not do that yet; jbotci#873 tracks the work.
 
 ## Appendix generation
 

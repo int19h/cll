@@ -217,7 +217,7 @@ ifdef copydir
 	cp "$(builddir)/cll-context.pdf" "$(copydir)/cll-context.pdf"
 endif
 
-$(builddir)/cll-context.pdf: $(builddir)/cll_processed_xhtml.xml scripts/docbook_to_context.rb scripts/build_context.sh scripts/context_assets.py assets/context/cll-layout.tex $(dtd_files) $(shell find assets/fonts assets/media -type f)
+$(builddir)/cll-context.pdf: $(builddir)/cll_processed_xhtml.xml scripts/docbook_to_context.rb scripts/status_labels.rb scripts/build_context.sh scripts/context_assets.py assets/context/cll-layout.tex $(dtd_files) $(shell find assets/fonts assets/media -type f)
 	bash scripts/build_context.sh "$(builddir)"
 
 #*******
@@ -288,7 +288,7 @@ ifdef copydir
 endif
 typst: pdf_typst
 
-$(builddir)/cll-typst.pdf: $(builddir)/cll_processed_xhtml.xml scripts/docbook_to_typst.rb scripts/build_pdf_typst.sh typst/book.typ $(dtd_files) $(wildcard assets/fonts/*.otf assets/fonts/linux-libertine/*.otf assets/media/*.png assets/media/*.gif assets/media/*.svg)
+$(builddir)/cll-typst.pdf: $(builddir)/cll_processed_xhtml.xml scripts/docbook_to_typst.rb scripts/status_labels.rb scripts/build_pdf_typst.sh typst/book.typ $(dtd_files) $(wildcard assets/fonts/*.otf assets/fonts/linux-libertine/*.otf assets/media/*.png assets/media/*.gif assets/media/*.svg)
 	TYPST_ALLOW_MISSING_REFS=$(if $(test),1,0) scripts/build_pdf_typst.sh "$(builddir)"
 
 #*******

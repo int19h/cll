@@ -89,10 +89,30 @@
   ]
 }
 
-#let cll-status(body) = block(inset: (left: 0.75em), outset: (left: -0.75em), stroke: (left: 1.5pt + gray), above: 4.5pt, below: 4.5pt)[
-  #set text(size: 0.92em)
-  #text(fill: gray)[◆] #body
-]
+// A status note (docs/status-markup.md, issue #47): the label in real text
+// with the same per-status margin glyph the print CSS uses, in black and
+// white. The glyph sits in the margin, left of the rule; the label aligns
+// with the note text. The label block is sticky, so it stays with the
+// start of the prose across a page break; a note taller than a page may
+// still break after its first lines. Proposed and unsettled notes also
+// differ in border style, as in print; historical uses a thicker rule
+// (Typst has no double rule).
+#let cll-status(token: "bare", glyph: "◆", label: "", also: "", body) = {
+  let dash = if token == "proposed" { "dashed" } else if token == "unsettled" { "dotted" } else { "solid" }
+  let width = if token == "historical" { 2.5pt } else { 1.5pt }
+  block(inset: (left: 1em), stroke: (left: (paint: gray, thickness: width, dash: dash)),
+    above: 4.5pt, below: 4.5pt, breakable: true)[
+    #set text(size: 0.92em)
+    // The glyph lives in the same sticky block as the label, so a page
+    // break can never strand it on the previous page.
+    #block(sticky: true, breakable: false)[
+      #place(left + top, dx: -2.5em)[#text(fill: black)[#glyph]]
+      #if label != "" [#smallcaps[#label]]
+      #if also != "" { linebreak(); text(size: 0.9em, fill: rgb("#333"))[#also] }
+    ]
+    #body
+  ]
+}
 
 #let cll-example(number, breakable: false, title, body) = block(inset: (left: 2em), above: 4.5pt, below: 4.5pt, breakable: breakable)[
   #set par(justify: false, first-line-indent: 0pt, spacing: 0pt)

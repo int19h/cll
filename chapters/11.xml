@@ -148,7 +148,9 @@
       <xref linkend="section-syntax" />
       made use of
       <valsi>nu</valsi>
-      as the abstractor, and it is certainly the most common abstractor in Lojban text. Its purpose is to capture the event or state of the bridi considered as a whole. Do not confuse the
+      as the abstractor, and it is the most common one in the logs of #jbosnu, a chat channel for conversation in Lojban: from 2004 to 2026, it appears there more than twice as often as
+      <valsi>ka</valsi>
+      , the runner-up. Its purpose is to capture the event or state of the bridi considered as a whole. Do not confuse the
       <valsi>lo</valsi>
       description built on a
       <valsi>nu</valsi>
@@ -240,7 +242,7 @@
       is relatively brief by comparison (again, under normal circumstances).
     </para>
     <para><indexterm type="general"><primary>abstractions</primary><secondary>sumti ellipsis in</secondary>
-      </indexterm>We can see from <xref linkend="example-random-id-qf97" /> through <xref linkend="example-random-id-BPcI" /> that sumti may be ellipsized in the bridi of an abstraction selbri, just as in the main bridi of a sentence. Any sumti may be left out if the listener can work out from context what its proper value is, or else can recognize that the proper value is unimportant. It is extremely common for <valsi>nu</valsi> abstractions in descriptions to have the x<subscript>1</subscript> place ellipsized:</para>
+      </indexterm>We can see from <xref linkend="example-random-id-qf97" /> through <xref linkend="example-random-id-BPcI" /> that sumti may be ellipsized in the bridi of an abstraction selbri, just as in the main bridi of a sentence. Any sumti may be left out if the listener can work out from context what its proper value is, or else can recognize that the proper value is unimportant. This applies in particular to the x<subscript>1</subscript> place of <valsi>nu</valsi> abstractions in descriptions:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-FRoP">
       <title><anchor xml:id="c11e2d9" /></title>
 
@@ -294,7 +296,7 @@
     <para>
       Event descriptions with
       <jbophrase>lo nu</jbophrase>
-      are commonly used to fill the
+      can fill the
       <quote>under conditions...</quote>
       places, among others, of gismu and lujvo place structures:
     </para>
@@ -639,7 +641,7 @@
       <quote>I have money</quote>
       , which is possession.)
     </para>
-    <para>Property descriptions, like event descriptions, are often wanted to fill places in brivla place structures:</para>
+    <para>Property descriptions, like event descriptions, can fill places in brivla place structures:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-v3Ba">
       <title><anchor xml:id="c11e4d3" /></title>
 
@@ -1426,7 +1428,7 @@
       </indexterm>
       <indexterm type="general"><primary>experience abstraction</primary></indexterm>
       <indexterm type="general"><primary>experience abstractor</primary></indexterm>
-      There are three more abstractors in Lojban, all of them little used so far. The abstractor
+      There are three more abstractors in Lojban. The abstractor
       <valsi>li'i</valsi>
       expresses experience:
     </para>
@@ -1936,7 +1938,7 @@
 
       </interlinear-gloss>
     </example>
-    <para role="indent">This feature of Lojban has hardly ever been used, and nobody knows what uses it may eventually have.</para>
+    <para role="indent">When the first edition of this book appeared, this feature of Lojban had hardly ever been used, and nobody knew what uses it might eventually have.</para>
   </section>
   <section xml:id="section-summary">
     <title><anchor xml:id="c11s13" />Table of abstractors</title>

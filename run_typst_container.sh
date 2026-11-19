@@ -41,6 +41,8 @@ esac
 # target is part of the hash because one Dockerfile builds several images.
 image_tag=$(cll_image_tag "$repo/Dockerfile" "$repo" typst) || exit 1
 image="localhost/cll-typst:$image_tag"
+iidfile=$(mktemp "${TMPDIR:-/tmp}/cll-image.XXXXXXXX") || exit 1
+rm -f "$iidfile"
 args=()
 volumes=(-v "$repo:$repo" -v "$builddir:$builddir")
 while getopts ':nstSha:' opt; do
@@ -69,7 +71,15 @@ args+=("$@")
 cd "$repo"
 build_version=$(scripts/build-version.sh)
 # Podman/Docker assigns a fresh container ID. No shared container is stopped.
-"${engine[@]}" build --target typst -t "$image" -f Dockerfile .
+"${engine[@]}" build --target typst -t "$image" --iidfile "$iidfile" -f Dockerfile .
+# Run the immutable image this build produced, not the tag: another checkout
+# can retag the name under this run between the build and the run.
+image_id=$(cat "$iidfile" 2>/dev/null) || image_id=
+rm -f "$iidfile"
+if [ -z "$image_id" ]; then
+  echo "Container image build did not report its ID." >&2
+  exit 1
+fi
 user_args=(--user "$(id -u):$(id -g)")
 if "${engine[@]}" --version | grep -qi podman; then
   user_args=(--userns=keep-id)
@@ -87,4 +97,4 @@ if [ -t 0 ]; then
   if [ -t 1 ]; then terminal+=(-t); fi
 fi
 exec "${engine[@]}" run --init --rm "${terminal[@]}" "${user_args[@]}" "${volumes[@]}" --workdir "$repo" \
-  -e HOME=/tmp -e CLL_BUILD_VERSION="$build_version" "$image" ./scripts/container-command.sh ./cll_build -n -T pdf_typst "${args[@]}"
+  -e HOME=/tmp -e CLL_BUILD_VERSION="$build_version" "$image_id" ./scripts/container-command.sh ./cll_build -n -T pdf_typst "${args[@]}"

@@ -66,7 +66,17 @@ flock -n 9 || { echo 'A WeasyPrint build already uses this build directory.' >&2
 # Dockerfiles never share a tag, equal ones share the image cache.
 image_tag=$(cll_image_tag "$repo_dir/Dockerfile.weasyprint" "$repo_dir/scripts/weasyprint") || exit 1
 image="localhost/cll-weasyprint:$image_tag"
-"${engine[@]}" build -t "$image" -f "$repo_dir/Dockerfile.weasyprint" "$repo_dir/scripts/weasyprint"
+iidfile=$(mktemp "${TMPDIR:-/tmp}/cll-image.XXXXXXXX") || exit 1
+rm -f "$iidfile"
+"${engine[@]}" build -t "$image" --iidfile "$iidfile" -f "$repo_dir/Dockerfile.weasyprint" "$repo_dir/scripts/weasyprint"
+# Run the immutable image this build produced, not the tag: another checkout
+# can retag the name under this run between the build and the run.
+image_id=$(cat "$iidfile" 2>/dev/null) || image_id=
+rm -f "$iidfile"
+if [ -z "$image_id" ]; then
+  echo "Container image build did not report its ID." >&2
+  exit 1
+fi
 user_args=(--user "$(id -u):$(id -g)")
 if "${engine[@]}" --version | grep -qi podman; then
   user_args=(--userns=keep-id)
@@ -88,4 +98,4 @@ fi
 exec "${engine[@]}" run --init --rm "${terminal[@]}" "${user_args[@]}" "${mount_args[@]}" "${extra_vols[@]}" \
   -w "$repo_dir" -e TMPDIR="$build_dir/tmp" -e XDG_CACHE_HOME="$build_dir/cache" \
   -e HOME=/tmp -e CLL_BUILD_VERSION="$build_version" \
-  "$image" ./scripts/container-command.sh ./cll_build -n -T pdf_weasyprint "${args[@]}"
+  "$image_id" ./scripts/container-command.sh ./cll_build -n -T pdf_weasyprint "${args[@]}"

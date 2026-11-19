@@ -2,12 +2,15 @@
 """Unique container names and content-derived image tags (issue #297).
 
 Two builds from different checkouts must not stop each other: each run gets
-its own container name, only that run's container is ever removed (also on
-interruption), and different Dockerfiles never share an image tag.
+its own container name, only that run's container is ever removed (by its
+immutable ID, also on interruption), and different Dockerfiles never share
+an image tag. A signal to the launcher PID alone stops the build at once
+and exits with the signal status.
 """
 
 import os
 import re
+import shutil
 import signal
 import stat
 import subprocess
@@ -22,9 +25,102 @@ SCRATCH = ROOT / 'build/container-tests'
 
 HEX16 = re.compile(r'^[0-9a-f]{16}$')
 
+# The stub engine below is written into the scratch directory by StubRun.
+# It logs each call, sleeps interruptibly in build and run, tracks one
+# marker per container ID, rejects an occupied container name, and fails
+# a test that calls the engine kill command (cleanup uses stop and rm).
+STUB_ENGINE = """\
+#!/usr/bin/env bash
+log() { printf '%s\\n' "$*" >> "$STUB_LOG"; }
+log "call $*"
+op=$1
+shift || true
+on_engine_signal() {
+  # Stop the sleep at once: an orphaned sleep would inherit the checkout
+  # lock and block the next run.
+  [ -n "$sp" ] && kill "$sp" 2>/dev/null
+  log "$1-signal"
+  exit 143
+}
+case "$op" in
+  info) exit 0 ;;
+  --version) echo "docker version 99-stub"; exit 0 ;;
+  tag) exit 0 ;;
+  kill) log "UNEXPECTED engine kill $*"; exit 1 ;;
+  build)
+    iidfile=
+    while [ $# -gt 0 ]; do
+      case "$1" in
+        --iidfile) iidfile=$2; shift 2 ;;
+        *) shift ;;
+      esac
+    done
+    trap 'on_engine_signal build' TERM INT HUP
+    log build-start
+    sleep "${STUB_BUILD_SLEEP:-0}" & sp=$!
+    wait "$sp"
+    rc=$?
+    log "build-end rc=$rc"
+    [ -n "$iidfile" ] && printf 'stub-image-id' > "$iidfile"
+    exit "$rc" ;;
+  run)
+    name=; cidfile=
+    while [ $# -gt 0 ]; do
+      case "$1" in
+        --name) name=$2; shift 2 ;;
+        --cidfile) cidfile=$2; shift 2 ;;
+        *) shift ;;
+      esac
+    done
+    id="cid-$name"
+    if [ -e "$STUB_DIR/$id.marker" ]; then
+      log "run-rejected-occupied $name"
+      exit 125
+    fi
+    [ -n "$cidfile" ] && printf '%s' "$id" > "$cidfile"
+    trap 'on_engine_signal run' TERM INT HUP
+    log run-start
+    touch "$STUB_DIR/$id.marker"
+    sleep "${STUB_RUN_SLEEP:-20}" & sp=$!
+    wait "$sp"
+    rc=$?
+    log "run-end rc=$rc"
+    if [ -n "${STUB_RUN_RC:-}" ]; then
+      exit "$STUB_RUN_RC"
+    fi
+    exit "$rc" ;;
+  stop)
+    id=
+    while [ $# -gt 0 ]; do
+      case "$1" in
+        -t) shift 2 ;;
+        *) id=$1; shift ;;
+      esac
+    done
+    log "stop $id"
+    rm -f "$STUB_DIR/$id.marker"
+    exit 0 ;;
+  rm)
+    id=
+    while [ $# -gt 0 ]; do
+      case "$1" in
+        -*) shift ;;
+        *) id=$1; shift ;;
+      esac
+    done
+    log "rm $id"
+    rm -f "$STUB_DIR/$id.marker"
+    exit 0 ;;
+esac
+exit 0
+"""
+
 
 def bash_lines(*statements, env_extra=None):
-    env = dict(os.environ)
+    # The caller's CLL_CONTAINER_NAME never leaks into these checks; the
+    # override test sets it explicitly.
+    env = {k: v for k, v in os.environ.items()
+           if k != 'CLL_CONTAINER_NAME'}
     env.update(env_extra or {})
     script = '. "{}"\n{}\n'.format(HELPER, '\n'.join(statements))
     return subprocess.run(['bash', '-c', script], capture_output=True,
@@ -37,15 +133,36 @@ def container_name(directory, override=None):
         **env_extra, 'CLL_T_DIR': directory})
 
 
-def image_tag(dockerfile, context, *extra):
-    env = dict(os.environ)
+def valid_container_name(name):
+    out = bash_lines(
+        'if cll_valid_container_name "$CLL_T_NAME"; then echo valid; else echo invalid; fi',
+        env_extra={'CLL_T_NAME': name})
+    return out == 'valid'
+
+
+def image_tag_env(dockerfile, context):
+    env = {k: v for k, v in os.environ.items()
+           if k != 'CLL_CONTAINER_NAME'}
     env['CLL_T_DOCKERFILE'] = str(dockerfile)
     env['CLL_T_CONTEXT'] = str(context)
+    return env
+
+
+def image_tag(dockerfile, context, *extra):
     script = ('. "{}"\ncll_image_tag "$CLL_T_DOCKERFILE" '
               '"$CLL_T_CONTEXT" "$@"\n'.format(HELPER))
     return subprocess.run(['bash', '-c', script, 'bash', *extra],
-                          capture_output=True, text=True, env=env,
+                          capture_output=True, text=True,
+                          env=image_tag_env(dockerfile, context),
                           check=True).stdout.strip()
+
+
+def image_tag_result(dockerfile, context, *extra):
+    script = ('. "{}"\ncll_image_tag "$CLL_T_DOCKERFILE" '
+              '"$CLL_T_CONTEXT" "$@"\n'.format(HELPER))
+    return subprocess.run(['bash', '-c', script, 'bash', *extra],
+                          capture_output=True, text=True,
+                          env=image_tag_env(dockerfile, context))
 
 
 def make_context(directory, dockerfile_lines, files):
@@ -55,6 +172,20 @@ def make_context(directory, dockerfile_lines, files):
         path = directory / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content)
+
+
+def make_launcher_tree(parent):
+    # A minimal second checkout for the collision test: the launcher
+    # locates its checkout from its own path, so each tree gets its own
+    # build folder and lock. CLL_BUILD_VERSION skips build-version.sh's
+    # Git lookup (the script still runs and exits 0 on the variable).
+    tree = Path(parent)
+    (tree / 'scripts').mkdir(parents=True, exist_ok=True)
+    shutil.copy2(ROOT / 'run_container.sh', tree / 'run_container.sh')
+    for name in ('container-names.sh', 'build-version.sh'):
+        shutil.copy2(ROOT / 'scripts' / name, tree / 'scripts' / name)
+    (tree / 'Dockerfile').write_text('FROM example/base\n')
+    return tree
 
 
 BASE_LINES = [
@@ -82,10 +213,16 @@ class ContainerNamesTests(unittest.TestCase):
             self.assertTrue(name.startswith('cll_build_'), name)
             self.assertNotEqual(name, 'cll_build')
             self.assertRegex(name, r'^cll_build_[0-9a-f]{12}_[0-9]+$')
+            self.assertTrue(valid_container_name(name))
 
     def test_caller_override(self):
         self.assertEqual(container_name('/worktrees/one', 'my-special-name'),
                          'my-special-name')
+        self.assertTrue(valid_container_name('my-special-name'))
+        self.assertTrue(valid_container_name('a0-_.-9'))
+        for bad in ('-leading-hyphen', 'has space', 'has/slash',
+                    '.leading-dot'):
+            self.assertFalse(valid_container_name(bad), bad)
 
     def test_tags_follow_content(self):
         with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
@@ -111,6 +248,102 @@ class ContainerNamesTests(unittest.TestCase):
             self.assertNotEqual(
                 tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a', 'typst'))
 
+    def test_lowercase_and_indented_instructions_count(self):
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            scratch = Path(directory)
+            lines = ['FROM example/base\n',
+                     'copy app/server.sh /srv/server.sh\n',
+                     '   COPY data/a.txt /srv/a.txt\n']
+            make_context(scratch / 'a', lines, BASE_FILES)
+            tag_a = image_tag(scratch / 'a/Dockerfile', scratch / 'a')
+            self.assertRegex(tag_a, HEX16)
+            (scratch / 'a/data/a.txt').write_text('ALPHA\n')
+            self.assertNotEqual(
+                tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a'))
+
+    def test_continued_instructions_join(self):
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            scratch = Path(directory)
+            make_context(scratch / 'a',
+                         ['FROM example/base\n', 'COPY a.txt \\\n',
+                          '  b.txt /dest/\n'],
+                         {'a.txt': 'a\n', 'b.txt': 'b\n'})
+            tag_a = image_tag(scratch / 'a/Dockerfile', scratch / 'a')
+            self.assertRegex(tag_a, HEX16)
+            (scratch / 'a/b.txt').write_text('B\n')
+            self.assertNotEqual(
+                tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a'))
+            make_context(scratch / 'b',
+                         ['FROM example/base\n', 'COPY c.txt \\\n'],
+                         {'c.txt': 'c\n'})
+            result = image_tag_result(scratch / 'b/Dockerfile', scratch / 'b')
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('unterminated', result.stderr)
+
+    def test_json_instructions_fail(self):
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            scratch = Path(directory)
+            make_context(scratch / 'b',
+                         ['FROM example/base\n',
+                          'COPY ["a.txt", "b.txt"] /dest/\n'],
+                         {'a.txt': 'a\n', 'b.txt': 'b\n'})
+            result = image_tag_result(scratch / 'b/Dockerfile', scratch / 'b')
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('JSON', result.stderr)
+
+    def test_filenames_with_spaces(self):
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            scratch = Path(directory)
+            make_context(scratch / 'a',
+                         ['FROM example/base\n', 'COPY data/ /dest/\n'],
+                         {'data/has space.txt': 'v1\n'})
+            result = image_tag_result(scratch / 'a/Dockerfile', scratch / 'a')
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.stderr, '')
+            tag_a = result.stdout.strip()
+            self.assertRegex(tag_a, HEX16)
+            (scratch / 'a/data/has space.txt').write_text('v2\n')
+            self.assertNotEqual(
+                tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a'))
+
+    def test_file_modes_count(self):
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            scratch = Path(directory)
+            make_context(scratch / 'a',
+                         ['FROM example/base\n', 'COPY run.sh /srv/\n'],
+                         {'run.sh': '#!/bin/sh\n'})
+            (scratch / 'a/run.sh').chmod(0o755)
+            tag_a = image_tag(scratch / 'a/Dockerfile', scratch / 'a')
+            (scratch / 'a/run.sh').chmod(0o644)
+            self.assertNotEqual(
+                tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a'))
+
+    def test_globs_resolve_in_the_context(self):
+        # A glob in COPY must expand against the build context, never the
+        # caller's directory: the tag is the same from any directory and
+        # follows the context's files.
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            scratch = Path(directory)
+            ctx = scratch / 'ctx'
+            make_context(ctx,
+                         ['FROM example/base\n', 'COPY scripts/*.sh /dst/\n'],
+                         {'scripts/a.sh': 'a\n', 'scripts/b.sh': 'b\n'})
+            elsewhere = scratch / 'cwd'
+            (elsewhere / 'scripts').mkdir(parents=True)
+            (elsewhere / 'scripts/zzz.sh').write_text('zzz\n')
+            run = subprocess.run(
+                ['bash', '-c',
+                 '. "{}"\ncll_image_tag "$0/Dockerfile" "$0"'.format(HELPER),
+                 str(ctx)],
+                capture_output=True, text=True, cwd=elsewhere)
+            self.assertEqual(run.returncode, 0, run.stderr)
+            tag_elsewhere = run.stdout.strip()
+            tag_here = image_tag(ctx / 'Dockerfile', ctx)
+            self.assertEqual(tag_elsewhere, tag_here)
+            (ctx / 'scripts/b.sh').write_text('B\n')
+            self.assertNotEqual(
+                tag_here, image_tag(ctx / 'Dockerfile', ctx))
+
     def test_stage_copies_and_remote_adds_need_no_local_file(self):
         lines = BASE_LINES + [
             'COPY --from=builder /out/bin /srv/bin\n',
@@ -131,14 +364,7 @@ class ContainerNamesTests(unittest.TestCase):
             scratch = Path(directory)
             make_context(scratch / 'a', BASE_LINES,
                          {'app/server.sh': 'x\n'})
-            result = subprocess.run(
-                ['bash', '-c',
-                 '. "{}"\ncll_image_tag "$CLL_T_DOCKERFILE" "$CLL_T_CONTEXT"'
-                 .format(HELPER)],
-                capture_output=True, text=True,
-                env={**os.environ,
-                     'CLL_T_DOCKERFILE': str(scratch / 'a/Dockerfile'),
-                     'CLL_T_CONTEXT': str(scratch / 'a')})
+            result = image_tag_result(scratch / 'a/Dockerfile', scratch / 'a')
             self.assertNotEqual(result.returncode, 0)
 
     def test_real_dockerfiles_tag_distinctly(self):
@@ -151,77 +377,244 @@ class ContainerNamesTests(unittest.TestCase):
         self.assertNotEqual(prince, typst)
         self.assertNotEqual(prince, weasy)
 
-    def test_interrupted_run_removes_only_its_container(self):
+
+class StubRun:
+    """One run_container.sh run against the stub engine in a scratch dir."""
+
+    def __init__(self, scratch, tree=ROOT, out_name='stdout.txt',
+                 **env_extra):
+        self.work = Path(scratch)
+        self.tree = Path(tree)
+        self.log = self.work / 'engine.log'
+        self.log.write_text('')
+        self.stub = self.work / 'stub-engine.sh'
+        self.stub.write_text(STUB_ENGINE)
+        self.stub.chmod(self.stub.stat().st_mode | stat.S_IXUSR)
+        env = {k: v for k, v in os.environ.items()
+               if k != 'CLL_CONTAINER_NAME'}
+        env['CONTAINER_BIN'] = str(self.stub)
+        env['CLL_BUILD_VERSION'] = 'test'
+        env['STUB_LOG'] = str(self.log)
+        env['STUB_DIR'] = str(self.work)
+        env['TMPDIR'] = str(self.work)
+        env.update(env_extra)
+        self.out_path = self.work / out_name
+        self.output = self.out_path.open('w')
+        self.proc = subprocess.Popen(
+            ['bash', str(self.tree / 'run_container.sh')],
+            stdout=self.output, stderr=subprocess.STDOUT,
+            env=env, cwd=str(self.tree), start_new_session=True, text=True)
+        self.pid = self.proc.pid
+
+    def wait_for(self, snippet, timeout=30):
+        end = time.monotonic() + timeout
+        while time.monotonic() < end:
+            if snippet in self.log.read_text():
+                return True
+            time.sleep(0.05)
+        return False
+
+    def calls(self):
+        return [line for line in self.log.read_text().splitlines()
+                if line.startswith('call ')]
+
+    def log_text(self):
+        return self.log.read_text()
+
+    def markers(self):
+        return sorted(p.name for p in self.work.glob('*.marker'))
+
+    def temp_files(self):
+        names = sorted(p.name for p in self.work.glob('cll-container*'))
+        names += sorted(p.name for p in self.work.glob('cll-image*'))
+        names += sorted(p.name for p in self.work.glob('cll-imagetag*'))
+        return names
+
+    def abort(self):
+        # Never leave a launcher holding the checkout lock for the next test.
+        try:
+            if self.proc.poll() is None:
+                os.killpg(self.pid, signal.SIGKILL)
+                self.proc.wait(timeout=15)
+        finally:
+            self.output.close()
+
+    def finish(self, sig=None):
+        try:
+            if sig is not None:
+                os.kill(self.pid, sig)
+            return self.proc.wait(timeout=30)
+        finally:
+            # wait() returning means the launcher exited; otherwise kill
+            # what is left so no lock is held for the next test.
+            if self.proc.poll() is None:
+                self.abort()
+            else:
+                self.output.close()
+
+
+EXPECTED_SIGNAL_RC = {
+    signal.SIGINT: -signal.SIGINT,
+    signal.SIGTERM: -signal.SIGTERM,
+    signal.SIGHUP: -signal.SIGHUP,
+}
+
+
+def assert_no_engine_kill(testcase, run):
+    testcase.assertFalse(
+        any(line.startswith('call kill') for line in run.calls()),
+        '\n'.join(run.calls()))
+
+
+class SignalTests(unittest.TestCase):
+    def test_pid_signal_during_build(self):
+        for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
+            with self.subTest(signal=sig):
+                with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+                    run = StubRun(directory, STUB_BUILD_SLEEP='30',
+                                  STUB_RUN_SLEEP='1')
+                    self.assertTrue(run.wait_for('build-start'),
+                                    'stub never started the image build')
+                    time.sleep(1)
+                    t0 = time.monotonic()
+                    rc = run.finish(sig=sig)
+                    elapsed = time.monotonic() - t0
+                    self.assertEqual(rc, EXPECTED_SIGNAL_RC[sig])
+                    self.assertLess(elapsed, 15,
+                                    'launcher did not stop promptly')
+                    # No container ever existed, and no book build starts
+                    # after a stop during the image build.
+                    self.assertFalse(
+                        any('call run' in line for line in run.calls()),
+                        '\n'.join(run.calls()))
+                    assert_no_engine_kill(self, run)
+                    self.assertEqual(run.markers(), [])
+                    self.assertEqual(run.temp_files(), [])
+
+    def test_pid_signal_during_run(self):
+        for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
+            with self.subTest(signal=sig):
+                with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+                    name = 'cll_sigtest_%d' % sig
+                    run = StubRun(directory, STUB_BUILD_SLEEP='0',
+                                  STUB_RUN_SLEEP='30',
+                                  CLL_CONTAINER_NAME=name)
+                    self.assertTrue(run.wait_for('run-start'),
+                                    'stub never started the container')
+                    time.sleep(1)
+                    t0 = time.monotonic()
+                    rc = run.finish(sig=sig)
+                    elapsed = time.monotonic() - t0
+                    self.assertEqual(rc, EXPECTED_SIGNAL_RC[sig])
+                    self.assertLess(elapsed, 15,
+                                    'launcher did not stop promptly')
+                    log = run.log_text()
+                    # The trap stops and removes only this run's container,
+                    # tracked by the ID the engine recorded.
+                    self.assertIn('stop cid-%s' % name, log, log)
+                    self.assertIn('rm cid-%s' % name, log, log)
+                    assert_no_engine_kill(self, run)
+                    self.assertFalse(
+                        any(line in ('call rm cll_build', 'call kill cll_build')
+                            for line in run.calls()),
+                        log)
+                    self.assertEqual(run.markers(), [])
+                    self.assertEqual(run.temp_files(), [])
+
+    def test_group_signal_during_run(self):
         with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
-            scratch = Path(directory)
-            log = scratch / 'engine.log'
-            log.write_text('')
-            stub = scratch / 'stub-engine.sh'
-            stub.write_text(
-                '#!/bin/bash\n'
-                'printf \'%s\\n\' "$*" >> "$CLL_STUB_LOG"\n'
-                'case "$1" in\n'
-                '  info) exit 0 ;;\n'
-                '  --version) echo "docker version 99-stub" ;;\n'
-                '  build|tag) exit 0 ;;\n'
-                '  kill|rm)\n'
-                '    name=; for a in "$@"; do name=$a; done\n'
-                '    rm -f "$CLL_STUB_DIR/$name.marker" 2>/dev/null || true ;;\n'
-                '  run)\n'
-                '    prev=; name=\n'
-                '    for a in "$@"; do\n'
-                '      if [ "$prev" = "--name" ]; then name=$a; fi\n'
-                '      prev=$a\n'
-                '    done\n'
-                '    touch "$CLL_STUB_DIR/$name.marker"\n'
-                '    sleep 30 ;;\n'
-                'esac\n'
-                'exit 0\n')
-            stub.chmod(stub.stat().st_mode | stat.S_IXUSR)
-            env = dict(os.environ)
-            env['CONTAINER_BIN'] = str(stub)
-            env['CLL_CONTAINER_NAME'] = 'cll_test_interrupt_297'
-            env['CLL_STUB_LOG'] = str(log)
-            env['CLL_STUB_DIR'] = str(scratch)
-            proc = subprocess.Popen(
-                ['bash', str(ROOT / 'run_container.sh')],
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                env=env, start_new_session=True, text=True)
-            try:
-                marker = scratch / 'cll_test_interrupt_297.marker'
-                for _ in range(100):
-                    if marker.exists():
-                        break
-                    time.sleep(0.2)
-                self.assertTrue(marker.exists(),
-                                'stub engine never started the container')
-                os.killpg(proc.pid, signal.SIGINT)
-                proc.communicate(timeout=60)
-            finally:
-                if proc.poll() is None:
-                    os.killpg(proc.pid, signal.SIGKILL)
-                    proc.communicate()
-            self.assertFalse(marker.exists(),
-                             'interrupted run left its container behind')
-            lines = log.read_text().splitlines()
-            run_lines = [line for line in lines if line.startswith('run ')]
-            self.assertTrue(
-                any('--name cll_test_interrupt_297' in line
-                    for line in run_lines),
-                'run did not use the run-owned container name:\n'
-                + '\n'.join(lines))
-            # The old script killed and removed the fixed name cll_build.
-            # This run must never touch that name, and never kill at all.
-            self.assertFalse(any(line.startswith('kill ') for line in lines),
-                             'run killed a container:\n' + '\n'.join(lines))
-            self.assertFalse(any(line in ('kill cll_build', 'rm cll_build')
-                                 for line in lines),
-                             'run touched the fixed container name:\n'
-                             + '\n'.join(lines))
-            self.assertTrue(any('rm -f cll_test_interrupt_297' in line
-                                for line in lines),
-                            'run never removed its own container:\n'
-                            + '\n'.join(lines))
+            name = 'cll_grouptest'
+            run = StubRun(directory, STUB_BUILD_SLEEP='0',
+                          STUB_RUN_SLEEP='30', CLL_CONTAINER_NAME=name)
+            self.assertTrue(run.wait_for('run-start'),
+                            'stub never started the container')
+            time.sleep(1)
+            os.killpg(run.pid, signal.SIGINT)
+            rc = run.proc.wait(timeout=30)
+            run.output.close()
+            self.assertEqual(rc, -signal.SIGINT)
+            self.assertEqual(run.markers(), [])
+            self.assertIn('stop cid-%s' % name, run.log_text(),
+                          run.log_text())
+
+    def test_failed_run_exits_with_its_status(self):
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            run = StubRun(directory, STUB_BUILD_SLEEP='0',
+                          STUB_RUN_SLEEP='1', STUB_RUN_RC='3')
+            rc = run.finish()
+            self.assertEqual(rc, 3)
+            self.assertEqual(run.markers(), [])
+
+    def test_invalid_override_rejected_before_engine(self):
+        for bad in ('-leading-hyphen', 'has space', 'has/slash'):
+            with self.subTest(name=bad):
+                with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+                    run = StubRun(directory, CLL_CONTAINER_NAME=bad)
+                    rc = run.finish()
+                    self.assertEqual(rc, 2)
+                    self.assertEqual(run.calls(), [])
+
+    def test_valid_override_runs_to_completion(self):
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            name = 'my-run_2.0'
+            run = StubRun(directory, STUB_BUILD_SLEEP='0',
+                          STUB_RUN_SLEEP='1', CLL_CONTAINER_NAME=name)
+            rc = run.finish()
+            self.assertEqual(rc, 0)
+            lines = '\n'.join(run.calls())
+            self.assertIn('--name %s' % name, lines, lines)
+            self.assertIn('--cidfile', lines, lines)
+            self.assertEqual(run.markers(), [])
+
+    def test_shared_name_rejected_by_engine(self):
+        # Each tree is its own checkout with its own build folder and lock,
+        # so both runs reach the engine; it rejects the second container
+        # with an occupied name while the first run is unaffected.
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as parent:
+            a_tree = make_launcher_tree(Path(parent) / 'a')
+            b_tree = make_launcher_tree(Path(parent) / 'b')
+            with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+                # Both runs share the stub engine state; only their
+                # checkouts (and so build folders and locks) differ.
+                first = StubRun(directory, tree=a_tree,
+                                STUB_BUILD_SLEEP='0',
+                                STUB_RUN_SLEEP='30',
+                                CLL_CONTAINER_NAME='shared-name')
+                self.assertTrue(first.wait_for('run-start'),
+                                'first run never started the container')
+                second = StubRun(directory, tree=b_tree,
+                                 out_name='second-stdout.txt',
+                                 STUB_BUILD_SLEEP='0',
+                                 STUB_RUN_SLEEP='30',
+                                 CLL_CONTAINER_NAME='shared-name')
+                rc = second.finish()
+                self.assertEqual(rc, 125)
+                self.assertIn('run-rejected-occupied shared-name',
+                              second.log_text(), second.log_text())
+                self.assertIsNone(first.proc.poll())
+                self.assertEqual(first.markers(),
+                                 ['cid-shared-name.marker'])
+                rc = first.finish(sig=signal.SIGTERM)
+                self.assertEqual(rc, -signal.SIGTERM)
+                self.assertEqual(first.markers(), [])
+
+    def test_second_run_in_same_checkout_fails_fast(self):
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            first = StubRun(directory, STUB_BUILD_SLEEP='30',
+                            STUB_RUN_SLEEP='1')
+            self.assertTrue(first.wait_for('build-start'),
+                            'first run never started the image build')
+            second = StubRun(directory, out_name='second-stdout.txt',
+                             STUB_BUILD_SLEEP='30', STUB_RUN_SLEEP='1')
+            rc = second.finish()
+            self.assertEqual(rc, 1)
+            self.assertFalse(
+                any('call build' in line for line in second.calls()),
+                '\n'.join(second.calls()))
+            self.assertIn('Another build already uses',
+                          second.out_path.read_text())
+            rc = first.finish(sig=signal.SIGTERM)
+            self.assertEqual(rc, -signal.SIGTERM)
 
 
 if __name__ == '__main__':

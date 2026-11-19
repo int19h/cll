@@ -3,6 +3,21 @@
 # Bash 3.2 treats empty arrays as unset, so keep nounset disabled.
 set -eo pipefail
 
+script_path=$(readlink -f "$0")
+dir=${script_path%/*}
+dir=${dir:-/}
+. "$dir/scripts/container-names.sh"
+# A name unique to this run (issue #297): builds from different checkouts
+# must not stop each other. A caller can set CLL_CONTAINER_NAME for a stable
+# name of its own; sharing one reintroduces the collision, so that is the
+# caller's choice. The name becomes an engine argument, so reject anything
+# that is not a plain container name before calling the engine.
+container_name=$(cll_container_name "$dir")
+if ! cll_valid_container_name "$container_name"; then
+  echo "Invalid container name '$container_name'. Set CLL_CONTAINER_NAME to letters, digits, '_', '.' and '-', starting with a letter or digit." >&2
+  exit 2
+fi
+
 # Select one engine; do not fall back when the selected engine is unavailable.
 engine=()
 if [ -n "${CONTAINER_BIN:-}" ]; then
@@ -42,20 +57,45 @@ do
   fi
 done
 
-script_path=$(readlink -f "$0")
-dir=${script_path%/*}
-dir=${dir:-/}
-. "$dir/scripts/container-names.sh"
-# A name unique to this run (issue #297): two builds from different checkouts
-# or from two shells in one checkout must not stop each other. A caller can
-# set CLL_CONTAINER_NAME for a stable name of its own; only that run's own
-# container is ever stopped or removed, and a trap does it on interruption.
-container_name=$(cll_container_name "$dir")
-cleanup_container() {
-  "${engine[@]}" rm -f "$container_name" >/dev/null 2>&1 || true
+# This run's container is tracked by its immutable ID, recorded by the
+# engine in a private file. Cleanup uses only that ID, never the name, so
+# it can neither touch another run's container nor miss this run's own.
+# There is no startup removal: an occupied name is the engine's error.
+child=0
+cidfile=$(mktemp "${TMPDIR:-/tmp}/cll-container.XXXXXXXX") || exit 1
+rm -f "$cidfile"
+iidfile=$(mktemp "${TMPDIR:-/tmp}/cll-image.XXXXXXXX") || exit 1
+rm -f "$iidfile"
+container_id() {
+  cat "$cidfile" 2>/dev/null || true
 }
-trap cleanup_container INT TERM HUP EXIT
-"${engine[@]}" rm -f "$container_name" >/dev/null 2>&1 || true
+cleanup_container() {
+  local id
+  id=$(container_id)
+  if [ -n "$id" ]; then
+    "${engine[@]}" rm -f "$id" >/dev/null 2>&1 || true
+  fi
+}
+on_signal() {
+  local sig id
+  sig=$1
+  # Stop the active engine call at once; bash would otherwise wait for it.
+  if [ "$child" -ne 0 ]; then kill "$child" 2>/dev/null || true; fi
+  id=$(container_id)
+  if [ -n "$id" ]; then
+    "${engine[@]}" stop -t 10 "$id" >/dev/null 2>&1 || true
+  fi
+  cleanup_container
+  # Remove the private files here as well as in the EXIT trap: bash can
+  # skip the EXIT trap when the shell dies inside this handler.
+  rm -f "$cidfile" "$iidfile"
+  # Exit with the signal status: reset the handler and re-raise the signal.
+  trap - "$sig"
+  kill -s "$sig" "$$"
+}
+for sig in INT TERM HUP; do trap "on_signal $sig" "$sig"; done
+# The double quotes expand the file paths now, while they are known.
+trap "cleanup_container; rm -f \"$cidfile\" \"$iidfile\"" EXIT
 mkdir -p "$dir/build"
 # Preserve trailing newlines so the whitespace check sees the full path.
 build_dir=$(realpath "$dir/build" && printf .)
@@ -66,6 +106,15 @@ case "$dir:$build_dir" in
     printf 'Checkout: %s\nBuild directory: %s\n' "$dir" "$build_dir" >&2
     exit 2 ;;
 esac
+# One writer per checkout build folder. Unique container names keep two runs
+# from one checkout from stopping each other, but both would still write the
+# same intermediate files, so the second run fails fast instead.
+# run_weasyprint_container.sh guards its build folder the same way.
+exec 9>"$build_dir/.container.lock"
+flock -n 9 || {
+  echo "Another build already uses this checkout's build directory ($build_dir)." >&2
+  exit 1
+}
 mounts=(-v "$dir:$dir" -v "$build_dir:$build_dir")
 build_version=$("$dir/scripts/build-version.sh") || exit 1
 
@@ -80,8 +129,14 @@ image="lojban/cll_build:$image_tag"
 # "${engine[@]}" rmi "$image"
 echo "Running container image build; this may take a while."
 echo "Image tag: $image"
+echo "Container name: $container_name"
 echo
-"${engine[@]}" build -t "$image" -f "$dir/Dockerfile" "$dir" >/tmp/rc.$$ 2>&1 || {
+"${engine[@]}" build -t "$image" --iidfile "$iidfile" -f "$dir/Dockerfile" "$dir" >/tmp/rc.$$ 2>&1 &
+child=$!
+build_rc=0
+wait "$child" || build_rc=$?
+child=0
+if [ "$build_rc" -ne 0 ]; then
   echo "Container image build failed.  Here's the output: "
   echo
   cat /tmp/rc.$$
@@ -92,11 +147,20 @@ echo
   echo
   rm -f /tmp/rc.$$
   exit 1
-}
+fi
 
 rm -f /tmp/rc.$$
 
-"${engine[@]}" tag "$image" lojban/cll_build
+# Run the immutable image this build produced, not the tag: another checkout
+# can retag the name under this run between the build and the run.
+image_id=$(cat "$iidfile" 2>/dev/null) || image_id=
+if [ -z "$image_id" ]; then
+  echo "Container image build did not report its ID." >&2
+  exit 1
+fi
+echo "Image ID: $image_id"
+
+"${engine[@]}" tag "$image_id" lojban/cll_build
 
 user_args=(--user "$(id -u):$(id -g)")
 if "${engine[@]}" --version | grep -qi podman; then
@@ -116,10 +180,16 @@ if [ -t 0 ]; then
 fi
 
 # Numeric Docker users may have no passwd entry or writable home directory.
-# No exec here: the EXIT trap above must stay in place so this run's own
-# container is removed however the build ends, and --rm removes it as well.
-"${engine[@]}" run --init --rm --name "$container_name" \
+# The run stays in the foreground but off exec: the traps above must stay in
+# place so a signal stops this run's own container at once, and the EXIT
+# trap removes that container however the build ends (--rm removes it too).
+"${engine[@]}" run --init --rm --name "$container_name" --cidfile "$cidfile" \
   "${user_args[@]}" "${mounts[@]}" "${extra_vols[@]}" -w "$dir" \
   -e HOME=/tmp -e XDG_CACHE_HOME=/tmp/.cache \
-  -e CLL_BUILD_VERSION="$build_version" "${terminal[@]}" "$image" \
-  ./scripts/container-command.sh ./cll_build "${args[@]}"
+  -e CLL_BUILD_VERSION="$build_version" "${terminal[@]}" "$image_id" \
+  ./scripts/container-command.sh ./cll_build "${args[@]}" &
+child=$!
+run_rc=0
+wait "$child" || run_rc=$?
+child=0
+exit "$run_rc"

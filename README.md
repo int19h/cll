@@ -65,12 +65,18 @@ To build all formats, run:
 ./run_container.sh
 ```
 
-The script builds the image `lojban/cll_build:<content-hash>` from `Dockerfile`, where the tag follows the Dockerfile and the files it copies, so different checkouts never share a tag while equal ones share the image cache.
-It also tags that image as `lojban/cll_build` for callers that name it.
+The script builds the image `lojban/cll_build:<content-hash>` from `Dockerfile`, where the tag follows the Dockerfile and the files it copies.
+Different image inputs never share a tag, while equal inputs share the image cache, even across checkouts.
+It also tags that image as `lojban/cll_build` for callers that name it, and runs the immutable image ID its own build returns.
 It then runs `./cll_build` inside a container with your checkout mounted, and passes its own arguments to `cll_build`.
 The container name is unique to the run (from the checkout path and the process ID), so builds from different checkouts run at the same time without stopping each other.
-Set `CLL_CONTAINER_NAME` to choose the name yourself; the script removes only that run's own container, also when the build is interrupted.
-The other launchers run unnamed containers that are removed after the build: `run_weasyprint_container.sh` and `run_typst_container.sh` tag their images the same content-derived way, and `run_context_container.sh` runs its freshly built image by ID.
+Set `CLL_CONTAINER_NAME` to choose the name yourself; sharing one name between runs reintroduces the collision, and the second run's container fails to start.
+A signal (`INT`, `TERM`, or `HUP`) to the launcher stops the build at once and exits with the signal status; the script stops and removes only that run's own container, tracked by its immutable ID rather than its name.
+A second build in the same checkout fails fast instead of sharing its `build/` folder; concurrent builds need one checkout each.
+The other launchers run unnamed containers that are removed after the build: `run_weasyprint_container.sh` and `run_typst_container.sh` tag their images the same content-derived way and also run the returned image ID, and `run_context_container.sh` runs its freshly built image by ID.
+
+Each new Dockerfile or copied file leaves its old `:<content-hash>` tag behind, and the Typst and WeasyPrint launchers previously used per-checkout tags that also stay.
+List them with `podman images --format '{{.Repository}}:{{.Tag}}'` (or `docker images --format '{{.Repository}}:{{.Tag}}'`) filtered for `lojban/cll_build:`, `localhost/cll-typst:` and `localhost/cll-weasyprint:`, and remove the ones no build uses anymore with `podman rmi` (or `docker rmi`).
 The launchers pass `-i` when standard input is a terminal.
 They pass `-t` only when standard input and standard output are both terminals.
 Each container uses `--init` to forward signals and clean up exited child processes.

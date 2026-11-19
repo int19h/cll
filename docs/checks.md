@@ -218,7 +218,7 @@ The renderer also needs Pango, HarfBuzz, and the fonts listed in [build-weasypri
 
 | Check | What it tests | Command |
 | --- | --- | --- |
-| Script syntax | The build scripts parse as Bash | `bash -n cll_build run_container.sh run_weasyprint_container.sh run_typst_container.sh run_context_container.sh scripts/build_context.sh scripts/container-names.sh` |
+| Script syntax | Each build script parses as Bash, checked by its own `bash -n` command (one per file, so a failure names the file) | `bash -n cll_build`, `bash -n run_container.sh`, `bash -n run_weasyprint_container.sh`, `bash -n run_typst_container.sh`, `bash -n run_context_container.sh`, `bash -n scripts/build_context.sh`, `bash -n scripts/container-names.sh` |
 | ConTeXt converter | `scripts/docbook_to_context.rb` on small books | `ruby scripts/test-docbook-to-context.rb` |
 | ConTeXt assets | `scripts/context_assets.py`, which prepares images for the ConTeXt PDF | `python3 scripts/test-context-assets.py` |
 

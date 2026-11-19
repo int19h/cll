@@ -1209,7 +1209,7 @@
     <para>      <indexterm type="general"><primary>modifying brivla (see also seltau)</primary></indexterm>      <indexterm type="general"><primary>seltau</primary><secondary>compared with English adverb</secondary>      </indexterm>      <indexterm type="general"><primary>seltau</primary><secondary>compared with English adjective</secondary>      </indexterm>
       <indexterm type="general"><primary>tanru</primary><secondary>explanation of</secondary>
       </indexterm>
-      When specifying a concept that is not found among the gismu (or, more specifically, when the relevant gismu seems too general in meaning), the first step is to express the concept as a tanru. Lojban tanru are an elaboration of the concept of
+      When specifying a concept that is not found among the gismu (or, more specifically, when the relevant gismu seems too general in meaning), one way is to express the concept as a tanru. Lojban tanru are an elaboration of the concept of
       <quote>metaphor</quote>
       used in English. In Lojban, any brivla can be used to modify another brivla. The first of the pair modifies the second. This modification is usually restrictive &ndash; the modifying brivla reduces the broader sense of the modified brivla to form a more narrow, concrete, or specific concept. Modifying brivla may thus be seen as acting like English adverbs or adjectives. For example,
     </para>
@@ -1627,7 +1627,9 @@
       <valsi valid="maybe">labmau</valsi>). On the other hand,
       <valsi>bakri</valsi>
       (
-      <quote>chalk</quote>) has no short rafsi, and the dictionary lists only a few lujvo built on it.
+      <quote>chalk</quote>) has no short rafsi, so a lujvo built on it, such as
+      <valsi valid="maybe">bakryta'o</valsi>
+      (<quote>chalkboard</quote>), must use a long rafsi.
     </para>
     <para>There are at most one CVC-form, one CCV-form, and one CVV-form rafsi per gismu. In fact, only a tiny handful of gismu have both a CCV-form and a CVV-form rafsi assigned, and still fewer have all three forms of short rafsi. However, gismu with both a CVC-form and another short rafsi are fairly common, partly because more possible CVC-form rafsi exist. Yet CVC-form rafsi, even though they are fairly easy to remember, cannot be used at the end of a lujvo (because lujvo must end in vowels), so that justifies assigning an additional short rafsi to many gismu.</para>
 
@@ -2274,7 +2276,7 @@
       </indexterm>
       Where a little more universality is desired, the word to be borrowed must be Lojbanized into one of several permitted forms. A rafsi is then usually attached to the beginning of the Lojbanized form, using a hyphen to ensure that the resulting word doesn't fall apart.
     </para>
-    <para><indexterm type="general"><primary>borrowings</primary><secondary>most common form for</secondary>
+    <para><indexterm type="general"><primary>borrowings</primary><secondary>categorizing rafsi in</secondary>
       </indexterm><indexterm type="general"><primary>fu'ivla</primary><secondary>uniqueness of meaning in</secondary>
       </indexterm><indexterm type="general"><primary>rafsi</primary><secondary>as fu'ivla categorizer</secondary>
       </indexterm><indexterm type="general"><primary>fu'ivla categorizer</primary></indexterm>The rafsi categorizes or limits the meaning of the fu'ivla. Without it, a word having several different jargon meanings in other languages would force the word-inventor to choose which meaning should be assigned to the fu'ivla, since fu'ivla (like other brivla) are not permitted to have more than one definition.</para>
@@ -2290,7 +2292,7 @@
       <indexterm type="lojban-word"><primary>zi'evla</primary></indexterm>
       <indexterm type="general"><primary>zi'evla</primary><secondary>as term for Stage 4 fu'ivla</secondary>
       </indexterm>
-      Finally, Stage 4 fu'ivla do not have any rafsi classifier. That makes them as short as a borrowing can be, which suits a concept so common or so important that its word must be made as short as possible. This book also calls these free-form borrowings
+      Finally, Stage 4 fu'ivla do not have any rafsi classifier. Without the classifier, a borrowing can be shorter, which suits a concept so common or so important that its word must be made as short as possible. This book also calls these free-form borrowings
       <jbophrase>zi'evla</jbophrase>
       (<quote>free words</quote>). (See
       <xref linkend="section-rafsi-fuhivla" />
@@ -2784,7 +2786,7 @@
     <para>
       Left uncontrolled,
       <valsi valid="maybe">.integrale</valsi>
-      almost certainly would eventually come to mean the same collection of loosely related concepts that English associates with
+      could eventually come to mean the same collection of loosely related concepts that English associates with
       <quote>integral</quote>
       , with only the context to indicate (possibly) that the mathematical term is meant.
     </para>
@@ -3871,11 +3873,11 @@
       <indexterm type="general"><primary>lujvo</primary><secondary>dropping elements of</secondary>
       </indexterm>
       <indexterm type="general"><primary>Zipf's Law</primary></indexterm>
-      The third complication is also simple, but its implications can look alarming at first. It is based on Zipf's Law, which says that the length of words is inversely proportional to their usage. The shortest words are those which are used more; the longest ones are used less. Conversely, commonly used concepts tend to be abbreviated. In English, we have abbreviations and acronyms and jargon, all of which represent complex ideas that are used often by small groups of people, so they shortened them to convey more information more rapidly.
+      The third complication is also simple, but its implications can look alarming at first. It is based on Zipf's Law, which says that the length of words is inversely proportional to their usage. The shortest words are those which are used more; the longest ones are used less. Conversely, commonly used concepts tend to be abbreviated. In English, abbreviations, acronyms, and jargon do the same job: a shorter form conveys more information more rapidly.
     </para>
 
 
-    <para>Therefore, given a complicated tanru with grouping markers, abstraction markers, and other cmavo in it to make it syntactically unambiguous, the psychological basis of Zipf's Law may compel the lujvo-maker to drop some of the cmavo to make a shorter (technically incorrect) tanru, and then use that tanru to make the lujvo.</para>
+    <para>Therefore, given a complicated tanru with grouping markers, abstraction markers, and other cmavo in it to make it syntactically unambiguous, a lujvo-maker can save effort by dropping some of the cmavo to make a shorter (technically incorrect) tanru, and then using that tanru to make the lujvo. The shorter tanru no longer shows every part of the intended meaning.</para>
 
 
     <para>
@@ -3981,7 +3983,7 @@
   <section xml:id="section-lujvo-scoring">
     <title><anchor xml:id="c4s12" />The lujvo scoring algorithm</title>
 
-    <para>This algorithm was devised by Bob and Nora LeChevalier in 1989. It is not the only possible algorithm; the priorities that it encodes are explained after the score formula. The algorithm may be changed in the future. The lowest-scoring variant is the one that the algorithm recommends as the dictionary form of the lujvo. (In previous versions, it was the highest-scoring variant.)</para>
+    <para>This algorithm was devised by Bob and Nora LeChevalier in 1989. It is not the only possible algorithm; the priorities that it encodes are explained after the score formula. The algorithm may be changed in the future. The lowest-scoring variant is the one that the algorithm recommends as the dictionary form of the lujvo, although a dictionary may list another form. (In previous versions, it was the highest-scoring variant.)</para>
     <orderedlist>
       <listitem>
         <para>

@@ -484,13 +484,13 @@
       </cmavo-entry>
     </cmavo-list>
     <para role="indent">
-      <indexterm type="general"><primary>relative phrase</primary><secondary>as an abbreviation of a common relative clause</secondary>
+      <indexterm type="general"><primary>relative phrase</primary><secondary>as an abbreviation of a relative clause</secondary>
       </indexterm>
       <indexterm type="general"><primary>relative phrase</primary><secondary>syntax of</secondary>
       </indexterm>
       <indexterm type="general"><primary>relative phrase</primary><secondary>rationale for</secondary>
       </indexterm>
-      Some types of relative clauses (those which have a certain selbri) can be expressed using a shortcut called a relative phrase. Relative phrases are introduced by cmavo of selma'o GOI, and consist of a GOI cmavo followed by a single sumti.
+      The designers of Lojban expected some types of relative clauses (those which have a certain selbri) to be wanted often, so these can be expressed using a shortcut called a relative phrase. Relative phrases are introduced by cmavo of selma'o GOI, and consist of a GOI cmavo followed by a single sumti.
     </para>
     <para>
       <indexterm type="general"><primary>loose association</primary><secondary>expressing with &quot;pe&quot;</secondary>
@@ -1584,7 +1584,7 @@
       <valsi>ku</valsi>
       at the end of the possessor sumti, which keeps the selbri of the possessor sumti from merging with the selbri of the main description sumti. Without it the two selbri simply run together on the page, and a reader has a hard time seeing where one ends and the other begins. The grammar still assigns the sentence its intended structure, since no other structure fits the text as a whole (see <xref linkend="ebnf-parses" />), but the parser of the first edition rejected the sentence outright. Because this
       <valsi>ku</valsi>
-      is needed for clarity, pro-sumti make the most convenient possessor sumti, especially personal pro-sumti, which require no elidable terminator. A description is more easily attached with a relative phrase.
+      is needed for clarity, a pro-sumti such as the personal pro-sumti <valsi>mi</valsi> has an advantage as a possessor sumti: it requires no elidable terminator. A description can instead be attached with a relative phrase, which places it after the main description, where its selbri cannot merge with the main selbri.
     </para>
 
     <para>And here is a number used as a possessor sumti:</para>

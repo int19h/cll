@@ -448,7 +448,7 @@
       <indexterm type="general"><primary>words not in the dictionary</primary></indexterm>
       Like the table in
       <xref linkend="section-sumti-cmavo" />,
-      this table is far from complete: in fact, no complete table can exist, because Lojban allows new words to be created (in specified ways) whenever a speaker or writer finds the existing supply of words inadequate. This notion is a basic difference between Lojban (and some other languages such as German and Chinese) and English: a Lojban word that
+      this table is far from complete: in fact, no complete table can exist, because Lojban allows new words to be created (in specified ways) whenever a speaker or writer finds the existing supply of words inadequate. This notion is basic to Lojban: a word that
       <quote>isn't in the dictionary</quote> is still a proper word if it is made by the rules. Lojbanists are encouraged to invent new words; doing so is a major way of participating in the development of the language.
       <xref linkend="chapter-morphology" />
       explains how to make new words, and
@@ -739,7 +739,7 @@
       <xref linkend="example-random-id-k068" />
       through
       <xref linkend="example-random-id-k0Bm" />
-      mean the same thing. Placing more than one sumti before the selbri is a matter of style, or of emphasis on the sumti that are out-of-place from their normal position. (Many languages other than English put the verb last, as <xref linkend="example-random-id-k0Bm" /> does.)
+      mean the same thing. Placing more than one sumti before the selbri can be done for style, for emphasis on the sumti that are out-of-place from their normal position, or to save words (see <xref linkend="section-cu" />). (Many languages other than English put the verb last, as <xref linkend="example-random-id-k0Bm" /> does.)
     </para>
     <para>
       <indexterm type="general"><primary>observatives</primary><secondary>quick-tour version</secondary>
@@ -1476,7 +1476,7 @@
     <para role="indent">
       <indexterm type="general"><primary>cmavo as selbri</primary><secondary>quick-tour version</secondary>
       </indexterm>
-      Some cmavo may also serve as selbri, acting as variables that stand for another selbri. The most commonly used of these is
+      Some cmavo may also serve as selbri, acting as variables that stand for another selbri. One of these is
       <valsi>go'i</valsi>,
       which represents the main bridi of the previous Lojban sentence, with any new sumti or other sentence features being expressed replacing the previously expressed ones. Thus, in this context:
     </para>
@@ -1564,7 +1564,7 @@
 
       </interlinear-gloss-itemized>
     </example>
-    <para role="indent"><indexterm type="general"><primary>pleases</primary></indexterm><xref linkend="example-random-id-k0YS" /> uses one sumti to point to or refer to another by inference. Like other cmavo compounds, <valsi>la'edi'u</valsi> may be written as a single word.</para>
+    <para role="indent"><indexterm type="general"><primary>pleases</primary></indexterm><xref linkend="example-random-id-k0YS" /> uses one sumti to point to or refer to another by inference. Lojban lets a string of cmavo be written as a single word, so <jbophrase>la'e di'u</jbophrase> may also be written <valsi>la'edi'u</valsi>.</para>
   </section>
   <section xml:id="section-possession">
     <title><anchor xml:id="c2s13" />Possession</title>
@@ -2546,7 +2546,7 @@
           <indexterm type="general"><primary>fu'ivla</primary><secondary>definition</secondary>
             <tertiary>quick-tour version</tertiary>
           </indexterm>
-          a borrowed word; a kind of brivla; may or may not appear in a dictionary; copied in a modified form from some non-Lojban language; usually refers to some aspect of culture or the natural world; does not have associated rafsi. See
+          a borrowed word; a kind of brivla; may or may not appear in a dictionary; copied in a modified form from some non-Lojban language; suited to terms for aspects of culture or the natural world; does not have associated rafsi. See
           <xref linkend="chapter-morphology" />.
         </td>
       </tr>

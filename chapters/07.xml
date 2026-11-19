@@ -266,7 +266,7 @@
       <valsi>mi'a</valsi>
       or even
       <valsi>ma'a</valsi>,
-      and English offers no easy way to distinguish
+      and the pronoun by itself does not distinguish
       <valsi>mi'o</valsi>
       from
       <valsi>mi'a</valsi>:
@@ -684,7 +684,7 @@
         </natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">The cmavo of the di'u-series have a meaning that is relative to the context. The referent of <valsi>dei</valsi> in the current utterance is the same as the referent of <valsi>di'u</valsi> in the next utterance. We say <quote>utterance</quote> rather than <quote>sentence</quote> because the amount of speech or written text referred to by any of these words is vague. Often a single bridi is intended, but longer utterances may be referred to as well.</para>
+    <para role="indent">The cmavo of the di'u-series have a meaning that is relative to the context. The referent of <valsi>dei</valsi> in the current utterance is the same as the referent of <valsi>di'u</valsi> in the next utterance. We say <quote>utterance</quote> rather than <quote>sentence</quote> because the amount of speech or written text referred to by any of these words is vague. A single bridi may be intended, but longer utterances may be referred to as well.</para>
     <para>A useful construction combines <valsi>di'u</valsi> with the cmavo <valsi>la'e</valsi> (of selma'o LAhE; see <xref linkend="section-sumti-qualifiers" />), which precedes a sumti and means <quote>the thing referred to by (the sumti)</quote>:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-MsUd">
       <title><anchor xml:id="c7e4d6" /></title>
@@ -866,7 +866,7 @@
       refers to the store; in other words, that its antecedent is
       <jbophrase>lo zarci</jbophrase>. In Lojban, however,
       <jbophrase>la .alis.</jbophrase>
-      is just as possible an antecedent, in which case
+      could just as well be the antecedent, in which case
       <xref linkend="example-random-id-qdCR" />
       means that Alice, not the store, is blue.
     </para>
@@ -1912,9 +1912,9 @@
       <quote>on foot</quote>,
       those being the typical route and means for leaving a house. On the other hand, if you are at the top of a high rise during a fire, neither
       <valsi>zu'i</valsi>
-      is appropriate. It's also common to use
+      is appropriate.
       <valsi>zu'i</valsi>
-      in
+      also suits
       <quote>by standard</quote>
       places.
     </para>
@@ -2790,7 +2790,7 @@
     <title><anchor xml:id="c7s15" />lujvo based on pro-sumti</title>
     <para>      <indexterm type="general"><primary>pro-sumti</primary><secondary>rafsi for</secondary>      </indexterm>      <indexterm type="general"><primary>rafsi</primary><secondary>based on pro-sumti</secondary>      </indexterm>      There exist rafsi allocated to a few cmavo of selma'o KOhA. (See
       <xref linkend="section-koha-summary" />
-      for a complete list.) The obvious way to use them is as internal sumti, filling in an appropriate place of the gismu or lujvo to which they are attached; as such, they usually stand as the first rafsi in their lujvo.
+      for a complete list.) The obvious way to use them is as internal sumti, filling in an appropriate place of the gismu or lujvo to which they are attached; as such, they stand in the seltau position, before the rafsi of the gismu or lujvo whose place they fill.
     </para>
     <para>
 

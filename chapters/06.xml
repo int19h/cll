@@ -393,7 +393,7 @@
       refers to someone whose naming predicate is
       <valsi>cribe</valsi>
       , i.e.
-      <quote>Bear</quote>. In English, most names don't mean anything, or at least not anything obvious. The name
+      <quote>Bear</quote>. In English, a name need not mean anything, or at least not anything obvious. The name
       <quote>Frank</quote>
       coincides with the English word
       <quote>frank</quote>
@@ -416,7 +416,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      Such a translation keeps the meaning of a name, whether etymological or current, and gives up its sound. Whether that is a fair trade is up to the bearer of the name. (In point of fact,
+      Such a translation uses an association that the name happens to have in English, and gives up its sound. Whether that is a fair trade is a matter of taste. (In point of fact,
       <quote>Frank</quote>
       originally meant
       <quote>the free one</quote>
@@ -1654,7 +1654,7 @@
         </interlinear-gloss>
       </example>
     </para>
-    <para>This compound, <jbophrase>na'ebo</jbophrase>, is the most common of the four negation sumti qualifiers. The others usually make sense only in the context of repeating, with modifications, something already referred to:</para>
+    <para>This compound, <jbophrase>na'ebo</jbophrase>, is the most widely applicable of the four negation sumti qualifiers. The others usually make sense only in the context of repeating, with modifications, something already referred to:</para>
 
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-JwCb">
@@ -1979,7 +1979,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent">
-      <indexterm type="general"><primary>names from vowel-final base</primary><secondary>commonly used consonant endings</secondary>
+      <indexterm type="general"><primary>names from vowel-final base</primary><secondary>added consonant endings</secondary>
       </indexterm>
       <indexterm type="general"><primary>names</primary><secondary>borrowing from other languages</secondary>
       </indexterm>
@@ -1987,7 +1987,7 @@
       <rafsi>s</rafsi>
       or
       <rafsi>n</rafsi>
-      when borrowing vowel-final names from English; speakers of other languages may wish to use other consonant endings.
+      when borrowing vowel-final names from English; any other consonant ending is just as correct.
     </para>
 
   </section>

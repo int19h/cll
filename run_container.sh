@@ -129,11 +129,11 @@ flock -n 9 || {
 mounts=(-v "$dir:$dir" -v "$build_dir:$build_dir")
 build_version=$("$dir/scripts/build-version.sh") || exit 1
 
-# The tag follows the build context's content (issue #297): different
-# Dockerfiles never share a tag, equal ones share the image cache.
-# lojban/cll_build stays as an alias for callers that name it.
-image_tag=$(cll_image_tag "$dir/Dockerfile" "$dir" prince) || exit 1
-image="lojban/cll_build:$image_tag"
+# One fixed tag for every build (issue #297). Each run starts the container
+# by the immutable image ID its own build returned (see below), so another
+# checkout rebuilding the same tag under it is harmless, and equal builds
+# share the image cache. scripts/diff_upstream also names this tag.
+image="lojban/cll_build"
 
 # FOR TESTING; forces complete container rebuild
 # "${engine[@]}" build --no-cache -t "$image" -f Dockerfile .
@@ -169,8 +169,6 @@ if [ -z "$image_id" ]; then
   exit 1
 fi
 echo "Image ID: $image_id"
-
-"${engine[@]}" tag "$image_id" lojban/cll_build
 
 user_args=(--user "$(id -u):$(id -g)")
 if "${engine[@]}" --version | grep -qi podman; then

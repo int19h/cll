@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Unique container names and content-derived image tags (issue #297).
+"""Unique container names and per-run image selection (issue #297).
 
 Two builds from different checkouts must not stop each other: each run gets
 its own container name, only that run's container is ever removed (by its
-immutable ID, also on interruption), and different Dockerfiles never share
-an image tag. A signal to the launcher PID alone stops the build at once
-and exits with the signal status.
+immutable ID, also on interruption), and each run starts the container by
+the image ID its own build returned, so sharing one image tag is safe.
+A signal to the launcher PID alone stops the build at once and exits with
+the signal status.
 """
 
 import os
-import re
 import shlex
 import shutil
 import signal
@@ -23,8 +23,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 HELPER = ROOT / 'scripts/container-names.sh'
 SCRATCH = ROOT / 'build/container-tests'
-
-HEX16 = re.compile(r'^[0-9a-f]{16}$')
 
 # The stub engine below is written into the scratch directory by StubRun.
 # It logs each call, sleeps interruptibly in build and run, tracks one
@@ -62,7 +60,7 @@ case "$op" in
     wait "$sp"
     rc=$?
     log "build-end rc=$rc"
-    [ -n "$iidfile" ] && printf 'stub-image-id' > "$iidfile"
+    [ -n "$iidfile" ] && printf '%s' "${STUB_IMAGE_ID:-stub-image-id}" > "$iidfile"
     exit "$rc" ;;
   run)
     name=; cidfile=
@@ -142,65 +140,19 @@ def valid_container_name(name):
     return out == 'valid'
 
 
-def image_tag_env(dockerfile, context):
-    env = {k: v for k, v in os.environ.items()
-           if k != 'CLL_CONTAINER_NAME'}
-    env['CLL_T_DOCKERFILE'] = str(dockerfile)
-    env['CLL_T_CONTEXT'] = str(context)
-    return env
-
-
-def image_tag(dockerfile, context, *extra):
-    script = ('. "{}"\ncll_image_tag "$CLL_T_DOCKERFILE" '
-              '"$CLL_T_CONTEXT" "$@"\n'.format(HELPER))
-    return subprocess.run(['bash', '-c', script, 'bash', *extra],
-                          capture_output=True, text=True,
-                          env=image_tag_env(dockerfile, context),
-                          check=True).stdout.strip()
-
-
-def image_tag_result(dockerfile, context, *extra):
-    script = ('. "{}"\ncll_image_tag "$CLL_T_DOCKERFILE" '
-              '"$CLL_T_CONTEXT" "$@"\n'.format(HELPER))
-    return subprocess.run(['bash', '-c', script, 'bash', *extra],
-                          capture_output=True, text=True,
-                          env=image_tag_env(dockerfile, context))
-
-
-def make_context(directory, dockerfile_lines, files):
-    directory.mkdir(parents=True, exist_ok=True)
-    (directory / 'Dockerfile').write_text(''.join(dockerfile_lines))
-    for name, content in files.items():
-        path = directory / name
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(content)
-
-
-def make_launcher_tree(parent):
-    # A minimal second checkout for the collision test: the launcher
-    # locates its checkout from its own path, so each tree gets its own
-    # build folder and lock. CLL_BUILD_VERSION skips build-version.sh's
-    # Git lookup (the script still runs and exits 0 on the variable).
+def make_launcher_tree(parent, dockerfile_lines=('FROM example/base\n',)):
+    # A minimal second checkout for the collision and image-identity
+    # tests: the launcher locates its checkout from its own path, so each
+    # tree gets its own build folder and lock. CLL_BUILD_VERSION skips
+    # build-version.sh's Git lookup (the script still runs and exits 0 on
+    # the variable).
     tree = Path(parent)
     (tree / 'scripts').mkdir(parents=True, exist_ok=True)
     shutil.copy2(ROOT / 'run_container.sh', tree / 'run_container.sh')
     for name in ('container-names.sh', 'build-version.sh'):
         shutil.copy2(ROOT / 'scripts' / name, tree / 'scripts' / name)
-    (tree / 'Dockerfile').write_text('FROM example/base\n')
+    (tree / 'Dockerfile').write_text(''.join(dockerfile_lines))
     return tree
-
-
-BASE_LINES = [
-    'FROM example/base\n',
-    'COPY app/server.sh /srv/server.sh\n',
-    'COPY data/ /srv/data/\n',
-    'RUN echo done\n',
-]
-BASE_FILES = {
-    'app/server.sh': '#!/bin/bash\necho hi\n',
-    'data/a.txt': 'alpha\n',
-    'data/b.txt': 'beta\n',
-}
 
 
 class ContainerNamesTests(unittest.TestCase):
@@ -226,220 +178,17 @@ class ContainerNamesTests(unittest.TestCase):
                     '.leading-dot'):
             self.assertFalse(valid_container_name(bad), bad)
 
-    def test_tags_follow_content(self):
-        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
-            scratch = Path(directory)
-            make_context(scratch / 'a', BASE_LINES, BASE_FILES)
-            make_context(scratch / 'b', BASE_LINES, BASE_FILES)
-            tag_a = image_tag(scratch / 'a/Dockerfile', scratch / 'a', 'prince')
-            # Equal contexts share the tag (the image cache is reused).
-            self.assertEqual(
-                tag_a, image_tag(scratch / 'b/Dockerfile', scratch / 'b', 'prince'))
-            self.assertRegex(tag_a, HEX16)
-            # A changed copied file changes the tag.
-            (scratch / 'b/data/a.txt').write_text('ALPHA\n')
-            self.assertNotEqual(
-                tag_a, image_tag(scratch / 'b/Dockerfile', scratch / 'b', 'prince'))
-            # A changed Dockerfile changes the tag.
-            (scratch / 'b/Dockerfile').write_text(
-                ''.join(BASE_LINES).replace('echo done', 'echo done now'))
-            self.assertNotEqual(
-                tag_a, image_tag(scratch / 'b/Dockerfile', scratch / 'b', 'prince'))
-            # The build target is part of the tag: one Dockerfile builds
-            # several images.
-            self.assertNotEqual(
-                tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a', 'typst'))
-
-    def test_lowercase_and_indented_instructions_count(self):
-        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
-            scratch = Path(directory)
-            lines = ['FROM example/base\n',
-                     'copy app/server.sh /srv/server.sh\n',
-                     '   COPY data/a.txt /srv/a.txt\n']
-            make_context(scratch / 'a', lines, BASE_FILES)
-            tag_a = image_tag(scratch / 'a/Dockerfile', scratch / 'a')
-            self.assertRegex(tag_a, HEX16)
-            (scratch / 'a/data/a.txt').write_text('ALPHA\n')
-            self.assertNotEqual(
-                tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a'))
-
-    def test_continued_instructions_join(self):
-        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
-            scratch = Path(directory)
-            make_context(scratch / 'a',
-                         ['FROM example/base\n', 'COPY a.txt \\\n',
-                          '  b.txt /dest/\n'],
-                         {'a.txt': 'a\n', 'b.txt': 'b\n'})
-            tag_a = image_tag(scratch / 'a/Dockerfile', scratch / 'a')
-            self.assertRegex(tag_a, HEX16)
-            (scratch / 'a/b.txt').write_text('B\n')
-            self.assertNotEqual(
-                tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a'))
-            make_context(scratch / 'b',
-                         ['FROM example/base\n', 'COPY c.txt \\\n'],
-                         {'c.txt': 'c\n'})
-            result = image_tag_result(scratch / 'b/Dockerfile', scratch / 'b')
-            self.assertNotEqual(result.returncode, 0)
-            self.assertIn('unterminated', result.stderr)
-
-    def test_json_instructions_fail(self):
-        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
-            scratch = Path(directory)
-            make_context(scratch / 'b',
-                         ['FROM example/base\n',
-                          'COPY ["a.txt", "b.txt"] /dest/\n'],
-                         {'a.txt': 'a\n', 'b.txt': 'b\n'})
-            result = image_tag_result(scratch / 'b/Dockerfile', scratch / 'b')
-            self.assertNotEqual(result.returncode, 0)
-            self.assertIn('JSON', result.stderr)
-
-    def test_filenames_with_spaces(self):
-        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
-            scratch = Path(directory)
-            make_context(scratch / 'a',
-                         ['FROM example/base\n', 'COPY data/ /dest/\n'],
-                         {'data/has space.txt': 'v1\n'})
-            result = image_tag_result(scratch / 'a/Dockerfile', scratch / 'a')
-            self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertEqual(result.stderr, '')
-            tag_a = result.stdout.strip()
-            self.assertRegex(tag_a, HEX16)
-            (scratch / 'a/data/has space.txt').write_text('v2\n')
-            self.assertNotEqual(
-                tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a'))
-
-    def test_hidden_files_count(self):
-        # A glob also matches the files the shell would hide: changing
-        # one changes the tag.
-        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
-            scratch = Path(directory)
-            make_context(scratch / 'a',
-                         ['FROM example/base\n', 'COPY inputs/* /dest/\n'],
-                         {'inputs/a.txt': 'a\n', 'inputs/.hidden': 'h1\n'})
-            tag_a = image_tag(scratch / 'a/Dockerfile', scratch / 'a')
-            self.assertRegex(tag_a, HEX16)
-            (scratch / 'a/inputs/.hidden').write_text('h2\n')
-            self.assertNotEqual(
-                tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a'))
-
-    def test_symlink_targets_count(self):
-        # A copied directory records its links: retargeting a link changes
-        # the tag even when every file's bytes stay the same.
-        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
-            scratch = Path(directory)
-            make_context(scratch / 'a',
-                         ['FROM example/base\n', 'COPY data/ /dest/\n'],
-                         {'data/a': 'same\n', 'data/b': 'same\n'})
-            os.symlink('a', scratch / 'a/data/link')
-            tag_a = image_tag(scratch / 'a/Dockerfile', scratch / 'a')
-            self.assertRegex(tag_a, HEX16)
-            (scratch / 'a/data/link').unlink()
-            os.symlink('b', scratch / 'a/data/link')
-            self.assertNotEqual(
-                tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a'))
-
-    def test_comment_lines_ignored(self):
-        # A full-line comment ends at its line: one ending in a backslash
-        # does not swallow the next COPY, and one between the lines of a
-        # continued COPY does not break it.
-        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
-            scratch = Path(directory)
-            make_context(scratch / 'a',
-                         ['FROM example/base\n',
-                          '# a comment \\\n',
-                          'COPY one.txt /dest/\n',
-                          'COPY two.txt \\\n',
-                          '# in the middle\n',
-                          '  three.txt /dest2/\n'],
-                         {'one.txt': '1\n', 'two.txt': '2\n',
-                          'three.txt': '3\n'})
-            tag_a = image_tag(scratch / 'a/Dockerfile', scratch / 'a')
-            self.assertRegex(tag_a, HEX16)
-            (scratch / 'a/three.txt').write_text('3 changed\n')
-            self.assertNotEqual(
-                tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a'))
-
-    def test_file_modes_count(self):
-        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
-            scratch = Path(directory)
-            make_context(scratch / 'a',
-                         ['FROM example/base\n', 'COPY run.sh /srv/\n'],
-                         {'run.sh': '#!/bin/sh\n'})
-            (scratch / 'a/run.sh').chmod(0o755)
-            tag_a = image_tag(scratch / 'a/Dockerfile', scratch / 'a')
-            (scratch / 'a/run.sh').chmod(0o644)
-            self.assertNotEqual(
-                tag_a, image_tag(scratch / 'a/Dockerfile', scratch / 'a'))
-
-    def test_globs_resolve_in_the_context(self):
-        # A glob in COPY must expand against the build context, never the
-        # caller's directory: the tag is the same from any directory and
-        # follows the context's files.
-        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
-            scratch = Path(directory)
-            ctx = scratch / 'ctx'
-            make_context(ctx,
-                         ['FROM example/base\n', 'COPY scripts/*.sh /dst/\n'],
-                         {'scripts/a.sh': 'a\n', 'scripts/b.sh': 'b\n'})
-            elsewhere = scratch / 'cwd'
-            (elsewhere / 'scripts').mkdir(parents=True)
-            (elsewhere / 'scripts/zzz.sh').write_text('zzz\n')
-            run = subprocess.run(
-                ['bash', '-c',
-                 '. "{}"\ncll_image_tag "$0/Dockerfile" "$0"'.format(HELPER),
-                 str(ctx)],
-                capture_output=True, text=True, cwd=elsewhere)
-            self.assertEqual(run.returncode, 0, run.stderr)
-            tag_elsewhere = run.stdout.strip()
-            tag_here = image_tag(ctx / 'Dockerfile', ctx)
-            self.assertEqual(tag_elsewhere, tag_here)
-            (ctx / 'scripts/b.sh').write_text('B\n')
-            self.assertNotEqual(
-                tag_here, image_tag(ctx / 'Dockerfile', ctx))
-
-    def test_stage_copies_and_remote_adds_need_no_local_file(self):
-        lines = BASE_LINES + [
-            'COPY --from=builder /out/bin /srv/bin\n',
-            'ADD https://example.invalid/ca.pem /etc/ssl/certs/ca.pem\n',
-        ]
-        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
-            scratch = Path(directory)
-            make_context(scratch / 'a', lines, BASE_FILES)
-            make_context(scratch / 'b', BASE_LINES, BASE_FILES)
-            # Both hash fine without any local builder output or download.
-            self.assertRegex(
-                image_tag(scratch / 'a/Dockerfile', scratch / 'a'), HEX16)
-            self.assertRegex(
-                image_tag(scratch / 'b/Dockerfile', scratch / 'b'), HEX16)
-
-    def test_missing_copy_source_fails(self):
-        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
-            scratch = Path(directory)
-            make_context(scratch / 'a', BASE_LINES,
-                         {'app/server.sh': 'x\n'})
-            result = image_tag_result(scratch / 'a/Dockerfile', scratch / 'a')
-            self.assertNotEqual(result.returncode, 0)
-
-    def test_real_dockerfiles_tag_distinctly(self):
-        prince = image_tag(ROOT / 'Dockerfile', ROOT, 'prince')
-        typst = image_tag(ROOT / 'Dockerfile', ROOT, 'typst')
-        weasy = image_tag(ROOT / 'Dockerfile.weasyprint',
-                          ROOT / 'scripts/weasyprint')
-        for tag in (prince, typst, weasy):
-            self.assertRegex(tag, HEX16)
-        self.assertNotEqual(prince, typst)
-        self.assertNotEqual(prince, weasy)
-
 
 class StubRun:
     """One run_container.sh run against the stub engine in a scratch dir."""
 
     def __init__(self, scratch, tree=ROOT, out_name='stdout.txt',
-                 **env_extra):
+                 truncate_log=True, **env_extra):
         self.work = Path(scratch)
         self.tree = Path(tree)
         self.log = self.work / 'engine.log'
-        self.log.write_text('')
+        if truncate_log or not self.log.exists():
+            self.log.write_text('')
         self.stub = self.work / 'stub-engine.sh'
         self.stub.write_text(STUB_ENGINE)
         self.stub.chmod(self.stub.stat().st_mode | stat.S_IXUSR)
@@ -459,10 +208,10 @@ class StubRun:
             env=env, cwd=str(self.tree), start_new_session=True, text=True)
         self.pid = self.proc.pid
 
-    def wait_for(self, snippet, timeout=30):
+    def wait_for(self, snippet, timeout=30, count=1):
         end = time.monotonic() + timeout
         while time.monotonic() < end:
-            if snippet in self.log.read_text():
+            if self.log.read_text().count(snippet) >= count:
                 return True
             time.sleep(0.05)
         return False
@@ -479,11 +228,8 @@ class StubRun:
 
     def temp_files(self):
         # The launcher keeps its container ID, image ID and build log in
-        # one private directory; the helper keeps its own digest input.
-        # Both must be gone when the run ends.
-        names = sorted(p.name for p in self.work.glob('cll-run*'))
-        names += sorted(p.name for p in self.work.glob('cll-imagetag*'))
-        return names
+        # one private directory. It must be gone when the run ends.
+        return sorted(p.name for p in self.work.glob('cll-run*'))
 
     def abort(self):
         # Never leave a launcher holding the checkout lock for the next test.
@@ -687,6 +433,48 @@ class SignalTests(unittest.TestCase):
                 rc = first.finish(sig=signal.SIGTERM)
                 self.assertEqual(rc, -signal.SIGTERM)
                 self.assertEqual(first.markers(), [])
+
+    def test_concurrent_runs_use_their_own_image_id(self):
+        # Two checkouts with different Dockerfiles share one image tag, but
+        # each run starts the container by the ID its own build returned.
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as parent:
+            a_tree = make_launcher_tree(
+                Path(parent) / 'a',
+                ['FROM example/base\n', 'ENV TREE=a\n'])
+            b_tree = make_launcher_tree(
+                Path(parent) / 'b',
+                ['FROM example/base\n', 'ENV TREE=b\n'])
+            with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+                first = StubRun(directory, tree=a_tree,
+                                STUB_BUILD_SLEEP='1',
+                                STUB_RUN_SLEEP='10',
+                                STUB_IMAGE_ID='img-aaa',
+                                CLL_CONTAINER_NAME='img-run-a')
+                second = StubRun(directory, tree=b_tree,
+                                 out_name='second-stdout.txt',
+                                 truncate_log=False,
+                                 STUB_BUILD_SLEEP='1',
+                                 STUB_RUN_SLEEP='10',
+                                 STUB_IMAGE_ID='img-bbb',
+                                 CLL_CONTAINER_NAME='img-run-b')
+                self.assertTrue(first.wait_for('run-start'),
+                                'first run never started the container')
+                self.assertTrue(second.wait_for('run-start', count=2),
+                                'second run never started the container')
+                # Both containers run at the same time under one tag.
+                self.assertIsNone(first.proc.poll())
+                self.assertIsNone(second.proc.poll())
+                log = second.log_text()
+                for name, image in (('img-run-a', 'img-aaa'),
+                                    ('img-run-b', 'img-bbb')):
+                    own = [line for line in log.splitlines()
+                           if line.startswith('call run ') and name in line]
+                    self.assertEqual(len(own), 1, log)
+                    self.assertIn(' %s ' % image, own[0], own[0])
+                self.assertEqual(first.finish(), 0)
+                self.assertEqual(second.finish(), 0)
+                self.assertEqual(first.markers(), [])
+                self.assertEqual(second.markers(), [])
 
     def test_second_run_in_same_checkout_fails_fast(self):
         with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:

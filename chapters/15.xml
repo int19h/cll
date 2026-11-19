@@ -448,7 +448,10 @@
       has been reserved for
       <valsi>na</valsi>. However, before using this rafsi, make sure that you intend the contradictory bridi negation, and not the scalar negation described in
       <xref linkend="section-scalar-negation" />
-      , which will be much more common in tanru and lujvo.
+      , for which tanru and lujvo use the NAhE cmavo, such as
+      <valsi>na'e</valsi>
+      with its rafsi
+      <rafsi>-nal-</rafsi>.
     </para>
   </section>
   <section xml:id="section-scalar-negation">
@@ -649,7 +652,7 @@
   </section>
   <section xml:id="section-nahe">
     <title><anchor xml:id="c15s4" />selbri and tanru negation</title>
-    <para>All the scalar negations illustrated in <xref linkend="section-scalar-negation" /> are expressed in Lojban with the cmavo <valsi>na'e</valsi> (of selma'o NAhE). The most common use of <valsi>na'e</valsi> is as a prefix to the selbri:</para>
+    <para>All the scalar negations illustrated in <xref linkend="section-scalar-negation" /> are expressed in Lojban with the cmavo <valsi>na'e</valsi> (of selma'o NAhE). One use of <valsi>na'e</valsi> is as a prefix to the selbri:</para>
     <example xml:id="example-random-id-qh42" role="interlinear-gloss-example">
       <title><anchor xml:id="c15e4d1" /></title>
 
@@ -1229,7 +1232,7 @@
   </section>
   <section xml:id="section-other-negation">
     <title><anchor xml:id="c15s7" />Negation of minor grammatical constructs</title>
-    <para>      We have a few other constructs that can be negated, all of them based on negating individual words. For such negation, we use the suffix-combining negator, which is      <valsi>nai</valsi>.      <valsi>nai</valsi>      , by the way, is almost always written as a compound into the previous word that it is negating, although it is a regular separate-word cmavo and the sole member of selma'o NAI.
+    <para>      We have a few other constructs that can be negated, all of them based on negating individual words. For such negation, we use the suffix-combining negator, which is      <valsi>nai</valsi>.      <valsi>nai</valsi>      , by the way, may be written as a compound into the previous word that it is negating, although it is a regular separate-word cmavo and the sole member of selma'o NAI.
     </para>
     <para>Most of these negation forms are straightforward, and should be discussed and interpreted in connection with an analysis of the particular construct being negated. Thus, we will not go into much detail here.</para>
     <para>
@@ -1322,10 +1325,10 @@
       Vocative cmavo of selma'o COI are considered a kind of indicator, but one which identifies the listener. Semantically, we could dispense with about half of the COI selma'o words based on the scalar paradigm. For example,
       <valsi>co'o</valsi>
       could be expressed as
-      <jbophrase>coinai</jbophrase>. However, this is not generally done.
+      <jbophrase>coinai</jbophrase>. However, in the logs of #jbosnu, a chat channel for conversation in Lojban, co'o appears 612 times from 2004 to 2026, and coinai only 4 times.
     </para>
     <para>
-      Most of the COI cmavo are used in what are commonly called protocol situations. These protocols are used, for example, in radio conversations, which often take place in a noisy environment. The negatives of protocol words tend to convey diametrically opposite communications situations (as might be expected). Therefore, only one protocol vocative is dependent on
+      Most of the COI cmavo are suited to what are called protocol situations. These protocols are used, for example, in radio conversations, which often take place in a noisy environment. The negatives of protocol words tend to convey diametrically opposite communications situations (as might be expected). Therefore, only one protocol vocative is dependent on
       <valsi>nai</valsi>
       : negative acknowledgement, which is
       <valsi>je'enai</valsi>
@@ -1805,7 +1808,7 @@
       is
       <quote>bad</quote>.
     </para>
-    <para>This mutual independence of gismu is only an ideal. Pragmatically, people will categorize things based on their world-views. We will write dictionary definitions that will relate gismu, unfortunately including some of these world-view assumptions. Lojbanists should try to minimize these assumptions, but this seems a likely area where logical rules will break down (or where Sapir-Whorf effects will be made evident). In terms of negation, however, it is vital that we clearly preserve the capability of denying a presumably obvious scale or category assumption.</para>
+    <para>This mutual independence of gismu is only an ideal. In practice, people categorize things based on their world-views, and dictionary definitions that relate gismu can carry some of these world-view assumptions. Lojbanists should try to minimize these assumptions, but this may be an area where logical rules break down (or where Sapir-Whorf effects become evident). In terms of negation, however, it is vital that we clearly preserve the capability of denying a presumably obvious scale or category assumption.</para>
 
     <para>
       Solecisms, grammatical and spelling errors will be marked by marking the offending word or phrase with
@@ -1820,14 +1823,14 @@
       for explanations of these usages.
     </para>
     <para>
-      In summary, metalinguistic negation will typically take the form of referring to a previous statement and marking it with one or more
+      In summary, a metalinguistic negation can refer to a previous statement, mark it with one or more
       <valsi>na'i</valsi>
-      to indicate what metalinguistic errors have been made, and then repeating the statement with corrections. References to previous statements may be full repetitions, or may use members of selma'o GOhA.
+      to indicate what metalinguistic errors have been made, and then repeat the statement with corrections. References to previous statements may be full repetitions, or may use members of selma'o GOhA.
       <valsi>na'i</valsi>
       at the beginning of a statement merely says that something is inappropriate about the statement, without specificity.
     </para>
 
-    <para>In normal use, metalinguistic negation requires that a corrected statement follow the negated statement. In Lojban, however, it is possible to completely and unambiguously specify metalinguistic errors without correcting them. It will eventually be seen whether an uncorrected metalinguistic negation remains an acceptable form in Lojban. In such a statement, metalinguistic expression would involve an ellipsis not unlike that of tenseless expression.</para>
+    <para>In normal use, metalinguistic negation requires that a corrected statement follow the negated statement. In Lojban, however, it is possible to completely and unambiguously specify metalinguistic errors without correcting them. No rule settles whether an uncorrected metalinguistic negation is an acceptable form in Lojban. In such a statement, metalinguistic expression would involve an ellipsis not unlike that of tenseless expression.</para>
 
     <para>
       Note that metalinguistic negation gives us another kind of legitimate negative answer to a
@@ -1887,9 +1890,9 @@
     <para role="indent">
       Finally, one may metalinguistically affirm a bridi with
       <valsi>jo'a</valsi>
-      , another cmavo of selma'o UI. A common use for
+      , another cmavo of selma'o UI. One use for
       <valsi>jo'a</valsi>
-      might be to affirm that a particular construction, though unusual or counterintuitive, is in fact correct; another usage would be to disagree with &ndash; by overriding &ndash; a respondent's metalinguistic negation.
+      is to affirm that a particular construction, though unusual or counterintuitive, is in fact correct; another is to disagree with &ndash; by overriding &ndash; a respondent's metalinguistic negation.
     </para>
 
   </section>

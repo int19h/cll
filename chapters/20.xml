@@ -10,7 +10,7 @@
 
     <para><indexterm type="general"><primary>selma'o</primary><secondary>cross-reference list of</secondary>
         <tertiary>selma'o catalog</tertiary>
-      </indexterm>The following paragraphs list all the selma'o of Lojban, with a brief explanation of what each one is about, and a reference to the chapter number where each is explained more fully. As usual, all selma'o names are given in capital letters (with “h” serving as the capital of “'”) and are the names of a representative cmavo, often the most important or the first in alphabetical order. One example is given of each selma'o: for selma'o which have several uses, the most common use is shown.</para>
+      </indexterm>The following paragraphs list all the selma'o of Lojban, with a brief explanation of what each one is about, and a reference to the chapter number where each is explained more fully. As usual, all selma'o names are given in capital letters (with “h” serving as the capital of “'”) and are the names of a representative cmavo, often the most important or the first in alphabetical order. One example is given of each selma'o: for selma'o which have several uses, only one use is shown.</para>
     <bridgehead>
       <anchor xml:id="A" xreflabel="A" />
       selma'o A (
@@ -171,7 +171,7 @@
       <xref linkend="section-bu" />)
     </bridgehead>
 
-    <para>A suffix which can be attached to any word, typically a word representing a letter of the alphabet or else a name, to make a word for a symbol or a different letter of the alphabet. In particular, attached to single-vowel cmavo to make words for vowel letters.</para>
+    <para>A suffix which can be attached to any word, such as a word representing a letter of the alphabet or a name, to make a word for a symbol or a different letter of the alphabet. In particular, attached to single-vowel cmavo to make words for vowel letters.</para>
     <interlinear-gloss>
       <jbo>.abu .ebu .ibu .obu .ubu .ybu</jbo>
       <gloss>a, e, i, o, u, y.</gloss>
@@ -194,7 +194,7 @@
       <xref linkend="section-intensity-scale" />)
     </bridgehead>
 
-    <para>Indicates the intensity of an emotion: maximum, strong, weak, or not at all. Typically follows another particle which specifies the emotion.</para>
+    <para>Indicates the intensity of an emotion: maximum, strong, weak, or not at all. Can follow another particle which specifies the emotion, or stand alone.</para>
     <interlinear-gloss>
       <jbo>.ei cai mi klama lo zarci</jbo>
       <gloss>[Obligation!] [Intense!] I go-to the market.</gloss>
@@ -1184,7 +1184,7 @@
     </bridgehead>
 
     <para>
-      Creates a mathematical operand from a selbri, usually a “
+      Creates a mathematical operand from a selbri, such as a “
       <valsi>ni</valsi>
       ” abstraction. Terminated by
       <xref linkend="TEhU" />.

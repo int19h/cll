@@ -7,7 +7,7 @@
   </mediaobject>
   <section xml:id="section-structure-introduction">
     <title><anchor xml:id="c19s1" />Introductory</title>
-    <para>This chapter is incurably miscellaneous. It describes the cmavo that specify the structure of Lojban texts, from the largest scale (paragraphs) to the smallest (single words). There are fewer examples than are found in other chapters of this book, since the linguistic mechanisms described are generally made use of in conversation or else in long documents.</para>    <para>This chapter is also not very self-contained. It makes passing reference to a great many concepts which are explained in full only in other chapters. The alternative would be a chapter on text structure which was as complex as all the other chapters put together. Lojban is a unified language, and it is not possible to understand any part of it (in full) before understanding every part of it (to some degree).</para>  </section>  <section xml:id="section-i">    <title><anchor xml:id="c19s2" />Sentences: I</title>
+    <para>This chapter is incurably miscellaneous. It describes the cmavo that specify the structure of Lojban texts, from the largest scale (paragraphs) to the smallest (single words). There are fewer examples than are found in other chapters of this book, since many of the mechanisms described need the context of a conversation or a long document, which does not fit into a short example.</para>    <para>This chapter is also not very self-contained. It makes passing reference to a great many concepts which are explained in full only in other chapters. The alternative would be a chapter on text structure which was as complex as all the other chapters put together. Lojban is a unified language, and it is not possible to understand any part of it (in full) before understanding every part of it (to some degree).</para>  </section>  <section xml:id="section-i">    <title><anchor xml:id="c19s2" />Sentences: I</title>
     <para>The following cmavo is discussed in this section:</para>
     <cmavo-list>
       <cmavo-entry>
@@ -38,9 +38,10 @@
       <quote>separator</quote>
       should be noted.
       <valsi>.i</valsi>
-      is not normally used after the last sentence nor before the first one, although both positions are technically grammatical.
+      is not needed after the last sentence or before the first one, although both positions are technically grammatical.
       <valsi>.i</valsi>
-      signals a new sentence on the same topic, not necessarily by the same speaker. The relationship between the sentences is left vague, except in stories, where the relationship usually is temporal, and the following sentence states something that happened after the previous sentence.
+      signals a new sentence on the same topic, not necessarily by the same speaker. The relationship between the sentences is left vague, except in stories, where the conventions of story time (
+      <xref linkend="section-story-time" />) make the relationship temporal, and the following sentence states something that happened after the previous sentence.
     </para>
 
     <para>
@@ -90,7 +91,7 @@
       <valsi>tu'e</valsi>
       (of selma'o TUhE) and followed by
       <valsi>tu'u</valsi>
-      (of selma'o TUhU) to fuse them into a single unit. A common use of
+      (of selma'o TUhU) to fuse them into a single unit. One use of
       <valsi>tu'e</valsi>
       &hellip;
       <valsi>tu'u</valsi>
@@ -134,14 +135,12 @@
       <valsi>ni'o</valsi>
       and
       <valsi>no'i</valsi>
-      , both of selma'o NIhO. Of these two,
-      <valsi>ni'o</valsi>
-      is the more common. By convention, written Lojban is broken into paragraphs just before any
+      , both of selma'o NIhO. Written Lojban can be broken into paragraphs just before any
       <valsi>ni'o</valsi>
       or
       <valsi>no'i</valsi>
       , but a very long passage on a single topic might be paragraphed before an
-      <valsi>.i</valsi>. On the other hand, it is conventional in English to start a new paragraph in dialogue when a new speaker starts, but this convention is not commonly observed in Lojban dialogues. Of course, none of these conventions affect meaning in any way.
+      <valsi>.i</valsi>. On the other hand, it is conventional in English to start a new paragraph in dialogue when a new speaker starts, but Lojban dialogues need not follow it. Of course, none of these conventions affect meaning in any way.
     </para>
     <para>
       <indexterm type="general"><primary>paragraphs</primary><secondary>separator</secondary>
@@ -155,7 +154,7 @@
       <valsi>ni'o</valsi>
       cmavo can appear consecutively and are equivalent to a single one; semantically, a greater number of
       <valsi>ni'o</valsi>
-      cmavo indicates a larger-scale change of topic. This feature allows complexly structured text, with topics, subtopics, and sub-subtopics, to be represented clearly and unambiguously in both spoken and written Lojban. However, some conventional differences do exist between
+      cmavo indicates a larger-scale change of topic. This feature allows complexly structured text, with topics, subtopics, and sub-subtopics, to be represented clearly and unambiguously in both spoken and written Lojban. However, the conventions described below treat
       <valsi>ni'o</valsi>
       in writing and in conversation.
     </para>
@@ -201,7 +200,7 @@
       <quote>The Arabian Nights</quote>
       , further levels may be expressed by extending the
       <valsi>ni'o</valsi>
-      string as needed. Normally, a written text will begin with the number of
+      string as needed. Under these conventions, a written text begins with the number of
       <valsi>ni'o</valsi>
       cmavo needed to signal the largest scale division which the text contains.
       <valsi>ni'o</valsi>
@@ -800,7 +799,7 @@
         </para>
       </listitem>
     </itemizedlist>
-    <para role="indent">Where not needed for the expression of answers, most of these are made grammatical for pragmatic reasons: people will say them in conversation, and there is no reason to rule them out as ungrammatical merely because most of them are vague.</para>
+    <para role="indent">Where not needed for the expression of answers, most of these are made grammatical for pragmatic reasons: they can come up in conversation, and there is no reason to rule them out as ungrammatical merely because most of them are vague.</para>
   </section>
   <section xml:id="section-subscripts-general">
     <title><anchor xml:id="c19s6" />Subscripts: XI</title>
@@ -1064,7 +1063,7 @@
       </indexterm>
       You can place a subscript on the word
       <valsi>ja'a</valsi>
-      , the bridi affirmative of selma'o NA, to express so-called fuzzy truths. The usual machinery for fuzzy logic (statements whose truth value is not merely
+      , the bridi affirmative of selma'o NA, to express so-called fuzzy truths. Fuzzy logic (statements whose truth value is not merely
       <quote>true</quote>
       or
       <quote>false</quote>
@@ -1526,7 +1525,7 @@
       <valsi>zo</valsi>
       , since the terminators for other kinds of quotation are rarely or never elidable.
     </para>
-    <para>The cmavo <valsi>zoi</valsi> (of selma'o ZOI) is a quotation mark for quoting non-Lojban text. Its syntax is <jbophrase>zoi .X. text .X</jbophrase>, where X is a single Lojban word (called the delimiting word) which is separated from the quoted text by pauses, and which is not found in the written text or spoken phoneme stream. Both occurrences of the delimiting word are required; neither can be elided. Within this construct the delimiting word serves only as a bracket, and it loses whatever grammatical function it has elsewhere. It is common, but not required, to use the lerfu word (of selma'o BY) which corresponds to the Lojban name of the language being quoted:</para>
+    <para>The cmavo <valsi>zoi</valsi> (of selma'o ZOI) is a quotation mark for quoting non-Lojban text. Its syntax is <jbophrase>zoi .X. text .X</jbophrase>, where X is a single Lojban word (called the delimiting word) which is separated from the quoted text by pauses, and which is not found in the written text or spoken phoneme stream. Both occurrences of the delimiting word are required; neither can be elided. Within this construct the delimiting word serves only as a bracket, and it loses whatever grammatical function it has elsewhere. One choice, which is not required, is the lerfu word (of selma'o BY) which corresponds to the Lojban name of the language being quoted:</para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-wYzm">
       <title><anchor xml:id="c19e10d2" /></title>
@@ -1543,7 +1542,7 @@
       where
       <valsi>gy.</valsi>
       stands for
-      <valsi>glico</valsi>. Other popular choices of delimiting words are
+      <valsi>glico</valsi>. Other choices of delimiting words include
       <cmevla>.kuuot.</cmevla>
       , a cmevla which sounds like the English word
       <quote>quote</quote>
@@ -1688,9 +1687,7 @@
       was separated from a preceding
       <valsi>zo</valsi>
       by a pause, thus:
-      <jbophrase>zo .bab.</jbophrase>. The reason for this extra pause is that all Lojban names must be separated by pause from any preceding word. There are numerous other cmavo that may precede a name: of these,
-      <valsi>zo</valsi>
-      is one of the most common.)
+      <jbophrase>zo .bab.</jbophrase>. The reason for this extra pause is that all Lojban names must be separated by pause from any preceding word. The same pause is needed after any of the numerous other cmavo that may precede a name.)
     </para>
     <para>
       The cmavo
@@ -2105,7 +2102,7 @@
       <valsi>sei</valsi>
       and its attached bridi as an editorial insert, not part of the quotation. In a more relaxed style, these
       <valsi>sa'a</valsi>
-      cmavo would probably be dropped.
+      cmavo could be dropped.
     </para>
 
     <para>
@@ -2477,7 +2474,7 @@
       <indexterm type="general"><primary>computer interaction</primary></indexterm>
       The cmavo
       <valsi>fa'o</valsi>
-      (of selma'o FAhO) is the usually omitted marker for the end of a text; it can be used in computer interaction to indicate the end of input or output, or for explicitly giving up the floor during a discussion.
+      (of selma'o FAhO) is an optional marker for the end of a text; it can be used in computer interaction to indicate the end of input or output, or for explicitly giving up the floor during a discussion.
     </para>
     <para>It<indexterm type="general"><primary>unconditional signal</primary></indexterm> is outside the regular grammar: a reader or a parser that reaches an effective <valsi>fa'o</valsi> reads nothing after that word. In particular, <valsi>fa'o</valsi> is not used at the end of subordinate texts quoted with <valsi>lu</valsi> … <valsi>li'u</valsi> or parenthesized with <jbophrase>to ... toi</jbophrase>. A <valsi>fa'o</valsi> has no effect only if some earlier word-level operator has already captured it, in one of these ways:</para>
     <itemizedlist role="bullets">

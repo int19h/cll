@@ -268,6 +268,66 @@ class BuildActions(unittest.TestCase):
                 result = subprocess.run(['ruby', str(tool), str(fixture)], capture_output=True, text=True)
                 self.assertNotEqual(result.returncode, 0)
 
+    def test_workflow_runner_and_base_pins(self):
+        # The runner guard and the base-image check must reject the drift
+        # that put the checks jobs back on 24.04: every Ubuntu release in
+        # every runs-on form, and every base image, has to match.
+        subprocess.run(['ruby', str(ROOT/'scripts/test-build-workflow.rb')], check=True)
+        staged = [
+            'scripts/test-build-workflow.rb',
+            'scripts/test-build-pins.py',
+            '.github/workflows/build.yml',
+            '.github/workflows/checks.yml',
+            'Dockerfile',
+            'Dockerfile.weasyprint',
+            'Dockerfile.context',
+        ]
+        wbv = '  whole-book-validation:\n    runs-on: ubuntu-26.04\n'
+        matrix = ('  whole-book-validation:\n'
+                  '    runs-on: ${{ matrix.os }}\n'
+                  '    strategy:\n'
+                  '      matrix:\n'
+                  '        os: [%s]\n')
+        cases = [
+            # (file, before, after, tool, rejected)
+            ('.github/workflows/checks.yml', wbv, wbv.replace('ubuntu-26.04', 'ubuntu-24.04'), 'ruby', True),
+            ('.github/workflows/checks.yml', wbv, wbv.replace('ubuntu-26.04', '[ubuntu-24.04]'), 'ruby', True),
+            ('.github/workflows/checks.yml', wbv, wbv.replace('ubuntu-26.04', 'ubuntu-24.04-arm'), 'ruby', True),
+            ('.github/workflows/checks.yml', wbv, wbv.replace('ubuntu-26.04', '{labels: ubuntu-24.04}'), 'ruby', True),
+            ('.github/workflows/checks.yml', wbv, wbv.replace('ubuntu-26.04', '{group: big, labels: [ubuntu-24.04]}'), 'ruby', True),
+            ('.github/workflows/checks.yml', wbv, wbv.replace(
+                'ubuntu-26.04',
+                "${{ github.event_name == 'pull_request' && 'ubuntu-26.04' || 'ubuntu-24.04' }}"), 'ruby', True),
+            ('.github/workflows/checks.yml', wbv, matrix % 'ubuntu-24.04', 'ruby', True),
+            ('.github/workflows/build.yml', '    runs-on: ubuntu-26.04\n', '    runs-on: ubuntu-24.04\n', 'ruby', True),
+            ('Dockerfile', 'FROM ubuntu:26.04@', 'FROM ubuntu:28.04@', 'ruby', True),
+            ('Dockerfile.weasyprint', 'FROM ubuntu:26.04@', 'FROM ubuntu:24.04@', 'pins', True),
+            ('.github/workflows/checks.yml', wbv, wbv.replace('ubuntu-26.04', 'ubuntu-26.04-arm'), 'ruby', False),
+            ('.github/workflows/checks.yml', wbv, wbv.replace('ubuntu-26.04', '{labels: [ubuntu-26.04]}'), 'ruby', False),
+            ('.github/workflows/checks.yml', wbv, matrix % 'ubuntu-26.04', 'ruby', False),
+        ]
+        for relpath, before, after, tool, rejected in cases:
+            with self.subTest(after=after), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                for name in staged:
+                    target = root/name
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_bytes((ROOT/name).read_bytes())
+                victim = root/relpath
+                text = victim.read_text()
+                self.assertIn(before, text)
+                victim.write_text(text.replace(before, after, 1))
+                if tool == 'ruby':
+                    command = ['ruby', str(root/'scripts/test-build-workflow.rb')]
+                else:
+                    command = ['python3', str(root/'scripts/test-build-pins.py'),
+                               'BuildPinsTest.test_base_images_and_packages']
+                result = subprocess.run(command, capture_output=True, text=True)
+                if rejected:
+                    self.assertNotEqual(result.returncode, 0, after)
+                else:
+                    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def fixture(self, p, empty=False):
         (p/'scripts').mkdir()
         (p/'build').mkdir()

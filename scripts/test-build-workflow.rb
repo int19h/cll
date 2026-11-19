@@ -65,29 +65,39 @@ sha = File.read(File.join(root, 'Dockerfile'))[/amd64\) prince_sha256=([0-9a-f]{
 check.call(sha && prince.include?(sha + '  prince_16.2-1_ubuntu26.04_amd64.deb') && prince.index('sha256sum -c -') < prince.index('sudo apt-get install'), 'Prince must match the Dockerfile hash before installation.')
 base = File.read(File.join(root, 'Dockerfile'))[/^FROM ubuntu:(\d+\.\d+)@/, 1]
 check.call(base, 'Dockerfile must pin an ubuntu:NN.NN base image.')
+collect = ->(node, releases) do
+  case node
+  when String
+    node.scan(/ubuntu-(\d+\.\d+)/) { |release| releases << release[0] }
+  when Array
+    node.each { |entry| collect.call(entry, releases) }
+  when Hash
+    node.each_value { |entry| collect.call(entry, releases) }
+  end
+end
 labels = {}
 {'build' => path, 'checks' => File.join(root, '.github/workflows/checks.yml')}.each do |file_name, file_path|
   YAML.safe_load(File.read(file_path)).fetch('jobs').each do |job, body|
     runners = body['runs-on']
     runners = [runners] unless runners.is_a?(Array)
     runners.each do |runner|
+      found = []
       if runner.is_a?(Hash)
-        group_labels = runner['labels']
-        group_labels = [group_labels] unless group_labels.is_a?(Array)
-        group_labels.each do |label|
-          next unless label.is_a?(String)
-          label.scan(/ubuntu-(\d+\.\d+)/) do |release|
-            (labels["#{file_name}.#{job}"] ||= []) << release[0]
-          end
-        end
-      elsif runner.is_a?(String)
-        runner.scan(/ubuntu-(\d+\.\d+)/) do |release|
-          (labels["#{file_name}.#{job}"] ||= []) << release[0]
-        end
+        collect.call(runner['labels'], found)
+      else
+        collect.call(runner, found)
       end
+      (labels["#{file_name}.#{job}"] ||= []).concat(found)
+    end
+    strategy = body['strategy']
+    if strategy.is_a?(Hash) && strategy.key?('matrix')
+      found = []
+      collect.call(strategy['matrix'], found)
+      (labels["#{file_name}.#{job} (matrix)"] ||= []).concat(found)
     end
   end
 end
+labels.reject! { |_job, releases| releases.empty? }
 check.call(labels.any?, 'No pinned Ubuntu runner found.')
 mismatched = labels.reject { |_job, releases| releases.uniq == [base] }
 check.call(mismatched.empty?, "Pinned runners must match the Dockerfile base ubuntu-#{base}: #{mismatched}.")

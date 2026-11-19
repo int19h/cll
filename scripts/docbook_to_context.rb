@@ -33,10 +33,13 @@ class ContextBook
       @ids[id] = node
     end
     number_components
+    @emitted = Hash.new { |store, register| store[register] = {} }
+    @pending_sees = []
     @ids.each do |id, node|
       owner = node
       owner = owner.parent while owner.element? && !@labels.key?(owner.path) && owner.parent&.element?
-      @labels[id] = @labels[owner.path] || plain(node)
+      # A target's own xreflabel wins over its containing section's number.
+      @labels[id] = node['xreflabel'] || @labels[owner.path] || plain(node)
     end
   end
 
@@ -55,6 +58,43 @@ class ContextBook
 
   def key(id)
     "cll-#{Digest::SHA256.hexdigest(id)[0, 24]}"
+  end
+
+  def term_key(term)
+    # ConTeXt strips apostrophes before sorting. An escaped sentinel keeps
+    # them distinct and before letters with the register's Unicode sorter.
+    # Keep an initial quote raw so a lone apostrophe retains its group heading.
+    value = term.text.gsub(/\s+/, ' ').strip.downcase.tr('’', "'").gsub('!', '!!').gsub(/(?<!\A)'/, '!a')
+    esc(value).gsub('+', '\\char43{}')
+  end
+
+  def normalize_entry(text)
+    text.gsub(/\s+/, ' ').strip
+  end
+
+  def plain_inline(node)
+    return '' unless node
+    node.xpath('.//text()').map(&:text).join.gsub(/\s+/, ' ').strip
+  end
+
+  # A see or seealso target counts as resolved only when the renderer
+  # emits its headword: ConTeXt drops anything else as an invalid
+  # crosslink. The check therefore runs against the index entries the
+  # converter actually writes, collected here as they are emitted, and
+  # validated after the document is rendered (targets may precede the
+  # entries they point at).
+  def record_emitted_entry(register, terms, keys)
+    (1..terms.length).each do |depth|
+      @emitted[register][normalize_entry(terms[0, depth].join('+'))] = true
+      @emitted[register][normalize_entry(keys[0, depth].join('+'))] = true
+    end
+  end
+
+  def validate_see_targets
+    @pending_sees.each do |see|
+      next if @emitted[see[:register]].key?(see[:text])
+      raise "Index see target #{see[:text].inspect} matches no #{see[:type]} headword (entry #{see[:entry].inspect})"
+    end
   end
 
   def number_components
@@ -165,14 +205,30 @@ class ContextBook
       # A literal plus must not become a register hierarchy separator.
       children(term).strip.gsub('+', '\\char43{}')
     end
-    keys = levels.map do |term|
-      # ConTeXt strips apostrophes before sorting. An escaped sentinel keeps
-      # them distinct and before letters with the register's Unicode sorter.
-      # Keep an initial quote raw so a lone apostrophe retains its group heading.
-      value = term.text.gsub(/\s+/, ' ').strip.downcase.tr('’', "'").gsub('!', '!!').gsub(/(?<!\A)'/, '!a')
-      esc(value).gsub('+', '\\char43{}')
-    end
-    "\\#{register}[{#{keys.join('+')}}]{#{terms.join('+')}}"
+    keys = levels.map { |term| term_key(term) }
+    base = "\\#{register}[{#{keys.join('+')}}]{#{terms.join('+')}}"
+    record_emitted_entry(register, terms, keys)
+    # DocBook see/seealso cross-references become the register's own see
+    # entries (for example \seeCLLgeneral). A see entry points at another
+    # headword instead of carrying page references; seealso points as well
+    # but keeps its own page entry, and the layout prints it as "see also"
+    # (flagged here with the CLLseealso processor, which leaves the target
+    # text itself untouched so the register still links the same headword).
+    # The target must match an emitted headword of its register exactly:
+    # ConTeXt drops a miss silently ("invalid crosslink ... ignored"), so
+    # validate_see_targets fails after rendering instead, where the message
+    # names the entry. Formatting inside the target cannot survive that
+    # lookup, so match and emit its plain text, escaped the same way as
+    # the stored headwords.
+    sees = node.xpath('./see|./seealso').map do |target|
+      text = normalize_entry(esc(plain_inline(target)).gsub('+', '\\char43{}'))
+      @pending_sees << { register: register, type: node['type'], text: text, entry: terms.join('+') }
+      entry = terms.join('+')
+      entry = "CLLseealso->#{entry}" if target.name == 'seealso'
+      "\\see#{register}[{#{keys.join('+')}}]{#{entry}}{#{text}}"
+    end.join
+    return sees if node.at_xpath('./see')
+    sees + base
   end
 
   def math(node)
@@ -323,7 +379,21 @@ class ContextBook
       body = node.xpath('./listitem').map { |item| children(item) }.join
       "\n\\noindentation{\\bf #{terms}}\\par\\startnarrower[left]#{body}\\stopnarrower\n"
     when 'blockquote' then "\n\\startnarrower[left]#{children(node)}\\stopnarrower\n"
-    when 'bridgehead' then "\n\\subsubject[title={#{children(node)}}]\n"
+    when 'bridgehead'
+      # Anchors cannot stay in the title argument: ConTeXt processes it
+      # more than once, and cross-references to them lose their page
+      # numbers. Pass them through the heading's reference field instead,
+      # as chapter and section titles already do. Index entries leave the
+      # title for the same reason; any other id loses its anchor rather
+      # than emitting a broken \reference inside the title.
+      refs = [node['id'], *node.xpath('.//*[@id]').map { |item| item['id'] }].compact.map { |id| key(id) }
+      clean = node.dup
+      clean.xpath('.//anchor|.//indexterm').remove
+      clean.xpath('.//*[@id]').each { |item| item.remove_attribute('id') }
+      marks = node.xpath('.//indexterm').map { |item| render(item) }.join
+      ref = refs.empty? ? '' : ",reference={#{refs.join(',')}}"
+      tail = marks.empty? ? "\n" : "\n#{marks}\n"
+      "\n\\subsubject[title={#{children(clean)}}#{ref}]#{tail}"
     when 'glossary'
       "\n\\startchapter[title={#{title(node)}},number=no]\n" +
         node.xpath('./para').map { |item| render(item) }.join +
@@ -356,7 +426,7 @@ class ContextBook
       raise "Unsupported DocBook element #{node.name} at #{node.path}" unless TRANSPARENT.include?(node.name)
       children(node)
     end
-    (%w[example glossentry mediaobject inlinemediaobject].include?(node.name) ? '' : anchor(node)) + content
+    (%w[example glossentry mediaobject inlinemediaobject bridgehead].include?(node.name) ? '' : anchor(node)) + content
   end
 
   def to_tex
@@ -373,6 +443,7 @@ class ContextBook
     author = info ? info.xpath('./author/personname/*').map { |node| plain(node) }.join(' ') : ''
     subtitle = plain(info&.at_xpath('./subtitle'))
     urls = @urls.map { |name, url| "\\useURL[#{name}][{#{esc(url)}}][][]" }.join("\n")
+    validate_see_targets
     <<~TEX
       % Generated by docbook_to_context.rb. Do not edit.
       \\environment cll-layout

@@ -144,6 +144,159 @@ class ContextBookTest < Minitest::Test
     assert_match(/\\bTD[^\n]*\n?\{\n\\begingroup/, output)
   end
 
+  def test_cross_references_use_custom_labels
+    input = book(<<~XML)
+      <chapter id="c"><title>Grammar</title><section id="s"><title>Rules</title>
+        <bridgehead><anchor id="rule" xreflabel="BNF rule #42"/>Rule 42</bridgehead>
+        <para><xref linkend="rule"/> and <xref linkend="s"/>.</para>
+      </section></chapter>
+    XML
+    output = input.to_tex
+    assert_includes output, '\\goto{BNF rule \\letterhash{}42}'
+    assert_includes output, '\\goto{Section 1.1}'
+    assert_empty input.report['missing_references']
+  end
+
+  def test_selmao_catalog_references_use_names
+    input = book(<<~XML)
+      <chapter><title>Catalog</title>
+        <bridgehead><anchor id="BE" xreflabel="BE"/>selma'o BE</bridgehead>
+        <para>Attach with <xref linkend="BE"/>.</para>
+      </chapter>
+    XML
+    output = input.to_tex
+    assert_includes output, '\\goto{BE}'
+    refute_includes output, '\\goto{Chapter 1}'
+  end
+
+  def test_bridgehead_anchors_leave_the_title_for_the_reference_field
+    input = book(<<~XML)
+      <chapter><title>Catalog</title>
+        <bridgehead><anchor id="BE" xreflabel="BE"/>selma'o BE</bridgehead>
+        <para>Attach with <xref linkend="BE"/>.</para>
+      </chapter>
+    XML
+    output = input.to_tex
+    key = "cll-#{Digest::SHA256.hexdigest('BE')[0, 24]}"
+    assert_includes output, "\\subsubject[title={selma'o BE},reference={#{key}}]"
+    refute_includes output, "\\reference[#{key}]"
+    assert_includes output, "\\goto{BE}[#{key}]"
+    assert_empty input.report['missing_references']
+  end
+
+  def test_index_see_entries_point_at_their_target
+    output = book('<para><indexterm type="general"><primary>masses</primary><see>groups</see></indexterm>' \
+                  '<indexterm type="general"><primary>groups</primary></indexterm>Body</para>').to_tex
+    assert_includes output, '\\seeCLLgeneral[{masses}]{masses}{groups}'
+    refute_match(/\\CLLgeneral\[\{masses\}\]\{masses\}(?!\{)/, output)
+    output = book('<para><indexterm type="general"><primary>terms</primary><seealso>words</seealso></indexterm>' \
+                  '<indexterm type="general"><primary>words</primary></indexterm>Body</para>').to_tex
+    assert_includes output, '\\seeCLLgeneral[{terms}]{CLLseealso->terms}{words}'
+    assert_match(/\\CLLgeneral\[\{terms\}\]\{terms\}(?!\{)/, output)
+  end
+
+  def test_index_see_target_with_formatting_uses_plain_text
+    output = book('<para><indexterm type="general"><primary>masses</primary><see><emphasis>groups</emphasis></see></indexterm>' \
+                  '<indexterm type="general"><primary>groups</primary></indexterm>Body</para>').to_tex
+    assert_includes output, '\\seeCLLgeneral[{masses}]{masses}{groups}'
+    refute_includes output, '{\\it groups}'
+  end
+
+  def test_index_see_target_with_special_character_matches_headword
+    output = book('<para><indexterm type="general"><primary>R&amp;D</primary></indexterm>' \
+                  '<indexterm type="general"><primary>research</primary><see>R&amp;D</see></indexterm>Body</para>').to_tex
+    assert_includes output, '\\seeCLLgeneral[{research}]{research}{R\\letterampersand{}D}'
+  end
+
+  def test_index_see_target_hidden_only_fails_but_visible_twin_passes
+    hidden = '<para role="display-none"><indexterm type="general"><primary>hiddenword</primary></indexterm>Hidden.</para>'
+    assert_raises(RuntimeError) do
+      book("<para><indexterm type=\"general\"><primary>alias</primary><see>hiddenword</see></indexterm>Visible.</para>#{hidden}").to_tex
+    end
+    output = book("<para><indexterm type=\"general\"><primary>alias</primary><see>hiddenword</see></indexterm>Visible.</para>" \
+                  '<para><indexterm type="general"><primary>hiddenword</primary></indexterm>Also visible.</para>').to_tex
+    assert_includes output, '\\seeCLLgeneral[{alias}]{alias}{hiddenword}'
+  end
+
+  def test_index_see_target_in_publication_notice_passes
+    input = book(<<~XML)
+      <info><title>Test</title>
+        <othercredit><orgname role="publication-notice">Notice<indexterm type="general"><primary>hiddenword</primary></indexterm></orgname></othercredit>
+      </info>
+      <chapter><title>Targets</title>
+        <para><indexterm type="general"><primary>alias</primary><see>hiddenword</see></indexterm></para>
+      </chapter>
+    XML
+    output = input.to_tex
+    assert_includes output, '\\seeCLLgeneral[{alias}]{alias}{hiddenword}'
+    assert_empty input.report['missing_references']
+  end
+
+  def test_index_see_target_in_chapter_info_title_passes
+    input = book(<<~XML)
+      <chapter><info><title>Targets<indexterm type="general"><primary>hiddenword</primary></indexterm></title></info>
+        <para><indexterm type="general"><primary>alias</primary><see>hiddenword</see></indexterm></para>
+      </chapter>
+    XML
+    output = input.to_tex
+    assert_includes output, '\\seeCLLgeneral[{alias}]{alias}{hiddenword}'
+    assert_empty input.report['missing_references']
+  end
+
+  def test_index_see_target_in_literallayout_fails
+    assert_raises(RuntimeError) do
+      book('<chapter><title>Targets</title>' \
+           '<para><indexterm type="general"><primary>alias</primary><see>hiddenword</see></indexterm></para>' \
+           '<literallayout>Hidden<indexterm type="general"><primary>hiddenword</primary></indexterm></literallayout></chapter>').to_tex
+    end
+  end
+
+  def test_index_two_seealso_targets_keep_page_entry_and_flag
+    output = book('<para><indexterm type="general"><primary>related</primary><seealso>alpha</seealso><seealso>beta</seealso></indexterm>' \
+                  '<indexterm type="general"><primary>alpha</primary></indexterm>' \
+                  '<indexterm type="general"><primary>beta</primary></indexterm>Body</para>').to_tex
+    assert_includes output, '\\seeCLLgeneral[{related}]{CLLseealso->related}{alpha}'
+    assert_includes output, '\\seeCLLgeneral[{related}]{CLLseealso->related}{beta}'
+    assert_match(/\\CLLgeneral\[\{related\}\]\{related\}(?!\{)/, output)
+  end
+
+  def test_bridgehead_own_id_lives_only_in_the_reference_field
+    input = book(<<~XML)
+      <chapter><title>Catalog</title>
+        <bridgehead id="bh" xreflabel="BH">Head</bridgehead>
+        <para>See <xref linkend="bh"/>.</para>
+      </chapter>
+    XML
+    output = input.to_tex
+    key = "cll-#{Digest::SHA256.hexdigest('bh')[0, 24]}"
+    assert_includes output, "\\subsubject[title={Head},reference={#{key}}]"
+    refute_includes output, "\\reference[#{key}]"
+    assert_empty input.report['missing_references']
+  end
+
+  def test_index_see_target_without_headword_fails
+    assert_raises(RuntimeError) do
+      book('<para><indexterm type="general"><primary>widgets</primary><see>gadgets</see></indexterm>Body</para>').to_tex
+    end
+    assert_raises(RuntimeError) do
+      book('<para><indexterm type="lojban-word"><primary>wordrelated</primary><seealso>missing</seealso></indexterm>Body</para>').to_tex
+    end
+  end
+
+  def test_bridgehead_index_entries_leave_the_title
+    input = book(<<~XML)
+      <chapter><title>Catalog</title>
+        <bridgehead><anchor id="BE" xreflabel="BE"/>selma'o BE<indexterm type="general"><primary>selmao</primary></indexterm></bridgehead>
+        <para>Attach with <xref linkend="BE"/>.</para>
+      </chapter>
+    XML
+    output = input.to_tex
+    key = "cll-#{Digest::SHA256.hexdigest('BE')[0, 24]}"
+    assert_includes output, "\\subsubject[title={selma'o BE},reference={#{key}}]\n\\CLLgeneral[{selmao}]{selmao}"
+    refute_match(/title=\{[^}]*CLLgeneral/, output)
+    assert_empty input.report['missing_references']
+  end
+
   def test_unsupported_content_fails_instead_of_disappearing
     assert_raises(RuntimeError) { book('<new-semantic-element>Important</new-semantic-element>').to_tex }
     assert_raises(RuntimeError) { book('<mediaobject><imageobject><imagedata fileref="../../secret"/></imageobject></mediaobject>').to_tex }

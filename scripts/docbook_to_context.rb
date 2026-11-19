@@ -76,11 +76,26 @@ class ContextBook
     node.xpath('.//text()').map(&:text).join.gsub(/\s+/, ' ').strip
   end
 
+  # An indexterm counts as a headword only when the renderer emits it:
+  # display-none subtrees never render, and the book info never reaches
+  # the body. Anything else would let the check pass for a target that
+  # ConTeXt drops as an invalid crosslink.
+  def emitted_indexterm?(node)
+    current = node
+    while current&.element?
+      return false if current['role'].to_s.split.include?('display-none')
+      return false if current.name == 'info'
+      current = current.parent
+    end
+    true
+  end
+
   def collect_headwords
     @headwords = Hash.new { |store, register| store[register] = {} }
     @document.xpath('//indexterm').each do |node|
       register = { 'general' => 'CLLgeneral', 'lojban-word' => 'CLLlojban' }[node['type']]
       next unless register
+      next unless emitted_indexterm?(node)
       levels = node.xpath('./primary|./secondary|./tertiary')
       entries = levels.map { |term| normalize_entry(children(term).strip.gsub('+', '\\char43{}')) }
       keys = levels.map { |term| normalize_entry(term_key(term)) }
@@ -210,9 +225,10 @@ class ContextBook
     # The target must match a headword of its register exactly: ConTeXt
     # drops a miss silently ("invalid crosslink ... ignored"), so fail here
     # instead, where the message names the entry. Formatting inside the
-    # target cannot survive that lookup, so match and emit its plain text.
+    # target cannot survive that lookup, so match and emit its plain text,
+    # escaped the same way as the stored headwords.
     sees = node.xpath('./see|./seealso').map do |target|
-      text = normalize_entry(plain_inline(target).gsub('+', '\\char43{}'))
+      text = normalize_entry(esc(plain_inline(target)).gsub('+', '\\char43{}'))
       unless @headwords[register].key?(text)
         raise "Index see target #{text.inspect} matches no #{node['type']} headword (entry #{terms.join('+').inspect})"
       end
@@ -419,7 +435,7 @@ class ContextBook
       raise "Unsupported DocBook element #{node.name} at #{node.path}" unless TRANSPARENT.include?(node.name)
       children(node)
     end
-    (%w[example glossentry mediaobject inlinemediaobject].include?(node.name) ? '' : anchor(node)) + content
+    (%w[example glossentry mediaobject inlinemediaobject bridgehead].include?(node.name) ? '' : anchor(node)) + content
   end
 
   def to_tex

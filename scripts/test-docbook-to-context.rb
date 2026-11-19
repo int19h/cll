@@ -202,6 +202,45 @@ class ContextBookTest < Minitest::Test
     refute_includes output, '{\\it groups}'
   end
 
+  def test_index_see_target_with_special_character_matches_headword
+    output = book('<para><indexterm type="general"><primary>R&amp;D</primary></indexterm>' \
+                  '<indexterm type="general"><primary>research</primary><see>R&amp;D</see></indexterm>Body</para>').to_tex
+    assert_includes output, '\\seeCLLgeneral[{research}]{research}{R\\letterampersand{}D}'
+  end
+
+  def test_index_see_target_hidden_only_fails_but_visible_twin_passes
+    hidden = '<para role="display-none"><indexterm type="general"><primary>hiddenword</primary></indexterm>Hidden.</para>'
+    assert_raises(RuntimeError) do
+      book("<para><indexterm type=\"general\"><primary>alias</primary><see>hiddenword</see></indexterm>Visible.</para>#{hidden}").to_tex
+    end
+    output = book("<para><indexterm type=\"general\"><primary>alias</primary><see>hiddenword</see></indexterm>Visible.</para>" \
+                  '<para><indexterm type="general"><primary>hiddenword</primary></indexterm>Also visible.</para>').to_tex
+    assert_includes output, '\\seeCLLgeneral[{alias}]{alias}{hiddenword}'
+  end
+
+  def test_index_two_seealso_targets_keep_page_entry_and_flag
+    output = book('<para><indexterm type="general"><primary>related</primary><seealso>alpha</seealso><seealso>beta</seealso></indexterm>' \
+                  '<indexterm type="general"><primary>alpha</primary></indexterm>' \
+                  '<indexterm type="general"><primary>beta</primary></indexterm>Body</para>').to_tex
+    assert_includes output, '\\seeCLLgeneral[{related}]{CLLseealso->related}{alpha}'
+    assert_includes output, '\\seeCLLgeneral[{related}]{CLLseealso->related}{beta}'
+    assert_match(/\\CLLgeneral\[\{related\}\]\{related\}(?!\{)/, output)
+  end
+
+  def test_bridgehead_own_id_lives_only_in_the_reference_field
+    input = book(<<~XML)
+      <chapter><title>Catalog</title>
+        <bridgehead id="bh" xreflabel="BH">Head</bridgehead>
+        <para>See <xref linkend="bh"/>.</para>
+      </chapter>
+    XML
+    output = input.to_tex
+    key = "cll-#{Digest::SHA256.hexdigest('bh')[0, 24]}"
+    assert_includes output, "\\subsubject[title={Head},reference={#{key}}]"
+    refute_includes output, "\\reference[#{key}]"
+    assert_empty input.report['missing_references']
+  end
+
   def test_index_see_target_without_headword_fails
     assert_raises(RuntimeError) do
       book('<para><indexterm type="general"><primary>widgets</primary><see>gadgets</see></indexterm>Body</para>').to_tex

@@ -89,11 +89,29 @@ labels = {}
       end
       (labels["#{file_name}.#{job}"] ||= []).concat(found)
     end
+    refs = []
+    collect_refs = ->(node) do
+      case node
+      when String
+        node.scan(/matrix\.([A-Za-z_][A-Za-z0-9_]*)/) { |field| refs << field[0] }
+      when Array
+        node.each { |entry| collect_refs.call(entry) }
+      when Hash
+        node.each_value { |entry| collect_refs.call(entry) }
+      end
+    end
+    collect_refs.call(runners)
     strategy = body['strategy']
-    if strategy.is_a?(Hash) && strategy.key?('matrix')
-      found = []
-      collect.call(strategy['matrix'], found)
-      (labels["#{file_name}.#{job} (matrix)"] ||= []).concat(found)
+    if strategy.is_a?(Hash) && strategy['matrix'].is_a?(Hash)
+      matrix = strategy['matrix']
+      refs.uniq.each do |field|
+        found = []
+        collect.call(matrix[field], found) if matrix.key?(field)
+        (matrix['include'] || []).each do |entry|
+          collect.call(entry[field], found) if entry.is_a?(Hash) && entry.key?(field)
+        end
+        (labels["#{file_name}.#{job} (matrix:#{field})"] ||= []).concat(found)
+      end
     end
   end
 end

@@ -33,6 +33,7 @@ class ContextBook
       @ids[id] = node
     end
     number_components
+    collect_headwords
     @ids.each do |id, node|
       owner = node
       owner = owner.parent while owner.element? && !@labels.key?(owner.path) && owner.parent&.element?
@@ -56,6 +57,38 @@ class ContextBook
 
   def key(id)
     "cll-#{Digest::SHA256.hexdigest(id)[0, 24]}"
+  end
+
+  def term_key(term)
+    # ConTeXt strips apostrophes before sorting. An escaped sentinel keeps
+    # them distinct and before letters with the register's Unicode sorter.
+    # Keep an initial quote raw so a lone apostrophe retains its group heading.
+    value = term.text.gsub(/\s+/, ' ').strip.downcase.tr('’', "'").gsub('!', '!!').gsub(/(?<!\A)'/, '!a')
+    esc(value).gsub('+', '\\char43{}')
+  end
+
+  def normalize_entry(text)
+    text.gsub(/\s+/, ' ').strip
+  end
+
+  def plain_inline(node)
+    return '' unless node
+    node.xpath('.//text()').map(&:text).join.gsub(/\s+/, ' ').strip
+  end
+
+  def collect_headwords
+    @headwords = Hash.new { |store, register| store[register] = {} }
+    @document.xpath('//indexterm').each do |node|
+      register = { 'general' => 'CLLgeneral', 'lojban-word' => 'CLLlojban' }[node['type']]
+      next unless register
+      levels = node.xpath('./primary|./secondary|./tertiary')
+      entries = levels.map { |term| normalize_entry(children(term).strip.gsub('+', '\\char43{}')) }
+      keys = levels.map { |term| normalize_entry(term_key(term)) }
+      (1..levels.length).each do |depth|
+        @headwords[register][entries[0, depth].join('+')] = true
+        @headwords[register][keys[0, depth].join('+')] = true
+      end
+    end
   end
 
   def number_components
@@ -166,21 +199,26 @@ class ContextBook
       # A literal plus must not become a register hierarchy separator.
       children(term).strip.gsub('+', '\\char43{}')
     end
-    keys = levels.map do |term|
-      # ConTeXt strips apostrophes before sorting. An escaped sentinel keeps
-      # them distinct and before letters with the register's Unicode sorter.
-      # Keep an initial quote raw so a lone apostrophe retains its group heading.
-      value = term.text.gsub(/\s+/, ' ').strip.downcase.tr('’', "'").gsub('!', '!!').gsub(/(?<!\A)'/, '!a')
-      esc(value).gsub('+', '\\char43{}')
-    end
+    keys = levels.map { |term| term_key(term) }
     base = "\\#{register}[{#{keys.join('+')}}]{#{terms.join('+')}}"
     # DocBook see/seealso cross-references become the register's own see
     # entries (for example \seeCLLgeneral). A see entry points at another
     # headword instead of carrying page references; seealso points as well
-    # but keeps its own page entry.
+    # but keeps its own page entry, and the layout prints it as "see also"
+    # (flagged here with the CLLseealso processor, which leaves the target
+    # text itself untouched so the register still links the same headword).
+    # The target must match a headword of its register exactly: ConTeXt
+    # drops a miss silently ("invalid crosslink ... ignored"), so fail here
+    # instead, where the message names the entry. Formatting inside the
+    # target cannot survive that lookup, so match and emit its plain text.
     sees = node.xpath('./see|./seealso').map do |target|
-      text = children(target).strip.gsub('+', '\\char43{}')
-      "\\see#{register}[{#{keys.join('+')}}]{#{terms.join('+')}}{#{text}}"
+      text = normalize_entry(plain_inline(target).gsub('+', '\\char43{}'))
+      unless @headwords[register].key?(text)
+        raise "Index see target #{text.inspect} matches no #{node['type']} headword (entry #{terms.join('+').inspect})"
+      end
+      entry = terms.join('+')
+      entry = "CLLseealso->#{entry}" if target.name == 'seealso'
+      "\\see#{register}[{#{keys.join('+')}}]{#{entry}}{#{text}}"
     end.join
     return sees if node.at_xpath('./see')
     sees + base
@@ -338,12 +376,17 @@ class ContextBook
       # Anchors cannot stay in the title argument: ConTeXt processes it
       # more than once, and cross-references to them lose their page
       # numbers. Pass them through the heading's reference field instead,
-      # as chapter and section titles already do.
-      refs = node.xpath('.//anchor').map { |item| item['id'] }.compact.map { |id| key(id) }
+      # as chapter and section titles already do. Index entries leave the
+      # title for the same reason; any other id loses its anchor rather
+      # than emitting a broken \reference inside the title.
+      refs = [node['id'], *node.xpath('.//*[@id]').map { |item| item['id'] }].compact.map { |id| key(id) }
       clean = node.dup
-      clean.xpath('.//anchor').remove
+      clean.xpath('.//anchor|.//indexterm').remove
+      clean.xpath('.//*[@id]').each { |item| item.remove_attribute('id') }
+      marks = node.xpath('.//indexterm').map { |item| render(item) }.join
       ref = refs.empty? ? '' : ",reference={#{refs.join(',')}}"
-      "\n\\subsubject[title={#{children(clean)}}#{ref}]\n"
+      tail = marks.empty? ? "\n" : "\n#{marks}\n"
+      "\n\\subsubject[title={#{children(clean)}}#{ref}]#{tail}"
     when 'glossary'
       "\n\\startchapter[title={#{title(node)}},number=no]\n" +
         node.xpath('./para').map { |item| render(item) }.join +

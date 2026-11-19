@@ -61,6 +61,50 @@
 \defineregister[CLLlojban]
 \setupregister[CLLgeneral,CLLlojban][n=2,style={\switchtobodyfont[8.1bp]},
   indicator=yes,compress=yes,pagestyle=normal,distance=.5em,method=uc]
+% Index see words. The stock \defaultregisterseeword prints the "see" and
+% "and" labels inside the entry's location link, which points at an
+% unrelated page (the Contents page in the full book). Print the connecting
+% words as plain text instead and keep the link on the target headword
+% only. A seealso entry additionally needs the label "see also" rather
+% than "see"; the converter flags those entries with the CLLseealso
+% processor, which leaves the target text itself untouched so the register
+% still links the same headword.
+\defineprocessor[CLLseealso]
+\setuplabeltext[en][CLLseealso=see also ]
+% The redefinition below uses internal register commands, so it needs
+% the protected catcode regime.
+\unprotect
+\permanent\protected\def\CLLregisterseeword#1#2#3#4#5#6#7%
+  {\pushcurrentregister{#1}%
+   \ifnum#2=\plusone
+     \registerpageseparator
+   \fi
+   \global\setconstant\c_strc_registers_page_state\plustwo
+   \def\currentregisterpageindex{#5}%
+   \def\currentregisterseeindex{#6}%
+   \dostarttaggednodetail\t!registersee
+   \c_strc_registers_page_done\conditionaltrue
+   \ifchknum\currentregisterseeindex\or
+     \lettonothing\currentregisterpageprefix
+   \else
+     \def\currentregisterpageprefix{\clf_registerlabel{\currentregisterseeindex}}%
+   \fi
+   \doifelse{#4}{CLLseealso}
+     {\def\CLLseefirst{\labeltexts{CLLseealso}}%
+      \def\CLLseeand##1{and see also ##1}}%
+     {\def\CLLseefirst{\labeltexts\v!see}%
+      \def\CLLseeand{\labeltexts\v!and}}%
+   \ifnum#2=\plusone
+     \CLLseefirst{\doapplyregisterseecommand{}{\currentregisterpageprefix#7}}%
+   \orelse\ifnum#2=#3\relax
+     \CLLseeand{\doapplyregisterseecommand{}{\currentregisterpageprefix#7}}%
+   \else
+     ,\space\doapplyregisterseecommand{}{\currentregisterpageprefix#7}%
+   \fi
+   \dostoptagged
+   \popcurrentregister}
+\protect
+\let\registerseeword\CLLregisterseeword
 \setupexternalfigures[location=local]
 \widowpenalty=10000
 \clubpenalty=10000

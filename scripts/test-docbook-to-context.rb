@@ -185,12 +185,44 @@ class ContextBookTest < Minitest::Test
   end
 
   def test_index_see_entries_point_at_their_target
-    output = book('<para><indexterm type="general"><primary>masses</primary><see>groups</see></indexterm>Body</para>').to_tex
+    output = book('<para><indexterm type="general"><primary>masses</primary><see>groups</see></indexterm>' \
+                  '<indexterm type="general"><primary>groups</primary></indexterm>Body</para>').to_tex
     assert_includes output, '\\seeCLLgeneral[{masses}]{masses}{groups}'
     refute_match(/\\CLLgeneral\[\{masses\}\]\{masses\}(?!\{)/, output)
-    output = book('<para><indexterm type="general"><primary>terms</primary><seealso>words</seealso></indexterm>Body</para>').to_tex
-    assert_includes output, '\\seeCLLgeneral[{terms}]{terms}{words}'
+    output = book('<para><indexterm type="general"><primary>terms</primary><seealso>words</seealso></indexterm>' \
+                  '<indexterm type="general"><primary>words</primary></indexterm>Body</para>').to_tex
+    assert_includes output, '\\seeCLLgeneral[{terms}]{CLLseealso->terms}{words}'
     assert_match(/\\CLLgeneral\[\{terms\}\]\{terms\}(?!\{)/, output)
+  end
+
+  def test_index_see_target_with_formatting_uses_plain_text
+    output = book('<para><indexterm type="general"><primary>masses</primary><see><emphasis>groups</emphasis></see></indexterm>' \
+                  '<indexterm type="general"><primary>groups</primary></indexterm>Body</para>').to_tex
+    assert_includes output, '\\seeCLLgeneral[{masses}]{masses}{groups}'
+    refute_includes output, '{\\it groups}'
+  end
+
+  def test_index_see_target_without_headword_fails
+    assert_raises(RuntimeError) do
+      book('<para><indexterm type="general"><primary>widgets</primary><see>gadgets</see></indexterm>Body</para>').to_tex
+    end
+    assert_raises(RuntimeError) do
+      book('<para><indexterm type="lojban-word"><primary>wordrelated</primary><seealso>missing</seealso></indexterm>Body</para>').to_tex
+    end
+  end
+
+  def test_bridgehead_index_entries_leave_the_title
+    input = book(<<~XML)
+      <chapter><title>Catalog</title>
+        <bridgehead><anchor id="BE" xreflabel="BE"/>selma'o BE<indexterm type="general"><primary>selmao</primary></indexterm></bridgehead>
+        <para>Attach with <xref linkend="BE"/>.</para>
+      </chapter>
+    XML
+    output = input.to_tex
+    key = "cll-#{Digest::SHA256.hexdigest('BE')[0, 24]}"
+    assert_includes output, "\\subsubject[title={selma'o BE},reference={#{key}}]\n\\CLLgeneral[{selmao}]{selmao}"
+    refute_match(/title=\{[^}]*CLLgeneral/, output)
+    assert_empty input.report['missing_references']
   end
 
   def test_unsupported_content_fails_instead_of_disappearing

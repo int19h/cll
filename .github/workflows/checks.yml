@@ -46,12 +46,12 @@ jobs:
   # The polyglot comparer, the link checker, and the pinned Nu jar.
   # The Makefile fixture test stays in xml-wellformed and does not run them.
   html-contract:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
-          ruby-version: '3.2'
+          ruby-version: '3.3'
       - name: Install Nokogiri and Java
         run: |
           gem install --no-document nokogiri:1.18.8
@@ -119,12 +119,12 @@ jobs:
 
   # The ePub navigation document is written from the DocBook source (issue #208).
   epub-nav:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
-          ruby-version: '3.2'
+          ruby-version: '3.3'
       - name: Install xsltproc
         run: sudo apt-get update -qq && sudo apt-get install -y -qq xsltproc
       - name: Install the production Nokogiri version
@@ -142,13 +142,13 @@ jobs:
   # pure Python, and bolting a Ruby runtime plus a native gem onto it would
   # make both its name and its dependency profile misleading.
   prince-postprocess-smoke:
-    # ubuntu-24.04 to match the Dockerfile's base image and the Pages builder.
-    runs-on: ubuntu-24.04
+    # ubuntu-26.04 to match the Dockerfile's base image and the Pages builder.
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
-          ruby-version: '3.2'
+          ruby-version: '3.3'
       # Gemfile.lock records the production pins. This job still installs the
       # gems directly, as the Dockerfile does, so the check does not depend on Bundler.
       - name: Install libxml2-utils
@@ -216,12 +216,12 @@ jobs:
           scripts/check-whole-book-validation.sh
 
   typst-smoke:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
-          ruby-version: '3.2'
+          ruby-version: '3.3'
       - name: Install the production Nokogiri version
         run: gem install --no-document nokogiri:1.18.8
       - name: Install the pinned Typst compiler
@@ -234,7 +234,7 @@ jobs:
         run: TYPST="$RUNNER_TEMP/typst/typst" ruby scripts/test_docbook_to_typst.rb
 
   weasyprint-smoke:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
@@ -253,14 +253,14 @@ jobs:
           PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-status-pagination.py
 
   context-converter:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - name: Check build script syntax
         run: bash -n cll_build run_context_container.sh scripts/build_context.sh
       - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
-          ruby-version: '3.2'
+          ruby-version: '3.3'
       - run: gem install --no-document nokogiri:1.18.8
       - run: ruby scripts/test-docbook-to-context.rb
       - run: sudo apt-get update && sudo apt-get install -y python3-pil

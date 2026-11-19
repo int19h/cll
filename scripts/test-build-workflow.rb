@@ -62,6 +62,6 @@ check.call(upload['if'] == "${{ success() && steps.guard.outputs.preview == 'tru
 end
 prince = steps.find { |s| s['name'] == 'Install Prince (PDF renderer)' }['run']
 sha = File.read(File.join(root, 'Dockerfile'))[/amd64\) prince_sha256=([0-9a-f]{64})/, 1]
-check.call(sha && prince.include?(sha + '  prince_16.2-1_ubuntu24.04_amd64.deb') && prince.index('sha256sum -c -') < prince.index('sudo apt-get install'), 'Prince must match the Dockerfile hash before installation.')
+check.call(sha && prince.include?(sha + '  prince_16.2-1_ubuntu26.04_amd64.deb') && prince.index('sha256sum -c -') < prince.index('sudo apt-get install'), 'Prince must match the Dockerfile hash before installation.')
 abort errors.join("\n") unless errors.empty?
 puts 'Build workflow: direct pins, permissions, retention, timeouts, and guard/partial-output wiring pass.'

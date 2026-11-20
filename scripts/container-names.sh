@@ -96,19 +96,22 @@ cll_cleanup_container() {
   record=$(cll_lookup_container "$cll_name") || record=
   id=${record%% *}
   owner=${record#* }
-  [ -n "$id" ] || return 0
   # Only this run's own container, proven by its label, is stopped and
   # removed. Anything else keeps running, including a same-named container
-  # that another run started after ours exited.
-  [ "$owner" = "$cll_run_tag" ] || return 0
-  "${engine[@]}" stop -t 10 "$id" >/dev/null 2>&1 || true
-  "${engine[@]}" rm -f "$id" >/dev/null 2>&1 || true
-  # The run's own container is gone, so untagging its image cannot strand
-  # anything. With --rm the engine's own auto-remove can still hold the
-  # image for a moment after our rm, so a single rmi can fail while a
-  # later one succeeds; retry while the tag still resolves, then give up
-  # quietly rather than failing the build over tag cleanup. When the tag
-  # never existed (a failed build) the first check ends this at once.
+  # that another run started after ours exited. With --rm the engine
+  # usually removes the container itself when the run ends, so a missing
+  # container or a foreign label simply skips this part.
+  if [ -n "$id" ] && [ "$owner" = "$cll_run_tag" ]; then
+    "${engine[@]}" stop -t 10 "$id" >/dev/null 2>&1 || true
+    "${engine[@]}" rm -f "$id" >/dev/null 2>&1 || true
+  fi
+  # Always untag this run's own run tag afterwards: it belongs to this
+  # run alone, so removing it is safe whatever happened to the container.
+  # With --rm the engine's own auto-remove can still hold the image for a
+  # moment after our rm, so a single rmi can fail while a later one
+  # succeeds; retry while the tag still resolves, then give up quietly
+  # rather than failing the build over tag cleanup. When the tag never
+  # existed (a failed build) the first check ends this at once.
   tries=0
   until "${engine[@]}" rmi "$cll_run_tag" >/dev/null 2>&1; do
     "${engine[@]}" image inspect --format '{{.Id}}' "$cll_run_tag" \

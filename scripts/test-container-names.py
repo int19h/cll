@@ -187,7 +187,7 @@ case "$op" in
     fi
     # The image is the argument right before the container command; flags
     # and their values are never split or glob-expanded while scanning.
-    name=; label_id=; image=; prev=; want=
+    name=; label_id=; image=; prev=; want=; rm_flag=
     for token in "$@"; do
       case "$want" in
         --name) name=$token; want=; prev=$token; continue ;;
@@ -199,6 +199,7 @@ case "$op" in
       esac
       case "$token" in
         --name|--label) want=$token; continue ;;
+        --rm) rm_flag=1 ;;
       esac
       if [ "$token" = "./scripts/container-command.sh" ]; then
         image=$prev
@@ -225,6 +226,13 @@ case "$op" in
     wait "$sp"
     rc=$?
     log "run-end rc=$rc"
+    # Like a real engine, --rm removes the container when it stops, before
+    # the launcher's cleanup runs. A signalled run never reaches this: its
+    # trap exits at once, leaving the container for the cleanup to stop.
+    if [ -n "$rm_flag" ]; then
+      remove_container "$cid"
+      log "run-auto-removed $cid"
+    fi
     if [ -n "${STUB_RUN_RC:-}" ]; then
       exit "$STUB_RUN_RC"
     fi
@@ -471,6 +479,20 @@ class StubRun:
                     if label_file.exists() else None
         return out
 
+    def tags(self):
+        # Every image tag the stub still tracks, by its filesystem key.
+        tags_dir = self.work / 'tags'
+        if not tags_dir.exists():
+            return []
+        return sorted(p.name for p in tags_dir.iterdir())
+
+    def run_tags(self):
+        # This run's own tags: only run tags hold the '-run-' marker the
+        # launchers put between the shared tag and the unique suffix (the
+        # key turns its hyphens into underscores). Shared fixed tags never
+        # contain it.
+        return sorted(t for t in self.tags() if 'run_' in t)
+
     def temp_files(self):
         # Each launcher keeps its container ID, image ID and build log in
         # one private directory (cll-run* for Prince, cll-image* for the
@@ -569,6 +591,7 @@ class SignalTests(unittest.TestCase):
                         log)
                     self.assertEqual(run.markers(), [])
                     self.assertEqual(run.temp_files(), [])
+                    self.assertEqual(run.run_tags(), [], run.tags())
 
     def test_group_signal_during_run(self):
         with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
@@ -693,6 +716,30 @@ class SignalTests(unittest.TestCase):
             self.assertNotIn('--iidfile', log, log)
             self.assertEqual(run.markers(), [])
 
+    def test_normal_run_leaves_no_run_tag(self):
+        # With --rm the engine removes the container itself when the run
+        # ends, before the launcher's cleanup runs; the run tag must still
+        # be gone in every launcher. The shared fixed tag stays.
+        for launcher in ('run_container.sh', 'run_weasyprint_container.sh',
+                         'run_typst_container.sh'):
+            with self.subTest(launcher=launcher):
+                with tempfile.TemporaryDirectory(dir=SCRATCH) as parent:
+                    tree = make_launcher_tree(
+                        Path(parent) / launcher.replace('.sh', ''),
+                        launcher=launcher) if launcher != 'run_container.sh' \
+                        else ROOT
+                    with tempfile.TemporaryDirectory(
+                            dir=SCRATCH) as directory:
+                        run = StubRun(directory, tree=tree, script=launcher,
+                                      STUB_BUILD_SLEEP='0',
+                                      STUB_RUN_SLEEP='1')
+                        rc = run.finish()
+                        self.assertEqual(rc, 0, run.out_path.read_text())
+                        self.assertEqual(run.markers(), [])
+                        self.assertEqual(run.run_tags(), [],
+                                         run.tags())
+                        self.assertEqual(len(run.tags()), 1, run.tags())
+
     def test_shared_name_rejected_by_engine(self):
         # Each tree is its own checkout with its own build folder and lock,
         # so both runs reach the engine; it rejects the second container
@@ -773,6 +820,7 @@ class SignalTests(unittest.TestCase):
                 # successor's name instead and the assertion above fails.
                 second.finish(sig=signal.SIGTERM)
                 self.assertEqual(second.markers(), [])
+                self.assertEqual(second.run_tags(), [], second.tags())
 
     def test_rmi_retry_removes_run_tag(self):
         # The first untag can fail (a real engine can hold the image for

@@ -90,7 +90,20 @@ else
   # a truncated glossary that later runs treat as a valid cache
   File.open(glossfile + ".tmp", 'w') do |gfh|
     tree=Nokogiri::XML(open "#{builddir}/cll_preglossary.xml")
-    words = find_lojban_words( tree ).select { |x| x.attributes['valid'].to_s != 'maybe' }.map { |x| x.text.to_s } + find_frame_words( tree )
+    cell_words = find_cmavo_list_words( tree )
+    # A cell spelling without an entry of its own must not join a slug
+    # group and remove a body word's entry (the "kiha" vs "ki'a" case):
+    # only cell words that match the dictionary themselves, exactly or
+    # in outer pause dots only, reach the grouping. In testing mode
+    # there is no dictionary, so everything counts.
+    unless opts[:testing]
+      cell_words = cell_words.select do |word|
+        defined_by_bare.fetch( bare_spelling.( word ), [] ).any? do |candidate|
+          slugify( candidate ) == slugify( word )
+        end
+      end
+    end
+    words = find_lojban_words( tree ).select { |x| x.attributes['valid'].to_s != 'maybe' }.map { |x| x.text.to_s } + find_frame_words( tree ) + cell_words
     glossary_word_groups(words).each do |slug, spellings|
       # Spellings that slugify to one ID, such as .y. and y, share one
       # entry, and every link uses valsi- plus that same slug. The match

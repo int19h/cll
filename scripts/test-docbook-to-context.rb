@@ -363,4 +363,19 @@ class ContextBookTest < Minitest::Test
     %w[CLLcrisa CLLkorean CLLchinese].each { |font| assert_includes output, "\\#{font}" }
     assert_equal ['outside'], input.report['missing_references']
   end
+
+  def test_glossterm_in_table_cell_links_to_glossary_entry
+    # xml_preprocess.rb links each cmavo-list word with the same glossterm
+    # markup a <valsi> gets; the converter turns that link into a ConTeXt
+    # goto without any table-specific code.
+    input = book(<<~XML)
+      <chapter><title>C</title>
+      <informaltable><colgroup/><tbody><tr><td class="cmavo"><para role="cmavo"><foreignphrase xml:lang="jbo"><glossterm role="valsi" linkend="valsi-mi">mi</glossterm></foreignphrase></para></td></tr></tbody></informaltable>
+      <glossary><title>G</title><glossdiv><title>M</title><glossentry xml:id="valsi-mi"><glossterm>mi</glossterm><glossdef><para>I</para></glossdef></glossentry></glossdiv></glossary>
+      </chapter>
+    XML
+    output = input.to_tex
+    assert_includes output, '\\goto{mi}'
+    assert_empty input.report['missing_references']
+  end
 end

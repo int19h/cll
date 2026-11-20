@@ -361,6 +361,9 @@ $document.css('jbophrase').each do |node|
   end
 end
 
+# The glossary entries once, for every cell below: scanning the whole
+# book per cell costs about 18 seconds on the full book.
+cmavo_glossary_entries = glossary_entries( $document )
 $document.css('cmavo-list').each do |node|
   #     Handle cmavo-list
   #
@@ -420,7 +423,22 @@ $document.css('cmavo-list').each do |node|
       #           <quote>Attention/Lo/Hark/Behold/Hey!/Listen, X</quote>; indicates an important communication that the listener should listen to.
       #         </description>
 
+      # A cmavo or gismu cell links its word to the glossary, exactly
+      # as a <valsi> is linked, when the cell holds one word or exactly
+      # one bracketed word. A <valsi> already inside the cell counts as
+      # the cell's text under the same rules. The link points at a
+      # glossary entry in this same document, so a word the dictionary
+      # lacks (the compounds roinai, pino'o and pirau have no entry)
+      # stays plain text instead of breaking validation, the way
+      # valid="maybe" does, and is reported. An opted-out cell
+      # (glossary="false", valid="false" or valid="maybe", on the cell
+      # or on a <valsi> inside it) never links. Every other cell shape
+      # stays plain and silent.
       handle_children( node: child, allowed_children_names: [ 'gismu', 'cmavo', 'selmaho', 'series', 'rafsi-group', 'rafsi', 'compound', 'modal-place', 'attitudinal-scale', 'pseudo-cmavo', 'description' ] ) do |grandchild|
+        if [ 'gismu', 'cmavo' ].include?( grandchild.name )
+          unlinked = link_cmavo_list_cell!( grandchild, cmavo_glossary_entries )
+          $stderr.puts %Q{cmavo-list: no glossary entry for "#{unlinked}", leaving the cell unlinked} if unlinked
+        end
         role=grandchild.name
         if grandchild[:role]
           role=grandchild[:role]

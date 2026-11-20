@@ -185,6 +185,8 @@ jobs:
         run: ruby scripts/lint-word-spellings.rb chapters/*.xml
       - name: Glossary links in jbophrase frames
         run: ruby scripts/test-jbophrase-frames.rb
+      - name: Glossary links in cmavo-list cells
+        run: ruby scripts/test-cmavo-list-links.rb
       - name: Index type lint self-test
         run: ruby scripts/test-lint-index-types.rb
       - name: Index term types

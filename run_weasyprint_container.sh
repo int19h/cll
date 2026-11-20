@@ -3,6 +3,23 @@
 # Bash 3.2 treats empty arrays as unset, so keep nounset disabled.
 set -eo pipefail
 
+script_path=$(readlink -f "$0")
+repo_dir=${script_path%/*}
+repo_dir=${repo_dir:-/}
+. "$repo_dir/scripts/container-names.sh"
+# A name unique to this run (issue #297). A caller can set CLL_CONTAINER_NAME
+# for a stable name of its own; validate the raw override before calling the
+# engine, since the name becomes an engine argument.
+if [ -n "${CLL_CONTAINER_NAME:-}" ]; then
+  if ! cll_valid_container_name "$CLL_CONTAINER_NAME"; then
+    echo "Invalid container name '$CLL_CONTAINER_NAME'. Set CLL_CONTAINER_NAME to letters, digits, '_', '.' and '-', starting with a letter or digit." >&2
+    exit 2
+  fi
+  container_name=$CLL_CONTAINER_NAME
+else
+  container_name=$(cll_container_name "$repo_dir")
+fi
+
 # Select one engine; do not fall back when the selected engine is unavailable.
 engine=()
 if [ -n "${CONTAINER_BIN:-}" ]; then
@@ -20,9 +37,6 @@ if ! "${engine[@]}" info >/dev/null 2>&1; then
   echo "Container command '$container_bin info' failed. Check that the selected engine is running and accessible." >&2
   exit 1
 fi
-script_path=$(readlink -f "$0")
-repo_dir=${script_path%/*}
-repo_dir=${repo_dir:-/}
 args=("$@")
 extra_vols=()
 for ((i=0; i<${#args[@]}; i++)); do
@@ -59,11 +73,38 @@ case "$repo_dir:$build_dir" in
 esac
 build_version=$(scripts/build-version.sh)
 mkdir -p "$build_dir/tmp" "$build_dir/cache"
-exec 9>"$build_dir/.weasyprint.lock"
-flock -n 9 || { echo 'A WeasyPrint build already uses this build directory.' >&2; exit 1; }
+cll_take_lock "$build_dir/.weasyprint.lock" \
+  'A WeasyPrint build already uses this build directory.'
+# One tag per checkout, as before issue #297. The build also attaches a
+# second tag that is unique to this run and keeps the image referenced
+# until this run's container exists. The run's private directory doubles
+# as the source of the tag's random part. Signal handling, background
+# execution, and cleanup are shared with the other launchers
+# (see scripts/container-names.sh).
 workspace_id=$(printf '%s' "$repo_dir" | sha256sum | cut -c1-16)
 image="localhost/cll-weasyprint:$workspace_id"
-"${engine[@]}" build -t "$image" -f "$repo_dir/Dockerfile.weasyprint" "$repo_dir/scripts/weasyprint"
+image_dir=$(mktemp -d "${TMPDIR:-/tmp}/cll-image.XXXXXXXX") || exit 1
+cll_run_tag="$image-run-$$-$(cll_run_id "$image_dir")"
+remove_run_files() {
+  rmdir "$image_dir" 2>/dev/null || true
+}
+cll_name=$container_name
+cll_install_traps
+build_rc=0
+cll_run_bg "${engine[@]}" build -t "$image" -t "$cll_run_tag" -f "$repo_dir/Dockerfile.weasyprint" "$repo_dir/scripts/weasyprint" || build_rc=$?
+# Run the immutable image this build produced, not the tag: another checkout
+# can retag the name under this run between the build and the run. The ID
+# comes from the engine itself, never from a file (a root-owned ID file is
+# unreadable); an empty answer fails loudly instead of running nothing.
+if [ "$build_rc" -ne 0 ]; then
+  echo "Container image build failed." >&2
+  exit 1
+fi
+image_id=$("${engine[@]}" image inspect --format '{{.Id}}' "$cll_run_tag" 2>/dev/null) || image_id=
+if [ -z "$image_id" ]; then
+  echo "Container image build did not report its ID." >&2
+  exit 1
+fi
 user_args=(--user "$(id -u):$(id -g)")
 if "${engine[@]}" --version | grep -qi podman; then
   user_args=(--userns=keep-id)
@@ -82,7 +123,12 @@ if [ -t 0 ]; then
   terminal+=(-i)
   if [ -t 1 ]; then terminal+=(-t); fi
 fi
-exec "${engine[@]}" run --init --rm "${terminal[@]}" "${user_args[@]}" "${mount_args[@]}" "${extra_vols[@]}" \
+# The run stays in the foreground but off exec, through the shared helper:
+# the traps stay in place so a signal stops this run's own container at
+# once, and the EXIT trap removes that container however the build ends.
+run_rc=0
+cll_run_bg "${engine[@]}" run --init --rm --name "$container_name" --label "cll.run=$cll_run_tag" "${terminal[@]}" "${user_args[@]}" "${mount_args[@]}" "${extra_vols[@]}" \
   -w "$repo_dir" -e TMPDIR="$build_dir/tmp" -e XDG_CACHE_HOME="$build_dir/cache" \
   -e HOME=/tmp -e CLL_BUILD_VERSION="$build_version" \
-  "$image" ./scripts/container-command.sh ./cll_build -n -T pdf_weasyprint "${args[@]}"
+  "$image_id" ./scripts/container-command.sh ./cll_build -n -T pdf_weasyprint "${args[@]}" || run_rc=$?
+exit "$run_rc"

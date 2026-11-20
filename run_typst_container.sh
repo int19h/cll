@@ -3,6 +3,23 @@
 # Bash 3.2 treats empty arrays as unset, so keep nounset disabled.
 set -eo pipefail
 
+script_path=$(readlink -f "$0")
+repo=${script_path%/*}
+repo=${repo:-/}
+. "$repo/scripts/container-names.sh"
+# A name unique to this run (issue #297). A caller can set CLL_CONTAINER_NAME
+# for a stable name of its own; validate the raw override before calling the
+# engine, since the name becomes an engine argument.
+if [ -n "${CLL_CONTAINER_NAME:-}" ]; then
+  if ! cll_valid_container_name "$CLL_CONTAINER_NAME"; then
+    echo "Invalid container name '$CLL_CONTAINER_NAME'. Set CLL_CONTAINER_NAME to letters, digits, '_', '.' and '-', starting with a letter or digit." >&2
+    exit 2
+  fi
+  container_name=$CLL_CONTAINER_NAME
+else
+  container_name=$(cll_container_name "$repo")
+fi
+
 # Select one engine; do not fall back when the selected engine is unavailable.
 engine=()
 if [ -n "${CONTAINER_BIN:-}" ]; then
@@ -21,9 +38,6 @@ if ! "${engine[@]}" info >/dev/null 2>&1; then
   exit 1
 fi
 
-script_path=$(readlink -f "$0")
-repo=${script_path%/*}
-repo=${repo:-/}
 mkdir -p "$repo/build"
 # Preserve absolute and relative build symlinks by mounting both host paths unchanged.
 # Preserve trailing newlines so the whitespace check sees the full path.
@@ -35,6 +49,9 @@ case "$repo:$builddir" in
     printf 'Checkout: %s\nBuild directory: %s\n' "$repo" "$builddir" >&2
     exit 2 ;;
 esac
+# One tag per checkout, as before issue #297. The build also attaches a
+# second tag that is unique to this run and keeps the image referenced
+# until this run's container exists.
 key=$(printf '%s' "$repo" | sha256sum | cut -c 1-16)
 image="localhost/cll-typst:$key"
 args=()
@@ -64,8 +81,36 @@ shift "$((OPTIND - 1))"
 args+=("$@")
 cd "$repo"
 build_version=$(scripts/build-version.sh)
+# This run's container is tracked by its unique name plus the cll.run
+# label it carries, which this run stamps with its own tag. The run's
+# private directory doubles as the source of the tag's random part.
+# Traps go in right after it, before the first engine call, and cover a
+# failed build as well as the run. Signal handling, background execution,
+# and cleanup are shared with the other launchers (see scripts/container-names.sh).
+image_dir=$(mktemp -d "${TMPDIR:-/tmp}/cll-image.XXXXXXXX") || exit 1
+cll_run_tag="$image-run-$$-$(cll_run_id "$image_dir")"
+remove_run_files() {
+  rmdir "$image_dir" 2>/dev/null || true
+}
+cll_name=$container_name
+cll_install_traps
 # Podman/Docker assigns a fresh container ID. No shared container is stopped.
-"${engine[@]}" build --target typst -t "$image" -f Dockerfile .
+build_rc=0
+cll_run_bg "${engine[@]}" build --target typst -t "$image" -t "$cll_run_tag" -f Dockerfile . || build_rc=$?
+# Run the immutable image this build produced, not the tag: another checkout
+# can retag the name under this run between the build and the run. The ID
+# comes from the engine itself, never from a file (a root-owned ID file is
+# unreadable); an empty answer fails loudly instead of running nothing.
+if [ "$build_rc" -ne 0 ]; then
+  echo "Container image build failed." >&2
+  exit 1
+fi
+image_id=$("${engine[@]}" image inspect --format '{{.Id}}' "$cll_run_tag" 2>/dev/null) || image_id=
+if [ -z "$image_id" ]; then
+  echo "Container image build did not report its ID." >&2
+  exit 1
+fi
+echo "Image ID: $image_id"
 user_args=(--user "$(id -u):$(id -g)")
 if "${engine[@]}" --version | grep -qi podman; then
   user_args=(--userns=keep-id)
@@ -82,5 +127,10 @@ if [ -t 0 ]; then
   terminal+=(-i)
   if [ -t 1 ]; then terminal+=(-t); fi
 fi
-exec "${engine[@]}" run --init --rm "${terminal[@]}" "${user_args[@]}" "${volumes[@]}" --workdir "$repo" \
-  -e HOME=/tmp -e CLL_BUILD_VERSION="$build_version" "$image" ./scripts/container-command.sh ./cll_build -n -T pdf_typst "${args[@]}"
+# The run stays in the foreground but off exec, through the shared helper:
+# the traps stay in place so a signal stops this run's own container at
+# once, and the EXIT trap removes that container however the build ends.
+run_rc=0
+cll_run_bg "${engine[@]}" run --init --rm --name "$container_name" --label "cll.run=$cll_run_tag" "${terminal[@]}" "${user_args[@]}" "${volumes[@]}" --workdir "$repo" \
+  -e HOME=/tmp -e CLL_BUILD_VERSION="$build_version" "$image_id" ./scripts/container-command.sh ./cll_build -n -T pdf_typst "${args[@]}" || run_rc=$?
+exit "$run_rc"

@@ -3,6 +3,26 @@
 # Bash 3.2 treats empty arrays as unset, so keep nounset disabled.
 set -eo pipefail
 
+script_path=$(readlink -f "$0")
+dir=${script_path%/*}
+dir=${dir:-/}
+. "$dir/scripts/container-names.sh"
+# A name unique to this run (issue #297): builds from different checkouts
+# must not stop each other. A caller can set CLL_CONTAINER_NAME for a stable
+# name of its own; sharing one reintroduces the collision, so that is the
+# caller's choice. The name becomes an engine argument, so reject anything
+# that is not a plain container name before calling the engine. Validate the
+# raw override: command substitution would silently drop trailing newlines.
+if [ -n "${CLL_CONTAINER_NAME:-}" ]; then
+  if ! cll_valid_container_name "$CLL_CONTAINER_NAME"; then
+    echo "Invalid container name '$CLL_CONTAINER_NAME'. Set CLL_CONTAINER_NAME to letters, digits, '_', '.' and '-', starting with a letter or digit." >&2
+    exit 2
+  fi
+  container_name=$CLL_CONTAINER_NAME
+else
+  container_name=$(cll_container_name "$dir")
+fi
+
 # Select one engine; do not fall back when the selected engine is unavailable.
 engine=()
 if [ -n "${CONTAINER_BIN:-}" ]; then
@@ -42,9 +62,33 @@ do
   fi
 done
 
-script_path=$(readlink -f "$0")
-dir=${script_path%/*}
-dir=${dir:-/}
+# This run's container is tracked by its unique name plus the cll.run
+# label it carries, which this run stamps with its own tag. Cleanup
+# removes the container only when the label matches, so it can neither
+# touch another run's container nor miss this run's own; the engine is
+# asked for everything, and no engine-written file is ever read (root-owned
+# files under sudo stay unreadable). There is no startup removal: an
+# occupied name is the engine's error. The signal handling, background
+# execution, and cleanup below are shared with the other launchers
+# (see container-names.sh).
+rundir=$(mktemp -d "${TMPDIR:-/tmp}/cll-run.XXXXXXXX") || exit 1
+rclog=$rundir/build.log
+remove_run_files() {
+  rm -f "$rclog"
+  rmdir "$rundir" 2>/dev/null || true
+}
+cll_name=$container_name
+# One fixed tag for every build (issue #297), spelled out in full so the
+# reference is always explicit. The build also attaches a second tag that
+# is unique to this run and keeps the image referenced until this run's
+# container exists, even if another checkout rebuilds the shared tag in
+# between (Docker's containerd store can otherwise drop the image at once).
+# Set it before installing the traps below: with an empty expected tag, an
+# early exit could otherwise match an unlabelled container of the same name.
+# scripts/diff_upstream names the same tag.
+image="lojban/cll_build:latest"
+cll_run_tag="lojban/cll_build:run-$$-$(cll_run_id "$rundir")"
+cll_install_traps
 mkdir -p "$dir/build"
 # Preserve trailing newlines so the whitespace check sees the full path.
 build_dir=$(realpath "$dir/build" && printf .)
@@ -55,31 +99,47 @@ case "$dir:$build_dir" in
     printf 'Checkout: %s\nBuild directory: %s\n' "$dir" "$build_dir" >&2
     exit 2 ;;
 esac
-"${engine[@]}" kill cll_build >/dev/null 2>&1 || true
-"${engine[@]}" rm cll_build >/dev/null 2>&1 || true
-
+# One writer per checkout build folder. Unique container names keep two runs
+# from one checkout from stopping each other, but both would still write the
+# same intermediate files, so the second run fails fast instead.
+cll_take_lock "$build_dir/.container.lock" \
+  "Another build already uses this checkout's build directory ($build_dir)."
 mounts=(-v "$dir:$dir" -v "$build_dir:$build_dir")
 build_version=$("$dir/scripts/build-version.sh") || exit 1
 
 # FOR TESTING; forces complete container rebuild
-# "${engine[@]}" build --no-cache -t lojban/cll_build -f Dockerfile .
-# "${engine[@]}" rmi lojban/cll_build
+# "${engine[@]}" build --no-cache -t "$image" -f Dockerfile .
+# "${engine[@]}" rmi "$image"
 echo "Running container image build; this may take a while."
+echo "Image tag: $image"
+echo "Container name: $container_name"
 echo
-"${engine[@]}" build -t lojban/cll_build -f "$dir/Dockerfile" "$dir" >/tmp/rc.$$ 2>&1 || {
+build_rc=0
+cll_run_bg "${engine[@]}" build -t "$image" -t "$cll_run_tag" -f "$dir/Dockerfile" "$dir" >"$rclog" 2>&1 || build_rc=$?
+# The build log lives in the private run directory, so an interrupted build
+# leaves no file behind either: the traps remove it.
+if [ "$build_rc" -ne 0 ]; then
   echo "Container image build failed.  Here's the output: "
   echo
-  cat /tmp/rc.$$
+  cat "$rclog"
   echo
   echo
   echo "Container image build failed.  Output is above."
   echo
   echo
-  rm -f /tmp/rc.$$
   exit 1
-}
+fi
 
-rm -f /tmp/rc.$$
+# Run the immutable image this build produced, not the tag: another checkout
+# can retag the name under this run between the build and the run. The ID
+# comes from the engine itself, never from a file (a root-owned ID file is
+# unreadable); an empty answer fails loudly instead of running nothing.
+image_id=$("${engine[@]}" image inspect --format '{{.Id}}' "$cll_run_tag" 2>/dev/null) || image_id=
+if [ -z "$image_id" ]; then
+  echo "Container image build did not report its ID." >&2
+  exit 1
+fi
+echo "Image ID: $image_id"
 
 user_args=(--user "$(id -u):$(id -g)")
 if "${engine[@]}" --version | grep -qi podman; then
@@ -99,8 +159,15 @@ if [ -t 0 ]; then
 fi
 
 # Numeric Docker users may have no passwd entry or writable home directory.
-exec "${engine[@]}" run --init --name cll_build \
+# The run stays in the foreground but off exec, through the shared helper:
+# the traps stay in place so a signal stops this run's own container at
+# once, and the EXIT trap removes that container however the build ends
+# (--rm removes it too). The helper attaches the launcher's own standard
+# input: without it, the engine would read /dev/null even with a terminal.
+run_rc=0
+cll_run_bg "${engine[@]}" run --init --rm --name "$container_name" --label "cll.run=$cll_run_tag" \
   "${user_args[@]}" "${mounts[@]}" "${extra_vols[@]}" -w "$dir" \
   -e HOME=/tmp -e XDG_CACHE_HOME=/tmp/.cache \
-  -e CLL_BUILD_VERSION="$build_version" "${terminal[@]}" lojban/cll_build \
-  ./scripts/container-command.sh ./cll_build "${args[@]}"
+  -e CLL_BUILD_VERSION="$build_version" "${terminal[@]}" "$image_id" \
+  ./scripts/container-command.sh ./cll_build "${args[@]}" || run_rc=$?
+exit "$run_rc"

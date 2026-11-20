@@ -10,6 +10,7 @@ the signal status.
 """
 
 import os
+import re
 import shutil
 import signal
 import stat
@@ -67,6 +68,9 @@ case "$op" in
     wait "$sp"
     rc=$?
     log "build-end rc=$rc"
+    if [ -n "${STUB_BUILD_RC:-}" ]; then
+      exit "$STUB_BUILD_RC"
+    fi
     iid="${STUB_IMAGE_ID:-stub-image-id}"
     [ -n "$iidfile" ] && printf '%s' "$iid" > "$iidfile"
     # Retagging moves each tag; an image whose last tag moves is dropped,
@@ -208,7 +212,8 @@ def valid_container_name(name):
     return out == 'valid'
 
 
-def make_launcher_tree(parent, dockerfile_lines=('FROM example/base\n',)):
+def make_launcher_tree(parent, dockerfile_lines=('FROM example/base\n',),
+                       launcher='run_container.sh'):
     # A minimal second checkout for the collision and image-identity
     # tests: the launcher locates its checkout from its own path, so each
     # tree gets its own build folder and lock. CLL_BUILD_VERSION skips
@@ -216,10 +221,11 @@ def make_launcher_tree(parent, dockerfile_lines=('FROM example/base\n',)):
     # the variable).
     tree = Path(parent)
     (tree / 'scripts').mkdir(parents=True, exist_ok=True)
-    shutil.copy2(ROOT / 'run_container.sh', tree / 'run_container.sh')
+    shutil.copy2(ROOT / launcher, tree / launcher)
     for name in ('container-names.sh', 'build-version.sh'):
         shutil.copy2(ROOT / 'scripts' / name, tree / 'scripts' / name)
     (tree / 'Dockerfile').write_text(''.join(dockerfile_lines))
+    (tree / 'Dockerfile.weasyprint').write_text(''.join(dockerfile_lines))
     return tree
 
 
@@ -250,8 +256,8 @@ class ContainerNamesTests(unittest.TestCase):
 class StubRun:
     """One run_container.sh run against the stub engine in a scratch dir."""
 
-    def __init__(self, scratch, tree=ROOT, out_name='stdout.txt',
-                 truncate_log=True, **env_extra):
+    def __init__(self, scratch, tree=ROOT, script='run_container.sh',
+                 out_name='stdout.txt', truncate_log=True, **env_extra):
         self.work = Path(scratch)
         self.tree = Path(tree)
         self.log = self.work / 'engine.log'
@@ -271,7 +277,7 @@ class StubRun:
         self.out_path = self.work / out_name
         self.output = self.out_path.open('w')
         self.proc = subprocess.Popen(
-            ['bash', str(self.tree / 'run_container.sh')],
+            ['bash', str(self.tree / script)],
             stdout=self.output, stderr=subprocess.STDOUT,
             env=env, cwd=str(self.tree), start_new_session=True, text=True)
         self.pid = self.proc.pid
@@ -295,9 +301,12 @@ class StubRun:
         return sorted(p.name for p in self.work.glob('*.marker'))
 
     def temp_files(self):
-        # The launcher keeps its container ID, image ID and build log in
-        # one private directory. It must be gone when the run ends.
-        return sorted(p.name for p in self.work.glob('cll-run*'))
+        # Each launcher keeps its container ID, image ID and build log in
+        # one private directory (cll-run* for Prince, cll-image* for the
+        # PDF launchers). It must be gone when the run ends.
+        names = sorted(p.name for p in self.work.glob('cll-run*'))
+        names += sorted(p.name for p in self.work.glob('cll-image*'))
+        return names
 
     def abort(self):
         # Never leave a launcher holding the checkout lock for the next test.
@@ -548,6 +557,121 @@ class SignalTests(unittest.TestCase):
                 self.assertNotIn('run-no-such-image', log, log)
                 self.assertEqual(first.markers(), [])
                 self.assertEqual(second.markers(), [])
+
+    def test_image_references_are_valid(self):
+        # Every tag the launchers generate has one colon after the last
+        # slash and valid tag characters; each build also carries a
+        # run-unique tag that names the launcher process.
+        tag_part = re.compile(r'^[A-Za-z0-9_][A-Za-z0-9_.-]{0,127}$')
+
+        def check(ref):
+            self.assertIn('/', ref)
+            name, colon, tag = ref.rpartition(':')
+            self.assertEqual(colon, ':', ref)
+            self.assertNotIn('/', tag, ref)
+            self.assertRegex(tag, tag_part)
+
+        def build_tags(lines):
+            tags = []
+            for line in lines:
+                if not line.startswith('call build '):
+                    continue
+                tokens = line.split(' ')
+                i = 2
+                while i < len(tokens):
+                    if tokens[i] == '-t' and i + 1 < len(tokens):
+                        tags.append(tokens[i + 1])
+                        i += 2
+                    elif tokens[i] in ('--iidfile', '-f', '--target'):
+                        i += 2
+                    else:
+                        i += 1
+            return tags
+
+        launchers = (('run_container.sh', 'img-prince'),
+                     ('run_weasyprint_container.sh', 'img-weasy'),
+                     ('run_typst_container.sh', 'img-typst'))
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as parent:
+            for launcher, image in launchers:
+                with self.subTest(launcher=launcher):
+                    tree = make_launcher_tree(
+                        Path(parent) / launcher.replace('.sh', ''),
+                        launcher=launcher)
+                    with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+                        run = StubRun(directory, tree=tree, script=launcher,
+                                      STUB_BUILD_SLEEP='0',
+                                      STUB_RUN_SLEEP='1',
+                                      STUB_IMAGE_ID=image)
+                        self.assertEqual(run.finish(), 0,
+                                         run.out_path.read_text())
+                        lines = run.log_text().splitlines()
+                        tags = build_tags(lines)
+                        self.assertEqual(len(tags), 2, lines)
+                        self.assertNotEqual(tags[0], tags[1])
+                        for tag in tags:
+                            check(tag)
+                        # The shared tags cannot end this way: their
+                        # tag parts are 'latest' or hex digits.
+                        run_tags = [tag for tag in tags
+                                    if tag.endswith('run-%d' % run.pid)]
+                        self.assertEqual(len(run_tags), 1, tags)
+                        run_calls = [line for line in lines
+                                     if line.startswith('call run ')]
+                        self.assertEqual(len(run_calls), 1, lines)
+                        self.assertIn(' %s ' % image, run_calls[0])
+                        self.assertEqual(run.temp_files(), [])
+
+    def test_backend_launchers_term_during_build(self):
+        # A TERM to the launcher PID alone during the image build stops
+        # the build at once for the WeasyPrint and Typst launchers too:
+        # no container ever starts and nothing is left behind.
+        for launcher in ('run_weasyprint_container.sh',
+                         'run_typst_container.sh'):
+            with self.subTest(launcher=launcher):
+                with tempfile.TemporaryDirectory(dir=SCRATCH) as parent:
+                    tree = make_launcher_tree(
+                        Path(parent) / launcher.replace('.sh', ''),
+                        launcher=launcher)
+                    with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+                        run = StubRun(directory, tree=tree, script=launcher,
+                                      STUB_BUILD_SLEEP='30',
+                                      STUB_RUN_SLEEP='1')
+                        self.assertTrue(run.wait_for('build-start'),
+                                        'stub never started the image build')
+                        time.sleep(1)
+                        t0 = time.monotonic()
+                        rc = run.finish(sig=signal.SIGTERM)
+                        self.assertEqual(rc, -signal.SIGTERM)
+                        self.assertLess(time.monotonic() - t0, 15,
+                                        'launcher did not stop promptly')
+                        self.assertFalse(
+                            any('call run' in line for line in run.calls()),
+                            '\n'.join(run.calls()))
+                        assert_no_engine_kill(self, run)
+                        self.assertEqual(run.markers(), [])
+                        self.assertEqual(run.temp_files(), [])
+
+    def test_backend_launchers_failed_build(self):
+        # A failed image build stops the WeasyPrint and Typst launchers
+        # before any container starts and leaves nothing behind.
+        for launcher in ('run_weasyprint_container.sh',
+                         'run_typst_container.sh'):
+            with self.subTest(launcher=launcher):
+                with tempfile.TemporaryDirectory(dir=SCRATCH) as parent:
+                    tree = make_launcher_tree(
+                        Path(parent) / launcher.replace('.sh', ''),
+                        launcher=launcher)
+                    with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+                        run = StubRun(directory, tree=tree, script=launcher,
+                                      STUB_BUILD_SLEEP='0',
+                                      STUB_BUILD_RC='3')
+                        self.assertEqual(run.finish(), 1,
+                                         run.out_path.read_text())
+                        self.assertFalse(
+                            any('call run' in line for line in run.calls()),
+                            '\n'.join(run.calls()))
+                        self.assertEqual(run.markers(), [])
+                        self.assertEqual(run.temp_files(), [])
 
     def test_second_run_in_same_checkout_fails_fast(self):
         with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:

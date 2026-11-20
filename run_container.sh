@@ -66,53 +66,19 @@ done
 # engine in a private directory made just for this run. Cleanup uses only
 # that ID, never the name, so it can neither touch another run's container
 # nor miss this run's own. There is no startup removal: an occupied name is
-# the engine's error.
-child=0
-run_tag=
+# the engine's error. The signal handling, background execution, and
+# cleanup below are shared with the other launchers (see container-names.sh).
 rundir=$(mktemp -d "${TMPDIR:-/tmp}/cll-run.XXXXXXXX") || exit 1
 cidfile=$rundir/container-id
 iidfile=$rundir/image-id
 rclog=$rundir/build.log
-container_id() {
-  cat "$cidfile" 2>/dev/null || true
-}
 remove_run_files() {
   rm -f "$cidfile" "$iidfile" "$rclog"
   rmdir "$rundir" 2>/dev/null || true
 }
-cleanup_container() {
-  local id
-  id=$(container_id)
-  if [ -n "$id" ]; then
-    "${engine[@]}" rm -f "$id" >/dev/null 2>&1 || true
-  fi
-  # Remove only this run's extra tag, never any other tag. While a
-  # container or another tag still uses the image, this only untags it.
-  if [ -n "$run_tag" ]; then
-    "${engine[@]}" rmi "$run_tag" >/dev/null 2>&1 || true
-  fi
-}
-on_signal() {
-  local sig id
-  sig=$1
-  # Stop the active engine call at once; bash would otherwise wait for it.
-  if [ "$child" -ne 0 ]; then kill "$child" 2>/dev/null || true; fi
-  id=$(container_id)
-  if [ -n "$id" ]; then
-    "${engine[@]}" stop -t 10 "$id" >/dev/null 2>&1 || true
-  fi
-  cleanup_container
-  # Remove the private files here as well as in the EXIT trap: bash can
-  # skip the EXIT trap when the shell dies inside this handler.
-  remove_run_files
-  # Exit with the signal status: reset the handler and re-raise the signal.
-  trap - "$sig"
-  kill -s "$sig" "$$"
-}
-for sig in INT TERM HUP; do trap "on_signal $sig" "$sig"; done
-# Single quotes: the paths expand when the trap runs, from variables that
-# never change, so no directory name is ever parsed as shell syntax again.
-trap 'cleanup_container; remove_run_files' EXIT
+cll_cidfile=$cidfile
+cll_run_tag=
+cll_install_traps
 mkdir -p "$dir/build"
 # Preserve trailing newlines so the whitespace check sees the full path.
 build_dir=$(realpath "$dir/build" && printf .)
@@ -126,29 +92,20 @@ esac
 # One writer per checkout build folder. Unique container names keep two runs
 # from one checkout from stopping each other, but both would still write the
 # same intermediate files, so the second run fails fast instead.
-# run_weasyprint_container.sh guards its build folder the same way.
-# The lock needs the flock command; without it the launcher warns and runs
-# unguarded instead of reporting a busy checkout that does not exist.
-if command -v flock >/dev/null 2>&1; then
-  exec 9>"$build_dir/.container.lock"
-  flock -n 9 || {
-    echo "Another build already uses this checkout's build directory ($build_dir)." >&2
-    exit 1
-  }
-else
-  echo "Warning: flock not found; this run does not guard the build folder." >&2
-fi
+cll_take_lock "$build_dir/.container.lock" \
+  "Another build already uses this checkout's build directory ($build_dir)."
 mounts=(-v "$dir:$dir" -v "$build_dir:$build_dir")
 build_version=$("$dir/scripts/build-version.sh") || exit 1
 
-# One fixed tag for every build (issue #297). The build also attaches a
-# second tag that is unique to this run and keeps the image referenced
-# until this run's container exists, even if another checkout rebuilds the
-# shared tag in between (Docker's containerd store can otherwise drop the
-# image at once). Cleanup removes only the run tag, never any other tag.
-# scripts/diff_upstream names the shared tag.
-image="lojban/cll_build"
-run_tag="lojban/cll_build:run-$$"
+# One fixed tag for every build (issue #297), spelled out in full so the
+# reference is always explicit. The build also attaches a second tag that
+# is unique to this run and keeps the image referenced until this run's
+# container exists, even if another checkout rebuilds the shared tag in
+# between (Docker's containerd store can otherwise drop the image at once).
+# Cleanup removes only the run tag, never any other tag.
+# scripts/diff_upstream names the same tag.
+image="lojban/cll_build:latest"
+cll_run_tag="lojban/cll_build:run-$$"
 
 # FOR TESTING; forces complete container rebuild
 # "${engine[@]}" build --no-cache -t "$image" -f Dockerfile .
@@ -157,11 +114,8 @@ echo "Running container image build; this may take a while."
 echo "Image tag: $image"
 echo "Container name: $container_name"
 echo
-"${engine[@]}" build -t "$image" -t "$run_tag" --iidfile "$iidfile" -f "$dir/Dockerfile" "$dir" >"$rclog" 2>&1 &
-child=$!
 build_rc=0
-wait "$child" || build_rc=$?
-child=0
+cll_run_bg "${engine[@]}" build -t "$image" -t "$cll_run_tag" --iidfile "$iidfile" -f "$dir/Dockerfile" "$dir" >"$rclog" 2>&1 || build_rc=$?
 # The build log lives in the private run directory, so an interrupted build
 # leaves no file behind either: the traps remove it.
 if [ "$build_rc" -ne 0 ]; then
@@ -203,18 +157,15 @@ if [ -t 0 ]; then
 fi
 
 # Numeric Docker users may have no passwd entry or writable home directory.
-# The run stays in the foreground but off exec: the traps above must stay in
-# place so a signal stops this run's own container at once, and the EXIT
-# trap removes that container however the build ends (--rm removes it too).
-# <&0 hands the background engine the launcher's own standard input: without
-# it, the engine would read /dev/null even when the launcher has a terminal.
-"${engine[@]}" run --init --rm --name "$container_name" --cidfile "$cidfile" \
+# The run stays in the foreground but off exec, through the shared helper:
+# the traps stay in place so a signal stops this run's own container at
+# once, and the EXIT trap removes that container however the build ends
+# (--rm removes it too). The helper attaches the launcher's own standard
+# input: without it, the engine would read /dev/null even with a terminal.
+run_rc=0
+cll_run_bg "${engine[@]}" run --init --rm --name "$container_name" --cidfile "$cidfile" \
   "${user_args[@]}" "${mounts[@]}" "${extra_vols[@]}" -w "$dir" \
   -e HOME=/tmp -e XDG_CACHE_HOME=/tmp/.cache \
   -e CLL_BUILD_VERSION="$build_version" "${terminal[@]}" "$image_id" \
-  ./scripts/container-command.sh ./cll_build "${args[@]}" <&0 &
-child=$!
-run_rc=0
-wait "$child" || run_rc=$?
-child=0
+  ./scripts/container-command.sh ./cll_build "${args[@]}" || run_rc=$?
 exit "$run_rc"

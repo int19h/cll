@@ -3,6 +3,23 @@
 # Bash 3.2 treats empty arrays as unset, so keep nounset disabled.
 set -eo pipefail
 
+script_path=$(readlink -f "$0")
+repo=${script_path%/*}
+repo=${repo:-/}
+. "$repo/scripts/container-names.sh"
+# A name unique to this run (issue #297). A caller can set CLL_CONTAINER_NAME
+# for a stable name of its own; validate the raw override before calling the
+# engine, since the name becomes an engine argument.
+if [ -n "${CLL_CONTAINER_NAME:-}" ]; then
+  if ! cll_valid_container_name "$CLL_CONTAINER_NAME"; then
+    echo "Invalid container name '$CLL_CONTAINER_NAME'. Set CLL_CONTAINER_NAME to letters, digits, '_', '.' and '-', starting with a letter or digit." >&2
+    exit 2
+  fi
+  container_name=$CLL_CONTAINER_NAME
+else
+  container_name=$(cll_container_name "$repo")
+fi
+
 # Select one engine; do not fall back when the selected engine is unavailable.
 engine=()
 if [ -n "${CONTAINER_BIN:-}" ]; then
@@ -21,10 +38,6 @@ if ! "${engine[@]}" info >/dev/null 2>&1; then
   exit 1
 fi
 
-script_path=$(readlink -f "$0")
-repo=${script_path%/*}
-repo=${repo:-/}
-. "$repo/scripts/container-names.sh"
 mkdir -p "$repo/build"
 # Preserve absolute and relative build symlinks by mounting both host paths unchanged.
 # Preserve trailing newlines so the whitespace check sees the full path.
@@ -74,7 +87,6 @@ build_version=$(scripts/build-version.sh)
 # Traps go in right after it, before the first engine call, and cover a
 # failed build as well as the run. Signal handling, background execution,
 # and cleanup are shared with the other launchers (see scripts/container-names.sh).
-container_name=$(cll_container_name "$repo")
 image_dir=$(mktemp -d "${TMPDIR:-/tmp}/cll-image.XXXXXXXX") || exit 1
 cll_run_tag="$image-run-$$-$(cll_run_id "$image_dir")"
 remove_run_files() {

@@ -78,21 +78,46 @@ cll_take_lock() {
     echo 'Warning: flock not found; this run does not guard the build folder.' >&2
   fi
 }
-# The cll.run label a container carries when this run started it. Empty
-# when no container by our name exists, or when it belongs to someone else.
-cll_owned_by() {
-  "${engine[@]}" inspect --format '{{ index .Config.Labels "cll.run" }}' "$1" 2>/dev/null || true
+# One `container inspect` call (never the generic `inspect`, so a name can
+# never resolve to an image) returns the full container ID and its cll.run
+# label. The ID pins the container: with --rm the name can be freed and
+# taken by another run between separate stop and rm calls, but an ID cannot
+# be reused for a different object.
+cll_lookup_container() {
+  "${engine[@]}" container inspect --format '{{.Id}} {{ index .Config.Labels "cll.run" }}' "$1" 2>/dev/null || true
 }
 cll_cleanup_container() {
-  local owner
-  owner=$(cll_owned_by "$cll_name")
-  if [ -n "$cll_name" ] && [ "$owner" = "$cll_run_tag" ]; then
-    "${engine[@]}" stop -t 10 "$cll_name" >/dev/null 2>&1 || true
-    "${engine[@]}" rm -f "$cll_name" >/dev/null 2>&1 || true
-  fi
-  if [ -n "$cll_run_tag" ]; then
-    "${engine[@]}" rmi "$cll_run_tag" >/dev/null 2>&1 || true
-  fi
+  local record id owner tries
+  # Never match an empty or missing tag: an early exit happens before this
+  # run's tag exists, and then any comparison against an empty label would
+  # wrongly succeed on Podman (empty) or a missing container (empty).
+  [ -n "$cll_name" ] || return 0
+  [ -n "$cll_run_tag" ] || return 0
+  record=$(cll_lookup_container "$cll_name") || record=
+  id=${record%% *}
+  owner=${record#* }
+  [ -n "$id" ] || return 0
+  # Only this run's own container, proven by its label, is stopped and
+  # removed. Anything else keeps running, including a same-named container
+  # that another run started after ours exited.
+  [ "$owner" = "$cll_run_tag" ] || return 0
+  "${engine[@]}" stop -t 10 "$id" >/dev/null 2>&1 || true
+  "${engine[@]}" rm -f "$id" >/dev/null 2>&1 || true
+  # The run's own container is gone, so untagging its image cannot strand
+  # anything. With --rm the engine's own auto-remove can still hold the
+  # image for a moment after our rm, so a single rmi can fail while a
+  # later one succeeds; retry while the tag still resolves, then give up
+  # quietly rather than failing the build over tag cleanup. When the tag
+  # never existed (a failed build) the first check ends this at once.
+  tries=0
+  until "${engine[@]}" rmi "$cll_run_tag" >/dev/null 2>&1; do
+    "${engine[@]}" image inspect --format '{{.Id}}' "$cll_run_tag" \
+      >/dev/null 2>&1 || break
+    tries=$((tries + 1))
+    [ "$tries" -ge 5 ] && break
+    sleep 2
+  done
+  return 0
 }
 cll_on_signal() {
   local sig

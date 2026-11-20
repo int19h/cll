@@ -63,12 +63,30 @@ valid_ref() {
 log "call $*"
 op=$1
 shift || true
+# The launchers scope container commands as `container inspect`, while
+# `stop` and `rm` stay bare, exactly as the real engines accept both.
+if [ "$op" = container ]; then
+  op=$1
+  shift || true
+fi
 on_engine_signal() {
   # Stop the sleep at once: an orphaned sleep would inherit the checkout
   # lock and block the next run.
   [ -n "$sp" ] && kill "$sp" 2>/dev/null
   log "$1-signal"
   exit 143
+}
+# Containers live in by-id/<full ID> holding "<name> <label>";
+# by-name/<name> holds the running container's full ID. Like the real
+# engines, the stub resolves stop/rm by the ID it is given: removing the
+# bare name instead would hit whatever container took the name afterwards.
+remove_container() {
+  # Delete the container $1 by its full ID, freeing its name if set.
+  rm -f "$STUB_DIR/by-id/$1"
+  for f in "$STUB_DIR"/by-name/*; do
+    [ -e "$f" ] || continue
+    [ "$(cat "$f")" = "$1" ] && rm -f "$f"
+  done
 }
 case "$op" in
   info) exit 0 ;;
@@ -78,12 +96,17 @@ case "$op" in
     log "tag-invalid $3"
     exit 1 ;;
   inspect)
-    # usage: inspect --format FMT NAME — report the cll.run label that a
-    # container was started with, or nothing when there is no such one.
+    # usage: container inspect --format FMT NAME — report "<full ID>
+    # <label>" for the container currently called NAME, or nothing when
+    # no such container or label exists. One call returns both, so the
+    # cleanup can check ownership and act without a name race.
     name=
     for token in "$@"; do name=$token; done
-    if [ -f "$STUB_DIR/$name.marker" ]; then
-      cat "$STUB_DIR/$name.marker"
+    if [ -e "$STUB_DIR/by-name/$name" ]; then
+      cid=$(cat "$STUB_DIR/by-name/$name")
+      if [ -e "$STUB_DIR/by-id/$cid" ]; then
+        printf '%s %s' "$cid" "$(cat "$STUB_DIR/by-id/$cid")"
+      fi
     fi
     exit 0 ;;
   image)
@@ -183,8 +206,7 @@ case "$op" in
       fi
       prev=$token
     done
-    id="$name"
-    if [ -e "$STUB_DIR/$id.marker" ]; then
+    if [ -e "$STUB_DIR/by-name/$name" ]; then
       log "run-rejected-occupied $name"
       exit 125
     fi
@@ -192,10 +214,13 @@ case "$op" in
       log "run-no-such-image $image"
       exit 125
     fi
+    cid="$name-$$-$RANDOM"
+    mkdir -p "$STUB_DIR/by-name" "$STUB_DIR/by-id"
+    printf '%s' "$cid" > "$STUB_DIR/by-name/$name"
+    printf '%s' "$label_id" > "$STUB_DIR/by-id/$cid"
     trap 'on_engine_signal run' TERM INT HUP
     log run-start
     if [ -t 0 ]; then log run-stdin-tty; else log run-stdin-notty; fi
-    printf '%s' "$label_id" > "$STUB_DIR/$id.marker"
     sleep "${STUB_RUN_SLEEP:-20}" & sp=$!
     wait "$sp"
     rc=$?
@@ -213,7 +238,14 @@ case "$op" in
       esac
     done
     log "stop $id"
-    rm -f "$STUB_DIR/$id.marker"
+    # The launchers run with --rm, so stopping frees the name at once; the
+    # stopped container itself is gone too. A test can hold the matching
+    # rm with STUB_RM_HOLD to let a successor take the freed name first.
+    if [ -e "$STUB_DIR/by-id/$id" ]; then
+      remove_container "$id"
+    elif [ -e "$STUB_DIR/by-name/$id" ]; then
+      remove_container "$(cat "$STUB_DIR/by-name/$id")"
+    fi
     exit 0 ;;
   rm)
     id=
@@ -224,9 +256,26 @@ case "$op" in
       esac
     done
     log "rm $id"
-    rm -f "$STUB_DIR/$id.marker"
+    if [ -n "${STUB_RM_HOLD:-}" ]; then
+      while [ ! -e "$STUB_RM_HOLD" ]; do sleep 0.2; done
+    fi
+    # Like a real engine, resolve the argument: a full ID deletes that
+    # container, a name deletes the container currently holding it.
+    if [ -e "$STUB_DIR/by-id/$id" ]; then
+      remove_container "$id"
+    elif [ -e "$STUB_DIR/by-name/$id" ]; then
+      remove_container "$(cat "$STUB_DIR/by-name/$id")"
+    fi
     exit 0 ;;
   rmi)
+    # A test can fail the first rmi per run with STUB_RMI_FAIL_ONCE: the
+    # launcher must retry and still remove its run tag, as a real engine
+    # can refuse the untag for a moment after --rm auto-removal.
+    if [ -n "${STUB_RMI_FAIL_ONCE:-}" ] && [ ! -e "$STUB_DIR/rmi-failed" ]; then
+      touch "$STUB_DIR/rmi-failed"
+      log "rmi-failed-once $*"
+      exit 1
+    fi
     for token in "$@"; do
       case "$token" in
         -*) continue ;;
@@ -403,7 +452,24 @@ class StubRun:
         return self.log.read_text()
 
     def markers(self):
-        return sorted(p.name for p in self.work.glob('*.marker'))
+        # Every full container ID the stub still tracks. Empty means the
+        # run left nothing behind.
+        by_id = self.work / 'by-id'
+        if not by_id.exists():
+            return []
+        return sorted(p.name for p in by_id.iterdir())
+
+    def named(self):
+        # Map each live container name to its cll.run label.
+        out = {}
+        by_name = self.work / 'by-name'
+        by_id = self.work / 'by-id'
+        if by_name.exists():
+            for entry in by_name.iterdir():
+                label_file = by_id / entry.read_text()
+                out[entry.name] = label_file.read_text() \
+                    if label_file.exists() else None
+        return out
 
     def temp_files(self):
         # Each launcher keeps its container ID, image ID and build log in
@@ -588,6 +654,30 @@ class SignalTests(unittest.TestCase):
                     self.assertEqual(rc, 2)
                     self.assertEqual(run.calls(), [])
 
+    def test_invalid_override_rejected_by_backend_launchers(self):
+        # The WeasyPrint and Typst launchers validate CLL_CONTAINER_NAME
+        # exactly as the Prince launcher does: a bad override fails before
+        # the first engine call, and no container ever starts.
+        for launcher in ('run_weasyprint_container.sh',
+                         'run_typst_container.sh'):
+            for bad in ('-leading-hyphen', 'has space', 'ends-newline\n'):
+                with self.subTest(launcher=launcher, name=bad):
+                    with tempfile.TemporaryDirectory(dir=SCRATCH) as parent:
+                        tree = make_launcher_tree(
+                            Path(parent) / launcher.replace('.sh', ''),
+                            launcher=launcher)
+                        with tempfile.TemporaryDirectory(
+                                dir=SCRATCH) as directory:
+                            run = StubRun(directory, tree=tree,
+                                          script=launcher,
+                                          STUB_BUILD_SLEEP='0',
+                                          STUB_RUN_SLEEP='0',
+                                          CLL_CONTAINER_NAME=bad)
+                            rc = run.finish()
+                            self.assertEqual(rc, 2)
+                            self.assertEqual(run.calls(), [])
+                            self.assertEqual(run.markers(), [])
+
     def test_valid_override_runs_to_completion(self):
         with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
             name = 'my-run_2.0'
@@ -629,10 +719,138 @@ class SignalTests(unittest.TestCase):
                 self.assertIn('run-rejected-occupied shared-name',
                               second.log_text(), second.log_text())
                 self.assertIsNone(first.proc.poll())
-                self.assertEqual(first.markers(), ['shared-name.marker'])
+                self.assertEqual(len(first.markers()), 1)
+                self.assertIn('shared-name', first.named())
                 rc = first.finish(sig=signal.SIGTERM)
                 self.assertEqual(rc, -signal.SIGTERM)
                 self.assertEqual(first.markers(), [])
+
+    def test_successor_removal_race_uses_full_id(self):
+        # A is cancelled while its cleanup's stop calls the stub; B takes
+        # the name before the rm. A must remove its own full ID and leave
+        # B's container running.
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as parent:
+            a_tree = make_launcher_tree(Path(parent) / 'a')
+            b_tree = make_launcher_tree(Path(parent) / 'b')
+            with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+                hold = Path(directory) / 'hold-rm'
+                first = StubRun(directory, tree=a_tree,
+                                STUB_BUILD_SLEEP='0',
+                                STUB_RUN_SLEEP='30',
+                                STUB_RM_HOLD=str(hold),
+                                CLL_CONTAINER_NAME='race-name')
+                self.assertTrue(first.wait_for('run-start'),
+                                'first run never started the container')
+                first_a = first.named()
+                self.assertIn('race-name', first_a)
+                tag_a = first_a['race-name']
+                cid_a = first.markers()
+                self.assertEqual(len(cid_a), 1)
+                cid_a = cid_a[0]
+                # Cancel A so its cleanup is waiting inside the rm call,
+                # after its stop already freed the name.
+                first.proc.send_signal(signal.SIGTERM)
+                self.assertTrue(first.wait_for('call rm -f %s' % cid_a),
+                                'cleanup never removed its own ID: %s'
+                                % first.log_text())
+                # B takes the freed name while A is still stopping it.
+                second = StubRun(directory, tree=b_tree,
+                                 out_name='second-stdout.txt',
+                                 STUB_BUILD_SLEEP='0',
+                                 STUB_RUN_SLEEP='30',
+                                 CLL_CONTAINER_NAME='race-name')
+                self.assertTrue(second.wait_for('run-start'),
+                                'second run never started: %s'
+                                % second.log_text())
+                hold.write_text('go')
+                self.assertEqual(first.finish(), -signal.SIGTERM)
+                live = second.named()
+                self.assertIn('race-name', live,
+                              'successor container was removed: %s'
+                              % second.log_text())
+                self.assertNotEqual(live['race-name'], tag_a)
+                # With the old remove-by-name, A's rm would have taken the
+                # successor's name instead and the assertion above fails.
+                second.finish(sig=signal.SIGTERM)
+                self.assertEqual(second.markers(), [])
+
+    def test_rmi_retry_removes_run_tag(self):
+        # The first untag can fail (a real engine can hold the image for
+        # a moment after --rm auto-removal); the launcher retries and the
+        # run tag is still gone at exit.
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            run = StubRun(directory, STUB_BUILD_SLEEP='0',
+                          STUB_RUN_SLEEP='1', STUB_RMI_FAIL_ONCE='1')
+            rc = run.finish()
+            self.assertEqual(rc, 0)
+            self.assertIn('rmi-failed-once', run.log_text())
+            self.assertGreaterEqual(
+                run.log_text().count('call rmi '), 2,
+                run.log_text())
+            self.assertEqual(run.markers(), [])
+
+    def test_cleanup_needs_nonempty_matching_tag(self):
+        # Unit test of cll_cleanup_container's guards: with no run tag (an
+        # exit before the tag exists) an unlabelled same-named foreign
+        # container must survive. The old code compared the empty tag with
+        # the empty label and removed it by name. With a matching nonempty
+        # tag the run's own container is still removed, by its full ID.
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            work = Path(directory)
+            (work / 'by-id').mkdir()
+            (work / 'by-name').mkdir()
+            (work / 'by-id' / 'foreign-cid').write_text('')
+            (work / 'by-name' / 'lone-wolf').write_text('foreign-cid')
+            (work / 'by-id' / 'own-cid').write_text('mytag')
+            (work / 'by-name' / 'mine').write_text('own-cid')
+            stub = work / 'stub-engine.sh'
+            stub.write_text(STUB_ENGINE)
+            stub.chmod(stub.stat().st_mode | stat.S_IXUSR)
+            env = {k: v for k, v in os.environ.items()
+                   if k != 'CLL_CONTAINER_NAME'}
+            env.update(STUB_LOG=str(work / 'engine.log'),
+                       STUB_DIR=str(work))
+            run_cleanup = ('. "{}"; engine=("{}"); '
+                           'cll_name="$0"; cll_run_tag="$1"; '
+                           'cll_cleanup_container').format(HELPER, stub)
+            subprocess.run(['bash', '-c', run_cleanup, 'lone-wolf', ''],
+                           check=True, text=True, env=env)
+            self.assertTrue((work / 'by-id' / 'foreign-cid').exists())
+            self.assertTrue((work / 'by-name' / 'lone-wolf').exists())
+            subprocess.run(['bash', '-c', run_cleanup, 'mine', 'mytag'],
+                           check=True, text=True, env=env)
+            self.assertFalse((work / 'by-id' / 'own-cid').exists())
+            self.assertFalse((work / 'by-name' / 'mine').exists())
+
+    def test_lock_conflict_leaves_foreign_container(self):
+        # An early exit (lock conflict here) must not touch a container it
+        # never owned, even when the override name matches and both sides
+        # have an empty run tag. The foreign container must survive.
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            work = Path(directory)
+            (work / 'by-id').mkdir()
+            (work / 'by-name').mkdir()
+            (work / 'by-id' / 'foreign-cid').write_text('')
+            (work / 'by-name' / 'lone-wolf').write_text('foreign-cid')
+            first = StubRun(directory, STUB_BUILD_SLEEP='30',
+                            STUB_RUN_SLEEP='1',
+                            CLL_CONTAINER_NAME='lone-wolf')
+            self.assertTrue(first.wait_for('call build '),
+                            'first run never reached the build')
+            second = StubRun(directory, out_name='second-stdout.txt',
+                             STUB_BUILD_SLEEP='0', STUB_RUN_SLEEP='1',
+                             CLL_CONTAINER_NAME='lone-wolf')
+            rc = second.finish()
+            self.assertEqual(rc, 1)
+            self.assertFalse(
+                any('call build' in line for line in second.calls()),
+                '\n'.join(second.calls()))
+            self.assertTrue((work / 'by-id' / 'foreign-cid').exists())
+            self.assertTrue((work / 'by-name' / 'lone-wolf').exists())
+            # SIGTERM, not SIGKILL: the trap must run so the engine child
+            # exits and releases the checkout lock for the next test. A
+            # SIGKILL would orphan the stub sleep holding the lock.
+            first.finish(sig=signal.SIGTERM)
 
     def test_rebuilt_tag_keeps_other_run_image_alive(self):
         # Docker's store drops an image as soon as its last tag moves.

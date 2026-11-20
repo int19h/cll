@@ -3,6 +3,23 @@
 # Bash 3.2 treats empty arrays as unset, so keep nounset disabled.
 set -eo pipefail
 
+script_path=$(readlink -f "$0")
+repo_dir=${script_path%/*}
+repo_dir=${repo_dir:-/}
+. "$repo_dir/scripts/container-names.sh"
+# A name unique to this run (issue #297). A caller can set CLL_CONTAINER_NAME
+# for a stable name of its own; validate the raw override before calling the
+# engine, since the name becomes an engine argument.
+if [ -n "${CLL_CONTAINER_NAME:-}" ]; then
+  if ! cll_valid_container_name "$CLL_CONTAINER_NAME"; then
+    echo "Invalid container name '$CLL_CONTAINER_NAME'. Set CLL_CONTAINER_NAME to letters, digits, '_', '.' and '-', starting with a letter or digit." >&2
+    exit 2
+  fi
+  container_name=$CLL_CONTAINER_NAME
+else
+  container_name=$(cll_container_name "$repo_dir")
+fi
+
 # Select one engine; do not fall back when the selected engine is unavailable.
 engine=()
 if [ -n "${CONTAINER_BIN:-}" ]; then
@@ -20,9 +37,6 @@ if ! "${engine[@]}" info >/dev/null 2>&1; then
   echo "Container command '$container_bin info' failed. Check that the selected engine is running and accessible." >&2
   exit 1
 fi
-script_path=$(readlink -f "$0")
-repo_dir=${script_path%/*}
-repo_dir=${repo_dir:-/}
 args=("$@")
 extra_vols=()
 for ((i=0; i<${#args[@]}; i++)); do
@@ -47,7 +61,6 @@ for ((i=0; i<${#args[@]}; i++)); do
   esac
 done
 cd "$repo_dir"
-. "$repo_dir/scripts/container-names.sh"
 mkdir -p build
 # Preserve trailing newlines so the whitespace check sees the full path.
 build_dir=$(readlink -f build && printf .)
@@ -70,7 +83,6 @@ cll_take_lock "$build_dir/.weasyprint.lock" \
 # (see scripts/container-names.sh).
 workspace_id=$(printf '%s' "$repo_dir" | sha256sum | cut -c1-16)
 image="localhost/cll-weasyprint:$workspace_id"
-container_name=$(cll_container_name "$repo_dir")
 image_dir=$(mktemp -d "${TMPDIR:-/tmp}/cll-image.XXXXXXXX") || exit 1
 cll_run_tag="$image-run-$$-$(cll_run_id "$image_dir")"
 remove_run_files() {

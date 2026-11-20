@@ -78,7 +78,16 @@ remove_run_files() {
   rmdir "$rundir" 2>/dev/null || true
 }
 cll_name=$container_name
-cll_run_tag=
+# One fixed tag for every build (issue #297), spelled out in full so the
+# reference is always explicit. The build also attaches a second tag that
+# is unique to this run and keeps the image referenced until this run's
+# container exists, even if another checkout rebuilds the shared tag in
+# between (Docker's containerd store can otherwise drop the image at once).
+# Set it before installing the traps below: with an empty expected tag, an
+# early exit could otherwise match an unlabelled container of the same name.
+# scripts/diff_upstream names the same tag.
+image="lojban/cll_build:latest"
+cll_run_tag="lojban/cll_build:run-$$-$(cll_run_id "$rundir")"
 cll_install_traps
 mkdir -p "$dir/build"
 # Preserve trailing newlines so the whitespace check sees the full path.
@@ -97,16 +106,6 @@ cll_take_lock "$build_dir/.container.lock" \
   "Another build already uses this checkout's build directory ($build_dir)."
 mounts=(-v "$dir:$dir" -v "$build_dir:$build_dir")
 build_version=$("$dir/scripts/build-version.sh") || exit 1
-
-# One fixed tag for every build (issue #297), spelled out in full so the
-# reference is always explicit. The build also attaches a second tag that
-# is unique to this run and keeps the image referenced until this run's
-# container exists, even if another checkout rebuilds the shared tag in
-# between (Docker's containerd store can otherwise drop the image at once).
-# Cleanup removes only the run tag, never any other tag.
-# scripts/diff_upstream names the same tag.
-image="lojban/cll_build:latest"
-cll_run_tag="lojban/cll_build:run-$$-$(cll_run_id "$rundir")"
 
 # FOR TESTING; forces complete container rebuild
 # "${engine[@]}" build --no-cache -t "$image" -f Dockerfile .

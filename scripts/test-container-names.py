@@ -37,6 +37,27 @@ STUB_ENGINE = """\
 log() { printf '%s\\n' "$*" >> "$STUB_LOG"; }
 tagkey() { printf '%s' "$1" | tr -c 'A-Za-z0-9' '_'; }
 have_image() { [ -e "$STUB_DIR/images/$1" ]; }
+# An image reference names exactly one tag after the last slash: the tag
+# starts with a letter, digit or underscore and holds only letters,
+# digits, _, . and -. Anything else fails the call, as a real engine
+# (and Docker's invalid reference format error) would.
+valid_ref() {
+  local after tag
+  after=${1##*/}
+  case "$after" in
+    *:*:*) return 1 ;;
+    *:*) ;;
+    *) return 1 ;;
+  esac
+  tag=${after#*:}
+  case "$tag" in
+    ""|*[!A-Za-z0-9_.-]*) return 1 ;;
+  esac
+  case "$tag" in
+    [A-Za-z0-9_]*) return 0 ;;
+  esac
+  return 1
+}
 log "call $*"
 op=$1
 shift || true
@@ -50,7 +71,10 @@ on_engine_signal() {
 case "$op" in
   info) exit 0 ;;
   --version) echo "docker version 99-stub"; exit 0 ;;
-  tag) exit 0 ;;
+  tag)
+    if valid_ref "$3"; then exit 0; fi
+    log "tag-invalid $3"
+    exit 1 ;;
   kill) log "UNEXPECTED engine kill $*"; exit 1 ;;
   build)
     iidfile=; tags=
@@ -76,6 +100,10 @@ case "$op" in
     # Retagging moves each tag; an image whose last tag moves is dropped,
     # as in Docker's containerd store.
     for tag in $tags; do
+      if ! valid_ref "$tag"; then
+        log "build-invalid-tag $tag"
+        exit 1
+      fi
       key=$(tagkey "$tag")
       if [ -e "$STUB_DIR/tags/$key" ] && [ "$(cat "$STUB_DIR/tags/$key")" != "$iid" ]; then
         old=$(cat "$STUB_DIR/tags/$key")
@@ -210,6 +238,45 @@ def valid_container_name(name):
         'if cll_valid_container_name "$CLL_T_NAME"; then echo valid; else echo invalid; fi',
         env_extra={'CLL_T_NAME': name})
     return out == 'valid'
+
+
+class StubEngineTests(unittest.TestCase):
+    def test_rejects_invalid_image_references(self):
+        # The round 5 bug (a second colon, as in repo:tag:run-PID) must
+        # fail in the stub too, not only on real engines.
+        bad = ['localhost/cll-weasyprint:abc:run-1',
+               'localhost/cll-weasyprint:bad tag',
+               'localhost/cll-weasyprint:',
+               'localhost/cll-weasyprint:-bad',
+               'localhost/cll-weasyprint']
+        good = ['lojban/cll_build:latest',
+                'localhost/cll-weasyprint:abc-run-1',
+                'localhost/cll-typst:abc123_-.-9']
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            work = Path(directory)
+            stub = work / 'stub-engine.sh'
+            stub.write_text(STUB_ENGINE)
+            stub.chmod(stub.stat().st_mode | stat.S_IXUSR)
+            log = work / 'engine.log'
+            for tag in bad + good:
+                log.write_text('')
+                env = dict(os.environ)
+                env.update(STUB_LOG=str(log), STUB_DIR=str(work),
+                           STUB_IMAGE_ID='img-x', STUB_BUILD_SLEEP='0',
+                           TMPDIR=str(work))
+                iid = work / 'image-id'
+                if iid.exists():
+                    iid.unlink()
+                result = subprocess.run(
+                    [str(stub), 'build', '-t', tag,
+                     '--iidfile', str(iid), '-f', 'Dockerfile', '.'],
+                    capture_output=True, text=True, env=env)
+                if tag in good:
+                    self.assertEqual(result.returncode, 0, tag)
+                    self.assertEqual(iid.read_text(), 'img-x', tag)
+                else:
+                    self.assertNotEqual(result.returncode, 0, tag)
+                    self.assertIn('build-invalid-tag', log.read_text())
 
 
 def make_launcher_tree(parent, dockerfile_lines=('FROM example/base\n',),
@@ -561,7 +628,8 @@ class SignalTests(unittest.TestCase):
     def test_image_references_are_valid(self):
         # Every tag the launchers generate has one colon after the last
         # slash and valid tag characters; each build also carries a
-        # run-unique tag that names the launcher process.
+        # run-unique tag that names the launcher process and a random
+        # value, so PIDs reused across namespaces cannot collide.
         tag_part = re.compile(r'^[A-Za-z0-9_][A-Za-z0-9_.-]{0,127}$')
 
         def check(ref):
@@ -610,10 +678,11 @@ class SignalTests(unittest.TestCase):
                         self.assertNotEqual(tags[0], tags[1])
                         for tag in tags:
                             check(tag)
-                        # The shared tags cannot end this way: their
-                        # tag parts are 'latest' or hex digits.
+                        # The shared tags cannot match: their tag parts
+                        # are 'latest' or hex digits, never 'run-...'.
                         run_tags = [tag for tag in tags
-                                    if tag.endswith('run-%d' % run.pid)]
+                                    if re.search(r'run-%d-[A-Za-z0-9]+$'
+                                                 % run.pid, tag)]
                         self.assertEqual(len(run_tags), 1, tags)
                         run_calls = [line for line in lines
                                      if line.startswith('call run ')]

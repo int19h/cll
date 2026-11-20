@@ -60,6 +60,13 @@ cll_valid_container_name() {
 cll_child=0
 cll_cidfile=
 cll_run_tag=
+# Prints the random part of a mktemp -d directory made from a
+# "<name>.XXXXXXXX" template, for run tags that stay unique even when two
+# launchers share a PID namespace and its PIDs.
+cll_run_id() {
+  local base=${1##*/}
+  printf '%s\n' "${base#*.}"
+}
 cll_take_lock() {
   if command -v flock >/dev/null 2>&1; then
     exec 9>"$1"

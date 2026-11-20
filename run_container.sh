@@ -105,7 +105,7 @@ build_version=$("$dir/scripts/build-version.sh") || exit 1
 # Cleanup removes only the run tag, never any other tag.
 # scripts/diff_upstream names the same tag.
 image="lojban/cll_build:latest"
-cll_run_tag="lojban/cll_build:run-$$"
+cll_run_tag="lojban/cll_build:run-$$-$(cll_run_id "$rundir")"
 
 # FOR TESTING; forces complete container rebuild
 # "${engine[@]}" build --no-cache -t "$image" -f Dockerfile .

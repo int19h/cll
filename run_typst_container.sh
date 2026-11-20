@@ -41,7 +41,6 @@ esac
 # until this run's container exists.
 key=$(printf '%s' "$repo" | sha256sum | cut -c 1-16)
 image="localhost/cll-typst:$key"
-cll_run_tag="$image-run-$$"
 args=()
 volumes=(-v "$repo:$repo" -v "$builddir:$builddir")
 while getopts ':nstSha:' opt; do
@@ -76,6 +75,7 @@ build_version=$(scripts/build-version.sh)
 # handling, background execution, and cleanup are shared with the other
 # launchers (see scripts/container-names.sh).
 image_dir=$(mktemp -d "${TMPDIR:-/tmp}/cll-image.XXXXXXXX") || exit 1
+cll_run_tag="$image-run-$$-$(cll_run_id "$image_dir")"
 iidfile=$image_dir/image-id
 remove_run_files() {
   rm -f "$image_dir/container-id" "$iidfile"

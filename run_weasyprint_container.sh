@@ -71,8 +71,8 @@ cll_take_lock "$build_dir/.weasyprint.lock" \
 # (see scripts/container-names.sh).
 workspace_id=$(printf '%s' "$repo_dir" | sha256sum | cut -c1-16)
 image="localhost/cll-weasyprint:$workspace_id"
-cll_run_tag="$image-run-$$"
 image_dir=$(mktemp -d "${TMPDIR:-/tmp}/cll-image.XXXXXXXX") || exit 1
+cll_run_tag="$image-run-$$-$(cll_run_id "$image_dir")"
 iidfile=$image_dir/image-id
 remove_run_files() {
   rm -f "$image_dir/container-id" "$iidfile"

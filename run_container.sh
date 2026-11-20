@@ -62,21 +62,22 @@ do
   fi
 done
 
-# This run's container is tracked by its immutable ID, recorded by the
-# engine in a private directory made just for this run. Cleanup uses only
-# that ID, never the name, so it can neither touch another run's container
-# nor miss this run's own. There is no startup removal: an occupied name is
-# the engine's error. The signal handling, background execution, and
-# cleanup below are shared with the other launchers (see container-names.sh).
+# This run's container is tracked by its unique name plus the cll.run
+# label it carries, which this run stamps with its own tag. Cleanup
+# removes the container only when the label matches, so it can neither
+# touch another run's container nor miss this run's own; the engine is
+# asked for everything, and no engine-written file is ever read (root-owned
+# files under sudo stay unreadable). There is no startup removal: an
+# occupied name is the engine's error. The signal handling, background
+# execution, and cleanup below are shared with the other launchers
+# (see container-names.sh).
 rundir=$(mktemp -d "${TMPDIR:-/tmp}/cll-run.XXXXXXXX") || exit 1
-cidfile=$rundir/container-id
-iidfile=$rundir/image-id
 rclog=$rundir/build.log
 remove_run_files() {
-  rm -f "$cidfile" "$iidfile" "$rclog"
+  rm -f "$rclog"
   rmdir "$rundir" 2>/dev/null || true
 }
-cll_cidfile=$cidfile
+cll_name=$container_name
 cll_run_tag=
 cll_install_traps
 mkdir -p "$dir/build"
@@ -115,7 +116,7 @@ echo "Image tag: $image"
 echo "Container name: $container_name"
 echo
 build_rc=0
-cll_run_bg "${engine[@]}" build -t "$image" -t "$cll_run_tag" --iidfile "$iidfile" -f "$dir/Dockerfile" "$dir" >"$rclog" 2>&1 || build_rc=$?
+cll_run_bg "${engine[@]}" build -t "$image" -t "$cll_run_tag" -f "$dir/Dockerfile" "$dir" >"$rclog" 2>&1 || build_rc=$?
 # The build log lives in the private run directory, so an interrupted build
 # leaves no file behind either: the traps remove it.
 if [ "$build_rc" -ne 0 ]; then
@@ -131,8 +132,10 @@ if [ "$build_rc" -ne 0 ]; then
 fi
 
 # Run the immutable image this build produced, not the tag: another checkout
-# can retag the name under this run between the build and the run.
-image_id=$(cat "$iidfile" 2>/dev/null) || image_id=
+# can retag the name under this run between the build and the run. The ID
+# comes from the engine itself, never from a file (a root-owned ID file is
+# unreadable); an empty answer fails loudly instead of running nothing.
+image_id=$("${engine[@]}" image inspect --format '{{.Id}}' "$cll_run_tag" 2>/dev/null) || image_id=
 if [ -z "$image_id" ]; then
   echo "Container image build did not report its ID." >&2
   exit 1
@@ -163,7 +166,7 @@ fi
 # (--rm removes it too). The helper attaches the launcher's own standard
 # input: without it, the engine would read /dev/null even with a terminal.
 run_rc=0
-cll_run_bg "${engine[@]}" run --init --rm --name "$container_name" --cidfile "$cidfile" \
+cll_run_bg "${engine[@]}" run --init --rm --name "$container_name" --label "cll.run=$cll_run_tag" \
   "${user_args[@]}" "${mounts[@]}" "${extra_vols[@]}" -w "$dir" \
   -e HOME=/tmp -e XDG_CACHE_HOME=/tmp/.cache \
   -e CLL_BUILD_VERSION="$build_version" "${terminal[@]}" "$image_id" \

@@ -42,7 +42,7 @@ cll_valid_container_name() {
 # (issue #297). Each launcher tracks its own run in these variables and in
 # one caller-defined remove_run_files function, then shares the rest:
 #
-#   cll_cidfile   file the engine fills with the container ID (--cidfile)
+#   cll_name      this run's container name (unique per run)
 #   cll_run_tag   extra image tag this run attached at build time
 #
 # Call cll_install_traps once, before the first engine call that needs
@@ -50,15 +50,18 @@ cll_valid_container_name() {
 # "cll_run_bg <engine> ... || step_rc=$?"; the step runs in the background
 # with the launcher's own standard input attached, so a trapped signal
 # interrupts the wait at once (and a terminal stays the engine's terminal).
-# Cleanup uses only the recorded container ID and the run tag, never any
-# other container, image, or tag.
+# Cleanup uses only the recorded container name and run tag, never any
+# other container, image, or tag. The container is removed only when its
+# cll.run label matches this run's tag, so a run that never started its
+# own container (a shared name taken by another run, a failed build, an
+# early signal) can never stop someone else's.
 #
 # Guard a build folder with cll_take_lock <lock-file> <busy-message>: it
 # takes a nonblocking flock, or warns and runs unguarded when flock is not
 # installed (as on macOS) instead of reporting a busy checkout that does
 # not exist.
 cll_child=0
-cll_cidfile=
+cll_name=
 cll_run_tag=
 # Prints the random part of a mktemp -d directory made from a
 # "<name>.XXXXXXXX" template, for run tags that stay unique even when two
@@ -75,28 +78,27 @@ cll_take_lock() {
     echo 'Warning: flock not found; this run does not guard the build folder.' >&2
   fi
 }
-cll_container_id() {
-  cat "$cll_cidfile" 2>/dev/null || true
+# The cll.run label a container carries when this run started it. Empty
+# when no container by our name exists, or when it belongs to someone else.
+cll_owned_by() {
+  "${engine[@]}" inspect --format '{{ index .Config.Labels "cll.run" }}' "$1" 2>/dev/null || true
 }
 cll_cleanup_container() {
-  local id
-  id=$(cll_container_id)
-  if [ -n "$id" ]; then
-    "${engine[@]}" rm -f "$id" >/dev/null 2>&1 || true
+  local owner
+  owner=$(cll_owned_by "$cll_name")
+  if [ -n "$cll_name" ] && [ "$owner" = "$cll_run_tag" ]; then
+    "${engine[@]}" stop -t 10 "$cll_name" >/dev/null 2>&1 || true
+    "${engine[@]}" rm -f "$cll_name" >/dev/null 2>&1 || true
   fi
   if [ -n "$cll_run_tag" ]; then
     "${engine[@]}" rmi "$cll_run_tag" >/dev/null 2>&1 || true
   fi
 }
 cll_on_signal() {
-  local sig id
+  local sig
   sig=$1
   # Stop the active engine call at once; bash would otherwise wait for it.
   if [ "$cll_child" -ne 0 ]; then kill "$cll_child" 2>/dev/null || true; fi
-  id=$(cll_container_id)
-  if [ -n "$id" ]; then
-    "${engine[@]}" stop -t 10 "$id" >/dev/null 2>&1 || true
-  fi
   cll_cleanup_container
   # Remove the private files here as well as in the EXIT trap: bash can
   # skip the EXIT trap when the shell dies inside this handler.

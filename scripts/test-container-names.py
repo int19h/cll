@@ -2,9 +2,11 @@
 """Unique container names and per-run image selection (issue #297).
 
 Two builds from different checkouts must not stop each other: each run gets
-its own container name, only that run's container is ever removed (by its
-immutable ID, also on interruption), and each run starts the container by
-the image ID its own build returned, so sharing one image tag is safe.
+its own container name, only that run's container is ever removed (found by
+name, verified by its cll.run label, also on interruption), and each run
+starts the container by the image ID its own build returned, so sharing one
+image tag is safe. The launcher never reads a file the engine wrote; it
+asks the engine for the image ID and the label instead.
 A signal to the launcher PID alone stops the build at once and exits with
 the signal status.
 """
@@ -75,6 +77,39 @@ case "$op" in
     if valid_ref "$3"; then exit 0; fi
     log "tag-invalid $3"
     exit 1 ;;
+  inspect)
+    # usage: inspect --format FMT NAME — report the cll.run label that a
+    # container was started with, or nothing when there is no such one.
+    name=
+    for token in "$@"; do name=$token; done
+    if [ -f "$STUB_DIR/$name.marker" ]; then
+      cat "$STUB_DIR/$name.marker"
+    fi
+    exit 0 ;;
+  image)
+    # usage: image inspect --format FMT TAG — report the tagged image ID,
+    # or fail when the tag moved or never existed.
+    tag=; skip=
+    for token in "$@"; do
+      if [ -n "$skip" ]; then skip=; continue; fi
+      case "$token" in
+        inspect) continue ;;
+        --format) skip=1; continue ;;
+        -*) continue ;;
+        *) tag=$token ;;
+      esac
+    done
+    if [ -n "${STUB_IMAGE_INSPECT_RC:-}" ]; then
+      log "image-inspect-failed $tag"
+      exit "$STUB_IMAGE_INSPECT_RC"
+    fi
+    key=$(tagkey "$tag")
+    if [ -n "$tag" ] && [ -e "$STUB_DIR/tags/$key" ]; then
+      cat "$STUB_DIR/tags/$key"
+      exit 0
+    fi
+    log "image-no-such-tag $tag"
+    exit 1 ;;
   kill) log "UNEXPECTED engine kill $*"; exit 1 ;;
   build)
     iidfile=; tags=
@@ -129,14 +164,18 @@ case "$op" in
     fi
     # The image is the argument right before the container command; flags
     # and their values are never split or glob-expanded while scanning.
-    name=; cidfile=; image=; prev=; want=
+    name=; label_id=; image=; prev=; want=
     for token in "$@"; do
       case "$want" in
         --name) name=$token; want=; prev=$token; continue ;;
-        --cidfile) cidfile=$token; want=; prev=$token; continue ;;
+        --label)
+          case "$token" in
+            cll.run=*) label_id=${token#cll.run=} ;;
+          esac
+          want=; prev=$token; continue ;;
       esac
       case "$token" in
-        --name|--cidfile) want=$token; continue ;;
+        --name|--label) want=$token; continue ;;
       esac
       if [ "$token" = "./scripts/container-command.sh" ]; then
         image=$prev
@@ -144,7 +183,7 @@ case "$op" in
       fi
       prev=$token
     done
-    id="cid-$name"
+    id="$name"
     if [ -e "$STUB_DIR/$id.marker" ]; then
       log "run-rejected-occupied $name"
       exit 125
@@ -153,11 +192,10 @@ case "$op" in
       log "run-no-such-image $image"
       exit 125
     fi
-    [ -n "$cidfile" ] && printf '%s' "$id" > "$cidfile"
     trap 'on_engine_signal run' TERM INT HUP
     log run-start
     if [ -t 0 ]; then log run-stdin-tty; else log run-stdin-notty; fi
-    touch "$STUB_DIR/$id.marker"
+    printf '%s' "$label_id" > "$STUB_DIR/$id.marker"
     sleep "${STUB_RUN_SLEEP:-20}" & sp=$!
     wait "$sp"
     rc=$?
@@ -455,9 +493,9 @@ class SignalTests(unittest.TestCase):
                                     'launcher did not stop promptly')
                     log = run.log_text()
                     # The trap stops and removes only this run's container,
-                    # tracked by the ID the engine recorded.
-                    self.assertIn('stop cid-%s' % name, log, log)
-                    self.assertIn('rm cid-%s' % name, log, log)
+                    # found by name and verified by its cll.run label.
+                    self.assertIn('stop %s' % name, log, log)
+                    self.assertIn('rm %s' % name, log, log)
                     assert_no_engine_kill(self, run)
                     self.assertFalse(
                         any(line in ('call rm cll_build', 'call kill cll_build')
@@ -479,7 +517,7 @@ class SignalTests(unittest.TestCase):
             run.output.close()
             self.assertEqual(rc, -signal.SIGINT)
             self.assertEqual(run.markers(), [])
-            self.assertIn('stop cid-%s' % name, run.log_text(),
+            self.assertIn('stop %s' % name, run.log_text(),
                           run.log_text())
 
     def test_run_gets_terminal_stdin(self):
@@ -525,6 +563,21 @@ class SignalTests(unittest.TestCase):
             self.assertEqual(rc, 3)
             self.assertEqual(run.markers(), [])
 
+    def test_missing_image_id_fails_loudly(self):
+        # An empty image ID must stop the launcher before any container
+        # runs, never start an empty image name.
+        with tempfile.TemporaryDirectory(dir=SCRATCH) as directory:
+            run = StubRun(directory, STUB_BUILD_SLEEP='0',
+                          STUB_IMAGE_INSPECT_RC='1')
+            rc = run.finish()
+            self.assertEqual(rc, 1)
+            self.assertIn('did not report its ID', run.out_path.read_text())
+            self.assertFalse(
+                any(line.startswith('call run ') for line in run.calls()))
+            self.assertIn('image-inspect-failed', run.log_text())
+            self.assertEqual(run.markers(), [])
+            self.assertEqual(run.temp_files(), [])
+
     def test_invalid_override_rejected_before_engine(self):
         for bad in ('-leading-hyphen', 'has space', 'has/slash',
                     'review-name\n', 'review-name\n\n'):
@@ -543,8 +596,11 @@ class SignalTests(unittest.TestCase):
             rc = run.finish()
             self.assertEqual(rc, 0)
             lines = '\n'.join(run.calls())
+            log = run.log_text()
             self.assertIn('--name %s' % name, lines, lines)
-            self.assertIn('--cidfile', lines, lines)
+            self.assertIn('--label cll.run=', lines, lines)
+            self.assertNotIn('--cidfile', log, log)
+            self.assertNotIn('--iidfile', log, log)
             self.assertEqual(run.markers(), [])
 
     def test_shared_name_rejected_by_engine(self):
@@ -573,8 +629,7 @@ class SignalTests(unittest.TestCase):
                 self.assertIn('run-rejected-occupied shared-name',
                               second.log_text(), second.log_text())
                 self.assertIsNone(first.proc.poll())
-                self.assertEqual(first.markers(),
-                                 ['cid-shared-name.marker'])
+                self.assertEqual(first.markers(), ['shared-name.marker'])
                 rc = first.finish(sig=signal.SIGTERM)
                 self.assertEqual(rc, -signal.SIGTERM)
                 self.assertEqual(first.markers(), [])
@@ -688,6 +743,18 @@ class SignalTests(unittest.TestCase):
                                      if line.startswith('call run ')]
                         self.assertEqual(len(run_calls), 1, lines)
                         self.assertIn(' %s ' % image, run_calls[0])
+                        self.assertIn('--label cll.run=', run_calls[0],
+                                      run_calls[0])
+                        # Nothing the launcher reads comes from an
+                        # engine-written file: no --iidfile/--cidfile flags
+                        # anywhere, and the image ID comes from
+                        # `image inspect`.
+                        self.assertFalse(
+                            any('--iidfile' in line or '--cidfile' in line
+                                for line in lines), lines)
+                        self.assertTrue(
+                            any(line.startswith('call image inspect ')
+                                for line in lines), lines)
                         self.assertEqual(run.temp_files(), [])
 
     def test_backend_launchers_term_during_build(self):

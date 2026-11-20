@@ -64,31 +64,31 @@ cll_take_lock "$build_dir/.weasyprint.lock" \
   'A WeasyPrint build already uses this build directory.'
 # One tag per checkout, as before issue #297. The build also attaches a
 # second tag that is unique to this run and keeps the image referenced
-# until this run's container exists. The image ID file lives in a private
-# directory, so a root-owned file never lands where this user cannot remove
-# it (as with CONTAINER_BIN="sudo docker"). Signal handling, background
+# until this run's container exists. The run's private directory doubles
+# as the source of the tag's random part. Signal handling, background
 # execution, and cleanup are shared with the other launchers
 # (see scripts/container-names.sh).
 workspace_id=$(printf '%s' "$repo_dir" | sha256sum | cut -c1-16)
 image="localhost/cll-weasyprint:$workspace_id"
+container_name=$(cll_container_name "$repo_dir")
 image_dir=$(mktemp -d "${TMPDIR:-/tmp}/cll-image.XXXXXXXX") || exit 1
 cll_run_tag="$image-run-$$-$(cll_run_id "$image_dir")"
-iidfile=$image_dir/image-id
 remove_run_files() {
-  rm -f "$image_dir/container-id" "$iidfile"
   rmdir "$image_dir" 2>/dev/null || true
 }
-cll_cidfile=$image_dir/container-id
+cll_name=$container_name
 cll_install_traps
 build_rc=0
-cll_run_bg "${engine[@]}" build -t "$image" -t "$cll_run_tag" --iidfile "$iidfile" -f "$repo_dir/Dockerfile.weasyprint" "$repo_dir/scripts/weasyprint" || build_rc=$?
+cll_run_bg "${engine[@]}" build -t "$image" -t "$cll_run_tag" -f "$repo_dir/Dockerfile.weasyprint" "$repo_dir/scripts/weasyprint" || build_rc=$?
 # Run the immutable image this build produced, not the tag: another checkout
-# can retag the name under this run between the build and the run.
+# can retag the name under this run between the build and the run. The ID
+# comes from the engine itself, never from a file (a root-owned ID file is
+# unreadable); an empty answer fails loudly instead of running nothing.
 if [ "$build_rc" -ne 0 ]; then
   echo "Container image build failed." >&2
   exit 1
 fi
-image_id=$(cat "$iidfile" 2>/dev/null) || image_id=
+image_id=$("${engine[@]}" image inspect --format '{{.Id}}' "$cll_run_tag" 2>/dev/null) || image_id=
 if [ -z "$image_id" ]; then
   echo "Container image build did not report its ID." >&2
   exit 1
@@ -115,7 +115,7 @@ fi
 # the traps stay in place so a signal stops this run's own container at
 # once, and the EXIT trap removes that container however the build ends.
 run_rc=0
-cll_run_bg "${engine[@]}" run --init --rm --cidfile "$image_dir/container-id" "${terminal[@]}" "${user_args[@]}" "${mount_args[@]}" "${extra_vols[@]}" \
+cll_run_bg "${engine[@]}" run --init --rm --name "$container_name" --label "cll.run=$cll_run_tag" "${terminal[@]}" "${user_args[@]}" "${mount_args[@]}" "${extra_vols[@]}" \
   -w "$repo_dir" -e TMPDIR="$build_dir/tmp" -e XDG_CACHE_HOME="$build_dir/cache" \
   -e HOME=/tmp -e CLL_BUILD_VERSION="$build_version" \
   "$image_id" ./scripts/container-command.sh ./cll_build -n -T pdf_weasyprint "${args[@]}" || run_rc=$?

@@ -59,6 +59,11 @@
 #   tools_sha256       sha256 of the site tooling: build-site.sh,
 #                      site-versions.sh, docbook-diff.py, docbook-diff.xsl,
 #                      docbook-diff-html5.xsl, docbook-diff-style.xsl
+#   toolchain          the build OS (ubuntu-26.04). A toolchain change must
+#                      rebuild every cache entry, so this field is part of
+#                      the key. It must match runs-on in
+#                      .github/workflows/pages.yml; test-pages-workflow.rb
+#                      checks that (issue #312).
 #   previous_commit    the content commit of the version before it
 #                      (diff_from_previous)
 #   baseline_commit    the UnCLL baseline commit (diff_from_uncll)
@@ -88,6 +93,8 @@ baseline_commit="${BASELINE_COMMIT:?}"
 . scripts/site-versions.sh
 rows="$(site_rows "$tsv")"
 bs_sha="$(cat scripts/build-site.sh scripts/site-versions.sh scripts/docbook-diff.py scripts/docbook-diff.xsl scripts/docbook-diff-html5.xsl scripts/docbook-diff-style.xsl | sha256sum | cut -c1-64)"
+# Must match runs-on in .github/workflows/pages.yml (issue #312).
+toolchain="ubuntu-26.04"
 cache_tag="site-build-cache"
 dl="$(mktemp -d)"
 safe_rm="$PWD/scripts/safe-rm-tree.sh"
@@ -156,8 +163,8 @@ unpack() { # <file> <ver>
 # include the digests of its release files, so the entry proves that its
 # book files are the release's.
 expect() { # <ver> <commit> <prev-commit> <released-digests> <formats>
-  printf 'commit=%s\nformats=%s\ntools_sha256=%s\nprevious_commit=%s\nbaseline_commit=%s\nrelease_files=%s\n' \
-    "$2" "$5" "$bs_sha" "$3" "$baseline_commit" "$4"
+  printf 'commit=%s\nformats=%s\ntools_sha256=%s\ntoolchain=%s\nprevious_commit=%s\nbaseline_commit=%s\nrelease_files=%s\n' \
+    "$2" "$5" "$bs_sha" "$toolchain" "$3" "$baseline_commit" "$4"
 }
 matches() { # <ver> <expected-fields> <formats>
   local bi="$outdir/$1/BUILD-INFO" key val f

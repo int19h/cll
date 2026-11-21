@@ -41,7 +41,7 @@ jobs:
   build:
     permissions:
       contents: write      # upload the per-version archives to the releases
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - name: Checkout pages branch (workflow + build scripts)
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -98,9 +98,10 @@ jobs:
       - name: Install Prince (PDF renderer)
         if: steps.formats.outputs.prince == 'true'
         run: |
-          # same version as the reviewed build container (Dockerfile)
-          wget -q "https://www.princexml.com/download/prince_16.2-1_ubuntu24.04_amd64.deb"
-          sudo apt-get install -y ./prince_16.2-1_ubuntu24.04_amd64.deb
+          # Prince 16.2, Ubuntu 26.04 build; hash from Dockerfile on main (issue #312)
+          wget -q "https://www.princexml.com/download/prince_16.2-1_ubuntu26.04_amd64.deb"
+          echo '40b31c21895956a277c2849b7609a377c5fae5c3554c8c0a712e71535633fd68  prince_16.2-1_ubuntu26.04_amd64.deb' | sha256sum -c -
+          sudo apt-get install -y ./prince_16.2-1_ubuntu26.04_amd64.deb
           prince --version
 
       - name: Resolve the baseline ref
@@ -142,7 +143,7 @@ jobs:
       pages: write
       id-token: write
     needs: build
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

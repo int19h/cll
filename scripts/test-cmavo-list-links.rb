@@ -13,8 +13,14 @@
 # <valsi> inside it stop the link, as for a <valsi>; a cell spelling
 # without an entry of its own ("kiha") never takes over another word's
 # entry ("ki'a"); two adjacent <valsi> parts link separately with no
-# space between them (rule 12); and a cell's text excludes indexterm,
-# anchor and display-none subtrees (rule 11).
+# space between them (rule 12), each part following the same rules on
+# its own (opt-outs, hidden-text exclusions and dictionary gate apply
+# per part; a part without an entry stays plain and is reported); and a
+# cell's text excludes indexterm, anchor and display-none subtrees
+# (rule 11), so an anchor between letters does not stop the link and a
+# nested rafsi never links (rule 9). The whole run is repeated with a
+# default DocBook namespace, which the merged book carries and under
+# which unprefixed XPath element names never match.
 # Run from the repository root; exits 1 on failure.
 require 'nokogiri'
 require 'open3'
@@ -23,6 +29,7 @@ require_relative 'util'
 
 failures = []
 check = lambda { |ok, msg| failures << msg unless ok }
+links = []
 
 source = <<~XML
   <?xml version="1.0"?>
@@ -96,6 +103,46 @@ source = <<~XML
       <gismu>[jundi<phrase role="display-none">hidden</phrase>]</gismu>
       <description>anchors and hidden text do not count as cell text</description>
     </cmavo-entry>
+    <cmavo-entry>
+      <cmavo><valsi glossary="false">roi</valsi><valsi>nai</valsi></cmavo>
+      <gismu>fasnu</gismu>
+      <description>an opted-out part stays plain, the other still links</description>
+    </cmavo-entry>
+    <cmavo-entry>
+      <cmavo><valsi>roi</valsi><valsi>nai<phrase glossary="false"/></valsi></cmavo>
+      <gismu>fasnu</gismu>
+      <description>a marked element inside a part unwraps that part</description>
+    </cmavo-entry>
+    <cmavo-entry>
+      <cmavo><valsi>roi</valsi><valsi>nai<phrase role="display-none">x</phrase></valsi></cmavo>
+      <gismu>fasnu</gismu>
+      <description>hidden text inside a part does not change its target</description>
+    </cmavo-entry>
+    <cmavo-entry>
+      <cmavo><valsi>pi</valsi><valsi>nosuchword</valsi></cmavo>
+      <gismu>fasnu</gismu>
+      <description>a part with no entry stays plain and is reported</description>
+    </cmavo-entry>
+    <cmavo-entry>
+      <cmavo valid="false"><valsi>roi</valsi><valsi>nai</valsi></cmavo>
+      <gismu>fasnu</gismu>
+      <description>an opted-out cell unwraps every part</description>
+    </cmavo-entry>
+    <cmavo-entry>
+      <cmavo>m<anchor xml:id="mid2"/>i</cmavo>
+      <gismu>fasnu</gismu>
+      <description>an anchor between letters does not stop the link</description>
+    </cmavo-entry>
+    <cmavo-entry>
+      <cmavo><rafsi>mi</rafsi></cmavo>
+      <gismu>fasnu</gismu>
+      <description>a nested rafsi never gets a glossary link</description>
+    </cmavo-entry>
+    <cmavo-entry>
+      <cmavo>mi</cmavo>
+      <gismu>fasnu<indexterm><primary>w</primary></indexterm></gismu>
+      <description>an explicit indexterm does not join the cell text</description>
+    </cmavo-entry>
   </cmavo-list>
   <glossary><glossdiv><title>M</title>
   <glossentry xml:id="valsi-mi"><glossterm>mi<guibutton>mi</guibutton></glossterm><glossdef><para>I</para></glossdef></glossentry>
@@ -105,6 +152,7 @@ source = <<~XML
   <glossentry xml:id="valsi-kiha"><glossterm>ki'a</glossterm><glossdef><para>sorry</para></glossdef></glossentry>
   <glossentry xml:id="valsi-roi"><glossterm>roi</glossterm><glossdef><para>all</para></glossdef></glossentry>
   <glossentry xml:id="valsi-nai"><glossterm>nai</glossterm><glossdef><para>not</para></glossdef></glossentry>
+  <glossentry xml:id="valsi-pi"><glossterm>pi</glossterm><glossdef><para>portion</para></glossdef></glossentry>
   </glossdiv></glossary>
   </chapter></book>
 XML
@@ -116,7 +164,7 @@ XML
 # contributes its whole text (roinai); anchors and hidden text do not
 # count (the mi and jundi cells, not "hidden").
 words = find_cmavo_list_words(Nokogiri::XML(source)).sort
-check.(words == ['.ki', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'jundi', 'jundi', 'kiha', 'mi', 'mi', 'mi', 'nahe', "pino'o", 'roinai', 'roinai'],
+check.(words == ['.ki', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'jundi', 'jundi', 'kiha', 'mi', 'mi', 'mi', 'mi', 'mi', 'nahe', "pino'o", 'pinosuchword', 'roinai', 'roinai', 'roinai', 'roinai', 'roinai'],
       "find_cmavo_list_words gave #{words.inspect}")
 
 # The preprocessing side, through the real script.
@@ -129,11 +177,10 @@ Dir.mktmpdir do |dir|
   doc.remove_namespaces!
 
   links = doc.xpath("//informaltable//glossterm").map { |g| [g.text, g['linkend']] }.sort
-  check.(links == [['.ki', 'valsi-ki'], ['fasnu', 'valsi-fasnu'], ['fasnu', 'valsi-fasnu'],
-                   ['fasnu', 'valsi-fasnu'], ['fasnu', 'valsi-fasnu'], ['fasnu', 'valsi-fasnu'],
-                   ['fasnu', 'valsi-fasnu'], ['jundi', 'valsi-jundi'],
-                   ['jundi', 'valsi-jundi'], ['mi', 'valsi-mi'], ['mi', 'valsi-mi'],
-                   ['mi', 'valsi-mi'], ['nai', 'valsi-nai'], ['roi', 'valsi-roi']],
+  check.(links == [['.ki', 'valsi-ki']] + [['fasnu', 'valsi-fasnu']] * 14 +
+                   [['jundi', 'valsi-jundi'], ['jundi', 'valsi-jundi']] +
+                   [['mi', 'valsi-mi']] * 5 +
+                   [['nai', 'valsi-nai']] * 3 + [['pi', 'valsi-pi']] + [['roi', 'valsi-roi']] * 3,
         "table links: #{links.inspect}")
 
   # The brackets stay as plain text around the inner link.
@@ -149,8 +196,8 @@ Dir.mktmpdir do |dir|
     check.(plain.include?(text), "plain cell #{text.inspect} changed or linked")
   end
   plain_roinai = doc.xpath("//informaltable//td[@class='cmavo']").select { |td| td.text == 'roinai' }
-  check.(plain_roinai.length == 1, 'the plain roinai cell changed text or linked')
-  check.(plain_roinai.all? { |td| td.xpath('.//glossterm').empty? }, 'the plain roinai cell linked')
+  check.(plain_roinai.length == 2, 'a plain roinai cell changed text or linked')
+  check.(plain_roinai.all? { |td| td.xpath('.//glossterm').empty? }, 'a plain roinai cell linked')
   split = doc.xpath("//informaltable//td[@class='cmavo']").find do |td|
     td.xpath('.//glossterm').map(&:text) == %w[roi nai]
   end
@@ -163,16 +210,55 @@ Dir.mktmpdir do |dir|
         'hidden text broke the bracketed link or was lost')
   check.(doc.xpath("//informaltable//td[@class='cmavo']").any? { |td| td.at('.//anchor') },
         'the anchor did not survive')
+  # Each split part follows the cell rules on its own: an opted-out
+  # part stays plain text while its neighbor still links, and no valsi
+  # wrapper survives the change.
+  optout = doc.xpath("//informaltable//td[@class='cmavo']").find do |td|
+    td.xpath('.//glossterm').map(&:text) == ['nai'] && td.text.gsub(/\s+/, '') == 'roinai'
+  end
+  check.(optout, 'the opted-out part did not stay plain beside its link')
+  check.(optout && optout.xpath('.//valsi').empty?, 'an unwrapped part kept a valsi wrapper')
+  marked_inside = doc.xpath("//informaltable//td[@class='cmavo']").find do |td|
+    td.xpath('.//glossterm').map(&:text) == ['roi'] && td.text.gsub(/\s+/, '') == 'roinai' && !td.xpath('.//phrase').empty?
+  end
+  check.(marked_inside, 'a marked element inside a part broke its neighbor')
+  hidden_part = doc.xpath("//informaltable//td[@class='cmavo']").find do |td|
+    td.xpath('.//glossterm').map(&:text) == %w[roi nai] && !td.xpath('.//phrase[@role="display-none"]').empty?
+  end
+  check.(hidden_part, 'a part with hidden text did not link both parts')
+  check.(hidden_part && hidden_part.xpath('.//glossterm').none? { |g| g['linkend'] == 'valsi-naix' },
+        'hidden text changed a part link target')
+  check.(hidden_part && hidden_part.text.include?('x'), 'hidden text inside a part was lost')
+  missing_part = doc.xpath("//informaltable//td[@class='cmavo']").find do |td|
+    td.xpath('.//glossterm').map(&:text) == ['pi'] && td.text.gsub(/\s+/, '') == 'pinosuchword'
+  end
+  check.(missing_part, 'a part with an entry did not link beside a part without one')
+  check.(doc.xpath('//informaltable//@linkend').none? { |id| id.value == 'valsi-nosuchword' },
+        'a part without an entry got a link')
+  # An anchor between a word's letters does not stop the link.
+  anchored = doc.xpath("//informaltable//td[@class='cmavo']").find do |td|
+    td.at('.//anchor') && td.xpath('.//glossterm').map(&:text) == ['mi']
+  end
+  check.(anchored, 'an anchor between letters broke the link')
+  # A nested rafsi never gets a glossary link, and the cell stays plain.
+  rafsi_cell = doc.xpath("//informaltable//td[@class='cmavo']").find do |td|
+    td.text.gsub(/\s+/, '') == 'mi' && td.xpath('.//glossterm').empty? &&
+      !td.xpath('.//rafsi | .//foreignphrase').empty?
+  end
+  check.(rafsi_cell, 'the rafsi cell lost its word or grew a link')
+  check.(doc.xpath("//informaltable//td[@class='cmavo']//indexterm").empty? &&
+         doc.xpath("//informaltable//td[@class='gismu']//indexterm").empty?,
+        'an explicit indexterm leaked into a cell')
   # Other elements never link, and the head row is untouched.
   check.(doc.xpath("//informaltable//td[not(@class='cmavo' or @class='gismu')]//glossterm").empty?,
         'a non-cmavo/gismu cell linked')
   check.(doc.xpath('//informaltable//thead//glossterm').empty?, 'the head row linked')
 
-  # The three words without entries of their own stay plain and are each
+  # The four words without entries of their own stay plain and are each
   # reported once. Opted-out cells and phrases stay silent.
-  check.(err.scan('cmavo-list: no glossary entry').length == 3,
+  check.(err.scan('cmavo-list: no glossary entry').length == 4,
         "unlinked-word reports:\n#{err}")
-  ['roinai', "pino'o", 'kiha'].each do |word|
+  ['roinai', "pino'o", 'kiha', 'nosuchword'].each do |word|
     check.(err.include?("cmavo-list: no glossary entry for \"#{word}\""),
           "missing word #{word.inspect} not reported:\n#{err}")
   end
@@ -189,6 +275,32 @@ Dir.mktmpdir do |dir|
   body_kia = doc.xpath("//chapter/para//glossterm[.=\"ki'a\"]")
   check.(body_kia.length == 1 && body_kia.first['linkend'] == 'valsi-kiha',
         "the body ki'a lost its link: #{body_kia.map(&:to_xml).inspect}")
+end
+
+# The merged book parses with the default DocBook namespace, under
+# which unprefixed XPath element names never match. The implementation
+# must not rely on them: the same input with a default namespace must
+# link the same cells the same way, with no valsi remnants and no
+# index terms in any table cell.
+Dir.mktmpdir do |dir|
+  path = File.join(dir, 'mini-ns.xml')
+  File.write(path, source.sub('<book>', '<book xmlns="http://docbook.org/ns/docbook">'))
+  out_ns, err_ns, status = Open3.capture3('ruby', File.join(__dir__, 'xml_preprocess.rb'), path)
+  check.(status.success?, "xml_preprocess.rb failed on namespaced input: #{err_ns.lines.last(3).join}")
+  doc_ns = Nokogiri::XML(out_ns)
+  doc_ns.remove_namespaces!
+  ns_links = doc_ns.xpath("//informaltable//glossterm").map { |g| [g.text, g['linkend']] }.sort
+  check.(ns_links == links, "namespaced run linked differently: #{ns_links.inspect}")
+  ns_plain = doc_ns.xpath("//informaltable//td[@class='cmavo']").map(&:text) +
+             doc_ns.xpath("//informaltable//td[@class='gismu']").map(&:text)
+  ['ki alone', 'tense+ ki', 'roi nai', '-----', '[cmavo: mi]', 'm,i', 'roinai', "pino'o",
+   'nahe', "ke'e", 'mi', 'kiha'].each do |text|
+    check.(ns_plain.include?(text), "namespaced plain cell #{text.inspect} changed")
+  end
+  check.(err_ns.scan('cmavo-list: no glossary entry').length == 4,
+        "namespaced run reported differently:\n#{err_ns}")
+  check.(doc_ns.xpath('//informaltable//valsi').empty?, 'a valsi wrapper survived under a namespace')
+  check.(doc_ns.xpath('//informaltable//indexterm').empty?, 'an indexterm survived under a namespace')
 end
 
 if failures.empty?

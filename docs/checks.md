@@ -275,6 +275,7 @@ These tests do not run in the `checks` workflow:
 
 - `python3 scripts/test-context-indexes.py build/cll-context.pdf` checks the printed indexes of a finished ConTeXt PDF. It needs PyMuPDF.
 - `python3 scripts/test-context-references.py build/cll-context.pdf` checks the printed cross-references of a finished ConTeXt PDF. It needs PyMuPDF.
+- `python3 scripts/test-context-link-fonts.py build/cll-context.pdf` checks that linked Lojban words print italic in a finished ConTeXt PDF. It needs PyMuPDF.
 - `python3 scripts/test-html-mathjax.py FILE` also compares a downloaded MathJax script with the integrity hash. See the [README](../README.md#mathematics-in-the-html-book).
 
 ### Offline reading in a browser

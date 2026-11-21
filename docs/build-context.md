@@ -129,7 +129,16 @@ python3 scripts/test-context-references.py build/cll-context.pdf
 This rendering test also requires PyMuPDF.
 It detects empty page references, section numbers in place of custom reference labels, and grammar-rule references without rule numbers.
 
-Neither rendering test runs in CI; run them locally after a full build.
+After a full build, test the printed glossary links:
+
+```sh
+python3 scripts/test-context-link-fonts.py build/cll-context.pdf
+```
+
+This rendering test also requires PyMuPDF.
+It checks that every linked Lojban word, in tables and in running prose, prints in the italic glossary-link face (not roman), that bracketed gismu keep roman brackets outside the link, and that split compound cells link each part with no space between them.
+
+None of these rendering tests runs in CI; run them locally after a full build.
 
 The container uses ConTeXt `2026.10.25 20:06` from a fixed commit of the official source repository.
 It compiles the bundled LuaMetaTeX source with the fixed Ubuntu toolchain.

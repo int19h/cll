@@ -438,7 +438,9 @@ $document.css('cmavo-list').each do |node|
       handle_children( node: child, allowed_children_names: [ 'gismu', 'cmavo', 'selmaho', 'series', 'rafsi-group', 'rafsi', 'compound', 'modal-place', 'attitudinal-scale', 'pseudo-cmavo', 'description' ] ) do |grandchild|
         if [ 'gismu', 'cmavo' ].include?( grandchild.name )
           unlinked = link_cmavo_list_cell!( grandchild, cmavo_glossary_entries )
-          $stderr.puts %Q{cmavo-list: no glossary entry for "#{unlinked}", leaving the cell unlinked} if unlinked
+          Array( unlinked ).each do |word|
+            $stderr.puts %Q{cmavo-list: no glossary entry for "#{word}", leaving the cell unlinked}
+          end
         end
         role=grandchild.name
         if grandchild[:role]

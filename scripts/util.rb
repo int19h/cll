@@ -84,10 +84,17 @@ end
 # A name test that ignores namespaces: the merged book parses with a
 # default DocBook namespace, under which unprefixed XPath element
 # names never match. Nokogiri element names never carry a prefix.
+# A rafsi is never a cell word for linking (rule 9), so it is excluded
+# from cell text too. An element that carries no visible text of its
+# own never blocks the in-place link surgery below.
 def cmavo_list_excluded_ancestor?( node, stop )
   node.ancestors.take_while { |a| a != stop }.any? do |a|
-    a.name == 'indexterm' || a.name == 'anchor' || a['role'] == 'display-none'
+    %w[indexterm anchor rafsi].include?( a.name ) || a['role'] == 'display-none'
   end
+end
+
+def cmavo_list_transparent?( node )
+  node.element? && ( %w[indexterm anchor rafsi].include?( node.name ) || node['role'] == 'display-none' )
 end
 
 # A cell's text for the linking rules: the concatenated text nodes,
@@ -121,6 +128,23 @@ def cmavo_list_split_cell?( cell )
   return false if kids.size < 2
   return false unless kids.all?( &:element? )
   kids.all? { |el| el.name == 'foreignphrase' }
+end
+
+# Whether a split part already links exactly the given word: one
+# glossterm with the right target and nothing else visible. Such a part
+# stays exactly as the <valsi> pass built it, so ordinary compound
+# cells keep byte-identical markup.
+def cmavo_list_part_linked?( part, word )
+  linkend = "valsi-#{slugify(word)}"
+  elements = []
+  part.children.each do |child|
+    next if child.text? && child.text =~ /\A\s+\z/
+    return false unless child.element?
+    elements << child
+  end
+  return false unless elements.size == 1
+  term = elements.first
+  term.name == 'glossterm' && term['linkend'] == linkend && cmavo_list_cell_text( term ) == word
 end
 
 # A cell contributes its word to the glossary list unless the cell (or a
@@ -197,11 +221,13 @@ def link_cmavo_word_in_place!( cell, word )
   end
   return false unless first && last
   # Any kept element strictly inside the span aborts the link, as does
-  # a span that does not run through siblings.
+  # a span that does not run through siblings. Transparent elements
+  # (indexterm, anchor, rafsi, display-none) carry no visible text of
+  # their own and never block the link.
   if first != last
     node = first.next_sibling
     while node && node != last
-      return false if node.element?
+      return false if node.element? && !cmavo_list_transparent?( node )
       node = node.next_sibling
     end
     return false unless node == last
@@ -249,16 +275,31 @@ def cmavo_list_remove_named!( cell, name )
   found.each( &:remove )
 end
 
+# Drop the <valsi>-pass markup inside a cell or part that stays plain,
+# splicing each pass-produced wrapper (foreignphrase, glossterm, valsi)
+# out and leaving its children in place. Indexterms go first so their
+# headwords never join the text; display-none subtrees are left alone so
+# hidden text stays hidden. Anchors and display-none spans survive in
+# place; everything else becomes plain text in document order.
 def unwrap_cmavo_cell!( cell )
   cmavo_list_remove_named!( cell, 'indexterm' )
-  targets = []
-  cell.traverse do |node|
-    next unless node.element? && ( node.name == 'foreignphrase' || node.name == 'valsi' )
-    next if cmavo_list_display_none_ancestor?( node, cell )
-    targets << node
-  end
-  targets.each do |el|
-    el.replace( Nokogiri::XML::Text.new( el.text, cell.document ) )
+  loop do
+    target = nil
+    cell.traverse do |node|
+      next if node == cell
+      next unless node.element? && %w[foreignphrase glossterm valsi].include?( node.name )
+      next if cmavo_list_display_none_ancestor?( node, cell )
+      target = node
+      break
+    end
+    break unless target
+    kids = target.children.to_a
+    if kids.empty?
+      target.remove
+    else
+      kids.each { |kid| target.add_previous_sibling( kid ) }
+      target.remove
+    end
   end
 end
 
@@ -271,13 +312,64 @@ end
 # text. A <valsi> already inside counts as the cell's text under the
 # same rules and never makes a second, nested link. Returns the unlinked
 # word, or nil when the cell linked or was never linkable.
+# A split cell's parts, in order: the child foreignphrase elements,
+# skipping indexterms, anchors and display-none subtrees.
+def cmavo_list_split_parts( cell )
+  kids = cell.children.reject do |child|
+    child.name == 'indexterm' || ( child.element? && ( child.name == 'anchor' || child['role'] == 'display-none' ) )
+  end
+  kids.select { |child| child.element? && child.name == 'foreignphrase' }
+end
+
+# Link one part of a split compound cell (rule 12): rules 6, 10 and 11
+# apply to each part on its own. An opted-out part stays plain; a part
+# whose visible text is not one dictionary word stays plain; a part
+# with no dictionary entry stays plain and is reported, so the build
+# never emits a link to a missing target. Returns the unlinked word, or
+# nil when the part linked or stayed plain on purpose.
+def link_cmavo_split_part!( part, entries )
+  if cmavo_list_cell_opted_out?( part ) || cmavo_list_descendant_opted_out?( part )
+    unwrap_cmavo_cell!( part )
+    return nil
+  end
+  word = cmavo_list_cell_text( part ).strip
+  unless word =~ %r{\A[.a-zA-Z']+\z}
+    unwrap_cmavo_cell!( part )
+    return nil
+  end
+  headword = entries["valsi-#{slugify(word)}"]
+  unless headword && bare_spelling( headword ) == bare_spelling( word )
+    unwrap_cmavo_cell!( part )
+    return word
+  end
+  cmavo_list_remove_named!( part, 'indexterm' )
+  return nil if cmavo_list_part_linked?( part, word )
+  unwrap_cmavo_cell!( part )
+  return word unless link_cmavo_word_in_place!( part, word )
+  nil
+end
+
+def cmavo_list_has_rafsi?( cell )
+  hit = false
+  cell.traverse { |node| hit ||= node.element? && node.name == 'rafsi' }
+  hit
+end
+
 def link_cmavo_list_cell!( cell, entries )
+  # Rule 9: a rafsi never gets a glossary link. Leave the cell's text
+  # alone (unwrapping only <valsi>-pass markup) so the rafsi pass still
+  # sees its own element.
+  if cmavo_list_has_rafsi?( cell )
+    unwrap_cmavo_cell!( cell )
+    return nil
+  end
   if cmavo_list_cell_opted_out?( cell )
     unwrap_cmavo_cell!( cell )
     return nil
   end
   if cmavo_list_split_cell?( cell )
-    cmavo_list_remove_named!( cell, 'indexterm' )
+    missing = cmavo_list_split_parts( cell ).map { |part| link_cmavo_split_part!( part, entries ) }.compact
+    return missing unless missing.empty?
     return nil
   end
   if cmavo_list_descendant_opted_out?( cell )

@@ -90,6 +90,17 @@ else
   # a truncated glossary that later runs treat as a valid cache
   File.open(glossfile + ".tmp", 'w') do |gfh|
     tree=Nokogiri::XML(open "#{builddir}/cll_preglossary.xml")
+    # A <valsi> wrapped in a cmavo-list <cmavo> or <gismu> cell names the
+    # same word as the cell's text. Such a wrapped word is a cell
+    # spelling, not body prose: it reaches the grouping only with its
+    # own dictionary match, like any other cell word (the "kiha" case
+    # below must not remove the entry of body "ki'a", and a wrapped
+    # spelling with an entry of its own still counts).
+    in_cell = ->(node) { node.ancestors.any? { |a| %w[cmavo gismu].include?( a.name ) } }
+    valsi_nodes = find_lojban_words( tree ).select { |x| x.attributes['valid'].to_s != 'maybe' }
+    body_valsi_words = []
+    wrapped_valsi_words = []
+    valsi_nodes.each { |x| ( in_cell.( x ) ? wrapped_valsi_words : body_valsi_words ) << x.text.to_s }
     cell_words = find_cmavo_list_words( tree )
     # A cell spelling without an entry of its own must not join a slug
     # group and remove a body word's entry (the "kiha" vs "ki'a" case):
@@ -97,13 +108,15 @@ else
     # in outer pause dots only, reach the grouping. In testing mode
     # there is no dictionary, so everything counts.
     unless opts[:testing]
-      cell_words = cell_words.select do |word|
+      own_match = ->(word) do
         defined_by_bare.fetch( bare_spelling.( word ), [] ).any? do |candidate|
           slugify( candidate ) == slugify( word )
         end
       end
+      wrapped_valsi_words = wrapped_valsi_words.select( &own_match )
+      cell_words = cell_words.select( &own_match )
     end
-    words = find_lojban_words( tree ).select { |x| x.attributes['valid'].to_s != 'maybe' }.map { |x| x.text.to_s } + find_frame_words( tree ) + cell_words
+    words = body_valsi_words + wrapped_valsi_words + find_frame_words( tree ) + cell_words
     glossary_word_groups(words).each do |slug, spellings|
       # Spellings that slugify to one ID, such as .y. and y, share one
       # entry, and every link uses valsi- plus that same slug. The match

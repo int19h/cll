@@ -147,6 +147,12 @@ class DocBookTypstTest < Minitest::Test
     refute_includes source, '#box['
   end
 
+  def test_status_mark_historical_label_uses_nonbreaking_hyphen
+    source = convert('<chapter><title>Status</title><para>So <phrase role="status-mark" condition="status:historical">this applies</phrase> here.</para></chapter>')
+    assert_includes source, "#super[#smallcaps(\" [First‑edition rule]\")#text(\"◇\")]"
+    refute_includes source, 'First-edition'
+  end
+
   def test_status_note_trims_leading_whitespace
     source = convert("<chapter><title>Status</title><para role=\"status-note\" condition=\"status:de-facto\">\n  <indexterm type=\"general\"><primary>entry</primary></indexterm>\n  Padded prose.</para></chapter>")
     assert_includes source, '#text("Padded prose.")]'
@@ -196,6 +202,35 @@ class DocBookTypstTest < Minitest::Test
       text = text.gsub(/\s+/, ' ')
       assert_includes text, 'accepted by parsers [Established usage]◆'
       refute_match(/[“”]/, text)
+    end
+  end
+
+  def test_compiled_historical_mark_never_splits_at_hyphen
+    # The hyphen in "First-edition rule" is a line-break opportunity even
+    # with hyphenation off; the converter emits U+2011 so the inline label
+    # stays whole. Needs pdftotext, which the CI smoke job installs.
+    executable = ENV['TYPST']
+    skip 'Set TYPST to run the native compilation test.' unless executable
+    skip 'Install poppler-utils to check rendered text.' unless system('command -v pdftotext >/dev/null 2>&1')
+    paras = [8, 9, 10].map do |n|
+      %(<para>#{'word ' * n}so this alternative never <phrase role="status-mark" condition="status:historical">applies here today</phrase> in every case.</para>)
+    end
+    source = convert("<chapter><title>Status</title>#{paras.join}</chapter>")
+    Dir.mktmpdir('compile-', TMP) do |dir|
+      File.write(File.join(dir, 'cll.typ'), source)
+      FileUtils.cp(File.expand_path('../typst/book.typ', __dir__), dir)
+      fonts = File.expand_path('../assets/fonts', __dir__)
+      pdf = File.join(dir, 'cll.pdf')
+      _, err, status = Open3.capture3(executable, 'compile', '--ignore-system-fonts', '--font-path', fonts, File.join(dir, 'cll.typ'), pdf)
+      assert status.success?, err
+      text, serr, tstatus = Open3.capture3('pdftotext', '-layout', pdf, '-')
+      assert tstatus.success?, serr
+      lines = text.split("\n").map(&:strip)
+      assert_empty lines.select { |l| l.end_with?('[First-') }
+      assert_empty lines.select { |l| l.start_with?('edition') }
+      collapsed = text.gsub(/\s+/, ' ')
+      assert_equal 3, collapsed.scan("[First‑edition rule]◇").length
+      refute_match(/\[First- /, collapsed)
     end
   end
 

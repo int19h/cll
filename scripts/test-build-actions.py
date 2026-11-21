@@ -407,6 +407,34 @@ class BuildActions(unittest.TestCase):
                '      matrix:\n'
                '        os: [ubuntu-24.04, ubuntu-26.04]\n'
                '        exclude: [{os: ubuntu-24.04, arch: arm}]\n', 1)], 'ruby', True),
+            # exclude removes whole base values, and include runs after it:
+            # a re-added stale value still fails, and a sibling label that
+            # merely shares the release is not removed.
+            ([('.github/workflows/checks.yml', wbv,
+               '  whole-book-validation:\n'
+               '    runs-on: ${{ matrix.os }}\n'
+               '    strategy:\n'
+               '      matrix:\n'
+               '        os: [ubuntu-26.04, ubuntu-24.04]\n'
+               '        exclude: [{os: ubuntu-24.04}]\n'
+               '        include: [{os: ubuntu-24.04, experimental: true}]\n', 1)], 'ruby', True),
+            ([('.github/workflows/checks.yml', wbv,
+               '  whole-book-validation:\n'
+               '    runs-on: ${{ matrix.os }}\n'
+               '    strategy:\n'
+               '      matrix:\n'
+               '        os: [ubuntu-24.04, ubuntu-24.04-arm, ubuntu-26.04]\n'
+               '        exclude: [{os: ubuntu-24.04}]\n', 1)], 'ruby', True),
+            # Excluding the only current value and including it again still
+            # runs the current release, so the job must pass.
+            ([('.github/workflows/checks.yml', wbv,
+               '  whole-book-validation:\n'
+               '    runs-on: ${{ matrix.os }}\n'
+               '    strategy:\n'
+               '      matrix:\n'
+               '        os: [ubuntu-26.04]\n'
+               '        exclude: [{os: ubuntu-26.04}]\n'
+               '        include: [{os: ubuntu-26.04}]\n', 1)], 'ruby', False),
             # A run-time include must fail with a message, not a crash.
             ([('.github/workflows/checks.yml', wbv,
                '  whole-book-validation:\n'

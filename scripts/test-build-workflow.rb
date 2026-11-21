@@ -111,17 +111,10 @@ labels = {}
       matrix = strategy['matrix']
       refs.uniq.each do |field|
         found = []
-        collect.call(matrix[field], found) if matrix.key?(field)
-        includes = matrix['include']
-        if includes.nil?
-          # No extra values.
-        elsif includes.is_a?(Array)
-          includes.each do |entry|
-            collect.call(entry[field], found) if entry.is_a?(Hash) && entry.key?(field)
-          end
-        else
-          errors << "#{file_name} #{job}: strategy.matrix.include is built at run time; the guard cannot resolve it."
-        end
+        # GitHub expands the base matrix first: exclude removes whole
+        # values, include adds entries back afterwards, and only then do
+        # the resulting labels pick runners.
+        values = matrix.key?(field) ? Array(matrix[field]) : []
         excludes = matrix['exclude']
         if excludes.nil?
           # No removed values.
@@ -130,13 +123,22 @@ labels = {}
             # Only an entry naming just this field provably removes every
             # run with the value; a conditional entry may leave some runs.
             next unless entry.is_a?(Hash) && entry.keys == [field]
-            removed = []
-            collect.call(entry[field], removed)
-            found -= removed
+            values.reject! { |value| value == entry[field] }
           end
         else
           errors << "#{file_name} #{job}: strategy.matrix.exclude is built at run time; the guard cannot resolve it."
         end
+        includes = matrix['include']
+        if includes.nil?
+          # No extra values.
+        elsif includes.is_a?(Array)
+          includes.each do |entry|
+            values << entry[field] if entry.is_a?(Hash) && entry.key?(field)
+          end
+        else
+          errors << "#{file_name} #{job}: strategy.matrix.include is built at run time; the guard cannot resolve it."
+        end
+        values.each { |value| collect.call(value, found) }
         (labels["#{file_name}.#{job} (matrix:#{field})"] ||= []).concat(found)
       end
     end

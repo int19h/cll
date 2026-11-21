@@ -65,12 +65,62 @@ end
 # A cell (or a <valsi> inside it) marked glossary="false", valid="false"
 # or valid="maybe" never links, as a <valsi> with those marks never
 # does. The marks survive the <valsi> pass (convert! keeps them), so
-# this sees them on whatever element carries them.
-def cmavo_list_opted_out?( cell )
-  return true if cell['glossary'] == 'false' || %w[false maybe].include?( cell['valid'].to_s )
-  cell.xpath('.//*').any? do |el|
-    el['glossary'] == 'false' || %w[false maybe].include?( el['valid'].to_s )
+# this sees them on whatever element carries them. The cell's own marks
+# and a descendant's marks are checked separately: in a split cell
+# (rule 12) each part already went through the <valsi> pass on its own,
+# so only the cell's own marks unwrap the whole cell.
+def cmavo_list_cell_opted_out?( cell )
+  cell['glossary'] == 'false' || %w[false maybe].include?( cell['valid'].to_s )
+end
+
+def cmavo_list_descendant_opted_out?( cell )
+  hit = false
+  cell.traverse do |node|
+    hit ||= node.element? && ( node['glossary'] == 'false' || %w[false maybe].include?( node['valid'].to_s ) )
   end
+  hit
+end
+
+# A name test that ignores namespaces: the merged book parses with a
+# default DocBook namespace, under which unprefixed XPath element
+# names never match. Nokogiri element names never carry a prefix.
+def cmavo_list_excluded_ancestor?( node, stop )
+  node.ancestors.take_while { |a| a != stop }.any? do |a|
+    a.name == 'indexterm' || a.name == 'anchor' || a['role'] == 'display-none'
+  end
+end
+
+# A cell's text for the linking rules: the concatenated text nodes,
+# excluding indexterm, anchor and display-none subtrees (rule 11).
+def cmavo_list_cell_text( cell )
+  texts = []
+  cell.traverse do |node|
+    texts << node.text if node.text? && !cmavo_list_excluded_ancestor?( node, cell )
+  end
+  texts.join
+end
+
+# Visible text nodes of a cell: the same exclusions as
+# cmavo_list_cell_text, as nodes.
+def cmavo_list_visible_texts( cell )
+  texts = []
+  cell.traverse do |node|
+    texts << node if node.text? && !cmavo_list_excluded_ancestor?( node, cell )
+  end
+  texts
+end
+
+# A split cell (rule 12): two or more <valsi>-pass link units with
+# nothing between them, not even whitespace. Indexterms (which the
+# <valsi> pass adds to each part), anchors and display-none subtrees do
+# not count. Each part already links, or stays plain on its own marks.
+def cmavo_list_split_cell?( cell )
+  kids = cell.children.reject do |child|
+    child.name == 'indexterm' || ( child.element? && ( child.name == 'anchor' || child['role'] == 'display-none' ) )
+  end
+  return false if kids.size < 2
+  return false unless kids.all?( &:element? )
+  kids.all? { |el| el.name == 'foreignphrase' }
 end
 
 # A cell contributes its word to the glossary list unless the cell (or a
@@ -79,7 +129,19 @@ end
 # link; the entry is still collected, as for a <valsi>.
 def cmavo_list_collectable?( cell )
   return false if %w[false maybe].include?( cell['valid'].to_s )
-  cell.xpath('.//valsi').none? { |v| %w[false maybe].include?( v['valid'].to_s ) }
+  hit = false
+  cell.traverse do |node|
+    next unless node.element? && node.name == 'valsi'
+    next if cmavo_list_display_none_ancestor?( node, cell )
+    hit ||= %w[false maybe].include?( node['valid'].to_s )
+  end
+  !hit
+end
+
+# True when an ancestor of node up to (but excluding) stop carries
+# role="display-none".
+def cmavo_list_display_none_ancestor?( node, stop )
+  node.ancestors.take_while { |a| a != stop }.any? { |a| a['role'] == 'display-none' }
 end
 
 # The words of linkable cmavo-list cells, for the glossary: the same
@@ -92,7 +154,7 @@ def find_cmavo_list_words( tree )
     entry.element_children.each do |cell|
       next unless %w[cmavo gismu].include?( cell.name )
       next unless cmavo_list_collectable?( cell )
-      parsed = cmavo_list_cell_word( cell.text )
+      parsed = cmavo_list_cell_word( cmavo_list_cell_text( cell ) )
       words << parsed[1] if parsed
     end
   end
@@ -101,8 +163,7 @@ end
 
 # The glossterm link xml_preprocess.rb wraps a linked word in, the same
 # markup a <valsi> gets. No index entry: tables must not grow the index.
-def glossary_link( parent, word )
-  document = parent.document
+def build_glossary_link( document, word )
   foreign = Nokogiri::XML::Node.new( 'foreignphrase', document )
   foreign['xml:lang'] = 'jbo'
   term = Nokogiri::XML::Node.new( 'glossterm', document )
@@ -110,16 +171,93 @@ def glossary_link( parent, word )
   term['linkend'] = "valsi-#{slugify(word)}"
   term.content = word
   foreign.add_child( term )
-  parent.add_child( foreign )
+  foreign
+end
+
+# Replace the cell's word with its glossary link in place, keeping every
+# other child (brackets stay as plain text around the link, anchors and
+# hidden spans stay where they are). Returns false when a kept element
+# sits inside the word span, which never happens in the book.
+def link_cmavo_word_in_place!( cell, word )
+  texts = cmavo_list_visible_texts( cell )
+  full = texts.map(&:text).join
+  start = full.index( word )
+  return false unless start
+  finish = start + word.length
+  offset = 0
+  first = first_cut = last = last_cut = nil
+  texts.each do |text|
+    stop = offset + text.text.length
+    first, first_cut = text, start - offset if !first && start < stop
+    if !last && finish <= stop
+      last, last_cut = text, finish - offset
+      break
+    end
+    offset = stop
+  end
+  return false unless first && last
+  # Any kept element strictly inside the span aborts the link, as does
+  # a span that does not run through siblings.
+  if first != last
+    node = first.next_sibling
+    while node && node != last
+      return false if node.element?
+      node = node.next_sibling
+    end
+    return false unless node == last
+  end
+  link = build_glossary_link( cell.document, word )
+  if first == last
+    before = first.text[0...first_cut]
+    after = first.text[last_cut..-1]
+    first.content = before
+    first.add_next_sibling( link )
+    link.add_next_sibling( Nokogiri::XML::Text.new( after, cell.document ) ) unless after.empty?
+    first.remove if before.empty?
+  else
+    middles = []
+    node = first.next_sibling
+    while node && node != last
+      sibling = node.next_sibling
+      middles << node if node.text?
+      node = sibling
+    end
+    first.content = first.text[0...first_cut]
+    last.content = last.text[last_cut..-1]
+    middles.each( &:remove )
+    if first.text.empty?
+      first.add_next_sibling( link )
+      first.remove
+    else
+      first.add_next_sibling( link )
+    end
+    if last.text.empty?
+      last.remove
+    end
+  end
+  true
 end
 
 # Drop the <valsi>-pass markup inside a cell that stays plain, keeping
 # its text: the foreignphrase link and the indexterm a <valsi> there
 # grew. Indexterms are removed first so their headword never joins the
-# cell's text.
+# cell's text. Display-none subtrees are left alone so hidden text stays
+# hidden.
+def cmavo_list_remove_named!( cell, name )
+  found = []
+  cell.traverse { |node| found << node if node.element? && node.name == name }
+  found.each( &:remove )
+end
+
 def unwrap_cmavo_cell!( cell )
-  cell.xpath('.//indexterm').remove
-  cell.element_children.each do |el|
+  cmavo_list_remove_named!( cell, 'indexterm' )
+  targets = []
+  cell.traverse do |node|
+    next unless node.element? && ( node.name == 'foreignphrase' || node.name == 'valsi' )
+    next if cmavo_list_display_none_ancestor?( node, cell )
+    targets << node
+  end
+  targets.each do |el|
     el.replace( Nokogiri::XML::Text.new( el.text, cell.document ) )
   end
 end
@@ -127,32 +265,39 @@ end
 # Link one cmavo-list cell's word to the glossary when this document
 # defines its entry spelled the same or differing only in outer pause
 # dots (so "kiha" never takes "ki'a"'s entry), keeping the brackets of
-# [word] as plain text. A cell of any other shape, an opted-out cell, a
-# compound the dictionary lacks, or a word with no entry stays plain
+# [word] as plain text. A split cell (rule 12) keeps its separately
+# linked parts, without indexterms and without a report. A cell of any
+# other shape, an opted-out cell, or a word with no entry stays plain
 # text. A <valsi> already inside counts as the cell's text under the
 # same rules and never makes a second, nested link. Returns the unlinked
 # word, or nil when the cell linked or was never linkable.
 def link_cmavo_list_cell!( cell, entries )
-  if cmavo_list_opted_out?( cell )
+  if cmavo_list_cell_opted_out?( cell )
     unwrap_cmavo_cell!( cell )
     return nil
   end
-  cell.xpath('.//indexterm').remove
-  parsed = cmavo_list_cell_word( cell.text )
+  if cmavo_list_split_cell?( cell )
+    cmavo_list_remove_named!( cell, 'indexterm' )
+    return nil
+  end
+  if cmavo_list_descendant_opted_out?( cell )
+    unwrap_cmavo_cell!( cell )
+    return nil
+  end
+  cmavo_list_remove_named!( cell, 'indexterm' )
+  parsed = cmavo_list_cell_word( cmavo_list_cell_text( cell ) )
   unless parsed
     unwrap_cmavo_cell!( cell )
     return nil
   end
-  pre, word, post = parsed
+  _pre, word, _post = parsed
   headword = entries["valsi-#{slugify(word)}"]
   unless headword && bare_spelling( headword ) == bare_spelling( word )
     unwrap_cmavo_cell!( cell )
     return word
   end
-  cell.children.remove
-  cell.add_child( Nokogiri::XML::Text.new( pre, cell.document ) ) unless pre.empty?
-  glossary_link( cell, word )
-  cell.add_child( Nokogiri::XML::Text.new( post, cell.document ) ) unless post.empty?
+  unwrap_cmavo_cell!( cell )
+  return word unless link_cmavo_word_in_place!( cell, word )
   nil
 end
 

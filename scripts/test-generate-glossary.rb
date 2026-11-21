@@ -284,6 +284,58 @@ Dir.mktmpdir do |dir|
   end
 end
 
+# A wrapped cell spelling counts its visible text only, as the
+# preprocessor does: hidden text inside the <valsi> must not join the
+# slug. Here "klama" appears only inside a wrapped phrase cell with a
+# display-none letter (the cell as a whole names no word), so without
+# the visible-text rule its entry would vanish under "klamax".
+Dir.mktmpdir do |dir|
+  scripts = stage_generator(repo, dir)
+  build = File.join(dir, 'build')
+  FileUtils.mkdir_p(build)
+  File.write(File.join(build, 'cll_preglossary.xml'), <<~XML)
+    <?xml version="1.0"?>
+    <book>
+      <cmavo-list>
+        <cmavo-entry><cmavo>tense+ <valsi>klama<phrase role="display-none">x</phrase></valsi></cmavo><gismu>y</gismu></cmavo-entry>
+      </cmavo-list>
+    </book>
+  XML
+
+  stdout, stderr, status = run_generator(scripts, build)
+  check.(status.success?, "hidden-text cell-word glossary failed\n#{stderr}")
+  if status.success?
+    by_id = entry_map(stdout).map { |id, term, defn| [id, [term, defn]] }.to_h
+    check.(by_id['valsi-klama'] == ['klama', 'to come or go'], "hidden text removed klama's entry: #{by_id['valsi-klama'].inspect}")
+    check.(!stderr.include?('klamax'), 'hidden text leaked into the glossary')
+  end
+end
+
+# Only a <cmavo> or <gismu> whose parent is a <cmavo-entry> counts as a
+# table cell. A wrapped spelling elsewhere, such as in an example, is
+# body prose: without an entry of its own it sinks the shared group
+# loudly instead of silently taking over another word's entry.
+Dir.mktmpdir do |dir|
+  scripts = stage_generator(repo, dir)
+  build = File.join(dir, 'build')
+  FileUtils.mkdir_p(build)
+  File.write(File.join(build, 'cll_preglossary.xml'), <<~XML)
+    <?xml version="1.0"?>
+    <book>
+      <para><valsi>na'e</valsi></para>
+      <example><para>see <cmavo><valsi>nahe</valsi></cmavo> here</para></example>
+    </book>
+  XML
+
+  stdout, stderr, status = run_generator(scripts, build)
+  check.(status.success?, "example-wrapped glossary failed\n#{stderr}")
+  if status.success?
+    by_id = entry_map(stdout).map { |id, term, defn| [id, [term, defn]] }.to_h
+    check.(by_id['valsi-nahe'].nil?, "an example-wrapped spelling kept na'e's entry quiet: #{by_id['valsi-nahe'].inspect}")
+    check.(stderr.include?('share the ID "valsi-nahe"'), 'the example-wrapped conflict is silent')
+  end
+end
+
 if failures.empty?
   puts 'test-generate-glossary: cache key and glossary IDs are stable'
 else

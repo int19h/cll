@@ -96,11 +96,21 @@ else
     # own dictionary match, like any other cell word (the "kiha" case
     # below must not remove the entry of body "ki'a", and a wrapped
     # spelling with an entry of its own still counts).
-    in_cell = ->(node) { node.ancestors.any? { |a| %w[cmavo gismu].include?( a.name ) } }
+    in_cell = ->(node) do
+      node.ancestors.any? do |a|
+        %w[cmavo gismu].include?( a.name ) && a.parent && a.parent.name == 'cmavo-entry'
+      end
+    end
     valsi_nodes = find_lojban_words( tree ).select { |x| x.attributes['valid'].to_s != 'maybe' }
     body_valsi_words = []
     wrapped_valsi_words = []
-    valsi_nodes.each { |x| ( in_cell.( x ) ? wrapped_valsi_words : body_valsi_words ) << x.text.to_s }
+    valsi_nodes.each do |x|
+      if in_cell.( x )
+        wrapped_valsi_words << cmavo_list_cell_text( x ).strip
+      else
+        body_valsi_words << x.text.to_s
+      end
+    end
     cell_words = find_cmavo_list_words( tree )
     # A cell spelling without an entry of its own must not join a slug
     # group and remove a body word's entry (the "kiha" vs "ki'a" case):

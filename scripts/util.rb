@@ -344,8 +344,32 @@ def link_cmavo_split_part!( part, entries )
   end
   cmavo_list_remove_named!( part, 'indexterm' )
   return nil if cmavo_list_part_linked?( part, word )
+  rebuild_cmavo_part_link!( part, word )
+  nil
+end
+
+# Rebuild a part's link with exactly one Lojban wrapper: unwrap the
+# <valsi>-pass markup (keeping anchors and hidden spans in place),
+# then replace the part with a fresh link plus those keepers in order.
+# Reusing the old wrapper would nest a second foreignphrase inside it,
+# and in Typst each wrapper adds #emph, flipping the letters back to
+# roman. The split detector and the end-pass see the same flat shape
+# that a directly linked part has.
+def rebuild_cmavo_part_link!( part, word )
   unwrap_cmavo_cell!( part )
-  return word unless link_cmavo_word_in_place!( part, word )
+  keepers = []
+  part.children.to_a.each do |child|
+    next unless child.element?
+    keepers << child.remove
+  end
+  part.children.to_a.each( &:remove )
+  link = build_glossary_link( part.document, word )
+  part.replace( link )
+  anchor = link
+  keepers.each do |keeper|
+    anchor.add_next_sibling( keeper )
+    anchor = keeper
+  end
   nil
 end
 

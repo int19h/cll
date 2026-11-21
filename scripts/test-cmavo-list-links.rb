@@ -134,6 +134,12 @@ source = <<~XML
       <description>an anchor between letters does not stop the link</description>
     </cmavo-entry>
     <cmavo-entry>
+      <cmavo><valsi>pi</valsi><valsi>rau
+      </valsi></cmavo>
+      <gismu>fasnu</gismu>
+      <description>a newline inside a part links once, with one wrapper</description>
+    </cmavo-entry>
+    <cmavo-entry>
       <cmavo><rafsi>mi</rafsi></cmavo>
       <gismu>fasnu</gismu>
       <description>a nested rafsi never gets a glossary link</description>
@@ -153,6 +159,7 @@ source = <<~XML
   <glossentry xml:id="valsi-roi"><glossterm>roi</glossterm><glossdef><para>all</para></glossdef></glossentry>
   <glossentry xml:id="valsi-nai"><glossterm>nai</glossterm><glossdef><para>not</para></glossdef></glossentry>
   <glossentry xml:id="valsi-pi"><glossterm>pi</glossterm><glossdef><para>portion</para></glossdef></glossentry>
+  <glossentry xml:id="valsi-rau"><glossterm>rau</glossterm><glossdef><para>enough</para></glossdef></glossentry>
   </glossdiv></glossary>
   </chapter></book>
 XML
@@ -164,7 +171,7 @@ XML
 # contributes its whole text (roinai); anchors and hidden text do not
 # count (the mi and jundi cells, not "hidden").
 words = find_cmavo_list_words(Nokogiri::XML(source)).sort
-check.(words == ['.ki', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'jundi', 'jundi', 'kiha', 'mi', 'mi', 'mi', 'mi', 'mi', 'nahe', "pino'o", 'pinosuchword', 'roinai', 'roinai', 'roinai', 'roinai', 'roinai'],
+check.(words == ['.ki', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'fasnu', 'jundi', 'jundi', 'kiha', 'mi', 'mi', 'mi', 'mi', 'mi', 'nahe', "pino'o", 'pinosuchword', 'pirau', 'roinai', 'roinai', 'roinai', 'roinai', 'roinai'],
       "find_cmavo_list_words gave #{words.inspect}")
 
 # The preprocessing side, through the real script.
@@ -177,10 +184,11 @@ Dir.mktmpdir do |dir|
   doc.remove_namespaces!
 
   links = doc.xpath("//informaltable//glossterm").map { |g| [g.text, g['linkend']] }.sort
-  check.(links == [['.ki', 'valsi-ki']] + [['fasnu', 'valsi-fasnu']] * 14 +
+  check.(links == [['.ki', 'valsi-ki']] + [['fasnu', 'valsi-fasnu']] * 15 +
                    [['jundi', 'valsi-jundi'], ['jundi', 'valsi-jundi']] +
                    [['mi', 'valsi-mi']] * 5 +
-                   [['nai', 'valsi-nai']] * 3 + [['pi', 'valsi-pi']] + [['roi', 'valsi-roi']] * 3,
+                   [['nai', 'valsi-nai']] * 3 + [['pi', 'valsi-pi']] * 2 +
+                   [['rau', 'valsi-rau']] + [['roi', 'valsi-roi']] * 3,
         "table links: #{links.inspect}")
 
   # The brackets stay as plain text around the inner link.
@@ -205,6 +213,19 @@ Dir.mktmpdir do |dir|
   check.(split && split.text.gsub(/\s+/, '') == 'roinai', 'a split cell changed text')
   check.(split && out.include?('roi</glossterm></foreignphrase><foreignphrase'),
         'the split parts are not adjacent')
+  newline_split = doc.xpath("//informaltable//td[@class='cmavo']").find do |td|
+    td.xpath('.//glossterm').map(&:text) == %w[pi rau]
+  end
+  check.(newline_split && newline_split.text.gsub(/\s+/, '') == 'pirau',
+        'a newline inside a part did not link both parts as one word')
+  check.(newline_split && out.include?('rau</glossterm></foreignphrase>'),
+        'a newline inside a part left whitespace inside its link')
+  doc.xpath('//informaltable//td[@class="cmavo" or @class="gismu"]').each do |td|
+    td.xpath('.//glossterm').each do |term|
+      wrappers = term.ancestors.select { |a| a.element? && a.name == 'foreignphrase' }
+      check.(wrappers.size == 1, "a linked word has #{wrappers.size} wrappers, expected one")
+    end
+  end
   hidden = doc.xpath("//informaltable//td[@class='gismu']").find { |td| td.at('.//phrase[@role="display-none"]') }
   check.(hidden && hidden.xpath('.//glossterm').map(&:text) == ['jundi'] && hidden.text.include?('hidden'),
         'hidden text broke the bracketed link or was lost')

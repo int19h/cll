@@ -143,9 +143,9 @@ class DocBookTypst
       mark = StatusLabels.describe(node['condition'], inline: true)
       if mark
         # Code-mode strings: markup-mode "..." would print as smart quotes.
-        short = "#super[#box[#smallcaps(#{q(mark.inline_short)})#text(#{q(mark.glyph)})]]"
+        short = "#super[#smallcaps(#{q(mark.inline_short.gsub(' ', " "))})#text(#{q(mark.glyph)})]"
       else
-        short = "#super[#box[#text(#{q(" " + StatusLabels::BARE_MARK_GLYPH)})]]"
+        short = "#super[#text(#{q(" " + StatusLabels::BARE_MARK_GLYPH)})]"
       end
       body = "#underline(stroke: (paint: gray, dash: \"dotted\"))[#{body}]#{short}"
     end

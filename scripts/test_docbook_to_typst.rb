@@ -143,7 +143,8 @@ class DocBookTypstTest < Minitest::Test
   def test_status_mark_renders_short_label_and_glyph
     source = convert('<chapter><title>Status</title><para>Ordinary <phrase role="status-mark" condition="status:de-facto;also:historical">accepted by parsers</phrase> here.</para></chapter>')
     # Code-mode strings: markup-mode "..." would print as smart quotes.
-    assert_includes source, '#super[#box[#smallcaps(" [Established usage]")#text("◆")]]'
+    assert_includes source, "#super[#smallcaps(\"\u00A0[Established\u00A0usage]\")#text(\"◆\")]"
+    refute_includes source, '#box['
   end
 
   def test_status_note_trims_leading_whitespace
@@ -155,8 +156,9 @@ class DocBookTypstTest < Minitest::Test
   def test_status_unknown_token_keeps_raw_label_and_bare_glyph
     source = convert('<chapter><title>Status</title><para role="status-note" condition="status:invented">Mystery prose.</para><para>Ordinary <phrase role="status-mark" condition="status:invented">clause</phrase> and <phrase role="status-mark">bare</phrase>.</para></chapter>')
     assert_includes source, 'label: "invented"'
-    assert_includes source, '#super[#box[#text(" ◇")]]'
-    assert_includes source, '#super[#box[#smallcaps(" [invented]")#text("◇")]]'
+    assert_includes source, "#super[#text(\"\u00A0◇\")]"
+    assert_includes source, "#super[#smallcaps(\"\u00A0[invented]\")#text(\"◇\")]"
+    refute_includes source, '#box['
   end
 
   def test_native_compilation_with_outline_links_and_indexes

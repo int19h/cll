@@ -2297,7 +2297,7 @@
       removes the whole quotation. Then the second
       <valsi>si</valsi>
       eats
-      <jbophrase>cmene</jbophrase>, because there is no leftover half-quotation for it to trim. So the sentence collapses.
+      <valsi>cmene</valsi>, because there is no leftover half-quotation for it to trim. So the sentence collapses.
     </para>
     <para role="status-note" condition="status:de-facto">
       Modern Lojban parsers implement

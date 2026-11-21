@@ -1506,7 +1506,7 @@
         <gloss>… - [quote] the red small-horse [unquote].</gloss>
       </interlinear-gloss>
     </example>
-    <para role="indent">The x<subscript>2</subscript> place of <jbophrase>selsinxa</jbophrase> (the x<subscript>1</subscript> place of <valsi>sinxa</valsi>) is a sign or symbol, and the x<subscript>1</subscript> place of <jbophrase>selsinxa</jbophrase> (the x<subscript>2</subscript> place of <valsi>sinxa</valsi>) is the thing represented by the sign. <xref linkend="example-random-id-MSVK" /> lets us use a symbol (namely the title of a book) to stand for the thing it is a symbol of (namely the book itself).</para>
+    <para role="indent">The x<subscript>2</subscript> place of <valsi valid="maybe">selsinxa</valsi> (the x<subscript>1</subscript> place of <valsi>sinxa</valsi>) is a sign or symbol, and the x<subscript>1</subscript> place of <valsi valid="maybe">selsinxa</valsi> (the x<subscript>2</subscript> place of <valsi>sinxa</valsi>) is the thing represented by the sign. <xref linkend="example-random-id-MSVK" /> lets us use a symbol (namely the title of a book) to stand for the thing it is a symbol of (namely the book itself).</para>
     <para>It is handy to have a shorter way of saying this:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-Ajty">
       <title><anchor xml:id="c6e10d3" /></title>

@@ -615,7 +615,7 @@
       <valsi>na</valsi>
       to the JA cmavo but after the
       <valsi>.i</valsi>. To negate the second or right-hand bridi, suffix
-      <jbophrase>-nai</jbophrase>
+      -<valsi>nai</valsi>
       to the JA cmavo. In either case, the negating word is placed on the side of the connective that is closest to the bridi being negated.
     </para>
     <para>
@@ -980,7 +980,7 @@
     </example>
     <para role="indent">
       How can the second bridi be negated? By adding
-      <jbophrase>-nai</jbophrase>
+      -<valsi>nai</valsi>
       to the
       <valsi>gi</valsi>.
     </para>
@@ -3865,7 +3865,7 @@
       <indexterm type="general"><primary>negated intervals</primary><secondary>meaning of</secondary>
       </indexterm>
       Negated intervals, marked with a
-      <jbophrase>-nai</jbophrase>
+      -<valsi>nai</valsi>
       following the BIhI cmavo, indicate an interval that includes everything but what is between the endpoints (with respect to some understood scale):
     </para>
 

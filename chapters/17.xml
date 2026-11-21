@@ -794,9 +794,9 @@
       and
       <valsi>slaka</valsi>
       are normal gismu with normal stress:
-      <jbophrase>denpabu</jbophrase>
+      <valsi valid="maybe">denpabu</valsi>
       would be a fu'ivla (word borrowed from another language into Lojban) stressed
-      <jbophrase>denPAbu</jbophrase>. No pause is required between
+      <valsi valid="maybe">denPAbu</valsi>. No pause is required between
       <valsi>denpa</valsi>
       (or
       <valsi>slaka</valsi>) and
@@ -823,7 +823,7 @@
       <letteral>s</letteral>
       and then into a Lojban lerfu word by adding
       <valsi>bu</valsi>. Note that the pause after
-      <jbophrase>.alfas.</jbophrase>
+      <cmevla>.alfas.</cmevla>
       is still needed.
     </para>
     <para>

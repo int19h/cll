@@ -348,8 +348,76 @@ class BuildActions(unittest.TestCase):
                '      matrix:\n'
                '        os: [ubuntu-26.04]\n'
                '        include: [{os: ubuntu-26.04}]\n', 1)], 'ruby', False),
+            # Hyphenated and index matrix fields pin the runner too.
+            ([('.github/workflows/checks.yml', wbv,
+               '  whole-book-validation:\n'
+               '    runs-on: ${{ matrix.runner-os }}\n'
+               '    strategy:\n'
+               '      matrix:\n'
+               '        runner-os: [ubuntu-24.04]\n', 1)], 'ruby', True),
+            ([('.github/workflows/checks.yml', wbv,
+               '  whole-book-validation:\n'
+               '    runs-on: ${{ matrix.runner-os }}\n'
+               '    strategy:\n'
+               '      matrix:\n'
+               '        runner-os: [ubuntu-26.04]\n', 1)], 'ruby', False),
+            ([('.github/workflows/checks.yml', wbv,
+               '  whole-book-validation:\n'
+               "    runs-on: ${{ matrix['os'] }}\n"
+               '    strategy:\n'
+               '      matrix:\n'
+               '        os: [ubuntu-24.04]\n', 1)], 'ruby', True),
+            ([('.github/workflows/checks.yml', wbv,
+               '  whole-book-validation:\n'
+               '    runs-on: ${{ matrix["os"] }}\n'
+               '    strategy:\n'
+               '      matrix:\n'
+               '        os: [ubuntu-26.04]\n', 1)], 'ruby', False),
+            # An interpolated release leaves no pinned runner behind: the
+            # guard must fail with an error, not pass silently.
+            ([('.github/workflows/checks.yml', wbv,
+               '  whole-book-validation:\n'
+               '    runs-on: ubuntu-${{ matrix.ver }}\n'
+               '    strategy:\n'
+               '      matrix:\n'
+               "        ver: ['24.04']\n", 1)], 'ruby', True),
+            # A matrix reference in group names the runner group, not the
+            # OS: with pinned labels the job must pass.
+            ([('.github/workflows/checks.yml', wbv,
+               '  whole-book-validation:\n'
+               '    runs-on:\n'
+               '      group: ${{ matrix.pool }}\n'
+               '      labels: [ubuntu-26.04]\n'
+               '    strategy:\n'
+               '      matrix:\n'
+               '        pool: [ubuntu-24.04]\n', 1)], 'ruby', False),
+            # exclude drops the stale release, so the job must pass; a
+            # conditional exclude may leave stale runs, so it still fails.
+            ([('.github/workflows/checks.yml', wbv,
+               '  whole-book-validation:\n'
+               '    runs-on: ${{ matrix.os }}\n'
+               '    strategy:\n'
+               '      matrix:\n'
+               '        os: [ubuntu-24.04, ubuntu-26.04]\n'
+               '        exclude: [{os: ubuntu-24.04}]\n', 1)], 'ruby', False),
+            ([('.github/workflows/checks.yml', wbv,
+               '  whole-book-validation:\n'
+               '    runs-on: ${{ matrix.os }}\n'
+               '    strategy:\n'
+               '      matrix:\n'
+               '        os: [ubuntu-24.04, ubuntu-26.04]\n'
+               '        exclude: [{os: ubuntu-24.04, arch: arm}]\n', 1)], 'ruby', True),
+            # A run-time include must fail with a message, not a crash.
+            ([('.github/workflows/checks.yml', wbv,
+               '  whole-book-validation:\n'
+               '    runs-on: ${{ matrix.os }}\n'
+               '    strategy:\n'
+               '      matrix:\n'
+               '        os: [ubuntu-26.04]\n'
+               '        include: ${{ fromJSON(steps.config.outputs.extra) }}\n', 1)],
+             'ruby', True, 'built at run time'),
         ]
-        for edits, tool, rejected in cases:
+        for edits, tool, rejected, *expected in cases:
             with self.subTest(edits=edits), tempfile.TemporaryDirectory() as tmp:
                 root = Path(tmp)
                 for name in staged:
@@ -367,10 +435,13 @@ class BuildActions(unittest.TestCase):
                     command = ['python3', str(root/'scripts/test-build-pins.py'),
                                'BuildPinsTest.test_base_images_and_packages']
                 result = subprocess.run(command, capture_output=True, text=True)
+                output = result.stdout + result.stderr
                 if rejected:
                     self.assertNotEqual(result.returncode, 0, str(edits))
                 else:
-                    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                    self.assertEqual(result.returncode, 0, output)
+                for message in expected:
+                    self.assertIn(message, output)
 
     def fixture(self, p, empty=False):
         (p/'scripts').mkdir()

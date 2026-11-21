@@ -93,25 +93,72 @@ labels = {}
     collect_refs = ->(node) do
       case node
       when String
-        node.scan(/matrix\.([A-Za-z_][A-Za-z0-9_]*)/) { |field| refs << field[0] }
+        node.scan(/matrix\.([A-Za-z_][A-Za-z0-9_-]*)/) { |field| refs << field[0] }
+        node.scan(/matrix\[\s*['"]([A-Za-z_][A-Za-z0-9_-]*)['"]\s*\]/) { |field| refs << field[0] }
       when Array
         node.each { |entry| collect_refs.call(entry) }
       when Hash
         node.each_value { |entry| collect_refs.call(entry) }
       end
     end
-    collect_refs.call(runners)
+    # Only labels pin the runner OS: a mapping's group names its runner
+    # group, so a matrix reference there must not count as a runner.
+    runners.each do |runner|
+      collect_refs.call(runner.is_a?(Hash) ? runner['labels'] : runner)
+    end
     strategy = body['strategy']
     if strategy.is_a?(Hash) && strategy['matrix'].is_a?(Hash)
       matrix = strategy['matrix']
       refs.uniq.each do |field|
         found = []
         collect.call(matrix[field], found) if matrix.key?(field)
-        (matrix['include'] || []).each do |entry|
-          collect.call(entry[field], found) if entry.is_a?(Hash) && entry.key?(field)
+        includes = matrix['include']
+        if includes.nil?
+          # No extra values.
+        elsif includes.is_a?(Array)
+          includes.each do |entry|
+            collect.call(entry[field], found) if entry.is_a?(Hash) && entry.key?(field)
+          end
+        else
+          errors << "#{file_name} #{job}: strategy.matrix.include is built at run time; the guard cannot resolve it."
+        end
+        excludes = matrix['exclude']
+        if excludes.nil?
+          # No removed values.
+        elsif excludes.is_a?(Array)
+          excludes.each do |entry|
+            # Only an entry naming just this field provably removes every
+            # run with the value; a conditional entry may leave some runs.
+            next unless entry.is_a?(Hash) && entry.keys == [field]
+            removed = []
+            collect.call(entry[field], removed)
+            found -= removed
+          end
+        else
+          errors << "#{file_name} #{job}: strategy.matrix.exclude is built at run time; the guard cannot resolve it."
         end
         (labels["#{file_name}.#{job} (matrix:#{field})"] ||= []).concat(found)
       end
+    end
+    mentions_matrix = false
+    scan_matrix = ->(node) do
+      case node
+      when String
+        mentions_matrix = true if node.match?(/matrix[\.\[]/)
+      when Array
+        node.each { |entry| scan_matrix.call(entry) }
+      when Hash
+        node.each_value { |entry| scan_matrix.call(entry) }
+      end
+    end
+    scan_matrix.call(runners)
+    if mentions_matrix
+      prefix = "#{file_name}.#{job}"
+      total = []
+      labels.each do |key, releases|
+        total.concat(releases) if key == prefix || key.start_with?(prefix + ' (matrix:')
+      end
+      errors << "#{file_name} #{job}: runs-on mentions matrix but no Ubuntu release was found for it." if total.empty?
     end
   end
 end

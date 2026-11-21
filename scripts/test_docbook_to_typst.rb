@@ -143,7 +143,14 @@ class DocBookTypstTest < Minitest::Test
   def test_status_mark_renders_short_label_and_glyph
     source = convert('<chapter><title>Status</title><para>Ordinary <phrase role="status-mark" condition="status:de-facto;also:historical">accepted by parsers</phrase> here.</para></chapter>')
     # Code-mode strings: markup-mode "..." would print as smart quotes.
-    assert_includes source, '#super[#smallcaps(" [Established usage]")#text("◆")]'
+    assert_includes source, "#super[#smallcaps(\"\u00A0[Established\u00A0usage]\")#text(\"◆\")]"
+    refute_includes source, '#box['
+  end
+
+  def test_status_mark_historical_label_uses_nonbreaking_hyphen
+    source = convert('<chapter><title>Status</title><para>So <phrase role="status-mark" condition="status:historical">this applies</phrase> here.</para></chapter>')
+    assert_includes source, "#super[#smallcaps(\" [First‑edition rule]\")#text(\"◇\")]"
+    refute_includes source, 'First-edition'
   end
 
   def test_status_note_trims_leading_whitespace
@@ -155,8 +162,9 @@ class DocBookTypstTest < Minitest::Test
   def test_status_unknown_token_keeps_raw_label_and_bare_glyph
     source = convert('<chapter><title>Status</title><para role="status-note" condition="status:invented">Mystery prose.</para><para>Ordinary <phrase role="status-mark" condition="status:invented">clause</phrase> and <phrase role="status-mark">bare</phrase>.</para></chapter>')
     assert_includes source, 'label: "invented"'
-    assert_includes source, '#super[#text(" ◇")]'
-    assert_includes source, '#super[#smallcaps(" [invented]")#text("◇")]'
+    assert_includes source, "#super[#text(\"\u00A0◇\")]"
+    assert_includes source, "#super[#smallcaps(\"\u00A0[invented]\")#text(\"◇\")]"
+    refute_includes source, '#box['
   end
 
   def test_native_compilation_with_outline_links_and_indexes
@@ -194,6 +202,35 @@ class DocBookTypstTest < Minitest::Test
       text = text.gsub(/\s+/, ' ')
       assert_includes text, 'accepted by parsers [Established usage]◆'
       refute_match(/[“”]/, text)
+    end
+  end
+
+  def test_compiled_historical_mark_never_splits_at_hyphen
+    # The hyphen in "First-edition rule" is a line-break opportunity even
+    # with hyphenation off; the converter emits U+2011 so the inline label
+    # stays whole. Needs pdftotext, which the CI smoke job installs.
+    executable = ENV['TYPST']
+    skip 'Set TYPST to run the native compilation test.' unless executable
+    skip 'Install poppler-utils to check rendered text.' unless system('command -v pdftotext >/dev/null 2>&1')
+    paras = [8, 9, 10].map do |n|
+      %(<para>#{'word ' * n}so this alternative never <phrase role="status-mark" condition="status:historical">applies here today</phrase> in every case.</para>)
+    end
+    source = convert("<chapter><title>Status</title>#{paras.join}</chapter>")
+    Dir.mktmpdir('compile-', TMP) do |dir|
+      File.write(File.join(dir, 'cll.typ'), source)
+      FileUtils.cp(File.expand_path('../typst/book.typ', __dir__), dir)
+      fonts = File.expand_path('../assets/fonts', __dir__)
+      pdf = File.join(dir, 'cll.pdf')
+      _, err, status = Open3.capture3(executable, 'compile', '--ignore-system-fonts', '--font-path', fonts, File.join(dir, 'cll.typ'), pdf)
+      assert status.success?, err
+      text, serr, tstatus = Open3.capture3('pdftotext', '-layout', pdf, '-')
+      assert tstatus.success?, serr
+      lines = text.split("\n").map(&:strip)
+      assert_empty lines.select { |l| l.end_with?('[First-') }
+      assert_empty lines.select { |l| l.start_with?('edition') }
+      collapsed = text.gsub(/\s+/, ' ')
+      assert_equal 3, collapsed.scan("[First‑edition rule]◇").length
+      refute_match(/\[First- /, collapsed)
     end
   end
 

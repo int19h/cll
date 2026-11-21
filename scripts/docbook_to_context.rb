@@ -348,7 +348,7 @@ class ContextBook
           head = ''
         end
         glyph = esc(note ? note.glyph : StatusLabels::BARE_GLYPH)
-        margin = "{\\hbox to 0pt{\\hss #{glyph}\\hskip.75em}}"
+        margin = "{\\hbox to 0pt{\\hss #{glyph}\\hskip1em}}"
         gap = head.empty? ? ' ' : "\\crlf "
         # \dontleavehmode starts the paragraph, so the box rides on the
         # label's line instead of forming a line of its own.

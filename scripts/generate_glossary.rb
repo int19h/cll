@@ -90,7 +90,43 @@ else
   # a truncated glossary that later runs treat as a valid cache
   File.open(glossfile + ".tmp", 'w') do |gfh|
     tree=Nokogiri::XML(open "#{builddir}/cll_preglossary.xml")
-    words = find_lojban_words( tree ).select { |x| x.attributes['valid'].to_s != 'maybe' }.map { |x| x.text.to_s } + find_frame_words( tree )
+    # A <valsi> wrapped in a cmavo-list <cmavo> or <gismu> cell names the
+    # same word as the cell's text. Such a wrapped word is a cell
+    # spelling, not body prose: it reaches the grouping only with its
+    # own dictionary match, like any other cell word (the "kiha" case
+    # below must not remove the entry of body "ki'a", and a wrapped
+    # spelling with an entry of its own still counts).
+    in_cell = ->(node) do
+      node.ancestors.any? do |a|
+        %w[cmavo gismu].include?( a.name ) && a.parent && a.parent.name == 'cmavo-entry'
+      end
+    end
+    valsi_nodes = find_lojban_words( tree ).select { |x| x.attributes['valid'].to_s != 'maybe' }
+    body_valsi_words = []
+    wrapped_valsi_words = []
+    valsi_nodes.each do |x|
+      if in_cell.( x )
+        wrapped_valsi_words << cmavo_list_cell_text( x ).strip
+      else
+        body_valsi_words << x.text.to_s
+      end
+    end
+    cell_words = find_cmavo_list_words( tree )
+    # A cell spelling without an entry of its own must not join a slug
+    # group and remove a body word's entry (the "kiha" vs "ki'a" case):
+    # only cell words that match the dictionary themselves, exactly or
+    # in outer pause dots only, reach the grouping. In testing mode
+    # there is no dictionary, so everything counts.
+    unless opts[:testing]
+      own_match = ->(word) do
+        defined_by_bare.fetch( bare_spelling.( word ), [] ).any? do |candidate|
+          slugify( candidate ) == slugify( word )
+        end
+      end
+      wrapped_valsi_words = wrapped_valsi_words.select( &own_match )
+      cell_words = cell_words.select( &own_match )
+    end
+    words = body_valsi_words + wrapped_valsi_words + find_frame_words( tree ) + cell_words
     glossary_word_groups(words).each do |slug, spellings|
       # Spellings that slugify to one ID, such as .y. and y, share one
       # entry, and every link uses valsi- plus that same slug. The match

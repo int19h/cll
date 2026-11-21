@@ -1631,7 +1631,7 @@
         <description>a tiny part of</description>
       </cmavo-entry>
       <cmavo-entry>
-        <cmavo>pino'o</cmavo>
+        <cmavo><valsi>pi</valsi><valsi>no'o</valsi></cmavo>
         <selmaho>PA+PA</selmaho>
         <description>the typical portion of</description>
       </cmavo-entry>
@@ -1651,7 +1651,7 @@
         <description>too few</description>
       </cmavo-entry>
       <cmavo-entry>
-        <cmavo>pirau</cmavo>
+        <cmavo><valsi>pi</valsi><valsi>rau</valsi></cmavo>
         <selmaho>PA+PA</selmaho>
         <description>enough of</description>
       </cmavo-entry>

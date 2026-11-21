@@ -218,6 +218,124 @@ Dir.mktmpdir do |dir|
   end
 end
 
+# Cmavo-list cells: a cell spelling without an entry of its own must not
+# join a slug group and remove a body word's entry. Here the "nahe" cell
+# shares the ID valsi-nahe with the body word "na'e", which the staged
+# dictionary defines. The cell word is dropped before grouping, so the
+# "na'e" entry survives; the preprocessed book leaves the cell plain and
+# reports it instead. The "klama" gismu cells have an entry of their own
+# and produce one with no body word, and the ".y." cell joins the body
+# "y" as before.
+Dir.mktmpdir do |dir|
+  scripts = stage_generator(repo, dir)
+  build = File.join(dir, 'build')
+  FileUtils.mkdir_p(build)
+  File.write(File.join(build, 'cll_preglossary.xml'), <<~XML)
+    <?xml version="1.0"?>
+    <book>
+      <para><valsi>na'e</valsi><valsi>y</valsi></para>
+      <cmavo-list>
+        <cmavo-entry><cmavo>nahe</cmavo><gismu>klama</gismu></cmavo-entry>
+        <cmavo-entry><cmavo>.y.</cmavo><gismu>klama</gismu></cmavo-entry>
+      </cmavo-list>
+    </book>
+  XML
+
+  stdout, stderr, status = run_generator(scripts, build)
+  check.(status.success?, "cell-word glossary failed\n#{stderr}")
+  if status.success?
+    by_id = entry_map(stdout).map { |id, term, defn| [id, [term, defn]] }.to_h
+    check.(by_id['valsi-nahe'] == ["na'e", 'other than'], "the nahe cell removed na'e's entry: #{by_id['valsi-nahe'].inspect}")
+    check.(!stderr.include?('share the ID "valsi-nahe"'), 'the valsi-nahe group conflict is back')
+    check.(by_id['valsi-klama'] == ['klama', 'to come or go'], "a cell word with an entry produced none: #{by_id['valsi-klama'].inspect}")
+    check.(by_id['valsi-y'] == ['.y.', 'hesitation noise'], "the .y. cell stopped joining y: #{by_id['valsi-y'].inspect}")
+  end
+end
+
+# A <valsi> wrapped in a table cell is a cell spelling, not body prose:
+# a wrapped spelling without an entry of its own must not join a slug
+# group and remove a body word's entry either. Here the wrapped "nahe"
+# shares the ID valsi-nahe with the body word "na'e", which the staged
+# dictionary defines. The entry survives with the "na'e" term and no
+# group conflict; a wrapped "klama", which has an entry of its own,
+# still produces one.
+Dir.mktmpdir do |dir|
+  scripts = stage_generator(repo, dir)
+  build = File.join(dir, 'build')
+  FileUtils.mkdir_p(build)
+  File.write(File.join(build, 'cll_preglossary.xml'), <<~XML)
+    <?xml version="1.0"?>
+    <book>
+      <para><valsi>na'e</valsi></para>
+      <cmavo-list>
+        <cmavo-entry><cmavo><valsi>nahe</valsi></cmavo><gismu>ui</gismu></cmavo-entry>
+        <cmavo-entry><cmavo><valsi>klama</valsi></cmavo><gismu>y</gismu></cmavo-entry>
+      </cmavo-list>
+    </book>
+  XML
+
+  stdout, stderr, status = run_generator(scripts, build)
+  check.(status.success?, "wrapped-word glossary failed\n#{stderr}")
+  if status.success?
+    by_id = entry_map(stdout).map { |id, term, defn| [id, [term, defn]] }.to_h
+    check.(by_id['valsi-nahe'] == ["na'e", 'other than'], "the wrapped nahe removed na'e's entry: #{by_id['valsi-nahe'].inspect}")
+    check.(!stderr.include?('share the ID "valsi-nahe"'), 'the valsi-nahe group conflict is back')
+    check.(by_id['valsi-klama'] == ['klama', 'to come or go'], "a wrapped cell word with an entry produced none: #{by_id['valsi-klama'].inspect}")
+  end
+end
+
+# A wrapped cell spelling counts its visible text only, as the
+# preprocessor does: hidden text inside the <valsi> must not join the
+# slug. Here "klama" appears only inside a wrapped phrase cell with a
+# display-none letter (the cell as a whole names no word), so without
+# the visible-text rule its entry would vanish under "klamax".
+Dir.mktmpdir do |dir|
+  scripts = stage_generator(repo, dir)
+  build = File.join(dir, 'build')
+  FileUtils.mkdir_p(build)
+  File.write(File.join(build, 'cll_preglossary.xml'), <<~XML)
+    <?xml version="1.0"?>
+    <book>
+      <cmavo-list>
+        <cmavo-entry><cmavo>tense+ <valsi>klama<phrase role="display-none">x</phrase></valsi></cmavo><gismu>y</gismu></cmavo-entry>
+      </cmavo-list>
+    </book>
+  XML
+
+  stdout, stderr, status = run_generator(scripts, build)
+  check.(status.success?, "hidden-text cell-word glossary failed\n#{stderr}")
+  if status.success?
+    by_id = entry_map(stdout).map { |id, term, defn| [id, [term, defn]] }.to_h
+    check.(by_id['valsi-klama'] == ['klama', 'to come or go'], "hidden text removed klama's entry: #{by_id['valsi-klama'].inspect}")
+    check.(!stderr.include?('klamax'), 'hidden text leaked into the glossary')
+  end
+end
+
+# Only a <cmavo> or <gismu> whose parent is a <cmavo-entry> counts as a
+# table cell. A wrapped spelling elsewhere, such as in an example, is
+# body prose: without an entry of its own it sinks the shared group
+# loudly instead of silently taking over another word's entry.
+Dir.mktmpdir do |dir|
+  scripts = stage_generator(repo, dir)
+  build = File.join(dir, 'build')
+  FileUtils.mkdir_p(build)
+  File.write(File.join(build, 'cll_preglossary.xml'), <<~XML)
+    <?xml version="1.0"?>
+    <book>
+      <para><valsi>na'e</valsi></para>
+      <example><para>see <cmavo><valsi>nahe</valsi></cmavo> here</para></example>
+    </book>
+  XML
+
+  stdout, stderr, status = run_generator(scripts, build)
+  check.(status.success?, "example-wrapped glossary failed\n#{stderr}")
+  if status.success?
+    by_id = entry_map(stdout).map { |id, term, defn| [id, [term, defn]] }.to_h
+    check.(by_id['valsi-nahe'].nil?, "an example-wrapped spelling kept na'e's entry quiet: #{by_id['valsi-nahe'].inspect}")
+    check.(stderr.include?('share the ID "valsi-nahe"'), 'the example-wrapped conflict is silent')
+  end
+end
+
 if failures.empty?
   puts 'test-generate-glossary: cache key and glossary IDs are stable'
 else

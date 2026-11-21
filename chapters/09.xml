@@ -3673,9 +3673,7 @@
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
       <cmavo-entry>
-        <cmavo>
-          <valsi>do'e</valsi>
-        </cmavo>
+        <cmavo>do'e</cmavo>
         <gismu>-----</gismu>
         <modal-place>vaguely related to</modal-place>
         <modal-place se="se"></modal-place>
@@ -3711,12 +3709,8 @@
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
       <cmavo-entry>
-        <cmavo>
-          <valsi>fau</valsi>
-        </cmavo>
-        <gismu>
-          <valsi>fasnu</valsi>
-        </gismu>
+        <cmavo>fau</cmavo>
+        <gismu>fasnu</gismu>
         <modal-place>in the event of</modal-place>
         <modal-place se="se"></modal-place>
         <modal-place se="te"></modal-place>
@@ -4012,12 +4006,8 @@
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
       <cmavo-entry>
-        <cmavo>
-          <valsi>ra'a</valsi>
-        </cmavo>
-        <gismu>
-          <valsi>srana</valsi>
-        </gismu>
+        <cmavo>ra'a</cmavo>
+        <gismu>srana</gismu>
         <modal-place>pertained to by</modal-place>
         <modal-place se="se">concerning</modal-place>
         <modal-place se="te"></modal-place>
@@ -4025,12 +4015,8 @@
         <modal-place se="xe"></modal-place>
       </cmavo-entry>
       <cmavo-entry>
-        <cmavo>
-          <valsi>ra'i</valsi>
-        </cmavo>
-        <gismu>
-          <valsi>krasi</valsi>
-        </gismu>
+        <cmavo>ra'i</cmavo>
+        <gismu>krasi</gismu>
         <modal-place>from source</modal-place>
         <modal-place se="se">as an origin of</modal-place>
         <modal-place se="te"></modal-place>

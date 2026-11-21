@@ -196,4 +196,12 @@ class DocBookTypstTest < Minitest::Test
       refute_match(/[“”]/, text)
     end
   end
+
+  def test_glossterm_in_table_cell_links_to_glossary_entry
+    # xml_preprocess.rb links each cmavo-list word with the same glossterm
+    # markup a <valsi> gets; the converter turns that link into a Typst
+    # link without any table-specific code.
+    source = convert('<chapter id="c"><title>C</title><informaltable><colgroup/><tbody><tr><td class="cmavo"><para role="cmavo"><foreignphrase xml:lang="jbo"><glossterm role="valsi" linkend="valsi-mi">mi</glossterm></foreignphrase></para></td></tr></tbody></informaltable><glossary><title>G</title><glossdiv><title>M</title><glossentry xml:id="valsi-mi"><glossterm>mi</glossterm><glossdef><para>I</para></glossdef></glossentry></glossdiv></glossary></chapter>')
+    assert_includes source, '#link(label("valsi-mi"))'
+  end
 end

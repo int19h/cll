@@ -47,7 +47,10 @@
 \setuplist[chapter][style=bold,width=0pt]
 \setuplist[section][margin=1em,width=0pt]
 \setupcombinedlist[content][list={chapter,section},alternative=c]
-\setupinteraction[state=start,style=normal]
+\setupinteraction[state=start,style=]
+% An empty interaction style keeps the surrounding typeface: linked
+% Lojban words stay italic like the unlinked {\it ...} around them
+% instead of resetting to roman. Links stay clickable.
 \enabletrackers[fonts.missing]
 \placebookmarks[chapter,section,subsection,subsubject][chapter]
 \definecolor[CLLrule][s=.6]

@@ -361,6 +361,9 @@ $document.css('jbophrase').each do |node|
   end
 end
 
+# The glossary entries once, for every cell below: scanning the whole
+# book per cell costs about 18 seconds on the full book.
+cmavo_glossary_entries = glossary_entries( $document )
 $document.css('cmavo-list').each do |node|
   #     Handle cmavo-list
   #
@@ -420,7 +423,25 @@ $document.css('cmavo-list').each do |node|
       #           <quote>Attention/Lo/Hark/Behold/Hey!/Listen, X</quote>; indicates an important communication that the listener should listen to.
       #         </description>
 
+      # A cmavo or gismu cell links its word to the glossary, exactly
+      # as a <valsi> is linked, when the cell holds one word or exactly
+      # one bracketed word. A <valsi> already inside the cell counts as
+      # the cell's text under the same rules. A split cell of two or
+      # more adjacent <valsi> parts (rule 12) keeps each part's own
+      # link, with no space between the parts. The link points at a
+      # glossary entry in this same document, so a word the dictionary
+      # lacks stays plain text instead of breaking validation, the way
+      # valid="maybe" does, and is reported. An opted-out cell
+      # (glossary="false", valid="false" or valid="maybe", on the cell
+      # or on a <valsi> inside it) never links. Every other cell shape
+      # stays plain and silent.
       handle_children( node: child, allowed_children_names: [ 'gismu', 'cmavo', 'selmaho', 'series', 'rafsi-group', 'rafsi', 'compound', 'modal-place', 'attitudinal-scale', 'pseudo-cmavo', 'description' ] ) do |grandchild|
+        if [ 'gismu', 'cmavo' ].include?( grandchild.name )
+          unlinked = link_cmavo_list_cell!( grandchild, cmavo_glossary_entries )
+          Array( unlinked ).each do |word|
+            $stderr.puts %Q{cmavo-list: no glossary entry for "#{word}", leaving the cell unlinked}
+          end
+        end
         role=grandchild.name
         if grandchild[:role]
           role=grandchild[:role]
@@ -448,6 +469,46 @@ $document.css('cmavo-list').each do |node|
   tableify node
 end
 
+# A split compound cell (rule 12) must read as one word. The table
+# markup above pretty-prints newlines around and inside the link units,
+# and the outputs would collapse them into one rendered space
+# ("roi nai"). Drop every whitespace-only text node inside a run of two
+# or more adjacent <valsi>-pass link units: the whitespace between the
+# units and the whitespace around each unit's link. Spaced cells never
+# reach this pass with link units (they unwrap to plain text), so every
+# remaining foreignphrase run here is a split cell.
+$document.css("td.cmavo, td.gismu").each do |cell|
+  holders = [cell]
+  cell.traverse { |node| holders << node if node != cell && node.element? }
+  holders.each do |parent|
+    kids = parent.children.to_a
+    i = 0
+    while i < kids.size
+      if kids[i].element? && kids[i].name == 'foreignphrase'
+        run = [kids[i]]
+        j = i + 1
+        while j + 1 < kids.size && kids[j].text? && kids[j].text =~ /\A\s+\z/ &&
+              kids[j + 1].element? && kids[j + 1].name == 'foreignphrase'
+          run << kids[j + 1]
+          j += 2
+        end
+        if run.size > 1
+          run.each do |unit|
+            ws = []
+            unit.traverse { |node| ws << node if node.text? && node.text =~ /\A\s+\z/ }
+            ws.each( &:remove )
+          end
+          ((i + 1)...j).step(2) do |k|
+            kids[k].remove if kids[k].text? && kids[k].text =~ /\A\s+\z/
+          end
+        end
+        i = j
+      end
+      i += 1
+    end
+  end
+end
+
 $document.css('.rafsi-group rafsi').each do |node|
   convert!( node: node, newname: 'phrase', lang: 'jbo' )
 end
@@ -473,7 +534,12 @@ $document.xpath('//@split').remove
 $document.xpath('//@se').remove
 $document.xpath('//@point').remove
 
-doc = $document.to_xml
+# No pretty-printing: the formatter would put whitespace between the
+# separately linked parts of a split compound cell (rule 12), and the
+# HTML and PDF outputs would read "roi nai". The tree already has those
+# parts adjacent with no text between them, and every consumer parses
+# this file, so indentation would only add insignificant bytes.
+doc = $document.to_xml( save_with: Nokogiri::XML::Node::SaveOptions::AS_XML )
 # Put in our own header
 header = File.open( 'scripts/header.xml', 'r' ) { |f| f.read }
 doc = doc.gsub( %r{^.*<book [^>]*>}m, header )

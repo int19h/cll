@@ -218,6 +218,72 @@ Dir.mktmpdir do |dir|
   end
 end
 
+# Cmavo-list cells: a cell spelling without an entry of its own must not
+# join a slug group and remove a body word's entry. Here the "nahe" cell
+# shares the ID valsi-nahe with the body word "na'e", which the staged
+# dictionary defines. The cell word is dropped before grouping, so the
+# "na'e" entry survives; the preprocessed book leaves the cell plain and
+# reports it instead. The "klama" gismu cells have an entry of their own
+# and produce one with no body word, and the ".y." cell joins the body
+# "y" as before.
+Dir.mktmpdir do |dir|
+  scripts = stage_generator(repo, dir)
+  build = File.join(dir, 'build')
+  FileUtils.mkdir_p(build)
+  File.write(File.join(build, 'cll_preglossary.xml'), <<~XML)
+    <?xml version="1.0"?>
+    <book>
+      <para><valsi>na'e</valsi><valsi>y</valsi></para>
+      <cmavo-list>
+        <cmavo-entry><cmavo>nahe</cmavo><gismu>klama</gismu></cmavo-entry>
+        <cmavo-entry><cmavo>.y.</cmavo><gismu>klama</gismu></cmavo-entry>
+      </cmavo-list>
+    </book>
+  XML
+
+  stdout, stderr, status = run_generator(scripts, build)
+  check.(status.success?, "cell-word glossary failed\n#{stderr}")
+  if status.success?
+    by_id = entry_map(stdout).map { |id, term, defn| [id, [term, defn]] }.to_h
+    check.(by_id['valsi-nahe'] == ["na'e", 'other than'], "the nahe cell removed na'e's entry: #{by_id['valsi-nahe'].inspect}")
+    check.(!stderr.include?('share the ID "valsi-nahe"'), 'the valsi-nahe group conflict is back')
+    check.(by_id['valsi-klama'] == ['klama', 'to come or go'], "a cell word with an entry produced none: #{by_id['valsi-klama'].inspect}")
+    check.(by_id['valsi-y'] == ['.y.', 'hesitation noise'], "the .y. cell stopped joining y: #{by_id['valsi-y'].inspect}")
+  end
+end
+
+# A <valsi> wrapped in a table cell is a cell spelling, not body prose:
+# a wrapped spelling without an entry of its own must not join a slug
+# group and remove a body word's entry either. Here the wrapped "nahe"
+# shares the ID valsi-nahe with the body word "na'e", which the staged
+# dictionary defines. The entry survives with the "na'e" term and no
+# group conflict; a wrapped "klama", which has an entry of its own,
+# still produces one.
+Dir.mktmpdir do |dir|
+  scripts = stage_generator(repo, dir)
+  build = File.join(dir, 'build')
+  FileUtils.mkdir_p(build)
+  File.write(File.join(build, 'cll_preglossary.xml'), <<~XML)
+    <?xml version="1.0"?>
+    <book>
+      <para><valsi>na'e</valsi></para>
+      <cmavo-list>
+        <cmavo-entry><cmavo><valsi>nahe</valsi></cmavo><gismu>ui</gismu></cmavo-entry>
+        <cmavo-entry><cmavo><valsi>klama</valsi></cmavo><gismu>y</gismu></cmavo-entry>
+      </cmavo-list>
+    </book>
+  XML
+
+  stdout, stderr, status = run_generator(scripts, build)
+  check.(status.success?, "wrapped-word glossary failed\n#{stderr}")
+  if status.success?
+    by_id = entry_map(stdout).map { |id, term, defn| [id, [term, defn]] }.to_h
+    check.(by_id['valsi-nahe'] == ["na'e", 'other than'], "the wrapped nahe removed na'e's entry: #{by_id['valsi-nahe'].inspect}")
+    check.(!stderr.include?('share the ID "valsi-nahe"'), 'the valsi-nahe group conflict is back')
+    check.(by_id['valsi-klama'] == ['klama', 'to come or go'], "a wrapped cell word with an entry produced none: #{by_id['valsi-klama'].inspect}")
+  end
+end
+
 if failures.empty?
   puts 'test-generate-glossary: cache key and glossary IDs are stable'
 else

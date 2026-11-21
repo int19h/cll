@@ -1322,7 +1322,7 @@
         </description>
       </cmavo-entry>
       <cmavo-entry>
-        <cmavo>roinai</cmavo>
+        <cmavo><valsi>roi</valsi><valsi>nai</valsi></cmavo>
         <selmaho>ROI</selmaho>
         <description>
           other than
@@ -5041,17 +5041,11 @@
           <para>set or reset sticky tense</para>
           <cmavo-list>
             <cmavo-entry>
-              <cmavo>
-                tense+
-                <valsi>ki</valsi>
-              </cmavo>
+              <cmavo>tense+ ki</cmavo>
               <description>set</description>
             </cmavo-entry>
             <cmavo-entry>
-              <cmavo>
-                <valsi>ki</valsi>
-                alone
-              </cmavo>
+              <cmavo>ki alone</cmavo>
               <description>reset</description>
             </cmavo-entry>
           </cmavo-list>

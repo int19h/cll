@@ -66,6 +66,7 @@ ruby scripts/test-generate-glossary.rb
 ruby scripts/test-lint-word-spellings.rb
 ruby scripts/lint-word-spellings.rb chapters/*.xml
 ruby scripts/test-jbophrase-frames.rb
+ruby scripts/test-cmavo-list-links.rb
 ruby scripts/test-docbook-to-context.rb
 python3 scripts/test-context-assets.py
 python3 scripts/test-build-version.py
@@ -155,6 +156,7 @@ The check needs `xsltproc` as well as Ruby and Nokogiri.
 | Word spellings self-test | The lint below, on fixtures | `ruby scripts/test-lint-word-spellings.rb` |
 | Word spellings | Lojban text has no CGV sequence (a consonant, a glide, and a vowel). Every word with a comma between two vowels appears in `scripts/reviewed-comma-words.json`. It does not check commas next to consonants. It reads only Lojban elements such as `jbo`, `valsi`, and `jbophrase`. It skips text marked `valid="false"` or `valid="maybe"`. It also skips the quoted text of `zoi` and `la'o`. | `ruby scripts/lint-word-spellings.rb chapters/*.xml` |
 | jbophrase frames | A frame such as `lu ... li'u` links each of its words to the glossary, and the glossary collects those words | `ruby scripts/test-jbophrase-frames.rb` |
+| cmavo-list links | A `cmavo-list` `cmavo` or `gismu` cell holding one word, or exactly one bracketed word, links to the glossary with the `valsi` markup; a split cell of adjacent `valsi` parts links each part with no space between them; every other cell shape stays plain, and a word with no entry stays plain and is reported | `ruby scripts/test-cmavo-list-links.rb` |
 
 This job checks that Nokogiri is version 1.18.8, the version that the Dockerfile installs.
 Check your version with `ruby -rnokogiri -e 'puts Nokogiri::VERSION'`.
@@ -273,6 +275,7 @@ These tests do not run in the `checks` workflow:
 
 - `python3 scripts/test-context-indexes.py build/cll-context.pdf` checks the printed indexes of a finished ConTeXt PDF. It needs PyMuPDF.
 - `python3 scripts/test-context-references.py build/cll-context.pdf` checks the printed cross-references of a finished ConTeXt PDF. It needs PyMuPDF.
+- `python3 scripts/test-context-link-fonts.py build/cll-context.pdf` checks that linked Lojban words print italic in a finished ConTeXt PDF. It needs PyMuPDF.
 - `python3 scripts/test-html-mathjax.py FILE` also compares a downloaded MathJax script with the integrity hash. See the [README](../README.md#mathematics-in-the-html-book).
 
 ### Offline reading in a browser

@@ -1155,8 +1155,8 @@
   </section>
   <section xml:id="section-sumti-negation">
     <title><anchor xml:id="c15s6" />sumti negation</title>
-    <para>      <indexterm type="lojban-word"><primary>NAhE+BO construct</primary><secondary>explanation of sumti negation</secondary>      </indexterm>        There are two ways of negating sumti in Lojban. We have the choice of quantifying the sumti with zero, or of applying the sumti-negator      <jbophrase>na'ebo</jbophrase>      before the sumti. It turns out that a zero quantification serves for contradictory negation. As the cmavo we use implies,
-      <jbophrase>na'ebo</jbophrase>
+    <para>      <indexterm type="lojban-word"><primary>NAhE+BO construct</primary><secondary>explanation of sumti negation</secondary>      </indexterm>        There are two ways of negating sumti in Lojban. We have the choice of quantifying the sumti with zero, or of applying the sumti-negator      <valsi>na'ebo</valsi>      before the sumti. It turns out that a zero quantification serves for contradictory negation. As the cmavo we use implies,
+      <valsi>na'ebo</valsi>
       forms a scalar negation.
     </para>
 
@@ -1179,7 +1179,7 @@
     <para>To make the plainly true claim directly, we quantify over a variable instead. Then no description has to refer to nonexistent kings: <jbophrase>no da poi ca nolraitru be lo fasygu'e cu krecau</jbophrase>. That is, nothing that is a current King of France lacks hair. This sentence is true precisely because nothing satisfies the restriction. (Older texts read descriptions like the one in <xref linkend="example-random-id-PL1E" /> quite differently: see <xref linkend="appendix-changes" />.)</para>
     <para>
       Now let us look at the same sentence using
-      <jbophrase>na'ebo</jbophrase>
+      <valsi>na'ebo</valsi>
       negation:
     </para>
 
@@ -1204,11 +1204,11 @@
     </para>
     <para>
       In place of
-      <jbophrase>na'ebo</jbophrase>
+      <valsi>na'ebo</valsi>
       , you may also use
-      <jbophrase>no'ebo</jbophrase>
+      <valsi>no'ebo</valsi>
       and
-      <jbophrase>to'ebo</jbophrase>
+      <valsi>to'ebo</valsi>
       , to be more specific about the sumti which would be appropriate in place of the stated sumti. Good examples are hard to come by, but here's a valiant try:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-S4AU">
@@ -1223,7 +1223,7 @@
     <para role="noindent">
       (Boston and Perth are nearly, but not quite, antipodal cities. In a purely United States context, San Francisco might be a better
       <quote>opposite</quote>.) Coming up with good examples is difficult, because attaching
-      <jbophrase>to'ebo</jbophrase>
+      <valsi>to'ebo</valsi>
       to a description sumti is usually the same as attaching
       <valsi>to'e</valsi>
       to the selbri of the description.

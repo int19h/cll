@@ -38,8 +38,9 @@ A `valsi` inside `title`, `term`, `primary`, or `secondary` gets no glossary lin
 A `jbophrase` in those elements gets no index entry.
 `scripts/merge.sh` defines only the `lojban-word` and `general` indexes, and neither of them collects `lojban-phrase` terms.
 
-For a compound cmavo whose meaning does not follow from its parts, use one element: `<valsi>.uinai</valsi>`.
-For a compound that does decompose, use one element per part: `<valsi>je</valsi><valsi>nai</valsi>`.
+A single-token compound with its own dictionary entry takes one `<valsi>` and links to that entry, whether or not its meaning follows from its parts: `<valsi>.uinai</valsi>`, `<valsi>naku</valsi>`. A `valid` mark from the next section still suppresses the link.
+In running text, a compound with no entry of its own stays `<jbophrase>`: `<jbophrase>texete</jbophrase>` (see #323).
+Splitting a compound into one `<valsi>` per part with no space between is for `<cmavo>` list cells whose compound has no entry: `<cmavo><valsi>roi</valsi><valsi>nai</valsi></cmavo>` in chapter 10.
 
 A `jbophrase` that names a frame, such as `ke ... ke'e` or `lu ... li'u`, links each of its words to the glossary.
 The words must be separated by `...` or `…`.

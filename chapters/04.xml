@@ -681,15 +681,15 @@
       <xref linkend="section-vowel-pairs" />), can also form a cmavo. Only one such cmavo is standard:
       <valsi>.y'y.</valsi>, the name of the apostrophe letter, which belongs to selma'o BY (see
       <xref linkend="section-lerfu-liste" />). All the others are experimental, like the longer vowel sequences described next; two examples are
-      <jbophrase>.a'y</jbophrase>
+      <valsi>.a'y</valsi>
       and
-      <jbophrase>.e'y</jbophrase>.
+      <valsi>.e'y</valsi>.
     </para>
     <para><indexterm type="general"><primary>cmavo</primary><secondary>lack of relation of form to grammatical use</secondary>
       </indexterm><indexterm type="general"><primary>experimental cmavo</primary><secondary>forms for</secondary>
       </indexterm><indexterm type="general"><primary>cmavo</primary><secondary>for experimental use</secondary>
       </indexterm><indexterm type="general"><primary>cmavo</primary><secondary>simple</secondary>
-      </indexterm>A simple cmavo thus has the property of having only one or two vowels, or of having a single consonant followed by one or two vowels. Longer vowel sequences are also of cmavo form. They follow the same syllable rules as everywhere else, so each additional vowel or diphthong comes after an apostrophe or a glide. But the language reserves these forms for experimental use: a few examples are <jbophrase>ku'a'e</jbophrase>, <jbophrase>sau'e</jbophrase>, and <jbophrase>bai'ai</jbophrase>. All CVV cmavo beginning with the letter <letteral>x</letteral> are also reserved for experimental use. In general, though, the form of a cmavo tells you little or nothing about its grammatical use.</para>
+      </indexterm>A simple cmavo thus has the property of having only one or two vowels, or of having a single consonant followed by one or two vowels. Longer vowel sequences are also of cmavo form. They follow the same syllable rules as everywhere else, so each additional vowel or diphthong comes after an apostrophe or a glide. But the language reserves these forms for experimental use: a few examples are <valsi valid="maybe">ku'a'e</valsi>, <valsi>sau'e</valsi>, and <valsi valid="maybe">bai'ai</valsi>. All CVV cmavo beginning with the letter <letteral>x</letteral> are also reserved for experimental use. In general, though, the form of a cmavo tells you little or nothing about its grammatical use.</para>
     <para>
       <indexterm type="general"><primary>experimental cmavo</primary><secondary>definition</secondary>
       </indexterm>
@@ -875,9 +875,9 @@
       , though, demands that a pause separate
       <valsi>re</valsi>
       from the following syllable
-      <jbophrase>nan</jbophrase>
+      <morphology>nan</morphology>
       to ensure that the stress on
-      <jbophrase>nan</jbophrase>
+      <morphology>nan</morphology>
       is properly heard as a stressed syllable. The alternative pronunciation
     </para>
 
@@ -2051,9 +2051,9 @@
       <jbophrase>rokci renro</jbophrase>
       (
       <quote>rock throw</quote>) cannot be expressed as
-      <jbophrase valid="false">ro'ire'o</jbophrase>
+      <valsi valid="false">ro'ire'o</valsi>
       (which breaks up into two cmavo), nor can it be
-      <jbophrase valid="false">ro'irre'o</jbophrase>
+      <valsi valid="false">ro'irre'o</valsi>
       (which has an impermissible double consonant); the 
     n-hyphen is required, and the correct form of the hyphenated lujvo is
       <valsi valid="maybe">ro'inre'o</valsi>. The same lujvo could also be expressed without hyphenation as
@@ -2061,7 +2061,7 @@
     </para>
     <para>
       This book teaches the classical rule: a hyphen appears exactly where it is needed, and nowhere else. The PEG word-form grammar is more liberal. It also accepts unneeded hyphens, for example in
-      <jbophrase>naltosymabru</jbophrase>. Expect software to accept such hyphens, but write them only where the classical rule needs them.
+      <valsi valid="maybe">naltosymabru</valsi>. Expect software to accept such hyphens, but write them only where the classical rule needs them.
     </para>
     <para role="status-note" condition="status:editorial;also:de-facto">
       <indexterm type="general"><primary>hyphens</primary><secondary>optional, status of</secondary>
@@ -2293,7 +2293,7 @@
       <indexterm type="general"><primary>zi'evla</primary><secondary>as term for Stage 4 fu'ivla</secondary>
       </indexterm>
       Finally, Stage 4 fu'ivla do not have any rafsi classifier. Without the classifier, a borrowing can be shorter, which suits a concept so common or so important that its word must be made as short as possible. This book also calls these free-form borrowings
-      <jbophrase>zi'evla</jbophrase>
+      <valsi>zi'evla</valsi>
       (<quote>free words</quote>). (See
       <xref linkend="section-rafsi-fuhivla" />
       for how fu'ivla of every stage take part in lujvo.)
@@ -3935,7 +3935,7 @@
         n-hyphen) after the first rafsi if it is CVV-form. If there are exactly two words, then put an 
         r-hyphen (or an 
         n-hyphen) between the two rafsi if the first rafsi is CVV-form, unless the second rafsi is CCV-form (for example,
-              <jbophrase>saicli</jbophrase>
+              <valsi valid="maybe">saicli</valsi>
               requires no hyphen). Use an 
         r-hyphen unless the letter after the hyphen is
               <letteral>r</letteral>
@@ -5900,16 +5900,16 @@
     <orderedlist>
       <listitem>
         <para><indexterm type="general"><primary>fu'ivla</primary><secondary>as final element of lujvo</secondary>
-          </indexterm>A fu'ivla can stand unchanged as the <emphasis>final</emphasis> element of a lujvo, with ordinary rafsi (and ordinary hyphens) in front of it. For example, from <valsi>spageti</valsi> (spaghetti) we can form <jbophrase>cmalyspageti</jbophrase> (<jbophrase>cmalu spageti</jbophrase>: little spaghetti, that is, spaghettini). We can also form <jbophrase>cidjyspageti</jbophrase> (<jbophrase>cidja spageti</jbophrase>: spaghetti as food), just as if <valsi>spageti</valsi> were a gismu in final position. Not every rafsi will work, though, because the whole word must still divide back into its parts and into nothing else. For instance, you cannot use the three-letter rafsi <rafsi>dja-</rafsi> here. The result, <jbophrase valid="false">djarspageti</jbophrase>, reads as one long undivided fu'ivla, not as a rafsi plus <valsi>spageti</valsi>.</para>
+          </indexterm>A fu'ivla can stand unchanged as the <emphasis>final</emphasis> element of a lujvo, with ordinary rafsi (and ordinary hyphens) in front of it. For example, from <valsi>spageti</valsi> (spaghetti) we can form <valsi valid="maybe">cmalyspageti</valsi> (<jbophrase>cmalu spageti</jbophrase>: little spaghetti, that is, spaghettini). We can also form <valsi valid="maybe">cidjyspageti</valsi> (<jbophrase>cidja spageti</jbophrase>: spaghetti as food), just as if <valsi>spageti</valsi> were a gismu in final position. Not every rafsi will work, though, because the whole word must still divide back into its parts and into nothing else. For instance, you cannot use the three-letter rafsi <rafsi>dja-</rafsi> here. The result, <jbophrase valid="false">djarspageti</jbophrase>, reads as one long undivided fu'ivla, not as a rafsi plus <valsi>spageti</valsi>.</para>
       </listitem>
       <listitem>
         <para>
           <indexterm type="general"><primary>fu'ivla</primary><secondary>as non-final element of lujvo</secondary>
           </indexterm>
           In a <emphasis>non-final</emphasis> position, the fu'ivla takes a hyphen. The way that is always safe is to attach
-          <jbophrase>'y</jbophrase>
+          <letteral>'y</letteral>
           to the complete fu'ivla:
-          <jbophrase>spageti'ykukte</jbophrase>
+          <valsi valid="maybe">spageti'ykukte</valsi>
           (<jbophrase>spageti kukte</jbophrase>: spaghetti-delicious). If the fu'ivla ends in a single vowel, you can often replace that final vowel with
           <letteral>y</letteral>
           instead, which gives a shorter word. But you can do this only when nobody can read the result as a string of ordinary rafsi.
@@ -5917,7 +5917,7 @@
         <para>
           With
           <valsi>spageti</valsi>, the substitution is not available. The word
-          <jbophrase>spagetykukte</jbophrase>
+          <valsi valid="maybe">spagetykukte</valsi>
           is well formed, but the rules for word forms divide it as
           <jbophrase>spa-get-y-kukte</jbophrase>. That is a classical lujvo built from three-letter rafsi pieces, not a compound of
           <valsi>spageti</valsi>
@@ -5931,13 +5931,13 @@
           (henry, the unit of inductance) and the rafsi
           <rafsi>mil-</rafsi>
           (<valsi>milti</valsi>, thousandth), we get
-          <jbophrase>mily'enri</jbophrase>
+          <valsi valid="maybe">mily'enri</valsi>
           (millihenry).
         </para>
       </listitem>
     </orderedlist>
-    <para>The rule that replaces the final vowel does work when no such collision happens. The fu'ivla <valsi valid="maybe">.enri</valsi> from rule 3 combines with <valsi>kukte</valsi> in two ways: the full form gives <jbophrase>enri'ykukte</jbophrase>, and the form with the final vowel replaced gives <jbophrase>enrykukte</jbophrase>. (A delicious henry? The meaning is the problem of whoever coins the word.) Nobody can misread <jbophrase>enr-</jbophrase> as a string of ordinary rafsi, so the shorter form is safe, and speakers usually prefer it.</para>
-    <para>The whole result is a single brivla, and this has one more consequence. The finished lujvo is stressed on its penultimate syllable, like any other brivla, no matter where the fu'ivla had its stress when it stood on its own. So <jbophrase>spageti'ykukte</jbophrase> is stressed on <quote>kuk</quote>. If you try to keep the original stress of <valsi>spageti</valsi>, as in <jbophrase valid="false">spagEti'ykukte</jbophrase>, the result is not a word.</para>
+    <para>The rule that replaces the final vowel does work when no such collision happens. The fu'ivla <valsi valid="maybe">.enri</valsi> from rule 3 combines with <valsi>kukte</valsi> in two ways: the full form gives <valsi valid="maybe">enri'ykukte</valsi>, and the form with the final vowel replaced gives <valsi valid="maybe">enrykukte</valsi>. (A delicious henry? The meaning is the problem of whoever coins the word.) Nobody can misread <rafsi>enr-</rafsi> as a string of ordinary rafsi, so the shorter form is safe, and speakers usually prefer it.</para>
+    <para>The whole result is a single brivla, and this has one more consequence. The finished lujvo is stressed on its penultimate syllable, like any other brivla, no matter where the fu'ivla had its stress when it stood on its own. So <valsi valid="maybe">spageti'ykukte</valsi> is stressed on <quote>kuk</quote>. If you try to keep the original stress of <valsi>spageti</valsi>, as in <valsi valid="false">spagEti'ykukte</valsi>, the result is not a word.</para>
     <para>As always, the results must satisfy the general rules for word forms. In particular, the whole word must not fall apart into smaller words, and the hyphens are there to prevent exactly that. There are no short (three-letter) rafsi for fu'ivla; only the forms above exist.</para>
     <para>Sometimes even this is too clumsy, or the non-Lojban element is not a fu'ivla at all. In these cases <valsi>zei</valsi> is still available, and it works with any kind of word, as <xref linkend="section-rafsi" /> describes.</para>
   </section>

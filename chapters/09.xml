@@ -1266,7 +1266,7 @@
       , and the sumti which follows it a
       <quote>modal sumti</quote>
       ; the corresponding purely Lojban terms are
-      <jbophrase>sumtcita</jbophrase>
+      <valsi>sumtcita</valsi>
       and
       <jbophrase>seltcita sumti</jbophrase>
       , respectively. Modal sumti may be placed anywhere within the bridi, in any order; they have no effect whatever on the rules for assigning unmarked sumti to numbered places, and they may not be marked with FA cmavo.
@@ -1329,7 +1329,7 @@
       </indexterm><indexterm type="general"><primary>modal tags</primary><secondary>short forms as BAI cmavo</secondary>
       </indexterm><indexterm type="lojban-word"><primary>fi'o</primary><secondary>&quot;fi'o&quot;-constructs ; short forms as BAI cmavo</secondary>
       </indexterm><indexterm type="lojban-word"><primary>BAI selma'o</primary><secondary>as short forms for &quot;fi'o&quot;-constructs</secondary>
-      </indexterm>Here <valsi>se</valsi> is used before a cmavo, namely <valsi>pi'o</valsi>, rather than before a brivla. The meaning of this cmavo, which belongs to selma'o BAI, is exactly the same as that of <jbophrase>fi'o pilno fe'u</jbophrase>. Since what we want is a tag based on <jbophrase>se pilno</jbophrase> rather than <jbophrase>pilno</jbophrase> (the tool, not the tool user), the grammar allows a BAI cmavo to be converted using a SE cmavo. <xref linkend="example-random-id-Lu15" /> may therefore be rewritten as:</para>
+      </indexterm>Here <valsi>se</valsi> is used before a cmavo, namely <valsi>pi'o</valsi>, rather than before a brivla. The meaning of this cmavo, which belongs to selma'o BAI, is exactly the same as that of <jbophrase>fi'o pilno fe'u</jbophrase>. Since what we want is a tag based on <jbophrase>se pilno</jbophrase> rather than <valsi>pilno</valsi> (the tool, not the tool user), the grammar allows a BAI cmavo to be converted using a SE cmavo. <xref linkend="example-random-id-Lu15" /> may therefore be rewritten as:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-N32m">
       <title><anchor xml:id="c9e6d1" /></title>
 
@@ -2156,7 +2156,7 @@
     </para>
     <para>Modal connectives<indexterm type="general"><primary>modal connectives</primary><secondary>with fi'o</secondary>
       </indexterm><indexterm type="lojban-word"><primary>fi'o</primary><secondary>restriction on use</secondary>
-      </indexterm> can be formed with the <jbophrase>fi'o-</jbophrase> plus-selbri form of modal too. The current grammar accepts a form like <jbophrase>.i fi'o bapli fe'u bo</jbophrase> (older grammars differ here: see <xref linkend="appendix-changes" />).</para>
+      </indexterm> can be formed with the <valsi>fi'o</valsi>-plus-selbri form of modal too. The current grammar accepts a form like <jbophrase>.i fi'o bapli fe'u bo</jbophrase> (older grammars differ here: see <xref linkend="appendix-changes" />).</para>
   </section>
   <section xml:id="section-modal-selbri">
     <title><anchor xml:id="c9s9" />Modal selbri</title>
@@ -2378,8 +2378,7 @@
     </para>
     <para>
       Note: Either BAI modals or
-      <jbophrase>fi'o-</jbophrase>
-      plus-selbri modals may correctly be used in any of the constructions discussed in this section.
+      <valsi>fi'o</valsi>-plus-selbri modals may correctly be used in any of the constructions discussed in this section.
     </para>
   </section>
   <section xml:id="section-modal-relative-phrases">
@@ -2749,8 +2748,7 @@
       <indexterm type="lojban-word"><primary>fi'o</primary><secondary>usage of modals in relative phrases</secondary>
       </indexterm>
       Note: The uses of modals discussed in this section are applicable both to BAI modals and to
-      <jbophrase>fi'o-</jbophrase>
-      plus-selbri modals.
+      <valsi>fi'o</valsi>-plus-selbri modals.
     </para>
   </section>
   <section xml:id="section-mixed-connection">
@@ -2947,8 +2945,7 @@
       <indexterm type="lojban-word"><primary>fi'o</primary><secondary>mixed modal connection with</secondary>
       </indexterm>
       Note: The uses of modals discussed in this section are applicable both to BAI modals and to
-      <jbophrase>fi'o-</jbophrase>
-      plus-selbri modals.
+      <valsi>fi'o</valsi>-plus-selbri modals.
     </para>
   </section>
   <section xml:id="section-modal-jai">
@@ -3096,8 +3093,7 @@
       </indexterm>
       <indexterm type="general"><primary>modal conversion with fi'o</primary></indexterm>
       Note: The uses of modals discussed in this section are applicable both to BAI modals and to
-      <jbophrase>fi'o-</jbophrase>
-      plus-selbri modals.
+      <valsi>fi'o</valsi>-plus-selbri modals.
     </para>
   </section>
   <section xml:id="section-modal-negation">
@@ -3116,9 +3112,9 @@
       <indexterm type="general"><primary>negation of modals</primary><secondary>contradictory</secondary>
       </indexterm>
       Contradictory negation involving BAI cmavo is performed by appending
-      <jbophrase>-nai</jbophrase>
+      -<valsi>nai</valsi>
       (of selma'o NAI) to the BAI. One use of modals with
-      <jbophrase>-nai</jbophrase>
+      -<valsi>nai</valsi>
       is to deny a causal relationship:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-ej84">
@@ -3139,7 +3135,7 @@
       <indexterm type="general"><primary>BAI selma'o</primary><secondary>negation, status of</secondary>
       </indexterm>
       This reading of BAI plus
-      <jbophrase>nai</jbophrase>
+      <valsi>nai</valsi>
       comes from a BPFK checkpoint. Under it, the main claim stands, and the sentence denies the relation but says nothing about the tagged event itself. Older word lists read it differently (see
       <xref linkend="appendix-changes" />). For the other sense, which is like
       <quote>despite</quote>

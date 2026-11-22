@@ -7,7 +7,7 @@
       </indexterm>The main reference chapters of this book teach the account of Lojban that this edition selected. Wherever they teach a rule, they also say where it comes from: a vote of the LLG or of the BPFK, a BPFK checkpoint, or established usage. Where the sources still disagree, they say that the question is open. This chapter describes something else. It describes words and grammatical variants that no official body ever adopted, but which a reader of real Lojban text will meet sooner or later.</para>
     <para>We call a single unadopted word an <quote>experimental cmavo</quote>, and a coherent set of unadopted grammar changes a <quote>dialect</quote>. Nothing in this chapter is official, and you do not need any of it to speak or read standard Lojban. But a reference that ignored these things would not describe the language as people actually use it.</para>
     <para><indexterm type="general"><primary>experimental cmavo</primary><secondary>word-forms reserved for</secondary>
-      </indexterm>Standard Lojban itself provides the space where these words live. <xref linkend="chapter-morphology" /> explains that the language reserves the cmavo shapes beyond the simple assigned forms (such as the longer vowel strings in <jbophrase>zo'oi</jbophrase> or <jbophrase>su'oi</jbophrase>) for experimental use. They are grammatical word forms with no officially assigned meaning. Coining one breaks no rule, and the new word has whatever standing its users give it. The community dictionaries record such words, clearly marked as unofficial.</para>
+      </indexterm>Standard Lojban itself provides the space where these words live. <xref linkend="chapter-morphology" /> explains that the language reserves the cmavo shapes beyond the simple assigned forms (such as the longer vowel strings in <valsi>zo'oi</valsi> or <valsi>su'oi</valsi>) for experimental use. They are grammatical word forms with no officially assigned meaning. Coining one breaks no rule, and the new word has whatever standing its users give it. The community dictionaries record such words, clearly marked as unofficial.</para>
     <para><indexterm type="general"><primary>dotside</primary><secondary>as dialect that the BPFK approved</secondary>
       </indexterm>The boundary between experimental and adopted has moved in the past, too. This book writes every cmevla with a dot at the start and at the end. That rule began as a deliberately partisan dialect, and its name, <quote>the dot side</quote>, was a joke. It is now approved by the BPFK (see <xref linkend="appendix-changes" /> for the details).</para>
     <para>The established corpus itself grew out of once-experimental proposals, adopted at various levels. The published records through the Logical Language Group's meeting of December 2025, however, show no official decision that changed a rule of the language after 2020, when the Group ratified the article rules (see <xref linkend="chapter-about" />).</para>
@@ -51,7 +51,7 @@
         <natlang><quote>Small</quote> is an English word.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent"><indexterm type="lojban-word"><primary>la'oi</primary></indexterm>Its sibling <valsi>la'oi</valsi> does the same for names, and stands to <jbophrase>la'o</jbophrase> as <valsi>zo'oi</valsi> stands to <valsi>zoi</valsi>. In the community's 2015 frequency survey it ranked first among all experimental cmavo. That is no surprise, since foreign names of one word (of people, software, and websites) are everywhere:</para>
+    <para role="indent"><indexterm type="lojban-word"><primary>la'oi</primary></indexterm>Its sibling <valsi>la'oi</valsi> does the same for names, and stands to <valsi>la'o</valsi> as <valsi>zo'oi</valsi> stands to <valsi>zoi</valsi>. In the community's 2015 frequency survey it ranked first among all experimental cmavo. That is no surprise, since foreign names of one word (of people, software, and websites) are everywhere:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x22b">
       <title><anchor xml:id="c22e2d2" /></title>
       <interlinear-gloss>
@@ -131,7 +131,7 @@
   <section xml:id="section-dialects-grabbag">
     <title><anchor xml:id="c22s4" />Other experimental cmavo in real use</title>
     <para><indexterm type="general"><primary>error correction</primary><secondary>experimental quote set</secondary>
-      </indexterm><indexterm type="lojban-word"><primary>lo'ai</primary></indexterm><indexterm type="lojban-word"><primary>sa'ai</primary></indexterm><indexterm type="lojban-word"><primary>le'ai</primary></indexterm>Beyond the quotation family, the community's frequency surveys put one coherent set clearly ahead of the rest: the <emphasis>error-correction quotes</emphasis> <valsi>lo'ai</valsi>, <valsi>sa'ai</valsi>, and <valsi>le'ai</valsi>. The erasure words of standard Lojban (see <xref linkend="section-erasure" />) can only erase the <emphasis>most recent</emphasis> words. But in live conversation, people often want to reach back and repair something that they said a sentence ago. The set works like a search-and-replace: <jbophrase>lo'ai</jbophrase> quotes the wrong text, <jbophrase>sa'ai</jbophrase> quotes its replacement, and <valsi>le'ai</valsi> closes the correction:</para>
+      </indexterm><indexterm type="lojban-word"><primary>lo'ai</primary></indexterm><indexterm type="lojban-word"><primary>sa'ai</primary></indexterm><indexterm type="lojban-word"><primary>le'ai</primary></indexterm>Beyond the quotation family, the community's frequency surveys put one coherent set clearly ahead of the rest: the <emphasis>error-correction quotes</emphasis> <valsi>lo'ai</valsi>, <valsi>sa'ai</valsi>, and <valsi>le'ai</valsi>. The erasure words of standard Lojban (see <xref linkend="section-erasure" />) can only erase the <emphasis>most recent</emphasis> words. But in live conversation, people often want to reach back and repair something that they said a sentence ago. The set works like a search-and-replace: <valsi>lo'ai</valsi> quotes the wrong text, <valsi>sa'ai</valsi> quotes its replacement, and <valsi>le'ai</valsi> closes the correction:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x22f">
       <title><anchor xml:id="c22e4d1" /></title>
       <interlinear-gloss>
@@ -184,19 +184,19 @@
     </para>
     <itemizedlist role="bullets">
       <listitem>
-        <para>The well-wishing vocative <jbophrase>di'ai</jbophrase></para>
+        <para>The well-wishing vocative <valsi>di'ai</valsi></para>
       </listitem>
       <listitem>
-        <para>The selma'o quoter <jbophrase>ma'oi</jbophrase> (<jbophrase>ma'oi ba</jbophrase> names selma'o PU by example)</para>
+        <para>The selma'o quoter <valsi>ma'oi</valsi> (<jbophrase>ma'oi ba</jbophrase> names selma'o PU by example)</para>
       </listitem>
       <listitem>
-        <para>The imperative marker <jbophrase>ko'oi</jbophrase></para>
+        <para>The imperative marker <valsi>ko'oi</valsi></para>
       </listitem>
       <listitem>
-        <para>The aspectual <jbophrase>xa'o</jbophrase> (<quote>already</quote>)</para>
+        <para>The aspectual <valsi>xa'o</valsi> (<quote>already</quote>)</para>
       </listitem>
       <listitem>
-        <para>The abstractor <jbophrase>poi'i</jbophrase>, common in the plural-logic literature of <xref linkend="section-dialects-plural" /></para>
+        <para>The abstractor <valsi>poi'i</valsi>, common in the plural-logic literature of <xref linkend="section-dialects-plural" /></para>
       </listitem>
     </itemizedlist>
     <para role="status-note" condition="status:de-facto;also:proposed">
@@ -207,7 +207,7 @@
   </section>
   <section xml:id="section-dialects-cbm">
     <title><anchor xml:id="c22s5" />The cmevla-brivla merger</title>
-    <para><indexterm type="general"><primary>cmevla-brivla merger</primary></indexterm>The dialects discussed so far add words. The remaining two change the grammar. The <emphasis>cmevla-brivla merger</emphasis> (CBM) removes the grammatical wall between name words and predicate words. Under it, a cmevla like <jbophrase>.djan.</jbophrase> can serve as a selbri or as a tanru unit. It then predicates of its subject, and the users of the dialect decide its precise place structure. In addition, the article <valsi>la</valsi> becomes an ordinary descriptor, which takes whatever selbri follows it.</para>
+    <para><indexterm type="general"><primary>cmevla-brivla merger</primary></indexterm>The dialects discussed so far add words. The remaining two change the grammar. The <emphasis>cmevla-brivla merger</emphasis> (CBM) removes the grammatical wall between name words and predicate words. Under it, a cmevla like <cmevla>.djan.</cmevla> can serve as a selbri or as a tanru unit. It then predicates of its subject, and the users of the dialect decide its precise place structure. In addition, the article <valsi>la</valsi> becomes an ordinary descriptor, which takes whatever selbri follows it.</para>
     <para>The motivating complaint is a pedagogical one. In standard Lojban, <valsi>la</valsi> behaves one way before a cmevla and another way before a brivla. Learners who discover that predicates can name things are tempted to write what the standard grammar forbids. Standard camxes and the default grammar of jbotci both reject the following sentence, but under CBM it is fine:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x22h">
       <title><anchor xml:id="c22e5d1" /></title>
@@ -247,7 +247,7 @@
       <valsi>tau</valsi>
       /
       <valsi>jau</valsi>, adds a
-      <jbophrase>su'o</jbophrase>-to-<valsi>su</valsi>
+      <valsi>su'o</valsi>-to-<valsi>su</valsi>
       swap, and omits
       <valsi>du</valsi>. It also prints back the standard equivalents.
     </para>

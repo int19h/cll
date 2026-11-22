@@ -791,7 +791,7 @@
     <para>Logical scope is an important factor in Lojban's claim to be unambiguous, so let us indicate the relative precedence of <valsi>na'e</valsi> as an operator. Grouping with <valsi>ke</valsi> and <valsi>ke'e</valsi>, of course, has an overt scope, which is its advantage. <valsi>na'e</valsi> is very close binding to its brivla. Internal binding of tanru with <valsi>bo</valsi> is not as tightly bound as <valsi>na'e</valsi>. <valsi>co</valsi>, the tanru inversion operator, has a scope that is longer than all other tanru constructs.</para>
 
     <para>In short, <valsi>na'e</valsi> and <jbophrase>na'eke</jbophrase> define a type of negation which is shorter in scope than bridi negation, and which affects all or part of a selbri. The result of <valsi>na'e</valsi> negation remains an assertion of some specific truth, and not merely a denial of another claim.</para>
-    <para>The similarity becomes striking when we notice that the rafsi <rafsi>-nal-</rafsi>, which represents <valsi>na'e</valsi> when a tanru is condensed into a lujvo, forms an exact parallel to the English usage of <jbophrase>non-</jbophrase>. Turning a series of related negations into lujvo gives:</para>
+    <para>The similarity becomes striking when we notice that the rafsi <rafsi>-nal-</rafsi>, which represents <valsi>na'e</valsi> when a tanru is condensed into a lujvo, forms an exact parallel to the English usage of <quote>non-</quote>. Turning a series of related negations into lujvo gives:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-2buq">
       <title><anchor xml:id="c15e4d12" /></title>
 
@@ -1119,7 +1119,7 @@
       has the assigned rafsi
       <rafsi>-tol-</rafsi>
       and
-      <jbophrase>-to'e-</jbophrase>
+      <rafsi>-to'e-</rafsi>
       ; the cmavo
       <valsi>no'e</valsi>
       has the assigned rafsi
@@ -1286,7 +1286,7 @@
     </para>
     <para>
       As a special case, a
-      <jbophrase>-nai</jbophrase>
+      -<valsi>nai</valsi>
       attached to the interval modifiers of selma'o TAhE, ROI, or ZAhO (explained in
       <xref linkend="chapter-tenses" />) signals a scalar negation:
     </para>

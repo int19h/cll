@@ -1783,10 +1783,8 @@
       <indexterm type="lojban-word"><primary>ri-series</primary><secondary>pro-sumti in quotation series</secondary>
       </indexterm>
       However, a
-      <jbophrase>ri-</jbophrase>
-      series or
-      <jbophrase>go'a-</jbophrase>
-      series reference within a quotation can refer to something mentioned in an earlier quotation if the two quotations are closely related in time and context. This allows a quotation to be broken up by narrative material without interfering with the pro-sumti within it. Here's an example:
+      <valsi>ri</valsi>-series or
+      <valsi>go'a</valsi>-series reference within a quotation can refer to something mentioned in an earlier quotation if the two quotations are closely related in time and context. This allows a quotation to be broken up by narrative material without interfering with the pro-sumti within it. Here's an example:
     </para>
 
     <example role="interlinear-gloss-example" xml:id="example-random-id-LWyE">
@@ -2909,8 +2907,7 @@
       and
       <valsi>bu'a</valsi>
       also have rafsi, which can be used just as if they were gismu. The resulting lujvo have (except for
-      <jbophrase>du-</jbophrase>
-      based lujvo) highly context-dependent meanings.
+      <valsi>du</valsi>-based lujvo) highly context-dependent meanings.
     </para>
   </section>
   <section xml:id="section-koha-summary">

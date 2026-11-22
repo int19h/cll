@@ -965,7 +965,7 @@
       <indexterm type="general"><primary>brivla</primary><secondary>recognition of</secondary>
       </indexterm>
       The presence of a consonant pair distinguishes brivla from cmavo and their compounds. The final vowel distinguishes brivla from cmevla, which always end in a consonant. Thus
-      <jbophrase>da'amei</jbophrase>
+      <valsi>da'amei</valsi>
       must be a compound cmavo because it lacks a consonant pair;
       <valsi>.lojban.</valsi>
       must be a cmevla because it lacks a final vowel.
@@ -990,7 +990,7 @@
       <morphology>sc</morphology>
       actually appears in the form of
       <valsi>sy.</valsi>. Similarly, the word
-      <valsi valid="maybe">ro'inre'o</valsi>
+      <valsi>ro'inre'o</valsi>
       contains
       <morphology>nr</morphology>
       in the first five letters because the apostrophes are not counted for this purpose.
@@ -2056,8 +2056,8 @@
       <valsi valid="false">ro'irre'o</valsi>
       (which has an impermissible double consonant); the 
     n-hyphen is required, and the correct form of the hyphenated lujvo is
-      <valsi valid="maybe">ro'inre'o</valsi>. The same lujvo could also be expressed without hyphenation as
-      <valsi valid="maybe">rokre'o</valsi>.
+      <valsi>ro'inre'o</valsi>. The same lujvo could also be expressed without hyphenation as
+      <valsi>rokre'o</valsi>.
     </para>
     <para>
       This book teaches the classical rule: a hyphen appears exactly where it is needed, and nowhere else. The PEG word-form grammar is more liberal. It also accepts unneeded hyphens, for example in
@@ -5927,7 +5927,7 @@
       <listitem>
         <para>
           A fu'ivla that begins with a vowel also takes an apostrophe in front when something attaches before it. For example, from
-          <valsi valid="maybe">.enri</valsi>
+          <valsi>.enri</valsi>
           (henry, the unit of inductance) and the rafsi
           <rafsi>mil-</rafsi>
           (<valsi>milti</valsi>, thousandth), we get
@@ -5936,7 +5936,7 @@
         </para>
       </listitem>
     </orderedlist>
-    <para>The rule that replaces the final vowel does work when no such collision happens. The fu'ivla <valsi valid="maybe">.enri</valsi> from rule 3 combines with <valsi>kukte</valsi> in two ways: the full form gives <valsi valid="maybe">enri'ykukte</valsi>, and the form with the final vowel replaced gives <valsi valid="maybe">enrykukte</valsi>. (A delicious henry? The meaning is the problem of whoever coins the word.) Nobody can misread <rafsi>enr-</rafsi> as a string of ordinary rafsi, so the shorter form is safe, and speakers usually prefer it.</para>
+    <para>The rule that replaces the final vowel does work when no such collision happens. The fu'ivla <valsi>.enri</valsi> from rule 3 combines with <valsi>kukte</valsi> in two ways: the full form gives <valsi valid="maybe">.enri'ykukte</valsi>, and the form with the final vowel replaced gives <valsi valid="maybe">.enrykukte</valsi>. (A delicious henry? The meaning is the problem of whoever coins the word.) Nobody can misread <rafsi>enr-</rafsi> as a string of ordinary rafsi, so the shorter form is safe, and speakers usually prefer it.</para>
     <para>The whole result is a single brivla, and this has one more consequence. The finished lujvo is stressed on its penultimate syllable, like any other brivla, no matter where the fu'ivla had its stress when it stood on its own. So <valsi valid="maybe">spageti'ykukte</valsi> is stressed on <quote>kuk</quote>. If you try to keep the original stress of <valsi>spageti</valsi>, as in <valsi valid="false">spagEti'ykukte</valsi>, the result is not a word.</para>
     <para>As always, the results must satisfy the general rules for word forms. In particular, the whole word must not fall apart into smaller words, and the hyphens are there to prevent exactly that. Fu'ivla get no short rafsi of the kind assigned to gismu; only the forms above exist.</para>
     <para>Sometimes even this is too clumsy, or the non-Lojban element is not a fu'ivla at all. In these cases <valsi>zei</valsi> is still available, and it works with any kind of word, as <xref linkend="section-rafsi" /> describes.</para>

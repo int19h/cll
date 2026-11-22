@@ -40,6 +40,7 @@ A `jbophrase` in those elements gets no index entry.
 
 For a compound cmavo whose meaning does not follow from its parts, use one element: `<valsi>.uinai</valsi>`.
 For a compound that does decompose, use one element per part: `<valsi>je</valsi><valsi>nai</valsi>`.
+A single-token compound with its own dictionary entry takes `<valsi>` and links to that entry: `<valsi>naku</valsi>`.
 
 A `jbophrase` that names a frame, such as `ke ... ke'e` or `lu ... li'u`, links each of its words to the glossary.
 The words must be separated by `...` or `…`.

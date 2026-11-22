@@ -1416,7 +1416,7 @@
         <natlang>I don't go to the store.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">The other form of bridi negation uses the compound cmavo <jbophrase>naku</jbophrase> in the prenex. The lexer identifies and compounds <jbophrase>naku</jbophrase> before it looks at the sentence grammar, and in Lojban grammar <jbophrase>naku</jbophrase> is then treated like a sumti. In a prenex, <jbophrase>naku</jbophrase> means precisely the same thing as the logician's <quote>it is not the case that</quote> in a similar English context. (Outside of a prenex, <jbophrase>naku</jbophrase> is also grammatically treated as a single entity – the equivalent of a sumti – but does not have this exact meaning; we'll discuss these other situations in <xref linkend="section-na-outside-prenex" />.)</para>
+    <para role="indent">The other form of bridi negation uses the compound cmavo <valsi>naku</valsi> in the prenex. The lexer identifies and compounds <valsi>naku</valsi> before it looks at the sentence grammar, and in Lojban grammar <valsi>naku</valsi> is then treated like a sumti. In a prenex, <valsi>naku</valsi> means precisely the same thing as the logician's <quote>it is not the case that</quote> in a similar English context. (Outside of a prenex, <valsi>naku</valsi> is also grammatically treated as a single entity – the equivalent of a sumti – but does not have this exact meaning; we'll discuss these other situations in <xref linkend="section-na-outside-prenex" />.)</para>
     <para>
       <indexterm type="general"><primary>external bridi negation</primary><secondary>compared to internal bridi negation</secondary>
       </indexterm>
@@ -1433,7 +1433,7 @@
       To represent a bridi negation using a prenex, remove the
       <valsi>na</valsi>
       from before the selbri and place
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       at the left end of the prenex. This form is called
       <quote>external bridi negation</quote>
       , as opposed to
@@ -1456,7 +1456,7 @@
       <indexterm type="general"><primary>negation in prenex</primary><secondary>effects of position</secondary>
       </indexterm>
       However,
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       can appear at other points in the prenex as well. Compare
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-cy6j">
@@ -1891,7 +1891,7 @@
           <indexterm type="general"><primary>prenex manipulation</primary><secondary>moving &quot;naku&quot; past bound variable</secondary>
           </indexterm>
           Within a prenex, whenever you move
-          <jbophrase>naku</jbophrase>
+          <valsi>naku</valsi>
           past a bound variable (<valsi>da</valsi>, <valsi>de</valsi>, <valsi>di</valsi>, etc.), you must invert the quantifier.
         </para>
       </listitem>
@@ -1904,14 +1904,14 @@
           A
           <valsi>na</valsi>
           before the selbri is always transformed into a
-          <jbophrase>naku</jbophrase>
+          <valsi>naku</valsi>
           at the left-hand end of the prenex, and vice versa.
         </para>
       </listitem>
     </itemizedlist>
   </section>
   <section xml:id="section-na-outside-prenex">
-    <title><anchor xml:id="c16s11" />Using <jbophrase>naku</jbophrase> outside a prenex</title>
+    <title><anchor xml:id="c16s11" />Using <valsi>naku</valsi> outside a prenex</title>
     <para>Let us consider the English sentence</para>    <example role="interlinear-gloss-example" xml:id="example-random-id-hp0j">      <title><anchor xml:id="c16e11d1" /><indexterm type="general"><primary>some do not go to school</primary></indexterm></title>
 
       <jbophrase>Some children do not go to school.</jbophrase>
@@ -1955,12 +1955,12 @@
       <indexterm type="general"><primary>negation</primary><secondary>form for emulating natural language negation</secondary>
       </indexterm>
       Lojban provides a negation form which more closely emulates natural language negation. This involves putting
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       before the selbri, instead of a
       <valsi>na</valsi>.
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       is clearly a contradictory negation, given its parallel with prenex bridi negation. Using
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       ,
       <xref linkend="example-random-id-hp0j" />
       can be expressed as:
@@ -1978,7 +1978,7 @@
       <indexterm type="lojban-word"><primary>naku</primary><secondary>compared with sumti in grammar</secondary>
       </indexterm>
       Although it is not technically a sumti,
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       can be used in most of the places where a sumti may appear. We'll see what this means in a moment.
     </para>
     <para>
@@ -1991,15 +1991,15 @@
       <indexterm type="lojban-word"><primary>naku</primary><secondary>as creating a negation boundary</secondary>
       </indexterm>
       When you use
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       within a bridi, you are explicitly creating a negation boundary. As explained in
       <xref linkend="section-negation-boundaries" />
       , when a prenex negation boundary expressed by
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       moves past a quantifier, the quantifier has to be inverted. The same is true for
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       in the bridi proper. We can move
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       to any place in the sentence where a sumti can go, inverting any quantifiers that the negation boundary crosses. Thus, the following are equivalent to
       <xref linkend="example-random-id-nvtf" />
       (no good English translations exist):
@@ -2069,9 +2069,9 @@
       <xref linkend="example-random-id-nvtf" />. Conversion with
       <valsi>se</valsi>
       under
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       negation is not symmetric; not all sumti are treated identically, and some sumti are not invariant under conversion. Thus, internal negation with
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       is considered an advanced technique, used to achieve stylistic compatibility with natural languages.
     </para>
     <para>
@@ -2108,11 +2108,11 @@
       to the prenex, as we saw in
       <xref linkend="section-negation-boundaries" />
       ; you just move it to the left end of the prenex. In comparison, it is non-trivial to export a
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       to the prenex because of the quantifiers. The rules for exporting
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       require that you export all of the quantified variables (implicit or explicit) along with
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       , and you must export them from left to right, in the same order that they appear in the sentence. Thus
       <xref linkend="example-random-id-nvtf" />
       goes into prenex form as:
@@ -2131,7 +2131,7 @@
     </example>
     <para role="indent">
       We can now move the
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       to the left end of the prenex, getting a contradictory negation that can be expressed with
       <valsi>na</valsi>
       :
@@ -2199,7 +2199,7 @@
       when you have two quantified variables in a sentence, you can still freely move sumti to either side of the selbri, as long as the order isn't changed. If you use
       <valsi>na</valsi>
       negation in such a sentence, nothing special need be done. If you use
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       negation, then quantified variables that cross the negation boundary must be inverted.
     </para>
     <para>
@@ -2208,7 +2208,7 @@
       <indexterm type="general"><primary>negation manipulation</primary><secondary>&quot;naku&quot; contrasted with &quot;na&quot; in difficulty of</secondary>
       </indexterm>
       Clearly, if all of Lojban negation was built on
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       negation instead of
       <valsi>na</valsi>
       negation, logical manipulation in Lojban would be as difficult as in natural languages. In
@@ -2219,7 +2219,7 @@
       <indexterm type="lojban-word"><primary>naku</primary><secondary>in linked sumti places</secondary>
       </indexterm>
       Since
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       has the grammar of a sumti, it can be placed almost anywhere a sumti can go, including
       <valsi>be</valsi>
       and
@@ -2232,9 +2232,9 @@
       <indexterm type="lojban-word"><primary>naku</primary><secondary>multiple in sentence</secondary>
       </indexterm>
       You can put multiple
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       compounds in a sentence, each forming a separate negation boundary. Two adjacent
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       compounds in a bridi are a double negative and cancel out:
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-u784">
@@ -2244,14 +2244,14 @@
     </example>
     <para role="indent">
       Other expressions using two
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       compounds may or may not cancel out. If there is no quantified variable between them, then the
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       compounds cancel.
     </para>
     <para>
       Negation with internal
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       is clumsy and non-intuitive for logical manipulations, but then, so are the natural language features it is emulating.
     </para>
   </section>
@@ -2306,7 +2306,7 @@
       When do we apply DeMorgan's Law? Whenever we wish to
       <quote>distribute</quote>
       a negation over a logical connective; and, for internal
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       negation, whenever a logical connective moves in to, or out of, the scope of a negation &ndash; when it crosses a negation boundary.
     </para>
     <para>
@@ -2463,7 +2463,7 @@
       , that you become familiar with expanding logical connectives to separate sentences, transforming the sentences, and then recondensing. Thus, you would prove the transformation correct by the following steps. By moving its
       <valsi>na</valsi>
       to the beginning of the prenex as a
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       ,
       <xref linkend="example-random-id-qHpR" />
       becomes:
@@ -2531,7 +2531,7 @@
       <indexterm type="general"><primary>internal naku negations</primary><secondary>and DeMorgan's Law</secondary>
       </indexterm>
       DeMorgan's Law must also be applied to internal
-      <jbophrase>naku</jbophrase>
+      <valsi>naku</valsi>
       negations:
     </para>
     <example xml:id="example-random-id-qhQP" role="interlinear-gloss-example">

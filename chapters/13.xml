@@ -1551,7 +1551,7 @@
     </example>
     <para role="indent">When <valsi>ga'i</valsi> is used without being attached to any bridi, it expresses the speaker's superiority to things in general, which may represent an absolute social rank: <jbophrase>ga'icai</jbophrase> is an appropriate opening word for an emperor's address from the throne.</para>
 
-    <para>The cmavo <valsi>le'o</valsi> represents the scale of aggressiveness. We may not overtly recognize that we are feeling aggressive or defensive, but perhaps in counseling sessions a psychologist might encourage someone to express these feelings on this scale. And football teams could be urged on by their coach using <jbophrase>ro'ole'o</jbophrase>. <valsi>le'o</valsi> is also useful in threats, as an alternative to <jbophrase>.o'onai</jbophrase>, which expresses anger.</para>
+    <para>The cmavo <valsi>le'o</valsi> represents the scale of aggressiveness. We may not overtly recognize that we are feeling aggressive or defensive, but perhaps in counseling sessions a psychologist might encourage someone to express these feelings on this scale. And football teams could be urged on by their coach using <jbophrase>ro'ole'o</jbophrase>. <valsi>le'o</valsi> is also useful in threats, as an alternative to <valsi>.o'onai</valsi>, which expresses anger.</para>
 
     <para><indexterm type="general"><primary>sinful</primary><secondary>example</secondary>
       </indexterm><indexterm type="general"><primary>virtue</primary><secondary>example</secondary>
@@ -3312,7 +3312,7 @@
     <para>
       <indexterm type="general"><primary>literally</primary></indexterm>
       The negated form,
-      <jbophrase>pe'anai</jbophrase>
+      <valsi>pe'anai</valsi>
       , indicates that what has been said is to be interpreted literally, in the usual way for Lojban; natural-language intuition is to be ignored.
     </para>
 
@@ -3492,7 +3492,7 @@
       The cmavo
       <valsi>doi</valsi>
       is the general-purpose vocative. It is not considered a scale, and
-      <jbophrase valid="false">doinai</jbophrase>
+      <valsi valid="false">doinai</valsi>
       is not grammatical. In general,
       <valsi>doi</valsi>
       needs no translation in English (we just use names by themselves without any preceding word, although in poetic styles we sometimes say

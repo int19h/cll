@@ -1142,11 +1142,11 @@
       <indexterm type="general"><primary>conversion</primary><secondary>swapping non-first places</secondary>
       </indexterm>
       (It is perhaps worth noting that compound conversions of the form
-      <jbophrase>setese</jbophrase>
+      <valsi>setese</valsi>
       , where the first and third cmavo are the same, effectively swap the two given places while leaving the others, including x<subscript>1</subscript>, alone:
-      <jbophrase>setese</jbophrase>
+      <valsi>setese</valsi>
       (or equivalently
-      <jbophrase>tesete</jbophrase>) swap the x<subscript>2</subscript> and x<subscript>3</subscript> places, whereas
+      <valsi>tesete</valsi>) swap the x<subscript>2</subscript> and x<subscript>3</subscript> places, whereas
       <jbophrase>texete</jbophrase>
       (or
       <jbophrase>xetexe</jbophrase>) swap the x<subscript>3</subscript> and x<subscript>5</subscript> places.)

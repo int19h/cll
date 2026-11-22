@@ -123,7 +123,7 @@
   <section xml:id="section-bridi-negation">
     <title><anchor xml:id="c15s2" />bridi negation</title>
     <para>In discussing Lojban negation, we will call the form of logical negation that simply denies the truth of a statement <quote>bridi negation</quote>. Using bridi negation, we can say the equivalent of <quote>I haven't stopped beating my wife</quote> without implying that I ever started, nor even that I have a wife, meaning simply <quote>It isn't true that I have stopped beating my wife.</quote> Since Lojban uses bridi as smaller components of complex sentences, bridi negation is permitted in these components as well as at the sentence level.</para>
-    <para>For the bridi negation of a sentence to be true, the sentence being negated must be false. One use of bridi negation is in making a negative response to a yes/no question; such a response is contradictory, denying the truth of the entire sentence. A negative answer to</para>
+    <para>For the bridi negation of a sentence to be true, the sentence being negated must be false. One use of bridi negation is in making a negative response to a yes/no question; used this way, bridi negation is contradictory, denying the truth of the entire sentence. A negative answer to</para>
 
     <example xml:id="example-random-id-sCNE">
       <title><anchor xml:id="c15e2d1" /></title>

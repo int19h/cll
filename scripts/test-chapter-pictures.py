@@ -32,6 +32,11 @@ class ChapterPictures(unittest.TestCase):
         self.assertIn('fileref="assets/media/chapter-2-diagram.svg.png"',
                       (ROOT / 'chapters/02.xml').read_text())
 
+    def test_no_leftover_chapter_svg_sources(self):
+        leftover = sorted(p.name for p in (ROOT / 'orig').glob('chapter-*.svg')
+                          if p.name != 'chapter-2-diagram.svg')
+        self.assertEqual(leftover, [], leftover)
+
     def test_diagram_resolution_and_size(self):
         data = (ROOT / 'assets/media/chapter-2-diagram.svg.png').read_bytes()
         self.assertEqual(struct.unpack('>IIBB', data[16:26]), (1200, 576, 8, 6))

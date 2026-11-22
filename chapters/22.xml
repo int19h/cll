@@ -267,7 +267,7 @@
         <natlang>Oh, joy. The rain is starting again.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent"><indexterm type="lojban-word"><primary>au'u</primary></indexterm><indexterm type="lojban-word"><primary>uu'i</primary></indexterm><indexterm type="lojban-word"><primary>xu'o</primary></indexterm>Two new pure emotions: <valsi>au'u</valsi>, the feeling that something is cute, with <jbophrase valid="iffy">au'u nai</jbophrase> for the repulsively uncute; and <valsi>uu'i</valsi>, which fuses <valsi>.uu</valsi> and <valsi>.u'i</valsi> into schadenfreude, pleasure at someone else's misfortune. The word <valsi>xu'o</valsi> is a contour rather than an emotion: placed after an attitudinal, it says that the feeling is growing stronger, and <jbophrase valid="iffy">xu'o nai</jbophrase> says that it is fading. Standard Lojban can say how strong a feeling is (<xref linkend="section-intensity-scale" />) but not which way it is heading.</para>
+    <para role="indent"><indexterm type="lojban-word"><primary>au'u</primary></indexterm><indexterm type="lojban-word"><primary>uu'i</primary></indexterm><indexterm type="lojban-word"><primary>xu'o</primary></indexterm>Two new pure emotions are <valsi>au'u</valsi>, the feeling that something is cute, with <jbophrase valid="iffy">au'u nai</jbophrase> for the repulsively uncute; and <valsi>uu'i</valsi>, which fuses <valsi>.uu</valsi> and <valsi>.u'i</valsi> into schadenfreude, pleasure at someone else's misfortune. The word <valsi>xu'o</valsi> is a contour rather than an emotion: placed after an attitudinal, it says that the feeling is growing stronger, and <jbophrase valid="iffy">xu'o nai</jbophrase> says that it is fading. Standard Lojban can say how strong a feeling is (<xref linkend="section-intensity-scale" />) but not which way it is heading.</para>
     <para><indexterm type="lojban-word"><primary>da'oi</primary></indexterm><indexterm type="lojban-word"><primary>da'ei</primary></indexterm>The modifier <valsi>dai</valsi> of <xref linkend="section-questions-empathy-contours" /> says that an attitude belongs to someone other than the speaker, without saying whom. The word <valsi>da'oi</valsi>, defined in selma'o DOI, takes a sumti and says whose attitude it is:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x22l">
       <title><anchor xml:id="c22e8d2" /></title>
@@ -364,9 +364,9 @@
         <natlang>Good luck to you!</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent"><indexterm type="lojban-word"><primary>o'ai</primary></indexterm><indexterm type="lojban-word"><primary>a'oi</primary></indexterm><indexterm type="lojban-word"><primary>co'oi</primary></indexterm>Three more greetings: <valsi>o'ai</valsi> is a slightly surprised greeting; <valsi>a'oi</valsi> is a slightly piratical one; and <valsi>co'oi</valsi> combines <valsi>coi</valsi> with <valsi>co'o</valsi> into a greeting-or-parting that context resolves, for the passing <quote>hi</quote> that is also a <quote>bye</quote>.</para>
+    <para role="indent"><indexterm type="lojban-word"><primary>o'ai</primary></indexterm><indexterm type="lojban-word"><primary>a'oi</primary></indexterm><indexterm type="lojban-word"><primary>co'oi</primary></indexterm>Three more greetings exist. <valsi>o'ai</valsi> is a slightly surprised greeting; <valsi>a'oi</valsi> is a slightly piratical one; and <valsi>co'oi</valsi> combines <valsi>coi</valsi> with <valsi>co'o</valsi> into a greeting-or-parting that context resolves, for the passing <quote>hi</quote> that is also a <quote>bye</quote>.</para>
     <para><indexterm type="lojban-word"><primary>xu'e</primary></indexterm><indexterm type="general"><primary>dialogue</primary><secondary>speaker tags in</secondary></indexterm>The word <valsi valid="maybe">xu'e</valsi> solves a problem of written dialogue. Written dialogue often needs to say who speaks a line, and <jbophrase>sei ko'a cusku</jbophrase> is long. <valsi valid="maybe">xu'e</valsi> followed by a sumti tags the sentence as that person's words, so that a dialogue can run <jbophrase valid="iffy">xu'e la .alis.</jbophrase>, then Alice's sentence, then <jbophrase valid="iffy">xu'e la .bob.</jbophrase>, and so on.</para>
-    <para role="status-note" condition="status:de-facto;also:proposed">No parser we tried accepts <valsi>ci'oi</valsi> or <valsi valid="maybe">xu'e</valsi> in a sentence, which is why <valsi valid="maybe">xu'e</valsi> has no example above. None is official.</para>
+    <para role="status-note" condition="status:de-facto;also:proposed">No parser we tried accepts <valsi>ci'oi</valsi> or <valsi valid="maybe">xu'e</valsi> in a sentence. None is official.</para>
   </section>
   <section xml:id="section-dialects-prosumti">
     <title><anchor xml:id="c22s10" />New pro-sumti, articles and conversions</title>
@@ -518,7 +518,7 @@
         <description>terminator for LOhOI*</description>
       </cmavo-entry>
     </cmavo-list>
-    <para role="indent"><indexterm type="general"><primary>abstraction</primary><secondary>experimental abstractors</secondary></indexterm><indexterm type="lojban-word"><primary>poi'i</primary></indexterm>The abstractors of <xref linkend="chapter-abstractions" /> turn a bridi into an event, a property or a proposition. A family of experimental words turns a bridi into other things. The oldest is <valsi>poi'i</valsi>, <jbophrase valid="iffy">lo poi'i ke'a broda</jbophrase> is the thing that is such that the bridi is true of it, with <valsi>ke'a</valsi> marking the place, exactly as in a relative clause. It makes a selbri out of any bridi, so that a description need not be rebuilt around the right gismu:</para>
+    <para role="indent"><indexterm type="general"><primary>abstraction</primary><secondary>experimental abstractors</secondary></indexterm><indexterm type="lojban-word"><primary>poi'i</primary></indexterm>The abstractors of <xref linkend="chapter-abstractions" /> turn a bridi into an event, a property or a proposition. A family of experimental words turns a bridi into other things. With <valsi>poi'i</valsi>, <jbophrase valid="iffy">lo poi'i ke'a broda</jbophrase> is the thing that is such that the bridi is true of it, with <valsi>ke'a</valsi> marking the place, exactly as in a relative clause. It makes a selbri out of any bridi, so that a description need not be rebuilt around the right gismu:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x22t">
       <title><anchor xml:id="c22e11d1" /></title>
       <interlinear-gloss>
@@ -600,7 +600,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent">The dictionary also records an older sense of <valsi>xoi</valsi>, now marked obsolete, in which it enclosed a whole bridi. Older text uses it that way, so the reader of older material should expect either.</para>
-    <para><indexterm type="lojban-word"><primary>poi'a</primary></indexterm><indexterm type="lojban-word"><primary>noi'a</primary></indexterm>The pair <valsi>poi'a</valsi> and <valsi>noi'a</valsi>, is more precise about what it claims. Each converts a selbri into an adverbial term whose first place is the event of the outer bridi, and each has the elidable terminator <valsi>fe'u</valsi>. <valsi>poi'a</valsi> is restrictive, like <valsi>poi</valsi>: <jbophrase valid="iffy">broda poi'a brode</jbophrase> claims that the event of broda happens and is a brode. <valsi>noi'a</valsi> is incidental, like <valsi>noi</valsi>: it claims broda, and remarks separately that the event is a brode:</para>
+    <para><indexterm type="lojban-word"><primary>poi'a</primary></indexterm><indexterm type="lojban-word"><primary>noi'a</primary></indexterm>The pair <valsi>poi'a</valsi> and <valsi>noi'a</valsi> is more precise about what it claims. Each converts a selbri into an adverbial term whose first place is the event of the outer bridi, and each has the elidable terminator <valsi>fe'u</valsi>. <valsi>poi'a</valsi> is restrictive, like <valsi>poi</valsi>: <jbophrase valid="iffy">broda poi'a brode</jbophrase> claims that the event of broda happens and is a brode. <valsi>noi'a</valsi> is incidental, like <valsi>noi</valsi>: it claims broda, and remarks separately that the event is a brode:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x22x">
       <title><anchor xml:id="c22e12d2" /></title>
       <interlinear-gloss>
@@ -763,7 +763,7 @@
       </interlinear-gloss>
     </example>
     <para role="indent">This book treats <valsi>jo'au</valsi> as a convention between writers and readers, and nothing more. Its definition speaks of changing the dialect <emphasis>of a parser</emphasis>, and lists parsers by name as possible arguments, but this book does not rely on any tool to act on the header, and does not know of one that does anything useful with it. What the header does reliably is tell a human reader that the usual meanings are suspended, which is exactly what the dialects below need.</para>
-    <para role="status-note" condition="status:proposed;also:de-facto">The header is the convention that the dialects below ask their readers to use. It is not official.</para>
+    <para role="status-note" condition="status:proposed;also:de-facto">The header is the convention by which a writer of gadganzu or of a swap dialect warns the reader. It is not official.</para>
   </section>
   <section xml:id="section-dialects-gadri">
     <title><anchor xml:id="c22s15" />Other takes on the articles</title>

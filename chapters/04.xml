@@ -2218,7 +2218,7 @@
       </indexterm>
       Note that rafsi may not be used in
       <valsi>zei</valsi>
-      phrases, because they are not words. CVV rafsi look like words (specifically cmavo) but there can be no confusion between the two uses of the same letters, because cmavo appear only as separate words or in compound cmavo (which are really just a notation for writing separate but closely related words as if they were one); rafsi appear only as parts of lujvo and fu'ivla.
+      phrases, because they are not words. CVV rafsi look like words (specifically cmavo) but there can be no confusion between the two uses of the same letters, because cmavo appear only as separate words or in compound cmavo (which are really just a notation for writing separate but closely related words as if they were one); rafsi appear only in lujvo, fu'ivla, and cmevla.
     </para>
   </section>
   <section xml:id="section-fuhivla">
@@ -5938,7 +5938,7 @@
     </orderedlist>
     <para>The rule that replaces the final vowel does work when no such collision happens. The fu'ivla <valsi valid="maybe">.enri</valsi> from rule 3 combines with <valsi>kukte</valsi> in two ways: the full form gives <valsi valid="maybe">enri'ykukte</valsi>, and the form with the final vowel replaced gives <valsi valid="maybe">enrykukte</valsi>. (A delicious henry? The meaning is the problem of whoever coins the word.) Nobody can misread <rafsi>enr-</rafsi> as a string of ordinary rafsi, so the shorter form is safe, and speakers usually prefer it.</para>
     <para>The whole result is a single brivla, and this has one more consequence. The finished lujvo is stressed on its penultimate syllable, like any other brivla, no matter where the fu'ivla had its stress when it stood on its own. So <valsi valid="maybe">spageti'ykukte</valsi> is stressed on <quote>kuk</quote>. If you try to keep the original stress of <valsi>spageti</valsi>, as in <valsi valid="false">spagEti'ykukte</valsi>, the result is not a word.</para>
-    <para>As always, the results must satisfy the general rules for word forms. In particular, the whole word must not fall apart into smaller words, and the hyphens are there to prevent exactly that. There are no short (three-letter) rafsi for fu'ivla; only the forms above exist.</para>
+    <para>As always, the results must satisfy the general rules for word forms. In particular, the whole word must not fall apart into smaller words, and the hyphens are there to prevent exactly that. Fu'ivla get no short rafsi of the kind assigned to gismu; only the forms above exist.</para>
     <para>Sometimes even this is too clumsy, or the non-Lojban element is not a fu'ivla at all. In these cases <valsi>zei</valsi> is still available, and it works with any kind of word, as <xref linkend="section-rafsi" /> describes.</para>
   </section>
 </chapter>

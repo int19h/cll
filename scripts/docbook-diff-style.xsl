@@ -52,12 +52,12 @@ span.diff-toc-deleted { background-color: #ffb6ba; text-decoration: line-through
 /* A fully added or deleted table row reads as one unit: one background
    with a single left bar on the first cell. The per-cell bars inside
    such a row are dropped (deleted rows keep their strikethrough). */
-tr.diff-row-added &gt; td { background-color: #e5fbe4; }
-tr.diff-row-added &gt; td:first-child { border-left: 4px solid #97f295; }
+tr.diff-row-added td { background-color: #e5fbe4; }
+tr.diff-row-added td:first-child { border-left: 4px solid #97f295; }
 tr.diff-row-added div.added { border-left: none; margin-left: 0; padding-left: 0;
                               background-color: transparent; }
-tr.diff-row-deleted &gt; td { background-color: #ffeef0; }
-tr.diff-row-deleted &gt; td:first-child { border-left: 4px solid #ffb6ba; }
+tr.diff-row-deleted td { background-color: #ffeef0; }
+tr.diff-row-deleted td:first-child { border-left: 4px solid #ffb6ba; }
 tr.diff-row-deleted div.deleted { border-left: none; margin-left: 0; padding-left: 0;
                                   background-color: transparent; }
 .diff-banner { font-family: system-ui, sans-serif; font-size: 0.95rem;

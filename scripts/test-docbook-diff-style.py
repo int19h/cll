@@ -19,6 +19,14 @@ class StyleTests(unittest.TestCase):
                       'span.deleted::before, span.deleted::after { content: "\\200c"; }',
                       STYLE)
 
+    def test_no_child_combinators(self):
+        # The XSL serializer escapes ">" inside <style> (as the ch22
+        # comparison build showed: "tr.diff-row-added &gt; td"), and
+        # <style> is raw text, so browsers never decode it back. Keep
+        # every rule on descendant combinators.
+        css = STYLE.split('<xsl:text>', 1)[1].split('</xsl:text>', 1)[0]
+        self.assertNotIn('>', css)
+
     def test_ordinary_text_is_not_restyled(self):
         self.assertNotIn('body {', STYLE)
         self.assertNotIn('p {', STYLE)

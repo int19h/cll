@@ -292,6 +292,39 @@ class TableRowTests(unittest.TestCase):
         self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
         self.assertEqual(prefixed.count('<span class="diffmark">[\u2212]</span>'), 1)
 
+    def test_added_header_row_is_one_unit(self):
+        # A bilingual header (Alice shape) whose th cells are all
+        # added gets one background, one bar and one marker.
+        table = ('<table><thead><tr><th>%s</th><th>%s</th></tr></thead></table>'
+                 % (word('la .alis. cizra'), word("Alice's Adventures")))
+        page, prefixed = self.finish(table)
+        self.assertIn('<tr class="diff-row-added">', page)
+        self.assertIn('<th class="diff-row-first">', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+        self.assertIn('<th class="diff-row-first"><span class="diffmark">[+]</span>',
+                      prefixed)
+
+    def test_deleted_header_row_is_one_unit(self):
+        cell = ('<th><span class="deleted"><span class="phrase">%s</span></span></th>')
+        table = ('<table><thead><tr>%s%s</tr></thead></table>'
+                 % (cell % 'la .alis.', cell % 'Alice'))
+        page, prefixed = self.finish(table)
+        self.assertIn('<tr class="diff-row-deleted">', page)
+        self.assertIn('<th class="diff-row-first">', page)
+        self.assertIn('class="deleted"', page)  # strikethrough stays
+        self.assertEqual(prefixed.count('<span class="diffmark">[\u2212]</span>'), 1)
+
+    def test_mixed_th_td_row_is_not_marked(self):
+        # An unchanged th beside an added td: per-cell marking stays,
+        # and the bar does not land on the added td.
+        table = ('<table><tbody><tr><th>Header</th><td>%s</td></tr></tbody></table>'
+                 % word('new'))
+        page, prefixed = self.finish(table)
+        self.assertNotIn('diff-row-added', page)
+        self.assertNotIn('diff-row-deleted', page)
+        self.assertNotIn('diff-row-first', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+
 
 class AddClassTests(unittest.TestCase):
     """_add_class must not break odd but legal start tags."""

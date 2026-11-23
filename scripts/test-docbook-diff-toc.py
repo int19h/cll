@@ -168,6 +168,66 @@ class TocMainTests(unittest.TestCase):
         self.assertEqual(sections.get('section-b', {}).get('status'), 'changed')
         self.assertEqual(sections.get('chapter-a', {}).get('status'), 'changed')
 
+    def test_renamed_section_counts_as_surviving(self):
+        # Same content under a new id: the section survived (blue),
+        # not a wholly new one, and nothing counts as deleted.
+        result, _ = self.compare(
+            chapter_file(section('section-a', 'Alpha',
+                                 '<para>Keep one here.</para>'
+                                 '<para>Keep two here.</para>')),
+            chapter_file(section('section-b', 'Alpha',
+                                 '<para>Keep one here.</para>'
+                                 '<para>Keep two here.</para>')))
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-b', {}).get('status'), 'changed')
+        self.assertNotIn('section-a', sections)
+
+    def test_renamed_section_with_changed_content(self):
+        # Most content paired with one old section: changed, with the
+        # deleted paragraph counted from the old section.
+        result, _ = self.compare(
+            chapter_file(section('section-a', 'Alpha',
+                                 '<para>Keep one here.</para>'
+                                 '<para>Drop this paragraph.</para>')),
+            chapter_file(section('section-b', 'Alpha',
+                                 '<para>Keep one here.</para>')))
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-b', {}).get('status'), 'changed')
+        self.assertEqual(sections['section-b'].get('del'), 1)
+
+    def test_genuinely_new_section_reusing_title_stays_added(self):
+        # A reused title alone is not identity: the new section is
+        # added (green). The old paragraphs show as deleted blocks
+        # inside it, so the old id gets no deleted number of its own.
+        result, _ = self.compare(
+            chapter_file(section('section-a', 'Alpha',
+                                 '<para>Zebra xylophone quartet jamboree.</para>'
+                                 '<para>Quixotic wizards vex brown jackals.</para>')),
+            chapter_file(section('section-b', 'Alpha',
+                                 '<para>Luminous nebulae drift silently onward.</para>'
+                                 '<para>Copper kettles sing thermal ballads.</para>')))
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-b', {}).get('status'), 'added')
+        self.assertNotIn('section-a', sections)
+
+    def test_shared_anchor_identifies_renamed_section(self):
+        # The title anchor survived a rewrite: the section counts as
+        # the old one (blue), not as wholly new.
+        old = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
+               '<section xml:id="section-a"><title>'
+               '<anchor xml:id="c4s8"/>Alpha</title>'
+               '<para>Old words about Alpha.</para>'
+               '<para>More old words here.</para></section></chapter>')
+        new = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
+               '<section xml:id="section-b"><title>'
+               '<anchor xml:id="c4s8"/>Alpha</title>'
+               '<para>Entirely new words about Beta.</para>'
+               '<para>Further new words here.</para></section></chapter>')
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-b', {}).get('status'), 'changed')
+        self.assertNotIn('section-a', sections)
+
     def test_deleted_section_keeps_subsection_ids(self):
         # Subsections of a wholly deleted section get the deleted mark
         # on their own numbers too.

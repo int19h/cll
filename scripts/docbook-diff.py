@@ -1666,6 +1666,12 @@ class Differ:
         """
         out = {}
         sn, so = self.sn, self.so
+        dead = set()
+        for O, cp in self.deleted_sections:
+            for e in cp.iter():
+                dead.add(id(e))
+        old_sec_of_id = self._id_sections(self.old, None)
+        new_sec_of_id = self._id_sections(self.new, dead)
         for _, root in self.new.files:
             for el in root.iter():
                 if not is_el(el) or local(el.tag) not in SECTIONISH:
@@ -1675,8 +1681,14 @@ class Differ:
                     continue
                 c = sn.get(el)
                 old_el = self.old.ids.get(i)
+                matched = False
+                if old_el is None:
+                    old_el = self._alias_old_section(el, old_sec_of_id, dead)
+                    if old_el is None:
+                        old_el = self._aligned_old_section(el)
+                    matched = old_el is not None
                 oc = so.get(old_el) if old_el is not None else {}
-                if not self._section_changed(c, oc):
+                if not matched and not self._section_changed(c, oc):
                     continue
                 out[i] = {'status': 'changed' if old_el is not None else 'added',
                           'chg': (c or {}).get('chg', 0), 'ins': (c or {}).get('ins', 0),
@@ -1686,11 +1698,112 @@ class Differ:
             i = cp.get(XML_ID)
             if not i:
                 continue
+            if self._alias_new_section(O, new_sec_of_id) is not None:
+                continue
             oc = so.get(O)
             out[i] = {'status': 'deleted', 'chg': 0, 'ins': 0,
                       'del': oc.get('del', 0),
                       'mov': oc.get('move', 0) + oc.get('movechg', 0)}
         return out
+
+    def _section_of(self, book, el):
+        """Nearest enclosing-or-self sectionish ancestor of el."""
+        while el is not None:
+            if is_el(el) and local(el.tag) in SECTIONISH:
+                return el
+            el = book.parent.get(el)
+        return None
+
+    def _id_sections(self, book, dead):
+        """Map every live xml:id to its nearest sectionish element.
+
+        Ids inside re-inserted deleted copies (dead) are skipped: they
+        name the copy, not a surviving section.
+        """
+        out = {}
+        dead = dead or ()
+        for _, root in book.files:
+            stack = [root]
+            while stack:
+                e = stack.pop()
+                if not is_el(e) or id(e) in dead:
+                    continue
+                i = e.get(XML_ID)
+                if i and i not in out:
+                    out[i] = self._section_of(book, e)
+                stack.extend(e)
+        return out
+
+    def _live_ids(self, el, dead):
+        """xml:ids under el, skipping re-inserted deleted copies."""
+        out = []
+        stack = [el]
+        while stack:
+            e = stack.pop()
+            if not is_el(e) or id(e) in dead:
+                continue
+            i = e.get(XML_ID)
+            if i:
+                out.append(i)
+            stack.extend(e)
+        return out
+
+    def _alias_old_section(self, new_el, old_sec_of_id, dead):
+        """Old section sharing inner ids with a renamed new section.
+
+        A new section whose title anchor or other stable inner ids all
+        point into one old section that is itself gone counts as that
+        section surviving under a new id (blue), not as wholly new.
+        """
+        cands = set()
+        for i in self._live_ids(new_el, dead):
+            o = old_sec_of_id.get(i)
+            if o is not None:
+                cands.add(o)
+        if len(cands) != 1:
+            return None
+        o = cands.pop()
+        if o is None:
+            return None
+        if o.get(XML_ID) in self.new_ids:
+            return None
+        return o
+
+    def _aligned_old_section(self, new_el):
+        """Old section holding most of a renamed new section's content.
+
+        When over half of the new section's blocks pair with blocks of
+        one old section, the section survived under a new id even if no
+        inner id was kept. A reused title alone never reaches the bar:
+        single-block sections need a shared id to match.
+        """
+        total, per = 0, {}
+        for b in self.sn.blocks_under(new_el):
+            total += 1
+            if b.partner is not None:
+                o = self._section_of(self.old, b.partner.el)
+                if o is not None:
+                    per[o] = per.get(o, 0) + 1
+        if total < 2 or not per:
+            return None
+        best = max(per, key=per.get)
+        return best if per[best] / total > 0.5 else None
+
+    def _alias_new_section(self, old_el, new_sec_of_id):
+        """New section continuing a deleted old section under a new id.
+
+        When the old section's inner ids unambiguously point into one
+        new section, the section survived renamed: no deleted number.
+        """
+        own = old_el.get(XML_ID)
+        cands = set()
+        for i in self._live_ids(old_el, set()):
+            if i == own:
+                continue
+            n = new_sec_of_id.get(i)
+            if n is not None:
+                cands.add(n)
+        return cands.pop() if len(cands) == 1 else None
 
     @staticmethod
     def _section_changed(c, oc):
@@ -1969,7 +2082,7 @@ class _TableWalk(_Offsets):
                  'end': None,
                  'classes': set(dict(attrs).get('class', '').split()),
                  'gloss': any(t['gloss'] for t in self.tables)})
-        elif tag == 'td':
+        elif tag == 'td' or tag == 'th':
             row = self._cur_row()
             if row is None:
                 return
@@ -1978,7 +2091,7 @@ class _TableWalk(_Offsets):
                                'open_end': self.open_end(), 'close': None})
 
     def handle_endtag(self, tag):
-        if tag == 'td':
+        if tag == 'td' or tag == 'th':
             row = self._cur_row()
             if row is not None and row['tds'] and row['tds'][-1]['close'] is None:
                 row['tds'][-1]['close'] = self.abs()

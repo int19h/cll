@@ -1830,12 +1830,15 @@ class Differ:
         return p
 
     def _aligned_old_section(self, new_el):
-        """Old section holding most of a renamed new section's content.
+        """Old material behind most of a renamed new section's content.
 
-        When over half of the new section's own blocks pair with blocks
-        of one old section, the section survived under a new id even if
-        no inner id was kept. A reused title alone never reaches the
-        bar: single-block sections need a shared id to match.
+        When over half of the new section's own blocks pair with old
+        blocks, from any old sections, the section holds familiar
+        material, changed: blue, not green. Green then means "read this
+        as new text". A reused title alone never reaches the bar:
+        single-block sections need a shared id to match. Of the old
+        sections, the one holding most of the paired blocks supplies
+        the tooltip counts.
         """
         total, per = 0, {}
         for b in self._own_blocks(new_el):
@@ -1846,8 +1849,9 @@ class Differ:
                     per[o] = per.get(o, 0) + 1
         if total < 2 or not per:
             return None
-        best = max(per, key=per.get)
-        return best if per[best] / total > 0.5 else None
+        if sum(per.values()) / total <= 0.5:
+            return None
+        return max(per, key=per.get)
 
     @staticmethod
     def _section_changed(c, oc):

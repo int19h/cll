@@ -304,6 +304,62 @@ class TocMainTests(unittest.TestCase):
         self.assertEqual(sections.get('section-a', {}).get('status'), 'deleted')
         self.assertEqual(sections.get('section-b', {}).get('status'), 'changed')
 
+    def test_merged_section_counts_as_surviving(self):
+        # Content from two gone old sections, most of it paired: blue,
+        # not green. Green means "read this as new text".
+        paras = ['Distinctive paragraph %s with enough words to align well.'
+                 % w for w in ('alpha one', 'alpha two', 'alpha three',
+                               'beta one', 'beta two', 'beta three')]
+        old = (chapter_file(section('section-a', 'Alpha',
+                                    '<para>' + paras[0] + '</para>'
+                                    '<para>' + paras[1] + '</para>'
+                                    '<para>' + paras[2] + '</para>')
+                            + section('section-b', 'Beta',
+                                      '<para>' + paras[3] + '</para>'
+                                      '<para>' + paras[4] + '</para>'
+                                      '<para>' + paras[5] + '</para>')))
+        new = (chapter_file(section(
+            'section-m', 'Merged',
+            ''.join('<para>' + p + '</para>' for p in paras))))
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-m', {}).get('status'), 'changed')
+
+    def test_exactly_half_old_stays_added(self):
+        # The rule is more than half: a section that is exactly half
+        # old text stays green.
+        old = (chapter_file(section(
+            'section-a', 'Alpha',
+            '<para>Zebra xylophone quartet jamboree.</para>'
+            '<para>Quixotic wizards vex brown jackals.</para>')))
+        new = (chapter_file(section(
+            'section-b', 'Beta',
+            '<para>Zebra xylophone quartet jamboree.</para>'
+            '<para>Quixotic wizards vex brown jackals.</para>'
+            '<para>Luminous nebulae drift silently onward.</para>')))
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-b', {}).get('status'), 'added')
+
+    def test_new_section_quoting_one_old_line_stays_added(self):
+        # One quoted old line among new text does not make it familiar.
+        old = (chapter_file(section(
+            'section-a', 'Alpha',
+            '<para>Zebra xylophone quartet jamboree.</para>'
+            '<para>Quixotic wizards vex brown jackals.</para>'
+            '<para>Pack my box with five dozen liquor jugs.</para>'
+            '<para>How vexingly quick daft zebras jump.</para>')))
+        new = (chapter_file(section(
+            'section-b', 'Beta',
+            '<para>Zebra xylophone quartet jamboree.</para>'
+            '<para>Luminous nebulae drift silently onward.</para>'
+            '<para>Copper kettles sing thermal ballads.</para>'
+            '<para>Sphinx of black quartz judge my vow.</para>'
+            '<para>Waltz bad nymph for quick jigs vex.</para>')))
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-b', {}).get('status'), 'added')
+
     def test_split_off_section_ignores_old_deletion_counts(self):
         # Half of a surviving old section moved to a new one: the new
         # section stays blue, but the old section's own deleted

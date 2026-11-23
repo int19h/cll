@@ -131,6 +131,7 @@ print display
   }
 
   section.chapter,
+  section.appendix,
   section.glossary,
   div.whole-index {
     page: chapter;

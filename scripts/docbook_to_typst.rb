@@ -40,14 +40,18 @@ class DocBookTypst
   def number_components
     chapter = 0
     article = 0
+    appendix = 0
     @document.root.element_children.each do |component|
       case component.name
       when 'chapter'
         chapter += 1
         @numbers[component.path] = chapter.to_s
-      when 'article', 'appendix'
+      when 'article'
         article += 1
         @numbers[component.path] = (64 + article).chr
+      when 'appendix'
+        appendix += 1
+        @numbers[component.path] = (64 + appendix).chr
       end
       number_sections(component, @numbers[component.path])
       %w[example table figure].each do |kind|

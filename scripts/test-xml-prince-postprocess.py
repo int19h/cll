@@ -48,6 +48,9 @@ MARKER = "--CHAPBR--"
 EXPECTED_HEADING_TEXT = "Chapter\u00a021\u0020Formal grammars"
 EXPECTED_XREF_TITLE = "Formal grammars"
 EXPECTED_XREF_TEXT = "Chapter\u00a021"
+EXPECTED_APPENDIX_HEADING_TEXT = "Appendix\u00a0B\u0020Changes from the first edition"
+EXPECTED_APPENDIX_XREF_TITLE = "Changes from the first edition"
+EXPECTED_APPENDIX_XREF_TEXT = "Appendix\u00a0B"
 
 failures = []
 
@@ -181,15 +184,37 @@ def main():
           f"actual prefix {prefix!r} (a no-break space U+00A0 or no space at all "
           "would leave the outline reading \"Chapter\\xa021Formal grammars\")")
 
-    check(len(root.findall(".//br")) == 1,
-          "the whole document contains exactly one <br/>",
+    appendix_headings = [h for h in root.iter("h1")
+                         if "title" in classes(h)
+                         and h.find("a") is not None
+                         and h.find("a").get("id") == "appendix-changes"]
+    if len(appendix_headings) != 1:
+        die(f"expected exactly 1 appendix heading in the output, found {len(appendix_headings)}")
+    appendix_heading = appendix_headings[0]
+    appendix_heading_text = "".join(appendix_heading.itertext())
+    check(appendix_heading_text == EXPECTED_APPENDIX_HEADING_TEXT,
+          "the appendix heading's text content is exactly "
+          f"{EXPECTED_APPENDIX_HEADING_TEXT!r}",
+          f"actual {appendix_heading_text!r}")
+    appendix_breaks = appendix_heading.findall(".//br")
+    check(len(appendix_breaks) == 1,
+          "the appendix heading contains exactly one <br/>",
+          f"found {len(appendix_breaks)}")
+    if len(appendix_breaks) == 1:
+        appendix_prefix, appendix_found = text_before(appendix_heading, appendix_breaks[0])
+        check(appendix_found and appendix_prefix[-1:] == " ",
+              "the appendix heading text before the <br/> ends in an ordinary space (U+0020)",
+              f"actual prefix {appendix_prefix!r}")
+
+    check(len(root.findall(".//br")) == 2,
+          "the whole document contains exactly two <br/> elements",
           f"found {len(root.findall('.//br'))}")
 
-    # --- xref title: chapter prefix and marker both stripped -----------------
+    # --- xref titles: chapter and appendix prefixes and markers stripped ----
     xrefs = [a for a in root.iter("a") if "xref" in classes(a)]
-    if len(xrefs) != 1:
-        die(f"expected exactly 1 xref in the output, found {len(xrefs)}")
-    xref = xrefs[0]
+    if len(xrefs) != 2:
+        die(f"expected exactly 2 xrefs in the output, found {len(xrefs)}")
+    xref = next(a for a in xrefs if a.get("href") == "#chapter-grammars")
     xref_title = xref.get("title")
     check(xref_title == EXPECTED_XREF_TITLE,
           f"the xref title is exactly {EXPECTED_XREF_TITLE!r}",
@@ -201,6 +226,19 @@ def main():
     check(xref_text == EXPECTED_XREF_TEXT,
           f"the xref's own link text is untouched ({EXPECTED_XREF_TEXT!r})",
           f"actual {xref_text!r}")
+
+    appendix_xref = next(a for a in xrefs if a.get("href") == "#appendix-changes")
+    appendix_xref_title = appendix_xref.get("title")
+    check(appendix_xref_title == EXPECTED_APPENDIX_XREF_TITLE,
+          f"the appendix xref title is exactly {EXPECTED_APPENDIX_XREF_TITLE!r}",
+          f"actual {appendix_xref_title!r}")
+    check("<br" not in (appendix_xref_title or ""),
+          "the appendix xref title contains no break markup",
+          f"actual {appendix_xref_title!r}")
+    appendix_xref_text = "".join(appendix_xref.itertext())
+    check(appendix_xref_text == EXPECTED_APPENDIX_XREF_TEXT,
+          f"the appendix xref's own link text is untouched ({EXPECTED_APPENDIX_XREF_TEXT!r})",
+          f"actual {appendix_xref_text!r}")
 
     # --- example anchor stays inside the example title ----------------------
     examples = [d for d in root.iter("div") if "example" in classes(d)]

@@ -61,6 +61,13 @@ class DocBookTypstTest < Minitest::Test
     assert_includes source, '#cll-ref("e", "Example A.1")'
   end
 
+  def test_appendix_letters_do_not_share_the_article_counter
+    source = convert('<article id="article"><title>Article</title></article><appendix id="appendix"><title>Appendix</title><section id="section"><title>Topic</title></section><para><xref linkend="appendix"/></para></appendix>')
+    assert_includes source, '#cll-heading(1, "Appendix A", "Appendix"'
+    assert_includes source, '#cll-heading(2, "A.1", "Topic"'
+    assert_includes source, '#cll-ref("appendix", "Appendix A")'
+  end
+
   def test_fraction_powers_and_radicals_use_native_math
     source = convert('<chapter><title>Math</title><para><inlineequation><math><mfrac><msup><mi>x</mi><mn>2</mn></msup><msqrt><mn>7</mn></msqrt></mfrac></math></inlineequation></para></chapter>')
     assert_includes source, '$frac(attach(x, t: 2), sqrt(7))$'

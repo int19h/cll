@@ -7,15 +7,13 @@
       </indexterm>The main reference chapters of this book teach the account of Lojban that this edition selected. Wherever they teach a rule, they also say where it comes from: a vote of the LLG or of the BPFK, a BPFK checkpoint, or established usage. Where the sources still disagree, they say that the question is open. This chapter describes something else. It describes words and grammatical variants that no official body ever adopted, but which a reader of real Lojban text will meet sooner or later.</para>
     <para>We call a single unadopted word an <quote>experimental cmavo</quote>, and a coherent set of unadopted grammar changes a <quote>dialect</quote>. Nothing in this chapter is official, and you do not need any of it to speak or read standard Lojban. But a reference that ignored these things would not describe the language as people actually use it.</para>
     <para><indexterm type="general"><primary>experimental cmavo</primary><secondary>word-forms reserved for</secondary>
-      </indexterm>Standard Lojban itself provides the space where these words live. <xref linkend="chapter-morphology" /> explains that the language reserves the cmavo shapes beyond the simple assigned forms (such as the longer vowel strings in <valsi>zo'oi</valsi> or <valsi>su'oi</valsi>) for experimental use. They are grammatical word forms with no officially assigned meaning. Coining one breaks no rule, and the new word has whatever standing its users give it. The community dictionaries record such words, clearly marked as unofficial.</para>
+      </indexterm>Standard Lojban itself provides the space where these words live. <xref linkend="chapter-morphology" /> explains that the language reserves the cmavo shapes beyond the simple assigned forms (such as the longer vowel strings in <valsi>zo'oi</valsi> or <valsi>su'oi</valsi>) for experimental use. They are grammatical word forms with no officially assigned meaning. Coining one breaks no rule, and the new word has whatever standing its users give it. The community dictionaries record such words, clearly marked as unofficial. In this chapter, every meaning given for an experimental word is the one that its dictionary entry gives first; a dictionary entry does not make the word official.</para>
     <para><indexterm type="general"><primary>dotside</primary><secondary>as dialect that the BPFK approved</secondary>
-      </indexterm>The boundary between experimental and adopted has moved in the past, too. This book writes every cmevla with a dot at the start and at the end. That rule began as a deliberately partisan dialect, and its name, <quote>the dot side</quote>, was a joke. It is now approved by the BPFK (see <xref linkend="appendix-changes" /> for the details).</para>
-    <para>The established corpus itself grew out of once-experimental proposals, adopted at various levels. The published records through the Logical Language Group's meeting of December 2025, however, show no official decision that changed a rule of the language after 2020, when the Group ratified the article rules (see <xref linkend="chapter-about" />).</para>
-    <para><indexterm type="general"><primary>parsers</primary><secondary>dialect support in</secondary>
-      </indexterm>The sections of this chapter document two different kinds of evidence, and it pays to keep them apart. The first is <emphasis>usage evidence</emphasis>: the feature appears in genuine text or in established community writing, and not only in a dictionary entry. The second is <emphasis>machine support</emphasis>: at least one maintained parser accepts it. They answer different questions. A parser that accepts a feature shows that someone implemented it, not that anyone uses it, so machine support alone is no proof of actual use. Not every section documents both.</para>
-    <para>The standard camxes grammar accepts only standard Lojban. Its <quote>beta</quote> variant adds the popular experimental cmavo that are backward-compatible, and further variants add the genuine grammar changes described at the end of this chapter. Other tools go the opposite way: they accept the popular experimental cmavo by default, and keep explicit dialect switches for the true grammar changes. We made sure that at least one such parser accepts every example in this chapter, and each section says which.</para>
+      </indexterm>The boundary between experimental and adopted has moved in the past, too. <xref linkend="chapter-morphology" /> requires a pause before and after every cmevla, which this book marks with a dot at each end. That rule began as a deliberately partisan dialect, and its name, <quote>the dot side</quote>, was a joke. It is now approved by the BPFK (see <xref linkend="appendix-changes" /> for the details).</para>
+    <para>The established corpus itself grew out of once-experimental proposals, adopted at various levels. The published records through the Logical Language Group's meeting of December 2025, however, show no official decision that changed a rule of the language after 2020, when the Group ratified the article rules (see <xref linkend="chapter-about" />). The language that people speak and write has kept moving all the same, and this chapter describes some of that motion. It does not predict what any official body will do about it, and this edition does not speak for the LLG.</para>
+    <para><indexterm type="general"><primary>parsers</primary><secondary>dialect support in</secondary></indexterm>The syntax grammar of <xref linkend="section-EBNF" /> accepts none of the experimental cmavo in this chapter, and the parsers that people actually run differ from one another in which of them they accept. Some accept the popular experimental cmavo by default and keep explicit switches for the dialects that change the grammar; others keep a separate experimental grammar for everything. The set of parsers in use changes from year to year, and so do their word lists, so this book does not record which tool accepts which word. Every numbered example in this chapter has at least one current parser that accepts it; for some words the chapter can give only the dictionary's account, because no parser we tried accepts them in a sentence. If you rely on a tool, check what it does with a word before you lean on it.</para>
     <para role="status-note" condition="status:de-facto;also:proposed"><indexterm type="general"><primary>experimental cmavo</primary><secondary>status of</secondary>
-      </indexterm>All of these features are unofficial. None is ratified by the LLG or approved by the BPFK, and none comes from a BPFK checkpoint. Where a section cites usage frequency, the evidence is a community survey of six corpora from 2015. Its counts give too much weight to chat logs and to individual authors, so treat it as a rough rank order, not as an endorsement.</para>
+      </indexterm>All of these features are unofficial. None is ratified by the LLG or approved by the BPFK, and none comes from a BPFK checkpoint.</para>
   </section>
   <section xml:id="section-dialects-quotation">
     <title><anchor xml:id="c22s2" />Quoting the outside world: <valsi>zo'oi</valsi> and friends</title>
@@ -41,6 +39,16 @@
         <selmaho>MEhOI*</selmaho>
         <description>ad-hoc brivla from next word</description>
       </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>la'au</cmavo>
+        <selmaho>LU*</selmaho>
+        <description>name from grammatical text</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>ma'oi</cmavo>
+        <selmaho>ZO*</selmaho>
+        <description>selma'o named by a quoted cmavo</description>
+      </cmavo-entry>
     </cmavo-list>
     <para role="indent"><indexterm type="lojban-word"><primary>zo'oi</primary></indexterm>Standard Lojban quotes non-Lojban material with <jbophrase>zoi ...</jbophrase>, which requires a delimiting word, said twice (see <xref linkend="section-more-quotations" />). For a single foreign word that ceremony is a heavy one, and a family of experimental cmavo exists to shorten it. The word <valsi>zo'oi</valsi> quotes exactly one following word, just as <valsi>zo</valsi> does for a single Lojban word. In speech, pauses delimit the quoted word; in writing, whitespace (spaces, tabs, or line breaks) does the job:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x22a">
@@ -51,19 +59,19 @@
         <natlang><quote>Small</quote> is an English word.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent"><indexterm type="lojban-word"><primary>la'oi</primary></indexterm>Its sibling <valsi>la'oi</valsi> does the same for names, and stands to <valsi>la'o</valsi> as <valsi>zo'oi</valsi> stands to <valsi>zoi</valsi>. In the community's 2015 frequency survey it ranked first among all experimental cmavo. That is no surprise, since foreign names of one word (of people, software, and websites) are everywhere:</para>
+    <para role="indent"><indexterm type="lojban-word"><primary>la'oi</primary></indexterm>Its sibling <valsi>la'oi</valsi> does the same for names, and stands to <valsi>la'o</valsi> as <valsi>zo'oi</valsi> stands to <valsi>zoi</valsi>. Foreign names of one word (of people, software, and websites) are everywhere:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x22b">
       <title><anchor xml:id="c22e2d2" /></title>
       <interlinear-gloss>
         <jbo valid="iffy">mi nelci la'oi Bach</jbo>
-        <gloss>I like that-named <quote>Bach</quote>.</gloss>
+        <gloss>I like that-named <quote>Bach</quote></gloss>
         <natlang>I like Bach.</natlang>
       </interlinear-gloss>
     </example>
     <para role="indent">
       <indexterm type="lojban-word"><primary>me'oi</primary></indexterm>
       <indexterm type="lojban-word"><primary>ra'oi</primary></indexterm>
-      Two rarer members complete the family. The word
+      Two more members complete the family. The word
       <valsi>me'oi</valsi>
       makes an ad-hoc predicate out of a foreign word. The community calls the result a
       <quote>stage-0 fu'ivla</quote>: a borrowing that skips even the minimal Lojbanization of
@@ -82,11 +90,528 @@
       <title><anchor xml:id="c22e2d4" /></title>
       <interlinear-gloss>
         <jbo valid="iffy">ra'oi bra cu rafsi zo barda</jbo>
-        <gloss>[quote-rafsi] <quote>bra</quote> - is-a-rafsi-of the-word <quote>barda</quote>.</gloss>
+        <gloss>[quote-rafsi] <quote>bra</quote> - is-a-rafsi-of the-word <quote>barda</quote></gloss>
         <natlang>The rafsi <quote>bra</quote> belongs to <quote>barda</quote>.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="status-note" condition="status:de-facto;also:proposed">Genuine text attests all four: <valsi>la'oi</valsi> and <valsi>zo'oi</valsi> heavily, <valsi>me'oi</valsi> and <valsi>ra'oi</valsi> more thinly. The standard camxes grammar rejects all four. The camxes beta family accepts them, and so does jbotci, without any dialect switch.</para>
+    <para role="indent"><indexterm type="lojban-word"><primary>la'au</primary></indexterm>Names made of Lojban words are a different problem. The article <valsi>la</valsi> takes a cmevla or a selbri, but a title like <quote>The Horse and the Cat</quote> is neither; it is a whole sumti, and standard Lojban can refer to the work only indirectly: by rebuilding the title as a cmevla, by quoting the title with <valsi>la'o</valsi> as if it were foreign, or by a description such as <jbophrase>lo se cmene be lu ... li'u</jbophrase>. The word <valsi>la'au</valsi> opens a quotation of grammatical Lojban text, closed by the ordinary <valsi>li'u</valsi>, and, like <valsi>la</valsi>, makes a sumti that refers to whatever bears that name. The quoted text must be grammatical on its own, as with <valsi>lu</valsi> (see <xref linkend="section-quotations" />):</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22i">
+      <title><anchor xml:id="c22e2d5" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">la'au lo xirma .e lo mlatu li'u cu lisri</jbo>
+        <gloss>[named:] the horse and the cat [end-name] - is-a-story.</gloss>
+        <natlang><quote>The Horse and the Cat</quote> is a story.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent"><indexterm type="lojban-word"><primary>ma'oi</primary></indexterm>Finally, <valsi>ma'oi</valsi> quotes a single cmavo, like <valsi>zo</valsi>, and uses it to name that word's selma'o: <jbophrase valid="iffy">ma'oi ba</jbophrase> is selma'o PU, and so is <jbophrase valid="iffy">ma'oi pu</jbophrase>. This book has needed selma'o names on nearly every page, and it has borrowed capital letters to write them; <valsi>ma'oi</valsi> is the community's way of saying them aloud in Lojban.</para>
+    <para role="status-note" condition="status:de-facto;also:proposed">The standard grammar rejects all six. None is official.</para>
+  </section>
+  <section xml:id="section-dialects-repairs">
+    <title><anchor xml:id="c22s7" />Repairs and terminators: <valsi>lo'ai</valsi>, <valsi>sa'ai</valsi>, <valsi>le'ai</valsi> and others</title>
+    <para>The following experimental cmavo are discussed in this section:</para>
+    <cmavo-list>
+      <cmavo-entry>
+        <cmavo>lo'ai</cmavo>
+        <selmaho>LOhAI*</selmaho>
+        <description>quote the mistaken text</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>sa'ai</cmavo>
+        <selmaho>LOhAI*</selmaho>
+        <description>quote the replacement text</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>le'ai</cmavo>
+        <selmaho>LEhAI*</selmaho>
+        <description>end of correction</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>iau</cmavo>
+        <selmaho>IhAU*</selmaho>
+        <description>close everything back to the main bridi</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>i'au</cmavo>
+        <selmaho>IhAU*</selmaho>
+        <description>the same (longer form)</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>cu'au</cmavo>
+        <selmaho>CUhAU*</selmaho>
+        <description>universal terminator</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>ze'ei</cmavo>
+        <selmaho>SI*</selmaho>
+        <description>nonce word with borrowed grammar</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>zo'au</cmavo>
+        <selmaho>ZOhAU*</selmaho>
+        <description>postnex: a prenex placed after the bridi</description>
+      </cmavo-entry>
+    </cmavo-list>
+    <para role="indent"><anchor xml:id="c22s4" /><anchor xml:id="section-dialects-grabbag" /><indexterm type="general"><primary>error correction</primary><secondary>experimental quote set</secondary>
+      </indexterm><indexterm type="lojban-word"><primary>lo'ai</primary></indexterm><indexterm type="lojban-word"><primary>sa'ai</primary></indexterm><indexterm type="lojban-word"><primary>le'ai</primary></indexterm>The erasure words of standard Lojban (see <xref linkend="section-erasure" />) can only erase the <emphasis>most recent</emphasis> words. But in live conversation, people often want to reach back and repair something that they said a sentence ago. The <emphasis>error-correction quotes</emphasis> <valsi>lo'ai</valsi>, <valsi>sa'ai</valsi>, and <valsi>le'ai</valsi> do that. The set works like a search-and-replace: <valsi>lo'ai</valsi> quotes the wrong text, <valsi>sa'ai</valsi> quotes its replacement, and <valsi>le'ai</valsi> closes the correction:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22f">
+      <title><anchor xml:id="c22e4d1" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">mi klama lo zarci .i lo'ai zarci sa'ai zdani le'ai</jbo>
+        <gloss>I go-to a market. - [wrong:] <quote>market</quote> [replace:] <quote>house</quote> [end]</gloss>
+        <natlang>I went to the market &ndash; I mean, the house.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent">The two quoted parts may come in either order, and either may be left out when context supplies it. A bare <valsi>le'ai</valsi> on its own simply admits that a mistake was made somewhere, and leaves the listener to find it.</para>
+    <para><indexterm type="lojban-word"><primary>iau</primary></indexterm><indexterm type="lojban-word"><primary>i'au</primary></indexterm>A different kind of repair is wanted when a sentence has wandered deep into subordinate clauses and the speaker wants to add something to the <emphasis>main</emphasis> bridi. In standard Lojban that takes a string of terminators, each matched to a construct that is still open, and in speech the count is easy to lose. The word <valsi>iau</valsi> (also spelled <valsi>i'au</valsi>) closes every open construct at once and returns to the top level of the sentence, as <valsi>.i</valsi> would, without starting a new sentence:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22j">
+      <title><anchor xml:id="c22e7d1" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">mi djica lo nu do klama lo zarci iau ca lo cabdei</jbo>
+        <gloss>I want the event-of your going-to the market [back-to-top] at the today.</gloss>
+        <natlang>I want you to go to the market; today, I mean.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent">Without the <valsi>iau</valsi>, the time tag would fall inside the <valsi>nu</valsi> clause and say when the going happens, not when the wanting does. An attitudinal placed right after <valsi>iau</valsi> is understood to apply to the whole sentence, which gives afterthought attitudinals a home.</para>
+    <para><indexterm type="lojban-word"><primary>cu'au</primary></indexterm>The word <valsi>cu'au</valsi> goes one step further and makes the terminators interchangeable. It looks back for the most recently opened construct that is still open and acts as whatever terminator would close it. So <jbophrase valid="iffy">lo broda cu'au cu'au</jbophrase> is <jbophrase>lo broda ku vau</jbophrase>, and with a subscript, <valsi>cu'au</valsi> followed by <jbophrase>xi ro</jbophrase>, it closes every construct that the current sentence has left open.</para>
+    <para><indexterm type="lojban-word"><primary>ze'ei</primary></indexterm>One word in this section belongs here only loosely, since it makes other words rather than repairing them. <valsi>ze'ei</valsi> binds two arbitrary words into one nonce word: the word on its left supplies the meaning, and the word on its right supplies the grammar. A speaker who wants a new abstractor, say, can glue a gismu to <valsi>nu</valsi> with <valsi>ze'ei</valsi> and use the result wherever <valsi>nu</valsi> would go, without first finding a free experimental cmavo shape. It is filed in selma'o SI, beside the erasure word, though it erases nothing.</para>
+    <para><indexterm type="lojban-word"><primary>zo'au</primary></indexterm>A prenex (<xref linkend="section-topic-comments" />) must come before its bridi, which is awkward when the topic or the quantifier occurs to the speaker last. <valsi>zo'au</valsi> is a prenex that comes after. It starts a logical, topical or termset <quote>postnex</quote>, like <valsi>zo'u</valsi> but placed after a bridi or after a <valsi>tu'e</valsi> ... <valsi>tu'u</valsi> group, so that the terms which <valsi>zo'u</valsi> would have introduced first can be added at the end.</para>
+    <para role="status-note" condition="status:de-facto;also:proposed">No parser we tried accepts <valsi>cu'au</valsi>, <valsi>zo'au</valsi>, or the spelling <valsi>i'au</valsi> in a sentence. None is official.</para>
+  </section>
+  <section xml:id="section-dialects-indicators">
+    <title><anchor xml:id="c22s8" />New attitudinals and indicators</title>
+    <para>The following experimental cmavo are discussed in this section:</para>
+    <cmavo-list>
+      <cmavo-entry>
+        <cmavo>xo'o</cmavo>
+        <selmaho>UI*</selmaho>
+        <description>sarcastically; <valsi>nai</valsi>: sincerely</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>au'u</cmavo>
+        <selmaho>UI*</selmaho>
+        <description>cute; <valsi>nai</valsi>: uncute</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>uu'i</cmavo>
+        <selmaho>UI*</selmaho>
+        <description>schadenfreude</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>xu'o</cmavo>
+        <selmaho>UI*</selmaho>
+        <description>contour: stronger over time; <valsi>nai</valsi>: weaker over time</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>da'oi</cmavo>
+        <selmaho>DOI*</selmaho>
+        <description>attitudinal attribution</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>da'ei</cmavo>
+        <selmaho>DOI*</selmaho>
+        <description>attitudinal cause attribution</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>ja'ai</cmavo>
+        <selmaho>NAI*</selmaho>
+        <description>affirm last word</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>toi'e</cmavo>
+        <selmaho>TOIhE*</selmaho>
+        <description>indicator applied to an indicator</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>si'au</cmavo>
+        <selmaho>UI*</selmaho>
+        <description>evidential: it seems that</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>zi'a</cmavo>
+        <selmaho>UI*</selmaho>
+        <description>previous word is a nonce creation</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>xe'o</cmavo>
+        <selmaho>UI*</selmaho>
+        <description>simply, merely; <valsi>nai</valsi>: there is more to it</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>xa'i</cmavo>
+        <selmaho>UI*</selmaho>
+        <description>imagining, roleplaying; <valsi>nai</valsi>: in real life</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>xu'a</cmavo>
+        <selmaho>UI*</selmaho>
+        <description>persuading; <valsi>nai</valsi>: conceding</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>va'oi</cmavo>
+        <selmaho>UI*</selmaho>
+        <description>regular reading of the previous brivla</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>ko'oi</cmavo>
+        <selmaho>UI*</selmaho>
+        <description>imperative or wish</description>
+      </cmavo-entry>
+    </cmavo-list>
+    <para role="indent"><indexterm type="general"><primary>attitudinals</primary><secondary>experimental</secondary></indexterm>The indicators of <xref linkend="chapter-attitudinals" /> form a closed system, and that chapter itself describes the system as tentative. The indicators have attracted more experimental cmavo than any other part of the language. This section gives the main ones, by the kind of indicator that each one is.</para>
+    <para><indexterm type="lojban-word"><primary>xo'o</primary></indexterm><xref linkend="section-pure-emotions" /> warns that attitudinals are meant sincerely, never ironically; <valsi>xo'o</valsi> gives sarcasm a marker of its own. It is an attitudinal modifier, like <valsi>dai</valsi> or <valsi>pei</valsi>, and it marks the preceding attitudinal (or the whole utterance, when it stands alone) as sarcastic. Its negative form <jbophrase valid="iffy">xo'o nai</jbophrase> insists on sincerity:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22k">
+      <title><anchor xml:id="c22e8d1" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">.ui xo'o lo carvi cu di'a cfari</jbo>
+        <gloss>[happy!] [sarcastic] the rain - [resuming] begins.</gloss>
+        <natlang>Oh, joy. The rain is starting again.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent"><indexterm type="lojban-word"><primary>au'u</primary></indexterm><indexterm type="lojban-word"><primary>uu'i</primary></indexterm><indexterm type="lojban-word"><primary>xu'o</primary></indexterm>Two new pure emotions are <valsi>au'u</valsi>, the feeling that something is cute, with <jbophrase valid="iffy">au'u nai</jbophrase> for the repulsively uncute; and <valsi>uu'i</valsi>, which fuses <valsi>.uu</valsi> and <valsi>.u'i</valsi> into schadenfreude, pleasure at someone else's misfortune. The word <valsi>xu'o</valsi> is a contour rather than an emotion: placed after an attitudinal, it says that the feeling is growing stronger, and <jbophrase valid="iffy">xu'o nai</jbophrase> says that it is fading. Standard Lojban can say how strong a feeling is (<xref linkend="section-intensity-scale" />) but not which way it is heading.</para>
+    <para><indexterm type="lojban-word"><primary>da'oi</primary></indexterm><indexterm type="lojban-word"><primary>da'ei</primary></indexterm>The modifier <valsi>dai</valsi> of <xref linkend="section-questions-empathy-contours" /> says that an attitude belongs to someone other than the speaker, without saying whom. The word <valsi>da'oi</valsi>, defined in selma'o DOI, takes a sumti and says whose attitude it is:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22l">
+      <title><anchor xml:id="c22e8d2" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">.ui da'oi la .alis. lo xirma cu bajra</jbo>
+        <gloss>[happy!] [felt-by] that-named Alice the horse - runs.</gloss>
+        <natlang>The horse is running, to Alice's delight.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent">Its companion <valsi>da'ei</valsi> attributes the <emphasis>cause</emphasis> of a feeling rather than its owner: <valsi>.iu</valsi> followed by <jbophrase valid="iffy">da'ei do</jbophrase> is love that you cause, which is to say <quote>I love you</quote>.</para>
+    <para><indexterm type="lojban-word"><primary>ja'ai</primary></indexterm><indexterm type="lojban-word"><primary>toi'e</primary></indexterm>Two small words act on indicators and on other cmavo. <valsi>ja'ai</valsi> is the affirmative counterpart of <valsi>nai</valsi>: attached to a cmavo, it affirms it, by the same analogy that gives <valsi>ja'a</valsi> to <valsi>na</valsi> and <valsi>je'a</valsi> to <valsi>na'e</valsi> (see <xref linkend="section-affirmations" />). It is useful in answers, where <jbophrase valid="iffy">.e ja'ai</jbophrase> affirms a connective that the question had offered as <jbophrase>.e nai</jbophrase>. <valsi>toi'e</valsi> opens a parenthesis of indicators that apply to the indicator just before it, instead of to the surrounding text, so that one can be amused at one's own anger rather than at the world. Standard Lojban has no way to point one indicator at another.</para>
+    <para><indexterm type="lojban-word"><primary>si'au</primary></indexterm>Among the evidentials of <xref linkend="section-evidentials" />, there is no plain <quote>it seems that</quote>. <valsi>si'au</valsi> supplies it:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22m">
+      <title><anchor xml:id="c22e8d3" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">si'au lo tcima ba cenba</jbo>
+        <gloss>[it-seems] the weather [future] changes.</gloss>
+        <natlang>It seems the weather is going to change.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent"><indexterm type="lojban-word"><primary>zi'a</primary></indexterm><indexterm type="lojban-word"><primary>xe'o</primary></indexterm><indexterm type="lojban-word"><primary>xa'i</primary></indexterm><indexterm type="lojban-word"><primary>xu'a</primary></indexterm><indexterm type="lojban-word"><primary>va'oi</primary></indexterm>The new discursives are a mixed bag. <valsi>zi'a</valsi>, placed after a word, flags it as a nonce creation that may not be standard; it does the job of <valsi>za'e</valsi> from <xref linkend="section-bahe" />, but as an indicator that follows its word rather than a marker that precedes it. <valsi>xe'o</valsi> means <quote>simply</quote> or <quote>merely</quote>, with the sense that there is nothing more to the matter, and <jbophrase valid="iffy">xe'o nai</jbophrase> warns that there is more to it; it differs from <valsi>po'o</valsi>, which restricts, and from <valsi>sa'u</valsi>, which only simplifies. <valsi>xa'i</valsi> marks an utterance as imagined or role-played, the equivalent of the asterisked actions of online chat, and <jbophrase valid="iffy">xa'i nai</jbophrase> steps back out of character. <valsi valid="maybe">xu'a</valsi> marks that the speaker is arguing a point, with <jbophrase valid="iffy">xu'a nai</jbophrase> for conceding one. <valsi valid="maybe">va'oi</valsi> asks for the regular reading of the brivla just before it, the reading in which a compound means what its parts predict (a <valsi>jvajvo</valsi> in community jargon), and <jbophrase valid="iffy">va'oi nai</jbophrase> asks for the other reading.</para>
+    <para><indexterm type="lojban-word"><primary>ko'oi</primary></indexterm><valsi>ko'oi</valsi> is the discursive of command and wish. The imperative pronoun <valsi>ko</valsi> of standard Lojban refers to the listener, so a command built with it can be addressed to nobody else. With <valsi>ko'oi</valsi> any bridi becomes a command or a wish that it be true, so that <valsi>ko</valsi> itself can be analyzed as <valsi>do</valsi> plus <valsi>ko'oi</valsi>, and <jbophrase valid="iffy">mi'o klama ko'oi</jbophrase> is <quote>let's go</quote>. It is broader than any single member of the <valsi>.e'o</valsi> family (<xref linkend="section-propositional-emotions" />), which is both its virtue and its vagueness.</para>
+    <para role="status-note" condition="status:de-facto;also:proposed">No parser we tried accepts <valsi>au'u</valsi>, <valsi>uu'i</valsi>, <valsi>xu'o</valsi>, <valsi>da'ei</valsi>, <valsi>toi'e</valsi>, <valsi>zi'a</valsi>, <valsi>xe'o</valsi>, <valsi>xa'i</valsi>, <valsi valid="maybe">xu'a</valsi> or <valsi valid="maybe">va'oi</valsi> in a sentence, so they appear here by description only. None is official.</para>
+  </section>
+  <section xml:id="section-dialects-vocatives">
+    <title><anchor xml:id="c22s9" />New vocatives and interjection makers</title>
+    <para>The following experimental cmavo are discussed in this section:</para>
+    <cmavo-list>
+      <cmavo-entry>
+        <cmavo>ki'ai</cmavo>
+        <selmaho>COI*</selmaho>
+        <description>nonce interjection from a selbri, cmevla or <valsi>zoi</valsi> quotation</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>sa'ei</cmavo>
+        <selmaho>COI*</selmaho>
+        <description>onomatopoeia from a cmevla or <valsi>zoi</valsi> quotation</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>ci'oi</cmavo>
+        <selmaho>COI*</selmaho>
+        <description>psychomime from a cmevla or <valsi>zoi</valsi> quotation</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>di'ai</cmavo>
+        <selmaho>COI*</selmaho>
+        <description>well-wish; <valsi>nai</valsi>: curse</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>o'ai</cmavo>
+        <selmaho>COI*</selmaho>
+        <description>slightly surprised greeting</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>a'oi</cmavo>
+        <selmaho>COI*</selmaho>
+        <description>slightly piratical greeting</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>co'oi</cmavo>
+        <selmaho>COI*</selmaho>
+        <description>greeting or parting, as context decides</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>xu'e</cmavo>
+        <selmaho>COI*</selmaho>
+        <description>said by ... (speaker tag)</description>
+      </cmavo-entry>
+    </cmavo-list>
+    <para role="indent"><indexterm type="general"><primary>vocatives</primary><secondary>experimental</secondary></indexterm><indexterm type="lojban-word"><primary>ki'ai</primary></indexterm>The vocatives of selma'o COI (<xref linkend="section-vocative-scales" />) are the closest thing standard Lojban has to interjections, and the community has stretched them in two directions. The first is a small family of <emphasis>converters</emphasis>, which turn an ordinary word or phrase into an interjection on the spot. <valsi>ki'ai</valsi>, from <valsi>krixa</valsi>, is the general one: it takes a following selbri, cmevla or <valsi>zoi</valsi> quotation and makes a nonce exclamation of it. A speaker can therefore turn any predicate into an exclamation, whether or not an attitudinal already covers the feeling:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22n">
+      <title><anchor xml:id="c22e9d1" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">ki'ai manci .i do pu jinga</jbo>
+        <gloss>[exclaim:] wonder! - You [past] win.</gloss>
+        <natlang>Wow! You won.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent"><indexterm type="lojban-word"><primary>sa'ei</primary></indexterm><indexterm type="lojban-word"><primary>ci'oi</primary></indexterm>Its two narrower siblings take a cmevla or a <valsi>zoi</valsi> quotation. <valsi>sa'ei</valsi> makes it an onomatopoeia, a sound effect in the manner of comic books; <valsi>ci'oi</valsi> makes it a <emphasis>psychomime</emphasis>, a word that imitates a state of mind or a manner rather than a sound, a category that Japanese has in abundance and English barely has at all. When the converted word is a cmevla, it carries the usual dots:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22o">
+      <title><anchor xml:id="c22e9d2" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">sa'ei .bam. lo tanxe pu farlu</jbo>
+        <gloss>[sound:] <quote>bam</quote> the box [past] falls.</gloss>
+        <natlang>Bam! The box fell.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent"><indexterm type="lojban-word"><primary>di'ai</primary></indexterm>The second direction adds vocatives with new meanings. <valsi>di'ai</valsi> expresses a wish for the good of the person addressed; <jbophrase valid="iffy">di'ai nai</jbophrase> is a curse. It says in one word what standard Lojban must build from <valsi>.a'o</valsi> and a bridi:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22p">
+      <title><anchor xml:id="c22e9d3" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">xamgu funca di'ai do</jbo>
+        <gloss>Good luck [wished-upon] you.</gloss>
+        <natlang>Good luck to you!</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent"><indexterm type="lojban-word"><primary>o'ai</primary></indexterm><indexterm type="lojban-word"><primary>a'oi</primary></indexterm><indexterm type="lojban-word"><primary>co'oi</primary></indexterm>Three more greetings exist. <valsi>o'ai</valsi> is a slightly surprised greeting; <valsi>a'oi</valsi> is a slightly piratical one; and <valsi>co'oi</valsi> combines <valsi>coi</valsi> with <valsi>co'o</valsi> into a greeting-or-parting that context resolves, for the passing <quote>hi</quote> that is also a <quote>bye</quote>.</para>
+    <para><indexterm type="lojban-word"><primary>xu'e</primary></indexterm><indexterm type="general"><primary>dialogue</primary><secondary>speaker tags in</secondary></indexterm>The word <valsi valid="maybe">xu'e</valsi> solves a problem of written dialogue. Written dialogue often needs to say who speaks a line, and <jbophrase>sei ko'a cusku</jbophrase> is long. <valsi valid="maybe">xu'e</valsi> followed by a sumti tags the sentence as that person's words, so that a dialogue can run <jbophrase valid="iffy">xu'e la .alis.</jbophrase>, then Alice's sentence, then <jbophrase valid="iffy">xu'e la .bob.</jbophrase>, and so on.</para>
+    <para role="status-note" condition="status:de-facto;also:proposed">No parser we tried accepts <valsi>ci'oi</valsi> or <valsi valid="maybe">xu'e</valsi> in a sentence. None is official.</para>
+  </section>
+  <section xml:id="section-dialects-prosumti">
+    <title><anchor xml:id="c22s10" />New pro-sumti, articles and conversions</title>
+    <para>The following experimental cmavo are discussed in this section:</para>
+    <cmavo-list>
+      <cmavo-entry>
+        <cmavo>xai</cmavo>
+        <selmaho>KOhA*</selmaho>
+        <description>they: the last two or more sumti together</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>mi'ai</cmavo>
+        <selmaho>KOhA*</selmaho>
+        <description>we: the speaker and at least one other</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>xa'u</cmavo>
+        <selmaho>KOhA*</selmaho>
+        <description>the future situation</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>go'oi</cmavo>
+        <selmaho>GOhOI*</selmaho>
+        <description>repeat the last bridi containing the quoted word</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>zo'ei</cmavo>
+        <selmaho>LAhE*</selmaho>
+        <description>something associated with</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>mo'oi</cmavo>
+        <selmaho>LE*</selmaho>
+        <description>interrogative article: which</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>ri'oi</cmavo>
+        <selmaho>LE*</selmaho>
+        <description>the latest aforementioned</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>to'ai</cmavo>
+        <selmaho>SE*</selmaho>
+        <description>third place to first, others unchanged</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>ja'ei</cmavo>
+        <selmaho>JAI*</selmaho>
+        <description><valsi>jai</valsi> equivalent of <valsi>la'e</valsi></description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>xo'i</cmavo>
+        <selmaho>XOhI*</selmaho>
+        <description>selbri from a tag (inverse of <valsi>fi'o</valsi>)</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>bei'e</cmavo>
+        <selmaho>BEIhE*</selmaho>
+        <description>open-ended sumti linking</description>
+      </cmavo-entry>
+    </cmavo-list>
+    <para role="indent"><indexterm type="lojban-word"><primary>xai</primary></indexterm><indexterm type="lojban-word"><primary>mi'ai</primary></indexterm><indexterm type="lojban-word"><primary>xa'u</primary></indexterm>The pro-sumti of <xref linkend="chapter-anaphoric-cmavo" /> leave a few gaps. <valsi>ri</valsi> repeats one sumti; there is no short way to repeat two of them together, which is what English <quote>they</quote> does after <quote>Alice saw Bob</quote>. The word <valsi>xai</valsi> does that: it refers back to two or more preceding sumti, taken together.</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22q">
+      <title><anchor xml:id="c22e10d1" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">la .alis. pu viska la .bob. .i xai ca tavla</jbo>
+        <gloss>That-named Alice [past] sees that-named Bob. - They [present] talk.</gloss>
+        <natlang>Alice saw Bob. Now they are talking.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent">In the same spirit, <valsi>mi'ai</valsi> is a general <quote>we</quote>: the speaker and at least one other person, without the commitment to including or excluding the listener that <valsi>mi'o</valsi>, <valsi>mi'a</valsi> and <valsi>ma'a</valsi> each carry. Those three are special cases of it. <valsi valid="maybe">xa'u</valsi> refers to the situation that is about to follow, as in <quote>watch this</quote>.</para>
+    <para><indexterm type="lojban-word"><primary>go'oi</primary></indexterm>The pro-bridi <valsi>go'oi</valsi> repeats a bridi by content rather than by position. It quotes the next word, as <valsi>zo</valsi> would, and stands for the most recent bridi that contained that word. Where <valsi>go'i</valsi> can only reach the previous sentence, <valsi>go'oi</valsi> can reach back several, as long as the speaker remembers a word from the one wanted.</para>
+    <para>
+      <indexterm type="lojban-word"><primary>zo'ei</primary></indexterm>
+      The word
+      <valsi>zo'ei</valsi>
+      (with a grammar like LAhE) means
+      <quote>something associated with ...</quote>, roughly
+      <jbophrase>zo'e pe</jbophrase>. It often takes the place of a
+      <valsi>tu'a</valsi>
+      that a lazy speaker stretches beyond its abstraction sense. For example,
+      <jbophrase valid="iffy">mi viska zo'ei la .paris.</jbophrase>
+      means
+      <quote>I see something related to Paris</quote>: a photograph, perhaps, or the skyline.
+    </para>
+    <para><indexterm type="lojban-word"><primary>mo'oi</primary></indexterm><indexterm type="lojban-word"><primary>ri'oi</primary></indexterm>Two experimental articles join the descriptors of <xref linkend="section-basic-descriptors" />. <valsi>mo'oi</valsi> is the interrogative article <quote>which</quote>, roughly <jbophrase>ma noi</jbophrase> but without starting a new bridi:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22r">
+      <title><anchor xml:id="c22e10d2" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">do nelci mo'oi cukta</jbo>
+        <gloss>You like which book?</gloss>
+        <natlang>Which book do you like?</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="noindent"><valsi>ri'oi</valsi> is an anaphoric article: <jbophrase valid="iffy">ri'oi cukta</jbophrase> is the most recently mentioned thing that is a book, the job that English gives to <quote>the</quote> after a first mention (compare <valsi>bi'unai</valsi> in <xref linkend="section-discursives" />, and see <xref linkend="section-dialects-gadri" /> for the argument around it):</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22s">
+      <title><anchor xml:id="c22e10d3" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">ri'oi cukta cu xamgu</jbo>
+        <gloss>The-aforementioned book - is-good.</gloss>
+        <natlang>The book I mentioned is good.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent"><indexterm type="lojban-word"><primary>to'ai</primary></indexterm><indexterm type="lojban-word"><primary>ja'ei</primary></indexterm><indexterm type="lojban-word"><primary>xo'i</primary></indexterm><indexterm type="lojban-word"><primary>bei'e</primary></indexterm>The remaining words rearrange places. <valsi>to'ai</valsi> is a conversion in the manner of <xref linkend="section-SE" />, but it moves the third place to the front and leaves the others in their order, which <valsi>te</valsi> does not do: <jbophrase valid="iffy">to'ai dunda</jbophrase> has the recipient first, then the giver, then the gift, the same effect as <jbophrase>te se dunda</jbophrase>. <valsi>ja'ei</valsi> is to <valsi>la'e</valsi> what <valsi>jai</valsi> is to <valsi>tu'a</valsi>: it converts a selbri so that its first place takes the referent of what the sumti refers to, so that <jbophrase valid="iffy">ko'a ja'ei broda</jbophrase> is <jbophrase>la'e ko'a broda</jbophrase>. <valsi>xo'i</valsi> undoes <valsi>fi'o</valsi>, extracting the selbri from a tag, so that <valsi>xo'i</valsi> applied to <valsi>bau</valsi> gives <valsi>bangu</valsi>. And <valsi>bei'e</valsi> opens a run of linked sumti that fill the places of the preceding selbri in order, until <valsi>be'o</valsi>, which saves the repeated <valsi>bei</valsi> of <xref linkend="section-be-sumti" />.</para>
+    <para role="status-note" condition="status:de-facto;also:proposed">No parser we tried accepts <valsi valid="maybe">xa'u</valsi>, <valsi>ja'ei</valsi>, <valsi>xo'i</valsi> or <valsi>bei'e</valsi> in a sentence. None is official.</para>
+  </section>
+  <section xml:id="section-dialects-abstraction">
+    <title><anchor xml:id="c22s11" />Abstraction and predicates</title>
+    <para>The following experimental cmavo are discussed in this section:</para>
+    <cmavo-list>
+      <cmavo-entry>
+        <cmavo>poi'i</cmavo>
+        <selmaho>NU*</selmaho>
+        <description>x<subscript>1</subscript> is such that [bridi], binding <valsi>ke'a</valsi></description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>kai'u</cmavo>
+        <selmaho>NU*</selmaho>
+        <description>x<subscript>1</subscript>, x<subscript>2</subscript>, ... satisfy [bridi], binding the <valsi>ce'u</valsi> slots</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>me'ei</cmavo>
+        <selmaho>LE*</selmaho>
+        <description>abstract predicate from a selbri (all places <valsi>ce'u</valsi>)</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>me'au</cmavo>
+        <selmaho>ME*</selmaho>
+        <description>predicate from an abstract predicate sumti</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>ce'ai</cmavo>
+        <selmaho>ZOhU*</selmaho>
+        <description>prenex of bound variables inside <valsi>ka</valsi></description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>lo'oi</cmavo>
+        <selmaho>LOhOI*</selmaho>
+        <description>description from a whole bridi, with <valsi>ke'a</valsi></description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>xu'u</cmavo>
+        <selmaho>LOhOI*</selmaho>
+        <description>sumti referring to a whole bridi</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>ku'au</cmavo>
+        <selmaho>KUhAU*</selmaho>
+        <description>terminator for LOhOI*</description>
+      </cmavo-entry>
+    </cmavo-list>
+    <para role="indent"><indexterm type="general"><primary>abstraction</primary><secondary>experimental abstractors</secondary></indexterm><indexterm type="lojban-word"><primary>poi'i</primary></indexterm>The abstractors of <xref linkend="chapter-abstractions" /> turn a bridi into an event, a property or a proposition. A family of experimental words turns a bridi into other things. With <valsi>poi'i</valsi>, <jbophrase valid="iffy">lo poi'i ke'a broda</jbophrase> is the thing that is such that the bridi is true of it, with <valsi>ke'a</valsi> marking the place, exactly as in a relative clause. It makes a selbri out of any bridi, so that a description need not be rebuilt around the right gismu:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22t">
+      <title><anchor xml:id="c22e11d1" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">mi nelci lo poi'i ke'a dunda lo cukta mi</jbo>
+        <gloss>I like the one-such-that IT gives the book to-me.</gloss>
+        <natlang>I like whoever gave me the book.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent"><indexterm type="lojban-word"><primary>kai'u</primary></indexterm>The abstractor <valsi>kai'u</valsi> does the same with several places at once: its x<subscript>1</subscript>, x<subscript>2</subscript> and so on are bound to the <valsi>ce'u</valsi> slots of its bridi, in order, so that <jbophrase valid="iffy">mi do kai'u ce'u ce'u prami</jbophrase> is a roundabout <jbophrase>mi prami do</jbophrase>. Its purpose is to let a sentence state a relation as a relation.</para>
+    <para><indexterm type="lojban-word"><primary>me'ei</primary></indexterm><indexterm type="lojban-word"><primary>me'au</primary></indexterm>The pair <valsi>me'ei</valsi> and <valsi>me'au</valsi> go back and forth between a selbri and the abstract predicate it expresses. <valsi>me'ei</valsi> is an article: <jbophrase valid="iffy">me'ei prami</jbophrase> is the relation of loving, with every place left open, which is to say <jbophrase>lo ka ce'u ce'u prami</jbophrase>. <valsi>me'au</valsi> is its inverse and belongs with <valsi>me</valsi> (<xref linkend="section-me-selbri" />): it takes a sumti that refers to an abstract predicate and uses it as a selbri again, so that <jbophrase valid="iffy">mi me'au lo ka ce'u klama lo zarci</jbophrase> is just <jbophrase>mi klama lo zarci</jbophrase>. Put together, the two let a conversation talk about a predicate and then apply it:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22u">
+      <title><anchor xml:id="c22e11d2" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">me'ei prami cu vajni .i mi me'au ri do</jbo>
+        <gloss>[predicate] loving - is-important. - I [apply] it-to you.</gloss>
+        <natlang>Loving matters. I do it to you.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent">In short, <valsi>me'au</valsi> is <valsi>ckaji</valsi> with any number of places.</para>
+    <para><indexterm type="lojban-word"><primary>ce'ai</primary></indexterm>The word <valsi>ce'ai</valsi> is a prenex marker, like <valsi>zo'u</valsi> (<xref linkend="section-topic-comments" />), for use inside a <valsi>ka</valsi> abstraction. The variables listed before it are the bound places of the property, in order, and the bridi after it may use them by name. It replaces repeated <jbophrase>ce'u goi ko'a</jbophrase> assignments and keeps nested properties apart:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22v">
+      <title><anchor xml:id="c22e11d3" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">mi'o simxu lo ka ko'a ko'e ce'ai ko'a prami ko'e</jbo>
+        <gloss>We-two mutual-in the property it-1 it-2 [where:] it-1 loves it-2.</gloss>
+        <natlang>You and I love each other.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent"><indexterm type="lojban-word"><primary>lo'oi</primary></indexterm><indexterm type="lojban-word"><primary>xu'u</primary></indexterm><indexterm type="lojban-word"><primary>ku'au</primary></indexterm>Finally, a small selma'o of its own, LOhOI*, makes sumti directly out of bridi. <valsi>lo'oi</valsi> is the full-bridi equivalent of <valsi>lo</valsi>: <jbophrase valid="iffy">lo'oi ke'a bevri lo pipno ku'au</jbophrase> describes whatever carries the piano, with <valsi>ke'a</valsi> marking the described place and <valsi>ku'au</valsi> as the elidable terminator. Its sibling <valsi>xu'u</valsi> makes a sumti that refers to the bridi itself, without picking out a place, which is what <jbophrase>lo su'u</jbophrase> does in standard Lojban at the cost of two words. <valsi>xu'u</valsi> reappears in <xref linkend="section-dialects-ckt" />, where one dialect gives it a shorter spelling.</para>
+    <para role="status-note" condition="status:de-facto;also:proposed">None of these words is official.</para>
+  </section>
+  <section xml:id="section-dialects-connectives">
+    <title><anchor xml:id="c22s12" />Connectives, adverbials and negation</title>
+    <para>The following experimental cmavo are discussed in this section:</para>
+    <cmavo-list>
+      <cmavo-entry>
+        <cmavo>xoi</cmavo>
+        <selmaho>SEI*</selmaho>
+        <description>adverbial phrase from a brivla</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>poi'a</cmavo>
+        <selmaho>NOIhA*</selmaho>
+        <description>restrictive adverbial from a selbri</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>noi'a</cmavo>
+        <selmaho>NOIhA*</selmaho>
+        <description>incidental adverbial from a selbri</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>ji'oi</cmavo>
+        <selmaho>JIhOI*</selmaho>
+        <description>connective from a predicate</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>ce'oi</cmavo>
+        <selmaho>JOI*</selmaho>
+        <description>argument-list separator</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>jo'oi</cmavo>
+        <selmaho>JOI*</selmaho>
+        <description>the more ..., the more ...</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>na'ei</cmavo>
+        <selmaho>NAhE*</selmaho>
+        <description>contradictory negation of a selbri</description>
+      </cmavo-entry>
+    </cmavo-list>
+    <para role="indent"><indexterm type="general"><primary>adverbials</primary><secondary>experimental</secondary></indexterm><indexterm type="lojban-word"><primary>xoi</primary></indexterm>Lojban has no adverbs. An English <quote>slowly</quote> becomes a tanru, a tense, or a whole clause (<xref linkend="chapter-sumti-tcita" /> and <xref linkend="section-selbri-modals" />), and all three change the shape of the sentence. Several experimental words try to add an adverbial that can be dropped into a sentence as freely as an indicator. One of them is <valsi>xoi</valsi>, which takes a following brivla (and any terms before it) and makes a free phrase of it that modifies the main predicate:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22w">
+      <title><anchor xml:id="c22e12d1" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">mi cadzu xoi masno</jbo>
+        <gloss>I walk [adverbially:] slow.</gloss>
+        <natlang>I walk slowly.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent">The dictionary also records an older sense of <valsi>xoi</valsi>, now marked obsolete, in which it enclosed a whole bridi. Older text uses it that way, so the reader of older material should expect either.</para>
+    <para><indexterm type="lojban-word"><primary>poi'a</primary></indexterm><indexterm type="lojban-word"><primary>noi'a</primary></indexterm>The pair <valsi>poi'a</valsi> and <valsi>noi'a</valsi> is more precise about what it claims. Each converts a selbri into an adverbial term whose first place is the event of the outer bridi, and each has the elidable terminator <valsi>fe'u</valsi>. <valsi>poi'a</valsi> is restrictive, like <valsi>poi</valsi>: <jbophrase valid="iffy">broda poi'a brode</jbophrase> claims that the event of broda happens and is a brode. <valsi>noi'a</valsi> is incidental, like <valsi>noi</valsi>: it claims broda, and remarks separately that the event is a brode:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22x">
+      <title><anchor xml:id="c22e12d2" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">mi klama lo zarci poi'a sutra</jbo>
+        <gloss>I go-to the market [which-event-is:] quick.</gloss>
+        <natlang>I go to the market quickly.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent"><indexterm type="lojban-word"><primary>ji'oi</primary></indexterm><indexterm type="lojban-word"><primary>ce'oi</primary></indexterm><indexterm type="lojban-word"><primary>jo'oi</primary></indexterm>Three words extend the connectives of <xref linkend="chapter-connectives" />. <valsi>ji'oi</valsi> takes a predicate of at least two places and turns it into a connective with the grammar of JA, the predicate stating the relation between the two connected propositions; its terminator is <valsi>te'u</valsi>. So <jbophrase valid="iffy">mi ji'oi balvi do snada</jbophrase> says that my succeeding comes after your succeeding. Joining two sumti with it, as that phrase does, is possible only under a community proposal that lets the <valsi>je</valsi> series take over the work of the other connective series: it joins sumti, bridi-tails and relative clauses, and it forms forethought connectives after <valsi>ga</valsi> or <valsi>gu</valsi>. This chapter calls that proposal the connective reform. <valsi>ji'oi</valsi> has no forethought or sumti-connective form of its own, so it is generally paired with that reform. <valsi>ce'oi</valsi> is a non-logical connective that separates the arguments of a function, where <valsi>ce'o</valsi> would wrongly suggest a sequence. <valsi>jo'oi</valsi> connects two sentences as <quote>the more ..., the more ...</quote>.</para>
+    <para><indexterm type="lojban-word"><primary>na'ei</primary></indexterm><valsi>na'ei</valsi> is a scalar-negation word with the force of contradictory negation: <jbophrase valid="iffy">mi na'ei klama</jbophrase> denies that I go, as <jbophrase>mi na klama</jbophrase> does, but as a modifier of the selbri rather than of the bridi, where <valsi>na'e</valsi> (<xref linkend="section-nahe" />) would only say that I do something other than go. With it, the quantifier laws of <xref linkend="section-negation-boundaries" /> read: <quote>not all of them go</quote> is <quote>some of them <valsi>na'ei</valsi> go</quote>.</para>
+    <para role="status-note" condition="status:de-facto;also:proposed">No parser we tried accepts <valsi>ce'oi</valsi> or <valsi>jo'oi</valsi> in a sentence. None is official.</para>
   </section>
   <section xml:id="section-dialects-plural">
     <title><anchor xml:id="c22s3" />Plural quantifiers: <valsi>su'oi</valsi> and <valsi>ro'oi</valsi></title>
@@ -111,7 +636,7 @@
       <valsi>loi</valsi>
       forms groups. But standard Lojban has no way to <emphasis>quantify</emphasis> plurally.
     </para>
-    <para>The experimental pair <valsi>su'oi</valsi> and <valsi>ro'oi</valsi> supplies exactly that. A variable bound by them can stand for one <emphasis>or more</emphasis> things at once. With them, you can say:</para>
+    <para>The experimental pair <valsi>su'oi</valsi> and <valsi>ro'oi</valsi> supplies that. A variable bound by them can stand for one <emphasis>or more</emphasis> things at once. With them, you can say:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x22e">
       <title><anchor xml:id="c22e3d1" /></title>
       <interlinear-gloss>
@@ -120,29 +645,87 @@
         <natlang>Some people are gathering.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">Here the <valsi>da</valsi> stands for the gatherers jointly. Each member of the pair can be defined from the other by the usual duality: <jbophrase>su'oi da</jbophrase> is <jbophrase>na ku ro'oi da na ku</jbophrase>. This parallels the singular rules of <xref linkend="chapter-quantifiers" /> exactly.</para>
-    <para>The standard camxes grammar rejects these quantifiers, though the camxes beta family and jbotci accept them. The logic chapters of this book use only the official singular quantifiers.</para>
+    <para role="indent">Here the <valsi>da</valsi> stands for the gatherers jointly. Each member of the pair can be defined from the other by the usual duality: <jbophrase valid="iffy">su'oi da</jbophrase> is <jbophrase valid="iffy">na ku ro'oi da na ku</jbophrase>. This parallels the singular rules of <xref linkend="chapter-quantifiers" /> exactly. The logic chapters of this book use only the official singular quantifiers.</para>
     <para role="status-note" condition="status:proposed;also:llg-ratified">
       The ratified part is the number-neutral constant semantics of the modern
       <valsi>lo</valsi>. To read that semantics as the constant half of a formal system of plural logic is an unofficial analysis. These quantifiers, the other half of that system, remain unadopted proposals (see
       <xref linkend="appendix-changes" />).
     </para>
   </section>
-  <section xml:id="section-dialects-grabbag">
-    <title><anchor xml:id="c22s4" />Other experimental cmavo in real use</title>
-    <para><indexterm type="general"><primary>error correction</primary><secondary>experimental quote set</secondary>
-      </indexterm><indexterm type="lojban-word"><primary>lo'ai</primary></indexterm><indexterm type="lojban-word"><primary>sa'ai</primary></indexterm><indexterm type="lojban-word"><primary>le'ai</primary></indexterm>Beyond the quotation family, the community's frequency surveys put one coherent set clearly ahead of the rest: the <emphasis>error-correction quotes</emphasis> <valsi>lo'ai</valsi>, <valsi>sa'ai</valsi>, and <valsi>le'ai</valsi>. The erasure words of standard Lojban (see <xref linkend="section-erasure" />) can only erase the <emphasis>most recent</emphasis> words. But in live conversation, people often want to reach back and repair something that they said a sentence ago. The set works like a search-and-replace: <valsi>lo'ai</valsi> quotes the wrong text, <valsi>sa'ai</valsi> quotes its replacement, and <valsi>le'ai</valsi> closes the correction:</para>
-    <example role="interlinear-gloss-example" xml:id="example-random-id-x22f">
-      <title><anchor xml:id="c22e4d1" /></title>
+  <section xml:id="section-dialects-tags">
+    <title><anchor xml:id="c22s13" />Tags, tenses, numbers and letters</title>
+    <para>The following experimental cmavo are discussed in this section:</para>
+    <cmavo-list>
+      <cmavo-entry>
+        <cmavo>xau</cmavo>
+        <selmaho>BAI*</selmaho>
+        <description>for the benefit of</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>ka'ai</cmavo>
+        <selmaho>BAI*</selmaho>
+        <description>with, accompanied by</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>xa'o</cmavo>
+        <selmaho>ZAhO*</selmaho>
+        <description>before the natural beginning</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>xei'e</cmavo>
+        <selmaho>FAhA*</selmaho>
+        <description>at the same online place as</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>xo'e</cmavo>
+        <selmaho>PA*</selmaho>
+        <description>elliptical number</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>xei</cmavo>
+        <selmaho>PA*</selmaho>
+        <description>hex digit E (fourteen)</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>tau'u</cmavo>
+        <selmaho>PA*</selmaho>
+        <description>the constant tau (twice pi)</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>pi'ai</cmavo>
+        <selmaho>KE*</selmaho>
+        <description>product of unit selbri</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>moi'o</cmavo>
+        <selmaho>MOI*</selmaho>
+        <description>the n-th date or time unit from a reference point</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>i'y</cmavo>
+        <selmaho>BY*</selmaho>
+        <description>letteral for i</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>o'y</cmavo>
+        <selmaho>BY*</selmaho>
+        <description>letteral for o</description>
+      </cmavo-entry>
+    </cmavo-list>
+    <para role="indent"><indexterm type="lojban-word"><primary>xau</primary></indexterm><indexterm type="lojban-word"><primary>ka'ai</primary></indexterm>The modal tags of <xref linkend="section-BAI" /> are built from gismu, and two further ones are common enough to mention. <valsi>xau</valsi> marks the beneficiary of the bridi, <quote>for the benefit of</quote>; its dictionary entry calls it similar to <jbophrase>se va'u</jbophrase>. <valsi>ka'ai</valsi>, from <valsi>kansa</valsi>, tags a companion: <jbophrase valid="iffy">mi klama ka'ai do</jbophrase> is <quote>I go with you</quote>.</para>
+    <para><indexterm type="lojban-word"><primary>xa'o</primary></indexterm>The event contours of <xref linkend="section-event-contours" /> have a small asymmetry. <valsi>za'o</valsi> covers the stretch of an event that drags on past its natural end; its mirror image, an event already under way before its natural beginning, has no standard contour. The word <valsi>xa'o</valsi> fills that slot:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22y">
+      <title><anchor xml:id="c22e13d1" /></title>
       <interlinear-gloss>
-        <jbo valid="iffy">mi klama lo zarci .i lo'ai zarci sa'ai zdani le'ai</jbo>
-        <gloss>I go-to a market. - [wrong:] <quote>market</quote> [replace-with:] <quote>house</quote> [correction-end]</gloss>
-        <natlang>I went to the market &ndash; I mean, the house.</natlang>
+        <jbo valid="iffy">lo verba xa'o cikna</jbo>
+        <gloss>The child [too-early] is-awake.</gloss>
+        <natlang>The child is awake ahead of time.</natlang>
       </interlinear-gloss>
     </example>
+    <para role="indent"><indexterm type="lojban-word"><primary>xei'e</primary></indexterm>The newest tense in this chapter is a child of the internet. <valsi valid="maybe">xei'e</valsi> is a spatial tense, like <valsi>bu'u</valsi>, that locates an event at the same <emphasis>online</emphasis> place as its sumti: the same chat channel, forum or site.</para>
     <para>
       <indexterm type="lojban-word"><primary>xo'e</primary></indexterm>
-      Two single words also came into real use. The word
+      Among numbers, the word
       <valsi>xo'e</valsi>
       is the elliptical <emphasis>digit</emphasis>. It is to numbers what
       <valsi>zo'e</valsi>
@@ -156,59 +739,107 @@
         <natlang>Some number of people are coming.</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">
-      <indexterm type="lojban-word"><primary>zo'ei</primary></indexterm>
-      The word
-      <valsi>zo'ei</valsi>
-      (with a grammar like LAhE) means
-      <quote>something associated with ...</quote>, roughly
-      <jbophrase>zo'e pe</jbophrase>. It often takes the place of a
-      <valsi>tu'a</valsi>
-      that a lazy speaker stretches beyond its abstraction sense. For example,
-      <jbophrase valid="iffy">mi viska zo'ei la .paris.</jbophrase>
-      means
-      <quote>I see something related to Paris</quote>: a photograph, perhaps, or the skyline.
-    </para>
-    <para>
-      A caveat on support: no camxes grammar recognizes
-      <valsi>zo'ei</valsi>
-      as a word, because in camxes the string collides with a
-      <valsi>zo</valsi>
-      quotation. The danger is silent. A full sentence like the one above still parses in camxes, as a quotation of
-      <quote>'ei</quote>, with an entirely different structure. jbotci recognizes
-      <valsi>zo'ei</valsi>
-      properly.
-    </para>
-    <para>
-      Several more words circulate, with thinner but real use. This book records them only by name:
-    </para>
-    <itemizedlist role="bullets">
-      <listitem>
-        <para>The well-wishing vocative <valsi>di'ai</valsi></para>
-      </listitem>
-      <listitem>
-        <para>The selma'o quoter <valsi>ma'oi</valsi> (<jbophrase>ma'oi ba</jbophrase> names selma'o PU by example)</para>
-      </listitem>
-      <listitem>
-        <para>The imperative marker <valsi>ko'oi</valsi></para>
-      </listitem>
-      <listitem>
-        <para>The aspectual <valsi>xa'o</valsi> (<quote>already</quote>)</para>
-      </listitem>
-      <listitem>
-        <para>The abstractor <valsi>poi'i</valsi>, common in the plural-logic literature of <xref linkend="section-dialects-plural" /></para>
-      </listitem>
-    </itemizedlist>
-    <para role="status-note" condition="status:de-facto;also:proposed">
-      The camxes beta family and jbotci accept the error-correction set and
-      <valsi>xo'e</valsi>. Only jbotci accepts
-      <valsi>zo'ei</valsi>. The camxes beta family accepts the words that this section only names, but jbotci's support for them varies from word to word. Make sure that your parser accepts a word before you rely on it. None of these words is official.
-    </para>
+    <para role="indent"><indexterm type="lojban-word"><primary>xei</primary></indexterm><indexterm type="lojban-word"><primary>tau'u</primary></indexterm><indexterm type="lojban-word"><primary>pi'ai</primary></indexterm><indexterm type="lojban-word"><primary>moi'o</primary></indexterm>The rest of the mathematical words are for specialists. <valsi>xei</valsi> is a second spelling of the hexadecimal digit E, which <xref linkend="section-radixen" /> gives as <valsi>rei</valsi>; its users find <valsi>rei</valsi> too easy to mishear as <valsi>re</valsi>. <valsi>tau'u</valsi> is the constant tau, the ratio of a circle's circumference to its radius, which is twice pi. <valsi>pi'ai</valsi> multiplies unit selbri in forethought: placed before <valsi>xampo</valsi> and <valsi>snidu</valsi>, it names the ampere-second, or coulomb. And <valsi>moi'o</valsi> is a MOI word for dates: <jbophrase valid="iffy">no moi'o</jbophrase> of a day is today, and <jbophrase valid="iffy">pa moi'o</jbophrase> of a month is next month, counted from a reference point that defaults to now.</para>
+    <para><indexterm type="lojban-word"><primary>i'y</primary></indexterm><indexterm type="lojban-word"><primary>o'y</primary></indexterm>Standard Lojban names a vowel letter with <valsi>bu</valsi>, as in <valsi>.ibu</valsi> and <valsi>.obu</valsi> (<xref linkend="section-lerfu-liste" />). <xref linkend="section-cmavo" /> mentions <valsi>.a'y</valsi> and <valsi>.e'y</valsi> as examples of experimental cmavo shapes; they are the first two of a set of one-word vowel letterals, and <valsi>i'y</valsi> and <valsi>o'y</valsi>, the letterals for <letteral>i</letteral> and <letteral>o</letteral>, belong to the same set. Each means what its <valsi>bu</valsi> form means, so <jbophrase valid="iffy">.o'y</jbophrase> is <valsi>.obu</valsi>.</para>
+    <para role="status-note" condition="status:de-facto;also:proposed">No parser we tried accepts <valsi>xau</valsi>, <valsi>xei</valsi>, <valsi>tau'u</valsi> or <valsi>pi'ai</valsi> in a sentence. None is official.</para>
+  </section>
+  <section xml:id="section-dialects-johau">
+    <title><anchor xml:id="c22s14" />Announcing a dialect: <valsi>jo'au</valsi></title>
+    <para>The following experimental cmavo is discussed in this section:</para>
+    <cmavo-list>
+      <cmavo-entry>
+        <cmavo>jo'au</cmavo>
+        <selmaho>COI*</selmaho>
+        <description>the following text is in dialect ...</description>
+      </cmavo-entry>
+    </cmavo-list>
+    <para role="indent"><indexterm type="general"><primary>dialects</primary><secondary>announcing with jo'au</secondary></indexterm><indexterm type="lojban-word"><primary>jo'au</primary></indexterm>Most of the words so far fit standard constructions: a text that uses them is still standard text with some extra words in it, and the example with <valsi>ji'oi</valsi> also needs the connective reform. The rest of this chapter describes variants that <emphasis>reinterpret</emphasis> standard forms, and a reader who meets such a text without warning will misread it in silence. The community's answer is a header. The vocative <valsi>jo'au</valsi> is followed by a name for the dialect and, if needed, by the elidable terminator <valsi>do'u</valsi>. Its definition, <quote>change version/dialect of parser</quote>, asks for it at the very start of a text, and says that it applies until the next <valsi>jo'au</valsi>:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22z">
+      <title><anchor xml:id="c22e14d1" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">jo'au tcekitaujau</jbo>
+        <gloss>[dialect:] tcekitaujau</gloss>
+        <natlang>What follows is in the tcekitaujau dialect.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent">This book treats <valsi>jo'au</valsi> as a convention between writers and readers, and nothing more. Its definition speaks of changing the dialect <emphasis>of a parser</emphasis>, and lists parsers by name as possible arguments, but this book does not rely on any tool to act on the header, and does not know of one that does anything useful with it. What the header does reliably is tell a human reader that the usual meanings are suspended, which is exactly what the dialects below need.</para>
+    <para role="status-note" condition="status:proposed;also:de-facto">The header is the convention by which a writer of gadganzu or of a swap dialect warns the reader. It is not official.</para>
+  </section>
+  <section xml:id="section-dialects-gadri">
+    <title><anchor xml:id="c22s15" />Other takes on the articles</title>
+    <para><indexterm type="general"><primary>articles</primary><secondary>alternative accounts of</secondary></indexterm><indexterm type="general"><primary>gadri</primary><secondary>alternative accounts of</secondary></indexterm>The articles of <xref linkend="chapter-sumti" /> are the one part of the language that an LLG vote has changed since the first edition, and <xref linkend="section-basic-descriptors" /> teaches the ratified account. This section describes two other ways of using the same words that a reader will meet in practice. Neither is official, and neither changes what this book teaches; they are here because a reader of real text must be able to recognize them. The first is a written proposal with a name; the second is a habit with no author at all.</para>
+    <para><indexterm type="general"><primary>gadganzu</primary></indexterm>The proposal is called <emphasis>gadganzu</emphasis>, from <valsi>gadri</valsi> and <valsi>ganzu</valsi>, <quote>organize</quote>. It is a community proposal, and its idea is to give the rarer articles sharp and distinct jobs while leaving the ratified <valsi>lo</valsi> and <valsi>la</valsi> alone. The proposal describes the result as a spectrum from the most definite to the least, and the table gives it in that order, with the new mass forms beside the individual ones:</para>
+    <cmavo-list>
+      <cmavo-entry>
+        <cmavo>la</cmavo> <cmavo>lai</cmavo>
+        <selmaho>LA</selmaho>
+        <description>the one named ... (unchanged)</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>le'i</cmavo> <cmavo>lei'i</cmavo>
+        <selmaho>LE*</selmaho>
+        <description>demonstrative: this or that ... (reassigned; <valsi>lei'i</valsi> new)</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>le'e</cmavo> <cmavo>lei'e</cmavo>
+        <selmaho>LE*</selmaho>
+        <description>anaphoric: the aforementioned ... (reassigned; <valsi>lei'e</valsi> new)</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>le</cmavo> <cmavo>lei</cmavo>
+        <selmaho>LE</selmaho>
+        <description>deictic: the ... that are identifiable or knowable (tightened)</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>lo</cmavo> <cmavo>loi</cmavo>
+        <selmaho>LE</selmaho>
+        <description>generic (unchanged)</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>lo'e</cmavo> <cmavo>loi'e</cmavo>
+        <selmaho>LE*</selmaho>
+        <description>generalizing: ... in general (shifted; <valsi>loi'e</valsi> new)</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>lo'i</cmavo> <cmavo>loi'i</cmavo>
+        <selmaho>LE*</selmaho>
+        <description>essentialist: the ideal model of ... (a significant shift; <valsi>loi'i</valsi> new)</description>
+      </cmavo-entry>
+      <cmavo-entry>
+        <cmavo>mo'oi</cmavo> <cmavo>moi'oi</cmavo>
+        <selmaho>LE*</selmaho>
+        <description>interrogative: which ... (new)</description>
+      </cmavo-entry>
+    </cmavo-list>
+    <para role="indent">What gadganzu keeps from the ratified account is its core: <valsi>lo</valsi>, <valsi>loi</valsi>, <valsi>la</valsi> and <valsi>lai</valsi> are untouched, and its foundation is xorlo, the ratified system. What it changes are two of the three set articles and the stereotype article; it says nothing about <valsi>la'i</valsi>. <valsi>le'i</valsi> becomes a demonstrative, roughly <jbophrase>ti noi</jbophrase> or <jbophrase>ta noi</jbophrase> without the distance and without a new clause; <valsi>le'e</valsi> becomes an anaphoric article that the proposal calls <quote>essentially identical to <jbophrase>lo bi'unai broda</jbophrase></quote>; and <valsi>lo'i</valsi> shifts (a <quote>significant shift</quote>, in the proposal's words) to the essentialist article, the Platonic model of a thing. Sets, the proposal says, are hardly ever needed in conversation, and for those who need them there is <valsi>lu'i</valsi>. What it adds are the four new mass forms in the table, the interrogative pair, and a <quote>titular</quote> use of <valsi>voi</valsi> that attaches an epithet to a name, as in <jbophrase>la .aleksandros. voi banli</jbophrase>, <quote>Alexander the Great</quote>; for writers who also adopt the tcekitau reassignment of <valsi>voi</valsi> (<xref linkend="section-dialects-ckt" />), the proposal recommends the dictionary spelling <valsi>voi'i</valsi> instead. The proposal also claims to leave <valsi>le</valsi> alone apart from a tightened definition. That claim deserves a second look: the ratified text says that <valsi>le</valsi> describes what the speaker has in mind, while gadganzu's <valsi>le</valsi> is what is <quote>identifiable or knowable</quote>, which leans toward the listener instead. The two readings agree in most sentences and part company in exactly the cases discussed below.</para>
+    <para>Because gadganzu gives standard words new meanings, a sentence in it means something else to a standard reader. The proposal therefore asks its readers to mark such text with the header <jbophrase valid="iffy">jo'au gadganzu</jbophrase> of <xref linkend="section-dialects-johau" />. Under that header, the following says that this book is beautiful; without it, under the ratified rules, it says that a set of books is:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22A">
+      <title><anchor xml:id="c22e15d1" /></title>
+      <interlinear-gloss>
+        <jbo valid="iffy">le'i cukta cu melbi</jbo>
+        <gloss>This book - is-beautiful.</gloss>
+        <natlang>This book is beautiful. (gadganzu reading)</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent">The published record shows no consideration of it by the BPFK. The objections to it have been that the several readings of <valsi>lo</valsi> that motivated it can be told apart with the standard devices of scope, variables and attitudinals; that reassigning any current article is too high a price; and that the system is too complex to learn.</para>
+    <para><indexterm type="general"><primary>le</primary><secondary>as English &quot;the&quot;</secondary></indexterm><indexterm type="general"><primary>the</primary><secondary>and le</secondary></indexterm>The second take needs no table. Many learners, and some teaching texts, simply use <valsi>lo</valsi> for English <quote>a</quote> and <valsi>le</valsi> for English <quote>the</quote>: introduce a thing with <valsi>lo</valsi>, and refer back to it with <valsi>le</valsi>. This book's own chapter on sumti says that <valsi>le</valsi> <quote>is quite close in meaning to English <quote>the</quote></quote>, so the habit has an honest pedigree, and in a great many sentences it does no harm at all:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22B">
+      <title><anchor xml:id="c22e15d2" /></title>
+      <interlinear-gloss>
+        <jbo>mi viska lo mlatu .i le mlatu cu cmalu</jbo>
+        <gloss>I see a cat. - The cat - is-small.</gloss>
+        <natlang>I see a cat. The cat is small.</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent">The sentence is good standard Lojban under the ratified rules too, because the speaker does have a specific cat in mind by the second sentence. The argument against the habit is about what the two words track. English <quote>the</quote> tracks the <emphasis>listener</emphasis>: it says that the listener can already identify the thing, usually because it was mentioned before. Lojban <valsi>le</valsi> tracks the <emphasis>speaker</emphasis>: it says that the speaker has particular things in mind, whether or not the listener knows which (<xref linkend="section-basic-descriptors" /> says this in as many words). So <valsi>le</valsi> can introduce something new to the listener without any identifying description, where English <quote>the</quote> needs one; and <quote>the aforementioned</quote> has its own marker in Lojban, the discursive <valsi>bi'unai</valsi>, with <valsi>bi'u</valsi> for the new (<xref linkend="section-discursives" />). The generic <quote>the</quote> of <quote>the wolf is endangered</quote> is <valsi>lo</valsi>, and a repeated <valsi>lo</valsi> may refer to the same thing as the first one. Whether a repeat mention is better served by <valsi>le</valsi> or by <valsi>lo</valsi> is a point on which speakers disagree, and nothing official settles it.</para>
+    <para>It is an observation of this edition's editors, from reading present-day text and attributing nothing to a survey, that most of the <valsi>le</valsi> one meets today follows one of the two takes in this section: either the gadganzu reading or the plain definite article. The ratified account of <xref linkend="chapter-sumti" /> remains what this book teaches, and a reader who follows it will be understood by users of both.</para>
+    <para role="status-note" condition="status:proposed;also:de-facto">Gadganzu is a community proposal that the published record shows no official body considering. The reading of <valsi>le</valsi> as a plain definite article is a learner's habit and a teaching shortcut, and it was never proposed as a rule.</para>
+    <para role="status-note" condition="status:llg-ratified;also:unsettled;date:2020-04-18">The meanings of <valsi>lo</valsi> and <valsi>le</valsi> themselves are ratified, and this section does not change them. Which article best serves a repeat mention is an open question among speakers, and this edition's choice to teach the ratified account does not settle it for the language.</para>
   </section>
   <section xml:id="section-dialects-cbm">
     <title><anchor xml:id="c22s5" />The cmevla-brivla merger</title>
-    <para><indexterm type="general"><primary>cmevla-brivla merger</primary></indexterm>The dialects discussed so far add words. The remaining two change the grammar. The <emphasis>cmevla-brivla merger</emphasis> (CBM) removes the grammatical wall between name words and predicate words. Under it, a cmevla like <cmevla>.djan.</cmevla> can serve as a selbri or as a tanru unit. It then predicates of its subject, and the users of the dialect decide its precise place structure. In addition, the article <valsi>la</valsi> becomes an ordinary descriptor, which takes whatever selbri follows it.</para>
-    <para>The motivating complaint is a pedagogical one. In standard Lojban, <valsi>la</valsi> behaves one way before a cmevla and another way before a brivla. Learners who discover that predicates can name things are tempted to write what the standard grammar forbids. Standard camxes and the default grammar of jbotci both reject the following sentence, but under CBM it is fine:</para>
+    <para><indexterm type="general"><primary>cmevla-brivla merger</primary></indexterm>The variants so far add words or reinterpret meanings. The rest of the chapter describes dialects that change the grammar. The <emphasis>cmevla-brivla merger</emphasis> (CBM) removes the grammatical wall between name words and predicate words. Under it, a cmevla like <cmevla>.djan.</cmevla> can serve as a selbri or as a tanru unit. It then predicates of its subject, and the users of the dialect decide its precise place structure. In addition, the article <valsi>la</valsi> becomes an ordinary descriptor, which takes whatever selbri follows it.</para>
+    <para>The motivating complaint is a pedagogical one. In standard Lojban, <valsi>la</valsi> behaves one way before a cmevla and another way before a brivla. Learners who discover that predicates can name things are tempted to write what the standard grammar forbids. The standard grammar rejects the following sentence, but under CBM it is fine:</para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-x22h">
       <title><anchor xml:id="c22e5d1" /></title>
       <interlinear-gloss>
@@ -217,42 +848,26 @@
         <natlang>This John-s, so to speak. (CBM dialect only)</natlang>
       </interlinear-gloss>
     </example>
-    <para role="indent">The merger <emphasis>reinterprets</emphasis> existing forms; it does not merely add new ones. It is therefore not backward-compatible: the same string of standard Lojban can parse differently under CBM. The two tested implementations are the camxes <quote>cbm</quote> grammars and the <quote>cbm</quote> dialect switch of jbotci. They differ in some corners in how aggressively they reinterpret <valsi>la</valsi> phrases. They do agree on the new permission itself: a cmevla can predicate.</para>
-    <para role="status-note" condition="status:de-facto;also:proposed">CBM is a real dialect, parsers implement it, and it has an established design literature. In the tested tools, it requires an explicit dialect grammar or switch.</para>
+    <para role="indent">The merger <emphasis>reinterprets</emphasis> existing forms; it does not merely add new ones. It is therefore not backward-compatible: the same string of standard Lojban can parse differently under CBM. More than one parser implements the dialect, under an explicit switch or as a separate grammar, and the implementations differ in some corners in how aggressively they reinterpret <valsi>la</valsi> phrases. They agree on the new permission itself: a cmevla can predicate.</para>
+    <para role="status-note" condition="status:de-facto;also:proposed">CBM is a community proposal that parsers implement. In the tools that implement it, it requires an explicit dialect grammar or switch.</para>
   </section>
   <section xml:id="section-dialects-ckt">
-    <title><anchor xml:id="c22s6" />Short words for common meanings: ce-ki-tau-jau</title>
-    <para><indexterm type="general"><primary>ce-ki-tau-jau</primary></indexterm>The last dialect is a family of <emphasis>cmavo swaps</emphasis>, and its label is <emphasis>ce-ki-tau-jau</emphasis>. It starts from a simple diagnosis. Some of the busiest cmavo in the language have two syllables: <valsi>ce'u</valsi>, <valsi>ke'a</valsi>, <valsi>tu'a</valsi>, <valsi>jo'u</valsi>, and <valsi>du'u</valsi>. Meanwhile some one-syllable forms sit nearly idle: <valsi>ce</valsi>, <valsi>ki</valsi>, <valsi>tau</valsi>, <valsi>jau</valsi>, and <valsi>du</valsi>.</para>
-    <para>The dialect swaps each pair. In ce-ki-tau-jau text, <valsi>ce</valsi> means what <valsi>ce'u</valsi> means in this book, and the reverse. In principle each swap works in both directions, and speakers can adopt each one separately.</para>
-    <para>Here is the trap. Most of the short forms also have meanings in standard Lojban, so a swapped sentence often parses in <emphasis>both</emphasis> grammars, with different meanings. Take <jbophrase>lo broda poi ki broda</jbophrase>. To a standard parser it is a sticky-tense construction; to a ce-ki-tau parser it is a relative clause with <valsi>ke'a</valsi>. Text in this dialect is therefore unintelligible to a standard reader in a peculiarly silent way: nothing fails, but the text means something else. A writer can avoid the trap by announcing the dialect first, with a header like <jbophrase valid="iffy">jo'au tcekitaujau</jbophrase>.</para>
-    <para>
-      Neither tested implementation matches the primary proposal of five pairs exactly. The camxes
-      <quote>ckt</quote>
-      grammar implements the
-      <valsi>ce</valsi>
-      /
-      <valsi>ki</valsi>
-      /
-      <valsi>tau</valsi>
-      /
-      <valsi>du</valsi>
-      swaps and several others, but not
-      <valsi>jau</valsi>. The
-      <quote>ce-ki-tau-jau</quote>
-      dialect of jbotci implements
-      <valsi>ce</valsi>
-      /
-      <valsi>ki</valsi>
-      /
-      <valsi>tau</valsi>
-      /
-      <valsi>jau</valsi>, adds a
-      <valsi>su'o</valsi>-to-<valsi>su</valsi>
-      swap, and omits
-      <valsi>du</valsi>. It also prints back the standard equivalents.
-    </para>
+    <title><anchor xml:id="c22s6" />Short words for common meanings: tcekitau and jboponei</title>
+    <para><indexterm type="general"><primary>tcekitau</primary></indexterm><indexterm type="general"><primary>ce-ki-tau-jau</primary></indexterm><indexterm type="general"><primary>cmavo swaps</primary></indexterm>The last family of dialects consists of <emphasis>cmavo swaps</emphasis>, and it starts from a complaint about the allocation of short words. The cmavo of one syllable are the most precious real estate in the language, and some of them do very little. Among the letteral shifts of <xref linkend="chapter-letterals" /> and the more exotic mathematical cmavo of <xref linkend="chapter-mekso" /> are words that see little or no use in ordinary text, and a few of them hold a one-syllable form of the shape CVV, among them <valsi>tau</valsi>, which shifts the case of a single letter, and <valsi>jau</valsi>, a hexadecimal digit. Meanwhile some of the busiest cmavo in the language have two syllables: <valsi>ce'u</valsi>, <valsi>ke'a</valsi>, <valsi>tu'a</valsi>, <valsi>jo'u</valsi> and <valsi>du'u</valsi>. The swap proposals try to reclaim idle short forms, CV words such as <valsi>ce</valsi> and <valsi>ki</valsi> as well as CVV ones, for more productive meanings, and since they take existing words away from their official senses, they are dialects in the full sense: text in them means something else to a standard reader.</para>
+    <para>The main example, and the most popular, is the family that the dictionary calls <valsi valid="maybe">tcekitau</valsi>, after the first three swapped words <valsi>ce</valsi>, <valsi>ki</valsi> and <valsi>tau</valsi>; its full version is <valsi>tcekitaujau</valsi>, or ce-ki-tau-jau in English. It swaps five pairs, the last of them, <valsi>du'u</valsi> and <valsi>du</valsi>, optional. In tcekitau text, <valsi>ce</valsi> means what <valsi>ce'u</valsi> means in this book, <valsi>ki</valsi> means <valsi>ke'a</valsi>, <valsi>tau</valsi> means <valsi>tu'a</valsi>, <valsi>jau</valsi> means <valsi>jo'u</valsi>, and <valsi>du</valsi> means <valsi>du'u</valsi>; and in each case the reverse, so that the long forms take over the old meanings of the short ones. In principle each swap works in both directions, and speakers can adopt each one separately. The proposal also lists a long second tier of further possible swaps, from <valsi>su'o</valsi> to <valsi>su</valsi> to the connective reform of <xref linkend="section-dialects-connectives" />, and the dictionary word <valsi valid="maybe">tcekitau</valsi> names the whole class rather than any one selection. The main criticism of it is that it buys shorter spellings at the price of meaning: a reader of the dialect cannot count on older text keeping its meaning, and a standard reader cannot count on dialect text keeping its.</para>
+    <para>Here is the trap. Most of the short forms also have meanings in standard Lojban, so a swapped sentence often parses in <emphasis>both</emphasis> grammars, with different meanings. Take <jbophrase>lo broda poi ki broda</jbophrase>. To a standard parser it is a sticky-tense construction; to a tcekitau parser it is a relative clause with <valsi>ke'a</valsi>. Text in this dialect is therefore unintelligible to a standard reader in a peculiarly silent way: nothing fails, but the text means something else. In the swapped reading, <valsi>ki</valsi> is <valsi>ke'a</valsi> and the clause means <jbophrase>lo broda poi ke'a broda</jbophrase>. A writer warns the reader by announcing the dialect first, with the header <jbophrase valid="iffy">jo'au tcekitaujau</jbophrase> of <xref linkend="section-dialects-johau" />; but since the swaps are independent, and the header does not say which of them are in force, the reader still has to learn from the writer whether <valsi>ki</valsi> is among them.</para>
+    <para><indexterm type="general"><primary>jboponei</primary></indexterm><indexterm type="lojban-word"><primary>po</primary><secondary>in jboponei</secondary></indexterm><indexterm type="lojban-word"><primary>nei</primary><secondary>in jboponei</secondary></indexterm>A second, smaller swap dialect is <valsi valid="maybe">jboponei</valsi>, named from <valsi>lojbo</valsi> and the two words it reassigns. Its motivation is that a learner must choose among <valsi>nu</valsi>, <valsi>ka</valsi> and <valsi>du'u</valsi> at every abstraction, while <valsi>su'u</valsi>, the general abstractor, would cover them all but is longer to write and to say. In jboponei the possessive <valsi>po</valsi> of <xref linkend="section-relative-phrases" /> is reassigned to mean <jbophrase>lo su'u</jbophrase>, the general abstraction taken as a sumti (or <valsi>xu'u</valsi> of <xref linkend="section-dialects-abstraction" />, which means the same), and the pro-bridi <valsi>nei</valsi> of <xref linkend="section-ri-gohi-series" /> becomes its terminator. The old sense of <valsi>po</valsi> is said with a relative clause instead, and the old sense of <valsi>nei</valsi> is given to <valsi>zi'e</valsi>, which the connective reform of <xref linkend="section-dialects-connectives" /> makes redundant:</para>
+    <example role="interlinear-gloss-example" xml:id="example-random-id-x22C">
+      <title><anchor xml:id="c22e6d1" /></title>
+      <interlinear-gloss>
+        <jbo valid="false">mi djica po do klama nei</jbo>
+        <gloss>I want [abstraction:] you go [end].</gloss>
+        <natlang>I want you to go. (jboponei dialect only)</natlang>
+      </interlinear-gloss>
+    </example>
+    <para role="indent">To a standard parser the sentence is simply ungrammatical, which is at least safer than the silent misreading of tcekitau. It is in this book as the smallest complete example of what a swap dialect does: it takes one common two-word phrase and gives it a one-syllable spelling that already belonged to something else.</para>
     <para role="status-note" condition="status:editorial;also:proposed">
-      This book includes it as the clearest worked example of what a dialect <emphasis>is</emphasis>. The text of this book uses none of the swaps.
+      This book includes the swap dialects as the clearest worked examples of what a dialect <emphasis>is</emphasis>. Both are community proposals, and the published record shows no official body considering either. The text of this book uses none of the swaps.
     </para>
   </section>
 </chapter>

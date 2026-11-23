@@ -1958,7 +1958,7 @@ class _TableWalk(_Offsets):
                 self._open_rows[-1]['nested'] = True
             cls = set(dict(attrs).get('class', '').split())
             self.tables.append({'start': self.open_start(), 'classes': cls,
-                                'gloss': ('interlinear-gloss' in cls or
+                                'gloss': (_is_gloss_table(cls) or
                                           any(t['gloss'] for t in self.tables))})
         elif tag == 'tr':
             if not self.tables:
@@ -1992,12 +1992,30 @@ class _TableWalk(_Offsets):
                 self.tables.pop()
 
 
+def _is_gloss_table(classes):
+    """Whether a table class set marks an interlinear gloss table.
+
+    Matches interlinear-gloss and anything built on it, such as
+    interlinear-gloss-itemized; the per-word cells of any of them must
+    keep working and never collapse into one marked row.
+    """
+    return any(c.startswith('interlinear-gloss') for c in classes)
+
+
+ROW_CLASSES_NEVER_MARKED = frozenset(('jbo', 'gloss', 'natlang'))
+
+
 def _add_class(open_tag, cls):
     """Append cls to the class attribute of a raw start tag."""
-    if re.search(r'\bclass="[^"]*"', open_tag):
-        return re.sub(r'\bclass="([^"]*)"', lambda m: 'class="%s %s"' % (m.group(1), cls),
-                      open_tag, count=1)
-    return open_tag[:-1] + ' class="%s"' % cls + open_tag[-1:]
+    m = re.search(r'''\bclass=(["'])(.*?)\1''', open_tag)
+    if m:
+        q = m.group(1)
+        return (open_tag[:m.start()] + 'class=%s%s %s%s' % (q, m.group(2), cls, q)
+                + open_tag[m.end():])
+    base = open_tag.rstrip()
+    if base.endswith('/>'):
+        return base[:-2] + ' class="%s"/>' % cls
+    return base[:-1] + ' class="%s"' % cls + base[-1:]
 
 
 def _apply_edits(page, edits):
@@ -2069,7 +2087,10 @@ class _CellPurity(HTMLParser):
     def __init__(self, kind):
         super().__init__(convert_charrefs=True)
         self.kind = kind
-        self.depth = 0
+        # One entry per open span/div: whether it is a same-kind wrapper.
+        # A counter is not enough: the end tag of a nested inline span
+        # must not close the wrapper around the text after it.
+        self.stack = []
         self.pure = True
         self.has_text = False
 
@@ -2078,18 +2099,21 @@ class _CellPurity(HTMLParser):
             return
         classes = dict(attrs).get('class', '').split()
         if self.kind in classes:
-            self.depth += 1
-        elif 'added' in classes or 'deleted' in classes or 'changed' in classes:
-            self.pure = False
+            self.stack.append(True)
+        else:
+            if ('added' in classes or 'deleted' in classes
+                    or 'changed' in classes):
+                self.pure = False
+            self.stack.append(False)
 
     def handle_endtag(self, tag):
-        if tag in ('span', 'div') and self.depth:
-            self.depth -= 1
+        if tag in ('span', 'div') and self.stack:
+            self.stack.pop()
 
     def handle_data(self, data):
         if not data.strip():
             return
-        if self.depth:
+        if any(self.stack):
             self.has_text = True
         else:
             self.pure = False
@@ -2131,6 +2155,8 @@ def mark_rows(page):
     edits = []
     for row in _walk_tables(page):
         if row['nested'] or row['gloss'] or not row['tds']:
+            continue
+        if row['classes'] & ROW_CLASSES_NEVER_MARKED:
             continue
         if 'diff-row-added' in row['classes'] or 'diff-row-deleted' in row['classes']:
             continue

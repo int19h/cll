@@ -9,6 +9,7 @@ Deleted rows keep their strikethrough. Rows with mixed changes keep
 per-cell marking. Interlinear-gloss rows (per-word cells) are never
 row-marked.
 """
+import importlib.util
 import json
 from pathlib import Path
 import subprocess
@@ -17,6 +18,14 @@ import tempfile
 import unittest
 
 SCRIPT = Path(__file__).with_name('docbook-diff.py')
+
+
+def load_tool():
+    spec = importlib.util.spec_from_file_location(
+        'docbook_diff_tool', str(SCRIPT))
+    tool = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(tool)
+    return tool
 
 PAGE_HEAD = """<html><head><title>t</title></head><body>
 <div class="toc"><div class="toc-title">Table of Contents</div>
@@ -188,6 +197,69 @@ class TableRowTests(unittest.TestCase):
         # Four per-word marks in the gloss, one beside the Chapter 22
         # caption, one for the marked plain row: 4 + 1 + 1.
         self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 6)
+
+    def test_itemized_gloss_line_is_not_a_whole_row(self):
+        # An itemized interlinear example that gains a whole gloss line
+        # renders one added div per cell; the gloss row must still not
+        # collapse, and neither must the jbo row.
+        cell = lambda cls, text, add: (
+            '<td>%s<p class="%s">%s</p>%s</td>'
+            % ('<div class="added">' if add else '', cls, text,
+               '</div>' if add else ''))
+        table = ('<div class="informaltable">'
+                 '<table class="interlinear-gloss-itemized">'
+                 '<tr class="jbo">' + cell('sumti', 'mi', False)
+                 + cell('selbri', 'klama', False) + '</tr>'
+                 '<tr class="gloss">' + cell('sumti', 'I', True)
+                 + cell('selbri', 'go', True) + '</tr>'
+                 '</table></div>')
+        page, prefixed = self.finish(table)
+        self.assertNotIn('diff-row-added', page)
+        self.assertNotIn('diff-row-deleted', page)
+        # ... but the two added per-word cells keep their marks.
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 2)
+
+    def test_word_class_rows_are_never_marked(self):
+        # jbo, gloss and natlang rows keep per-cell marking even in an
+        # ordinary table whose cells are all added.
+        for cls in ('jbo', 'gloss', 'natlang'):
+            table = ('<table><tbody><tr class="%s"><td>%s</td><td>%s</td></tr>'
+                     '</tbody></table>' % (cls, word('new one'), word('new two')))
+            page, _ = self.finish(table)
+            self.assertNotIn('diff-row-added', page)
+            self.assertNotIn('diff-row-deleted', page)
+
+    def test_text_after_nested_span_still_counts_as_added(self):
+        # A description cell that quotes another word after an inline
+        # span is still only added material, so the row collapses.
+        cell = ('<td><div class="added"><p>the word '
+                '<span class="foreignphrase"><em>la</em></span> quotes</p>'
+                '</div></td>')
+        page, prefixed = self.finish(
+            '<table><tbody><tr>%s%s</tr></tbody></table>' % (cell, cell))
+        self.assertIn('<tr class="diff-row-added">', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+
+
+class AddClassTests(unittest.TestCase):
+    """_add_class must not break odd but legal start tags."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.add_class = staticmethod(load_tool()._add_class)
+
+    def test_plain_tag(self):
+        self.assertEqual(self.add_class('<td>', 'c'), '<td class="c">')
+
+    def test_existing_class(self):
+        self.assertEqual(self.add_class('<tr class="cmavo-entry">', 'diff-row-added'),
+                         '<tr class="cmavo-entry diff-row-added">')
+
+    def test_self_closing_tag(self):
+        self.assertEqual(self.add_class('<td/>', 'c'), '<td class="c"/>')
+
+    def test_single_quoted_class(self):
+        self.assertEqual(self.add_class("<td class='x'>", 'c'), "<td class='x c'>")
 
 
 if __name__ == '__main__':

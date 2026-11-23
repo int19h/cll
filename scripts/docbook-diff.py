@@ -2005,12 +2005,17 @@ def _is_gloss_table(classes):
 ROW_CLASSES_NEVER_MARKED = frozenset(('jbo', 'gloss', 'natlang'))
 
 
+def _cell_text(inner):
+    """Visible text of a cell, for telling content apart from markup."""
+    return re.sub(r'<[^>]*>', '', inner).strip()
+
+
 def _add_class(open_tag, cls):
     """Append cls to the class attribute of a raw start tag."""
-    m = re.search(r'''\bclass=(["'])(.*?)\1''', open_tag)
+    m = re.search(r'''\sclass=(["'])(.*?)\1''', open_tag)
     if m:
         q = m.group(1)
-        return (open_tag[:m.start()] + 'class=%s%s %s%s' % (q, m.group(2), cls, q)
+        return (open_tag[:m.start()] + ' class=%s%s %s%s' % (q, m.group(2), cls, q)
                 + open_tag[m.end():])
     base = open_tag.rstrip()
     if base.endswith('/>'):
@@ -2147,6 +2152,9 @@ def mark_rows(page):
     deleted) gets the mark: a layout row that merely contains a changed
     nested table never does, and neither does a row inside an
     interlinear-gloss table, whose per-word cells must keep working.
+    A cell with no text counts as empty even when it carries same-kind
+    change markup (a new cmavo entry whose series cell is empty still
+    collapses); a cell holding other-kind change markup is never empty.
     The tr gets diff-row-added (or diff-row-deleted) and its first
     direct cell gets diff-row-first, so the stylesheet can paint one
     background with a single left bar instead of styling each cell
@@ -2162,19 +2170,35 @@ def mark_rows(page):
             continue
         kinds = set()
         seen = False
+        pending = []
         for td in row['tds']:
             inner = page[td['open_end']:td['close'] or td['open_end']]
-            status = _cell_status(inner)
-            if status is None:
-                if inner.strip():
+            if _cell_text(inner):
+                status = _cell_status(inner)
+                if status is None:
                     break
-            else:
                 kinds.add(status)
                 seen = True
+            else:
+                pending.append(inner)
         else:
             if not seen or len(kinds) != 1:
                 continue
             kind = kinds.pop()
+            blank = True
+            for inner in pending:
+                probe = _CellPurity(kind)
+                try:
+                    probe.feed(inner)
+                    probe.close()
+                except Exception:
+                    blank = False
+                    break
+                if not (probe.pure and not probe.has_text):
+                    blank = False
+                    break
+            if not blank:
+                continue
             edits.append((row['start'], row['start'] + len(row['open']),
                           _add_class(row['open'], 'diff-row-%s' % kind)))
             first = row['tds'][0]

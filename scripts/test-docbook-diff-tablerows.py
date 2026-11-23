@@ -240,6 +240,58 @@ class TableRowTests(unittest.TestCase):
         self.assertIn('<tr class="diff-row-added">', page)
         self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
 
+    def test_added_row_with_wrapped_empty_series_cell(self):
+        # A new cmavo entry without a series renders an empty series
+        # cell wrapped as added; the row still becomes one marked row.
+        row = ('<table><tbody><tr>'
+               '<td class="cmavo"><div class="added"><p class="cmavo">goi</p></div></td>'
+               '<td class="selmaho"><div class="added"><p class="selmaho">GOI</p></div></td>'
+               '<td class="description"><div class="added"><p class="description">'
+               'sumti assignment</p></div></td>'
+               '<td class="series"><div class="added">'
+               '<p class="cmavo-series"></p></div></td>'
+               '</tr></tbody></table>')
+        page, prefixed = self.finish(row)
+        self.assertIn('<tr class="diff-row-added">', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+
+    def test_added_row_with_plain_empty_series_cell(self):
+        # The same, with the empty series cell left unwrapped.
+        row = ('<table><tbody><tr>'
+               '<td class="cmavo"><div class="added"><p class="cmavo">goi</p></div></td>'
+               '<td class="selmaho"><div class="added"><p class="selmaho">GOI</p></div></td>'
+               '<td class="series"><p class="cmavo-series"></p></td>'
+               '</tr></tbody></table>')
+        page, prefixed = self.finish(row)
+        self.assertIn('<tr class="diff-row-added">', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+
+    def test_deleted_row_with_empty_series_cell(self):
+        # A deleted entry with an empty series cell collapses too.
+        row = ('<table><tbody><tr>'
+               '<td class="cmavo"><div class="deleted"><p class="cmavo">goi</p></div></td>'
+               '<td class="selmaho"><div class="deleted"><p class="selmaho">GOI</p></div></td>'
+               '<td class="series"><div class="deleted">'
+               '<p class="cmavo-series"></p></div></td>'
+               '</tr></tbody></table>')
+        page, prefixed = self.finish(row)
+        self.assertIn('<tr class="diff-row-deleted">', page)
+        self.assertIn('class="deleted"', page)  # strikethrough stays
+        self.assertEqual(prefixed.count('<span class="diffmark">[\u2212]</span>'), 1)
+
+    def test_other_kind_markup_in_empty_cell_blocks_the_row(self):
+        # An empty cell holding deleted markup is not empty: the mixed
+        # row keeps per-cell marking.
+        row = ('<table><tbody><tr>'
+               '<td><div class="added"><p>new one</p></div></td>'
+               '<td><div class="deleted"><p></p></div></td>'
+               '</tr></tbody></table>')
+        page, prefixed = self.finish(row)
+        self.assertNotIn('diff-row-added', page)
+        self.assertNotIn('diff-row-deleted', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+        self.assertEqual(prefixed.count('<span class="diffmark">[\u2212]</span>'), 1)
+
 
 class AddClassTests(unittest.TestCase):
     """_add_class must not break odd but legal start tags."""
@@ -260,6 +312,10 @@ class AddClassTests(unittest.TestCase):
 
     def test_single_quoted_class(self):
         self.assertEqual(self.add_class("<td class='x'>", 'c'), "<td class='x c'>")
+
+    def test_data_class_attribute_is_left_alone(self):
+        self.assertEqual(self.add_class('<td data-class="q">', 'c'),
+                         '<td data-class="q" class="c">')
 
 
 if __name__ == '__main__':

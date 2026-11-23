@@ -391,6 +391,145 @@ class TocMainTests(unittest.TestCase):
         self.assertEqual(sections.get('section-a', {}).get('status'), 'changed')
         self.assertEqual(sections['section-a'].get('del'), 1)
 
+    def test_kept_anchor_does_not_hide_a_deletion(self):
+        # The new title keeps the old section id as an anchor for old
+        # links, but the section itself is gone: the deletion still
+        # counts, it is not just an id rename.
+        old = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
+               '<section xml:id="section-cmene"><title>'
+               '<anchor xml:id="c4s8"/>cmevla</title>'
+               '<para>Keep this paragraph unchanged.</para>'
+               '<para>Remove this paragraph entirely.</para></section></chapter>')
+        new = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
+               '<section xml:id="section-cmevla"><title>'
+               '<anchor xml:id="c4s8"/><anchor xml:id="section-cmene"/>cmevla</title>'
+               '<para>Keep this paragraph unchanged.</para></section></chapter>')
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-cmevla', {}).get('status'), 'changed')
+        self.assertEqual(sections['section-cmevla'].get('del'), 1)
+
+    def test_struck_copy_does_not_identify_the_parent(self):
+        # The deleted subsection is re-inserted as a struck copy inside
+        # the new section, but it is not a surviving child: the new
+        # section stays added (green).
+        old = (chapter_file(section('section-lead', 'Lead',
+                                    '<para>Stable lead text here.</para>')
+                            + section('section-before', 'Notes',
+                                      '<para>abcdefghijklm nopqrstuvwxyz</para>'
+                                      '<para>abcdefghi klmnopqrstuvw xyz</para>'
+                                      + section('section-removed', 'Retired',
+                                                '<para>zyxwvutsrqpon unique retired words</para>'))
+                            + section('section-trail', 'Trailing',
+                                      '<para>Stable trailing text here.</para>')))
+        new = (chapter_file(section('section-lead', 'Lead',
+                                    '<para>Stable lead text here.</para>')
+                            + section('section-after', 'Notes',
+                                      '<para>111111111111111111111111111111</para>'
+                                      '<para>222222222222222222222222222222</para>'
+                                      '<para>333333333333333333333333333333</para>'
+                                      '<para>444444444444444444444444444444</para>')
+                            + section('section-trail', 'Trailing',
+                                      '<para>Stable trailing text here.</para>')))
+        result, tree = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-after', {}).get('status'), 'added')
+        self.assertEqual(sections.get('section-removed', {}).get('status'), 'deleted')
+        # The struck copy really sits inside the new section: without
+        # the dead-copy guard the parent lookup would match it.
+        after = tree.find('.//*[@xml:id="section-after"]'.replace(
+            'xml:id', '{http://www.w3.org/XML/1998/namespace}id'))
+        ids = [el.get(XML_ID) for el in after.iter() if isinstance(el.tag, str)]
+        self.assertIn('section-removed', ids)
+
+    def test_anchor_child_identifies_renamed_parent(self):
+        # The child kept only its title anchor under a new id; the
+        # parent is still that parent renamed, not a new section.
+        def family(pid, ptitle, p1, p2, cid):
+            return ('<section xml:id="%s"><title>%s</title>'
+                    '<para>%s</para><para>%s</para>'
+                    '<section xml:id="%s"><title>'
+                    '<anchor xml:id="ca"/>Child title</title>'
+                    '<para>Child words here.</para></section></section>'
+                    % (pid, ptitle, p1, p2, cid))
+        lead = ('<section xml:id="section-lead"><title>Lead</title>'
+                '<para>Stable lead text here.</para></section>')
+        trail = ('<section xml:id="section-trail"><title>Trailing</title>'
+                 '<para>Stable trailing text here.</para></section>')
+        old = ('<chapter xml:id="chapter-a"><title>Chapter</title>' + lead
+               + family('section-pold', 'Same parent',
+                        'Parent words one.', 'Parent words two.', 'section-cold')
+               + trail + '</chapter>')
+        new = ('<chapter xml:id="chapter-a"><title>Chapter</title>' + lead
+               + family('section-pnew', 'New parent',
+                        'Fresh parent words one.', 'Fresh parent words two.', 'section-cnew')
+               + trail + '</chapter>')
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-pnew', {}).get('status'), 'changed')
+        self.assertEqual(sections.get('section-cnew', {}).get('status'), 'changed')
+
+    def test_split_moves_charged_to_supplier_and_receiver(self):
+        # B takes three paragraphs from A, two others move A to D: B
+        # supplied and received none of the moves, so B reports none
+        # while A and D report theirs.
+        astro = 'The astronomer carefully recorded distant galaxies throughout the winter observation period.'
+        garden = 'A patient gardener planted fragrant flowers beside the old stone cottage yesterday.'
+        sail = 'Sailors navigated treacherous ocean currents using ancient maps and polished brass instruments.'
+        bake = 'Bakers prepared delicious crusty sourdough loaves before sunrise at the village market.'
+        music = 'Musicians rehearsed intricate melodies together inside the historic concert hall downtown.'
+        scient = 'Scientists measured unexpected volcanic tremors beneath the remote mountain range overnight.'
+        trav = 'Travelers discovered remarkable pottery ruins among the ruins of an abandoned settlement.'
+        para = lambda s: '<para>' + s + '</para>'
+        old = (chapter_file(section('section-a', 'Section A',
+                                    para(astro) + para(scient) + para(trav)
+                                    + para(garden) + para(sail) + para(bake) + para(music))
+                            + section('section-d', 'Section D',
+                                      para('The distinct first observation here.')
+                                      + para('The distinct second observation here.')
+                                      + para('The distinct third observation here.'))))
+        new = (chapter_file(section('section-a', 'Section A',
+                                    para(astro) + para(garden))
+                            + section('section-b', 'Section B',
+                                      para(sail) + para(bake) + para(music))
+                            + section('section-d', 'Section D',
+                                      para('The distinct first observation here.')
+                                      + para('The distinct second observation here.')
+                                      + para('The distinct third observation here.')
+                                      + para(scient) + para(trav))))
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-b', {}).get('status'), 'changed')
+        self.assertEqual(sections['section-b'].get('mov'), 0)
+        self.assertEqual(sections.get('section-a', {}).get('mov'), 2)
+        self.assertEqual(sections.get('section-d', {}).get('mov'), 2)
+
+    def test_split_deletion_counted_once(self):
+        # The old section is gone, its content split over two new ones
+        # and one paragraph deleted: neither successor may claim the
+        # deletion twice, so neither claims it.
+        old = (chapter_file(section(
+            'section-a', 'Section A',
+            '<para>Keep this paragraph unchanged.</para>'
+            '<para>Keep this other paragraph unchanged.</para>'
+            '<para>Keep a third paragraph unchanged.</para>'
+            '<para>Keep a fourth paragraph unchanged.</para>'
+            '<para>Remove this paragraph entirely.</para>')))
+        new = (chapter_file(section(
+            'section-b', 'Section B',
+            '<para>Keep this paragraph unchanged.</para>'
+            '<para>Keep this other paragraph unchanged.</para>')
+            + section(
+                'section-c', 'Section C',
+                '<para>Keep a third paragraph unchanged.</para>'
+                '<para>Keep a fourth paragraph unchanged.</para>')))
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-b', {}).get('status'), 'changed')
+        self.assertEqual(sections.get('section-c', {}).get('status'), 'changed')
+        self.assertEqual(sections['section-b'].get('del'), 0)
+        self.assertEqual(sections['section-c'].get('del'), 0)
+
     def test_deleted_section_keeps_subsection_ids(self):
         # Subsections of a wholly deleted section get the deleted mark
         # on their own numbers too.
@@ -554,6 +693,11 @@ class TocFinishTests(unittest.TestCase):
             self.assertIn('#a9c8ff', variant)
             self.assertIn('#97f295', variant)
             self.assertIn('#ffb6ba', variant)
+            self.assertIn('mostly familiar material, changed', variant)
+            self.assertIn('to read as new text', variant)
+            self.assertIn('more than half of its blocks come from old text', variant)
+            self.assertIn('half or less comes from old text', variant)
+            self.assertNotIn('wholly new section', variant)
             # The existing explanations stay right.
             self.assertIn('Moved material itself is not marked at its new place.',
                           variant)

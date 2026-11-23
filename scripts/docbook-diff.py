@@ -1671,6 +1671,7 @@ class Differ:
             for e in cp.iter():
                 dead.add(id(e))
         old_sec_of_id = self._id_sections(self.old, None)
+        resolved = []
         for _, root in self.new.files:
             for el in root.iter():
                 if not is_el(el) or local(el.tag) not in SECTIONISH:
@@ -1686,7 +1687,7 @@ class Differ:
                     if old_el is not None:
                         via = 'alias'
                     else:
-                        old_el = self._parent_old_section(el)
+                        old_el = self._parent_old_section(el, dead, old_sec_of_id)
                         if old_el is not None:
                             via = 'parent'
                         else:
@@ -1696,15 +1697,16 @@ class Differ:
                 oc = so.get(old_el) if old_el is not None else {}
                 if via in (None, 'direct') and not self._section_changed(c, oc):
                     continue
-                if (via == 'align' and old_el is not None
-                        and old_el.get(XML_ID) in self.new_ids):
-                    deleted = 0
-                else:
-                    deleted = oc.get('del', 0)
-                out[i] = {'status': 'changed' if old_el is not None else 'added',
-                          'chg': (c or {}).get('chg', 0), 'ins': (c or {}).get('ins', 0),
-                          'del': deleted,
-                          'mov': self._moved_touching(el, old_el)}
+                resolved.append((el, i, c, oc, old_el, via))
+        matched = {}
+        for el, i, c, oc, old_el, via in resolved:
+            if via in ('alias', 'parent', 'align'):
+                matched[old_el] = matched.get(old_el, 0) + 1
+        for el, i, c, oc, old_el, via in resolved:
+            out[i] = {'status': 'changed' if old_el is not None else 'added',
+                      'chg': (c or {}).get('chg', 0), 'ins': (c or {}).get('ins', 0),
+                      'del': self._deleted_count(old_el, oc, via, matched),
+                      'mov': self._moved_touching(el, old_el, via)}
         for O, cp in self.deleted_sections:
             i = cp.get(XML_ID)
             if not i:
@@ -1722,6 +1724,18 @@ class Differ:
                 return el
             el = book.parent.get(el)
         return None
+
+    def _section_survives(self, old_el):
+        """Whether the old section still exists under the same id.
+
+        A bare id occurrence (an anchor kept for old links) does not
+        count: only a section carrying the id means the section
+        survived. An id reused as an anchor must not hide that section's
+        own deletions, nor block an alias match.
+        """
+        oid = old_el.get(XML_ID)
+        n = self.new.ids.get(oid) if oid else None
+        return n is not None and is_el(n) and local(n.tag) in SECTIONISH
 
     def _id_sections(self, book, dead):
         """Map every live xml:id to its nearest sectionish element.
@@ -1792,31 +1806,36 @@ class Differ:
         if len(cands) != 1:
             return None
         o = cands.pop()
-        if o is None:
-            return None
-        if o.get(XML_ID) in self.new_ids:
+        if o is None or self._section_survives(o):
             return None
         return o
 
-    def _parent_old_section(self, new_el):
+    def _parent_old_section(self, new_el, dead, old_sec_of_id):
         """Gone old parent whose subsections the new subsections continue.
 
-        When the new section's subsections resolve by id to old
-        subsections that share one old parent, and that parent is gone,
-        the new section is that parent renamed -- even a chapter, and
-        even when its own blocks pair elsewhere.
+        Only subsections present in the new source count: a struck
+        re-inserted deleted copy is not a surviving child. Each child
+        resolves by id, or through the same alias as a rename (a kept
+        title anchor or inner id). When the resolved old subsections
+        share one gone old parent, the new section is that parent
+        renamed -- even a chapter, and even when its own blocks pair
+        elsewhere.
         """
         cands = set()
         resolved = 0
         for ch in new_el:
             if not is_el(ch) or local(ch.tag) not in SECTIONISH:
                 continue
+            if id(ch) in dead:
+                continue
             i = ch.get(XML_ID)
             if not i:
                 continue
             o = self.old.ids.get(i)
             if o is None:
-                continue
+                o = self._alias_old_section(ch, old_sec_of_id, dead)
+                if o is None:
+                    continue
             resolved += 1
             par = self.old.parent.get(o)
             while par is not None and not (is_el(par) and local(par.tag) in SECTIONISH):
@@ -1825,7 +1844,7 @@ class Differ:
         if not resolved or len(cands) != 1:
             return None
         p = cands.pop()
-        if p is None or p.get(XML_ID) in self.new_ids:
+        if p is None or self._section_survives(p):
             return None
         return p
 
@@ -1865,16 +1884,41 @@ class Differ:
             return True
         return bool(oc) and any(oc.get(s) for s in ('del', 'move', 'movechg'))
 
-    def _moved_touching(self, new_el, old_el):
-        """Moved pairs with one side under the (new, old) section."""
+    def _deleted_count(self, old_el, oc, via, matched):
+        """Deleted blocks to charge to a new section's number.
+
+        A directly matched section carries its own old counts. A
+        section matched to a different old one carries that old
+        section's deletions only when it is the sole claimant and the
+        old section is gone: a split must not charge the same deletion
+        to every successor, and a surviving old section keeps its own.
+        """
+        if via == 'direct':
+            return oc.get('del', 0)
+        if old_el is None or matched.get(old_el, 0) > 1:
+            return 0
+        if self._section_survives(old_el):
+            return 0
+        return oc.get('del', 0)
+
+    def _moved_touching(self, new_el, old_el, via):
+        """Moved pairs the section supplied or received.
+
+        Counts moved blocks under the new section wherever they came
+        from, plus moved blocks under a directly matched old section
+        wherever they went. For a section matched to a different old
+        section, only pairs touching the new section itself count: a
+        bystander never inherits another section's moves.
+        """
         pairs = set()
         for b in self.sn.blocks_under(new_el):
             if b.status in MOVED and b.partner is not None:
                 pairs.add(id(b.partner))
         if old_el is not None:
             for b in self.so.blocks_under(old_el):
-                if b.status in MOVED:
-                    pairs.add(id(b))
+                if b.status in MOVED and b.partner is not None:
+                    if via == 'direct' or self._section_of(self.new, b.partner.el) is new_el:
+                        pairs.add(id(b))
         return len(pairs)
 
     def fix_order(self, root):
@@ -2425,10 +2469,11 @@ def finish(argv):
         '<span class="deleted">deleted text</span> (kept where it was, struck through), and '
         '<span class="changed">notes where moved material used to be</span>, '
         'with a link to its new place. Moved material itself is not marked at its new place.%s '
-        'In the table of contents, a section number with a light blue background (#a9c8ff) '
-        'means the section changed somewhere below it, a number with a green background '
-        '(#97f295) is a wholly new section, and a number with a pink background (#ffb6ba), '
-        'struck through, is a section deleted from the new version (its text is kept '
+        'In the table of contents, a light blue number (#a9c8ff) is a section that is '
+        'mostly familiar material, changed (more than half of its blocks come from old '
+        'text); a green number (#97f295) is a section to read as new text (half or less '
+        'comes from old text, but it may hold a little moved or changed material); '
+        'a pink number (#ffb6ba), struck through, is a deleted section (its text is kept '
         'below, struck through). '
         'The comparison is computed from the DocBook sources of the two versions, '
         'so it ignores differences that are only in the formatting.</p></div>'

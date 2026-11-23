@@ -76,6 +76,12 @@ BLOCK = {
 }
 SECTIONISH = {'chapter', 'article', 'appendix', 'section', 'preface',
               'sect1', 'sect2', 'sect3', 'simplesect'}
+# Sections with at least this many own blocks are judged by content
+# alone. Smaller sections (a bare title, or a title plus one paragraph)
+# carry too little text to judge familiarity, so kept ids and the
+# parent rule may decide for them instead -- but never override a
+# content verdict for a larger section.
+CONTENT_BLOCKS = 3
 VERBATIM = {'programlisting', 'literallayout', 'screen'}
 SKIP = {'indexterm', 'anchor', 'imagedata', 'colgroup', 'col'}
 CELL = {'td', 'th', 'entry'}
@@ -1683,17 +1689,22 @@ class Differ:
                 old_el = self.old.ids.get(i)
                 via = 'direct' if old_el is not None else None
                 if old_el is None:
-                    old_el = self._alias_old_section(el, old_sec_of_id, dead)
-                    if old_el is not None:
-                        via = 'alias'
-                    else:
-                        old_el = self._parent_old_section(el, dead, old_sec_of_id)
+                    if len(self._own_blocks(el)) >= CONTENT_BLOCKS:
+                        old_el = self._aligned_old_section(el)
                         if old_el is not None:
-                            via = 'parent'
+                            via = 'align'
+                    else:
+                        old_el = self._alias_old_section(el, old_sec_of_id, dead)
+                        if old_el is not None:
+                            via = 'alias'
                         else:
-                            old_el = self._aligned_old_section(el)
+                            old_el = self._parent_old_section(el, dead, old_sec_of_id)
                             if old_el is not None:
-                                via = 'align'
+                                via = 'parent'
+                            else:
+                                old_el = self._aligned_old_section(el)
+                                if old_el is not None:
+                                    via = 'align'
                 oc = so.get(old_el) if old_el is not None else {}
                 if via in (None, 'direct') and not self._section_changed(c, oc):
                     continue

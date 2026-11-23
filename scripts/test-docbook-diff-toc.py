@@ -210,22 +210,23 @@ class TocMainTests(unittest.TestCase):
         self.assertEqual(sections.get('section-b', {}).get('status'), 'added')
         self.assertNotIn('section-a', sections)
 
-    def test_shared_anchor_identifies_renamed_section(self):
-        # The title anchor survived a rewrite: the section counts as
-        # the old one (blue), not as wholly new.
+    def test_shared_title_anchor_does_not_override_new_content(self):
+        # The title anchor survived a rewrite, but the section has
+        # enough own blocks to judge by content: one paired title out
+        # of three blocks is not familiar material, so it stays green.
         old = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
                '<section xml:id="section-a"><title>'
                '<anchor xml:id="c4s8"/>Alpha</title>'
-               '<para>Old words about Alpha.</para>'
-               '<para>More old words here.</para></section></chapter>')
+               '<para>Zebra xylophone quartet jamboree.</para>'
+               '<para>Quixotic wizards vex brown jackals.</para></section></chapter>')
         new = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
                '<section xml:id="section-b"><title>'
                '<anchor xml:id="c4s8"/>Alpha</title>'
-               '<para>Entirely new words about Beta.</para>'
-               '<para>Further new words here.</para></section></chapter>')
+               '<para>Luminous nebulae drift silently onward.</para>'
+               '<para>Copper kettles sing thermal ballads.</para></section></chapter>')
         result, _ = self.compare(old, new)
         sections = result.get('sections', {})
-        self.assertEqual(sections.get('section-b', {}).get('status'), 'changed')
+        self.assertEqual(sections.get('section-b', {}).get('status'), 'added')
         self.assertNotIn('section-a', sections)
 
     def test_renamed_parent_with_subsections_counts_as_surviving(self):
@@ -285,8 +286,9 @@ class TocMainTests(unittest.TestCase):
 
     def test_deleted_section_keeps_pink_despite_shared_inner_id(self):
         # The old section was rewritten from scratch under a new id but
-        # kept its example id: the struck copy stays deleted (pink) while
-        # the new section is changed (blue) through the forward alias.
+        # kept its example id: the struck copy stays deleted (pink).
+        # Content decides the new section -- all new text means green,
+        # even with the kept id; only a small section may match by alias.
         old = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
                '<section xml:id="section-a"><title>Gone</title>'
                '<para>Zebra xylophone quartet jamboree.</para>'
@@ -302,7 +304,50 @@ class TocMainTests(unittest.TestCase):
         result, _ = self.compare(old, new)
         sections = result.get('sections', {})
         self.assertEqual(sections.get('section-a', {}).get('status'), 'deleted')
-        self.assertEqual(sections.get('section-b', {}).get('status'), 'changed')
+        self.assertEqual(sections.get('section-b', {}).get('status'), 'added')
+
+    def test_kept_anchor_on_mostly_new_section_stays_green(self):
+        # 22.3's shape: the new section keeps the old section's id as
+        # an anchor and reuses its title, but only one of its four own
+        # blocks pairs with old text. Content decides: green.
+        old = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
+               '<section xml:id="section-old"><title>Repairs</title>'
+               '<para>Zebra xylophone quartet jamboree.</para>'
+               '<para>Quixotic wizards vex brown jackals.</para>'
+               '<para>Pack my box with five dozen liquor jugs.</para>'
+               '<para>How vexingly quick daft zebras jump.</para></section>'
+               '</chapter>')
+        new = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
+               '<section xml:id="section-new"><title>'
+               '<anchor xml:id="section-old"/>Repairs</title>'
+               '<para>Pack my box with five dozen liquor jugs.</para>'
+               '<para>Luminous nebulae drift silently onward.</para>'
+               '<para>Copper kettles sing thermal ballads.</para>'
+               '<para>Sphinx of black quartz judge my vow.</para></section>'
+               '</chapter>')
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-new', {}).get('status'), 'added')
+        self.assertNotIn('section-old', [
+            s for s, e in sections.items() if e.get('status') == 'changed'])
+
+    def test_shared_anchor_decides_small_section(self):
+        # The same kept anchor on a section too small to judge by
+        # content (a title plus one paragraph): the alias still counts,
+        # so the section is blue.
+        old = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
+               '<section xml:id="section-old"><title>'
+               '<anchor xml:id="ca"/>Old title</title>'
+               '<para>Vanishing words one.</para></section>'
+               '</chapter>')
+        new = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
+               '<section xml:id="section-new"><title>'
+               '<anchor xml:id="ca"/>Old title</title>'
+               '<para>Fresh words one.</para></section>'
+               '</chapter>')
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-new', {}).get('status'), 'changed')
 
     def test_merged_section_counts_as_surviving(self):
         # Content from two gone old sections, most of it paired: blue,

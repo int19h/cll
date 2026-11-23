@@ -100,12 +100,21 @@ class ContextBook
 
   def number_components
     chapter_number = 0
+    appendix_number = 0
     @document.root.element_children.each do |component|
-      next unless %w[chapter article].include?(component.name)
+      next unless %w[chapter article appendix].include?(component.name)
       chapter_number += 1 if component.name == 'chapter'
-      number = component.name == 'chapter' ? chapter_number.to_s : nil
+      appendix_number += 1 if component.name == 'appendix'
+      number = case component.name
+               when 'chapter' then chapter_number.to_s
+               when 'appendix' then (64 + appendix_number).chr
+               end
       @numbers[component.path] = number
-      @labels[component.path] = number ? "Chapter #{number}" : plain(component.at_xpath('./title'))
+      @labels[component.path] = case component.name
+                                when 'chapter' then "Chapter #{number}"
+                                when 'appendix' then "Appendix #{number}"
+                                else plain(component.at_xpath('./title'))
+                                end
       sections(component, number)
       %w[example table].each do |kind|
         component.xpath(".//#{kind}").each_with_index do |node, index|
@@ -191,15 +200,16 @@ class ContextBook
       kind = 'sub' * depth + 'section'
     end
     number = @numbers[node.path]
+    component = { 'chapter' => 'Chapter', 'appendix' => 'Appendix' }[node.name]
     text = title(node)
-    text = "Chapter~#{number}\\crlf #{text}" if node.name == 'chapter'
+    text = "#{component}~#{number}\\crlf #{text}" if component
     text = "#{number}\\quad #{text}" if node.name == 'section'
     # Title anchors belong on the heading's page, not in a moving title argument.
     clean_title = node.at_xpath('./title')&.dup
     if clean_title
       clean_title.xpath('.//anchor|.//indexterm').remove
       text = children(clean_title)
-      text = "Chapter~#{number}\\crlf #{text}" if node.name == 'chapter'
+      text = "#{component}~#{number}\\crlf #{text}" if component
       text = "#{number}\\quad #{text}" if node.name == 'section'
     end
     refs = [node['id'], *node.xpath('./title//anchor').map { |item| item['id'] }].compact.map { |id| key(id) }
@@ -332,7 +342,7 @@ class ContextBook
     return '' unless node.element?
     return '' if node['role'].to_s.split.include?('display-none')
     content = case node.name
-    when 'chapter', 'article', 'section' then return heading(node)
+    when 'chapter', 'article', 'appendix', 'section' then return heading(node)
     when 'anchor' then ''
     when 'indexterm' then indexterm(node)
     when 'para'

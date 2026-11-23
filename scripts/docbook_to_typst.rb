@@ -266,7 +266,12 @@ class DocBookTypst
       clean_title = title&.dup
       clean_title&.xpath('.//anchor | .//indexterm')&.remove
       number = @numbers[node.path]
-      prefix = node.name == 'chapter' ? "Chapter #{number}" : (node.name == 'section' ? number : '')
+      prefix = case node.name
+               when 'chapter' then "Chapter #{number}"
+               when 'appendix' then "Appendix #{number}"
+               when 'section' then number
+               else ''
+               end
       "#cll-heading(#{level}, #{q(prefix)}, #{q(plain(title))}, marks: [#{marks}])[#{clean_title ? children(clean_title) : ''}]\n#{children(node, except: ['title'])}"
     when 'para', 'simpara'
       if node.ancestors.any? { |parent| %w[itemizedlist orderedlist].include?(parent.name) }

@@ -46,7 +46,7 @@ BOOK = '''<?xml version="1.0" encoding="UTF-8"?>
     <para role="status-note" condition="status:de-facto;&#9;date:2015-08-08">Tab separated date prose.</para>
     <para>Ordinary <phrase role="status-mark" condition="status:de-facto;also:historical">accepted by parsers</phrase> here, and <phrase role="status-mark extra" condition="status:proposed;body:bpfk;date:2020-01-02">a BPFK proposal clause</phrase> too.</para>
   </chapter>
-  <article xml:id="appendix-changes">
+  <appendix xml:id="appendix-changes">
     <title>Changes</title>
     <section xml:id="section-changes-how-to-read">
       <title>How to read</title>
@@ -55,7 +55,7 @@ BOOK = '''<?xml version="1.0" encoding="UTF-8"?>
         <listitem><para>An LLG vote.</para></listitem></varlistentry>
       </variablelist>
     </section>
-  </article>
+  </appendix>
 </book>
 '''
 

@@ -1,4 +1,4 @@
-<article xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="appendix-changes">
+<appendix xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="appendix-changes">
   <title><anchor xml:id="a03" />Changes from the first edition</title>
   <section xml:id="section-changes-how-to-read">
     <title><anchor xml:id="a03-how" />How to read this appendix</title>
@@ -311,4 +311,4 @@
       <listitem><para><indexterm type="general"><primary>lo'e</primary><secondary>unsettled status</secondary></indexterm><indexterm type="general"><primary>le'e</primary><secondary>unsettled status</secondary></indexterm><indexterm type="general"><primary>jei</primary><secondary>unsettled status</secondary></indexterm>The words <valsi>lo'e</valsi>, <valsi>le'e</valsi>, and <valsi>jei</valsi> remain as unsettled as the first edition left them. This book marks them as such where it teaches them.</para></listitem>
     </itemizedlist>
   </section>
-</article>
+</appendix>

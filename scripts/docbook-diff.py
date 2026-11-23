@@ -2214,7 +2214,7 @@ def finish(argv):
         '<span class="deleted">deleted text</span> (kept where it was, struck through), and '
         '<span class="changed">notes where moved material used to be</span>, '
         'with a link to its new place. Moved material itself is not marked at its new place.%s '
-        'In the table of contents, a section number with an amber background (#ffd84d) '
+        'In the table of contents, a section number with a light blue background (#a9c8ff) '
         'means the section changed somewhere below it, a number with a green background '
         '(#97f295) is a wholly new section, and a number with a pink background (#ffb6ba), '
         'struck through, is a section deleted from the new version (its text is kept '

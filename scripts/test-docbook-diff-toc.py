@@ -3,7 +3,7 @@
 
 A comparison page must mark, on each table-of-contents entry's section
 NUMBER (never the title, whose inline diffs keep working):
-  * amber (#ffd84d) when the surviving section changed anywhere under it;
+  * light blue (#a9c8ff) when the surviving section changed anywhere under it;
   * the existing added green for an entirely new section;
   * the existing deleted pink, struck through, for a deleted section.
 Each marked number carries a tooltip with per-section block counts, and
@@ -283,7 +283,7 @@ class TocFinishTests(unittest.TestCase):
         return ((root / 'out' / 'difference.html').read_text(encoding='utf-8'),
                 (root / 'out' / 'difference_prefixed.html').read_text(encoding='utf-8'))
 
-    def test_changed_number_gets_amber_and_tooltip(self):
+    def test_changed_number_gets_blue_and_tooltip(self):
         page, _ = self.finish()
         self.assertIn('<span class="diff-toc-changed" title="1 block changed">1.1.</span>'
                       ' Unchanged title', page)
@@ -305,7 +305,7 @@ class TocFinishTests(unittest.TestCase):
         self.assertIn('<span class="diff-toc-deleted" title="1 block deleted">1.4.</span>'
                       ' Deleted section', page)
 
-    def test_chapter_number_gets_amber(self):
+    def test_chapter_number_gets_blue(self):
         page, _ = self.finish()
         self.assertIn('<span class="diff-toc-changed" '
                       'title="2 blocks changed, 2 added, 1 deleted">1.</span>'
@@ -328,7 +328,7 @@ class TocFinishTests(unittest.TestCase):
         page, prefixed = self.finish()
         for variant in (page, prefixed):
             self.assertIn('table of contents', variant.lower())
-            self.assertIn('#ffd84d', variant)
+            self.assertIn('#a9c8ff', variant)
             self.assertIn('#97f295', variant)
             self.assertIn('#ffb6ba', variant)
             # The existing explanations stay right.

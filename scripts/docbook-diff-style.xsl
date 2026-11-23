@@ -40,10 +40,10 @@ div.changed  { background-color: #eef3fd; border-left: 4px solid #8aa9e6;
 span.changed { background-color: #eef3fd; }
 div.added span.added { background-color: transparent; }
 div.deleted span.deleted { background-color: transparent; }
-/* Changed-section numbers in the table of contents. Amber, not pale
-   yellow: red-green colour-blind readers see the added green as pale
-   yellow, so amber stays distinct. */
-span.diff-toc-changed { background-color: #ffd84d; color: #000;
+/* Changed-section numbers in the table of contents. Light blue, the
+   same hue as the "changed" move-note blocks below: amber and the added
+   green look alike to red-green colour-blind readers, blue stays apart. */
+span.diff-toc-changed { background-color: #a9c8ff; color: #000;
                         border-radius: 2px; padding: 0 0.2em; }
 span.diff-toc-added { background-color: #97f295;
                       border-radius: 2px; padding: 0 0.2em; }

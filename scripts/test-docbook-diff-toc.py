@@ -228,6 +228,113 @@ class TocMainTests(unittest.TestCase):
         self.assertEqual(sections.get('section-b', {}).get('status'), 'changed')
         self.assertNotIn('section-a', sections)
 
+    def test_renamed_parent_with_subsections_counts_as_surviving(self):
+        # The parent was renamed but its subsections kept their ids:
+        # it matches the gone old parent instead of looking wholly new.
+        old = (chapter_file(section('section-a', 'Section',
+                                    '<para>Keep this sentence.</para>')
+                            + section('section-p', 'Parent',
+                                      '<para>Parent words one.</para>'
+                                      + section('section-c1', 'C1',
+                                                '<para>Child one words.</para>'
+                                                '<para>Child two words.</para>')
+                                      + section('section-c2', 'C2',
+                                                '<para>Child three words.</para>'
+                                                '<para>Child four words.</para>'))))
+        new = (chapter_file(section('section-a', 'Section',
+                                    '<para>Keep this sentence.</para>')
+                            + section('section-p2', 'Parent',
+                                      '<para>Parent words one.</para>'
+                                      + section('section-c1', 'C1',
+                                                '<para>Child one words.</para>'
+                                                '<para>Child two words.</para>')
+                                      + section('section-c2', 'C2',
+                                                '<para>Child three words.</para>'
+                                                '<para>Child four words.</para>'))))
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-p2', {}).get('status'), 'changed')
+
+    def test_renamed_chapter_matches_old_chapter(self):
+        # Three sections, one changed paragraph plus a deleted third
+        # section: the chapter matches the old chapter (del 3 from the
+        # deleted section's title and paragraphs), not one of its sections.
+        long1 = ('First paragraph with enough distinctive words to align well.')
+        long2 = ('Second paragraph with enough distinctive words to align well.')
+        long3 = ('Third paragraph with enough distinctive words to align well.')
+        old = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
+               '<section xml:id="section-k"><title>Keep</title>'
+               '<para>Stable lead paragraph here.</para></section>'
+               '<section xml:id="section-a"><title>Alpha</title>'
+               '<para>' + long1 + '</para><para>' + long2 + '</para>'
+               '<para>' + long3 + '</para></section>'
+               '<section xml:id="section-z"><title>Gone</title>'
+               '<para>Doomed words one.</para><para>Doomed words two.</para>'
+               '</section></chapter>')
+        new = ('<chapter xml:id="chapter-b"><title>Chapter</title>'
+               '<section xml:id="section-k"><title>Keep</title>'
+               '<para>Stable lead paragraph here.</para></section>'
+               '<section xml:id="section-a"><title>Alpha</title>'
+               '<para>' + long1 + '</para><para>' + long2 + ' More.</para>'
+               '<para>' + long3 + '</para></section></chapter>')
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('chapter-b', {}).get('status'), 'changed')
+        self.assertEqual(sections['chapter-b'].get('del'), 3)
+        self.assertEqual(sections.get('section-z', {}).get('status'), 'deleted')
+
+    def test_deleted_section_keeps_pink_despite_shared_inner_id(self):
+        # The old section was rewritten from scratch under a new id but
+        # kept its example id: the struck copy stays deleted (pink) while
+        # the new section is changed (blue) through the forward alias.
+        old = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
+               '<section xml:id="section-a"><title>Gone</title>'
+               '<para>Zebra xylophone quartet jamboree.</para>'
+               '<example xml:id="ex1">'
+               '<para>Quixotic wizards vex brown jackals.</para></example></section>'
+               '</chapter>')
+        new = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
+               '<section xml:id="section-b"><title>New</title>'
+               '<para>Luminous nebulae drift silently onward.</para>'
+               '<example xml:id="ex1">'
+               '<para>Copper kettles sing thermal ballads.</para></example></section>'
+               '</chapter>')
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-a', {}).get('status'), 'deleted')
+        self.assertEqual(sections.get('section-b', {}).get('status'), 'changed')
+
+    def test_split_off_section_ignores_old_deletion_counts(self):
+        # Half of a surviving old section moved to a new one: the new
+        # section stays blue, but the old section's own deleted
+        # paragraph is not charged to it.
+        paras = ''.join('<para>Stable paragraph number %d with some words to '
+                        'anchor alignment here.</para>' % k for k in range(6))
+        old = (chapter_file(section('section-a', 'Alpha',
+                                            paras + '<para>Gone paragraph here.</para>')))
+        new = (chapter_file(section(
+            'section-a', 'Alpha',
+            '<para>Stable paragraph number 0 with some words to anchor '
+            'alignment here.</para>'
+            '<para>Stable paragraph number 1 with some words to anchor '
+            'alignment here.</para>')
+            + section(
+                'section-b', 'Beta',
+                '<para>Stable paragraph number 2 with some words to anchor '
+                'alignment here.</para>'
+                '<para>Stable paragraph number 3 with some words to anchor '
+                'alignment here.</para>'
+                '<para>Stable paragraph number 4 with some words to anchor '
+                'alignment here.</para>'
+                '<para>Stable paragraph number 5 with some words to anchor '
+                'alignment here.</para>')))
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-b', {}).get('status'), 'changed')
+        self.assertEqual(sections['section-b'].get('del'), 0)
+        self.assertEqual(sections.get('section-a', {}).get('status'), 'changed')
+        self.assertEqual(sections['section-a'].get('del'), 1)
+
     def test_deleted_section_keeps_subsection_ids(self):
         # Subsections of a wholly deleted section get the deleted mark
         # on their own numbers too.
@@ -427,6 +534,15 @@ class TocFinishTests(unittest.TestCase):
         self.assertIn('[*] marks a changed section', prefixed)
         self.assertIn('[+] added, [\u2212] deleted, [\u2192] moved', prefixed)
         self.assertNotIn('[*] marks a changed section', page)
+
+    def test_pure_rename_tooltip_names_the_rename(self):
+        # A renamed section with unchanged content has no block counts;
+        # its tooltip says what happened instead of staying empty.
+        page, _ = self.finish(stats={
+            'statuses': {}, 'stats': {},
+            'sections': {'chapter-a': {'status': 'changed', 'chg': 0,
+                                       'ins': 0, 'del': 0, 'mov': 0}}})
+        self.assertIn('title="section id renamed"', page)
 
 
 if __name__ == '__main__':

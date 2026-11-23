@@ -1671,7 +1671,6 @@ class Differ:
             for e in cp.iter():
                 dead.add(id(e))
         old_sec_of_id = self._id_sections(self.old, None)
-        new_sec_of_id = self._id_sections(self.new, dead)
         for _, root in self.new.files:
             for el in root.iter():
                 if not is_el(el) or local(el.tag) not in SECTIONISH:
@@ -1681,24 +1680,34 @@ class Differ:
                     continue
                 c = sn.get(el)
                 old_el = self.old.ids.get(i)
-                matched = False
+                via = 'direct' if old_el is not None else None
                 if old_el is None:
                     old_el = self._alias_old_section(el, old_sec_of_id, dead)
-                    if old_el is None:
-                        old_el = self._aligned_old_section(el)
-                    matched = old_el is not None
+                    if old_el is not None:
+                        via = 'alias'
+                    else:
+                        old_el = self._parent_old_section(el)
+                        if old_el is not None:
+                            via = 'parent'
+                        else:
+                            old_el = self._aligned_old_section(el)
+                            if old_el is not None:
+                                via = 'align'
                 oc = so.get(old_el) if old_el is not None else {}
-                if not matched and not self._section_changed(c, oc):
+                if via in (None, 'direct') and not self._section_changed(c, oc):
                     continue
+                if (via == 'align' and old_el is not None
+                        and old_el.get(XML_ID) in self.new_ids):
+                    deleted = 0
+                else:
+                    deleted = oc.get('del', 0)
                 out[i] = {'status': 'changed' if old_el is not None else 'added',
                           'chg': (c or {}).get('chg', 0), 'ins': (c or {}).get('ins', 0),
-                          'del': oc.get('del', 0),
+                          'del': deleted,
                           'mov': self._moved_touching(el, old_el)}
         for O, cp in self.deleted_sections:
             i = cp.get(XML_ID)
             if not i:
-                continue
-            if self._alias_new_section(O, new_sec_of_id) is not None:
                 continue
             oc = so.get(O)
             out[i] = {'status': 'deleted', 'chg': 0, 'ins': 0,
@@ -1734,8 +1743,13 @@ class Differ:
                 stack.extend(e)
         return out
 
-    def _live_ids(self, el, dead):
-        """xml:ids under el, skipping re-inserted deleted copies."""
+    def _live_ids(self, el, dead, own_level=False):
+        """xml:ids under el, skipping re-inserted deleted copies.
+
+        With own_level, ids inside a nested section of el itself do not
+        count: only the section's own level decides its identity, so a
+        renamed parent is not outvoted by its kept subsections.
+        """
         out = []
         stack = [el]
         while stack:
@@ -1745,18 +1759,33 @@ class Differ:
             i = e.get(XML_ID)
             if i:
                 out.append(i)
-            stack.extend(e)
+            for c in e:
+                if not is_el(c):
+                    continue
+                if own_level and c is not el and local(c.tag) in SECTIONISH:
+                    continue
+                stack.append(c)
         return out
 
-    def _alias_old_section(self, new_el, old_sec_of_id, dead):
-        """Old section sharing inner ids with a renamed new section.
+    def _own_blocks(self, new_el):
+        """Blocks whose nearest new section is new_el itself.
 
-        A new section whose title anchor or other stable inner ids all
-        point into one old section that is itself gone counts as that
-        section surviving under a new id (blue), not as wholly new.
+        Blocks under nested subsections belong to those subsections, so
+        a renamed parent is judged on its own title and paragraphs, and
+        a renamed chapter on its title.
+        """
+        return [b for b in self.sn.blocks_under(new_el)
+                if self._section_of(self.new, b.el) is new_el]
+
+    def _alias_old_section(self, new_el, old_sec_of_id, dead):
+        """Old section sharing own-level inner ids with a renamed section.
+
+        A new section whose title anchor or other own stable inner ids
+        all point into one old section that is itself gone counts as
+        that section surviving under a new id (blue), not as wholly new.
         """
         cands = set()
-        for i in self._live_ids(new_el, dead):
+        for i in self._live_ids(new_el, dead, own_level=True):
             o = old_sec_of_id.get(i)
             if o is not None:
                 cands.add(o)
@@ -1769,16 +1798,47 @@ class Differ:
             return None
         return o
 
+    def _parent_old_section(self, new_el):
+        """Gone old parent whose subsections the new subsections continue.
+
+        When the new section's subsections resolve by id to old
+        subsections that share one old parent, and that parent is gone,
+        the new section is that parent renamed -- even a chapter, and
+        even when its own blocks pair elsewhere.
+        """
+        cands = set()
+        resolved = 0
+        for ch in new_el:
+            if not is_el(ch) or local(ch.tag) not in SECTIONISH:
+                continue
+            i = ch.get(XML_ID)
+            if not i:
+                continue
+            o = self.old.ids.get(i)
+            if o is None:
+                continue
+            resolved += 1
+            par = self.old.parent.get(o)
+            while par is not None and not (is_el(par) and local(par.tag) in SECTIONISH):
+                par = self.old.parent.get(par)
+            cands.add(par)
+        if not resolved or len(cands) != 1:
+            return None
+        p = cands.pop()
+        if p is None or p.get(XML_ID) in self.new_ids:
+            return None
+        return p
+
     def _aligned_old_section(self, new_el):
         """Old section holding most of a renamed new section's content.
 
-        When over half of the new section's blocks pair with blocks of
-        one old section, the section survived under a new id even if no
-        inner id was kept. A reused title alone never reaches the bar:
-        single-block sections need a shared id to match.
+        When over half of the new section's own blocks pair with blocks
+        of one old section, the section survived under a new id even if
+        no inner id was kept. A reused title alone never reaches the
+        bar: single-block sections need a shared id to match.
         """
         total, per = 0, {}
-        for b in self.sn.blocks_under(new_el):
+        for b in self._own_blocks(new_el):
             total += 1
             if b.partner is not None:
                 o = self._section_of(self.old, b.partner.el)
@@ -1788,22 +1848,6 @@ class Differ:
             return None
         best = max(per, key=per.get)
         return best if per[best] / total > 0.5 else None
-
-    def _alias_new_section(self, old_el, new_sec_of_id):
-        """New section continuing a deleted old section under a new id.
-
-        When the old section's inner ids unambiguously point into one
-        new section, the section survived renamed: no deleted number.
-        """
-        own = old_el.get(XML_ID)
-        cands = set()
-        for i in self._live_ids(old_el, set()):
-            if i == own:
-                continue
-            n = new_sec_of_id.get(i)
-            if n is not None:
-                cands.add(n)
-        return cands.pop() if len(cands) == 1 else None
 
     @staticmethod
     def _section_changed(c, oc):
@@ -2154,7 +2198,7 @@ def toc_tip(entry):
                ('del', 'deleted'), ('mov', 'moved'))]
     counts = [(n, w) for n, w in counts if n]
     if not counts:
-        return ''
+        return 'section id renamed'
     (n0, w0), rest = counts[0], counts[1:]
     tip = '%d block%s %s' % (n0, '' if n0 == 1 else 's', w0)
     return ', '.join([tip] + ['%d %s' % (n, w) for n, w in rest])

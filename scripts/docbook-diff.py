@@ -1278,6 +1278,7 @@ class Differ:
                 if oid and oid not in self.new_ids:
                     cp.set(XML_ID, oid)
                     self.preserved_ids.add(oid)
+                    self._keep_section_ids(O, cp)
                 self.deleted_sections.append((O, cp))
             return [cp]
         if not c.get('del') and self.representable(O):
@@ -1307,7 +1308,38 @@ class Differ:
                 p.tail = '\n'
                 S.append(p)
         self.merge_notes(S)
+        if local(O.tag) in SECTIONISH:
+            oid = O.get(XML_ID)
+            if oid and oid not in self.new_ids:
+                S.set(XML_ID, oid)
+                self.preserved_ids.add(oid)
+                self._keep_section_ids(O, S)
+                self.deleted_sections.append((O, S))
         return [S]
+
+    def _keep_section_ids(self, O, cp):
+        """Keep the ids of deleted subsections for their ToC links.
+
+        Sanitizing strips every id from a re-inserted copy, so without
+        this the ToC links of subsections inside a deleted section point
+        at generated ids and the subsections get no mark. Sanitizing
+        keeps SECTIONISH elements in order (it only drops anchors,
+        indexterms and inline replacements), so pair the old and copied
+        subsection sequences positionally; on any shape mismatch keep
+        nothing rather than mislabel.
+        """
+        olds = [e for e in O.iter()
+                if e is not O and is_el(e) and local(e.tag) in SECTIONISH]
+        news = [e for e in cp.iter()
+                if e is not cp and is_el(e) and local(e.tag) in SECTIONISH]
+        if len(olds) != len(news):
+            return
+        for o_el, n_el in zip(olds, news):
+            oid = o_el.get(XML_ID)
+            if oid and not n_el.get(XML_ID) and oid not in self.new_ids:
+                n_el.set(XML_ID, oid)
+                self.preserved_ids.add(oid)
+                self.deleted_sections.append((o_el, n_el))
 
     def mark_deleted_copy(self, cp, orig, parent_tag=None):
         par = self.old.parent.get(orig)
@@ -1642,12 +1674,12 @@ class Differ:
                 if not i:
                     continue
                 c = sn.get(el)
-                if not c or not any(c.get(s) for s in ('chg', 'ins', 'move', 'movechg')):
-                    continue
                 old_el = self.old.ids.get(i)
                 oc = so.get(old_el) if old_el is not None else {}
+                if not self._section_changed(c, oc):
+                    continue
                 out[i] = {'status': 'changed' if old_el is not None else 'added',
-                          'chg': c.get('chg', 0), 'ins': c.get('ins', 0),
+                          'chg': (c or {}).get('chg', 0), 'ins': (c or {}).get('ins', 0),
                           'del': oc.get('del', 0),
                           'mov': self._moved_touching(el, old_el)}
         for O, cp in self.deleted_sections:
@@ -1659,6 +1691,18 @@ class Differ:
                       'del': oc.get('del', 0),
                       'mov': oc.get('move', 0) + oc.get('movechg', 0)}
         return out
+
+    @staticmethod
+    def _section_changed(c, oc):
+        """Whether a surviving section changed anywhere under it.
+
+        New-side blocks (changed, added, moved) live in c; deleted
+        blocks and the old side of a move live only in oc, so a section
+        that only lost material counts as changed too.
+        """
+        if c and any(c.get(s) for s in ('chg', 'ins', 'move', 'movechg')):
+            return True
+        return bool(oc) and any(oc.get(s) for s in ('del', 'move', 'movechg'))
 
     def _moved_touching(self, new_el, old_el):
         """Moved pairs with one side under the (new, old) section."""
@@ -1817,14 +1861,154 @@ MARKS = {'added': '[+]', 'deleted': '[\u2212]', 'changed': '[\u2192]'}
 TOC_MARKS = {'added': '[+]', 'deleted': '[\u2212]', 'changed': '[*]'}
 TOC_CLASSES = {'added': 'diff-toc-added', 'deleted': 'diff-toc-deleted',
                'changed': 'diff-toc-changed'}
-TOC_REGION = re.compile(r'<div\b[^>]*\bclass="toc[^"]*"[^>]*>')
-TOC_DIV = re.compile(r'<(/?)div\b[^>]*>')
 TOC_LINK = re.compile(r'<a\b[^>]*href="#([^"]+)"[^>]*>')
 TOC_NUMBER = re.compile(r'\s*(\d[\d.]*\.?|[A-Z]\.[\d.]*\.?)(?=\s)')
-TABLE = re.compile(r'<table\b([^>]*)>(.*?)</table>', re.DOTALL)
-TABLE_ROW = re.compile(r'<tr\b([^>]*)>(.*?)</tr>', re.DOTALL)
-TABLE_CELL = re.compile(r'<td\b[^>]*>(.*?)</td>', re.DOTALL)
 ROW_MARK = {'added': '[+]', 'deleted': '[\u2212]'}
+
+
+class _Offsets(HTMLParser):
+    """HTMLParser with absolute offsets for tag boundaries.
+
+    In handle_starttag and handle_data, getpos() points at the '<' of
+    the tag (and at the end of the data); in handle_endtag it points at
+    the '<' of the end tag. A start tag therefore spans abs() up to
+    abs() plus len(get_starttag_text()), and an end tag ends at the
+    next '>'.
+    """
+
+    def __init__(self, page):
+        super().__init__(convert_charrefs=False)
+        self.page = page
+        self.starts = [0]
+        pos = page.find('\n')
+        while pos != -1:
+            self.starts.append(pos + 1)
+            pos = page.find('\n', pos + 1)
+
+    def abs(self):
+        ln, col = self.getpos()
+        return self.starts[ln - 1] + col
+
+    def open_start(self):
+        return self.abs()
+
+    def open_end(self):
+        return self.abs() + len(self.get_starttag_text())
+
+    def close_end(self):
+        return self.page.find('>', self.abs()) + 1
+
+
+class _TocWalk(_Offsets):
+    """Spans of top-level divs whose class list contains 'toc'.
+
+    A nested div like toc-title is part of its ToC region, never a
+    region of its own, so each table of contents is visited exactly
+    once no matter how its inner divs are classed.
+    """
+
+    def __init__(self, page):
+        super().__init__(page)
+        self.regions = []
+        self._depth = None
+        self._start = None
+
+    def handle_starttag(self, tag, attrs):
+        if tag != 'div':
+            return
+        if self._depth is not None:
+            self._depth += 1
+            return
+        if 'toc' in dict(attrs).get('class', '').split():
+            self._depth = 1
+            self._start = self.open_start()
+
+    def handle_endtag(self, tag):
+        if tag != 'div' or self._depth is None:
+            return
+        self._depth -= 1
+        if self._depth == 0:
+            self.regions.append((self._start, self.close_end()))
+            self._depth = None
+class _TableWalk(_Offsets):
+    """Table/row/cell structure of a page with absolute offsets.
+
+    Each row records its own direct cells, whether any cell holds a
+    nested table, and whether it sits inside an interlinear-gloss
+    table. Judging rows only by their own direct cells means a layout
+    row that merely contains a changed nested table is never marked,
+    and rows after a nested table are still examined.
+    """
+
+    def __init__(self, page):
+        super().__init__(page)
+        self.tables = []
+        self.rows = []
+        self._open_rows = []
+
+    def _cur_row(self):
+        if (self.tables and self._open_rows and
+                self._open_rows[-1]['table'] is self.tables[-1]):
+            return self._open_rows[-1]
+        return None
+
+    def handle_starttag(self, tag, attrs):
+        if tag == 'table':
+            if self._open_rows:
+                self._open_rows[-1]['nested'] = True
+            cls = set(dict(attrs).get('class', '').split())
+            self.tables.append({'start': self.open_start(), 'classes': cls,
+                                'gloss': ('interlinear-gloss' in cls or
+                                          any(t['gloss'] for t in self.tables))})
+        elif tag == 'tr':
+            if not self.tables:
+                return
+            self._open_rows.append(
+                {'table': self.tables[-1], 'start': self.open_start(),
+                 'open': self.get_starttag_text(), 'tds': [], 'nested': False,
+                 'end': None,
+                 'classes': set(dict(attrs).get('class', '').split()),
+                 'gloss': any(t['gloss'] for t in self.tables)})
+        elif tag == 'td':
+            row = self._cur_row()
+            if row is None:
+                return
+            row['tds'].append({'start': self.open_start(),
+                               'open': self.get_starttag_text(),
+                               'open_end': self.open_end(), 'close': None})
+
+    def handle_endtag(self, tag):
+        if tag == 'td':
+            row = self._cur_row()
+            if row is not None and row['tds'] and row['tds'][-1]['close'] is None:
+                row['tds'][-1]['close'] = self.abs()
+        elif tag == 'tr':
+            if self._open_rows:
+                row = self._open_rows.pop()
+                row['end'] = self.close_end()
+                self.rows.append(row)
+        elif tag == 'table':
+            if self.tables:
+                self.tables.pop()
+
+
+def _add_class(open_tag, cls):
+    """Append cls to the class attribute of a raw start tag."""
+    if re.search(r'\bclass="[^"]*"', open_tag):
+        return re.sub(r'\bclass="([^"]*)"', lambda m: 'class="%s %s"' % (m.group(1), cls),
+                      open_tag, count=1)
+    return open_tag[:-1] + ' class="%s"' % cls + open_tag[-1:]
+
+
+def _apply_edits(page, edits):
+    """Splice (start, end, replacement) edits into the page."""
+    out, pos = [], 0
+    for start, end, text in sorted(edits):
+        out.append(page[pos:start])
+        out.append(text)
+        pos = end
+    out.append(page[pos:])
+    return ''.join(out)
 
 
 def toc_tip(entry):
@@ -1848,14 +2032,10 @@ def mark_toc(page, sections):
     """
     if not sections:
         return page
-    regions = []
-    for m in TOC_REGION.finditer(page):
-        depth = 0
-        for t in TOC_DIV.finditer(page, m.start()):
-            depth += -1 if t.group(1) else 1
-            if depth == 0:
-                regions.append((m.start(), t.end()))
-                break
+    walk = _TocWalk(page)
+    walk.feed(page)
+    walk.close()
+    regions = walk.regions
     out, pos = [], 0
     for r0, r1 in regions:
         out.append(page[pos:r0])
@@ -1929,62 +2109,68 @@ def _cell_status(inner):
     return None
 
 
+def _walk_tables(page):
+    walk = _TableWalk(page)
+    walk.feed(page)
+    walk.close()
+    return walk.rows
+
+
 def mark_rows(page):
     """Mark fully added or deleted table rows as one unit.
 
-    When every non-empty cell of a row holds only added (or only deleted)
-    material, the tr gets diff-row-added (or diff-row-deleted) so the
-    stylesheet can paint one background with a single left bar instead of
-    styling each cell separately. Interlinear-gloss tables are never
-    row-marked: their per-word cells must keep working.
+    Only the innermost row whose own cells are all added (or all
+    deleted) gets the mark: a layout row that merely contains a changed
+    nested table never does, and neither does a row inside an
+    interlinear-gloss table, whose per-word cells must keep working.
+    The tr gets diff-row-added (or diff-row-deleted) and its first
+    direct cell gets diff-row-first, so the stylesheet can paint one
+    background with a single left bar instead of styling each cell
+    separately.
     """
-    def mark_table(m):
-        if 'interlinear-gloss' in m.group(1):
-            return m.group(0)
-        return TABLE_ROW.sub(mark_row, m.group(0))
-
-    def mark_row(m):
-        attrs, inner = m.group(1), m.group(2)
-        if 'diff-row-' in attrs:
-            return m.group(0)
+    edits = []
+    for row in _walk_tables(page):
+        if row['nested'] or row['gloss'] or not row['tds']:
+            continue
+        if 'diff-row-added' in row['classes'] or 'diff-row-deleted' in row['classes']:
+            continue
         kinds = set()
         seen = False
-        for cell in TABLE_CELL.finditer(inner):
-            status = _cell_status(cell.group(1))
+        for td in row['tds']:
+            inner = page[td['open_end']:td['close'] or td['open_end']]
+            status = _cell_status(inner)
             if status is None:
-                if cell.group(1).strip():
-                    return m.group(0)
+                if inner.strip():
+                    break
             else:
                 kinds.add(status)
                 seen = True
-        if not seen or len(kinds) != 1:
-            return m.group(0)
-        kind = kinds.pop()
-        if re.search(r'\bclass="[^"]*"', attrs):
-            attrs = re.sub(r'\bclass="([^"]*)"',
-                           lambda c: 'class="%s diff-row-%s"' % (c.group(1), kind),
-                           attrs, count=1)
         else:
-            attrs += ' class="diff-row-%s"' % kind
-        return '<tr%s>%s</tr>' % (attrs, inner)
-
-    return TABLE.sub(mark_table, page)
+            if not seen or len(kinds) != 1:
+                continue
+            kind = kinds.pop()
+            edits.append((row['start'], row['start'] + len(row['open']),
+                          _add_class(row['open'], 'diff-row-%s' % kind)))
+            first = row['tds'][0]
+            edits.append((first['start'], first['start'] + len(first['open']),
+                          _add_class(first['open'], 'diff-row-first')))
+            continue
+    return _apply_edits(page, edits)
 
 
 def collapse_row_marks(prefixed):
     """One prefixed marker per row-marked row, after its first cell."""
-    def fix(m):
-        kind, inner = m.group(1), m.group(2)
+    edits = []
+    for row in _walk_tables(prefixed):
+        kind = ('added' if 'diff-row-added' in row['classes']
+                else 'deleted' if 'diff-row-deleted' in row['classes'] else None)
+        if kind is None or not row['tds'] or row['end'] is None:
+            continue
         mark = '<span class="diffmark">%s</span>' % ROW_MARK[kind]
-        inner = inner.replace(mark, '')
-        inner, n = re.subn(r'<td\b[^>]*>',
-                           lambda t: t.group(0) + mark, inner, count=1)
-        if not n:
-            return m.group(0)
-        return re.match(r'<tr\b[^>]*>', m.group(0)).group(0) + inner + '</tr>'
-
-    return re.sub(r'<tr\b[^>]*\bdiff-row-(added|deleted)\b[^>]*>(.*?)</tr>',
-                  fix, prefixed, flags=re.DOTALL)
+        first = row['tds'][0]
+        inner = prefixed[first['open_end']:row['end']].replace(mark, '')
+        edits.append((first['open_end'], row['end'], mark + inner))
+    return _apply_edits(prefixed, edits)
 
 
 def finish(argv):
@@ -2072,8 +2258,15 @@ def finish(argv):
         if cm:
             depth += 1
     res.append(page[pos:])
+    # The prefixed page also explains its text markers, which the plain
+    # page never shows.
+    banner_pre = (banner[:-len('</p></div>')]
+                  + ' In this version, a text marker comes before each change: '
+                  '[+] added, [\u2212] deleted, [\u2192] moved; in the table '
+                  'of contents, [*] marks a changed section.</p></div>')
     (out / 'difference_prefixed.html').write_text(
-        collapse_row_marks(''.join(res)), encoding='utf-8')
+        collapse_row_marks(''.join(res)).replace(banner, banner_pre, 1),
+        encoding='utf-8')
 
 
 if __name__ == '__main__':

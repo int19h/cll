@@ -80,7 +80,9 @@ SECTIONISH = {'chapter', 'article', 'appendix', 'section', 'preface',
 # alone. Smaller sections (a bare title, or a title plus one paragraph)
 # carry too little text to judge familiarity, so kept ids and the
 # parent rule may decide for them instead -- but never override a
-# content verdict for a larger section.
+# content verdict for a larger section. Chapters are the exception:
+# their substance is their subsections, so a renamed chapter also
+# matches the gone old chapter its subsections continue.
 CONTENT_BLOCKS = 3
 VERBATIM = {'programlisting', 'literallayout', 'screen'}
 SKIP = {'indexterm', 'anchor', 'imagedata', 'colgroup', 'col'}
@@ -1693,6 +1695,10 @@ class Differ:
                         old_el = self._aligned_old_section(el)
                         if old_el is not None:
                             via = 'align'
+                        elif local(el.tag) == 'chapter':
+                            old_el = self._parent_old_section(el, dead, old_sec_of_id)
+                            if old_el is not None:
+                                via = 'parent'
                     else:
                         old_el = self._alias_old_section(el, old_sec_of_id, dead)
                         if old_el is not None:
@@ -1714,10 +1720,17 @@ class Differ:
             if via in ('alias', 'parent', 'align'):
                 matched[old_el] = matched.get(old_el, 0) + 1
         for el, i, c, oc, old_el, via in resolved:
+            if old_el is None:
+                deleted = self._subtree_del(el)
+                moved = (self._moved_touching(el, None, None)
+                         + self._subtree_notes(el))
+            else:
+                deleted = self._deleted_count(old_el, oc, via, matched)
+                moved = self._moved_touching(el, old_el, via)
             out[i] = {'status': 'changed' if old_el is not None else 'added',
                       'chg': (c or {}).get('chg', 0), 'ins': (c or {}).get('ins', 0),
-                      'del': self._deleted_count(old_el, oc, via, matched),
-                      'mov': self._moved_touching(el, old_el, via)}
+                      'del': deleted,
+                      'mov': moved}
         for O, cp in self.deleted_sections:
             i = cp.get(XML_ID)
             if not i:
@@ -1894,6 +1907,43 @@ class Differ:
         if c and any(c.get(s) for s in ('chg', 'ins', 'move', 'movechg')):
             return True
         return bool(oc) and any(oc.get(s) for s in ('del', 'move', 'movechg'))
+
+    def _subtree_del(self, el):
+        """Struck blocks held in the section's annotated subtree.
+
+        A section with no old counterpart can still hold struck text
+        that the build re-inserted into it: count the outermost deleted
+        elements that are blocks or containers of blocks, never inline
+        phrases, and never anything inside a move note.
+        """
+        n = 0
+        stack = [(el, False)]
+        while stack:
+            e, inf = stack.pop()
+            if not is_el(e):
+                continue
+            if e.get('diffmoved') is not None or e.get('role') == 'diff-moved':
+                continue
+            flagged = e.get('revisionflag') == 'deleted'
+            if flagged and not inf:
+                if local(e.tag) in BLOCK or any(is_el(c) for c in e):
+                    n += 1
+            stack.extend((c, inf or flagged) for c in e)
+        return n
+
+    def _subtree_notes(self, el):
+        """"Moved to" notes placed in the section's annotated subtree."""
+        n = 0
+        stack = [el]
+        while stack:
+            e = stack.pop()
+            if not is_el(e):
+                continue
+            if e.get('role') == 'diff-moved':
+                n += 1
+            else:
+                stack.extend(e)
+        return n
 
     def _deleted_count(self, old_el, oc, via, matched):
         """Deleted blocks to charge to a new section's number.
@@ -2480,12 +2530,11 @@ def finish(argv):
         '<span class="deleted">deleted text</span> (kept where it was, struck through), and '
         '<span class="changed">notes where moved material used to be</span>, '
         'with a link to its new place. Moved material itself is not marked at its new place.%s '
-        'In the table of contents, a light blue number (#a9c8ff) is a section that is '
-        'mostly familiar material, changed (more than half of its blocks come from old '
-        'text); a green number (#97f295) is a section to read as new text (half or less '
-        'comes from old text, but it may hold a little moved or changed material); '
-        'a pink number (#ffb6ba), struck through, is a deleted section (its text is kept '
-        'below, struck through). '
+        'In the table of contents, a light blue number (#a9c8ff) is a section that '
+        'continues from the old version -- keeping its place, or with most of its '
+        'text from old text -- changed; a green number (#97f295) is a section to '
+        'read as new text; a pink number (#ffb6ba), struck through, is a deleted '
+        'section (its text is kept below, struck through). '
         'The comparison is computed from the DocBook sources of the two versions, '
         'so it ignores differences that are only in the formatting.</p></div>'
         % (esc(a.old_label), esc(a.new_label), esc(a.new_label), esc(a.old_label), counts))

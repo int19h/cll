@@ -575,6 +575,63 @@ class TocMainTests(unittest.TestCase):
         self.assertEqual(sections['section-b'].get('del'), 0)
         self.assertEqual(sections['section-c'].get('del'), 0)
 
+    def test_green_section_lists_struck_text_and_move_note(self):
+        # 22.10's shape: a green section that kept one paragraph,
+        # lost one paragraph to deletion and one to a move. Its tooltip
+        # lists every change, including the struck text and the move.
+        keep = 'Keep this sentence here for alignment purposes only.'
+        moved = ('The first paragraph has a fair amount of distinctive text '
+                 'in it so it can move across sections.')
+        gone = 'Vanishing words one two three four five, gone completely now.'
+        new1 = 'Luminous nebulae drift silently onward through the void.'
+        new2 = 'Copper kettles sing thermal ballads late at night.'
+        old = chapter_file(section('section-a', 'Section A',
+                                           '<para>' + keep + '</para>'
+                                           + '<para>' + moved + '</para>'
+                                           + '<para>' + gone + '</para>'),
+                                    section('section-x', 'Section X',
+                                            '<para>Stable text here.</para>'))
+        new = chapter_file(section('section-b', 'Section B',
+                                   '<para>' + keep + '</para>'
+                                   + '<para>' + new1 + '</para>'
+                                   + '<para>' + new2 + '</para>'),
+                           section('section-x', 'Section X',
+                                   '<para>Stable text here.</para>'
+                                   '<para>' + moved + '</para>'))
+        result, tree = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-b', {}).get('status'), 'added')
+        self.assertEqual(sections['section-b'].get('del'), 1)
+        self.assertEqual(sections['section-b'].get('mov'), 1)
+        # The struck paragraph and the move note really sit in section b.
+        ids = [el.get(XML_ID) for el in tree.iter() if isinstance(el.tag, str)]
+        self.assertIn('section-b', ids)
+
+    def test_renamed_chapter_with_own_content_matches_old_chapter(self):
+        # A renamed chapter with three own blocks: the title and both
+        # intro paragraphs are new, but both subsections continue old
+        # ones, so the parent rule matches the gone old chapter.
+        old = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
+               '<para>Zebra xylophone quartet jamboree here.</para>'
+               '<para>Quixotic wizards vex brown jackals here.</para>'
+               '<section xml:id="section-k"><title>Keep</title>'
+               '<para>Stable lead paragraph here.</para></section>'
+               '<section xml:id="section-a"><title>Alpha</title>'
+               '<para>Stable alpha paragraph here.</para></section>'
+               '</chapter>')
+        new = ('<chapter xml:id="chapter-b"><title>Chapter</title>'
+               '<para>Luminous nebulae drift silently onward here.</para>'
+               '<para>Copper kettles sing thermal ballads here.</para>'
+               '<section xml:id="section-k"><title>Keep</title>'
+               '<para>Stable lead paragraph here.</para></section>'
+               '<section xml:id="section-a"><title>Alpha</title>'
+               '<para>Stable alpha paragraph here.</para></section>'
+               '</chapter>')
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('chapter-b', {}).get('status'), 'changed')
+        self.assertEqual(sections['chapter-b'].get('del'), 2)
+
     def test_deleted_section_keeps_subsection_ids(self):
         # Subsections of a wholly deleted section get the deleted mark
         # on their own numbers too.
@@ -738,11 +795,13 @@ class TocFinishTests(unittest.TestCase):
             self.assertIn('#a9c8ff', variant)
             self.assertIn('#97f295', variant)
             self.assertIn('#ffb6ba', variant)
-            self.assertIn('mostly familiar material, changed', variant)
+            self.assertIn('continues from the old version', variant)
+            self.assertIn('keeping its place', variant)
+            self.assertIn('most of its text from old text', variant)
             self.assertIn('to read as new text', variant)
-            self.assertIn('more than half of its blocks come from old text', variant)
-            self.assertIn('half or less comes from old text', variant)
+            self.assertIn('struck through, is a deleted section', variant)
             self.assertNotIn('wholly new section', variant)
+            self.assertNotIn('more than half of its blocks', variant)
             # The existing explanations stay right.
             self.assertIn('Moved material itself is not marked at its new place.',
                           variant)

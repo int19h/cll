@@ -131,6 +131,7 @@ print display
   }
 
   section.chapter,
+  section.appendix,
   section.glossary,
   div.whole-index {
     page: chapter;
@@ -874,7 +875,7 @@ hr {
   width: 100%;
 }
 
-.guibutton, .display-none, .article > .titlepage hr {
+.guibutton, .display-none, .article > .titlepage hr, .appendix > .titlepage hr {
   display: none;
 }
 

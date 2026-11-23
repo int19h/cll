@@ -1,4 +1,4 @@
-<article xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="volume-chrestomathy">
+<appendix xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="volume-chrestomathy">
   <title><anchor xml:id="a01" />Chrestomathy</title>
   <para><indexterm type="general"><primary>chrestomathy</primary><secondary>editorial principles of</secondary></indexterm>This chrestomathy reprints its texts in the form in which their authors and translators published them, as closely as the surviving copies permit. The note at the start of each text records who wrote it, who translated it, and any editorial departure from the source. We didn't try to bend them all into a single style.</para>
   <para>The texts range from classical Lojban (the Terry story, from the first edition of this book, and the Alice extract), through the anonymous fable translation, to contemporary usage (the poem). So they differ in article usage and in orthography. Read them for what they are: genuine Lojban text from different hands and different eras. As everywhere in this book, the older usage is not an error (see <xref linkend="appendix-changes" />).</para>
@@ -850,4 +850,4 @@
       </tbody>
     </informaltable>
   </section>
-</article>
+</appendix>

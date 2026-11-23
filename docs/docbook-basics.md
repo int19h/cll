@@ -8,7 +8,7 @@ This page shows the standard markup that a chapter uses.
 
 Each file in `chapters/` holds one chapter or appendix.
 A chapter file has the root element `chapter`, as below.
-The two appendix files, `a01.xml` and `a03.xml`, have the root element `article` with the same kind of content.
+The two appendix files, `a01.xml` and `a03.xml`, have the root element `appendix` with the same kind of content.
 
 ```xml
 <chapter xml:id="chapter-dialects">

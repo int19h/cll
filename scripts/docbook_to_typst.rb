@@ -40,14 +40,18 @@ class DocBookTypst
   def number_components
     chapter = 0
     article = 0
+    appendix = 0
     @document.root.element_children.each do |component|
       case component.name
       when 'chapter'
         chapter += 1
         @numbers[component.path] = chapter.to_s
-      when 'article', 'appendix'
+      when 'article'
         article += 1
         @numbers[component.path] = (64 + article).chr
+      when 'appendix'
+        appendix += 1
+        @numbers[component.path] = (64 + appendix).chr
       end
       number_sections(component, @numbers[component.path])
       %w[example table figure].each do |kind|
@@ -266,7 +270,12 @@ class DocBookTypst
       clean_title = title&.dup
       clean_title&.xpath('.//anchor | .//indexterm')&.remove
       number = @numbers[node.path]
-      prefix = node.name == 'chapter' ? "Chapter #{number}" : (node.name == 'section' ? number : '')
+      prefix = case node.name
+               when 'chapter' then "Chapter #{number}"
+               when 'appendix' then "Appendix #{number}"
+               when 'section' then number
+               else ''
+               end
       "#cll-heading(#{level}, #{q(prefix)}, #{q(plain(title))}, marks: [#{marks}])[#{clean_title ? children(clean_title) : ''}]\n#{children(node, except: ['title'])}"
     when 'para', 'simpara'
       if node.ancestors.any? { |parent| %w[itemizedlist orderedlist].include?(parent.name) }

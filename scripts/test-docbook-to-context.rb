@@ -40,6 +40,27 @@ class ContextBookTest < Minitest::Test
     assert_empty input.report['missing_references']
   end
 
+  def test_appendices_use_letters_in_headings_sections_examples_and_references
+    input = book(<<~XML)
+      <appendix id="a"><title>First</title>
+        <section id="s"><title>Topic</title>
+          <example id="e"><title/><para>Text.</para></example>
+          <para><xref linkend="a"/>, <xref linkend="s"/>, <xref linkend="e"/>.</para>
+        </section>
+      </appendix>
+      <appendix id="b"><title>Second</title></appendix>
+    XML
+    output = input.to_tex
+    assert_includes output, 'Appendix~A\\crlf First'
+    assert_includes output, 'Appendix~B\\crlf Second'
+    assert_includes output, 'A.1\\quad Topic'
+    assert_includes output, 'Example~A.1'
+    assert_includes output, '\\goto{Appendix A}'
+    assert_includes output, '\\goto{Section A.1}'
+    assert_includes output, '\\goto{Example A.1}'
+    assert_empty input.report['missing_references']
+  end
+
   def test_math_is_structural_and_rejects_unknown_operators
     input = book('<para><math><mfrac><mi>a</mi><msqrt><msup><mi>b</mi><mn>2</mn></msup></msqrt></mfrac></math></para>')
     assert_includes input.to_tex, '\\frac{a}{\\sqrt{{b}^{2}}}'

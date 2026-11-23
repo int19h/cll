@@ -45,7 +45,7 @@ doc = serialize_page($document, mode: :html)
 # libxml chooses one or the other. A reference must still match, or the
 # following substitution would put a <br /> inside the title attribute.
 nbsp = '(?:\u00A0|&#x0*[Aa]0;|&#160;|&nbsp;)'
-doc = doc.gsub(%r{title="Chapter#{nbsp}[0-9]+--CHAPBR--}, 'title="')
+doc = doc.gsub(%r{title="(?:Chapter#{nbsp}[0-9]+|Appendix#{nbsp}[A-Z]+)--CHAPBR--}, 'title="')
 #
 # In this case: 
 #

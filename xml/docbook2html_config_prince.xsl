@@ -12,18 +12,18 @@
   <l:i18n xmlns:l="http://docbook.sourceforge.net/xmlns/l10n/1.0">
     <l:l10n language="en">
       <l:context name="title">
-        <!-- Essentially insert a seperator in the Chapter title
-             which gets hacked later into being a <br/> tag
-             -->
+        <!-- Insert a separator in chapter and appendix titles, which the
+             postprocessor later turns into a <br/> tag. -->
         <l:template name="chapter" text="Chapter %n--CHAPBR--%t" />
+        <l:template name="appendix" text="Appendix %n--CHAPBR--%t" />
         <!-- Drop the pointles . after the example number -->
         <l:template name="example" text="Example %n %t" />
       </l:context>
       <l:context name="title-numbered">
-        <!-- Essentially insert a seperator in the Chapter title
-             which gets hacked later into being a <br/> tag
-             -->
+        <!-- Insert a separator in chapter and appendix titles, which the
+             postprocessor later turns into a <br/> tag. -->
         <l:template name="chapter" text="Chapter %n--CHAPBR--%t" />
+        <l:template name="appendix" text="Appendix %n--CHAPBR--%t" />
         <!-- Drop the pointles . after the section number -->
         <l:template name="section" text="%n %t" />
       </l:context>

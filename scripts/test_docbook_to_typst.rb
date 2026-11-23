@@ -50,6 +50,24 @@ class DocBookTypstTest < Minitest::Test
     assert_equal 1, source.scan('#label("alias")').size
   end
 
+  def test_appendices_use_letters_in_headings_sections_examples_and_references
+    source = convert('<appendix id="a"><title>First</title><section id="s"><title>Topic</title><example id="e"><title/><para>Text</para></example><para><xref linkend="a"/> <xref linkend="s"/> <xref linkend="e"/></para></section></appendix><appendix id="b"><title>Second</title></appendix>')
+    assert_includes source, '#cll-heading(1, "Appendix A", "First"'
+    assert_includes source, '#cll-heading(1, "Appendix B", "Second"'
+    assert_includes source, '#cll-heading(2, "A.1", "Topic"'
+    assert_includes source, '#cll-example("A.1"'
+    assert_includes source, '#cll-ref("a", "Appendix A")'
+    assert_includes source, '#cll-ref("s", "Section A.1")'
+    assert_includes source, '#cll-ref("e", "Example A.1")'
+  end
+
+  def test_appendix_letters_do_not_share_the_article_counter
+    source = convert('<article id="article"><title>Article</title></article><appendix id="appendix"><title>Appendix</title><section id="section"><title>Topic</title></section><para><xref linkend="appendix"/></para></appendix>')
+    assert_includes source, '#cll-heading(1, "Appendix A", "Appendix"'
+    assert_includes source, '#cll-heading(2, "A.1", "Topic"'
+    assert_includes source, '#cll-ref("appendix", "Appendix A")'
+  end
+
   def test_fraction_powers_and_radicals_use_native_math
     source = convert('<chapter><title>Math</title><para><inlineequation><math><mfrac><msup><mi>x</mi><mn>2</mn></msup><msqrt><mn>7</mn></msqrt></mfrac></math></inlineequation></para></chapter>')
     assert_includes source, '$frac(attach(x, t: 2), sqrt(7))$'

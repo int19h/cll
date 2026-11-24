@@ -47,6 +47,7 @@ Standard library only.
 import argparse
 import copy
 import difflib
+import html
 import json
 import re
 import subprocess
@@ -879,10 +880,12 @@ def flag_element(el, flag, parent_of):
     parent_of[el] = p
 
 
-def mark_all(el, flag, parent_of, top=True):
-    """Mark all of el's content with flag, on the largest elements whose flag
-    survives the build."""
-    if not is_el(el):
+def mark_all(el, flag, parent_of, top=True, skip=frozenset()):
+    """Mark content with flag, on the largest surviving elements.
+
+    Nested blocks in skip keep their own alignment and annotations.
+    """
+    if not is_el(el) or id(el) in skip:
         return
     t = local(el.tag)
     if t in SKIP:
@@ -890,22 +893,25 @@ def mark_all(el, flag, parent_of, top=True):
     par = parent_of.get(el)
     pt = local(par.tag) if par is not None else None
     row = is_row(el, par)
-    if not row and t not in ('title', 'term', 'caption', 'attribution') and (
+    has_skipped = any(id(e) in skip for e in el.iter())
+    if not row and not has_skipped and t not in ('title', 'term', 'caption', 'attribution') and (
             t in FLAGGABLE and not (t in ('jbo', 'gloss')) or
             (t in ROWCHILD_FLAGGABLE and pt in ROWCHILD_PARENTS and t != 'td')):
         el.set('revisionflag', flag)
         return
-    if t in ('jbo', 'gloss') and not row and pt in ('lujvo-making', 'pronunciation',
-                                                    'compound-cmavo', 'lojbanization'):
+    if t in ('jbo', 'gloss') and not row and not has_skipped and pt in (
+            'lujvo-making', 'pronunciation', 'compound-cmavo', 'lojbanization'):
         el.set('revisionflag', flag)
         return
     wr = writable(el, par)
     children = list(el)
     for c in children:
+        if id(c) in skip:
+            continue
         if is_el(c) and local(c.tag) in ATOM:
             flag_element(c, flag, parent_of)
         else:
-            mark_all(c, flag, parent_of, False)
+            mark_all(c, flag, parent_of, False, skip)
     if not wr:
         return
     segs = [(el, 'text')] + [(c, 'tail') for c in el]
@@ -934,6 +940,8 @@ class Differ:
         self.so, self.sn = None, None
         self.new_ids = set(new.ids)
         self.deleted_sections = []     # (old section, re-inserted copy)
+        self.added_rows = []           # visible text of inserted table rows
+        self.added_row_elements = set()
         self.preserved_ids = set()     # old section ids kept on their copies
         self.stats = {}
         self.unplaced = []
@@ -1161,7 +1169,7 @@ class Differ:
             if not c:
                 return
             if set(c) == {'ins'}:
-                todo.append(('all', N))
+                todo.append(('all', N, frozenset()))
                 covered.update(id(e) for e in N.iter())
                 return
             for ch in N:
@@ -1171,13 +1179,21 @@ class Differ:
             walk(root)
         for b in self.new.blocks:
             if b.status in ('chg', 'movechg'):
-                todo.append(('chg', b))
+                todo.append(('chg', b, None))
             elif b.status == 'ins' and id(b.el) not in covered:
-                todo.append(('all', b.el))
+                if local(b.el.tag) in ('tr', 'row'):
+                    cells = [c for c in b.el if is_el(c) and local(c.tag) in CELL]
+                    self.added_rows.append(' '.join(
+                        ws(''.join(text_skipping(c))) for c in cells))
+                    self.added_row_elements.add(id(b.el))
+                else:
+                    skip = {id(x.el) for x in sn.blocks_under(b.el)
+                            if x.el is not b.el and x.status != 'ins'}
+                    todo.append(('all', b.el, skip))
                 covered.update(id(e) for e in b.el.iter())
-        for kind, x in todo:
+        for kind, x, skip in todo:
             if kind == 'all':
-                mark_all(x, 'added', self.parent_of)
+                mark_all(x, 'added', self.parent_of, skip=skip)
                 self.count('added_elements')
             else:
                 self.word_diff(x)
@@ -1910,6 +1926,15 @@ class Differ:
                 return None
             return 'changed'
 
+        inherited = None
+        parent = self.parent_of.get(el)
+        while parent is not None:
+            flag = parent.get('revisionflag')
+            if flag in ('added', 'deleted'):
+                inherited = flag
+                break
+            parent = self.parent_of.get(parent)
+
         kinds = set()
         def walk(e, flag):
             if not is_el(e) or local(e.tag) in SKIP:
@@ -1919,6 +1944,11 @@ class Differ:
             if e.get('revisionflag') in ('added', 'deleted'):
                 flag = e.get('revisionflag')
             t = local(e.tag)
+            if t in SECTIONISH and flag:
+                kinds.add(flag)
+                flag = None
+            if id(e) in self.added_row_elements:
+                kinds.add('added')
             direct = (e.text or '').strip() or any((c.tail or '').strip() for c in e)
             if t in BLOCK or (direct and t not in SECTIONISH):
                 kind = block_kind(e, flag)
@@ -1931,7 +1961,7 @@ class Differ:
                 return
             for c in e:
                 walk(c, flag)
-        walk(el, None)
+        walk(el, inherited)
         return kinds
 
     def _subtree_has_moved(self, el):
@@ -2071,7 +2101,7 @@ def main():
         kinds[b.status] = kinds.get(b.status, 0) + 1
     res = dict(old=a.old, new=a.new, old_blocks=len(old.blocks), new_blocks=len(new.blocks),
                statuses=kinds, stats=d.stats, deleted_files=[t for t, _ in written],
-               sections=d.section_summaries(),
+               sections=d.section_summaries(), added_rows=d.added_rows,
                t_parse=round(t1 - t0, 2), t_align=round(t2 - t1, 2),
                t_annotate=round(t3 - t2, 2))
     print(json.dumps(res, ensure_ascii=False))
@@ -2370,13 +2400,14 @@ def _walk_tables(page):
     return walk.rows
 
 
-def mark_rows(page):
+def mark_rows(page, added_rows=()):
     """Mark fully added or deleted table rows as one unit.
 
     Only the innermost row whose own cells are all added (or all
-    deleted) gets the mark: a layout row that merely contains a changed
-    nested table never does, and neither does a row inside an
-    interlinear-gloss table, whose per-word cells must keep working.
+    deleted), or a row identified as inserted in the stats, gets the mark:
+    a layout row that merely contains a changed nested table never does,
+    and neither does a row inside an interlinear-gloss table, whose
+    per-word cells must keep working.
     A cell with no text counts as empty even when it carries same-kind
     change markup (a new cmavo entry whose series cell is empty still
     collapses); a cell holding other-kind change markup is never empty.
@@ -2386,12 +2417,25 @@ def mark_rows(page):
     separately.
     """
     edits = []
+    remaining = {}
+    for text in added_rows:
+        remaining[text] = remaining.get(text, 0) + 1
     for row in _walk_tables(page):
         if row['nested'] or row['gloss'] or not row['tds']:
             continue
         if row['classes'] & ROW_CLASSES_NEVER_MARKED:
             continue
         if 'diff-row-added' in row['classes'] or 'diff-row-deleted' in row['classes']:
+            continue
+        signature = ' '.join(ws(html.unescape(_cell_text(
+            page[td['open_end']:td['close'] or td['open_end']]))) for td in row['tds'])
+        if remaining.get(signature):
+            remaining[signature] -= 1
+            edits.append((row['start'], row['start'] + len(row['open']),
+                          _add_class(row['open'], 'diff-row-added')))
+            first = row['tds'][0]
+            edits.append((first['start'], first['start'] + len(first['open']),
+                          _add_class(first['open'], 'diff-row-first')))
             continue
         kinds = set()
         seen = False
@@ -2473,9 +2517,11 @@ def finish(argv):
                       lambda m: '%s="%s%s' % (m.group(1), a.assets, m.group(2)), page)
     esc = lambda x: x.replace('&', '&amp;').replace('<', '&lt;')
     sections = {}
+    added_rows = []
     if a.stats:
         st = json.loads(Path(a.stats).read_text())
         sections = st.get('sections', {})
+        added_rows = st.get('added_rows', [])
     banner = (
         '<div class="diff-banner"><p><strong>Changes from %s to %s.</strong> '
         'This is the complete text of %s, with the changes since %s marked in place: '
@@ -2495,7 +2541,7 @@ def finish(argv):
     page, n = re.subn(r'(<body\b[^>]*>)', lambda m: m.group(1) + banner, page, count=1)
     if not n:
         sys.exit('docbook-diff finish: no <body> in %s' % a.index)
-    page = mark_rows(mark_toc(page, sections))
+    page = mark_rows(mark_toc(page, sections), added_rows)
     out = Path(a.outdir)
     out.mkdir(parents=True, exist_ok=True)
     (out / 'difference.html').write_text(page, encoding='utf-8')

@@ -889,9 +889,41 @@ class TocMainTests(unittest.TestCase):
         result, tree = self.compare(old, new)
         row = tree.find('.//tr')
         self.assertIsNotNone(row)
-        self.assertTrue(any(el.get('revisionflag') == 'added'
-                            for el in row.iter() if isinstance(el.tag, str)))
+        self.assertFalse(any(el.get('revisionflag') == 'added'
+                             for el in row.iter() if isinstance(el.tag, str)))
+        self.assertIn("nunkilca'a sharpness-apparatus", result.get('added_rows', []))
         self.assertTrue(result['sections']['section-a'].get('added'))
+
+    def test_new_chapter_marks_each_new_section(self):
+        old = ('<chapter xml:id="chapter-old"><title>Alpha</title>'
+               '<section xml:id="section-old"><title>Obsolete</title>'
+               '<para>Zebra xylophone quartet jamboree.</para></section></chapter>')
+        new = ('<chapter xml:id="chapter-new"><title>New chapter</title>'
+               '<section xml:id="section-one"><title>One</title>'
+               '<para>First new section text.</para></section>'
+               '<section xml:id="section-two"><title>Two</title>'
+               '<para>Second new section text.</para></section></chapter>')
+        result, _ = self.compare(old, new)
+        for section_id in ('chapter-new', 'section-one', 'section-two'):
+            entry = result['sections'][section_id]
+            self.assertEqual(entry.get('status'), 'added')
+            self.assertTrue(entry.get('added'))
+
+    def test_inserted_line_does_not_mark_unchanged_comment_added(self):
+        old = chapter_file(section(
+            'section-a', 'Section',
+            '<jbo>kuarka <comment>(add final vowel)</comment></jbo>'))
+        new = chapter_file(section(
+            'section-a', 'Section',
+            '<jbo>ku\'arka <comment>(add final vowel)</comment></jbo>'))
+        result, tree = self.compare(old, new)
+        comment = tree.find('.//comment')
+        self.assertIsNotNone(comment)
+        self.assertNotEqual(comment.get('revisionflag'), 'added')
+        self.assertNotEqual(tree.find('.//jbo').get('revisionflag'), 'added')
+        self.assertTrue(any(el.get('revisionflag') == 'added'
+                            for el in tree.iter() if isinstance(el.tag, str)))
+        self.assertTrue(result['sections']['section-a'].get('changed'))
 
     def test_rewritten_title_reports_visible_change_not_added(self):
         old = chapter_file(section('section-a', 'Language and dialect',

@@ -117,13 +117,14 @@ PAGE_TAIL = "</section></body></html>"
 
 
 class TableRowTests(unittest.TestCase):
-    def finish(self, *tables):
+    def finish(self, *tables, added_rows=()):
         temp = tempfile.TemporaryDirectory()
         self.addCleanup(temp.cleanup)
         root = Path(temp.name)
         (root / 'index.html').write_text(
             PAGE_HEAD + ''.join(tables) + PAGE_TAIL, encoding='utf-8')
-        (root / 'stats.json').write_text(json.dumps({'statuses': {}, 'stats': {}}))
+        (root / 'stats.json').write_text(json.dumps(
+            {'statuses': {}, 'stats': {}, 'added_rows': list(added_rows)}))
         run = subprocess.run(
             [sys.executable, str(SCRIPT), 'finish', str(root / 'index.html'),
              str(root / 'out'), '--old-label', 'Old', '--new-label', 'New',
@@ -132,6 +133,19 @@ class TableRowTests(unittest.TestCase):
         self.assertEqual(run.returncode, 0, run.stderr)
         return ((root / 'out' / 'difference.html').read_text(encoding='utf-8'),
                 (root / 'out' / 'difference_prefixed.html').read_text(encoding='utf-8'))
+
+    def test_inserted_row_from_stats_has_no_added_inner_text(self):
+        # An inserted row can hold unchanged aligned text. Stats identify
+        # the row itself, so finish marks it without painting its cells.
+        row = ('<table><tbody><tr><td><span class="foreignphrase">nunkilca\'a</span></td>'
+               '<td><p>sharpness-apparatus</p></td></tr></tbody></table>')
+        page, prefixed = self.finish(row, added_rows=["nunkilca'a sharpness-apparatus"])
+        self.assertIn('<tr class="diff-row-added">', page)
+        rendered_row = page[page.index('<tr class="diff-row-added">'):]
+        rendered_row = rendered_row[:rendered_row.index('</tr>')]
+        self.assertNotIn('class="added"', rendered_row)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+        self.assertIn('sharpness-apparatus', page)
 
     def test_fully_added_row_is_one_unit(self):
         page, prefixed = self.finish(ORDINARY_ADDED)

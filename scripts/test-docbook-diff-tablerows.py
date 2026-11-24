@@ -137,15 +137,39 @@ class TableRowTests(unittest.TestCase):
     def test_inserted_row_from_stats_has_no_added_inner_text(self):
         # An inserted row can hold unchanged aligned text. Stats identify
         # the row itself, so finish marks it without painting its cells.
-        row = ('<table><tbody><tr><td><span class="foreignphrase">nunkilca\'a</span></td>'
+        row = ('<table><tbody><tr><td><a id="diff-added-row-0"></a>'
+               '<span class="foreignphrase">nunkilca\'a</span></td>'
                '<td><p>sharpness-apparatus</p></td></tr></tbody></table>')
-        page, prefixed = self.finish(row, added_rows=["nunkilca'a sharpness-apparatus"])
+        page, prefixed = self.finish(row, added_rows=['diff-added-row-0'])
         self.assertIn('<tr class="diff-row-added">', page)
         rendered_row = page[page.index('<tr class="diff-row-added">'):]
         rendered_row = rendered_row[:rendered_row.index('</tr>')]
         self.assertNotIn('class="added"', rendered_row)
+        self.assertNotIn('diff-added-row-0', page)
         self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
         self.assertIn('sharpness-apparatus', page)
+
+    def test_only_the_marked_duplicate_row_is_added(self):
+        rows = ('<table><tbody>'
+                '<tr><td>a</td><td>b</td></tr>'
+                '<tr><td><a id="diff-added-row-0"></a>a</td><td>b</td></tr>'
+                '</tbody></table>')
+        page, prefixed = self.finish(rows, added_rows=['diff-added-row-0'])
+        self.assertEqual(page.count('diff-row-added'), 1)
+        self.assertIn('<tr><td>a</td><td>b</td></tr>', page)
+        self.assertIn('<tr class="diff-row-added">', page)
+        self.assertNotIn('diff-added-row-0', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+
+    def test_marker_survives_generated_xref_text(self):
+        row = ('<table><tbody><tr><td><a id="diff-added-row-0"></a>'
+               'nunkilca\'a, see <a href="#target">Generated section label</a></td>'
+               '<td><p>sharpness-apparatus</p></td></tr></tbody></table>')
+        page, prefixed = self.finish(row, added_rows=['diff-added-row-0'])
+        self.assertIn('<tr class="diff-row-added">', page)
+        self.assertIn('Generated section label', page)
+        self.assertNotIn('diff-added-row-0', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
 
     def test_fully_added_row_is_one_unit(self):
         page, prefixed = self.finish(ORDINARY_ADDED)

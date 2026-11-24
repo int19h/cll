@@ -891,7 +891,9 @@ class TocMainTests(unittest.TestCase):
         self.assertIsNotNone(row)
         self.assertFalse(any(el.get('revisionflag') == 'added'
                              for el in row.iter() if isinstance(el.tag, str)))
-        self.assertIn("nunkilca'a sharpness-apparatus", result.get('added_rows', []))
+        self.assertEqual(result.get('added_rows'), ['diff-added-row-0'])
+        self.assertIsNotNone(tree.find('.//anchor[@xml:id="diff-added-row-0"]'.replace(
+            'xml:id', '{http://www.w3.org/XML/1998/namespace}id')))
         self.assertTrue(result['sections']['section-a'].get('added'))
 
     def test_new_chapter_marks_each_new_section(self):

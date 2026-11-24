@@ -47,7 +47,6 @@ Standard library only.
 import argparse
 import copy
 import difflib
-import html
 import json
 import re
 import subprocess
@@ -940,7 +939,7 @@ class Differ:
         self.so, self.sn = None, None
         self.new_ids = set(new.ids)
         self.deleted_sections = []     # (old section, re-inserted copy)
-        self.added_rows = []           # visible text of inserted table rows
+        self.added_rows = []           # generated ids of inserted table rows
         self.added_row_elements = set()
         self.preserved_ids = set()     # old section ids kept on their copies
         self.stats = {}
@@ -1183,8 +1182,11 @@ class Differ:
             elif b.status == 'ins' and id(b.el) not in covered:
                 if local(b.el.tag) in ('tr', 'row'):
                     cells = [c for c in b.el if is_el(c) and local(c.tag) in CELL]
-                    self.added_rows.append(' '.join(
-                        ws(''.join(text_skipping(c))) for c in cells))
+                    marker = 'diff-added-row-%d' % len(self.added_rows)
+                    anchor = ET.Element('anchor', {XML_ID: marker})
+                    cells[0].insert(0, anchor)
+                    self.parent_of[anchor] = cells[0]
+                    self.added_rows.append(marker)
                     self.added_row_elements.add(id(b.el))
                 else:
                     skip = {id(x.el) for x in sn.blocks_under(b.el)
@@ -2119,6 +2121,7 @@ TOC_CLASSES = {'added': 'diff-toc-added', 'deleted': 'diff-toc-deleted',
 TOC_LINK = re.compile(r'<a\b[^>]*href="#([^"]+)"[^>]*>')
 TOC_NUMBER = re.compile(r'\s*(\d[\d.]*\.?|[A-Z]\.[\d.]*\.?)(?=\s)')
 ROW_MARK = {'added': '[+]', 'deleted': '[\u2212]'}
+DIFF_ADDED_ROW = re.compile(r'<a\b[^>]*\bid="(diff-added-row-\d+)"[^>]*(?:/>|></a>)')
 
 
 class _Offsets(HTMLParser):
@@ -2427,15 +2430,16 @@ def mark_rows(page, added_rows=()):
             continue
         if 'diff-row-added' in row['classes'] or 'diff-row-deleted' in row['classes']:
             continue
-        signature = ' '.join(ws(html.unescape(_cell_text(
-            page[td['open_end']:td['close'] or td['open_end']]))) for td in row['tds'])
-        if remaining.get(signature):
-            remaining[signature] -= 1
+        end = row['end'] if row['end'] is not None else row['start'] + len(row['open'])
+        marker = DIFF_ADDED_ROW.search(page, row['start'], end)
+        if marker and remaining.get(marker.group(1)):
+            remaining[marker.group(1)] -= 1
             edits.append((row['start'], row['start'] + len(row['open']),
                           _add_class(row['open'], 'diff-row-added')))
             first = row['tds'][0]
             edits.append((first['start'], first['start'] + len(first['open']),
                           _add_class(first['open'], 'diff-row-first')))
+            edits.append((marker.start(), marker.end(), ''))
             continue
         kinds = set()
         seen = False

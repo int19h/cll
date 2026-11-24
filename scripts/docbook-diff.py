@@ -91,6 +91,8 @@ CELL = {'td', 'th', 'entry'}
 # used by the build, they have no text, or their destination is meaningful.
 ATOM = {'xref', 'link', 'valsi', 'glossterm', 'footnoteref', 'inlinemediaobject',
         'mmlinlinemath', 'inlineequation', 'imageobject'}
+LIVE_ATOMS = {'xref', 'footnoteref', 'inlinemediaobject', 'mmlinlinemath',
+              'inlineequation'}
 # Structural elements whose own text is only indentation: no phrase may be
 # put directly in them.
 STRUCT = {'tr', 'row', 'thead', 'tbody', 'tfoot', 'tgroup', 'table',
@@ -1152,6 +1154,7 @@ class Differ:
         sn = Summary(self.new)
         self.sn = sn
         todo = []
+        covered = set()
 
         def walk(N):
             c = sn.get(N)
@@ -1159,6 +1162,7 @@ class Differ:
                 return
             if set(c) == {'ins'}:
                 todo.append(('all', N))
+                covered.update(id(e) for e in N.iter())
                 return
             for ch in N:
                 if is_el(ch):
@@ -1168,8 +1172,9 @@ class Differ:
         for b in self.new.blocks:
             if b.status in ('chg', 'movechg'):
                 todo.append(('chg', b))
-            elif b.status == 'ins':
-                pass
+            elif b.status == 'ins' and id(b.el) not in covered:
+                todo.append(('all', b.el))
+                covered.update(id(e) for e in b.el.iter())
         for kind, x in todo:
             if kind == 'all':
                 mark_all(x, 'added', self.parent_of)
@@ -1286,7 +1291,7 @@ class Differ:
                 if oid and oid not in self.new_ids:
                     cp.set(XML_ID, oid)
                     self.preserved_ids.add(oid)
-                    self._keep_section_ids(O, cp)
+                self._keep_section_ids(O, cp)
                 self.deleted_sections.append((O, cp))
             return [cp]
         if not c.get('del') and self.representable(O):
@@ -1321,8 +1326,8 @@ class Differ:
             if oid and oid not in self.new_ids:
                 S.set(XML_ID, oid)
                 self.preserved_ids.add(oid)
-                self._keep_section_ids(O, S)
-                self.deleted_sections.append((O, S))
+            self._keep_section_ids(O, S)
+            self.deleted_sections.append((O, S))
         return [S]
 
     def _keep_section_ids(self, O, cp):
@@ -1683,14 +1688,14 @@ class Differ:
                 i = el.get(XML_ID)
                 if not i:
                     continue
-                c = self.sn.get(el)
                 old_el = self._resolve_old_section(el, dead, old_sec_of_id)
                 renamed = (old_el is not None and i != old_el.get(XML_ID)
                            and not self._section_survives(old_el))
+                visible = self._subtree_kinds(el)
                 entry = {'status': 'changed' if old_el is not None else 'added',
-                         'changed': bool(c and (c.get('chg') or c.get('movechg'))),
-                         'added': bool(c and c.get('ins')),
-                         'deleted': self._subtree_has_deleted(el),
+                         'changed': 'changed' in visible,
+                         'added': 'added' in visible,
+                         'deleted': 'deleted' in visible,
                          'moved': self._subtree_has_moved(el),
                          'renamed': renamed}
                 if renamed or any(entry[k] for k in
@@ -1879,47 +1884,55 @@ class Differ:
             return None
         return max(per, key=per.get)
 
-    def _subtree_has_deleted(self, el):
-        """Whether the annotated subtree holds a wholly struck block.
-
-        Follow nested blocks like Book.linearize. A live cross-reference
-        supplies visible text even though its XML element has no literal
-        text, so deleting adjacent punctuation does not delete its block.
-        """
-        def all_deleted(block):
-            seen = [False, False]
-            def walk(e, deleted):
-                if (local(e.tag) in ('xref', 'footnoteref')
-                        and not (deleted or e.get('revisionflag') == 'deleted')):
-                    seen[False] = True
+    def _subtree_kinds(self, el):
+        """Visible change kinds from the annotations in a section subtree."""
+        def block_kind(block, inherited):
+            seen = set()
+            def walk(e, flag):
+                flag = (e.get('revisionflag')
+                        if e.get('revisionflag') in ('added', 'deleted') else flag)
+                if local(e.tag) in LIVE_ATOMS:
+                    seen.add(flag or 'live')
                     return
-                deleted = deleted or e.get('revisionflag') == 'deleted'
                 if (e.text or '').strip():
-                    seen[deleted] = True
+                    seen.add(flag or 'live')
                 for c in e:
                     if is_el(c) and local(c.tag) not in SKIP:
-                        walk(c, deleted)
+                        walk(c, flag)
                     if (c.tail or '').strip():
-                        seen[deleted] = True
-            walk(block, False)
-            return seen[True] and not seen[False]
+                        seen.add(flag or 'live')
+            walk(block, inherited)
+            if seen == {'added'}:
+                return 'added'
+            if seen == {'deleted'}:
+                return 'deleted'
+            if not seen or seen == {'live'}:
+                return None
+            return 'changed'
 
-        def walk(e, deleted):
+        kinds = set()
+        def walk(e, flag):
             if not is_el(e) or local(e.tag) in SKIP:
-                return False
+                return
             if e.get('diffmoved') is not None or e.get('role') == 'diff-moved':
-                return False
+                return
+            if e.get('revisionflag') in ('added', 'deleted'):
+                flag = e.get('revisionflag')
             t = local(e.tag)
-            deleted = deleted or e.get('revisionflag') == 'deleted'
             direct = (e.text or '').strip() or any((c.tail or '').strip() for c in e)
             if t in BLOCK or (direct and t not in SECTIONISH):
+                kind = block_kind(e, flag)
+                if kind:
+                    kinds.add(kind)
                 out, nested = [], []
                 inline_text(e, out, nested)
-                if ws(''.join(out)) and (deleted or all_deleted(e)):
-                    return True
-                return any(walk(n, deleted) for n in nested)
-            return any(walk(c, deleted) for c in e)
-        return walk(el, False)
+                for n in nested:
+                    walk(n, flag)
+                return
+            for c in e:
+                walk(c, flag)
+        walk(el, None)
+        return kinds
 
     def _subtree_has_moved(self, el):
         """Whether the subtree holds a move note or received moved text."""

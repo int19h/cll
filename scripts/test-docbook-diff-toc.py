@@ -873,6 +873,67 @@ class TocMainTests(unittest.TestCase):
         result, _ = self.compare(old, new)
         self.assertNotIn('topic', result['sections'])
 
+    def test_inserted_row_gets_visible_added_annotation(self):
+        # The inserted tr pairs its cells with text elsewhere, so neither
+        # the row nor a cell is wholly inserted by ancestry. The row still
+        # needs visible added marks; the old summary claimed added anyway.
+        old = chapter_file(section(
+            'section-a', 'Section',
+            '<informaltable><tr><td><valsi>nunkilbra</valsi></td>'
+            '<td><para>sharpness-apparatus</para></td></tr></informaltable>'
+            '<para>nunkilca\'a</para>'))
+        new = chapter_file(section(
+            'section-a', 'Section',
+            '<informaltable><tr><td><valsi>nunkilca\'a</valsi></td>'
+            '<td><para>sharpness-apparatus</para></td></tr></informaltable>'))
+        result, tree = self.compare(old, new)
+        row = tree.find('.//tr')
+        self.assertIsNotNone(row)
+        self.assertTrue(any(el.get('revisionflag') == 'added'
+                            for el in row.iter() if isinstance(el.tag, str)))
+        self.assertTrue(result['sections']['section-a'].get('added'))
+
+    def test_rewritten_title_reports_visible_change_not_added(self):
+        old = chapter_file(section('section-a', 'Language and dialect',
+                                   '<para>First shared paragraph.</para>'))
+        new = chapter_file(section('section-a', 'How to read this book',
+                                   '<para>First shared paragraph.</para>'))
+        result, _ = self.compare(old, new)
+        entry = result['sections']['section-a']
+        self.assertTrue(entry.get('changed'))
+        self.assertFalse(entry.get('added'))
+
+    def test_whitespace_only_edit_gets_no_mark(self):
+        old = chapter_file(section(
+            'section-a', 'Same heading',
+            '<para>A very long <emphasis>formatted</emphasis>word near the end.</para>'))
+        new = chapter_file(section(
+            'section-a', 'Same heading',
+            '<para>A very long <emphasis>formatted</emphasis> word near the end.</para>'))
+        result, _ = self.compare(old, new)
+        self.assertNotIn('section-a', result['sections'])
+
+    def test_deleted_child_id_survives_parent_compatibility_anchor(self):
+        old = ('<chapter xml:id="c1"><title>Chapter</title>'
+               '<section xml:id="c1s1"><title>Stable</title>'
+               '<para>Stable preceding paragraph.</para></section>'
+               '<section xml:id="c1s2"><title>Deleted outer</title>'
+               '<para>Outer deleted substance.</para>'
+               '<section xml:id="c1s3"><title>Nested deleted</title>'
+               '<para>Nested deleted substance.</para></section></section>'
+               '<section xml:id="c1s4"><title>Stable again</title>'
+               '<para>Stable final paragraph.</para></section></chapter>')
+        new = ('<chapter xml:id="c1"><title>Chapter</title>'
+               '<section xml:id="c1s1"><title>Stable<anchor xml:id="c1s2"/></title>'
+               '<para>Stable preceding paragraph.</para></section>'
+               '<section xml:id="c1s4"><title>Stable again</title>'
+               '<para>Stable final paragraph.</para></section></chapter>')
+        result, tree = self.compare(old, new)
+        self.assertEqual(result['sections']['c1s3'].get('status'), 'deleted')
+        self.assertTrue(result['sections']['c1s3'].get('deleted'))
+        ids = [el.get(XML_ID) for el in tree.iter() if isinstance(el.tag, str)]
+        self.assertIn('c1s3', ids)
+
     def test_renamed_chapter_with_own_content_matches_old_chapter(self):
         # A renamed chapter with three own blocks: the title and both
         # intro paragraphs are new, but both subsections continue old

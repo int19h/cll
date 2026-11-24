@@ -1951,23 +1951,22 @@ class Differ:
         return n
 
     def _subtree_moves(self, el):
-        """Moved pairs whose source note or destination is in the subtree."""
+        """Count destination pairs and source notes not already represented."""
         pairs = {id(b.partner) for b in self.sn.blocks_under(el)
                  if b.status in MOVED and b.partner is not None}
+        notes = 0
         stack = [el]
         while stack:
             e = stack.pop()
             if not is_el(e):
                 continue
             if e.get('role') == 'diff-moved':
-                noted = self.move_note_pairs.get(e)
-                if noted:
-                    pairs.update(noted)
-                else:
-                    pairs.add(('note', id(e)))
+                noted = self.move_note_pairs.get(e, ())
+                if not noted or pairs.isdisjoint(noted):
+                    notes += 1
             else:
                 stack.extend(e)
-        return len(pairs)
+        return len(pairs) + notes
 
     def fix_order(self, root):
         """Inserted paragraphs may not follow a section in a section: wrap

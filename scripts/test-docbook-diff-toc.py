@@ -171,6 +171,35 @@ class TocMainTests(unittest.TestCase):
         self.assertEqual(sections['section-b'].get('mov'), 1)
         self.assertEqual(sections['chapter-a'].get('mov'), 1)
 
+    def test_multiblock_move_note_counts_once_but_parent_counts_pairs(self):
+        # A moved example has three moved lines but one visible note. Its
+        # source section counts the note once; the destination and their
+        # parent count the three moved block pairs without double-counting.
+        example = ('<example><interlinear-gloss>'
+                   '<jbo>mi klama lo zarci i lo sa zdani li u</jbo>'
+                   '<gloss>I go-to a market and then to a house.</gloss>'
+                   '<natlang>I went to the market and then to the house.</natlang>'
+                   '</interlinear-gloss></example>')
+        mid = ''.join('<para>Stable paragraph number %d with some words to '
+                      'anchor alignment here.</para>' % k for k in range(8))
+        old = (chapter_file(section('section-a', 'Alpha',
+                                    '<para>Keep one here.</para>' + example)
+                            + '<section xml:id="section-m"><title>Middle</title>'
+                            + mid + '</section>'
+                            + section('section-d', 'Delta',
+                                      '<para>Keep two here.</para>')))
+        new = (chapter_file(section('section-a', 'Alpha',
+                                    '<para>Keep one here.</para>')
+                            + '<section xml:id="section-m"><title>Middle</title>'
+                            + mid + '</section>'
+                            + section('section-d', 'Delta',
+                                      '<para>Keep two here.</para>' + example)))
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections['section-a'].get('mov'), 1)
+        self.assertEqual(sections['section-d'].get('mov'), 3)
+        self.assertEqual(sections['chapter-a'].get('mov'), 3)
+
     def test_renamed_section_counts_as_surviving(self):
         # Same content under a new id: the section survived (blue),
         # not a wholly new one, and nothing counts as deleted.

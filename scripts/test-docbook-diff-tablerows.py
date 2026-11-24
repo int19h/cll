@@ -137,7 +137,7 @@ class TableRowTests(unittest.TestCase):
     def test_inserted_row_from_stats_has_no_added_inner_text(self):
         # An inserted row can hold unchanged aligned text. Stats identify
         # the row itself, so finish marks it without painting its cells.
-        row = ('<table><tbody><tr><td><a id="diff-added-row-0"></a>'
+        row = ('<table><tbody><tr><td><span id="diff-added-row-0"></span>'
                '<span class="foreignphrase">nunkilca\'a</span></td>'
                '<td><p>sharpness-apparatus</p></td></tr></tbody></table>')
         page, prefixed = self.finish(row, added_rows=['diff-added-row-0'])

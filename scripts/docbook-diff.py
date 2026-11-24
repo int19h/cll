@@ -2121,7 +2121,8 @@ TOC_CLASSES = {'added': 'diff-toc-added', 'deleted': 'diff-toc-deleted',
 TOC_LINK = re.compile(r'<a\b[^>]*href="#([^"]+)"[^>]*>')
 TOC_NUMBER = re.compile(r'\s*(\d[\d.]*\.?|[A-Z]\.[\d.]*\.?)(?=\s)')
 ROW_MARK = {'added': '[+]', 'deleted': '[\u2212]'}
-DIFF_ADDED_ROW = re.compile(r'<a\b[^>]*\bid="(diff-added-row-\d+)"[^>]*(?:/>|></a>)')
+DIFF_ADDED_ROW = re.compile(
+    r'<(?:a|span)\b[^>]*\bid="(diff-added-row-\d+)"[^>]*(?:/>|></(?:a|span)>)')
 
 
 class _Offsets(HTMLParser):

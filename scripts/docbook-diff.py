@@ -1669,8 +1669,9 @@ class Differ:
         entirely new section, deleted for a re-inserted deleted one,
         changed for a surviving section with any change under it -- and to
         its block counts, so finish() can mark the section's ToC number.
-        Counts follow the banner: chg/ins count new-side blocks, del counts
-        old-side blocks, mov counts moved pairs touching the section.
+        Counts describe the blocks and move notes visibly held in each
+        section's annotated subtree. Old-side summaries decide only whether
+        the section survives and which colour its number receives.
         """
         out = {}
         sn, so = self.sn, self.so
@@ -1714,31 +1715,19 @@ class Differ:
                 oc = so.get(old_el) if old_el is not None else {}
                 if via in (None, 'direct') and not self._section_changed(c, oc):
                     continue
-                resolved.append((el, i, c, oc, old_el, via))
-        matched = {}
-        for el, i, c, oc, old_el, via in resolved:
-            if via in ('alias', 'parent', 'align'):
-                matched[old_el] = matched.get(old_el, 0) + 1
-        for el, i, c, oc, old_el, via in resolved:
-            if old_el is None:
-                deleted = self._subtree_del(el)
-                moved = (self._moved_touching(el, None, None)
-                         + self._subtree_notes(el))
-            else:
-                deleted = self._deleted_count(old_el, oc, via, matched)
-                moved = self._moved_touching(el, old_el, via)
+                resolved.append((el, i, c, old_el))
+        for el, i, c, old_el in resolved:
             out[i] = {'status': 'changed' if old_el is not None else 'added',
                       'chg': (c or {}).get('chg', 0), 'ins': (c or {}).get('ins', 0),
-                      'del': deleted,
-                      'mov': moved}
-        for O, cp in self.deleted_sections:
+                      'del': self._subtree_del(el),
+                      'mov': self._subtree_moves(el) + self._subtree_notes(el)}
+        for _, cp in self.deleted_sections:
             i = cp.get(XML_ID)
             if not i:
                 continue
-            oc = so.get(O)
             out[i] = {'status': 'deleted', 'chg': 0, 'ins': 0,
-                      'del': oc.get('del', 0),
-                      'mov': oc.get('move', 0) + oc.get('movechg', 0)}
+                      'del': self._subtree_del(cp),
+                      'mov': self._subtree_notes(cp)}
         return out
 
     def _section_of(self, book, el):
@@ -1881,7 +1870,7 @@ class Differ:
         as new text". A reused title alone never reaches the bar:
         single-block sections need a shared id to match. Of the old
         sections, the one holding most of the paired blocks supplies
-        the tooltip counts.
+        the old counterpart used to decide the section's colour.
         """
         total, per = 0, {}
         for b in self._own_blocks(new_el):
@@ -1911,24 +1900,45 @@ class Differ:
     def _subtree_del(self, el):
         """Struck blocks held in the section's annotated subtree.
 
-        A section with no old counterpart can still hold struck text
-        that the build re-inserted into it: count the outermost deleted
-        elements that are blocks or containers of blocks, never inline
-        phrases, and never anything inside a move note.
+        Use the same block boundaries as Book.linearize: a list entry,
+        table row or example line is one block, while an inline phrase in
+        a surviving block is not. Count outermost blocks that are flagged
+        deleted, inherit a deleted flag, or hold only struck text. Move
+        notes are counted separately.
         """
+        def all_deleted(block):
+            seen = [False, False]
+            def walk(e, deleted):
+                deleted = deleted or e.get('revisionflag') == 'deleted'
+                if (e.text or '').strip():
+                    seen[deleted] = True
+                for c in e:
+                    if is_el(c) and local(c.tag) not in SKIP:
+                        walk(c, deleted)
+                    if (c.tail or '').strip():
+                        seen[deleted] = True
+            walk(block, False)
+            return seen[True] and not seen[False]
+
         n = 0
-        stack = [(el, False)]
-        while stack:
-            e, inf = stack.pop()
-            if not is_el(e):
-                continue
+        def walk(e, deleted):
+            nonlocal n
+            if not is_el(e) or local(e.tag) in SKIP:
+                return
             if e.get('diffmoved') is not None or e.get('role') == 'diff-moved':
-                continue
-            flagged = e.get('revisionflag') == 'deleted'
-            if flagged and not inf:
-                if local(e.tag) in BLOCK or any(is_el(c) for c in e):
+                return
+            t = local(e.tag)
+            deleted = deleted or e.get('revisionflag') == 'deleted'
+            direct = (e.text or '').strip() or any((c.tail or '').strip() for c in e)
+            if t in BLOCK or (direct and t not in SECTIONISH):
+                out = []
+                inline_text(e, out, [])
+                if ws(''.join(out)) and (deleted or all_deleted(e)):
                     n += 1
-            stack.extend((c, inf or flagged) for c in e)
+                return
+            for c in e:
+                walk(c, deleted)
+        walk(el, False)
         return n
 
     def _subtree_notes(self, el):
@@ -1945,42 +1955,10 @@ class Differ:
                 stack.extend(e)
         return n
 
-    def _deleted_count(self, old_el, oc, via, matched):
-        """Deleted blocks to charge to a new section's number.
-
-        A directly matched section carries its own old counts. A
-        section matched to a different old one carries that old
-        section's deletions only when it is the sole claimant and the
-        old section is gone: a split must not charge the same deletion
-        to every successor, and a surviving old section keeps its own.
-        """
-        if via == 'direct':
-            return oc.get('del', 0)
-        if old_el is None or matched.get(old_el, 0) > 1:
-            return 0
-        if self._section_survives(old_el):
-            return 0
-        return oc.get('del', 0)
-
-    def _moved_touching(self, new_el, old_el, via):
-        """Moved pairs the section supplied or received.
-
-        Counts moved blocks under the new section wherever they came
-        from, plus moved blocks under a directly matched old section
-        wherever they went. For a section matched to a different old
-        section, only pairs touching the new section itself count: a
-        bystander never inherits another section's moves.
-        """
-        pairs = set()
-        for b in self.sn.blocks_under(new_el):
-            if b.status in MOVED and b.partner is not None:
-                pairs.add(id(b.partner))
-        if old_el is not None:
-            for b in self.so.blocks_under(old_el):
-                if b.status in MOVED and b.partner is not None:
-                    if via == 'direct' or self._section_of(self.new, b.partner.el) is new_el:
-                        pairs.add(id(b))
-        return len(pairs)
+    def _subtree_moves(self, el):
+        """Moved blocks visibly held in the section's annotated subtree."""
+        return sum(b.status in MOVED and b.partner is not None
+                   for b in self.sn.blocks_under(el))
 
     def fix_order(self, root):
         """Inserted paragraphs may not follow a section in a section: wrap
@@ -2531,8 +2509,8 @@ def finish(argv):
         '<span class="changed">notes where moved material used to be</span>, '
         'with a link to its new place. Moved material itself is not marked at its new place.%s '
         'In the table of contents, a light blue number (#a9c8ff) is a section that '
-        'continues from the old version -- keeping its place, or with most of its '
-        'text from old text -- changed; a green number (#97f295) is a section to '
+        'continues from the old version — keeping its place, or with most of its '
+        'text from old text — changed; a green number (#97f295) is a section to '
         'read as new text; a pink number (#ffb6ba), struck through, is a deleted '
         'section (its text is kept below, struck through). '
         'The comparison is computed from the DocBook sources of the two versions, '

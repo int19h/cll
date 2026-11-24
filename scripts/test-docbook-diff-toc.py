@@ -184,7 +184,7 @@ class TocMainTests(unittest.TestCase):
 
     def test_renamed_section_with_changed_content(self):
         # Most content paired with one old section: changed, with the
-        # deleted paragraph counted from the old section.
+        # visibly struck deletion counted in the annotated subtree.
         result, _ = self.compare(
             chapter_file(section('section-a', 'Alpha',
                                  '<para>Keep one here.</para>'
@@ -405,10 +405,10 @@ class TocMainTests(unittest.TestCase):
         sections = result.get('sections', {})
         self.assertEqual(sections.get('section-b', {}).get('status'), 'added')
 
-    def test_split_off_section_ignores_old_deletion_counts(self):
+    def test_split_off_section_counts_deletions_where_shown(self):
         # Half of a surviving old section moved to a new one: the new
-        # section stays blue, but the old section's own deleted
-        # paragraph is not charged to it.
+        # section stays blue, and its tooltip counts the old paragraph
+        # because the struck copy is visibly inserted into its subtree.
         paras = ''.join('<para>Stable paragraph number %d with some words to '
                         'anchor alignment here.</para>' % k for k in range(6))
         old = (chapter_file(section('section-a', 'Alpha',
@@ -432,9 +432,9 @@ class TocMainTests(unittest.TestCase):
         result, _ = self.compare(old, new)
         sections = result.get('sections', {})
         self.assertEqual(sections.get('section-b', {}).get('status'), 'changed')
-        self.assertEqual(sections['section-b'].get('del'), 0)
+        self.assertEqual(sections['section-b'].get('del'), 1)
         self.assertEqual(sections.get('section-a', {}).get('status'), 'changed')
-        self.assertEqual(sections['section-a'].get('del'), 1)
+        self.assertEqual(sections['section-a'].get('del'), 0)
 
     def test_kept_anchor_does_not_hide_a_deletion(self):
         # The new title keeps the old section id as an anchor for old
@@ -549,10 +549,10 @@ class TocMainTests(unittest.TestCase):
         self.assertEqual(sections.get('section-a', {}).get('mov'), 2)
         self.assertEqual(sections.get('section-d', {}).get('mov'), 2)
 
-    def test_split_deletion_counted_once(self):
+    def test_split_deletion_counted_once_where_shown(self):
         # The old section is gone, its content split over two new ones
-        # and one paragraph deleted: neither successor may claim the
-        # deletion twice, so neither claims it.
+        # and one paragraph deleted: the successor holding the struck
+        # copy counts it once, and the other successor does not.
         old = (chapter_file(section(
             'section-a', 'Section A',
             '<para>Keep this paragraph unchanged.</para>'
@@ -573,7 +573,7 @@ class TocMainTests(unittest.TestCase):
         self.assertEqual(sections.get('section-b', {}).get('status'), 'changed')
         self.assertEqual(sections.get('section-c', {}).get('status'), 'changed')
         self.assertEqual(sections['section-b'].get('del'), 0)
-        self.assertEqual(sections['section-c'].get('del'), 0)
+        self.assertEqual(sections['section-c'].get('del'), 1)
 
     def test_green_section_lists_struck_text_and_move_note(self):
         # 22.10's shape: a green section that kept one paragraph,
@@ -606,6 +606,80 @@ class TocMainTests(unittest.TestCase):
         # The struck paragraph and the move note really sit in section b.
         ids = [el.get(XML_ID) for el in tree.iter() if isinstance(el.tag, str)]
         self.assertIn('section-b', ids)
+
+    def test_blue_sections_count_deletions_where_they_are_shown(self):
+        # CLL 1.1's quantified/indefinite descriptions shape: a paragraph
+        # of A pairs across the section boundary with one in B, so A's five
+        # deleted blocks are inserted before it in B. Tooltips follow them.
+        shared = ('A surviving paragraph with enough shared wording '
+                  'to align across sections.')
+        gone = ''.join('<para>Deleted block %d from section A.</para>' % n
+                       for n in range(5))
+        old = chapter_file(
+            section('section-a', 'Old heading',
+                    gone + '<para>' + shared + '</para>'),
+            section('section-b', 'Old B heading',
+                    '<para>Keep this paragraph in section B.</para>'))
+        new = chapter_file(
+            section('section-a', 'Completely different title',
+                    '<para>Fresh replacement text in section A.</para>'),
+            section('section-b', 'New B title',
+                    '<para>' + shared + ' Extra words.</para>'
+                    '<para>Keep this paragraph in section B.</para>'))
+        result, tree = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-a', {}).get('status'), 'changed')
+        self.assertEqual(sections.get('section-b', {}).get('status'), 'changed')
+        self.assertEqual(sections['section-a'].get('del'), 0)
+        self.assertEqual(sections['section-b'].get('del'), 5)
+        b = tree.find('.//*[@xml:id="section-b"]'.replace(
+            'xml:id', '{http://www.w3.org/XML/1998/namespace}id'))
+        self.assertEqual(sum('Deleted block' in ''.join(el.itertext())
+                             for el in b.iter() if el.tag == 'para'), 5)
+
+    def test_deleted_list_entries_count_as_separate_blocks(self):
+        # A struck list of five entries is five deleted blocks, not one
+        # deleted list container.
+        keep = 'Keep this sentence here for alignment purposes only.'
+        entries = ''.join('<listitem><member>Old entry %d.</member></listitem>' % n
+                          for n in range(5))
+        old = chapter_file(section(
+            'section-a', 'Section A',
+            '<para>' + keep + '</para><itemizedlist>' + entries + '</itemizedlist>'))
+        new = chapter_file(section(
+            'section-b', 'Section B',
+            '<para>' + keep + '</para>'
+            '<para>Luminous nebulae drift silently onward through the void.</para>'
+            '<para>Copper kettles sing thermal ballads late at night.</para>'))
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('section-b', {}).get('status'), 'added')
+        self.assertEqual(sections['section-b'].get('del'), 5)
+
+    def test_deleted_inline_valsi_phrases_are_not_deleted_blocks(self):
+        # Opus's inline reproduction: the surviving changed paragraph has
+        # two struck phrases containing valsi markup, but no deleted block.
+        old = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
+               '<section xml:id="s-k"><title>Keep</title><para>'
+               'A stable lead paragraph that never changes in any version of this test book.'
+               '</para></section><section xml:id="s-g"><title>Grab bag</title><para>'
+               "The quote word <valsi>zo'oi</valsi> and the name word <valsi>la'oi</valsi> "
+               'both take one foreign word, as <xref linkend="s-k"/> says.'
+               '</para></section></chapter>')
+        new = ('<chapter xml:id="chapter-a"><title>Chapter</title>'
+               '<section xml:id="s-k"><title>Keep</title><para>'
+               'A stable lead paragraph that never changes in any version of this test book.'
+               '</para></section><section xml:id="s-n"><title>Quoting</title>'
+               '<para>Fresh paragraph one about quoting here.</para>'
+               '<para>Fresh paragraph two about quoting here.</para>'
+               '<para>Fresh paragraph three about quoting here.</para><para>'
+               "The quote word <valsi>zo'oi</valsi> takes one foreign word."
+               '</para></section></chapter>')
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertEqual(sections.get('s-n', {}).get('status'), 'added')
+        self.assertEqual(sections['s-n'].get('chg'), 1)
+        self.assertEqual(sections['s-n'].get('del'), 0)
 
     def test_renamed_chapter_with_own_content_matches_old_chapter(self):
         # A renamed chapter with three own blocks: the title and both
@@ -795,9 +869,9 @@ class TocFinishTests(unittest.TestCase):
             self.assertIn('#a9c8ff', variant)
             self.assertIn('#97f295', variant)
             self.assertIn('#ffb6ba', variant)
-            self.assertIn('continues from the old version', variant)
-            self.assertIn('keeping its place', variant)
-            self.assertIn('most of its text from old text', variant)
+            self.assertIn('continues from the old version — keeping its place, '
+                          'or with most of its text from old text — changed', variant)
+            self.assertNotIn(' -- ', variant)
             self.assertIn('to read as new text', variant)
             self.assertIn('struck through, is a deleted section', variant)
             self.assertNotIn('wholly new section', variant)

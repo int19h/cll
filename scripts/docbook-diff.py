@@ -1688,7 +1688,7 @@ class Differ:
                 renamed = (old_el is not None and i != old_el.get(XML_ID)
                            and not self._section_survives(old_el))
                 entry = {'status': 'changed' if old_el is not None else 'added',
-                         'changed': bool(c and c.get('chg')),
+                         'changed': bool(c and (c.get('chg') or c.get('movechg'))),
                          'added': bool(c and c.get('ins')),
                          'deleted': self._subtree_has_deleted(el),
                          'moved': self._subtree_has_moved(el),
@@ -2469,7 +2469,8 @@ def finish(argv):
         '<span class="added">added text</span>, '
         '<span class="deleted">deleted text</span> (kept where it was, struck through), and '
         '<span class="changed">notes where moved material used to be</span>, '
-        'with a link to its new place. Moved material itself is not marked at its new place. '
+        'with a link to its new place. Moved material itself is not marked at its new place '
+        'unless its wording also changed. '
         'In the table of contents, a light blue number (#a9c8ff) is a section that '
         'continues from the old version — keeping its place, or with most of its '
         'text from old text — changed; a green number (#97f295) is a section to '

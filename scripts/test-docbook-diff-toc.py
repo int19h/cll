@@ -198,6 +198,36 @@ class TocMainTests(unittest.TestCase):
         self.assertTrue(sections['section-d'].get('moved'))
         self.assertTrue(sections['chapter-a'].get('moved'))
 
+    def test_moved_and_changed_line_also_marks_changed(self):
+        # A moved example whose gloss changes shows added and struck words
+        # at its destination: movechg means both moved and changed.
+        old_example = ('<example><interlinear-gloss>'
+                       '<jbo>mi klama lo zarci i lo sa zdani li u</jbo>'
+                       '<gloss>I go-to a market and then to a house.</gloss>'
+                       '<natlang>I went to the market and then to the house.</natlang>'
+                       '</interlinear-gloss></example>')
+        new_example = old_example.replace('and then to a house',
+                                          'and later to a house')
+        mid = ''.join('<para>Stable paragraph number %d with some words to '
+                      'anchor alignment here.</para>' % k for k in range(8))
+        old = (chapter_file(section('section-a', 'Alpha',
+                                    '<para>Keep one here.</para>' + old_example)
+                            + '<section xml:id="section-m"><title>Middle</title>'
+                            + mid + '</section>'
+                            + section('section-d', 'Delta',
+                                      '<para>Keep two here.</para>')))
+        new = (chapter_file(section('section-a', 'Alpha',
+                                    '<para>Keep one here.</para>')
+                            + '<section xml:id="section-m"><title>Middle</title>'
+                            + mid + '</section>'
+                            + section('section-d', 'Delta',
+                                      '<para>Keep two here.</para>' + new_example)))
+        result, _ = self.compare(old, new)
+        sections = result.get('sections', {})
+        self.assertTrue(sections['section-d'].get('moved'))
+        self.assertTrue(sections['section-d'].get('changed'))
+        self.assertTrue(sections['chapter-a'].get('changed'))
+
     def test_renamed_section_counts_as_surviving(self):
         # Same content under a new id: the section survived (blue),
         # not a wholly new one, and nothing counts as deleted.
@@ -1041,8 +1071,8 @@ class TocFinishTests(unittest.TestCase):
             self.assertNotIn('more than half of its blocks', variant)
             self.assertNotIn('Blocks (paragraphs', variant)
             # The existing explanations stay right.
-            self.assertIn('Moved material itself is not marked at its new place.',
-                          variant)
+            self.assertIn('Moved material itself is not marked at its new place '
+                          'unless its wording also changed.', variant)
             self.assertIn('ignores differences that are only in the formatting.',
                           variant)
 

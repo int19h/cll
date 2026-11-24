@@ -39,8 +39,8 @@ The finish step turns the built page into the published difference.html
 (with a banner explaining the marks) and difference_prefixed.html (the same
 with a searchable text marker at each change); it also marks each changed
 section's number in the table of contents and collapses fully added or
-deleted table rows into one marked row. Per-section block counts for the
-table of contents travel in the stats file under "sections"; see finish().
+deleted table rows into one marked row. Per-section visible change kinds
+travel in the stats file under "sections"; see finish().
 
 Standard library only.
 """
@@ -937,7 +937,6 @@ class Differ:
         self.unplaced = []
         self.dropped_words = []
         self.parent_of = dict(new.parent)          # live parent map of the output
-        self.move_note_pairs = {}                  # note element -> old moved block ids
         self.id_rep_old = rep(old.groups)
         self.id_rep_new = rep(new.groups)
         self.after = {}
@@ -1382,8 +1381,6 @@ class Differ:
         targets = self.target_of(O)
         p = ET.Element('para', {'role': 'diff-moved', 'revisionflag': 'changed'})
         p.set('diffmoved', ' '.join(targets))
-        self.move_note_pairs[p] = {id(b) for b in self.so.blocks_under(O)
-                                   if b.status in MOVED}
         self.fill_note(p, targets)
         if t in SECTIONISH:
             title = O.find('title')
@@ -1457,14 +1454,10 @@ class Differ:
             if len(run) < 2 and local(run[0].tag) != 'section':
                 continue
             targets = []
-            pairs = set()
             for c in run:
                 for i in c.get('diffmoved').split():
                     if i not in targets:
                         targets.append(i)
-                for e in c.iter():
-                    if is_el(e) and e.get('role') == 'diff-moved':
-                        pairs.update(self.move_note_pairs.get(e, ()))
             last = run[-1]
             idx = kids.index(last)
             later_sections = any(local(c.tag) in SECTIONISH for c in kids[idx + 1:])
@@ -1472,7 +1465,6 @@ class Differ:
                                    for c in kids[:kids.index(run[0])])
             p = ET.Element('para', {'role': 'diff-moved', 'revisionflag': 'changed',
                                     'diffmoved': ' '.join(targets)})
-            self.move_note_pairs[p] = pairs
             self.fill_note(p, targets)
             if local(S.tag) in SECTIONISH and (later_sections or earlier_sections) and \
                     all(local(c.tag) == 'section' for c in run):
@@ -1671,24 +1663,19 @@ class Differ:
     # are handled by insert_old (their old blocks are 'del').
 
     def section_summaries(self):
-        """Per-section change counts for the comparison table of contents.
+        """Visible change kinds for each marked section's ToC tooltip.
 
-        Maps each changed section's xml:id to its status -- added for an
-        entirely new section, deleted for a re-inserted deleted one,
-        changed for a surviving section with any change under it -- and to
-        its block counts, so finish() can mark the section's ToC number.
-        Counts describe the blocks and move notes visibly held in each
-        section's annotated subtree. Old-side summaries decide only whether
-        the section survives and which colour its number receives.
+        Old-side summaries decide only section identity and colour. A real
+        ID rename can mark an otherwise unchanged section; every other mark
+        requires a changed, added, deleted or moved annotation in the
+        section's own annotated subtree, including its subsections.
         """
         out = {}
-        sn, so = self.sn, self.so
         dead = set()
         for O, cp in self.deleted_sections:
             for e in cp.iter():
                 dead.add(id(e))
         old_sec_of_id = self._id_sections(self.old, None)
-        resolved = []
         for _, root in self.new.files:
             for el in root.iter():
                 if not is_el(el) or local(el.tag) not in SECTIONISH:
@@ -1696,48 +1683,48 @@ class Differ:
                 i = el.get(XML_ID)
                 if not i:
                     continue
-                c = sn.get(el)
-                old_el = self.old.ids.get(i)
-                via = 'direct' if old_el is not None else None
-                if old_el is None:
-                    if len(self._own_blocks(el)) >= CONTENT_BLOCKS:
-                        old_el = self._aligned_old_section(el)
-                        if old_el is not None:
-                            via = 'align'
-                        elif local(el.tag) == 'chapter':
-                            old_el = self._parent_old_section(el, dead, old_sec_of_id)
-                            if old_el is not None:
-                                via = 'parent'
-                    else:
-                        old_el = self._alias_old_section(el, old_sec_of_id, dead)
-                        if old_el is not None:
-                            via = 'alias'
-                        else:
-                            old_el = self._parent_old_section(el, dead, old_sec_of_id)
-                            if old_el is not None:
-                                via = 'parent'
-                            else:
-                                old_el = self._aligned_old_section(el)
-                                if old_el is not None:
-                                    via = 'align'
-                oc = so.get(old_el) if old_el is not None else {}
-                if via in (None, 'direct') and not self._section_changed(c, oc):
-                    continue
-                resolved.append((el, i, c, old_el))
-        for el, i, c, old_el in resolved:
-            out[i] = {'status': 'changed' if old_el is not None else 'added',
-                      'chg': (c or {}).get('chg', 0), 'ins': (c or {}).get('ins', 0),
-                      'del': self._subtree_del(el),
-                      'mov': self._subtree_moves(el),
-                      'renamed': old_el is not None and i != old_el.get(XML_ID)}
+                c = self.sn.get(el)
+                old_el = self._resolve_old_section(el, dead, old_sec_of_id)
+                renamed = (old_el is not None and i != old_el.get(XML_ID)
+                           and not self._section_survives(old_el))
+                entry = {'status': 'changed' if old_el is not None else 'added',
+                         'changed': bool(c and c.get('chg')),
+                         'added': bool(c and c.get('ins')),
+                         'deleted': self._subtree_has_deleted(el),
+                         'moved': self._subtree_has_moved(el),
+                         'renamed': renamed}
+                if renamed or any(entry[k] for k in
+                                  ('changed', 'added', 'deleted', 'moved')):
+                    out[i] = entry
         for _, cp in self.deleted_sections:
             i = cp.get(XML_ID)
             if not i:
                 continue
-            out[i] = {'status': 'deleted', 'chg': 0, 'ins': 0,
-                      'del': self._subtree_del(cp),
-                      'mov': self._subtree_moves(cp)}
+            out[i] = {'status': 'deleted', 'changed': False, 'added': False,
+                      'deleted': True, 'moved': self._subtree_has_moved(cp),
+                      'renamed': False}
         return out
+
+    def _resolve_old_section(self, new_el, dead, old_sec_of_id):
+        """Old section that determines a new section's identity and colour."""
+        i = new_el.get(XML_ID)
+        old_el = self.old.ids.get(i)
+        if old_el is not None and (not is_el(old_el)
+                                   or local(old_el.tag) not in SECTIONISH):
+            old_el = None
+        if old_el is not None:
+            return old_el
+        if len(self._own_blocks(new_el)) >= CONTENT_BLOCKS:
+            old_el = self._aligned_old_section(new_el)
+            if old_el is None and local(new_el.tag) == 'chapter':
+                old_el = self._parent_old_section(new_el, dead, old_sec_of_id)
+        else:
+            old_el = self._alias_old_section(new_el, old_sec_of_id, dead)
+            if old_el is None:
+                old_el = self._parent_old_section(new_el, dead, old_sec_of_id)
+            if old_el is None:
+                old_el = self._aligned_old_section(new_el)
+        return old_el
 
     def _section_of(self, book, el):
         """Nearest enclosing-or-self sectionish ancestor of el."""
@@ -1853,11 +1840,9 @@ class Differ:
             i = ch.get(XML_ID)
             if not i:
                 continue
-            o = self.old.ids.get(i)
+            o = self._resolve_old_section(ch, dead, old_sec_of_id)
             if o is None:
-                o = self._alias_old_section(ch, old_sec_of_id, dead)
-                if o is None:
-                    continue
+                continue
             resolved += 1
             par = self.old.parent.get(o)
             while par is not None and not (is_el(par) and local(par.tag) in SECTIONISH):
@@ -1894,30 +1879,20 @@ class Differ:
             return None
         return max(per, key=per.get)
 
-    @staticmethod
-    def _section_changed(c, oc):
-        """Whether a surviving section changed anywhere under it.
+    def _subtree_has_deleted(self, el):
+        """Whether the annotated subtree holds a wholly struck block.
 
-        New-side blocks (changed, added, moved) live in c; deleted
-        blocks and the old side of a move live only in oc, so a section
-        that only lost material counts as changed too.
-        """
-        if c and any(c.get(s) for s in ('chg', 'ins', 'move', 'movechg')):
-            return True
-        return bool(oc) and any(oc.get(s) for s in ('del', 'move', 'movechg'))
-
-    def _subtree_del(self, el):
-        """Struck blocks held in the section's annotated subtree.
-
-        Use the same block boundaries as Book.linearize: a list entry,
-        table row or example line is one block, while an inline phrase in
-        a surviving block is not. Count outermost blocks that are flagged
-        deleted, inherit a deleted flag, or hold only struck text. Move
-        notes are counted separately.
+        Follow nested blocks like Book.linearize. A live cross-reference
+        supplies visible text even though its XML element has no literal
+        text, so deleting adjacent punctuation does not delete its block.
         """
         def all_deleted(block):
             seen = [False, False]
             def walk(e, deleted):
+                if (local(e.tag) in ('xref', 'footnoteref')
+                        and not (deleted or e.get('revisionflag') == 'deleted')):
+                    seen[False] = True
+                    return
                 deleted = deleted or e.get('revisionflag') == 'deleted'
                 if (e.text or '').strip():
                     seen[deleted] = True
@@ -1929,44 +1904,29 @@ class Differ:
             walk(block, False)
             return seen[True] and not seen[False]
 
-        n = 0
         def walk(e, deleted):
-            nonlocal n
             if not is_el(e) or local(e.tag) in SKIP:
-                return
+                return False
             if e.get('diffmoved') is not None or e.get('role') == 'diff-moved':
-                return
+                return False
             t = local(e.tag)
             deleted = deleted or e.get('revisionflag') == 'deleted'
             direct = (e.text or '').strip() or any((c.tail or '').strip() for c in e)
             if t in BLOCK or (direct and t not in SECTIONISH):
-                out = []
-                inline_text(e, out, [])
+                out, nested = [], []
+                inline_text(e, out, nested)
                 if ws(''.join(out)) and (deleted or all_deleted(e)):
-                    n += 1
-                return
-            for c in e:
-                walk(c, deleted)
-        walk(el, False)
-        return n
+                    return True
+                return any(walk(n, deleted) for n in nested)
+            return any(walk(c, deleted) for c in e)
+        return walk(el, False)
 
-    def _subtree_moves(self, el):
-        """Count destination pairs and source notes not already represented."""
-        pairs = {id(b.partner) for b in self.sn.blocks_under(el)
-                 if b.status in MOVED and b.partner is not None}
-        notes = 0
-        stack = [el]
-        while stack:
-            e = stack.pop()
-            if not is_el(e):
-                continue
-            if e.get('role') == 'diff-moved':
-                noted = self.move_note_pairs.get(e, ())
-                if not noted or pairs.isdisjoint(noted):
-                    notes += 1
-            else:
-                stack.extend(e)
-        return len(pairs) + notes
+    def _subtree_has_moved(self, el):
+        """Whether the subtree holds a move note or received moved text."""
+        if any(b.status in MOVED for b in self.sn.blocks_under(el)):
+            return True
+        return any(is_el(e) and e.get('role') == 'diff-moved'
+                   for e in el.iter())
 
     def fix_order(self, root):
         """Inserted paragraphs may not follow a section in a section: wrap
@@ -2287,17 +2247,13 @@ def _apply_edits(page, edits):
 
 
 def toc_tip(entry):
-    """Tooltip for a marked ToC number from its per-section block counts."""
-    counts = [(entry.get(k, 0), w) for k, w in
-              (('chg', 'changed'), ('ins', 'added'),
-               ('del', 'deleted'), ('mov', 'moved'))]
-    counts = [(n, w) for n, w in counts if n]
-    if not counts:
-        return ('section id renamed' if entry.get('renamed')
-                else 'material moved or deleted from this section')
-    (n0, w0), rest = counts[0], counts[1:]
-    tip = '%d block%s %s' % (n0, '' if n0 == 1 else 's', w0)
-    return ', '.join([tip] + ['%d %s' % (n, w) for n, w in rest])
+    """Name the visible change kinds in a marked section, in fixed order."""
+    kinds = [k for k in ('changed', 'added', 'deleted', 'moved') if entry.get(k)]
+    if not kinds:
+        return 'Section renamed' if entry.get('renamed') else ''
+    words = kinds[0] if len(kinds) == 1 else ', '.join(kinds[:-1]) + ' and ' + kinds[-1]
+    tip = words.capitalize() + ' material'
+    return 'Section renamed; ' + tip[0].lower() + tip[1:] if entry.get('renamed') else tip
 
 
 def mark_toc(page, sections):
@@ -2323,9 +2279,12 @@ def mark_toc(page, sections):
             nm = TOC_NUMBER.match(page, lm.end())
             if not nm:
                 continue
+            tip = toc_tip(entry)
+            if not tip:
+                continue
             chunks.append(page[bpos:nm.start(1)])
             chunks.append('<span class="%s" title="%s">%s</span>'
-                          % (TOC_CLASSES[entry['status']], toc_tip(entry),
+                          % (TOC_CLASSES[entry['status']], tip,
                              nm.group(1)))
             bpos = nm.end(1)
         chunks.append(page[bpos:r1])
@@ -2500,15 +2459,9 @@ def finish(argv):
         page = re.sub(r'(\s(?:src|href))="(assets/|final\.css")',
                       lambda m: '%s="%s%s' % (m.group(1), a.assets, m.group(2)), page)
     esc = lambda x: x.replace('&', '&amp;').replace('<', '&lt;')
-    counts = ''
     sections = {}
     if a.stats:
         st = json.loads(Path(a.stats).read_text())
-        k = st.get('statuses', {})
-        counts = (' Blocks (paragraphs, example lines, table rows, list entries, titles): '
-                  '%d changed, %d added, %d deleted, %d moved.'
-                  % (k.get('chg', 0) // 2, k.get('ins', 0), k.get('del', 0),
-                     (k.get('move', 0) + k.get('movechg', 0)) // 2))
         sections = st.get('sections', {})
     banner = (
         '<div class="diff-banner"><p><strong>Changes from %s to %s.</strong> '
@@ -2516,7 +2469,7 @@ def finish(argv):
         '<span class="added">added text</span>, '
         '<span class="deleted">deleted text</span> (kept where it was, struck through), and '
         '<span class="changed">notes where moved material used to be</span>, '
-        'with a link to its new place. Moved material itself is not marked at its new place.%s '
+        'with a link to its new place. Moved material itself is not marked at its new place. '
         'In the table of contents, a light blue number (#a9c8ff) is a section that '
         'continues from the old version — keeping its place, or with most of its '
         'text from old text — changed; a green number (#97f295) is a section to '
@@ -2524,7 +2477,7 @@ def finish(argv):
         'section (its text is kept below, struck through). '
         'The comparison is computed from the DocBook sources of the two versions, '
         'so it ignores differences that are only in the formatting.</p></div>'
-        % (esc(a.old_label), esc(a.new_label), esc(a.new_label), esc(a.old_label), counts))
+        % (esc(a.old_label), esc(a.new_label), esc(a.new_label), esc(a.old_label)))
     page, n = re.subn(r'(<body\b[^>]*>)', lambda m: m.group(1) + banner, page, count=1)
     if not n:
         sys.exit('docbook-diff finish: no <body> in %s' % a.index)

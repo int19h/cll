@@ -937,6 +937,7 @@ class Differ:
         self.unplaced = []
         self.dropped_words = []
         self.parent_of = dict(new.parent)          # live parent map of the output
+        self.move_note_pairs = {}                  # note element -> old moved block ids
         self.id_rep_old = rep(old.groups)
         self.id_rep_new = rep(new.groups)
         self.after = {}
@@ -1381,6 +1382,8 @@ class Differ:
         targets = self.target_of(O)
         p = ET.Element('para', {'role': 'diff-moved', 'revisionflag': 'changed'})
         p.set('diffmoved', ' '.join(targets))
+        self.move_note_pairs[p] = {id(b) for b in self.so.blocks_under(O)
+                                   if b.status in MOVED}
         self.fill_note(p, targets)
         if t in SECTIONISH:
             title = O.find('title')
@@ -1454,10 +1457,14 @@ class Differ:
             if len(run) < 2 and local(run[0].tag) != 'section':
                 continue
             targets = []
+            pairs = set()
             for c in run:
                 for i in c.get('diffmoved').split():
                     if i not in targets:
                         targets.append(i)
+                for e in c.iter():
+                    if is_el(e) and e.get('role') == 'diff-moved':
+                        pairs.update(self.move_note_pairs.get(e, ()))
             last = run[-1]
             idx = kids.index(last)
             later_sections = any(local(c.tag) in SECTIONISH for c in kids[idx + 1:])
@@ -1465,6 +1472,7 @@ class Differ:
                                    for c in kids[:kids.index(run[0])])
             p = ET.Element('para', {'role': 'diff-moved', 'revisionflag': 'changed',
                                     'diffmoved': ' '.join(targets)})
+            self.move_note_pairs[p] = pairs
             self.fill_note(p, targets)
             if local(S.tag) in SECTIONISH and (later_sections or earlier_sections) and \
                     all(local(c.tag) == 'section' for c in run):
@@ -1720,14 +1728,15 @@ class Differ:
             out[i] = {'status': 'changed' if old_el is not None else 'added',
                       'chg': (c or {}).get('chg', 0), 'ins': (c or {}).get('ins', 0),
                       'del': self._subtree_del(el),
-                      'mov': self._subtree_moves(el) + self._subtree_notes(el)}
+                      'mov': self._subtree_moves(el),
+                      'renamed': old_el is not None and i != old_el.get(XML_ID)}
         for _, cp in self.deleted_sections:
             i = cp.get(XML_ID)
             if not i:
                 continue
             out[i] = {'status': 'deleted', 'chg': 0, 'ins': 0,
                       'del': self._subtree_del(cp),
-                      'mov': self._subtree_notes(cp)}
+                      'mov': self._subtree_moves(cp)}
         return out
 
     def _section_of(self, book, el):
@@ -1941,24 +1950,24 @@ class Differ:
         walk(el, False)
         return n
 
-    def _subtree_notes(self, el):
-        """"Moved to" notes placed in the section's annotated subtree."""
-        n = 0
+    def _subtree_moves(self, el):
+        """Moved pairs whose source note or destination is in the subtree."""
+        pairs = {id(b.partner) for b in self.sn.blocks_under(el)
+                 if b.status in MOVED and b.partner is not None}
         stack = [el]
         while stack:
             e = stack.pop()
             if not is_el(e):
                 continue
             if e.get('role') == 'diff-moved':
-                n += 1
+                noted = self.move_note_pairs.get(e)
+                if noted:
+                    pairs.update(noted)
+                else:
+                    pairs.add(('note', id(e)))
             else:
                 stack.extend(e)
-        return n
-
-    def _subtree_moves(self, el):
-        """Moved blocks visibly held in the section's annotated subtree."""
-        return sum(b.status in MOVED and b.partner is not None
-                   for b in self.sn.blocks_under(el))
+        return len(pairs)
 
     def fix_order(self, root):
         """Inserted paragraphs may not follow a section in a section: wrap
@@ -2285,7 +2294,8 @@ def toc_tip(entry):
                ('del', 'deleted'), ('mov', 'moved'))]
     counts = [(n, w) for n, w in counts if n]
     if not counts:
-        return 'section id renamed'
+        return ('section id renamed' if entry.get('renamed')
+                else 'material moved or deleted from this section')
     (n0, w0), rest = counts[0], counts[1:]
     tip = '%d block%s %s' % (n0, '' if n0 == 1 else 's', w0)
     return ', '.join([tip] + ['%d %s' % (n, w) for n, w in rest])

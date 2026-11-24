@@ -167,6 +167,9 @@ class TocMainTests(unittest.TestCase):
         self.assertGreater(sections['section-a'].get('mov'), 0)
         self.assertEqual(sections.get('section-b', {}).get('status'), 'changed')
         self.assertEqual(sections.get('chapter-a', {}).get('status'), 'changed')
+        self.assertEqual(sections['section-a'].get('mov'), 1)
+        self.assertEqual(sections['section-b'].get('mov'), 1)
+        self.assertEqual(sections['chapter-a'].get('mov'), 1)
 
     def test_renamed_section_counts_as_surviving(self):
         # Same content under a new id: the section survived (blue),
@@ -435,6 +438,7 @@ class TocMainTests(unittest.TestCase):
         self.assertEqual(sections['section-b'].get('del'), 1)
         self.assertEqual(sections.get('section-a', {}).get('status'), 'changed')
         self.assertEqual(sections['section-a'].get('del'), 0)
+        self.assertFalse(sections['section-a'].get('renamed'))
 
     def test_kept_anchor_does_not_hide_a_deletion(self):
         # The new title keeps the old section id as an anchor for old
@@ -919,8 +923,21 @@ class TocFinishTests(unittest.TestCase):
         page, _ = self.finish(stats={
             'statuses': {}, 'stats': {},
             'sections': {'chapter-a': {'status': 'changed', 'chg': 0,
-                                       'ins': 0, 'del': 0, 'mov': 0}}})
+                                       'ins': 0, 'del': 0, 'mov': 0,
+                                       'renamed': True}}})
         self.assertIn('title="section id renamed"', page)
+
+    def test_unchanged_id_zero_counts_is_not_called_a_rename(self):
+        # A split source can keep its id and show no struck block or move
+        # note because those were placed in the receiving sibling. Never
+        # describe that section as renamed.
+        page, _ = self.finish(stats={
+            'statuses': {}, 'stats': {},
+            'sections': {'chapter-a': {'status': 'changed', 'chg': 0,
+                                       'ins': 0, 'del': 0, 'mov': 0,
+                                       'renamed': False}}})
+        self.assertIn('title="material moved or deleted from this section"', page)
+        self.assertNotIn('title="section id renamed"', page)
 
 
 if __name__ == '__main__':

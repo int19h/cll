@@ -47,6 +47,24 @@ def write_fixture(directory, stylesheets):
                 f'<div class="case"><div style="height: {i * 4}mm"></div>'
                 f'{inner}</div>')
 
+    # Sweep section heading followed by empty styling markers (p.twocolumn +
+    # p.allowbreaks) and a table, as in Section 17.16.
+    for i in range(CASES):
+        head_tok = f'MarkerHead{i}'
+        row_tok = f'MarkerRow{i}'
+        blocks.append(
+            f'<div class="case"><div style="height: {i * 4}mm"></div>'
+            f'<section class="section">'
+            f'<div class="titlepage"><div><div>'
+            f'<h2 class="title" style="clear: both">{head_tok}</h2>'
+            f'</div></div></div>'
+            f'<p class="twocolumn"></p><p class="allowbreaks"></p>'
+            f'<div class="informaltable"><table>'
+            f'<tr><td>{row_tok}</td><td>alpha</td></tr>'
+            f'<tr><td>row2</td><td>beta</td></tr>'
+            f'<tr><td>row3</td><td>gamma</td></tr>'
+            f'</table></div></section></div>')
+
     # Sweep p + div.example across page boundaries.
     for i in range(CASES):
         lead_tok = f'LeadEnd{i}:'
@@ -95,6 +113,13 @@ def assert_pagination(test, pages):
                 hp, bp,
                 f'h{level} case {i}: heading stranded on page {hp + 1} '
                 f'while its content starts on page {bp + 1}')
+    for i in range(CASES):
+        hp = find_page(test, pages, f'MarkerHead{i}')
+        rp = find_page(test, pages, f'MarkerRow{i}')
+        test.assertEqual(
+            hp, rp,
+            f'marker-heading case {i}: heading stranded on page {hp + 1} '
+            f'while its table starts on page {rp + 1}')
     for i in range(CASES):
         lp = find_page(test, pages, f'LeadEnd{i}:')
         ep = find_page(test, pages, f'ExStart{i}')

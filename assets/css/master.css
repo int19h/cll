@@ -534,12 +534,17 @@ h2 {
   margin: 0pt;
   margin-top: 10pt;
 }
+/* Empty styling-marker paragraphs (p.twocolumn, p.allowbreaks) can sit
+   between a section's div.titlepage and its table; keep-with-next on them
+   ensures the heading's break-after: avoid is not consumed by an empty box. */
 h2,
 h3,
 h4,
 h5,
 h6,
-section.section > div.titlepage {
+section.section > div.titlepage,
+p.twocolumn,
+p.allowbreaks {
   break-after: avoid;
   page-break-after: avoid;
 }
@@ -742,6 +747,7 @@ div.allowbreaks,
 .allowbreaks + div.table,
 .allowbreaks + div.informaltable,
 .allowbreaks + div.example {
+  break-inside: auto;
   page-break-inside: auto;
 }
 

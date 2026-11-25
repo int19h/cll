@@ -197,7 +197,12 @@ def audit_pdf(pdf_path, html_examples=None):
         lines = lines_by_page[pno]
         if not lines:
             continue
-        first_txt = lines[0][6]
+        first_ln = lines[0]
+        first_txt = first_ln[6]
+        # True example titles are bold ("Example N.M"), not prose sentences
+        # referencing a prior example ("Example 6.2 (p. 125) exhibits ...").
+        if not first_ln[5] or '(p.' in first_txt:
+            continue
         m = EXAMPLE_HEAD_RE.match(first_txt)
         if not m:
             continue

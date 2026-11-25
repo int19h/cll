@@ -366,7 +366,13 @@ div.example {
   margin-bottom: 0pt;
 }
 
-p + div.example {
+/* Keep an introducing paragraph with the example or table that follows it,
+   including across empty styling-marker paragraphs (p.allowbreaks, p.twocolumn). */
+p + div.example,
+p + div.informaltable,
+p + div.table,
+p + p.allowbreaks,
+p + p.twocolumn {
   break-before: avoid;
   page-break-before: avoid;
 }
@@ -534,9 +540,12 @@ h2 {
   margin: 0pt;
   margin-top: 10pt;
 }
-/* Empty styling-marker paragraphs (p.twocolumn, p.allowbreaks) can sit
-   between a section's div.titlepage and its table; keep-with-next on them
-   ensures the heading's break-after: avoid is not consumed by an empty box. */
+/* WeasyPrint's and Prince's UA stylesheets already keep h1-h6 with the next
+   block; repeating break-after: avoid here covers other print engines and
+   documents the invariant. Empty styling-marker paragraphs (p.twocolumn,
+   p.allowbreaks) can sit between a section's div.titlepage and its table;
+   keep-with-next on them passes the heading's break-after: avoid through to
+   the table instead of letting the empty box consume it. */
 h2,
 h3,
 h4,
@@ -720,6 +729,7 @@ table {
 /* Keep tables with their titles */
 div.table,
 div.informaltable {
+  break-inside: avoid;
   page-break-inside: avoid;
 }
 

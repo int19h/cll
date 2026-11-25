@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
-"""Section headings stay with their content and examples stay with lead-ins.
+"""Section headings with table lead-ins, marker headings, and examples stay attached.
 
 Regression for issue #333:
-- Section headings (h2..h6 and section.section > div.titlepage) must not be
-  stranded at the foot of a page away from their following content.
-- An example (div.example) following a paragraph (p + div.example) must not
-  start a new page while the paragraph that introduces it ends the previous
-  page, and the example itself must not split across pages.
+- A section heading followed by a lead-in paragraph ("The following cmavo are
+  discussed in this section:") and an unbreakable div.informaltable (cmavo-list)
+  must not strand the heading and lead-in at the foot of a page while the table
+  moves to the next page.
+- A paragraph introducing a div.table must stay with the table.
+- A section heading followed by empty styling-marker paragraphs (p.twocolumn,
+  p.allowbreaks) and a table (as in Section 17.16) must not strand the heading.
+- A paragraph introducing a div.example (p + div.example) must stay with the
+  example, and the example itself must stay unbreakable.
 
-Sweeps a spacer across a page height so one case always lands on the boundary,
-for both WeasyPrint and Prince (when prince is installed).
+Every sweep group in this file fails against origin/main's CSS in WeasyPrint
+and passes with the fix. Sweeps a spacer across a page height so one case
+always lands on the boundary, for both WeasyPrint and Prince (when installed).
 """
 import shutil
 import subprocess
@@ -26,29 +31,45 @@ def write_fixture(directory, stylesheets):
         f'<link rel="stylesheet" href="{path.resolve().as_uri()}">'
         for path in stylesheets)
     blocks = []
-    # Sweep h2 (inside DocBook section > div.titlepage), h3, h4, h5, h6.
-    for level in (2, 3, 4, 5, 6):
-        for i in range(CASES):
-            head_tok = f'HeadL{level}Case{i}'
-            body_tok = f'BodyL{level}Case{i}'
-            if level == 2:
-                inner = (
-                    f'<section class="section">'
-                    f'<div class="titlepage"><div><div>'
-                    f'<h2 class="title" style="clear: both">{head_tok}</h2>'
-                    f'</div></div></div>'
-                    f'<p>{body_tok} line one.<br>line two.<br>line three.</p>'
-                    f'</section>')
-            else:
-                inner = (
-                    f'<h{level}>{head_tok}</h{level}>'
-                    f'<p>{body_tok} line one.<br>line two.<br>line three.</p>')
-            blocks.append(
-                f'<div class="case"><div style="height: {i * 4}mm"></div>'
-                f'{inner}</div>')
 
-    # Sweep section heading followed by empty styling markers (p.twocolumn +
-    # p.allowbreaks) and a table, as in Section 17.16.
+    # 1. Section heading + one-line lead-in + unbreakable cmavo informaltable
+    # (issue #333 reported shape: 22.5, 22.6, 22.10, 18.8).
+    for i in range(CASES):
+        head_tok = f'CmavoHead{i}'
+        lead_tok = f'CmavoLead{i}:'
+        row_start = f'CmavoRowStart{i}'
+        row_end = f'CmavoRowEnd{i}'
+        blocks.append(
+            f'<div class="case"><div style="height: {i * 4}mm"></div>'
+            f'<section class="section">'
+            f'<div class="titlepage"><div><div>'
+            f'<h2 class="title" style="clear: both">{head_tok}</h2>'
+            f'</div></div></div>'
+            f'<p>The following cmavo are discussed in this section {lead_tok}</p>'
+            f'<div class="informaltable"><table class="cmavo-list">'
+            f'<tr><td>{row_start}</td><td>PA*</td><td>first row</td></tr>'
+            f'<tr><td>cmavo2</td><td>PA*</td><td>second row</td></tr>'
+            f'<tr><td>cmavo3</td><td>PA*</td><td>third row</td></tr>'
+            f'<tr><td>{row_end}</td><td>PA*</td><td>fourth row</td></tr>'
+            f'</table></div></section></div>')
+
+    # 2. Lead-in paragraph + formal div.table.
+    for i in range(CASES):
+        lead_tok = f'TableLead{i}:'
+        tbl_start = f'TableStart{i}'
+        tbl_end = f'TableEnd{i}'
+        blocks.append(
+            f'<div class="case"><div style="height: {i * 4}mm"></div>'
+            f'<p>Introductory text leading into the formal table {lead_tok}</p>'
+            f'<div class="table"><div class="table-title">{tbl_start}</div>'
+            f'<div class="table-contents"><table>'
+            f'<tr><td>r1</td><td>val1</td></tr>'
+            f'<tr><td>r2</td><td>val2</td></tr>'
+            f'<tr><td>r3</td><td>{tbl_end}</td></tr>'
+            f'</table></div></div></div>')
+
+    # 3. Section heading + empty styling markers (p.twocolumn + p.allowbreaks)
+    # + informaltable (Section 17.16 shape).
     for i in range(CASES):
         head_tok = f'MarkerHead{i}'
         row_tok = f'MarkerRow{i}'
@@ -65,7 +86,7 @@ def write_fixture(directory, stylesheets):
             f'<tr><td>row3</td><td>gamma</td></tr>'
             f'</table></div></section></div>')
 
-    # Sweep p + div.example across page boundaries.
+    # 4. Paragraph + unbreakable div.example.
     for i in range(CASES):
         lead_tok = f'LeadEnd{i}:'
         ex_tok = f'ExStart{i}'
@@ -105,32 +126,50 @@ def find_page(test, pages, token):
 
 def assert_pagination(test, pages):
     test.assertTrue(pages, 'no pages rendered')
-    for level in (2, 3, 4, 5, 6):
-        for i in range(CASES):
-            hp = find_page(test, pages, f'HeadL{level}Case{i}')
-            bp = find_page(test, pages, f'BodyL{level}Case{i}')
-            test.assertEqual(
-                hp, bp,
-                f'h{level} case {i}: heading stranded on page {hp + 1} '
-                f'while its content starts on page {bp + 1}')
+    for i in range(CASES):
+        hp = find_page(test, pages, f'CmavoHead{i}')
+        lp = find_page(test, pages, f'CmavoLead{i}:')
+        rs = find_page(test, pages, f'CmavoRowStart{i}')
+        re_ = find_page(test, pages, f'CmavoRowEnd{i}')
+        test.assertEqual(
+            hp, lp,
+            f'cmavo-heading case {i}: heading on p.{hp + 1}, lead-in on p.{lp + 1}')
+        test.assertEqual(
+            lp, rs,
+            f'cmavo-heading case {i}: heading+lead-in stranded on p.{lp + 1} '
+            f'while cmavo table starts on p.{rs + 1}')
+        test.assertEqual(
+            rs, re_,
+            f'cmavo-heading case {i}: cmavo table broke across pp.{rs + 1}..{re_ + 1}')
+    for i in range(CASES):
+        lp = find_page(test, pages, f'TableLead{i}:')
+        ts = find_page(test, pages, f'TableStart{i}')
+        te = find_page(test, pages, f'TableEnd{i}')
+        test.assertEqual(
+            lp, ts,
+            f'formal-table case {i}: lead-in ends on p.{lp + 1} '
+            f'while table starts on p.{ts + 1}')
+        test.assertEqual(
+            ts, te,
+            f'formal-table case {i}: table broke across pp.{ts + 1}..{te + 1}')
     for i in range(CASES):
         hp = find_page(test, pages, f'MarkerHead{i}')
         rp = find_page(test, pages, f'MarkerRow{i}')
         test.assertEqual(
             hp, rp,
-            f'marker-heading case {i}: heading stranded on page {hp + 1} '
-            f'while its table starts on page {rp + 1}')
+            f'marker-heading case {i}: heading stranded on p.{hp + 1} '
+            f'while its table starts on p.{rp + 1}')
     for i in range(CASES):
         lp = find_page(test, pages, f'LeadEnd{i}:')
         ep = find_page(test, pages, f'ExStart{i}')
         ee = find_page(test, pages, f'ExEnd{i}')
         test.assertEqual(
             lp, ep,
-            f'example case {i}: lead-in ends on page {lp + 1} '
-            f'while example starts on page {ep + 1}')
+            f'example case {i}: lead-in ends on p.{lp + 1} '
+            f'while example starts on p.{ep + 1}')
         test.assertEqual(
             ep, ee,
-            f'example case {i}: example broke across pages {ep + 1}..{ee + 1}')
+            f'example case {i}: example broke across pp.{ep + 1}..{ee + 1}')
 
 
 def weasyprint_html():

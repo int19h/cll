@@ -1,7 +1,8 @@
 name: site-tools
 
-# Tests of the site scripts. They need no build tools and no GitHub
-# access, and they change nothing: see scripts/test-site-versions.sh.
+# Tests of the site scripts. They need no GitHub access and change
+# nothing; only xsltproc is installed for the end-to-end DocBook
+# comparison render test. See scripts/test-site-versions.sh.
 
 on:
   pull_request:
@@ -19,6 +20,10 @@ jobs:
         run: python3 scripts/test-docbook-diff-deletions.py
       - name: Ligatures stay inside comparison changes
         run: python3 scripts/test-docbook-diff-style.py
+      - name: Table-of-contents markers in DocBook comparisons
+        run: python3 scripts/test-docbook-diff-toc.py
+      - name: Table-row markers in DocBook comparisons
+        run: python3 scripts/test-docbook-diff-tablerows.py
       - name: Guarded recursive delete helper
         run: python3 scripts/test-safe-rm-tree.py
       - name: Makefile folder guard
@@ -33,3 +38,12 @@ jobs:
         run: bash scripts/test-site-versions.sh
       - name: Link destinations in DocBook comparisons
         run: python3 scripts/test-docbook-diff-links.py
+      - name: Install xsltproc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends xsltproc
+          xsltproc --version
+      - name: End-to-end DocBook comparison render
+        run: |
+          command -v xsltproc >/dev/null
+          python3 scripts/test-docbook-diff-render.py

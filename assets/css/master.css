@@ -752,11 +752,15 @@ div.informaltable {
  * WHich is freaking lame, but seems to work fine.
  *
  */
+/* Parallel-text chrestomathy passages in Appendix A can span multiple pages,
+   so allow breaks inside their informaltable wrappers while keeping the
+   preceding intro paragraph attached to the start of each passage. */
 .allowbreaks,
 div.allowbreaks,
 .allowbreaks + div.table,
 .allowbreaks + div.informaltable,
-.allowbreaks + div.example {
+.allowbreaks + div.example,
+section#volume-chrestomathy div.informaltable {
   break-inside: auto;
   page-break-inside: auto;
 }

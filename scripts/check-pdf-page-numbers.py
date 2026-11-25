@@ -31,6 +31,10 @@ BODY_BOTTOM = 631.0
 TRAILING_PAGE_RE = re.compile(r'(\d+)\s*$')
 INLINE_PAGE_RE = re.compile(r'\(p\.\s*(\d+)\)')
 EMPTY_PAGE_RE = re.compile(r'\(p\.\s*\)')
+SECTION_NUM_RE = re.compile(r'^(?:\d+|[A-Z]+)(?:\.\d+)+$')
+SECTION_HEAD_LINE_RE = re.compile(r'^((?:\d+|[A-Z]+)(?:\.\d+)+)(?:\s+(.*))?$')
+CHAPTER_OR_APPENDIX_ONLY_RE = re.compile(r'^(?:Chapter\s+\d+|Appendix\s+[A-Z]+)$')
+CHAPTER_OR_APPENDIX_START_RE = re.compile(r'^(?:Chapter\s+\d+|Appendix\s+[A-Z]+)(?:\s|$)')
 
 
 def normalize_ws(text):
@@ -43,8 +47,35 @@ def body_text(page):
     return normalize_ws(page.get_text('text', clip=clip))
 
 
+def is_toc_entry_line(text):
+    """Return True if a body line in the contents range is a printed ToC entry."""
+    if not text or text == 'Table of Contents':
+        return False
+    if CHAPTER_OR_APPENDIX_ONLY_RE.match(text):
+        return False
+    m = TRAILING_PAGE_RE.search(text)
+    if not m:
+        return False
+    head = text[:m.start()].strip()
+    return bool(re.search(r'[A-Za-z]', head))
+
+
+def is_body_start_page_lines(body_lines):
+    """Return True if non-empty body lines mark the start of the book body after ToC."""
+    first = body_lines[0]
+    if CHAPTER_OR_APPENDIX_START_RE.match(first):
+        if CHAPTER_OR_APPENDIX_ONLY_RE.match(first) or not TRAILING_PAGE_RE.search(first):
+            return True
+    return not any(is_toc_entry_line(txt) for txt in body_lines)
+
+
 def find_toc_pages(doc):
-    """Return 1-based page numbers belonging to the Table of Contents."""
+    """Return 1-based page numbers belonging to the Table of Contents.
+
+    Discovers the whole contents range from printed content, independent of
+    PDF link annotations, so a contents page that lost its links is still
+    counted and fails reconciliation.
+    """
     start = None
     for index, page in enumerate(doc, 1):
         if 'Table of Contents' in page.get_text():
@@ -52,17 +83,18 @@ def find_toc_pages(doc):
             break
     if start is None:
         raise RuntimeError('Table of Contents not found in PDF')
-    pages = []
-    for pno in range(start, min(start + 25, len(doc) + 1)):
-        page = doc[pno - 1]
-        text = page.get_text()
-        if pno > start and ('Chapter\xa01' in text or 'Chapter 1\n' in text or 'Chapter 1 ' in text):
-            if not page.get_links() or ('1.1' in text and 'Table of Contents' not in text):
-                break
-        if page.get_links():
-            pages.append(pno)
-        elif pno > start:
+    pages = [start]
+    for pno in range(start + 1, min(start + 25, len(doc) + 1)):
+        body_lines = [
+            txt for _, y0, y1, _, _, txt in page_visual_lines(doc[pno - 1])
+            if y1 > BODY_TOP and y0 < BODY_BOTTOM
+        ]
+        if not body_lines:
+            # Blank verso page between the end of ToC and Chapter 1.
             break
+        if is_body_start_page_lines(body_lines):
+            break
+        pages.append(pno)
     return pages
 
 
@@ -73,10 +105,10 @@ def heading_key_from_toc_label(label):
     m = re.match(r'^(\d+)\.\s+(.*)$', cleaned)
     if m:
         return f'Chapter {m.group(1)}', m.group(2)
-    m = re.match(r'^([A-Z])\.\s+(.*)$', cleaned)
+    m = re.match(r'^([A-Z]+)\.\s+(.*)$', cleaned)
     if m:
         return f'Appendix {m.group(1)}', m.group(2)
-    m = re.match(r'^((?:\d+|[A-Z])(?:\.\d+)+)\.\s+(.*)$', cleaned)
+    m = re.match(r'^((?:\d+|[A-Z]+)(?:\.\d+)+)\.\s+(.*)$', cleaned)
     if m:
         return m.group(1), m.group(2)
     return cleaned, ''
@@ -127,9 +159,7 @@ def count_printed_toc_lines(doc, toc_pages):
         for ym, y0, y1, x0, x1, txt in page_visual_lines(doc[pno - 1]):
             if y1 <= BODY_TOP or y0 >= BODY_BOTTOM:
                 continue
-            if txt == 'Table of Contents':
-                continue
-            if TRAILING_PAGE_RE.search(txt):
+            if is_toc_entry_line(txt):
                 count += 1
     return count
 
@@ -354,10 +384,10 @@ def parse_inline_xref_target(xref_text):
     m = re.match(r'^(Chapter\s+\d+)$', label)
     if m:
         return ('chapter', m.group(1))
-    m = re.match(r'^(Appendix\s+[A-Z])$', label)
+    m = re.match(r'^(Appendix\s+[A-Z]+)$', label)
     if m:
         return ('appendix', m.group(1))
-    m = re.match(r'^Section\s+((?:\d+|[A-Z])(?:\.\d+)+)$', label)
+    m = re.match(r'^Section\s+((?:\d+|[A-Z]+)(?:\.\d+)+)$', label)
     if m:
         return ('section', m.group(1))
     m = re.match(r'^(Example\s+\d+\.\d+)$', label)
@@ -425,7 +455,84 @@ def page_selmao_headings(page):
     return found
 
 
-def inline_target_on_page(page_text, bold_examples, selmao_headings, kind, key, toc_titles):
+def page_section_headings(page):
+    """Return {section_number: [full_heading_text, ...]} for section headings in body.
+
+    Requires the heading line itself (bold or >= 10.5pt text spans, starting
+    with the section number and without an inline '(p.' reference), joining
+    immediately following heading-styled continuation lines for wrapped titles.
+    """
+    raw_lines = []
+    for block in page.get_text('dict')['blocks']:
+        if block['type'] != 0:
+            continue
+        for line in block['lines']:
+            y0, y1 = line['bbox'][1], line['bbox'][3]
+            if y1 <= BODY_TOP or y0 >= BODY_BOTTOM:
+                continue
+            spans = [s for s in line['spans'] if s['text'].strip()]
+            if not spans:
+                continue
+            txt = normalize_ws(''.join(s['text'] for s in line['spans']))
+            if not txt:
+                continue
+            is_heading = all(
+                bool(s['flags'] & 16) or 'Bold' in s.get('font', '') or s['size'] >= 10.5
+                for s in spans
+            )
+            raw_lines.append((0.5 * (y0 + y1), y0, y1, line['bbox'][0], txt, is_heading))
+    raw_lines.sort(key=lambda item: (item[0], item[3]))
+    merged = []
+    for ym, y0, y1, x0, txt, is_heading in raw_lines:
+        if merged and abs(ym - merged[-1][0]) < 2.5:
+            pm, py0, py1, px0, ptxt, ph = merged[-1]
+            merged[-1] = (pm, min(py0, y0), max(py1, y1), min(px0, x0), f'{ptxt} {txt}', ph and is_heading)
+        else:
+            merged.append((ym, y0, y1, x0, txt, is_heading))
+
+    headings = {}
+    i = 0
+    while i < len(merged):
+        _, _, _, _, txt, is_heading = merged[i]
+        if is_heading and '(p.' not in txt:
+            m = SECTION_HEAD_LINE_RE.match(txt)
+            if m:
+                key = m.group(1)
+                parts = [txt]
+                j = i + 1
+                while j < len(merged):
+                    _, ny0, _, _, ntxt, nhead = merged[j]
+                    if (
+                        nhead
+                        and '(p.' not in ntxt
+                        and (ny0 - merged[j - 1][2]) < 6.0
+                        and not SECTION_HEAD_LINE_RE.match(ntxt)
+                        and not CHAPTER_OR_APPENDIX_START_RE.match(ntxt)
+                    ):
+                        parts.append(ntxt)
+                        j += 1
+                    else:
+                        break
+                headings.setdefault(key, []).append(normalize_ws(' '.join(parts)))
+                i = j
+                continue
+        i += 1
+    return headings
+
+
+def section_heading_on_page(section_headings, key, title=''):
+    """Confirm section heading 'key' (and title start, if known) prints as a heading line."""
+    lines = section_headings.get(key)
+    if not lines:
+        return False
+    if title:
+        short_title = ' '.join(title.split()[:3])
+        expected = f'{key} {short_title}'
+        return any(line.startswith(expected) for line in lines)
+    return True
+
+
+def inline_target_on_page(page_text, bold_examples, selmao_headings, section_headings, kind, key, toc_titles):
     """Verify the target heading/example/rule/selma'o actually prints on page."""
     if not page_text:
         return False
@@ -434,9 +541,7 @@ def inline_target_on_page(page_text, bold_examples, selmao_headings, kind, key, 
         return heading_present_on_page(page_text, key, title)
     if kind == 'section':
         title = toc_titles.get(key, '')
-        if title:
-            return heading_present_on_page(page_text, key, title)
-        return re.search(rf'(?:^|\s){re.escape(key)}(?:\s|$)', page_text) is not None
+        return section_heading_on_page(section_headings, key, title)
     if kind == 'example':
         return key in bold_examples
     if kind == 'titled':
@@ -455,6 +560,7 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
     body_cache = {}
     bold_ex_cache = {}
     selmao_cache = {}
+    section_head_cache = {}
 
     def get_body(pno):
         if pno not in body_cache:
@@ -470,6 +576,16 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
         if pno not in selmao_cache:
             selmao_cache[pno] = page_selmao_headings(doc[pno - 1]) if 1 <= pno <= total_pages else set()
         return selmao_cache[pno]
+
+    def get_section_headings(pno):
+        if pno not in section_head_cache:
+            section_head_cache[pno] = page_section_headings(doc[pno - 1]) if 1 <= pno <= total_pages else {}
+        return section_head_cache[pno]
+
+    def toc_heading_matches(pno, prefix, title):
+        if SECTION_NUM_RE.match(prefix):
+            return section_heading_on_page(get_section_headings(pno), prefix, title)
+        return heading_present_on_page(get_body(pno), prefix, title)
 
     toc_pages = find_toc_pages(doc)
     printed_toc_lines = count_printed_toc_lines(doc, toc_pages)
@@ -490,10 +606,10 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
             continue
         if printed != dest:
             toc_dest_mismatches.append((pno, nd, text, printed, dest, dest - printed))
-        if not heading_present_on_page(get_body(dest), prefix, title):
+        if not toc_heading_matches(dest, prefix, title):
             actual = None
             for cand in range(max(1, dest - 3), min(total_pages, dest + 3) + 1):
-                if heading_present_on_page(get_body(cand), prefix, title):
+                if toc_heading_matches(cand, prefix, title):
                     actual = cand
                     break
             toc_heading_mismatches.append((pno, nd, text, printed, dest, actual))
@@ -522,6 +638,7 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
             dest_text,
             get_bold_examples(dest) if kind == 'example' else (),
             get_selmao_headings(dest) if kind == 'selmao' else (),
+            get_section_headings(dest) if kind == 'section' else {},
             kind,
             key,
             toc_titles,

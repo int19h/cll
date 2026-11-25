@@ -67,6 +67,13 @@
     <xsl:value-of select="concat(@role,' example')"/>
   </xsl:template>
 
+  <!-- Mark parallel-text chrestomathy tables on their wrapper div so print CSS
+       can allow page breaks in them without affecting gloss tables added to
+       Appendix A later (issue #344). -->
+  <xsl:template match="informaltable[@role='parallel-text']" mode="class.value">
+    <xsl:value-of select="'parallel-text informaltable'"/>
+  </xsl:template>
+
   <!-- default is at
        http://docbook.sourceforge.net/release/xsl/1.76.1/doc/html/generate.toc.html
        -->

@@ -756,14 +756,15 @@ div.informaltable {
  *
  */
 /* Parallel-text chrestomathy passages in Appendix A can span multiple pages,
-   so allow breaks inside their informaltable wrappers while keeping the
-   preceding intro paragraph attached to the start of each passage. */
+   so allow breaks inside their parallel-text informaltable wrappers only,
+   keeping any other informaltable there (such as a gloss table) unbroken
+   while keeping the preceding intro paragraph attached to each passage. */
 .allowbreaks,
 div.allowbreaks,
 .allowbreaks + div.table,
 .allowbreaks + div.informaltable,
 .allowbreaks + div.example,
-section#volume-chrestomathy div.informaltable {
+section#volume-chrestomathy div.parallel-text.informaltable {
   break-inside: auto;
   page-break-inside: auto;
 }
@@ -914,7 +915,7 @@ hr {
   width: 100%;
 }
 
-.guibutton, .display-none, .article > .titlepage hr, .appendix > .titlepage hr {
+.guibutton, .display-none, .article > .titlepage hr {
   display: none;
 }
 

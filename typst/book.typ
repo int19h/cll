@@ -20,6 +20,12 @@
   )
   show math.equation: set text(font: "New Computer Modern Math", ligatures: true)
   show link: set text(fill: black)
+  // Keep level-1 chapter and appendix entries on one line in the Table of
+  // Contents instead of carrying over the display linebreak from cll-heading.
+  show outline.entry: it => {
+    show linebreak: [ ]
+    it
+  }
   show heading.where(level: 1): it => {
     block(above: 10pt, below: 10pt, sticky: true)[#align(center, text(size: 14pt, weight: "bold", it.body))]
   }

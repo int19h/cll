@@ -37,21 +37,28 @@ class DocBookTypst
     end
   end
 
+  def appendix_letter(number)
+    raise ArgumentError, "Appendix number must be positive: #{number.inspect}" unless number.is_a?(Integer) && number >= 1
+    letters = +''
+    n = number
+    while n > 0
+      n, rem = (n - 1).divmod(26)
+      letters.prepend((65 + rem).chr)
+    end
+    letters
+  end
+
   def number_components
     chapter = 0
-    article = 0
     appendix = 0
     @document.root.element_children.each do |component|
       case component.name
       when 'chapter'
         chapter += 1
         @numbers[component.path] = chapter.to_s
-      when 'article'
-        article += 1
-        @numbers[component.path] = (64 + article).chr
       when 'appendix'
         appendix += 1
-        @numbers[component.path] = (64 + appendix).chr
+        @numbers[component.path] = appendix_letter(appendix)
       end
       number_sections(component, @numbers[component.path])
       %w[example table figure].each do |kind|

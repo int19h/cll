@@ -114,6 +114,38 @@ def write_fixture(directory, stylesheets):
             f'<div class="example-contents"><p>line a<br>line b<br>{ex_end}</p></div>'
             f'</div></div>')
 
+    # 6. Appendix A gloss table outside an example must stay unbroken (issue #344),
+    # while a parallel-text table in Appendix A stays breakable across pages with
+    # its introducing paragraph attached to the start of the table.
+    gloss_cases = []
+    for i in range(CASES):
+        jbo_tok = f'AppGlossJbo{i}'
+        gloss_tok = f'AppGlossRow{i}'
+        gloss_cases.append(
+            f'<div class="case"><div style="height: {i * 4}mm"></div>'
+            f'<div class="informaltable"><table class="interlinear-gloss">'
+            f'<tbody>'
+            f'<tr class="jbo"><td>{jbo_tok}</td><td>klama</td></tr>'
+            f'<tr class="gloss"><td>{gloss_tok}</td><td>go</td></tr>'
+            f'</tbody></table></div></div>')
+    parallel_rows = ''.join(
+        f'<tr><td>ParaRow{r} lojban text line</td><td>English parallel line {r}</td></tr>'
+        for r in range(20)
+    )
+    blocks.append(
+        '<section class="appendix" id="volume-chrestomathy">'
+        '<section class="section" id="section-terry">'
+        + ''.join(gloss_cases)
+        + '</section>'
+        '<section class="section" id="section-north-wind">'
+        '<div class="case">'
+        '<p>Introductory note for the parallel passage AppParaIntro:</p>'
+        '<div class="parallel-text informaltable"><table>'
+        '<thead><tr><th>AppParaHead</th><th>English</th></tr></thead>'
+        f'<tbody>{parallel_rows}</tbody>'
+        '</table></div></div>'
+        '</section></section>')
+
     html_path = directory / 'fixture.html'
     html_path.write_text(f'''<!DOCTYPE html>
 <html>
@@ -197,6 +229,22 @@ def assert_pagination(test, pages):
         test.assertEqual(
             ep, ee,
             f'list-example case {i}: example broke across pp.{ep + 1}..{ee + 1}')
+    for i in range(CASES):
+        jp = find_page(test, pages, f'AppGlossJbo{i}')
+        gp = find_page(test, pages, f'AppGlossRow{i}')
+        test.assertEqual(
+            jp, gp,
+            f'appendix-gloss case {i}: Lojban row on p.{jp + 1} '
+            f'broke from gloss row on p.{gp + 1}')
+    intro_p = find_page(test, pages, 'AppParaIntro:')
+    head_p = find_page(test, pages, 'AppParaHead')
+    end_p = find_page(test, pages, 'ParaRow19')
+    test.assertEqual(
+        intro_p, head_p,
+        f'appendix parallel-text intro on p.{intro_p + 1} split from table on p.{head_p + 1}')
+    test.assertLess(
+        head_p, end_p,
+        f'appendix parallel-text table did not flow across pages (all on p.{head_p + 1})')
 
 
 def weasyprint_html():

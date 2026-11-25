@@ -62,10 +62,29 @@ class DocBookTypstTest < Minitest::Test
   end
 
   def test_appendix_letters_do_not_share_the_article_counter
-    source = convert('<article id="article"><title>Article</title></article><appendix id="appendix"><title>Appendix</title><section id="section"><title>Topic</title></section><para><xref linkend="appendix"/></para></appendix>')
+    source = convert('<article id="article"><title>Article</title><section id="as"><title>ArtSec</title><example id="ae"><title/><para>T</para></example></section><para><xref linkend="article"/></para></article><appendix id="appendix"><title>Appendix</title><section id="section"><title>Topic</title></section><para><xref linkend="appendix"/></para></appendix>')
+    assert_includes source, '#cll-heading(1, "", "Article"'
+    assert_includes source, '#cll-heading(2, "1", "ArtSec"'
+    assert_includes source, '#cll-example("1"'
+    assert_includes source, '#cll-ref("article", "Article")'
     assert_includes source, '#cll-heading(1, "Appendix A", "Appendix"'
     assert_includes source, '#cll-heading(2, "A.1", "Topic"'
     assert_includes source, '#cll-ref("appendix", "Appendix A")'
+  end
+
+  def test_appendix_letters_continue_past_z_as_aa_ab
+    appendices = (1..28).map do |i|
+      "<appendix id=\"app#{i}\"><title>App #{i}</title><section id=\"sec#{i}\"><title>S #{i}</title><example id=\"ex#{i}\"><title/><para>E</para></example></section><para><xref linkend=\"app#{i}\"/> <xref linkend=\"sec#{i}\"/></para></appendix>"
+    end.join
+    source = convert(appendices)
+    assert_includes source, '#cll-heading(1, "Appendix Z", "App 26"'
+    assert_includes source, '#cll-heading(1, "Appendix AA", "App 27"'
+    assert_includes source, '#cll-heading(1, "Appendix AB", "App 28"'
+    assert_includes source, '#cll-heading(2, "AA.1", "S 27"'
+    assert_includes source, '#cll-example("AA.1"'
+    assert_includes source, '#cll-ref("app27", "Appendix AA")'
+    assert_includes source, '#cll-ref("sec27", "Section AA.1")'
+    refute_includes source, 'Appendix ['
   end
 
   def test_fraction_powers_and_radicals_use_native_math
@@ -249,6 +268,32 @@ class DocBookTypstTest < Minitest::Test
       collapsed = text.gsub(/\s+/, ' ')
       assert_equal 3, collapsed.scan("[First‑edition rule]◇").length
       refute_match(/\[First- /, collapsed)
+    end
+  end
+
+  def test_compiled_outline_keeps_chapter_and_appendix_on_one_line
+    # Issue #338: level-1 headings put a linebreak between "Chapter N" /
+    # "Appendix A" and the title, which should not split their ToC entries
+    # across two lines.
+    executable = ENV['TYPST']
+    skip 'Set TYPST to run the native compilation test.' unless executable
+    skip 'Install poppler-utils to check rendered text.' unless system('command -v pdftotext >/dev/null 2>&1')
+    source = convert('<chapter><title>Opening Chapter</title><para>Body.</para></chapter><appendix><title>Chrestomathy</title><para>Text.</para></appendix>')
+    Dir.mktmpdir('compile-', TMP) do |dir|
+      File.write(File.join(dir, 'cll.typ'), source)
+      FileUtils.cp(File.expand_path('../typst/book.typ', __dir__), dir)
+      fonts = File.expand_path('../assets/fonts', __dir__)
+      pdf = File.join(dir, 'cll.pdf')
+      _, err, status = Open3.capture3(executable, 'compile', '--ignore-system-fonts', '--font-path', fonts, File.join(dir, 'cll.typ'), pdf)
+      assert status.success?, err
+      text, serr, tstatus = Open3.capture3('pdftotext', '-layout', pdf, '-')
+      assert tstatus.success?, serr
+      toc_page = text.split("\f")[1].to_s
+      toc_lines = toc_page.lines.map(&:strip).reject(&:empty?)
+      assert toc_lines.any? { |l| l.include?('Chapter 1') && l.include?('Opening Chapter') },
+             "Expected Chapter 1 and title on one ToC line:\n#{toc_page}"
+      assert toc_lines.any? { |l| l.include?('Appendix A') && l.include?('Chrestomathy') },
+             "Expected Appendix A and title on one ToC line:\n#{toc_page}"
     end
   end
 

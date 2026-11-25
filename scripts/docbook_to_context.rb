@@ -98,6 +98,17 @@ class ContextBook
     end
   end
 
+  def appendix_letter(number)
+    raise ArgumentError, "Appendix number must be positive: #{number.inspect}" unless number.is_a?(Integer) && number >= 1
+    letters = +''
+    n = number
+    while n > 0
+      n, rem = (n - 1).divmod(26)
+      letters.prepend((65 + rem).chr)
+    end
+    letters
+  end
+
   def number_components
     chapter_number = 0
     appendix_number = 0
@@ -107,7 +118,7 @@ class ContextBook
       appendix_number += 1 if component.name == 'appendix'
       number = case component.name
                when 'chapter' then chapter_number.to_s
-               when 'appendix' then (64 + appendix_number).chr
+               when 'appendix' then appendix_letter(appendix_number)
                end
       @numbers[component.path] = number
       @labels[component.path] = case component.name

@@ -589,7 +589,7 @@
       <valsi>zvati</valsi>
     </para>
     <para>This is a fable by Aesop. The Lojban translation appeared anonymously and in the public domain, and the translator is unknown. This book reprints it as published.</para>
-    <informaltable>
+    <informaltable role="parallel-text">
       <thead>
         <tr>
           <th>la berti brife jo'u la solri</th>
@@ -623,7 +623,7 @@
   <section xml:id="section-terry">
     <title><anchor xml:id="a01-terry" />Terry, the Tiger, visits the big city</title>
     <para>This is an original Lojban story by Michael Turniansky, with the author's own English translation. This book reprints it as written (CC BY-NC). The only exception is the byline, which uses the orthography of this edition.</para>
-    <informaltable>
+    <informaltable role="parallel-text">
       <thead>
         <tr>
           <th>la teris. po'u le tirxu cu vitke zi'o le barda tcadu</th>
@@ -697,7 +697,7 @@
   <section xml:id="section-soft-rains">
     <title><anchor xml:id="a01-soft-rains" />There Will Come Soft Rains</title>
     <para>This is a poem by Sara Teasdale, translated into Lojban by <jbophrase>la lalxu</jbophrase>. This book prints it from the translator's own text, with her permission.</para>
-    <informaltable>
+    <informaltable role="parallel-text">
       <thead>
         <tr>
           <th>ba carvi co milxe</th>
@@ -767,7 +767,7 @@
   <section xml:id="section-alice01">
     <title><anchor xml:id="a0102" />Alice in Wonderland</title>
     <para>What follows is an extract from the novel by Lewis Carroll. The Lojban translation is the early community translation. Credit for it goes collectively to <jbophrase>la .lojbangirz.</jbophrase> (the Logical Language Group), and its contributors explicitly placed it in the public domain. The community's own index of texts records that <jbophrase>la .xorxes.</jbophrase> (Jorge Llambias) did the vast majority of it. This book reprints it as published, in the classical orthography of its era.</para>
-    <informaltable>
+    <informaltable role="parallel-text">
       <thead>
         <tr>
           <th>la .alis. cizra je cinri zukte vi le selmacygu'e</th>

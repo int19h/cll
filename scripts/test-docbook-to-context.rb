@@ -61,6 +61,28 @@ class ContextBookTest < Minitest::Test
     assert_empty input.report['missing_references']
   end
 
+  def test_appendix_letters_continue_past_z_as_aa_ab
+    appendices = (1..28).map do |i|
+      "<appendix id=\"app#{i}\"><title>App #{i}</title>" \
+        "<section id=\"sec#{i}\"><title>S #{i}</title>" \
+        "<example id=\"ex#{i}\"><title/><para>E</para></example>" \
+        "<para><xref linkend=\"app#{i}\"/>, <xref linkend=\"sec#{i}\"/>, <xref linkend=\"ex#{i}\"/>.</para>" \
+        '</section></appendix>'
+    end.join
+    input = book(appendices)
+    output = input.to_tex
+    assert_includes output, 'Appendix~Z\\crlf App 26'
+    assert_includes output, 'Appendix~AA\\crlf App 27'
+    assert_includes output, 'Appendix~AB\\crlf App 28'
+    assert_includes output, 'AA.1\\quad S 27'
+    assert_includes output, 'Example~AA.1'
+    assert_includes output, '\\goto{Appendix AA}'
+    assert_includes output, '\\goto{Section AA.1}'
+    assert_includes output, '\\goto{Example AA.1}'
+    refute_includes output, 'Appendix~['
+    assert_empty input.report['missing_references']
+  end
+
   def test_math_is_structural_and_rejects_unknown_operators
     input = book('<para><math><mfrac><mi>a</mi><msqrt><msup><mi>b</mi><mn>2</mn></msup></msqrt></mfrac></math></para>')
     assert_includes input.to_tex, '\\frac{a}{\\sqrt{{b}^{2}}}'

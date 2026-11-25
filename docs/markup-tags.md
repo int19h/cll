@@ -39,7 +39,7 @@ A `jbophrase` in those elements gets no index entry.
 `scripts/merge.sh` defines only the `lojban-word` and `general` indexes, and neither of them collects `lojban-phrase` terms.
 
 A single-token compound with its own dictionary entry takes one `<valsi>` and links to that entry, whether or not its meaning follows from its parts: `<valsi>.uinai</valsi>`, `<valsi>naku</valsi>`. A `valid` mark from the next section still suppresses the link.
-In running text, a compound with no entry of its own stays `<jbophrase>`: `<jbophrase>texete</jbophrase>` (see #323).
+In running text, a compound with no entry of its own stays `<jbophrase>`: `<jbophrase>texete</jbophrase>` (issue #323).
 Splitting a compound into one `<valsi>` per part with no space between is for `<cmavo>` list cells whose compound has no entry: `<cmavo><valsi>roi</valsi><valsi>nai</valsi></cmavo>` in chapter 10.
 
 A `jbophrase` that names a frame, such as `ke ... ke'e` or `lu ... li'u`, links each of its words to the glossary.
@@ -53,7 +53,7 @@ The `valid` attribute marks Lojban that is wrong or questionable on purpose.
 
 | Element | Values in use | Meaning |
 | --- | --- | --- |
-| `valsi` | `false`, `maybe` | `false`: the word is ill formed. `maybe`: the word is well formed but is probably not in the dictionary, such as a lujvo made up for an example. |
+| `valsi` | `false`, `maybe` | `false`: the form is not a valid standard Lojban word. It is one of these: an ill-formed shape; a legal shape that is not a word, such as a gismu that does not exist or a lujvo with undefined rafsi; a lujvo form that the text sets aside, such as an unreduced form or a losing candidate; or a combination that standard grammar does not allow, such as `doinai`. `maybe`: the word is well formed but is probably not in the dictionary, such as a lujvo made up for an example. |
 | `cmevla` | `false`, `iffy` | `false`: the name is ill formed. `iffy`: the form is surprising or doubtful. |
 | `jbophrase` | `false`, `iffy` | `false`: the phrase is ungrammatical. `iffy`: the phrase is doubtful. |
 | `jbo` (inside an example) | `false`, `iffy` | The same meanings for a line of an example. |
@@ -63,6 +63,9 @@ The `valid` attribute marks Lojban that is wrong or questionable on purpose.
 <valsi valid="maybe">nunctikezgau</valsi>
 <jbo valid="iffy">barda - xunre - gerku</jbo>
 ```
+
+Mark an ungrammatical use of real words on the phrase or the line, not on the word.
+Chapter 13 writes `<jbophrase valid="false">le li'o</jbophrase>` and leaves `<valsi>li'o</valsi>` plain, so the word keeps its glossary link.
 
 The attribute has these effects:
 

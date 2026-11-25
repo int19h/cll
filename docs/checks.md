@@ -205,11 +205,13 @@ python3 scripts/test-build-version.py
 PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-weasyprint.py
 PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-pdf-bookmarks.py
 PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-status-pagination.py
+PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-print-pagination.py
 ```
 
 The bookmark test renders a small title page with the print stylesheets and checks outline levels and parents.
 When `prince` and `pymupdf` are installed, the same test checks Prince.
 The status pagination test sweeps a status note across a page boundary and checks that its label and also-line stay on the page where its prose begins; it reads per-page text with `pdftotext` (poppler-utils), and checks Prince the same way when `prince` is installed.
+The print pagination test sweeps section headings (`h2`–`h6`) and paragraph-introduced examples (`p + div.example`) across a page boundary to check that headings stay with their content and examples stay unbreakable and attached to their lead-in paragraph.
 
 The installer needs Python 3 with `venv` and Node.js 22 or later.
 The renderer also needs Pango, HarfBuzz, and the fonts listed in [build-weasyprint.md](build-weasyprint.md#local-build).
@@ -272,6 +274,8 @@ Check the result for any example that you changed.
 
 These tests do not run in the `checks` workflow:
 
+- `python3 scripts/check-pdf-page-numbers.py build/cll-weasyprint.pdf build/cll.pdf` checks every Table of Contents page number and inline `(p. N)` cross-reference against actual destination pages and headings in a finished WeasyPrint or Prince PDF. It needs PyMuPDF.
+- `python3 scripts/check-pdf-page-breaks.py build/cll-weasyprint.pdf` audits stranded section headings, split example lead-ins, and page fill ratios in a finished WeasyPrint or Prince PDF (with optional `--html` and `--compare`). It needs PyMuPDF.
 - `python3 scripts/test-context-indexes.py build/cll-context.pdf` checks the printed indexes of a finished ConTeXt PDF. It needs PyMuPDF.
 - `python3 scripts/test-context-references.py build/cll-context.pdf` checks the printed cross-references of a finished ConTeXt PDF. It needs PyMuPDF.
 - `python3 scripts/test-context-link-fonts.py build/cll-context.pdf` checks that linked Lojban words print italic in a finished ConTeXt PDF. It needs PyMuPDF.

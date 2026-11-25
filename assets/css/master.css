@@ -359,10 +359,16 @@ div.table {
 }
 
 div.example {
+  break-inside: avoid;
   page-break-inside: avoid;
   /* font-family: "Linux Biolinum", "Biolinum", "DejaVu Sans"; */
   margin-top: 0pt;
   margin-bottom: 0pt;
+}
+
+p + div.example {
+  break-before: avoid;
+  page-break-before: avoid;
 }
 
 br.example-break {
@@ -514,6 +520,7 @@ h[12345] elements
 */
 h1 {
   page-break-before: right;
+  break-after: avoid;
   page-break-after: avoid;
   string-set: header content();
   prince-page-group: start;
@@ -526,6 +533,15 @@ h2 {
   font-size: 11pt;
   margin: 0pt;
   margin-top: 10pt;
+}
+h2,
+h3,
+h4,
+h5,
+h6,
+section.section > div.titlepage {
+  break-after: avoid;
+  page-break-after: avoid;
 }
 /*
 }}}

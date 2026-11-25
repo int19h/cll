@@ -29,6 +29,16 @@ h6 { font-size: 8pt; margin: 21pt 0; }
 pre, code, tt { font-family: "DejaVu Sans Mono", monospace; }
 
 @media print {
+  /* The Python pagination pass writes converged page numbers into data-page
+     (issue #337), avoiding WeasyPrint's target-counter(attr(href), page)
+     repagination bug where earlier pages keep stale page numbers after a
+     mid-document shift. */
+  div.toc a[data-page]::after {
+    content: leader(".") attr(data-page);
+  }
+  a.xref[data-page]::after {
+    content: " (p. " attr(data-page) ")";
+  }
   p,
   .formalpara-title,
   div.figure-title,

@@ -124,6 +124,46 @@ def page_ranges(targets, pages):
     return ranges
 
 
+def collect_page_refs(tree):
+    """Collect local ToC and inline xref links for converged page numbering.
+
+    WeasyPrint 70.0's compute_content_list() passes the unresolved attr(href)
+    token to anchor_name_from_token(), which returns None, so
+    missing_target_counters is keyed by None instead of the target anchor name.
+    When filling in forward references causes a later page shift, WeasyPrint
+    never invalidates earlier referencing pages, leaving stale page numbers on
+    ToC entries and earlier inline xrefs (issue #337). Writing converged page
+    numbers into data-page inside the existing multi-pass loop avoids the bug.
+    """
+    refs = []
+    for link in tree.iter('a'):
+        href = link.get('href', '')
+        if not href.startswith('#'):
+            continue
+        in_toc = any(
+            parent.tag == 'div' and has_class(parent, 'toc')
+            for parent in link.iterancestors()
+        )
+        if not (in_toc or has_class(link, 'xref')):
+            continue
+        target = unquote(href[1:])
+        if not target:
+            continue
+        link.set('data-page', '0')
+        refs.append((link, target))
+    return refs
+
+
+def resolve_page_refs(refs, pages):
+    """Return rendered 1-based page numbers for every collected ToC/xref link."""
+    resolved = []
+    for _, target in refs:
+        if target not in pages:
+            raise ValueError(f'Page reference target is missing from rendered pages: {target}')
+        resolved.append(pages[target])
+    return resolved
+
+
 def write_index(span, ranges):
     tail = span.tail
     span.clear()
@@ -160,7 +200,7 @@ def prepared_path(directory):
     return directory.with_name(directory.name + '-work') / 'cll-weasyprint.html'
 
 
-def render(input_path, output_path, max_passes=6):
+def render(input_path, output_path, max_passes=8):
     input_path = Path(input_path).resolve()
     tree = html.parse(str(input_path), parser=html.HTMLParser(encoding='utf-8')).getroot()
     directory = input_path.parent
@@ -171,6 +211,7 @@ def render(input_path, output_path, max_passes=6):
     math = typeset_math(tree, directory)
     tree.find('head').append(etree.Element('link', rel='stylesheet', href='weasyprint.css'))
     indexes = collect_indexes(tree)
+    page_refs = collect_page_refs(tree)
     prepared = prepared_path(directory)
     prepared.parent.mkdir(parents=True, exist_ok=True)
     font_config = FontConfiguration()
@@ -193,8 +234,9 @@ def render(input_path, output_path, max_passes=6):
             pages = {anchor: number for number, page in reversed(list(enumerate(document.pages, 1)))
                      for anchor in page.anchors}
             ranges = [page_ranges(targets, pages) for _, targets in indexes]
-            signature = json.dumps(ranges)
-            if not indexes or signature == previous:
+            ref_pages = resolve_page_refs(page_refs, pages)
+            signature = json.dumps({'indexes': ranges, 'refs': ref_pages})
+            if (not indexes and not page_refs) or signature == previous:
                 temporary = output_path.with_suffix('.pdf.tmp')
                 try:
                     document.write_pdf(str(temporary))
@@ -211,20 +253,23 @@ def render(input_path, output_path, max_passes=6):
                     'mathjax': math,
                     'relocated_hidden_index_anchors': hidden_anchors,
                     'index_entries': len(indexes),
+                    'page_refs': len(page_refs),
                     'index_targets': {target: pages[target] for _, targets in indexes for target in targets},
                 }
                 (directory / 'render-report.json').write_text(json.dumps(report, indent=2) + '\n')
                 print(f'Wrote {output_path}: {len(document.pages)} pages', flush=True)
                 return report
             if signature in seen:
-                raise RuntimeError('Index pagination oscillates instead of converging')
+                raise RuntimeError('Pagination oscillates instead of converging')
             seen.add(signature)
             previous = signature
             for (span, _), entries in zip(indexes, ranges):
                 write_index(span, entries)
+            for (link, _), page_number in zip(page_refs, ref_pages):
+                link.set('data-page', str(page_number))
             del document
             gc.collect()
-        raise RuntimeError(f'Index pagination did not converge after {max_passes} passes')
+        raise RuntimeError(f'Pagination did not converge after {max_passes} passes')
     finally:
         logger.removeHandler(errors)
 

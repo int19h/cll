@@ -3,6 +3,8 @@
 import importlib.util
 import os
 from pathlib import Path
+import shutil
+import subprocess
 import tempfile
 import unittest
 
@@ -120,6 +122,60 @@ class RenderingTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, 'MathJax conversion failed'):
             backend.render(source, pdf)
         self.assertFalse(pdf.exists())
+
+    def test_toc_and_xref_page_numbers_converge_after_shift(self):
+        # Regression for issue #337: when filling in a forward inline xref
+        # pushes later chapters across a break-before: right boundary (here
+        # shifting ch-target from page 13 to page 15), WeasyPrint's built-in
+        # target-counter(attr(href), page) leaves the ToC and early xrefs stuck
+        # at 13. render.py must converge all of them to 15.
+        shutil.copy2(ROOT / 'assets/css/master.css', self.directory / 'final.css')
+        shutil.copy2(ROOT / 'assets/css/weasyprint.css', self.directory / 'weasyprint.css')
+        (self.directory / 'assets').symlink_to(ROOT / 'assets')
+        filler = '<p style="break-before: page">Filler page</p>' * 8
+        source = self.directory / 'input.html'
+        source.write_text(f'''<!doctype html><html><head><meta charset="utf-8">
+          <link rel="stylesheet" href="final.css">
+          <style>
+            @page {{ size: 100mm 45mm; margin: 5mm; }}
+            body {{ margin: 0; font-family: "DejaVu Serif", serif; font-size: 9pt; line-height: 11pt; }}
+            p {{ margin: 0; }}
+            h1 {{ margin: 0; }}
+          </style>
+          </head><body>
+          <div class="toc"><ul>
+            <li><a href="#ch-target">Target Chapter</a></li>
+          </ul></div>
+          <section class="chapter" id="ch-one">
+            <div class="titlepage"><div><div><h1 class="title">Chapter 1</h1></div></div></div>
+            <p>Early reference: <a class="xref" href="#ch-target">Target</a>.</p>
+            {filler}
+            <p style="break-before: page"><span style="display:inline-block;width:76mm">x</span> <a class="xref" href="#ch-target">T</a></p>
+            <div style="break-inside: avoid; height: 29mm;">Tall block</div>
+          </section>
+          <section class="chapter" id="ch-target">
+            <div class="titlepage"><div><div><h1 class="title">Chapter 2</h1></div></div></div>
+            <p>Target body.</p>
+          </section>
+          </body></html>''')
+        pdf = self.directory / 'result.pdf'
+        report = backend.render(source, pdf)
+        self.assertEqual(report['page_refs'], 3)
+        self.assertGreaterEqual(report['passes'], 3)
+        prepared = html.parse(str(self.prepared))
+        pages_attr = prepared.xpath('//a[@href="#ch-target"]/@data-page')
+        self.assertEqual(len(pages_attr), 3)
+        self.assertEqual(len(set(pages_attr)), 1, f'Inconsistent data-page values: {pages_attr}')
+        expected_page = int(pages_attr[0])
+        self.assertEqual(expected_page, report['pages'])
+        pdftotext = shutil.which('pdftotext')
+        if pdftotext:
+            result = subprocess.run(
+                [pdftotext, str(pdf), '-'], check=True, capture_output=True, text=True)
+            rendered_pages = result.stdout.split('\f')
+            self.assertIn('Chapter 2', rendered_pages[expected_page - 1])
+            self.assertIn(str(expected_page), rendered_pages[0])
+            self.assertIn(f'(p. {expected_page})', rendered_pages[2])
 
 
 if __name__ == '__main__':

@@ -53,7 +53,7 @@ The `valid` attribute marks Lojban that is wrong or questionable on purpose.
 
 | Element | Values in use | Meaning |
 | --- | --- | --- |
-| `valsi` | `false`, `maybe` | `false`: the form is not a valid standard Lojban word. It is one of these: an ill-formed shape; a legal shape that is not a word, such as a gismu that does not exist or a lujvo with undefined rafsi; a lujvo form that the text sets aside, such as an unreduced form or a losing candidate; or a combination that standard grammar does not allow, such as `doinai`. `maybe`: the word is well formed but is probably not in the dictionary, such as a lujvo made up for an example. |
+| `valsi` | `false`, `maybe` | `false` has two uses. It marks a form that fails the rule under discussion: an ill-formed shape, a legal shape that is not a word, an unreduced or losing lujvo form, or a combination that standard grammar does not allow, such as `doinai`. In chapter 4 it also leaves unlinked some valid alternate spellings, such as `brivalsi`, and candidate words or names that the text presents as examples, such as `lojbaugri` and `lojbangir`. `maybe`: the word is well formed but is probably not in the dictionary, such as a lujvo made up for an example. |
 | `cmevla` | `false`, `iffy` | `false`: the name is ill formed. `iffy`: the form is surprising or doubtful. |
 | `jbophrase` | `false`, `iffy` | `false`: the phrase is ungrammatical. `iffy`: the phrase is doubtful. |
 | `jbo` (inside an example) | `false`, `iffy` | The same meanings for a line of an example. |

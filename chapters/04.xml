@@ -1407,11 +1407,11 @@
       , built from the tanru
       <jbophrase>bridi valsi</jbophrase>
       , is the same lujvo as
-      <valsi valid="false">brivalsi</valsi>
+      <valsi valid="maybe">brivalsi</valsi>
       ,
-      <valsi valid="false">bridyvla</valsi>
+      <valsi valid="maybe">bridyvla</valsi>
       , and
-      <valsi valid="false">bridyvalsi</valsi>
+      <valsi valid="maybe">bridyvalsi</valsi>
       , each of which uses a different combination of rafsi.
     </para>
     <para><indexterm type="general"><primary>apostrophe</primary><secondary>and consonant cluster determination in lujvo</secondary>
@@ -4470,89 +4470,89 @@
     <para>After hyphenation, we have:</para>
     <simplelist type="horiz" columns="3">
       <member>
-        <valsi valid="false">lojbangri</valsi>
+        <valsi valid="maybe">lojbangri</valsi>
       </member>
       <member>
-        <valsi valid="false">lojbaugri</valsi>
+        <valsi valid="maybe">lojbaugri</valsi>
       </member>
       <member>
-        <valsi valid="false">lojbangygri</valsi>
-      </member>
-
-      <member>
-        <valsi valid="false">logjybangri</valsi>
-      </member>
-      <member>
-        <valsi valid="false">logjybaugri</valsi>
-      </member>
-      <member>
-        <valsi valid="false">logjybangygri</valsi>
+        <valsi valid="maybe">lojbangygri</valsi>
       </member>
 
       <member>
-        <valsi valid="false">lojbangirzu</valsi>
+        <valsi valid="maybe">logjybangri</valsi>
       </member>
       <member>
-        <valsi valid="false">lojbaugirzu</valsi>
+        <valsi valid="maybe">logjybaugri</valsi>
       </member>
       <member>
-        <valsi valid="false">lojbangygirzu</valsi>
-      </member>
-
-      <member>
-        <valsi valid="false">logjybangirzu</valsi>
-      </member>
-      <member>
-        <valsi valid="false">logjybaugirzu</valsi>
-      </member>
-      <member>
-        <valsi valid="false">logjybangygirzu</valsi>
+        <valsi valid="maybe">logjybangygri</valsi>
       </member>
 
       <member>
-        <valsi valid="false">lojbangir</valsi>
+        <valsi valid="maybe">lojbangirzu</valsi>
       </member>
       <member>
-        <valsi valid="false">lojbaugir</valsi>
+        <valsi valid="maybe">lojbaugirzu</valsi>
       </member>
       <member>
-        <valsi valid="false">lojbangygir</valsi>
+        <valsi valid="maybe">lojbangygirzu</valsi>
       </member>
 
       <member>
-        <valsi valid="false">logjybangir</valsi>
+        <valsi valid="maybe">logjybangirzu</valsi>
       </member>
       <member>
-        <valsi valid="false">logjybaugir</valsi>
+        <valsi valid="maybe">logjybaugirzu</valsi>
       </member>
       <member>
-        <valsi valid="false">logjybangygir</valsi>
+        <valsi valid="maybe">logjybangygirzu</valsi>
+      </member>
+
+      <member>
+        <valsi valid="maybe">lojbangir</valsi>
+      </member>
+      <member>
+        <valsi valid="maybe">lojbaugir</valsi>
+      </member>
+      <member>
+        <valsi valid="maybe">lojbangygir</valsi>
+      </member>
+
+      <member>
+        <valsi valid="maybe">logjybangir</valsi>
+      </member>
+      <member>
+        <valsi valid="maybe">logjybaugir</valsi>
+      </member>
+      <member>
+        <valsi valid="maybe">logjybangygir</valsi>
       </member>
 
       <member>
         <valsi>.lojbangirz.</valsi>
       </member>
       <member>
-        <valsi valid="false">lojbaugirz</valsi>
+        <valsi valid="maybe">lojbaugirz</valsi>
       </member>
       <member>
-        <valsi valid="false">lojbangygirz</valsi>
+        <valsi valid="maybe">lojbangygirz</valsi>
       </member>
 
       <member>
-        <valsi valid="false">logjybangirz</valsi>
+        <valsi valid="maybe">logjybangirz</valsi>
       </member>
       <member>
-        <valsi valid="false">logjybaugirz</valsi>
+        <valsi valid="maybe">logjybaugirz</valsi>
       </member>
       <member>
-        <valsi valid="false">logjybangygirz</valsi>
+        <valsi valid="maybe">logjybangygirz</valsi>
       </member>
     </simplelist>
     <para><indexterm type="general"><primary>sexual teacher</primary><secondary>male</secondary>
         <tertiary>example</tertiary>
       </indexterm><indexterm type="general"><primary>male sexual teacher</primary><secondary>example</secondary>
-      </indexterm>The only fully reduced lujvo forms are <valsi valid="maybe">lojbangri</valsi> and <valsi>lojbaugri</valsi>, of which the latter has a slightly lower score: 8827 versus 8796, respectively. For the name of the organization, however, we chose to make sure the name of the language was embedded in it, and to use the clearer long-form rafsi for <valsi>girzu</valsi>, producing <cmevla>.lojbangirz.</cmevla></para>
+      </indexterm>The only fully reduced lujvo forms are <valsi valid="maybe">lojbangri</valsi> and <valsi valid="maybe">lojbaugri</valsi>, of which the latter has a slightly lower score: 8827 versus 8796, respectively. For the name of the organization, however, we chose to make sure the name of the language was embedded in it, and to use the clearer long-form rafsi for <valsi>girzu</valsi>, producing <valsi>.lojbangirz.</valsi></para>
     <para>
       Finally, here is a four-part lujvo with a cmavo in it, based on the tanru
       <jbophrase>nakni ke cinse ctuca</jbophrase>
@@ -4582,7 +4582,7 @@
         <rafsi>-ctuca</rafsi>
       </member>
       <member>
-        <valsi valid="false">nakykemcinctuca</valsi>
+        <valsi valid="maybe">nakykemcinctuca</valsi>
       </member>
 
       <member>
@@ -4592,7 +4592,7 @@
         <rafsi>-ctu</rafsi>
       </member>
       <member>
-        <valsi valid="false">nakykemcinsyctu</valsi>
+        <valsi valid="maybe">nakykemcinsyctu</valsi>
       </member>
 
       <member>
@@ -4602,7 +4602,7 @@
         <rafsi>-ctuca</rafsi>
       </member>
       <member>
-        <valsi valid="false">nakykemcinsyctuca</valsi>
+        <valsi valid="maybe">nakykemcinsyctuca</valsi>
       </member>
 
       <member>
@@ -4612,7 +4612,7 @@
         <rafsi>-ctu</rafsi>
       </member>
       <member>
-        <valsi valid="false">naknykemcinctu</valsi>
+        <valsi valid="maybe">naknykemcinctu</valsi>
       </member>
 
       <member>
@@ -4622,7 +4622,7 @@
         <rafsi>-ctuca</rafsi>
       </member>
       <member>
-        <valsi valid="false">naknykemcinctuca</valsi>
+        <valsi valid="maybe">naknykemcinctuca</valsi>
       </member>
 
       <member>
@@ -4632,7 +4632,7 @@
         <rafsi>-ctu</rafsi>
       </member>
       <member>
-        <valsi valid="false">naknykemcinsyctu</valsi>
+        <valsi valid="maybe">naknykemcinsyctu</valsi>
       </member>
 
       <member>
@@ -4642,7 +4642,7 @@
         <rafsi>-ctuca</rafsi>
       </member>
       <member>
-        <valsi valid="false">naknykemcinsyctuca</valsi>
+        <valsi valid="maybe">naknykemcinsyctuca</valsi>
       </member>
     </simplelist>
     <para><indexterm type="general"><primary>gismu</primary><secondary>algorithm for</secondary>
@@ -5900,7 +5900,7 @@
     <orderedlist>
       <listitem>
         <para><indexterm type="general"><primary>fu'ivla</primary><secondary>as final element of lujvo</secondary>
-          </indexterm>A fu'ivla can stand unchanged as the <emphasis>final</emphasis> element of a lujvo, with ordinary rafsi (and ordinary hyphens) in front of it. For example, from <valsi>spageti</valsi> (spaghetti) we can form <valsi valid="maybe">cmalyspageti</valsi> (<jbophrase>cmalu spageti</jbophrase>: little spaghetti, that is, spaghettini). We can also form <valsi valid="maybe">cidjyspageti</valsi> (<jbophrase>cidja spageti</jbophrase>: spaghetti as food), just as if <valsi>spageti</valsi> were a gismu in final position. Not every rafsi will work, though, because the whole word must still divide back into its parts and into nothing else. For instance, you cannot use the three-letter rafsi <rafsi>dja-</rafsi> here. The result, <jbophrase valid="false">djarspageti</jbophrase>, reads as one long undivided fu'ivla, not as a rafsi plus <valsi>spageti</valsi>.</para>
+          </indexterm>A fu'ivla can stand unchanged as the <emphasis>final</emphasis> element of a lujvo, with ordinary rafsi (and ordinary hyphens) in front of it. For example, from <valsi>spageti</valsi> (spaghetti) we can form <valsi valid="maybe">cmalyspageti</valsi> (<jbophrase>cmalu spageti</jbophrase>: little spaghetti, that is, spaghettini). We can also form <valsi valid="maybe">cidjyspageti</valsi> (<jbophrase>cidja spageti</jbophrase>: spaghetti as food), just as if <valsi>spageti</valsi> were a gismu in final position. Not every rafsi will work, though, because the whole word must still divide back into its parts and into nothing else. For instance, you cannot use the three-letter rafsi <rafsi>dja-</rafsi> here. The result, <valsi valid="false">djarspageti</valsi>, reads as one long undivided fu'ivla, not as a rafsi plus <valsi>spageti</valsi>.</para>
       </listitem>
       <listitem>
         <para>

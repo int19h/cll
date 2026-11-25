@@ -53,7 +53,7 @@ The `valid` attribute marks Lojban that is wrong or questionable on purpose.
 
 | Element | Values in use | Meaning |
 | --- | --- | --- |
-| `valsi` | `false`, `maybe` | `false` has two uses. It marks a form that fails the rule under discussion: an ill-formed shape, a legal shape that is not a word, an unreduced or losing lujvo form, or a combination that standard grammar does not allow, such as `doinai`. In chapter 4 it also leaves unlinked some valid alternate spellings, such as `brivalsi`, and candidate words or names that the text presents as examples, such as `lojbaugri` and `lojbangir`. `maybe`: the word is well formed but is probably not in the dictionary, such as a lujvo made up for an example. |
+| `valsi` | `false`, `maybe` | `false`: a form that the text presents as failing: an ill-formed shape, a legal shape that is not a word, a form that breaks apart into other words (such as `tosmabru`) or parses as another kind of word (such as `djarspageti` as a lujvo), or a combination that standard grammar does not allow (such as `doinai`). `maybe`: a well-formed word that is not the form to look up, such as a word made up for an example or a non-canonical form (an alternative lujvo spelling such as `brivalsi`, or an unchosen candidate such as `lojbaugri` or `lojbangir`, even if the dictionary happens to list it). |
 | `cmevla` | `false`, `iffy` | `false`: the name is ill formed. `iffy`: the form is surprising or doubtful. |
 | `jbophrase` | `false`, `iffy` | `false`: the phrase is ungrammatical. `iffy`: the phrase is doubtful. |
 | `jbo` (inside an example) | `false`, `iffy` | The same meanings for a line of an example. |
@@ -66,6 +66,7 @@ The `valid` attribute marks Lojban that is wrong or questionable on purpose.
 
 Mark an ungrammatical use of real words on the phrase or the line, not on the word.
 Chapter 13 writes `<jbophrase valid="false">le li'o</jbophrase>` and leaves `<valsi>li'o</valsi>` plain, so the word keeps its glossary link.
+A single-token compound such as `doinai` is one `valsi`, so the mark goes on it.
 
 The attribute has these effects:
 

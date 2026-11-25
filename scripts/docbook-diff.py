@@ -37,7 +37,10 @@ Rules the build pipeline imposes (see issue #127):
 
 The finish step turns the built page into the published difference.html
 (with a banner explaining the marks) and difference_prefixed.html (the same
-with a searchable text marker at each change); see finish().
+with a searchable text marker at each change); it also marks each changed
+section's number in the table of contents and collapses fully added or
+deleted table rows into one marked row. Per-section visible change kinds
+travel in the stats file under "sections"; see finish().
 
 Standard library only.
 """
@@ -50,6 +53,7 @@ import subprocess
 import sys
 import time
 import xml.etree.ElementTree as ET
+from html.parser import HTMLParser
 from pathlib import Path
 
 XML_ID = '{http://www.w3.org/XML/1998/namespace}id'
@@ -72,6 +76,14 @@ BLOCK = {
 }
 SECTIONISH = {'chapter', 'article', 'appendix', 'section', 'preface',
               'sect1', 'sect2', 'sect3', 'simplesect'}
+# Sections with at least this many own blocks are judged by content
+# alone. Smaller sections (a bare title, or a title plus one paragraph)
+# carry too little text to judge familiarity, so kept ids and the
+# parent rule may decide for them instead -- but never override a
+# content verdict for a larger section. Chapters are the exception:
+# their substance is their subsections, so a renamed chapter also
+# matches the gone old chapter its subsections continue.
+CONTENT_BLOCKS = 3
 VERBATIM = {'programlisting', 'literallayout', 'screen'}
 SKIP = {'indexterm', 'anchor', 'imagedata', 'colgroup', 'col'}
 CELL = {'td', 'th', 'entry'}
@@ -79,6 +91,8 @@ CELL = {'td', 'th', 'entry'}
 # used by the build, they have no text, or their destination is meaningful.
 ATOM = {'xref', 'link', 'valsi', 'glossterm', 'footnoteref', 'inlinemediaobject',
         'mmlinlinemath', 'inlineequation', 'imageobject'}
+LIVE_ATOMS = {'xref', 'footnoteref', 'inlinemediaobject', 'mmlinlinemath',
+              'inlineequation'}
 # Structural elements whose own text is only indentation: no phrase may be
 # put directly in them.
 STRUCT = {'tr', 'row', 'thead', 'tbody', 'tfoot', 'tgroup', 'table',
@@ -865,10 +879,12 @@ def flag_element(el, flag, parent_of):
     parent_of[el] = p
 
 
-def mark_all(el, flag, parent_of, top=True):
-    """Mark all of el's content with flag, on the largest elements whose flag
-    survives the build."""
-    if not is_el(el):
+def mark_all(el, flag, parent_of, top=True, skip=frozenset()):
+    """Mark content with flag, on the largest surviving elements.
+
+    Nested blocks in skip keep their own alignment and annotations.
+    """
+    if not is_el(el) or id(el) in skip:
         return
     t = local(el.tag)
     if t in SKIP:
@@ -876,22 +892,25 @@ def mark_all(el, flag, parent_of, top=True):
     par = parent_of.get(el)
     pt = local(par.tag) if par is not None else None
     row = is_row(el, par)
-    if not row and t not in ('title', 'term', 'caption', 'attribution') and (
+    has_skipped = any(id(e) in skip for e in el.iter())
+    if not row and not has_skipped and t not in ('title', 'term', 'caption', 'attribution') and (
             t in FLAGGABLE and not (t in ('jbo', 'gloss')) or
             (t in ROWCHILD_FLAGGABLE and pt in ROWCHILD_PARENTS and t != 'td')):
         el.set('revisionflag', flag)
         return
-    if t in ('jbo', 'gloss') and not row and pt in ('lujvo-making', 'pronunciation',
-                                                    'compound-cmavo', 'lojbanization'):
+    if t in ('jbo', 'gloss') and not row and not has_skipped and pt in (
+            'lujvo-making', 'pronunciation', 'compound-cmavo', 'lojbanization'):
         el.set('revisionflag', flag)
         return
     wr = writable(el, par)
     children = list(el)
     for c in children:
+        if id(c) in skip:
+            continue
         if is_el(c) and local(c.tag) in ATOM:
             flag_element(c, flag, parent_of)
         else:
-            mark_all(c, flag, parent_of, False)
+            mark_all(c, flag, parent_of, False, skip)
     if not wr:
         return
     segs = [(el, 'text')] + [(c, 'tail') for c in el]
@@ -919,6 +938,10 @@ class Differ:
         self.old, self.new = old, new
         self.so, self.sn = None, None
         self.new_ids = set(new.ids)
+        self.deleted_sections = []     # (old section, re-inserted copy)
+        self.added_rows = []           # generated ids of inserted table rows
+        self.added_row_elements = set()
+        self.preserved_ids = set()     # old section ids kept on their copies
         self.stats = {}
         self.unplaced = []
         self.dropped_words = []
@@ -1138,13 +1161,15 @@ class Differ:
         sn = Summary(self.new)
         self.sn = sn
         todo = []
+        covered = set()
 
         def walk(N):
             c = sn.get(N)
             if not c:
                 return
             if set(c) == {'ins'}:
-                todo.append(('all', N))
+                todo.append(('all', N, frozenset()))
+                covered.update(id(e) for e in N.iter())
                 return
             for ch in N:
                 if is_el(ch):
@@ -1153,12 +1178,24 @@ class Differ:
             walk(root)
         for b in self.new.blocks:
             if b.status in ('chg', 'movechg'):
-                todo.append(('chg', b))
-            elif b.status == 'ins':
-                pass
-        for kind, x in todo:
+                todo.append(('chg', b, None))
+            elif b.status == 'ins' and id(b.el) not in covered:
+                if local(b.el.tag) in ('tr', 'row'):
+                    cells = [c for c in b.el if is_el(c) and local(c.tag) in CELL]
+                    marker = 'diff-added-row-%d' % len(self.added_rows)
+                    anchor = ET.Element('anchor', {XML_ID: marker})
+                    cells[0].insert(0, anchor)
+                    self.parent_of[anchor] = cells[0]
+                    self.added_rows.append(marker)
+                    self.added_row_elements.add(id(b.el))
+                else:
+                    skip = {id(x.el) for x in sn.blocks_under(b.el)
+                            if x.el is not b.el and x.status != 'ins'}
+                    todo.append(('all', b.el, skip))
+                covered.update(id(e) for e in b.el.iter())
+        for kind, x, skip in todo:
             if kind == 'all':
-                mark_all(x, 'added', self.parent_of)
+                mark_all(x, 'added', self.parent_of, skip=skip)
                 self.count('added_elements')
             else:
                 self.word_diff(x)
@@ -1252,6 +1289,22 @@ class Differ:
             if r is root:
                 return name
 
+    def _deleted_section_id(self, O):
+        """ID for a deleted copy, without stealing a surviving anchor's ID."""
+        oid = O.get(XML_ID)
+        if not oid:
+            return None
+        if oid not in self.new_ids:
+            self.preserved_ids.add(oid)
+            return oid
+        n = 0
+        while True:
+            candidate = 'diff-deleted-section-%d' % n
+            if candidate not in self.new_ids and candidate not in self.preserved_ids:
+                self.preserved_ids.add(candidate)
+                return candidate
+            n += 1
+
     def reconstruct(self, O):
         so = self.so
         c = so.get(O)
@@ -1261,6 +1314,18 @@ class Differ:
             cp.tail = None
             self.mark_deleted_copy(cp, O)
             self.count('deleted_elements')
+            if local(O.tag) in SECTIONISH:
+                # A wholly deleted section keeps its id (when nothing in the
+                # new book uses it), so the comparison table of contents and
+                # the re-inserted body still link to each other. Refs to such
+                # an id stay dangling: _sanitize never lets a copy point at
+                # one, so any remaining ref comes from the new book, where
+                # the id does not exist either (see check_ids).
+                new_id = self._deleted_section_id(O)
+                if new_id:
+                    cp.set(XML_ID, new_id)
+                self._keep_section_ids(O, cp)
+                self.deleted_sections.append((O, cp))
             return [cp]
         if not c.get('del') and self.representable(O):
             self.count('move_notes')
@@ -1289,7 +1354,38 @@ class Differ:
                 p.tail = '\n'
                 S.append(p)
         self.merge_notes(S)
+        if local(O.tag) in SECTIONISH:
+            new_id = self._deleted_section_id(O)
+            if new_id:
+                S.set(XML_ID, new_id)
+            self._keep_section_ids(O, S)
+            self.deleted_sections.append((O, S))
         return [S]
+
+    def _keep_section_ids(self, O, cp):
+        """Give deleted subsections usable targets for their ToC links.
+
+        Preserve each original id that is free; when a surviving anchor
+        owns it, generate a distinct comparison id instead. Sanitizing
+        strips every id from a re-inserted copy, so without this the ToC
+        links of subsections inside a deleted section point
+        at generated ids and the subsections get no mark. Sanitizing
+        keeps SECTIONISH elements in order (it only drops anchors,
+        indexterms and inline replacements), so pair the old and copied
+        subsection sequences positionally; on any shape mismatch keep
+        nothing rather than mislabel.
+        """
+        olds = [e for e in O.iter()
+                if e is not O and is_el(e) and local(e.tag) in SECTIONISH]
+        news = [e for e in cp.iter()
+                if e is not cp and is_el(e) and local(e.tag) in SECTIONISH]
+        if len(olds) != len(news):
+            return
+        for o_el, n_el in zip(olds, news):
+            new_id = self._deleted_section_id(o_el)
+            if new_id and not n_el.get(XML_ID):
+                n_el.set(XML_ID, new_id)
+                self.deleted_sections.append((o_el, n_el))
 
     def mark_deleted_copy(self, cp, orig, parent_tag=None):
         par = self.old.parent.get(orig)
@@ -1604,6 +1700,294 @@ class Differ:
     # --- step 5: deleted copies of low-similarity splits and demoted moves
     # are handled by insert_old (their old blocks are 'del').
 
+    def section_summaries(self):
+        """Visible change kinds for each marked section's ToC tooltip.
+
+        Old-side summaries decide only section identity and colour. A real
+        ID rename can mark an otherwise unchanged section; every other mark
+        requires a changed, added, deleted or moved annotation in the
+        section's own annotated subtree, including its subsections.
+        """
+        out = {}
+        dead = set()
+        for O, cp in self.deleted_sections:
+            for e in cp.iter():
+                dead.add(id(e))
+        old_sec_of_id = self._id_sections(self.old, None)
+        for _, root in self.new.files:
+            for el in root.iter():
+                if not is_el(el) or local(el.tag) not in SECTIONISH or id(el) in dead:
+                    continue
+                i = el.get(XML_ID)
+                if not i:
+                    continue
+                old_el = self._resolve_old_section(el, dead, old_sec_of_id)
+                renamed = (old_el is not None and i != old_el.get(XML_ID)
+                           and not self._section_survives(old_el))
+                visible = self._subtree_kinds(el)
+                entry = {'status': 'changed' if old_el is not None else 'added',
+                         'changed': 'changed' in visible,
+                         'added': 'added' in visible,
+                         'deleted': 'deleted' in visible,
+                         'moved': self._subtree_has_moved(el),
+                         'renamed': renamed}
+                if renamed or any(entry[k] for k in
+                                  ('changed', 'added', 'deleted', 'moved')):
+                    out[i] = entry
+        for O, cp in self.deleted_sections:
+            i = cp.get(XML_ID) or O.get(XML_ID)
+            if not i:
+                continue
+            out[i] = {'status': 'deleted', 'changed': False, 'added': False,
+                      'deleted': True, 'moved': self._subtree_has_moved(cp),
+                      'renamed': False}
+        return out
+
+    def _resolve_old_section(self, new_el, dead, old_sec_of_id):
+        """Old section that determines a new section's identity and colour."""
+        i = new_el.get(XML_ID)
+        old_el = self.old.ids.get(i)
+        if old_el is not None and (not is_el(old_el)
+                                   or local(old_el.tag) not in SECTIONISH):
+            old_el = None
+        if old_el is not None:
+            return old_el
+        if len(self._own_blocks(new_el)) >= CONTENT_BLOCKS:
+            old_el = self._aligned_old_section(new_el)
+            if old_el is None and local(new_el.tag) == 'chapter':
+                old_el = self._parent_old_section(new_el, dead, old_sec_of_id)
+        else:
+            old_el = self._alias_old_section(new_el, old_sec_of_id, dead)
+            if old_el is None:
+                old_el = self._parent_old_section(new_el, dead, old_sec_of_id)
+            if old_el is None:
+                old_el = self._aligned_old_section(new_el)
+        return old_el
+
+    def _section_of(self, book, el):
+        """Nearest enclosing-or-self sectionish ancestor of el."""
+        while el is not None:
+            if is_el(el) and local(el.tag) in SECTIONISH:
+                return el
+            el = book.parent.get(el)
+        return None
+
+    def _section_survives(self, old_el):
+        """Whether the old section still exists under the same id.
+
+        A bare id occurrence (an anchor kept for old links) does not
+        count: only a section carrying the id means the section
+        survived. An id reused as an anchor must not hide that section's
+        own deletions, nor block an alias match.
+        """
+        oid = old_el.get(XML_ID)
+        n = self.new.ids.get(oid) if oid else None
+        return n is not None and is_el(n) and local(n.tag) in SECTIONISH
+
+    def _id_sections(self, book, dead):
+        """Map every live xml:id to its nearest sectionish element.
+
+        Ids inside re-inserted deleted copies (dead) are skipped: they
+        name the copy, not a surviving section.
+        """
+        out = {}
+        dead = dead or ()
+        for _, root in book.files:
+            stack = [root]
+            while stack:
+                e = stack.pop()
+                if not is_el(e) or id(e) in dead:
+                    continue
+                i = e.get(XML_ID)
+                if i and i not in out:
+                    out[i] = self._section_of(book, e)
+                stack.extend(e)
+        return out
+
+    def _live_ids(self, el, dead, own_level=False):
+        """xml:ids under el, skipping re-inserted deleted copies.
+
+        With own_level, ids inside a nested section of el itself do not
+        count: only the section's own level decides its identity, so a
+        renamed parent is not outvoted by its kept subsections.
+        """
+        out = []
+        stack = [el]
+        while stack:
+            e = stack.pop()
+            if not is_el(e) or id(e) in dead:
+                continue
+            i = e.get(XML_ID)
+            if i:
+                out.append(i)
+            for c in e:
+                if not is_el(c):
+                    continue
+                if own_level and c is not el and local(c.tag) in SECTIONISH:
+                    continue
+                stack.append(c)
+        return out
+
+    def _own_blocks(self, new_el):
+        """Blocks whose nearest new section is new_el itself.
+
+        Blocks under nested subsections belong to those subsections, so
+        a renamed parent is judged on its own title and paragraphs, and
+        a renamed chapter on its title.
+        """
+        return [b for b in self.sn.blocks_under(new_el)
+                if self._section_of(self.new, b.el) is new_el]
+
+    def _alias_old_section(self, new_el, old_sec_of_id, dead):
+        """Old section sharing own-level inner ids with a renamed section.
+
+        A new section whose title anchor or other own stable inner ids
+        all point into one old section that is itself gone counts as
+        that section surviving under a new id (blue), not as wholly new.
+        """
+        cands = set()
+        for i in self._live_ids(new_el, dead, own_level=True):
+            o = old_sec_of_id.get(i)
+            if o is not None:
+                cands.add(o)
+        if len(cands) != 1:
+            return None
+        o = cands.pop()
+        if o is None or self._section_survives(o):
+            return None
+        return o
+
+    def _parent_old_section(self, new_el, dead, old_sec_of_id):
+        """Gone old parent whose subsections the new subsections continue.
+
+        Only subsections present in the new source count: a struck
+        re-inserted deleted copy is not a surviving child. Each child
+        resolves by id, or through the same alias as a rename (a kept
+        title anchor or inner id). When the resolved old subsections
+        share one gone old parent, the new section is that parent
+        renamed -- even a chapter, and even when its own blocks pair
+        elsewhere.
+        """
+        cands = set()
+        resolved = 0
+        for ch in new_el:
+            if not is_el(ch) or local(ch.tag) not in SECTIONISH:
+                continue
+            if id(ch) in dead:
+                continue
+            i = ch.get(XML_ID)
+            if not i:
+                continue
+            o = self._resolve_old_section(ch, dead, old_sec_of_id)
+            if o is None:
+                continue
+            resolved += 1
+            par = self.old.parent.get(o)
+            while par is not None and not (is_el(par) and local(par.tag) in SECTIONISH):
+                par = self.old.parent.get(par)
+            cands.add(par)
+        if not resolved or len(cands) != 1:
+            return None
+        p = cands.pop()
+        if p is None or self._section_survives(p):
+            return None
+        return p
+
+    def _aligned_old_section(self, new_el):
+        """Old material behind most of a renamed new section's content.
+
+        When over half of the new section's own blocks pair with old
+        blocks, from any old sections, the section holds familiar
+        material, changed: blue, not green. Green then means "read this
+        as new text". A reused title alone never reaches the bar:
+        single-block sections need a shared id to match. Of the old
+        sections, the one holding most of the paired blocks supplies
+        the old counterpart used to decide the section's colour.
+        """
+        total, per = 0, {}
+        for b in self._own_blocks(new_el):
+            total += 1
+            if b.partner is not None:
+                o = self._section_of(self.old, b.partner.el)
+                if o is not None:
+                    per[o] = per.get(o, 0) + 1
+        if total < 2 or not per:
+            return None
+        if sum(per.values()) / total <= 0.5:
+            return None
+        return max(per, key=per.get)
+
+    def _subtree_kinds(self, el):
+        """Visible change kinds from the annotations in a section subtree."""
+        def block_kind(block, inherited):
+            seen = set()
+            def walk(e, flag):
+                flag = (e.get('revisionflag')
+                        if e.get('revisionflag') in ('added', 'deleted') else flag)
+                if local(e.tag) in LIVE_ATOMS:
+                    seen.add(flag or 'live')
+                    return
+                if (e.text or '').strip():
+                    seen.add(flag or 'live')
+                for c in e:
+                    if is_el(c) and local(c.tag) not in SKIP:
+                        walk(c, flag)
+                    if (c.tail or '').strip():
+                        seen.add(flag or 'live')
+            walk(block, inherited)
+            if seen == {'added'}:
+                return 'added'
+            if seen == {'deleted'}:
+                return 'deleted'
+            if not seen or seen == {'live'}:
+                return None
+            return 'changed'
+
+        inherited = None
+        parent = self.parent_of.get(el)
+        while parent is not None:
+            flag = parent.get('revisionflag')
+            if flag in ('added', 'deleted'):
+                inherited = flag
+                break
+            parent = self.parent_of.get(parent)
+
+        kinds = set()
+        def walk(e, flag):
+            if not is_el(e) or local(e.tag) in SKIP:
+                return
+            if e.get('diffmoved') is not None or e.get('role') == 'diff-moved':
+                return
+            if e.get('revisionflag') in ('added', 'deleted'):
+                flag = e.get('revisionflag')
+            t = local(e.tag)
+            if t in SECTIONISH and flag:
+                kinds.add(flag)
+                flag = None
+            if id(e) in self.added_row_elements:
+                kinds.add('added')
+            direct = (e.text or '').strip() or any((c.tail or '').strip() for c in e)
+            if t in BLOCK or (direct and t not in SECTIONISH):
+                kind = block_kind(e, flag)
+                if kind:
+                    kinds.add(kind)
+                out, nested = [], []
+                inline_text(e, out, nested)
+                for n in nested:
+                    walk(n, flag)
+                return
+            for c in e:
+                walk(c, flag)
+        walk(el, inherited)
+        return kinds
+
+    def _subtree_has_moved(self, el):
+        """Whether the subtree holds a move note or received moved text."""
+        if any(b.status in MOVED for b in self.sn.blocks_under(el)):
+            return True
+        return any(is_el(e) and e.get('role') == 'diff-moved'
+                   for e in el.iter())
+
     def fix_order(self, root):
         """Inserted paragraphs may not follow a section in a section: wrap
         them in a section of their own."""
@@ -1650,7 +2034,13 @@ def cleanup(root):
             del el.attrib['diffmoved']
 
 
-def check_ids(roots):
+def check_ids(roots, invalid=frozenset()):
+    """Duplicate ids and dangling links in the annotated roots.
+
+    Ids in invalid (old section ids kept on re-inserted deleted copies)
+    never resolve a ref: sanitizing strips every id from the copies, so a
+    ref to one comes from the new book, where the id does not exist either.
+    """
     seen, dup = set(), []
     for r in roots:
         for el in r.iter():
@@ -1666,7 +2056,7 @@ def check_ids(roots):
             if is_el(el):
                 for a in ('linkend', 'endterm', 'otherterm'):
                     v = el.get(a)
-                    if v and v not in seen:
+                    if v and (v not in seen or v in invalid):
                         refs.append(v)
     return dup, refs
 
@@ -1713,7 +2103,7 @@ def main():
     for r in roots:
         d.fix_order(r)
         cleanup(r)
-    dup, dangling = check_ids(roots)
+    dup, dangling = check_ids(roots, d.preserved_ids)
     if dup or dangling:
         print('docbook-diff: duplicate ids %s; dangling links %s' % (sorted(set(dup))[:20],
               sorted(set(dangling))[:20]), file=sys.stderr)
@@ -1728,6 +2118,7 @@ def main():
         kinds[b.status] = kinds.get(b.status, 0) + 1
     res = dict(old=a.old, new=a.new, old_blocks=len(old.blocks), new_blocks=len(new.blocks),
                statuses=kinds, stats=d.stats, deleted_files=[t for t, _ in written],
+               sections=d.section_summaries(), added_rows=d.added_rows,
                t_parse=round(t1 - t0, 2), t_align=round(t2 - t1, 2),
                t_annotate=round(t3 - t2, 2))
     print(json.dumps(res, ensure_ascii=False))
@@ -1739,6 +2130,388 @@ def main():
 
 FLAG_TAG = re.compile(r'<(/?)(span|div)\b([^>]*?)(/?)>')
 MARKS = {'added': '[+]', 'deleted': '[\u2212]', 'changed': '[\u2192]'}
+TOC_MARKS = {'added': '[+]', 'deleted': '[\u2212]', 'changed': '[*]'}
+TOC_CLASSES = {'added': 'diff-toc-added', 'deleted': 'diff-toc-deleted',
+               'changed': 'diff-toc-changed'}
+TOC_LINK = re.compile(r'<a\b[^>]*href="#([^"]+)"[^>]*>')
+TOC_NUMBER = re.compile(r'\s*(\d[\d.]*\.?|[A-Z]\.[\d.]*\.?)(?=\s)')
+ROW_MARK = {'added': '[+]', 'deleted': '[\u2212]'}
+DIFF_ADDED_ROW = re.compile(
+    r'<(?:a|span)\b[^>]*\bid="(diff-added-row-\d+)"[^>]*(?:/>|></(?:a|span)>)')
+
+
+class _Offsets(HTMLParser):
+    """HTMLParser with absolute offsets for tag boundaries.
+
+    In handle_starttag and handle_data, getpos() points at the '<' of
+    the tag (and at the end of the data); in handle_endtag it points at
+    the '<' of the end tag. A start tag therefore spans abs() up to
+    abs() plus len(get_starttag_text()), and an end tag ends at the
+    next '>'.
+    """
+
+    def __init__(self, page):
+        super().__init__(convert_charrefs=False)
+        self.page = page
+        self.starts = [0]
+        pos = page.find('\n')
+        while pos != -1:
+            self.starts.append(pos + 1)
+            pos = page.find('\n', pos + 1)
+
+    def abs(self):
+        ln, col = self.getpos()
+        return self.starts[ln - 1] + col
+
+    def open_start(self):
+        return self.abs()
+
+    def open_end(self):
+        return self.abs() + len(self.get_starttag_text())
+
+    def close_end(self):
+        return self.page.find('>', self.abs()) + 1
+
+
+class _TocWalk(_Offsets):
+    """Spans of top-level divs whose class list contains 'toc'.
+
+    A nested div like toc-title is part of its ToC region, never a
+    region of its own, so each table of contents is visited exactly
+    once no matter how its inner divs are classed.
+    """
+
+    def __init__(self, page):
+        super().__init__(page)
+        self.regions = []
+        self._depth = None
+        self._start = None
+
+    def handle_starttag(self, tag, attrs):
+        if tag != 'div':
+            return
+        if self._depth is not None:
+            self._depth += 1
+            return
+        if 'toc' in dict(attrs).get('class', '').split():
+            self._depth = 1
+            self._start = self.open_start()
+
+    def handle_endtag(self, tag):
+        if tag != 'div' or self._depth is None:
+            return
+        self._depth -= 1
+        if self._depth == 0:
+            self.regions.append((self._start, self.close_end()))
+            self._depth = None
+class _TableWalk(_Offsets):
+    """Table/row/cell structure of a page with absolute offsets.
+
+    Each row records its own direct cells, whether any cell holds a
+    nested table, and whether it sits inside an interlinear-gloss
+    table. Judging rows only by their own direct cells means a layout
+    row that merely contains a changed nested table is never marked,
+    and rows after a nested table are still examined.
+    """
+
+    def __init__(self, page):
+        super().__init__(page)
+        self.tables = []
+        self.rows = []
+        self._open_rows = []
+
+    def _cur_row(self):
+        if (self.tables and self._open_rows and
+                self._open_rows[-1]['table'] is self.tables[-1]):
+            return self._open_rows[-1]
+        return None
+
+    def handle_starttag(self, tag, attrs):
+        if tag == 'table':
+            if self._open_rows:
+                self._open_rows[-1]['nested'] = True
+            cls = set(dict(attrs).get('class', '').split())
+            self.tables.append({'start': self.open_start(), 'classes': cls,
+                                'gloss': (_is_gloss_table(cls) or
+                                          any(t['gloss'] for t in self.tables))})
+        elif tag == 'tr':
+            if not self.tables:
+                return
+            self._open_rows.append(
+                {'table': self.tables[-1], 'start': self.open_start(),
+                 'open': self.get_starttag_text(), 'tds': [], 'nested': False,
+                 'end': None,
+                 'classes': set(dict(attrs).get('class', '').split()),
+                 'gloss': any(t['gloss'] for t in self.tables)})
+        elif tag == 'td' or tag == 'th':
+            row = self._cur_row()
+            if row is None:
+                return
+            row['tds'].append({'start': self.open_start(),
+                               'open': self.get_starttag_text(),
+                               'open_end': self.open_end(), 'close': None})
+
+    def handle_endtag(self, tag):
+        if tag == 'td' or tag == 'th':
+            row = self._cur_row()
+            if row is not None and row['tds'] and row['tds'][-1]['close'] is None:
+                row['tds'][-1]['close'] = self.abs()
+        elif tag == 'tr':
+            if self._open_rows:
+                row = self._open_rows.pop()
+                row['end'] = self.close_end()
+                self.rows.append(row)
+        elif tag == 'table':
+            if self.tables:
+                self.tables.pop()
+
+
+def _is_gloss_table(classes):
+    """Whether a table class set marks an interlinear gloss table.
+
+    Matches interlinear-gloss and anything built on it, such as
+    interlinear-gloss-itemized; the per-word cells of any of them must
+    keep working and never collapse into one marked row.
+    """
+    return any(c.startswith('interlinear-gloss') for c in classes)
+
+
+ROW_CLASSES_NEVER_MARKED = frozenset(('jbo', 'gloss', 'natlang'))
+
+
+def _cell_text(inner):
+    """Visible text of a cell, for telling content apart from markup."""
+    return re.sub(r'<[^>]*>', '', inner).strip()
+
+
+def _add_class(open_tag, cls):
+    """Append cls to the class attribute of a raw start tag."""
+    m = re.search(r'''\sclass=(["'])(.*?)\1''', open_tag)
+    if m:
+        q = m.group(1)
+        return (open_tag[:m.start()] + ' class=%s%s %s%s' % (q, m.group(2), cls, q)
+                + open_tag[m.end():])
+    base = open_tag.rstrip()
+    if base.endswith('/>'):
+        return base[:-2] + ' class="%s"/>' % cls
+    return base[:-1] + ' class="%s"' % cls + base[-1:]
+
+
+def _apply_edits(page, edits):
+    """Splice (start, end, replacement) edits into the page."""
+    out, pos = [], 0
+    for start, end, text in sorted(edits):
+        out.append(page[pos:start])
+        out.append(text)
+        pos = end
+    out.append(page[pos:])
+    return ''.join(out)
+
+
+def toc_tip(entry):
+    """Name the visible change kinds in a marked section, in fixed order."""
+    kinds = [k for k in ('changed', 'added', 'deleted', 'moved') if entry.get(k)]
+    if not kinds:
+        return 'Section renamed' if entry.get('renamed') else ''
+    words = kinds[0] if len(kinds) == 1 else ', '.join(kinds[:-1]) + ' and ' + kinds[-1]
+    tip = words.capitalize() + ' material'
+    return 'Section renamed; ' + tip[0].lower() + tip[1:] if entry.get('renamed') else tip
+
+
+def mark_toc(page, sections):
+    """Wrap each changed section's NUMBER in ToC links, never the title.
+
+    Inline diffs in titles keep working because only the leading number
+    token is wrapped. Returns the page with the spans inserted.
+    """
+    if not sections:
+        return page
+    walk = _TocWalk(page)
+    walk.feed(page)
+    walk.close()
+    regions = walk.regions
+    out, pos = [], 0
+    for r0, r1 in regions:
+        out.append(page[pos:r0])
+        chunks, bpos = [], r0
+        for lm in TOC_LINK.finditer(page, r0, r1):
+            entry = sections.get(lm.group(1))
+            if not entry or entry.get('status') not in TOC_CLASSES:
+                continue
+            nm = TOC_NUMBER.match(page, lm.end())
+            if not nm:
+                continue
+            tip = toc_tip(entry)
+            if not tip:
+                continue
+            chunks.append(page[bpos:lm.start()])
+            chunks.append(lm.group(0))
+            chunks.append(page[lm.end():nm.start(1)])
+            chunks.append('<span class="%s" title="%s">%s</span>'
+                          % (TOC_CLASSES[entry['status']], tip,
+                             nm.group(1)))
+            bpos = nm.end(1)
+        chunks.append(page[bpos:r1])
+        out.append(''.join(chunks))
+        pos = r1
+    out.append(page[pos:])
+    return ''.join(out)
+
+
+class _CellPurity(HTMLParser):
+    """Whether a table cell holds only added (or only deleted) material.
+
+    Text outside same-kind change wrappers, or any other-kind change
+    markup, makes the cell impure. Whitespace-only cells are empty.
+    """
+
+    def __init__(self, kind):
+        super().__init__(convert_charrefs=True)
+        self.kind = kind
+        # One entry per open span/div: whether it is a same-kind wrapper.
+        # A counter is not enough: the end tag of a nested inline span
+        # must not close the wrapper around the text after it.
+        self.stack = []
+        self.pure = True
+        self.has_text = False
+
+    def handle_starttag(self, tag, attrs):
+        if tag not in ('span', 'div'):
+            return
+        classes = dict(attrs).get('class', '').split()
+        if self.kind in classes:
+            self.stack.append(True)
+        else:
+            if ('added' in classes or 'deleted' in classes
+                    or 'changed' in classes):
+                self.pure = False
+            self.stack.append(False)
+
+    def handle_endtag(self, tag):
+        if tag in ('span', 'div') and self.stack:
+            self.stack.pop()
+
+    def handle_data(self, data):
+        if not data.strip():
+            return
+        if any(self.stack):
+            self.has_text = True
+        else:
+            self.pure = False
+
+
+def _cell_status(inner):
+    """'added'/'deleted' when the cell holds only that kind of material."""
+    for kind in ('added', 'deleted'):
+        probe = _CellPurity(kind)
+        try:
+            probe.feed(inner)
+            probe.close()
+        except Exception:
+            return None
+        if probe.pure and probe.has_text:
+            return kind
+    return None
+
+
+def _walk_tables(page):
+    walk = _TableWalk(page)
+    walk.feed(page)
+    walk.close()
+    return walk.rows
+
+
+def mark_rows(page, added_rows=()):
+    """Mark fully added or deleted table rows as one unit.
+
+    Only the innermost row whose own cells are all added (or all
+    deleted), or a row identified as inserted in the stats, gets the mark:
+    a layout row that merely contains a changed nested table never does,
+    and neither does a row inside an interlinear-gloss table, whose
+    per-word cells must keep working.
+    A cell with no text counts as empty even when it carries same-kind
+    change markup (a new cmavo entry whose series cell is empty still
+    collapses); a cell holding other-kind change markup is never empty.
+    The tr gets diff-row-added (or diff-row-deleted) and its first
+    direct cell gets diff-row-first, so the stylesheet can paint one
+    background with a single left bar instead of styling each cell
+    separately.
+    """
+    edits = []
+    remaining = {}
+    for text in added_rows:
+        remaining[text] = remaining.get(text, 0) + 1
+    for row in _walk_tables(page):
+        if row['nested'] or row['gloss'] or not row['tds']:
+            continue
+        if row['classes'] & ROW_CLASSES_NEVER_MARKED:
+            continue
+        if 'diff-row-added' in row['classes'] or 'diff-row-deleted' in row['classes']:
+            continue
+        end = row['end'] if row['end'] is not None else row['start'] + len(row['open'])
+        marker = DIFF_ADDED_ROW.search(page, row['start'], end)
+        if marker and remaining.get(marker.group(1)):
+            remaining[marker.group(1)] -= 1
+            edits.append((row['start'], row['start'] + len(row['open']),
+                          _add_class(row['open'], 'diff-row-added')))
+            first = row['tds'][0]
+            edits.append((first['start'], first['start'] + len(first['open']),
+                          _add_class(first['open'], 'diff-row-first')))
+            edits.append((marker.start(), marker.end(), ''))
+            continue
+        kinds = set()
+        seen = False
+        pending = []
+        for td in row['tds']:
+            inner = page[td['open_end']:td['close'] or td['open_end']]
+            if _cell_text(inner):
+                status = _cell_status(inner)
+                if status is None:
+                    break
+                kinds.add(status)
+                seen = True
+            else:
+                pending.append(inner)
+        else:
+            if not seen or len(kinds) != 1:
+                continue
+            kind = kinds.pop()
+            blank = True
+            for inner in pending:
+                probe = _CellPurity(kind)
+                try:
+                    probe.feed(inner)
+                    probe.close()
+                except Exception:
+                    blank = False
+                    break
+                if not (probe.pure and not probe.has_text):
+                    blank = False
+                    break
+            if not blank:
+                continue
+            edits.append((row['start'], row['start'] + len(row['open']),
+                          _add_class(row['open'], 'diff-row-%s' % kind)))
+            first = row['tds'][0]
+            edits.append((first['start'], first['start'] + len(first['open']),
+                          _add_class(first['open'], 'diff-row-first')))
+            continue
+    return _apply_edits(page, edits)
+
+
+def collapse_row_marks(prefixed):
+    """One prefixed marker per row-marked row, after its first cell."""
+    edits = []
+    for row in _walk_tables(prefixed):
+        kind = ('added' if 'diff-row-added' in row['classes']
+                else 'deleted' if 'diff-row-deleted' in row['classes'] else None)
+        if kind is None or not row['tds'] or row['end'] is None:
+            continue
+        mark = '<span class="diffmark">%s</span>' % ROW_MARK[kind]
+        first = row['tds'][0]
+        inner = prefixed[first['open_end']:row['end']].replace(mark, '')
+        edits.append((first['open_end'], row['end'], mark + inner))
+    return _apply_edits(prefixed, edits)
 
 
 def finish(argv):
@@ -1765,27 +2538,32 @@ def finish(argv):
         page = re.sub(r'(\s(?:src|href))="(assets/|final\.css")',
                       lambda m: '%s="%s%s' % (m.group(1), a.assets, m.group(2)), page)
     esc = lambda x: x.replace('&', '&amp;').replace('<', '&lt;')
-    counts = ''
+    sections = {}
+    added_rows = []
     if a.stats:
         st = json.loads(Path(a.stats).read_text())
-        k = st.get('statuses', {})
-        counts = (' Blocks (paragraphs, example lines, table rows, list entries, titles): '
-                  '%d changed, %d added, %d deleted, %d moved.'
-                  % (k.get('chg', 0) // 2, k.get('ins', 0), k.get('del', 0),
-                     (k.get('move', 0) + k.get('movechg', 0)) // 2))
+        sections = st.get('sections', {})
+        added_rows = st.get('added_rows', [])
     banner = (
         '<div class="diff-banner"><p><strong>Changes from %s to %s.</strong> '
         'This is the complete text of %s, with the changes since %s marked in place: '
         '<span class="added">added text</span>, '
         '<span class="deleted">deleted text</span> (kept where it was, struck through), and '
         '<span class="changed">notes where moved material used to be</span>, '
-        'with a link to its new place. Moved material itself is not marked at its new place.%s '
+        'with a link to its new place. Moved material itself is not marked at its new place '
+        'unless its wording also changed. '
+        'In the table of contents, a light blue number (#a9c8ff) is a section that '
+        'continues from the old version — keeping its place, or with most of its '
+        'text from old text — changed; a green number (#97f295) is a section to '
+        'read as new text; a pink number (#ffb6ba), struck through, is a deleted '
+        'section (its text is kept below, struck through). '
         'The comparison is computed from the DocBook sources of the two versions, '
         'so it ignores differences that are only in the formatting.</p></div>'
-        % (esc(a.old_label), esc(a.new_label), esc(a.new_label), esc(a.old_label), counts))
+        % (esc(a.old_label), esc(a.new_label), esc(a.new_label), esc(a.old_label)))
     page, n = re.subn(r'(<body\b[^>]*>)', lambda m: m.group(1) + banner, page, count=1)
     if not n:
         sys.exit('docbook-diff finish: no <body> in %s' % a.index)
+    page = mark_rows(mark_toc(page, sections), added_rows)
     out = Path(a.outdir)
     out.mkdir(parents=True, exist_ok=True)
     (out / 'difference.html').write_text(page, encoding='utf-8')
@@ -1802,6 +2580,8 @@ def finish(argv):
                     depth -= 1
             continue
         cm = re.search(r'\bclass="(added|deleted|changed)"', attrs)
+        tm = (not cm and tag == 'span' and
+              re.search(r'\bclass="diff-toc-(added|deleted|changed)"', attrs))
         if selfclose:
             continue
         stack.append(bool(cm))
@@ -1809,10 +2589,22 @@ def finish(argv):
             res.append(page[pos:m.end()])
             res.append('<span class="diffmark">%s</span>' % MARKS[cm.group(1)])
             pos = m.end()
+        elif tm and depth == 0:
+            res.append(page[pos:m.start()])
+            res.append('<span class="diffmark">%s</span>' % TOC_MARKS[tm.group(1)])
+            pos = m.start()
         if cm:
             depth += 1
     res.append(page[pos:])
-    (out / 'difference_prefixed.html').write_text(''.join(res), encoding='utf-8')
+    # The prefixed page also explains its text markers, which the plain
+    # page never shows.
+    banner_pre = (banner[:-len('</p></div>')]
+                  + ' In this version, a text marker comes before each change: '
+                  '[+] added, [\u2212] deleted, [\u2192] moved; in the table '
+                  'of contents, [*] marks a changed section.</p></div>')
+    (out / 'difference_prefixed.html').write_text(
+        collapse_row_marks(''.join(res)).replace(banner, banner_pre, 1),
+        encoding='utf-8')
 
 
 if __name__ == '__main__':

@@ -1,0 +1,393 @@
+#!/usr/bin/env python3
+"""Whole added or deleted table rows in DocBook comparisons.
+
+Only the innermost row whose own cells are all added (or all deleted)
+is marked as one unit: one background and a single left bar on the
+first cell, instead of styling each cell's content separately. A layout
+row that merely contains a changed nested table is never marked.
+Deleted rows keep their strikethrough. Rows with mixed changes keep
+per-cell marking. Interlinear-gloss rows (per-word cells) are never
+row-marked.
+"""
+import importlib.util
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+import unittest
+
+SCRIPT = Path(__file__).with_name('docbook-diff.py')
+
+
+def load_tool():
+    spec = importlib.util.spec_from_file_location(
+        'docbook_diff_tool', str(SCRIPT))
+    tool = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(tool)
+    return tool
+
+PAGE_HEAD = """<html><head><title>t</title></head><body>
+<div class="toc"><div class="toc-title">Table of Contents</div>
+<ul class="toc"><li><span class="chapter"><a href="#chapter-a">1. Chapter</a></span></li></ul></div>
+<section class="chapter" id="chapter-a">
+"""
+
+ORDINARY_ADDED = """<table><tbody>
+<tr><td><span class="added"><span class="phrase">new one</span></span></td>
+<td><span class="added"><span class="phrase">new two</span></span></td></tr>
+</tbody></table>
+"""
+
+ORDINARY_DELETED = """<table><tbody>
+<tr><td><div class="deleted"><p>old one</p></div></td>
+<td><div class="deleted"><p>old two</p></div></td></tr>
+</tbody></table>
+"""
+
+ORDINARY_MIXED = """<table><tbody>
+<tr><td><span class="added"><span class="phrase">new one</span></span></td>
+<td>untouched two</td></tr>
+</tbody></table>
+"""
+
+CMAVO_ADDED = """<table class="cmavo-list"><tbody>
+<tr class="cmavo-entry"><td class="cmavo"><div class="added"><p>la'au</p></div></td>
+<td class="selmaho"><div class="added"><p>LU*</p></div></td>
+<td class="description"><div class="added"><p>name from grammatical text</p></div></td></tr>
+</tbody></table>
+"""
+
+INTERLINEAR_ADDED = """<table class="interlinear-gloss"><tbody>
+<tr class="jbo"><td><span class="added"><span class="phrase">mi</span></span></td>
+<td><span class="added"><span class="phrase">klama</span></span></td></tr>
+<tr class="gloss"><td><span class="added"><span class="phrase">I</span></span></td>
+<td><span class="added"><span class="phrase">go</span></span></td></tr>
+</tbody></table>
+"""
+
+WITH_EMPTY_CELL = """<table><tbody>
+<tr><td><span class="added"><span class="phrase">new one</span></span></td><td> </td></tr>
+</tbody></table>
+"""
+
+def word(text):
+    return '<span class="added"><span class="phrase">%s</span></span>' % text
+
+
+def cmavo_entry(cmavo, selmaho, description, added):
+    wrap = '<div class="added">%s</div>' if added else '%s'
+    cell = lambda cls, text: ('<td class="%s">%s</td>'
+                              % (cls, wrap % ('<p class="%s">%s</p>' % (cls, text))))
+    return ('<tr class="cmavo-entry">'
+            + cell('cmavo', cmavo) + cell('selmaho', selmaho)
+            + cell('description', description) + '</tr>')
+
+
+# Two cmavo lists side by side in a noborder layout table, as in 18.2:
+# only the first entry of the left list is added.
+SIDE_BY_SIDE = (
+    '<div class="informaltable"><table class="noborder"><tr>'
+    '<td><div class="informaltable"><table class="cmavo-list">'
+    + cmavo_entry("xo'e", 'PA', 'some number', True)
+    + cmavo_entry('pa', 'PA', '1', False)
+    + cmavo_entry('re', 'PA', '2', False)
+    + '</table></div></td>'
+    '<td><div class="informaltable"><table class="cmavo-list">'
+    + cmavo_entry('vo', 'PA', '4', False)
+    + '</table></div></td></tr></table></div>')
+
+# A caption table holding a nested interlinear gloss (chapter 1 shape):
+# a wholly added jbo line and gloss line must not become whole rows,
+# and neither must the outer caption row that contains them. The plain
+# added row after the nested table is still marked.
+CAPTION_WITH_GLOSS = (
+    '<table class="vertsep">'
+    '<tr><td><a class="link" href="#c5">Chapter 5</a></td>'
+    '<td><p> (none) </p></td></tr>'
+    '<tr><td>' + word('Chapter 22') + '</td>'
+    '<td><div class="informaltable"><table class="interlinear-gloss">'
+    '<tr class="jbo"><td>' + word('mi') + '</td><td>' + word('klama') + '</td></tr>'
+    '<tr class="gloss"><td>' + word('I') + '</td><td>' + word('go') + '</td></tr>'
+    '</table></div></td></tr>'
+    '<tr><td>' + word('Chapter 23') + '</td><td><p>' + word('(none)') + '</p></td></tr>'
+    '</table>')
+
+PAGE_TAIL = "</section></body></html>"
+
+
+class TableRowTests(unittest.TestCase):
+    def finish(self, *tables, added_rows=()):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        root = Path(temp.name)
+        (root / 'index.html').write_text(
+            PAGE_HEAD + ''.join(tables) + PAGE_TAIL, encoding='utf-8')
+        (root / 'stats.json').write_text(json.dumps(
+            {'statuses': {}, 'stats': {}, 'added_rows': list(added_rows)}))
+        run = subprocess.run(
+            [sys.executable, str(SCRIPT), 'finish', str(root / 'index.html'),
+             str(root / 'out'), '--old-label', 'Old', '--new-label', 'New',
+             '--stats', str(root / 'stats.json')],
+            capture_output=True, text=True)
+        self.assertEqual(run.returncode, 0, run.stderr)
+        return ((root / 'out' / 'difference.html').read_text(encoding='utf-8'),
+                (root / 'out' / 'difference_prefixed.html').read_text(encoding='utf-8'))
+
+    def test_inserted_row_from_stats_has_no_added_inner_text(self):
+        # An inserted row can hold unchanged aligned text. Stats identify
+        # the row itself, so finish marks it without painting its cells.
+        row = ('<table><tbody><tr><td><span id="diff-added-row-0"></span>'
+               '<span class="foreignphrase">nunkilca\'a</span></td>'
+               '<td><p>sharpness-apparatus</p></td></tr></tbody></table>')
+        page, prefixed = self.finish(row, added_rows=['diff-added-row-0'])
+        self.assertIn('<tr class="diff-row-added">', page)
+        rendered_row = page[page.index('<tr class="diff-row-added">'):]
+        rendered_row = rendered_row[:rendered_row.index('</tr>')]
+        self.assertNotIn('class="added"', rendered_row)
+        self.assertNotIn('diff-added-row-0', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+        self.assertIn('sharpness-apparatus', page)
+
+    def test_only_the_marked_duplicate_row_is_added(self):
+        rows = ('<table><tbody>'
+                '<tr><td>a</td><td>b</td></tr>'
+                '<tr><td><a id="diff-added-row-0"></a>a</td><td>b</td></tr>'
+                '</tbody></table>')
+        page, prefixed = self.finish(rows, added_rows=['diff-added-row-0'])
+        self.assertEqual(page.count('diff-row-added'), 1)
+        self.assertIn('<tr><td>a</td><td>b</td></tr>', page)
+        self.assertIn('<tr class="diff-row-added">', page)
+        self.assertNotIn('diff-added-row-0', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+
+    def test_marker_survives_generated_xref_text(self):
+        row = ('<table><tbody><tr><td><a id="diff-added-row-0"></a>'
+               'nunkilca\'a, see <a href="#target">Generated section label</a></td>'
+               '<td><p>sharpness-apparatus</p></td></tr></tbody></table>')
+        page, prefixed = self.finish(row, added_rows=['diff-added-row-0'])
+        self.assertIn('<tr class="diff-row-added">', page)
+        self.assertIn('Generated section label', page)
+        self.assertNotIn('diff-added-row-0', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+
+    def test_fully_added_row_is_one_unit(self):
+        page, prefixed = self.finish(ORDINARY_ADDED)
+        self.assertIn('<tr class="diff-row-added">', page)
+        # One marker for the row, not one per cell. The first direct
+        # cell carries the single left bar.
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+        self.assertIn('<td class="diff-row-first"><span class="diffmark">[+]</span>',
+                      prefixed)
+        self.assertIn('<td class="diff-row-first">', page)
+
+    def test_fully_deleted_row_keeps_strike(self):
+        page, prefixed = self.finish(ORDINARY_DELETED)
+        self.assertIn('<tr class="diff-row-deleted">', page)
+        self.assertIn('class="deleted"', page)  # strikethrough stays
+        self.assertEqual(prefixed.count('<span class="diffmark">[\u2212]</span>'), 1)
+
+    def test_cmavo_row_is_one_unit(self):
+        page, prefixed = self.finish(CMAVO_ADDED)
+        self.assertIn('cmavo-entry diff-row-added', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+
+    def test_mixed_row_keeps_per_cell_marking(self):
+        page, prefixed = self.finish(ORDINARY_MIXED)
+        self.assertNotIn('diff-row-added', page)
+        self.assertNotIn('diff-row-deleted', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+
+    def test_interlinear_rows_are_not_row_marked(self):
+        page, prefixed = self.finish(INTERLINEAR_ADDED)
+        self.assertNotIn('diff-row-added', page)
+        self.assertNotIn('diff-row-deleted', page)
+        # ... but their per-word marks still work as today.
+        self.assertGreater(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+
+    def test_empty_cell_does_not_block_row_marking(self):
+        page, _ = self.finish(WITH_EMPTY_CELL)
+        self.assertIn('<tr class="diff-row-added">', page)
+
+    def test_nested_lists_mark_only_the_added_inner_row(self):
+        # As in 18.2: the outer layout row merely contains the lists,
+        # so it stays plain; the added inner entry becomes one row.
+        page, prefixed = self.finish(SIDE_BY_SIDE)
+        self.assertIn('<tr class="cmavo-entry diff-row-added">', page)
+        self.assertEqual(page.count('diff-row-added'), 1)  # the inner row only
+        self.assertNotIn('<tr class="diff-row-added">', page)
+        self.assertNotIn('<table class="noborder diff-row-added">', page)
+        # One marker for the inner row; the inner [+] marks are gone.
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+        self.assertIn('<td class="cmavo diff-row-first">'
+                      '<span class="diffmark">[+]</span>', prefixed)
+
+    def test_caption_table_with_nested_gloss(self):
+        # Wholly added jbo/gloss lines stay per-word marks, the outer
+        # caption row stays plain, and the plain added row after the
+        # nested table is still marked.
+        page, prefixed = self.finish(CAPTION_WITH_GLOSS)
+        self.assertNotIn('jbo diff-row-added', page)
+        self.assertNotIn('gloss diff-row-added', page)
+        self.assertIn('<table class="vertsep">', page)
+        self.assertNotIn('<table class="vertsep diff-row-added">', page)
+        self.assertIn('<tr class="diff-row-added">', page)
+        # Four per-word marks in the gloss, one beside the Chapter 22
+        # caption, one for the marked plain row: 4 + 1 + 1.
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 6)
+
+    def test_itemized_gloss_line_is_not_a_whole_row(self):
+        # An itemized interlinear example that gains a whole gloss line
+        # renders one added div per cell; the gloss row must still not
+        # collapse, and neither must the jbo row.
+        cell = lambda cls, text, add: (
+            '<td>%s<p class="%s">%s</p>%s</td>'
+            % ('<div class="added">' if add else '', cls, text,
+               '</div>' if add else ''))
+        table = ('<div class="informaltable">'
+                 '<table class="interlinear-gloss-itemized">'
+                 '<tr class="jbo">' + cell('sumti', 'mi', False)
+                 + cell('selbri', 'klama', False) + '</tr>'
+                 '<tr class="gloss">' + cell('sumti', 'I', True)
+                 + cell('selbri', 'go', True) + '</tr>'
+                 '</table></div>')
+        page, prefixed = self.finish(table)
+        self.assertNotIn('diff-row-added', page)
+        self.assertNotIn('diff-row-deleted', page)
+        # ... but the two added per-word cells keep their marks.
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 2)
+
+    def test_word_class_rows_are_never_marked(self):
+        # jbo, gloss and natlang rows keep per-cell marking even in an
+        # ordinary table whose cells are all added.
+        for cls in ('jbo', 'gloss', 'natlang'):
+            table = ('<table><tbody><tr class="%s"><td>%s</td><td>%s</td></tr>'
+                     '</tbody></table>' % (cls, word('new one'), word('new two')))
+            page, _ = self.finish(table)
+            self.assertNotIn('diff-row-added', page)
+            self.assertNotIn('diff-row-deleted', page)
+
+    def test_text_after_nested_span_still_counts_as_added(self):
+        # A description cell that quotes another word after an inline
+        # span is still only added material, so the row collapses.
+        cell = ('<td><div class="added"><p>the word '
+                '<span class="foreignphrase"><em>la</em></span> quotes</p>'
+                '</div></td>')
+        page, prefixed = self.finish(
+            '<table><tbody><tr>%s%s</tr></tbody></table>' % (cell, cell))
+        self.assertIn('<tr class="diff-row-added">', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+
+    def test_added_row_with_wrapped_empty_series_cell(self):
+        # A new cmavo entry without a series renders an empty series
+        # cell wrapped as added; the row still becomes one marked row.
+        row = ('<table><tbody><tr>'
+               '<td class="cmavo"><div class="added"><p class="cmavo">goi</p></div></td>'
+               '<td class="selmaho"><div class="added"><p class="selmaho">GOI</p></div></td>'
+               '<td class="description"><div class="added"><p class="description">'
+               'sumti assignment</p></div></td>'
+               '<td class="series"><div class="added">'
+               '<p class="cmavo-series"></p></div></td>'
+               '</tr></tbody></table>')
+        page, prefixed = self.finish(row)
+        self.assertIn('<tr class="diff-row-added">', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+
+    def test_added_row_with_plain_empty_series_cell(self):
+        # The same, with the empty series cell left unwrapped.
+        row = ('<table><tbody><tr>'
+               '<td class="cmavo"><div class="added"><p class="cmavo">goi</p></div></td>'
+               '<td class="selmaho"><div class="added"><p class="selmaho">GOI</p></div></td>'
+               '<td class="series"><p class="cmavo-series"></p></td>'
+               '</tr></tbody></table>')
+        page, prefixed = self.finish(row)
+        self.assertIn('<tr class="diff-row-added">', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+
+    def test_deleted_row_with_empty_series_cell(self):
+        # A deleted entry with an empty series cell collapses too.
+        row = ('<table><tbody><tr>'
+               '<td class="cmavo"><div class="deleted"><p class="cmavo">goi</p></div></td>'
+               '<td class="selmaho"><div class="deleted"><p class="selmaho">GOI</p></div></td>'
+               '<td class="series"><div class="deleted">'
+               '<p class="cmavo-series"></p></div></td>'
+               '</tr></tbody></table>')
+        page, prefixed = self.finish(row)
+        self.assertIn('<tr class="diff-row-deleted">', page)
+        self.assertIn('class="deleted"', page)  # strikethrough stays
+        self.assertEqual(prefixed.count('<span class="diffmark">[\u2212]</span>'), 1)
+
+    def test_other_kind_markup_in_empty_cell_blocks_the_row(self):
+        # An empty cell holding deleted markup is not empty: the mixed
+        # row keeps per-cell marking.
+        row = ('<table><tbody><tr>'
+               '<td><div class="added"><p>new one</p></div></td>'
+               '<td><div class="deleted"><p></p></div></td>'
+               '</tr></tbody></table>')
+        page, prefixed = self.finish(row)
+        self.assertNotIn('diff-row-added', page)
+        self.assertNotIn('diff-row-deleted', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+        self.assertEqual(prefixed.count('<span class="diffmark">[\u2212]</span>'), 1)
+
+    def test_added_header_row_is_one_unit(self):
+        # A bilingual header (Alice shape) whose th cells are all
+        # added gets one background, one bar and one marker.
+        table = ('<table><thead><tr><th>%s</th><th>%s</th></tr></thead></table>'
+                 % (word('la .alis. cizra'), word("Alice's Adventures")))
+        page, prefixed = self.finish(table)
+        self.assertIn('<tr class="diff-row-added">', page)
+        self.assertIn('<th class="diff-row-first">', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+        self.assertIn('<th class="diff-row-first"><span class="diffmark">[+]</span>',
+                      prefixed)
+
+    def test_deleted_header_row_is_one_unit(self):
+        cell = ('<th><span class="deleted"><span class="phrase">%s</span></span></th>')
+        table = ('<table><thead><tr>%s%s</tr></thead></table>'
+                 % (cell % 'la .alis.', cell % 'Alice'))
+        page, prefixed = self.finish(table)
+        self.assertIn('<tr class="diff-row-deleted">', page)
+        self.assertIn('<th class="diff-row-first">', page)
+        self.assertIn('class="deleted"', page)  # strikethrough stays
+        self.assertEqual(prefixed.count('<span class="diffmark">[\u2212]</span>'), 1)
+
+    def test_mixed_th_td_row_is_not_marked(self):
+        # An unchanged th beside an added td: per-cell marking stays,
+        # and the bar does not land on the added td.
+        table = ('<table><tbody><tr><th>Header</th><td>%s</td></tr></tbody></table>'
+                 % word('new'))
+        page, prefixed = self.finish(table)
+        self.assertNotIn('diff-row-added', page)
+        self.assertNotIn('diff-row-deleted', page)
+        self.assertNotIn('diff-row-first', page)
+        self.assertEqual(prefixed.count('<span class="diffmark">[+]</span>'), 1)
+
+
+class AddClassTests(unittest.TestCase):
+    """_add_class must not break odd but legal start tags."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.add_class = staticmethod(load_tool()._add_class)
+
+    def test_plain_tag(self):
+        self.assertEqual(self.add_class('<td>', 'c'), '<td class="c">')
+
+    def test_existing_class(self):
+        self.assertEqual(self.add_class('<tr class="cmavo-entry">', 'diff-row-added'),
+                         '<tr class="cmavo-entry diff-row-added">')
+
+    def test_self_closing_tag(self):
+        self.assertEqual(self.add_class('<td/>', 'c'), '<td class="c"/>')
+
+    def test_single_quoted_class(self):
+        self.assertEqual(self.add_class("<td class='x'>", 'c'), "<td class='x c'>")
+
+    def test_data_class_attribute_is_left_alone(self):
+        self.assertEqual(self.add_class('<td data-class="q">', 'c'),
+                         '<td data-class="q" class="c">')
+
+
+if __name__ == '__main__':
+    unittest.main()

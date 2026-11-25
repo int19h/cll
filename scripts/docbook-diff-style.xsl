@@ -40,6 +40,30 @@ div.changed  { background-color: #eef3fd; border-left: 4px solid #8aa9e6;
 span.changed { background-color: #eef3fd; }
 div.added span.added { background-color: transparent; }
 div.deleted span.deleted { background-color: transparent; }
+/* Changed-section numbers in the table of contents. Light blue, the
+   same hue as the "changed" move-note blocks below: amber and the added
+   green look alike to red-green colour-blind readers, blue stays apart. */
+span.diff-toc-changed { background-color: #a9c8ff; color: #000;
+                        border-radius: 2px; padding: 0 0.2em; }
+span.diff-toc-added { background-color: #97f295;
+                      border-radius: 2px; padding: 0 0.2em; }
+span.diff-toc-deleted { background-color: #ffb6ba; text-decoration: line-through;
+                        border-radius: 2px; padding: 0 0.2em; }
+/* A fully added or deleted table row reads as one unit: one background
+   with a single left bar on the first cell. The per-cell bars inside
+   such a row are dropped (deleted rows keep their strikethrough). */
+tr.diff-row-added td, tr.diff-row-added th { background-color: #e5fbe4; }
+tr.diff-row-added td.diff-row-first,
+tr.diff-row-added th.diff-row-first { border-left: 4px solid #97f295; }
+tr.diff-row-added div.added { border-left: none; margin-left: 0; padding-left: 0;
+                              background-color: transparent; }
+tr.diff-row-added span.added { background-color: transparent; }
+tr.diff-row-deleted td, tr.diff-row-deleted th { background-color: #ffeef0; }
+tr.diff-row-deleted td.diff-row-first,
+tr.diff-row-deleted th.diff-row-first { border-left: 4px solid #ffb6ba; }
+tr.diff-row-deleted div.deleted { border-left: none; margin-left: 0; padding-left: 0;
+                                  background-color: transparent; }
+tr.diff-row-deleted span.deleted { background-color: transparent; }
 .diff-banner { font-family: system-ui, sans-serif; font-size: 0.95rem;
                line-height: 1.45; background: #f7f7f7; border: 1px solid #ccc;
                border-radius: 4px; padding: 0.6em 0.9em; margin: 0.5em 0 1.5em; }

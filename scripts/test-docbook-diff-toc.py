@@ -963,10 +963,43 @@ class TocMainTests(unittest.TestCase):
                '<section xml:id="c1s4"><title>Stable again</title>'
                '<para>Stable final paragraph.</para></section></chapter>')
         result, tree = self.compare(old, new)
+        self.assertEqual(result['sections']['c1s2'].get('status'), 'deleted')
+        self.assertTrue(result['sections']['c1s2'].get('target'))
         self.assertEqual(result['sections']['c1s3'].get('status'), 'deleted')
+        self.assertNotIn('target', result['sections']['c1s3'])
         self.assertTrue(result['sections']['c1s3'].get('deleted'))
         ids = [el.get(XML_ID) for el in tree.iter() if isinstance(el.tag, str)]
         self.assertIn('c1s3', ids)
+        self.assertIn(result['sections']['c1s2']['target'], ids)
+
+    def test_both_deleted_ids_survive_as_live_anchors(self):
+        old = ('<chapter xml:id="c1"><title>Chapter</title>'
+               '<section xml:id="c1s1"><title>Stable</title>'
+               '<para>Stable preceding paragraph.</para></section>'
+               '<section xml:id="c1s2"><title>Deleted outer</title>'
+               '<para>Outer deleted substance.</para>'
+               '<section xml:id="c1s3"><title>Nested deleted</title>'
+               '<para>Nested deleted substance.</para></section></section>'
+               '<section xml:id="c1s4"><title>Stable again</title>'
+               '<para>Stable final paragraph.</para></section></chapter>')
+        new = ('<chapter xml:id="c1"><title>Chapter</title>'
+               '<section xml:id="c1s1"><title>Stable'
+               '<anchor xml:id="c1s2"/><anchor xml:id="c1s3"/></title>'
+               '<para>Stable preceding paragraph.</para></section>'
+               '<section xml:id="c1s4"><title>Stable again</title>'
+               '<para>Stable final paragraph.</para></section></chapter>')
+        result, tree = self.compare(old, new)
+        targets = []
+        for section_id in ('c1s2', 'c1s3'):
+            entry = result['sections'][section_id]
+            self.assertEqual(entry.get('status'), 'deleted')
+            self.assertTrue(entry.get('deleted'))
+            self.assertTrue(entry.get('target'))
+            targets.append(entry['target'])
+        self.assertEqual(len(set(targets)), 2)
+        ids = [el.get(XML_ID) for el in tree.iter() if isinstance(el.tag, str)]
+        for target in targets:
+            self.assertIn(target, ids)
 
     def test_renamed_chapter_with_own_content_matches_old_chapter(self):
         # A renamed chapter with three own blocks: the title and both
@@ -1136,6 +1169,17 @@ class TocFinishTests(unittest.TestCase):
         self.assertIn('<span class="diff-toc-changed" '
                       'title="Changed, added, deleted and moved material">1.</span>'
                       ' Chapter', page)
+
+    def test_deleted_entry_link_points_to_deleted_copy(self):
+        stats = {'statuses': {}, 'stats': {}, 'sections': {}}
+        stats['sections'] = dict(STATS['sections'])
+        stats['sections']['section-d'] = dict(stats['sections']['section-d'])
+        stats['sections']['section-d']['target'] = 'diff-deleted-section-0'
+        page, prefixed = self.finish(stats=stats)
+        for variant in (page, prefixed):
+            self.assertIn('<a href="#diff-deleted-section-0">', variant)
+            self.assertNotIn('<a href="#section-d">', variant)
+            self.assertIn('title="Deleted material"', variant)
 
     def test_numberless_entry_is_left_alone(self):
         page, _ = self.finish()

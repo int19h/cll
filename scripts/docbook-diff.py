@@ -1289,6 +1289,22 @@ class Differ:
             if r is root:
                 return name
 
+    def _deleted_section_id(self, O):
+        """ID for a deleted copy, without stealing a surviving anchor's ID."""
+        oid = O.get(XML_ID)
+        if not oid:
+            return None
+        if oid not in self.new_ids:
+            self.preserved_ids.add(oid)
+            return oid
+        n = 0
+        while True:
+            candidate = 'diff-deleted-section-%d' % n
+            if candidate not in self.new_ids and candidate not in self.preserved_ids:
+                self.preserved_ids.add(candidate)
+                return candidate
+            n += 1
+
     def reconstruct(self, O):
         so = self.so
         c = so.get(O)
@@ -1305,10 +1321,9 @@ class Differ:
                 # an id stay dangling: _sanitize never lets a copy point at
                 # one, so any remaining ref comes from the new book, where
                 # the id does not exist either (see check_ids).
-                oid = O.get(XML_ID)
-                if oid and oid not in self.new_ids:
-                    cp.set(XML_ID, oid)
-                    self.preserved_ids.add(oid)
+                new_id = self._deleted_section_id(O)
+                if new_id:
+                    cp.set(XML_ID, new_id)
                 self._keep_section_ids(O, cp)
                 self.deleted_sections.append((O, cp))
             return [cp]
@@ -1340,19 +1355,20 @@ class Differ:
                 S.append(p)
         self.merge_notes(S)
         if local(O.tag) in SECTIONISH:
-            oid = O.get(XML_ID)
-            if oid and oid not in self.new_ids:
-                S.set(XML_ID, oid)
-                self.preserved_ids.add(oid)
+            new_id = self._deleted_section_id(O)
+            if new_id:
+                S.set(XML_ID, new_id)
             self._keep_section_ids(O, S)
             self.deleted_sections.append((O, S))
         return [S]
 
     def _keep_section_ids(self, O, cp):
-        """Keep the ids of deleted subsections for their ToC links.
+        """Give deleted subsections usable targets for their ToC links.
 
-        Sanitizing strips every id from a re-inserted copy, so without
-        this the ToC links of subsections inside a deleted section point
+        Preserve each original id that is free; when a surviving anchor
+        owns it, generate a distinct comparison id instead. Sanitizing
+        strips every id from a re-inserted copy, so without this the ToC
+        links of subsections inside a deleted section point
         at generated ids and the subsections get no mark. Sanitizing
         keeps SECTIONISH elements in order (it only drops anchors,
         indexterms and inline replacements), so pair the old and copied
@@ -1366,10 +1382,9 @@ class Differ:
         if len(olds) != len(news):
             return
         for o_el, n_el in zip(olds, news):
-            oid = o_el.get(XML_ID)
-            if oid and not n_el.get(XML_ID) and oid not in self.new_ids:
-                n_el.set(XML_ID, oid)
-                self.preserved_ids.add(oid)
+            new_id = self._deleted_section_id(o_el)
+            if new_id and not n_el.get(XML_ID):
+                n_el.set(XML_ID, new_id)
                 self.deleted_sections.append((o_el, n_el))
 
     def mark_deleted_copy(self, cp, orig, parent_tag=None):
@@ -1701,7 +1716,7 @@ class Differ:
         old_sec_of_id = self._id_sections(self.old, None)
         for _, root in self.new.files:
             for el in root.iter():
-                if not is_el(el) or local(el.tag) not in SECTIONISH:
+                if not is_el(el) or local(el.tag) not in SECTIONISH or id(el) in dead:
                     continue
                 i = el.get(XML_ID)
                 if not i:
@@ -1719,13 +1734,17 @@ class Differ:
                 if renamed or any(entry[k] for k in
                                   ('changed', 'added', 'deleted', 'moved')):
                     out[i] = entry
-        for _, cp in self.deleted_sections:
-            i = cp.get(XML_ID)
+        for O, cp in self.deleted_sections:
+            target = cp.get(XML_ID)
+            i = O.get(XML_ID) or target
             if not i:
                 continue
-            out[i] = {'status': 'deleted', 'changed': False, 'added': False,
-                      'deleted': True, 'moved': self._subtree_has_moved(cp),
-                      'renamed': False}
+            entry = {'status': 'deleted', 'changed': False, 'added': False,
+                     'deleted': True, 'moved': self._subtree_has_moved(cp),
+                     'renamed': False}
+            if target and target != i:
+                entry['target'] = target
+            out[i] = entry
         return out
 
     def _resolve_old_section(self, new_el, dead, old_sec_of_id):
@@ -2329,7 +2348,13 @@ def mark_toc(page, sections):
             tip = toc_tip(entry)
             if not tip:
                 continue
-            chunks.append(page[bpos:nm.start(1)])
+            chunks.append(page[bpos:lm.start()])
+            link = lm.group(0)
+            if entry.get('target'):
+                link = link.replace('href="#%s"' % lm.group(1),
+                                    'href="#%s"' % entry['target'], 1)
+            chunks.append(link)
+            chunks.append(page[lm.end():nm.start(1)])
             chunks.append('<span class="%s" title="%s">%s</span>'
                           % (TOC_CLASSES[entry['status']], tip,
                              nm.group(1)))

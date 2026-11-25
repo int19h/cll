@@ -47,6 +47,16 @@ pre, code, tt { font-family: "DejaVu Sans Mono", monospace; }
   div.toc-title { font-variant: normal; font-feature-settings: "ccmp" 1, "liga" 0, "clig" 0; }
   @page chapter:left { @top-left { width: 100%; } }
   @page chapter:right { @top-right { width: 100%; } }
+  /* WeasyPrint's html5_ua.css sets ol, ul { break-before: avoid }, which
+     glues a list-wrapped example lead-in (e.g. Examples 17.34-17.39) to the
+     preceding block and defeats div.itemizedlist + div.example
+     { break-before: avoid }. Reset break-before on a list that directly
+     introduces an example so the break moves before the list instead of
+     splitting the list from its example. */
+  div.itemizedlist:has(+ div.example) > ul,
+  div.orderedlist:has(+ div.example) > ol {
+    break-before: auto;
+  }
 }
 
 /* Apply column spanning to the wrapper, rather than all nested descendants. */

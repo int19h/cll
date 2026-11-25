@@ -248,15 +248,12 @@ def audit_pdf(pdf_path, html_examples=None, html_table_leadins=None):
             continue
         prev_last_txt = prev_lines[-1][6]
         ends_colon = prev_last_txt.endswith(':')
+        if ends_colon:
+            split_colon.append((pno, ex_num, prev_last_txt[-80:]))
         if html_examples is not None and ex_num in html_examples:
             prev_is_p, _ = html_examples[ex_num]
             if prev_is_p:
                 split_p_all.append((pno, ex_num, ends_colon, prev_last_txt[-80:]))
-                if ends_colon:
-                    split_colon.append((pno, ex_num, prev_last_txt[-80:]))
-        else:
-            if ends_colon:
-                split_colon.append((pno, ex_num, prev_last_txt[-80:]))
 
     # 3. Split table lead-ins (pages ending with a colon-ending table lead-in):
     split_table_leadins = []
@@ -333,8 +330,9 @@ def print_report(res, label=''):
         print(f"    ... ({len(res['split_colon']) - 15} more)")
 
     if res['split_p_all']:
-        non_colon = [x for x in res['split_p_all'] if not x[2]]
-        print(f"  Split HTML <p>+div.example total: {len(res['split_p_all'])} (colon={len(res['split_colon'])}, non-colon={len(non_colon)})")
+        p_colon = sum(1 for x in res['split_p_all'] if x[2])
+        non_colon = len(res['split_p_all']) - p_colon
+        print(f"  Split HTML <p>+div.example total: {len(res['split_p_all'])} (colon={p_colon}, non-colon={non_colon})")
 
     print(f"  Split colon-ending table lead-ins: {len(res['split_table_leadins'])}")
     for pno, tail in res['split_table_leadins'][:15]:

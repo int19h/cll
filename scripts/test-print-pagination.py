@@ -9,8 +9,10 @@ Regression for issue #333:
 - A paragraph introducing a div.table must stay with the table.
 - A section heading followed by empty styling-marker paragraphs (p.twocolumn,
   p.allowbreaks) and a table (as in Section 17.16) must not strand the heading.
-- A paragraph introducing a div.example (p + div.example) must stay with the
-  example, and the example itself must stay unbreakable.
+- A paragraph introducing a div.example (p + div.example) or a list item
+  introducing a div.example (div.itemizedlist + div.example, as in Examples
+  17.34-17.39) must stay with the example, and the example itself must stay
+  unbreakable.
 
 Every sweep group in this file fails against origin/main's CSS in WeasyPrint
 and passes with the fix. Sweeps a spacer across a page height so one case
@@ -98,6 +100,20 @@ def write_fixture(directory, stylesheets):
             f'<div class="example-contents"><p>line a<br>line b<br>{ex_end}</p></div>'
             f'</div></div>')
 
+    # 5. List-wrapped lead-in + unbreakable div.example (Examples 17.34-17.39 shape).
+    for i in range(CASES):
+        lead_tok = f'ListLead{i}:'
+        ex_tok = f'ListExStart{i}'
+        ex_end = f'ListExEnd{i}'
+        blocks.append(
+            f'<div class="case"><div style="height: {i * 4}mm"></div>'
+            f'<div class="itemizedlist"><ul class="itemizedlist"><li>'
+            f'<p>A lerfu string in a one-item list introducing {lead_tok}</p>'
+            f'</li></ul></div>'
+            f'<div class="example"><div class="example-title">{ex_tok}</div>'
+            f'<div class="example-contents"><p>line a<br>line b<br>{ex_end}</p></div>'
+            f'</div></div>')
+
     html_path = directory / 'fixture.html'
     html_path.write_text(f'''<!DOCTYPE html>
 <html>
@@ -170,6 +186,17 @@ def assert_pagination(test, pages):
         test.assertEqual(
             ep, ee,
             f'example case {i}: example broke across pp.{ep + 1}..{ee + 1}')
+    for i in range(CASES):
+        lp = find_page(test, pages, f'ListLead{i}:')
+        ep = find_page(test, pages, f'ListExStart{i}')
+        ee = find_page(test, pages, f'ListExEnd{i}')
+        test.assertEqual(
+            lp, ep,
+            f'list-example case {i}: list lead-in ends on p.{lp + 1} '
+            f'while example starts on p.{ep + 1}')
+        test.assertEqual(
+            ep, ee,
+            f'list-example case {i}: example broke across pp.{ep + 1}..{ee + 1}')
 
 
 def weasyprint_html():

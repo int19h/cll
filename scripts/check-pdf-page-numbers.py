@@ -120,6 +120,20 @@ def page_visual_lines(page):
     return merged
 
 
+def count_printed_toc_lines(doc, toc_pages):
+    """Count printed ToC entry lines independently of PDF link annotations."""
+    count = 0
+    for pno in toc_pages:
+        for ym, y0, y1, x0, x1, txt in page_visual_lines(doc[pno - 1]):
+            if y1 <= BODY_TOP or y0 >= BODY_BOTTOM:
+                continue
+            if txt == 'Table of Contents':
+                continue
+            if TRAILING_PAGE_RE.search(txt):
+                count += 1
+    return count
+
+
 def extract_toc_entries(doc, toc_pages):
     """Extract (toc_page, nameddest, label, printed_page, dest_page) for every ToC entry."""
     entries = []
@@ -387,7 +401,31 @@ def page_bold_examples(page):
     return found
 
 
-def inline_target_on_page(page_text, bold_examples, kind, key, toc_titles):
+def page_selmao_headings(page):
+    """Return set of complete selma'o names printed as catalogue headings on page."""
+    found = set()
+    for block in page.get_text('dict')['blocks']:
+        if block['type'] != 0:
+            continue
+        for line in block['lines']:
+            y0, y1 = line['bbox'][1], line['bbox'][3]
+            if y1 <= BODY_TOP or y0 >= BODY_BOTTOM:
+                continue
+            txt = normalize_ws(''.join(span['text'] for span in line['spans']))
+            m = re.match(r"^selma'o\s+([A-Za-z][A-Za-z0-9']*)(?![A-Za-z0-9'])", txt)
+            if not m:
+                continue
+            max_size = max(span['size'] for span in line['spans'])
+            bold = any(
+                bool(span['flags'] & 16) or 'Bold' in span.get('font', '')
+                for span in line['spans'] if span['text'].strip()
+            )
+            if bold or max_size >= 11.0:
+                found.add(m.group(1))
+    return found
+
+
+def inline_target_on_page(page_text, bold_examples, selmao_headings, kind, key, toc_titles):
     """Verify the target heading/example/rule/selma'o actually prints on page."""
     if not page_text:
         return False
@@ -407,7 +445,7 @@ def inline_target_on_page(page_text, bold_examples, kind, key, toc_titles):
         # EBNF rules print as "<name> <num> =" (sometimes wrapped); check rule number before "=".
         return re.search(rf'\b{re.escape(key)}\s*=', page_text) is not None
     if kind == 'selmao':
-        return f"selma'o {key}" in page_text
+        return key in selmao_headings
     return False
 
 
@@ -416,6 +454,7 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
     total_pages = len(doc)
     body_cache = {}
     bold_ex_cache = {}
+    selmao_cache = {}
 
     def get_body(pno):
         if pno not in body_cache:
@@ -427,7 +466,13 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
             bold_ex_cache[pno] = page_bold_examples(doc[pno - 1]) if 1 <= pno <= total_pages else set()
         return bold_ex_cache[pno]
 
+    def get_selmao_headings(pno):
+        if pno not in selmao_cache:
+            selmao_cache[pno] = page_selmao_headings(doc[pno - 1]) if 1 <= pno <= total_pages else set()
+        return selmao_cache[pno]
+
     toc_pages = find_toc_pages(doc)
+    printed_toc_lines = count_printed_toc_lines(doc, toc_pages)
     toc_entries = extract_toc_entries(doc, toc_pages)
 
     # Map ToC heading prefixes ("Chapter 22", "Appendix B", "21.2", ...) -> title.
@@ -473,7 +518,14 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
         kind, key = parse_inline_xref_target(text)
         if kind == 'unknown':
             xref_unknown_shape.append((pno, nd, text, dest))
-        elif not inline_target_on_page(dest_text, get_bold_examples(dest) if kind == 'example' else (), kind, key, toc_titles):
+        elif not inline_target_on_page(
+            dest_text,
+            get_bold_examples(dest) if kind == 'example' else (),
+            get_selmao_headings(dest) if kind == 'selmao' else (),
+            kind,
+            key,
+            toc_titles,
+        ):
             xref_target_missing.append((pno, nd, text, kind, key, dest))
 
     # Reconcile extracted inline xref count against raw body-text "(p. N)" count
@@ -511,7 +563,7 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
     print(f'PDF: {pdf_path} ({total_pages} pages)')
     if resolved_html:
         print(f'  HTML source: {resolved_html} (expected ToC={expected_toc}, inline xrefs={expected_xrefs})')
-    print(f'  ToC pages: {toc_pages[0]}..{toc_pages[-1]} ({len(toc_entries)} entries)')
+    print(f'  ToC pages: {toc_pages[0]}..{toc_pages[-1]} ({len(toc_entries)} linked entries, {printed_toc_lines} printed lines)')
     print(f'  ToC unparsed entries: {len(toc_unparsed)}')
     print(f'  ToC printed != link dest: {len(toc_dest_mismatches)}')
     print(f'  ToC heading not on dest page: {len(toc_heading_mismatches)}')
@@ -571,7 +623,10 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
         print('  Pages with empty "(p. )":', empty_refs[:10])
 
     doc.close()
-    toc_count_ok = (len(toc_entries) == expected_toc) if expected_toc is not None else (len(toc_entries) >= 350)
+    toc_links_match_printed = (len(toc_entries) == printed_toc_lines)
+    toc_count_ok = toc_links_match_printed and (
+        (len(toc_entries) == expected_toc) if expected_toc is not None else (len(toc_entries) >= 350)
+    )
     xref_count_ok = (len(xrefs) == expected_xrefs) if expected_xrefs is not None else (len(xrefs) >= 2000)
     ok = (
         toc_count_ok

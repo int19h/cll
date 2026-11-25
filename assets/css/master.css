@@ -366,9 +366,12 @@ div.example {
   margin-bottom: 0pt;
 }
 
-/* Keep an introducing paragraph with the example or table that follows it,
-   including across empty styling-marker paragraphs (p.allowbreaks, p.twocolumn). */
+/* Keep an introducing paragraph or list item with the example or table that
+   follows it, including across empty styling-marker paragraphs (p.allowbreaks,
+   p.twocolumn). */
 p + div.example,
+div.itemizedlist + div.example,
+div.orderedlist + div.example,
 p + div.informaltable,
 p + div.table,
 p + p.allowbreaks,

@@ -1735,16 +1735,12 @@ class Differ:
                                   ('changed', 'added', 'deleted', 'moved')):
                     out[i] = entry
         for O, cp in self.deleted_sections:
-            target = cp.get(XML_ID)
-            i = O.get(XML_ID) or target
+            i = cp.get(XML_ID) or O.get(XML_ID)
             if not i:
                 continue
-            entry = {'status': 'deleted', 'changed': False, 'added': False,
-                     'deleted': True, 'moved': self._subtree_has_moved(cp),
-                     'renamed': False}
-            if target and target != i:
-                entry['target'] = target
-            out[i] = entry
+            out[i] = {'status': 'deleted', 'changed': False, 'added': False,
+                      'deleted': True, 'moved': self._subtree_has_moved(cp),
+                      'renamed': False}
         return out
 
     def _resolve_old_section(self, new_el, dead, old_sec_of_id):
@@ -2349,11 +2345,7 @@ def mark_toc(page, sections):
             if not tip:
                 continue
             chunks.append(page[bpos:lm.start()])
-            link = lm.group(0)
-            if entry.get('target'):
-                link = link.replace('href="#%s"' % lm.group(1),
-                                    'href="#%s"' % entry['target'], 1)
-            chunks.append(link)
+            chunks.append(lm.group(0))
             chunks.append(page[lm.end():nm.start(1)])
             chunks.append('<span class="%s" title="%s">%s</span>'
                           % (TOC_CLASSES[entry['status']], tip,

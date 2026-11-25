@@ -963,14 +963,14 @@ class TocMainTests(unittest.TestCase):
                '<section xml:id="c1s4"><title>Stable again</title>'
                '<para>Stable final paragraph.</para></section></chapter>')
         result, tree = self.compare(old, new)
-        self.assertEqual(result['sections']['c1s2'].get('status'), 'deleted')
-        self.assertTrue(result['sections']['c1s2'].get('target'))
+        generated = [key for key, entry in result['sections'].items()
+                     if key != 'c1s3' and entry.get('status') == 'deleted']
+        self.assertEqual(len(generated), 1)
         self.assertEqual(result['sections']['c1s3'].get('status'), 'deleted')
-        self.assertNotIn('target', result['sections']['c1s3'])
         self.assertTrue(result['sections']['c1s3'].get('deleted'))
         ids = [el.get(XML_ID) for el in tree.iter() if isinstance(el.tag, str)]
         self.assertIn('c1s3', ids)
-        self.assertIn(result['sections']['c1s2']['target'], ids)
+        self.assertIn(generated[0], ids)
 
     def test_both_deleted_ids_survive_as_live_anchors(self):
         old = ('<chapter xml:id="c1"><title>Chapter</title>'
@@ -989,14 +989,12 @@ class TocMainTests(unittest.TestCase):
                '<section xml:id="c1s4"><title>Stable again</title>'
                '<para>Stable final paragraph.</para></section></chapter>')
         result, tree = self.compare(old, new)
-        targets = []
-        for section_id in ('c1s2', 'c1s3'):
-            entry = result['sections'][section_id]
-            self.assertEqual(entry.get('status'), 'deleted')
-            self.assertTrue(entry.get('deleted'))
-            self.assertTrue(entry.get('target'))
-            targets.append(entry['target'])
-        self.assertEqual(len(set(targets)), 2)
+        targets = [key for key, entry in result['sections'].items()
+                   if key not in ('c1', 'c1s1', 'c1s4')
+                   and entry.get('status') == 'deleted']
+        self.assertEqual(len(targets), 2)
+        for target in targets:
+            self.assertTrue(result['sections'][target].get('deleted'))
         ids = [el.get(XML_ID) for el in tree.iter() if isinstance(el.tag, str)]
         for target in targets:
             self.assertIn(target, ids)
@@ -1170,12 +1168,15 @@ class TocFinishTests(unittest.TestCase):
                       'title="Changed, added, deleted and moved material">1.</span>'
                       ' Chapter', page)
 
-    def test_deleted_entry_link_points_to_deleted_copy(self):
+    def test_deleted_entry_uses_the_copy_id(self):
         stats = {'statuses': {}, 'stats': {}, 'sections': {}}
         stats['sections'] = dict(STATS['sections'])
-        stats['sections']['section-d'] = dict(stats['sections']['section-d'])
-        stats['sections']['section-d']['target'] = 'diff-deleted-section-0'
-        page, prefixed = self.finish(stats=stats)
+        del stats['sections']['section-d']
+        stats['sections']['diff-deleted-section-0'] = {
+            'status': 'deleted', 'deleted': True}
+        page = PAGE_HEAD + PAGE_BODY
+        page = page.replace('href="#section-d"', 'href="#diff-deleted-section-0"')
+        page, prefixed = self.finish(page=page, stats=stats)
         for variant in (page, prefixed):
             self.assertIn('<a href="#diff-deleted-section-0">', variant)
             self.assertNotIn('<a href="#section-d">', variant)

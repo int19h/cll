@@ -575,7 +575,7 @@
     </example>
     <para role="noindent">
       and so the three-part lujvo
-      <valsi valid="maybe">gerselzda</valsi>
+      <valsi>gerselzda</valsi>
       would have the place structure
     </para>
     <example xml:id="example-random-id-KqE4">
@@ -589,13 +589,13 @@
     </example>
     <para role="indent">
       However, although
-      <valsi valid="maybe">gerselzda</valsi>
+      <valsi>gerselzda</valsi>
       is a valid lujvo, it doesn't translate
       <quote>doghouse</quote>
       ; its first place is the dog, not the doghouse. Furthermore, it is more complicated than necessary;
       <valsi>gerzda</valsi>
       is simpler than
-      <valsi valid="maybe">gerselzda</valsi>.
+      <valsi>gerselzda</valsi>.
     </para>
     <para>From the reader's or listener's point of view, it may not always be obvious whether a newly met lujvo is symmetrical or asymmetrical, and if the latter, what kind of asymmetrical lujvo. If the place structure of the lujvo isn't given in a dictionary or elsewhere, then plausibility must be applied, just as in interpreting tanru.</para>
 
@@ -1408,7 +1408,7 @@
 
       <indexterm type="general"><primary>shellfish</primary></indexterm>
       There are cases, however, where omitting a KE or KEhE rafsi can produce another lujvo, equally useful. For example,
-      <valsi valid="maybe">xaskemcakcurnu</valsi>
+      <valsi>xaskemcakcurnu</valsi>
       means
       <quote>oceanic shellfish</quote>
       , and has the veljvo
@@ -1527,7 +1527,7 @@
       <valsi valid="maybe">selkemdzukla</valsi>
       , with an explicit rafsi for
       <valsi>ke</valsi>. Similarly,
-      <valsi valid="maybe">nalbrablo</valsi>
+      <valsi>nalbrablo</valsi>
       (from
       <jbophrase>na'e barda bloti</jbophrase>) means
       <quote>non-big boat</quote>
@@ -1638,7 +1638,7 @@
       <indexterm type="general"><primary>lujvo place structure</primary><secondary>&quot;ni&quot; lujvo</secondary>
       </indexterm>
       For those abstractors which have a second place as well, the standard convention is to place this place after, rather than before, the places of the brivla being abstracted. The place structure of
-      <valsi valid="maybe">nilkla</valsi>
+      <valsi>nilkla</valsi>
       , the lujvo derived from
       <jbophrase>ni klama</jbophrase>
       , is the imposing:
@@ -1654,7 +1654,7 @@
     </example>
     <para role="indent">
       Abstractors can participate in the making of more complex lujvo as well. For example,
-      <valsi valid="maybe">nunsoidji</valsi>
+      <valsi>nunsoidji</valsi>
       , from the veljvo
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-RKcH">
@@ -1682,7 +1682,7 @@
     </para>
     <para>
       The lujvo
-      <valsi valid="maybe">nunsoidji</valsi>
+      <valsi>nunsoidji</valsi>
       is quite different from the ordinary asymmetric lujvo
       <valsi valid="maybe">soidji</valsi>
       , a
@@ -1700,7 +1700,7 @@
     </example>
     <para role="indent">
       A
-      <valsi valid="maybe">nunsoidji</valsi>
+      <valsi>nunsoidji</valsi>
       might be someone who is about to enlist, whereas a
       <valsi valid="maybe">soidji</valsi>
       might be a camp-follower.
@@ -1995,7 +1995,7 @@
     </example>
     <para role="noindent">
       can give
-      <valsi valid="maybe">likygau</valsi>
+      <valsi>likygau</valsi>
       , meaning
       <quote>to liquefy</quote>
       :
@@ -2012,7 +2012,7 @@
     </example>
     <para role="indent">
       While
-      <valsi valid="maybe">likygau</valsi>
+      <valsi>likygau</valsi>
       correctly represents
       <quote>causes to be a liquid</quote>
       , a different lujvo based on
@@ -2054,7 +2054,7 @@
       is a cause, not a causer. Thus the place structure of
       <valsi valid="maybe">likyri'a</valsi>
       , a lujvo analogous to
-      <valsi valid="maybe">likygau</valsi>
+      <valsi>likygau</valsi>
       , is
     </para>
     <example xml:id="example-random-id-1HT3">
@@ -2167,7 +2167,7 @@
       Another example of this kind of anomalous lujvo, drawn from the tanru lists in
       <xref linkend="section-asymmetric-tanru" />
       , is
-      <valsi valid="maybe">lange'u</valsi>
+      <valsi>lange'u</valsi>
       , meaning
       <quote>sheepdog</quote>. Clearly a sheepdog is not a dog which is a sheep (the symmetrical interpretation is wrong), nor a dog of the sheep breed (the asymmetrical interpretation is wrong). Indeed, there is simply no overlap in the places of
       <valsi>lanme</valsi>
@@ -2213,11 +2213,11 @@
       , but
       <valsi>lantro</valsi>
       is itself an asymmetrical lujvo. The l2 place, the breed of sheep, is removed as dependent on l1. However, the lujvo
-      <valsi valid="maybe">lange'u</valsi>
+      <valsi>lange'u</valsi>
       is both shorter than
       <valsi valid="maybe">terlantroge'u</valsi>
       and sufficiently clear to warrant its use: its place structure, however, should be the same as that of the longer lujvo, for which
-      <valsi valid="maybe">lange'u</valsi>
+      <valsi>lange'u</valsi>
       can be understood as an abbreviation.
     </para>
     <para>
@@ -2457,7 +2457,7 @@
       , or
       <quote>X likes Y more than Z likes Y</quote>
       ? Does
-      <valsi valid="maybe">klamau</valsi>
+      <valsi>klamau</valsi>
       mean:
       <quote>X goes to Y more than to Z</quote>
       ,
@@ -2487,7 +2487,7 @@
         : z1, more than z2, is liked by n1 in amount z4
       </para>
       <para>
-        <valsi valid="maybe">klamau</valsi>
+        <valsi>klamau</valsi>
         : z1, more than z2, goes to k2 from k3 via k4 by means of k5 by amount z4
       </para>
       <para>
@@ -2508,7 +2508,7 @@
       The ordering rule places the things being compared first, and the other seltau places following. Unfortunately the z4 place, which expresses by how much one entity exceeds the other, is displaced into a lujvo place whose number is different for each lujvo. For example, while
       <valsi valid="maybe">nelcymau</valsi>
       has z4 as its fourth place,
-      <valsi valid="maybe">klamau</valsi>
+      <valsi>klamau</valsi>
       has it as its seventh place. In any sentence where a difficulty arises, this amount-place can be redundantly tagged with
       <valsi>vemau</valsi>
       (for

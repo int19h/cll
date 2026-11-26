@@ -421,4 +421,20 @@ class ContextBookTest < Minitest::Test
     assert_includes output, '\\goto{mi}'
     assert_empty input.report['missing_references']
   end
+
+  def test_role_matching_uses_token_membership
+    input = book(<<~XML)
+      <chapter><title>Roles</title>
+      <para role=" extra noindent ">Flush <emphasis role=" extra bold ">strong</emphasis> <phrase role="X-SAMPA extra">ipa</phrase></para>
+      <itemizedlist role=" extra bullets "><listitem><para>One</para></listitem></itemizedlist>
+      <itemizedlist role="not-bullets"><listitem><para>Two</para></listitem></itemizedlist>
+      </chapter>
+    XML
+    output = input.to_tex
+    assert_includes output, '\\noindentation Flush'
+    assert_includes output, '{\\bf strong}'
+    assert_includes output, '{\\tt ipa}'
+    assert_includes output, '\\startCLLbulleted[1,packed]'
+    assert_includes output, '\\startCLLunmarked[none,packed]'
+  end
 end

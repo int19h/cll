@@ -181,16 +181,22 @@ class ContextBook
     result
   end
 
+  def has_role?(node, *tokens)
+    return false unless node&.element?
+    roles = node['role'].to_s.split
+    tokens.any? { |token| roles.include?(token) }
+  end
+
   def styled(node, text)
-    role = node['role'].to_s
+    roles = node['role'].to_s.split
     language = node['lang']
-    text = "{\\it #{text}}" if %w[jbo jbophrase pronunciation-jbo compound-cmavo-jbo].include?(role) || language == 'jbo'
-    text = "{\\bf #{text}}" if %w[gloss selbri].include?(role)
-    text = "{\\tt #{text}}" if role == 'X-SAMPA'
+    text = "{\\it #{text}}" if (roles & %w[jbo jbophrase pronunciation-jbo compound-cmavo-jbo]).any? || language == 'jbo'
+    text = "{\\bf #{text}}" if (roles & %w[gloss selbri]).any?
+    text = "{\\tt #{text}}" if roles.include?('X-SAMPA')
     text = "{\\CLLcrisa #{text}}" if language == 'zlm'
     text = "{\\CLLkorean #{text}}" if language == 'ko'
     text = "{\\CLLchinese #{text}}" if language == 'zh'
-    if role.split.include?('status-mark')
+    if roles.include?('status-mark')
       mark = StatusLabels.describe(node['condition'], inline: true)
       if mark
         # The space is explicit: TeX would swallow one after \sc as the
@@ -377,7 +383,7 @@ class ContextBook
       elsif node.ancestors.any? { |ancestor| %w[td th].include?(ancestor.name) }
         "#{body}\\par\n"
       else
-        prefix = node['role'] == 'noindent' ? '\\noindentation ' : ''
+        prefix = roles.include?('noindent') ? '\\noindentation ' : ''
         "\n#{prefix}#{body}\\par\n"
       end
     when 'example'
@@ -387,7 +393,7 @@ class ContextBook
         children(node, except: ['title']) + "\n\\stopnarrower\\blank[small]\n"
     when 'table', 'informaltable' then table(node)
     when 'quote' then "“#{children(node)}”"
-    when 'emphasis' then "{\\#{node['role'] == 'bold' ? 'bf' : 'it'} #{children(node)}}"
+    when 'emphasis' then "{\\#{has_role?(node, 'bold') ? 'bf' : 'it'} #{children(node)}}"
     when 'foreignphrase', 'phrase' then styled(node, children(node))
     when 'subscript' then "\\low{#{children(node)}}"
     when 'superscript' then "\\high{#{children(node)}}"
@@ -408,11 +414,12 @@ class ContextBook
       @report['math'] += 1
       "\\mathematics{#{math(node)}}"
     when 'itemizedlist', 'orderedlist'
-      option = node.name == 'orderedlist' ? 'n' : (node['role'] == 'bullets' ? '1' : 'none')
+      bulleted = has_role?(node, 'bullets')
+      option = node.name == 'orderedlist' ? 'n' : (bulleted ? '1' : 'none')
       layout = if node.name == 'orderedlist'
                  'CLLordered'
                else
-                 node['role'] == 'bullets' ? 'CLLbulleted' : 'CLLunmarked'
+                 bulleted ? 'CLLbulleted' : 'CLLunmarked'
                end
       "\n\\start#{layout}[#{option},packed]\n#{children(node)}\n\\stop#{layout}\n"
     when 'listitem' then "\\startitem #{children(node).strip}\\stopitem\n"
@@ -478,13 +485,13 @@ class ContextBook
     info = @document.root.at_xpath('./info')
     book_title = plain(info&.at_xpath('./title'))
     body = children(@document.root, except: ['info'])
-    credit = info ? info.xpath('./othercredit[not(orgname[@role="publication-notice"])]').map { |node| "#{esc(plain(node))}\\par" }.join("\n") : ''
-    notice = info&.at_xpath('./othercredit/orgname[@role="publication-notice"]')
+    credit = info ? info.xpath('./othercredit[not(orgname[contains(concat(" ", normalize-space(@role), " "), " publication-notice ")])]').map { |node| "#{esc(plain(node))}\\par" }.join("\n") : ''
+    notice = info&.at_xpath('./othercredit/orgname[contains(concat(" ", normalize-space(@role), " "), " publication-notice ")]')
     notice_text = notice ? notice.children.map do |child|
-      child.element? && child['role'] == 'publication-disclaimer' ? "\\crlf #{children(child)}" : render(child)
+      has_role?(child, 'publication-disclaimer') ? "\\crlf #{children(child)}" : render(child)
     end.join.strip : ''
-    version = plain(info&.at_xpath('./releaseinfo/phrase[@role="release-version"]'))
-    date = plain(info&.at_xpath('./releaseinfo/phrase[@role="release-date"]'))
+    version = plain(info&.at_xpath('./releaseinfo/phrase[contains(concat(" ", normalize-space(@role), " "), " release-version ")]'))
+    date = plain(info&.at_xpath('./releaseinfo/phrase[contains(concat(" ", normalize-space(@role), " "), " release-date ")]'))
     author = info ? info.xpath('./author/personname/*').map { |node| plain(node) }.join(' ') : ''
     subtitle = plain(info&.at_xpath('./subtitle'))
     urls = @urls.map { |name, url| "\\useURL[#{name}][{#{esc(url)}}][][]" }.join("\n")

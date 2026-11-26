@@ -1381,13 +1381,13 @@
     <para role="noindent">
       which refers specifically to the concept
       <quote>maternal grandfather</quote>. The two gismu that constitute the tanru are represented in
-      <valsi valid="maybe">mampa'u</valsi>
+      <valsi>mampa'u</valsi>
       by the rafsi
       <rafsi>mam-</rafsi>
       and
       <rafsi>-pa'u</rafsi>
       , respectively; these two rafsi are then concatenated together to form
-      <valsi valid="maybe">mampa'u</valsi>.
+      <valsi>mampa'u</valsi>.
     </para>
     <para>
       <indexterm type="general"><primary>long rafsi form</primary><secondary>compared with short form in effect on lujvo meaning</secondary>
@@ -1624,7 +1624,7 @@
       such as
       <quote>whiter</quote>
       (Lojban
-      <valsi valid="maybe">labmau</valsi>). On the other hand,
+      <valsi>labmau</valsi>). On the other hand,
       <valsi>bakri</valsi>
       (
       <quote>chalk</quote>) has no short rafsi, so a lujvo built on it, such as
@@ -1930,9 +1930,9 @@
       <quote>wooden whistle</quote>) cannot form the lujvo
       <valsi valid="false">mudsiclu</valsi>
       ; instead,
-      <valsi valid="maybe">mudysiclu</valsi>
+      <valsi>mudysiclu</valsi>
       must be used. (A classical lujvo must have a consonant cluster within its first five letters, and at first sight
-      <valsi valid="maybe">mudysiclu</valsi>
+      <valsi>mudysiclu</valsi>
       seems to lack one. But in looking for that cluster,
       <letteral>y</letteral>
       is simply passed over: it is not counted as one of the five letters, and it does not separate the consonants on either side of it. The letters that count are thus
@@ -2585,7 +2585,7 @@
       <valsi valid="maybe">saktrxaceru</valsi>
       , or could be represented by the tanru
       <jbophrase>tricrxaceru sakta</jbophrase>. Technically,
-      <valsi valid="maybe">ricrxaceru</valsi>
+      <valsi>ricrxaceru</valsi>
       and
       <valsi valid="maybe">tricrxaceru</valsi>
       are distinct fu'ivla, but they would surely be given the same meanings if both happened to be in use.
@@ -2777,7 +2777,7 @@
       For another example,
       <quote>integral</quote>
       has a specific meaning to a mathematician. But the Lojban fu'ivla
-      <valsi valid="maybe">.integrale</valsi>
+      <valsi>.integrale</valsi>
       , which is a valid Stage 4 fu'ivla, does not convey that mathematical sense to a non-mathematical listener, even one with an English-speaking background; its source &ndash; the English word
       <quote>integral</quote>
       &ndash; has various other specialized meanings in other fields.
@@ -2785,7 +2785,7 @@
 
     <para>
       Left uncontrolled,
-      <valsi valid="maybe">.integrale</valsi>
+      <valsi>.integrale</valsi>
       could eventually come to mean the same collection of loosely related concepts that English associates with
       <quote>integral</quote>
       , with only the context to indicate (possibly) that the mathematical term is meant.
@@ -2803,7 +2803,7 @@
       , if the
       <letteral>i</letteral>
       of
-      <valsi valid="maybe">.integrale</valsi>
+      <valsi>.integrale</valsi>
       is removed, or something like
       <valsi valid="maybe">cmacrnintegrale</valsi>
       , if a new consonant is added to the beginning;
@@ -4646,7 +4646,7 @@
       </member>
     </simplelist>
     <para><indexterm type="general"><primary>gismu</primary><secondary>algorithm for</secondary>
-      </indexterm>Of these forms, <valsi>nakykemcinctu</valsi> is the shortest and is the one the scoring algorithm prefers. On the whole, however, it might be better to just make a lujvo for <jbophrase>cinse ctuca</jbophrase> (which would be <valsi valid="maybe">cinctu</valsi>), since the sex of the teacher is rarely important. If there were a reason to specify <quote>male</quote>, then the simpler tanru <jbophrase>nakni cinctu</jbophrase> (<quote>male sexual-teacher</quote>) would be appropriate. This tanru is actually shorter than the four-part lujvo, since the <valsi>ke</valsi> required for grouping need not be expressed.</para>
+      </indexterm>Of these forms, <valsi>nakykemcinctu</valsi> is the shortest and is the one the scoring algorithm prefers. On the whole, however, it might be better to just make a lujvo for <jbophrase>cinse ctuca</jbophrase> (which would be <valsi>cinctu</valsi>), since the sex of the teacher is rarely important. If there were a reason to specify <quote>male</quote>, then the simpler tanru <jbophrase>nakni cinctu</jbophrase> (<quote>male sexual-teacher</quote>) would be appropriate. This tanru is actually shorter than the four-part lujvo, since the <valsi>ke</valsi> required for grouping need not be expressed.</para>
   </section>
   <section xml:id="section-gismu-making">
     <title><anchor xml:id="c4s14" />The gismu creation algorithm</title>

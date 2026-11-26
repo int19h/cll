@@ -31,10 +31,15 @@ BODY_BOTTOM = 631.0
 TRAILING_PAGE_RE = re.compile(r'(\d+)\s*$')
 INLINE_PAGE_RE = re.compile(r'\(p\.\s*(\d+)\)')
 EMPTY_PAGE_RE = re.compile(r'\(p\.\s*\)')
-SECTION_NUM_RE = re.compile(r'^(?:\d+|[A-Z]+)(?:\.\d+)+$')
-SECTION_HEAD_LINE_RE = re.compile(r'^((?:\d+|[A-Z]+)(?:\.\d+)+)(?:\s+(.*))?$')
-CHAPTER_OR_APPENDIX_ONLY_RE = re.compile(r'^(?:Chapter\s+\d+|Appendix\s+[A-Z]+)$')
-CHAPTER_OR_APPENDIX_START_RE = re.compile(r'^(?:Chapter\s+\d+|Appendix\s+[A-Z]+)(?:\s|$)')
+COMPONENT_NUM_PAT = r'(?:\d+|[A-Z])'
+SECTION_NUM_RE = re.compile(rf'^{COMPONENT_NUM_PAT}(?:\.\d+)+$')
+SECTION_HEAD_LINE_RE = re.compile(rf'^({COMPONENT_NUM_PAT}(?:\.\d+)+)(?:\s+(.*))?$')
+CHAPTER_OR_APPENDIX_ONLY_RE = re.compile(r'^(?:Chapter\s+\d+|Appendix\s+[A-Z])$')
+CHAPTER_OR_APPENDIX_START_RE = re.compile(r'^(Chapter\s+\d+|Appendix\s+[A-Z])(?:\s+(.*))?$')
+EXAMPLE_HEAD_RE = re.compile(rf'^(Example\s+{COMPONENT_NUM_PAT}\.\d+)(?:\.?(?:\s|$))')
+TITLED_HEAD_RE = re.compile(rf'^((?:Table|Figure)\s+{COMPONENT_NUM_PAT}\.\d+)(?:\.?(?:\s|$))')
+SELMAO_HEAD_RE = re.compile(r"^selma'o\s+([A-Za-z][A-Za-z0-9']*)(?![A-Za-z0-9'])")
+BNF_RULE_LINE_RE = re.compile(r'^(?:[A-Za-z][A-Za-z0-9_-]*\s+|[A-Za-z][A-Za-z_-]*)(\d+)\s*=')
 
 
 def normalize_ws(text):
@@ -84,7 +89,7 @@ def find_toc_pages(doc):
     if start is None:
         raise RuntimeError('Table of Contents not found in PDF')
     pages = [start]
-    for pno in range(start + 1, min(start + 25, len(doc) + 1)):
+    for pno in range(start + 1, len(doc) + 1):
         body_lines = [
             txt for _, y0, y1, _, _, txt in page_visual_lines(doc[pno - 1])
             if y1 > BODY_TOP and y0 < BODY_BOTTOM
@@ -105,29 +110,24 @@ def heading_key_from_toc_label(label):
     m = re.match(r'^(\d+)\.\s+(.*)$', cleaned)
     if m:
         return f'Chapter {m.group(1)}', m.group(2)
-    m = re.match(r'^([A-Z]+)\.\s+(.*)$', cleaned)
+    m = re.match(r'^([A-Z])\.\s+(.*)$', cleaned)
     if m:
         return f'Appendix {m.group(1)}', m.group(2)
-    m = re.match(r'^((?:\d+|[A-Z]+)(?:\.\d+)+)\.\s+(.*)$', cleaned)
+    m = re.match(rf'^({COMPONENT_NUM_PAT}(?:\.\d+)+)\.\s+(.*)$', cleaned)
     if m:
         return m.group(1), m.group(2)
     return cleaned, ''
 
 
-def heading_present_on_page(page_text, prefix, title):
-    """Check whether the heading identified by (prefix, title) appears on the page."""
-    if not page_text:
-        return False
-    if prefix and title:
-        words = title.split()[:3]
-        short_title = ' '.join(words)
-        if f'{prefix} {short_title}' in page_text:
-            return True
-        if prefix in page_text and short_title in page_text:
-            return True
-    elif prefix and prefix in page_text:
-        return True
-    return False
+def toc_heading_kind(prefix):
+    """Classify a ToC heading prefix into its target kind."""
+    if re.match(r'^Chapter\s+\d+$', prefix):
+        return 'chapter'
+    if re.match(r'^Appendix\s+[A-Z]$', prefix):
+        return 'appendix'
+    if SECTION_NUM_RE.match(prefix):
+        return 'section'
+    return 'unnumbered'
 
 
 def page_visual_lines(page):
@@ -384,16 +384,16 @@ def parse_inline_xref_target(xref_text):
     m = re.match(r'^(Chapter\s+\d+)$', label)
     if m:
         return ('chapter', m.group(1))
-    m = re.match(r'^(Appendix\s+[A-Z]+)$', label)
+    m = re.match(r'^(Appendix\s+[A-Z])$', label)
     if m:
         return ('appendix', m.group(1))
-    m = re.match(r'^Section\s+((?:\d+|[A-Z]+)(?:\.\d+)+)$', label)
+    m = re.match(rf'^Section\s+({COMPONENT_NUM_PAT}(?:\.\d+)+)$', label)
     if m:
         return ('section', m.group(1))
-    m = re.match(r'^(Example\s+\d+\.\d+)$', label)
+    m = re.match(rf'^(Example\s+{COMPONENT_NUM_PAT}\.\d+)$', label)
     if m:
         return ('example', m.group(1))
-    m = re.match(r'^((?:Table|Figure)\s+\d+\.\d+)$', label)
+    m = re.match(rf'^((?:Table|Figure)\s+{COMPONENT_NUM_PAT}\.\d+)$', label)
     if m:
         return ('titled', m.group(1))
     m = re.match(r'^BNF\s+rule\s+#(\d+)$', label)
@@ -406,68 +406,29 @@ def parse_inline_xref_target(xref_text):
     return ('unknown', label)
 
 
-def page_bold_examples(page):
-    """Return set of bold 'Example N.M' headings printed in the body of page."""
-    found = set()
-    for block in page.get_text('dict')['blocks']:
-        if block['type'] != 0:
-            continue
-        for line in block['lines']:
-            y0, y1 = line['bbox'][1], line['bbox'][3]
-            if y1 <= BODY_TOP or y0 >= BODY_BOTTOM:
-                continue
-            txt = normalize_ws(''.join(span['text'] for span in line['spans']))
-            if '(p.' in txt:
-                continue
-            m = re.match(r'^(Example\s+\d+\.\d+)(?:\s|$)', txt)
-            if not m:
-                continue
-            bold = all(
-                bool(span['flags'] & 16) or 'Bold' in span.get('font', '')
-                for span in line['spans'] if span['text'].strip()
-            )
-            if bold:
-                found.add(m.group(1))
-    return found
+def span_is_prominent(span):
+    """Return True if a text span carries heading/caption styling (bold or >= 10.5pt)."""
+    return (
+        bool(span['flags'] & 16)
+        or 'Bold' in span.get('font', '')
+        or span['size'] >= 10.5
+    )
 
 
-def page_selmao_headings(page):
-    """Return set of complete selma'o names printed as catalogue headings on page."""
-    found = set()
-    for block in page.get_text('dict')['blocks']:
-        if block['type'] != 0:
-            continue
-        for line in block['lines']:
-            y0, y1 = line['bbox'][1], line['bbox'][3]
-            if y1 <= BODY_TOP or y0 >= BODY_BOTTOM:
-                continue
-            txt = normalize_ws(''.join(span['text'] for span in line['spans']))
-            m = re.match(r"^selma'o\s+([A-Za-z][A-Za-z0-9']*)(?![A-Za-z0-9'])", txt)
-            if not m:
-                continue
-            max_size = max(span['size'] for span in line['spans'])
-            bold = any(
-                bool(span['flags'] & 16) or 'Bold' in span.get('font', '')
-                for span in line['spans'] if span['text'].strip()
-            )
-            if bold or max_size >= 11.0:
-                found.add(m.group(1))
-    return found
+def page_body_styled_lines(page):
+    """Return merged body lines as (y0, y1, text, is_head_start, is_head_cont).
 
-
-def page_section_headings(page):
-    """Return {section_number: [full_heading_text, ...]} for section headings in body.
-
-    Requires the heading line itself (bold or >= 10.5pt text spans, starting
-    with the section number and without an inline '(p.' reference), joining
-    immediately following heading-styled continuation lines for wrapped titles.
+    Merges fragments on the same visual line before scoring span styling so a
+    small non-bold span (e.g. a subscript or inline symbol) on a heading or
+    caption line does not hide the heading, while normal prose lines (even ones
+    starting with a single bold word) stay rejected.
     """
-    raw_lines = []
+    raw = []
     for block in page.get_text('dict')['blocks']:
         if block['type'] != 0:
             continue
         for line in block['lines']:
-            y0, y1 = line['bbox'][1], line['bbox'][3]
+            x0, y0, x1, y1 = line['bbox']
             if y1 <= BODY_TOP or y0 >= BODY_BOTTOM:
                 continue
             spans = [s for s in line['spans'] if s['text'].strip()]
@@ -476,81 +437,168 @@ def page_section_headings(page):
             txt = normalize_ws(''.join(s['text'] for s in line['spans']))
             if not txt:
                 continue
-            is_heading = all(
-                bool(s['flags'] & 16) or 'Bold' in s.get('font', '') or s['size'] >= 10.5
-                for s in spans
-            )
-            raw_lines.append((0.5 * (y0 + y1), y0, y1, line['bbox'][0], txt, is_heading))
-    raw_lines.sort(key=lambda item: (item[0], item[3]))
+            raw.append((0.5 * (y0 + y1), y0, y1, x0, txt, spans))
+    raw.sort(key=lambda item: (item[0], item[3]))
+
     merged = []
-    for ym, y0, y1, x0, txt, is_heading in raw_lines:
+    for ym, y0, y1, x0, txt, spans in raw:
         if merged and abs(ym - merged[-1][0]) < 2.5:
-            pm, py0, py1, px0, ptxt, ph = merged[-1]
-            merged[-1] = (pm, min(py0, y0), max(py1, y1), min(px0, x0), f'{ptxt} {txt}', ph and is_heading)
+            pm, py0, py1, px0, ptxt, pspans = merged[-1]
+            merged[-1] = (pm, min(py0, y0), max(py1, y1), min(px0, x0), f'{ptxt} {txt}', pspans + spans)
         else:
-            merged.append((ym, y0, y1, x0, txt, is_heading))
+            merged.append((ym, y0, y1, x0, txt, list(spans)))
 
-    headings = {}
+    result = []
+    for _, y0, y1, _, txt, spans in merged:
+        spans.sort(key=lambda s: s['bbox'][0])
+        total_chars = sum(len(''.join(s['text'].split())) for s in spans)
+        prominent_chars = sum(
+            len(''.join(s['text'].split())) for s in spans if span_is_prominent(s)
+        )
+        max_size = max(s['size'] for s in spans)
+        first_prominent = span_is_prominent(spans[0])
+        mostly_prominent = max_size >= 10.5 or (prominent_chars * 2 >= total_chars)
+        is_head_start = first_prominent and mostly_prominent
+        is_head_cont = mostly_prominent
+        result.append((y0, y1, txt, is_head_start, is_head_cont))
+    return result
+
+
+def is_distinct_target_line(txt):
+    """Return True if a heading-styled line starts a distinct numbered/named target."""
+    return bool(
+        SECTION_HEAD_LINE_RE.match(txt)
+        or CHAPTER_OR_APPENDIX_START_RE.match(txt)
+        or EXAMPLE_HEAD_RE.match(txt)
+        or TITLED_HEAD_RE.match(txt)
+        or SELMAO_HEAD_RE.match(txt)
+        or BNF_RULE_LINE_RE.match(txt)
+    )
+
+
+def page_targets(page):
+    """Extract all verifiable heading, caption, selma'o, and BNF targets on page.
+
+    Every target kind is matched on its actual heading, caption, or rule line,
+    never as arbitrary text anywhere on the page.
+    """
+    lines = page_body_styled_lines(page)
+    targets = {
+        'chapter': {},
+        'appendix': {},
+        'section': {},
+        'unnumbered': [],
+        'example': set(),
+        'titled': set(),
+        'selmao': set(),
+        'bnf': set(),
+    }
+
+    def collect_block(start_idx):
+        parts = [lines[start_idx][2]]
+        j = start_idx + 1
+        while j < len(lines):
+            ny0, _, ntxt, _, ncont = lines[j]
+            if (
+                ncont
+                and '(p.' not in ntxt
+                and (ny0 - lines[j - 1][1]) < 6.0
+                and not is_distinct_target_line(ntxt)
+            ):
+                parts.append(ntxt)
+                j += 1
+            else:
+                break
+        return normalize_ws(' '.join(parts)), j
+
     i = 0
-    while i < len(merged):
-        _, _, _, _, txt, is_heading = merged[i]
-        if is_heading and '(p.' not in txt:
-            m = SECTION_HEAD_LINE_RE.match(txt)
-            if m:
-                key = m.group(1)
-                parts = [txt]
-                j = i + 1
-                while j < len(merged):
-                    _, ny0, _, _, ntxt, nhead = merged[j]
-                    if (
-                        nhead
-                        and '(p.' not in ntxt
-                        and (ny0 - merged[j - 1][2]) < 6.0
-                        and not SECTION_HEAD_LINE_RE.match(ntxt)
-                        and not CHAPTER_OR_APPENDIX_START_RE.match(ntxt)
-                    ):
-                        parts.append(ntxt)
-                        j += 1
-                    else:
-                        break
-                headings.setdefault(key, []).append(normalize_ws(' '.join(parts)))
-                i = j
+    while i < len(lines):
+        _, _, txt, is_head_start, _ = lines[i]
+
+        # BNF rule definitions print in regular font in WeasyPrint and bold in
+        # Prince, always anchored at the start of their definition line.
+        if '(p.' not in txt:
+            bm = BNF_RULE_LINE_RE.match(txt)
+            if bm:
+                targets['bnf'].add(bm.group(1))
+                i += 1
                 continue
+
+        if is_head_start:
+            sm = SELMAO_HEAD_RE.match(txt)
+            if sm:
+                targets['selmao'].add(sm.group(1))
+                i += 1
+                continue
+
+            if '(p.' not in txt:
+                em = EXAMPLE_HEAD_RE.match(txt)
+                if em:
+                    targets['example'].add(em.group(1))
+                    i += 1
+                    continue
+
+                tm = TITLED_HEAD_RE.match(txt)
+                if tm:
+                    targets['titled'].add(tm.group(1))
+                    i += 1
+                    continue
+
+                cm = CHAPTER_OR_APPENDIX_START_RE.match(txt)
+                if cm:
+                    key = cm.group(1)
+                    kind = 'chapter' if key.startswith('Chapter ') else 'appendix'
+                    block_text, next_i = collect_block(i)
+                    targets[kind].setdefault(key, []).append(block_text)
+                    i = next_i
+                    continue
+
+                secm = SECTION_HEAD_LINE_RE.match(txt)
+                if secm:
+                    key = secm.group(1)
+                    block_text, next_i = collect_block(i)
+                    targets['section'].setdefault(key, []).append(block_text)
+                    i = next_i
+                    continue
+
+                block_text, next_i = collect_block(i)
+                targets['unnumbered'].append(block_text)
+                i = next_i
+                continue
+
         i += 1
-    return headings
+    return targets
 
 
-def section_heading_on_page(section_headings, key, title=''):
-    """Confirm section heading 'key' (and title start, if known) prints as a heading line."""
-    lines = section_headings.get(key)
-    if not lines:
+def starts_with_prefix(line, expected):
+    """Return True if line starts with expected at a non-alphanumeric boundary."""
+    if not line.startswith(expected):
+        return False
+    return len(line) == len(expected) or not line[len(expected)].isalnum()
+
+
+def heading_block_matches(blocks, key, title=''):
+    """Confirm heading 'key' (and title start, if known) prints as a heading line."""
+    if not blocks:
         return False
     if title:
         short_title = ' '.join(title.split()[:3])
         expected = f'{key} {short_title}'
-        return any(line.startswith(expected) for line in lines)
+        return any(starts_with_prefix(line, expected) for line in blocks)
     return True
 
 
-def inline_target_on_page(page_text, bold_examples, selmao_headings, section_headings, kind, key, toc_titles):
-    """Verify the target heading/example/rule/selma'o actually prints on page."""
-    if not page_text:
+def target_on_page(targets, kind, key, title=''):
+    """Verify the target heading/caption/rule/selma'o prints on its own line on page."""
+    if not targets:
         return False
-    if kind in ('chapter', 'appendix'):
-        title = toc_titles.get(key, '')
-        return heading_present_on_page(page_text, key, title)
-    if kind == 'section':
-        title = toc_titles.get(key, '')
-        return section_heading_on_page(section_headings, key, title)
-    if kind == 'example':
-        return key in bold_examples
-    if kind == 'titled':
-        return key in page_text
-    if kind == 'bnf':
-        # EBNF rules print as "<name> <num> =" (sometimes wrapped); check rule number before "=".
-        return re.search(rf'\b{re.escape(key)}\s*=', page_text) is not None
-    if kind == 'selmao':
-        return key in selmao_headings
+    if kind in ('chapter', 'appendix', 'section'):
+        return heading_block_matches(targets[kind].get(key), key, title)
+    if kind == 'unnumbered':
+        short = ' '.join(key.split()[:3]) if key else ''
+        return bool(short) and any(starts_with_prefix(line, short) for line in targets['unnumbered'])
+    if kind in ('example', 'titled', 'selmao', 'bnf'):
+        return key in targets[kind]
     return False
 
 
@@ -558,34 +606,20 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
     doc = pymupdf.open(pdf_path)
     total_pages = len(doc)
     body_cache = {}
-    bold_ex_cache = {}
-    selmao_cache = {}
-    section_head_cache = {}
+    targets_cache = {}
 
     def get_body(pno):
         if pno not in body_cache:
             body_cache[pno] = body_text(doc[pno - 1]) if 1 <= pno <= total_pages else ''
         return body_cache[pno]
 
-    def get_bold_examples(pno):
-        if pno not in bold_ex_cache:
-            bold_ex_cache[pno] = page_bold_examples(doc[pno - 1]) if 1 <= pno <= total_pages else set()
-        return bold_ex_cache[pno]
-
-    def get_selmao_headings(pno):
-        if pno not in selmao_cache:
-            selmao_cache[pno] = page_selmao_headings(doc[pno - 1]) if 1 <= pno <= total_pages else set()
-        return selmao_cache[pno]
-
-    def get_section_headings(pno):
-        if pno not in section_head_cache:
-            section_head_cache[pno] = page_section_headings(doc[pno - 1]) if 1 <= pno <= total_pages else {}
-        return section_head_cache[pno]
+    def get_targets(pno):
+        if pno not in targets_cache:
+            targets_cache[pno] = page_targets(doc[pno - 1]) if 1 <= pno <= total_pages else None
+        return targets_cache[pno]
 
     def toc_heading_matches(pno, prefix, title):
-        if SECTION_NUM_RE.match(prefix):
-            return section_heading_on_page(get_section_headings(pno), prefix, title)
-        return heading_present_on_page(get_body(pno), prefix, title)
+        return target_on_page(get_targets(pno), toc_heading_kind(prefix), prefix, title)
 
     toc_pages = find_toc_pages(doc)
     printed_toc_lines = count_printed_toc_lines(doc, toc_pages)
@@ -634,15 +668,7 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
         kind, key = parse_inline_xref_target(text)
         if kind == 'unknown':
             xref_unknown_shape.append((pno, nd, text, dest))
-        elif not inline_target_on_page(
-            dest_text,
-            get_bold_examples(dest) if kind == 'example' else (),
-            get_selmao_headings(dest) if kind == 'selmao' else (),
-            get_section_headings(dest) if kind == 'section' else {},
-            kind,
-            key,
-            toc_titles,
-        ):
+        elif not target_on_page(get_targets(dest), kind, key, toc_titles.get(key, '')):
             xref_target_missing.append((pno, nd, text, kind, key, dest))
 
     # Reconcile extracted inline xref count against raw body-text "(p. N)" count

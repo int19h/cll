@@ -26,7 +26,7 @@ BODY_BOTTOM = 631.0
 CONTENT_TOP = 48.19
 CONTENT_HEIGHT = 632.13 - CONTENT_TOP
 
-EXAMPLE_HEAD_RE = re.compile(r'^Example[\s\u00a0]+(\d+\.\d+)\b')
+EXAMPLE_HEAD_RE = re.compile(r'^Example[\s\u00a0]+((?:\d+|[A-Z])\.\d+)\b')
 MARGIN_GLYPHS = set('◆★●■△?▲◇')
 
 
@@ -47,12 +47,14 @@ def page_body_lines(page):
             text = normalize_ws(''.join(span['text'] for span in line['spans']))
             if not text or text in MARGIN_GLYPHS:
                 continue
-            max_size = max(span['size'] for span in line['spans'])
-            bold = all(
-                bool(span['flags'] & 16) or 'Bold' in span.get('font', '')
-                for span in line['spans']
-                if span['text'].strip()
-            )
+            spans = [s for s in line['spans'] if s['text'].strip()]
+            if not spans:
+                continue
+            max_size = max(span['size'] for span in spans)
+            is_bold = lambda s: bool(s['flags'] & 16) or 'Bold' in s.get('font', '')
+            total_chars = sum(len(''.join(s['text'].split())) for s in spans)
+            bold_chars = sum(len(''.join(s['text'].split())) for s in spans if is_bold(s))
+            bold = is_bold(spans[0]) and (bold_chars * 2 >= total_chars)
             lines.append((y0, y1, line['bbox'][0], line['bbox'][2], max_size, bold, text))
     lines.sort(key=lambda item: (round(item[0], 1), item[2]))
     return lines

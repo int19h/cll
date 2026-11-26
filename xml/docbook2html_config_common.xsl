@@ -7,22 +7,22 @@
   version="1.0">
 
   <xsl:param name="use.id.as.filename" select="'1'"/>
-  <xsl:template match="releaseinfo/phrase[@role='release-version']">
-    <span xmlns="http://www.w3.org/1999/xhtml" class="release-version"><xsl:apply-templates/></span>
+  <xsl:template match="releaseinfo/phrase[contains(concat(' ', normalize-space(@role), ' '), ' release-version ')]">
+    <span xmlns="http://www.w3.org/1999/xhtml" class="{normalize-space(@role)}"><xsl:apply-templates/></span>
   </xsl:template>
-  <xsl:template match="releaseinfo/phrase[@role='release-date']">
-    <span xmlns="http://www.w3.org/1999/xhtml" class="release-date"><xsl:apply-templates/></span>
+  <xsl:template match="releaseinfo/phrase[contains(concat(' ', normalize-space(@role), ' '), ' release-date ')]">
+    <span xmlns="http://www.w3.org/1999/xhtml" class="{normalize-space(@role)}"><xsl:apply-templates/></span>
   </xsl:template>
-  <xsl:template match="releaseinfo/phrase[@role='release-separator']">
-    <span xmlns="http://www.w3.org/1999/xhtml" class="release-separator"><xsl:apply-templates/></span>
+  <xsl:template match="releaseinfo/phrase[contains(concat(' ', normalize-space(@role), ' '), ' release-separator ')]">
+    <span xmlns="http://www.w3.org/1999/xhtml" class="{normalize-space(@role)}"><xsl:apply-templates/></span>
   </xsl:template>
-  <xsl:template match="orgname[@role='publication-notice']">
-    <span xmlns="http://www.w3.org/1999/xhtml" class="orgname publication-notice"><xsl:apply-templates/></span>
+  <xsl:template match="orgname[contains(concat(' ', normalize-space(@role), ' '), ' publication-notice ')]">
+    <span xmlns="http://www.w3.org/1999/xhtml" class="{concat('orgname ', normalize-space(@role))}"><xsl:apply-templates/></span>
   </xsl:template>
   <!-- Keep the publication disclaimer on a separate line in every HTML output. -->
-  <xsl:template match="phrase[@role='publication-disclaimer']">
+  <xsl:template match="phrase[contains(concat(' ', normalize-space(@role), ' '), ' publication-disclaimer ')]">
     <br xmlns="http://www.w3.org/1999/xhtml"/>
-    <span xmlns="http://www.w3.org/1999/xhtml" class="publication-disclaimer"><xsl:apply-templates/></span>
+    <span xmlns="http://www.w3.org/1999/xhtml" class="{normalize-space(@role)}"><xsl:apply-templates/></span>
   </xsl:template>
   <xsl:param name="html.stylesheet" select="'final.css'"/>
   <!-- Keep the public file names. The xhtml5 base defaults to .xhtml. -->
@@ -63,15 +63,16 @@
   <xsl:param name="section.label.includes.component.label" select="1"></xsl:param>
 
   <!-- Allow non-trivial classes on examples -->
-  <xsl:template match="example[@role]" mode="class.value">
-    <xsl:value-of select="concat(@role,' example')"/>
+  <xsl:template match="example[normalize-space(@role) != '']" mode="class.value">
+    <xsl:value-of select="concat(normalize-space(@role),' example')"/>
   </xsl:template>
 
   <!-- Mark parallel-text chrestomathy tables on their wrapper div so print CSS
        can allow page breaks in them without affecting gloss tables added to
-       Appendix A later (issue #344). -->
-  <xsl:template match="informaltable[@role='parallel-text']" mode="class.value">
-    <xsl:value-of select="'parallel-text informaltable'"/>
+       Appendix A later (issue #344). Match by role token membership so extra
+       tokens or whitespace survive as classes (issue #348). -->
+  <xsl:template match="informaltable[contains(concat(' ', normalize-space(@role), ' '), ' parallel-text ')]" mode="class.value">
+    <xsl:value-of select="concat(normalize-space(@role), ' informaltable')"/>
   </xsl:template>
 
   <!-- default is at
@@ -176,8 +177,8 @@
     </xsl:if>
   </xsl:template>
 
-  <xsl:template match="itemizedlist[@role='bullets']" mode="class.value">
-    <xsl:value-of select="'bullets'"/>
+  <xsl:template match="itemizedlist[contains(concat(' ', normalize-space(@role), ' '), ' bullets ')]" mode="class.value">
+    <xsl:value-of select="normalize-space(@role)"/>
   </xsl:template>
 
   <!-- Status notes and marks (docs/status-markup.md, issue #47).

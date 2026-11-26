@@ -87,14 +87,18 @@ end
 # A rafsi is never a cell word for linking (rule 9), so it is excluded
 # from cell text too. An element that carries no visible text of its
 # own never blocks the in-place link surgery below.
+def has_role?( node, token )
+  node.element? && node['role'].to_s.split.include?( token )
+end
+
 def cmavo_list_excluded_ancestor?( node, stop )
   node.ancestors.take_while { |a| a != stop }.any? do |a|
-    %w[indexterm anchor rafsi].include?( a.name ) || a['role'] == 'display-none'
+    %w[indexterm anchor rafsi].include?( a.name ) || has_role?( a, 'display-none' )
   end
 end
 
 def cmavo_list_transparent?( node )
-  node.element? && ( %w[indexterm anchor rafsi].include?( node.name ) || node['role'] == 'display-none' )
+  node.element? && ( %w[indexterm anchor rafsi].include?( node.name ) || has_role?( node, 'display-none' ) )
 end
 
 # A cell's text for the linking rules: the concatenated text nodes,
@@ -123,7 +127,7 @@ end
 # not count. Each part already links, or stays plain on its own marks.
 def cmavo_list_split_cell?( cell )
   kids = cell.children.reject do |child|
-    child.name == 'indexterm' || ( child.element? && ( child.name == 'anchor' || child['role'] == 'display-none' ) )
+    child.name == 'indexterm' || ( child.element? && ( child.name == 'anchor' || has_role?( child, 'display-none' ) ) )
   end
   return false if kids.size < 2
   return false unless kids.all?( &:element? )
@@ -165,7 +169,7 @@ end
 # True when an ancestor of node up to (but excluding) stop carries
 # role="display-none".
 def cmavo_list_display_none_ancestor?( node, stop )
-  node.ancestors.take_while { |a| a != stop }.any? { |a| a['role'] == 'display-none' }
+  node.ancestors.take_while { |a| a != stop }.any? { |a| has_role?( a, 'display-none' ) }
 end
 
 # The words of linkable cmavo-list cells, for the glossary: the same
@@ -316,7 +320,7 @@ end
 # skipping indexterms, anchors and display-none subtrees.
 def cmavo_list_split_parts( cell )
   kids = cell.children.reject do |child|
-    child.name == 'indexterm' || ( child.element? && ( child.name == 'anchor' || child['role'] == 'display-none' ) )
+    child.name == 'indexterm' || ( child.element? && ( child.name == 'anchor' || has_role?( child, 'display-none' ) ) )
   end
   kids.select { |child| child.element? && child.name == 'foreignphrase' }
 end

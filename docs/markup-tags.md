@@ -36,7 +36,8 @@ A `valsi` gets its glossary definition from the dictionary export in `dictionary
 Use `valsi` only for a word that you expect to find there, or mark it with `valid` as described below.
 Link a word only when its dictionary entry agrees with the meaning and place structure that the surrounding text gives.
 If the text builds or defines a different sense, or gives places that the dictionary entry omits or swaps, mark it `valid="maybe"` so the link does not contradict the passage (leave the link when the dictionary entry agrees or merely adds places).
-A cmevla that names a Lojban term with its own dictionary entry takes `<valsi>` instead of `<cmevla>` so that it links to the glossary, as chapter 4 does for `.lojban.` and `.lojbangirz.` and Appendix A does for `teris.`; ordinary example personal names (such as `.meiris.`, `.jan.`, or `.djordj.`) stay `<cmevla>`.
+In running prose, a name stays `<cmevla>` even if the dictionary lists it (such as `.djordj.`, or `.jan.` whose dictionary entry means "Jean/Zhang" rather than "John", or an unchosen spelling variant such as `.meiris.`), unless it is Lojban vocabulary with its own dictionary entry whose meaning agrees, in which case it takes `<valsi>` (such as `.lojban.` and `.lojbangirz.` in chapter 4).
+In a hidden glossary word list (such as Appendix A's `role="display-none"` lists), every word is a `<valsi>`, names included: a name there links when it has a matching dictionary entry (as `teris.` does) and takes `valid="maybe"` when it has no entry (such as `.alis.`, `.dinas.`, `.elis.`, `.maikl.turni'anskis.`, `mulis.`, and `zo,is.`).
 A `valsi` inside `title`, `term`, `primary`, or `secondary` gets no glossary link and no index entry.
 A `jbophrase` in those elements gets no index entry.
 `scripts/merge.sh` defines only the `lojban-word` and `general` indexes, and neither of them collects `lojban-phrase` terms.

@@ -28,14 +28,17 @@ import pymupdf
 BODY_TOP = 46.0
 BODY_BOTTOM = 631.0
 
-TRAILING_PAGE_RE = re.compile(r'(\d+)\s*$')
+HTML_WS_RE = re.compile(r'[ \t\r\n\f]+')
+TRAILING_PAGE_RE = re.compile(r'(?:\s+|\.{2,})(\d+)\s*$')
 INLINE_PAGE_RE = re.compile(r'\(p\.\s*(\d+)\)')
+INLINE_PAGE_STRIP_RE = re.compile(r'\s*\(p\.\s*\d+\)')
+PARTIAL_INLINE_PAGE_RE = re.compile(r'(?:\s*\(p\.?)?$')
 EMPTY_PAGE_RE = re.compile(r'\(p\.\s*\)')
 COMPONENT_NUM_PAT = r'(?:\d+|[A-Z])'
 SECTION_NUM_RE = re.compile(rf'^{COMPONENT_NUM_PAT}(?:\.\d+)+$')
-SECTION_HEAD_LINE_RE = re.compile(rf'^({COMPONENT_NUM_PAT}(?:\.\d+)+)(?:\s+(.*))?$')
+SECTION_HEAD_LINE_RE = re.compile(rf'^({COMPONENT_NUM_PAT}(?:\.\d+)+)\.?(?:\s+(.*))?$')
 CHAPTER_OR_APPENDIX_ONLY_RE = re.compile(r'^(?:Chapter\s+\d+|Appendix\s+[A-Z])$')
-CHAPTER_OR_APPENDIX_START_RE = re.compile(r'^(Chapter\s+\d+|Appendix\s+[A-Z])(?:\s+(.*))?$')
+CHAPTER_OR_APPENDIX_START_RE = re.compile(r'^(Chapter\s+\d+|Appendix\s+[A-Z])\.?(?:\s+(.*))?$')
 EXAMPLE_HEAD_RE = re.compile(rf'^(Example\s+{COMPONENT_NUM_PAT}\.\d+)(?:\.?(?:\s|$))')
 TITLED_HEAD_RE = re.compile(rf'^((?:Table|Figure)\s+{COMPONENT_NUM_PAT}\.\d+)(?:\.?(?:\s|$))')
 SELMAO_HEAD_RE = re.compile(r"^selma'o\s+([A-Za-z][A-Za-z0-9']*)(?![A-Za-z0-9'])")
@@ -103,10 +106,22 @@ def find_toc_pages(doc):
     return pages
 
 
-def heading_key_from_toc_label(label):
+def strip_pdf_toc_page_suffix(text):
+    """Strip the trailing PDF ToC page number and optional dot leaders.
+
+    Only call on PDF ToC lines, never on unpaginated HTML ToC labels, so digits
+    that belong to a title (e.g. 'Changes since CLL 1.1', 'Release 1.3.7') are
+    never stripped.
+    """
+    s = normalize_ws(text)
+    s = re.sub(r'(?:\s+|\.{2,})\d+\s*$', '', s)
+    s = re.sub(r'(?:\s*\.{2,}|\s+\.)\s*$', '', s)
+    return s.strip()
+
+
+def heading_key_from_toc_label(label, *, strip_pdf_page=False):
     """Derive (prefix, title) from a ToC label to confirm the heading on its page."""
-    cleaned = re.sub(r'\.+\s*\d+\s*$', '', label).strip()
-    cleaned = normalize_ws(cleaned)
+    cleaned = strip_pdf_toc_page_suffix(label) if strip_pdf_page else normalize_ws(label)
     m = re.match(r'^(\d+)\.\s+(.*)$', cleaned)
     if m:
         return f'Chapter {m.group(1)}', m.group(2)
@@ -379,7 +394,7 @@ class _HtmlRefCollector(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         attr_map = dict(attrs)
-        classes = set((attr_map.get('class') or '').split())
+        classes = {tok for tok in HTML_WS_RE.split(attr_map.get('class') or '') if tok}
         if tag == 'div':
             is_toc = 'toc' in classes
             is_fig = 'figure' in classes
@@ -581,30 +596,50 @@ def is_self_reference_line(txt, label_end):
     return bool(re.match(r'^\(p\.\s*\d+\)', rest))
 
 
-def canonical_target_text(text):
-    """Normalize a heading or caption for comparing PDF lines against print HTML."""
-    s = INLINE_PAGE_RE.sub('', text)
+def canonical_target_text(text, *, from_pdf=False):
+    """Normalize a heading or caption for comparing PDF lines against print HTML.
+
+    PDF-only CSS-inserted '(p. N)' suffixes (together with their leading space)
+    are stripped only when from_pdf=True, leaving literal HTML punctuation and
+    spacing intact on both sides.
+    """
+    s = INLINE_PAGE_STRIP_RE.sub('', text) if from_pdf else text
     s = normalize_ws(s)
-    s = re.sub(r'-\s+', '-', s)
-    s = re.sub(r'\s+([.,:;)])', r'\1', s)
-    s = re.sub(r'\(\s+', '(', s)
     s = re.sub(
-        rf'^((?:Example|Table|Figure)\s+{COMPONENT_NUM_PAT}\.\d+|{COMPONENT_NUM_PAT}(?:\.\d+)+)\.(?=\s|$)',
+        rf'^((?:Chapter\s+\d+|Appendix\s+[A-Z]|(?:Example|Table|Figure)\s+{COMPONENT_NUM_PAT}\.\d+|{COMPONENT_NUM_PAT}(?:\.\d+)+))\.(?=\s|$)',
         r'\1',
         s,
     )
-    s = re.sub(r'([A-Za-z])\s+(\d+\b)', r'\1\2', s)
     return s
+
+
+def join_row_fragments(frags):
+    """Join left-to-right fragments on one visual line without splitting touching subscripts."""
+    frags_sorted = sorted(frags, key=lambda item: item[3])
+    parts = []
+    prev_x1 = None
+    prev_raw = ''
+    for _, _, _, x0, x1, raw_txt, txt, _ in frags_sorted:
+        if parts:
+            touching = (
+                not prev_raw.endswith((' ', '\t', '\u00a0'))
+                and not raw_txt.startswith((' ', '\t', '\u00a0'))
+                and (x0 - prev_x1) < 1.2
+            )
+            parts.append('' if touching else ' ')
+        parts.append(txt)
+        prev_x1 = x1
+        prev_raw = raw_txt
+    return normalize_ws(''.join(parts))
 
 
 def page_body_styled_lines(page):
     """Return merged body lines as (y0, y1, x0, max_size, text, is_head_start, is_head_cont, bnf_rule).
 
-    Merges fragments on the same visual line before scoring span styling so a
-    small non-bold span (e.g. a subscript) or an inline cross-reference link on
-    a heading or caption line does not hide the heading, while prose lines
-    (including 50/50 bold-lead prose such as "**Table A.1** follows.") stay
-    rejected.
+    Clusters fragments on the same visual line (including vertically shifted
+    subscripts/superscripts) and sorts them left-to-right before joining text
+    and scoring span styling. Link-only continuation lines qualify for
+    is_head_cont so wrapped inline xrefs inside captions are not lost.
     """
     link_rects = [
         pymupdf.Rect(l['from']) for l in page.get_links()
@@ -621,25 +656,59 @@ def page_body_styled_lines(page):
             spans = [s for s in line['spans'] if s['text'].strip()]
             if not spans:
                 continue
-            txt = normalize_ws(''.join(s['text'] for s in line['spans']))
+            raw_txt = ''.join(s['text'] for s in line['spans'])
+            txt = normalize_ws(raw_txt)
             if not txt:
                 continue
-            raw.append((0.5 * (y0 + y1), y0, y1, x0, txt, spans))
+            raw.append((0.5 * (y0 + y1), y0, y1, x0, x1, raw_txt, txt, spans))
     raw.sort(key=lambda item: (item[0], item[3]))
 
-    merged = []
-    for ym, y0, y1, x0, txt, spans in raw:
-        if merged and abs(ym - merged[-1][0]) < 2.5:
-            pm, py0, py1, px0, ptxt, pspans = merged[-1]
-            merged[-1] = (pm, min(py0, y0), max(py1, y1), min(px0, x0), f'{ptxt} {txt}', pspans + spans)
-        else:
-            merged.append((ym, y0, y1, x0, txt, list(spans)))
+    rows = []
+    for frag in raw:
+        ym, y0, y1, x0, x1, raw_txt, txt, spans = frag
+        fsize = max(s['size'] for s in spans)
+        placed = False
+        for row in reversed(rows):
+            ry0, ry1, rym, rsize, rfrags = row
+            if abs(ym - rym) < 2.5:
+                rfrags.append(frag)
+                row[0] = min(ry0, y0)
+                row[1] = max(ry1, y1)
+                row[3] = max(rsize, fsize)
+                placed = True
+                break
+            is_sub_or_sup = (
+                fsize < rsize - 0.5
+                and ry0 <= ym <= ry1
+                and any(-1.5 <= (x0 - fx1) < 6.0 or -1.5 <= (fx0 - x1) < 6.0
+                        for _, _, _, fx0, fx1, _, _, _ in rfrags)
+                and not any(x0 < fx1 - 1.5 and x1 > fx0 + 1.5
+                            for _, _, _, fx0, fx1, _, _, _ in rfrags)
+            )
+            if is_sub_or_sup:
+                rfrags.append(frag)
+                row[0] = min(ry0, y0)
+                row[1] = max(ry1, y1)
+                placed = True
+                break
+        if not placed:
+            rows.append([y0, y1, ym, fsize, [frag]])
+
+    rows.sort(key=lambda row: (row[0], min(f[3] for f in row[4])))
 
     result = []
-    for _, y0, y1, x0, txt, spans in merged:
+    for y0, y1, _, _, rfrags in rows:
+        x0 = min(f[3] for f in rfrags)
+        txt = join_row_fragments(rfrags)
+        spans = []
+        for f in rfrags:
+            spans.extend(f[7])
         spans.sort(key=lambda s: s['bbox'][0])
+        has_link = any(span_in_links(s, link_rects) for s in spans)
         non_link_spans = [s for s in spans if not span_in_links(s, link_rects)]
-        scored = non_link_spans or spans
+        non_link_chars = sum(len(''.join(s['text'].split())) for s in non_link_spans)
+        non_link_alnum = sum(sum(ch.isalnum() for ch in s['text']) for s in non_link_spans)
+        scored = non_link_spans if non_link_chars > 0 else spans
         total_chars = sum(len(''.join(s['text'].split())) for s in scored)
         prominent_chars = sum(
             len(''.join(s['text'].split())) for s in scored if span_is_prominent(s)
@@ -648,7 +717,7 @@ def page_body_styled_lines(page):
         first_prominent = span_is_prominent(spans[0])
         mostly_prominent = (prominent_chars * 2 > total_chars)
         is_head_start = first_prominent and mostly_prominent
-        is_head_cont = mostly_prominent
+        is_head_cont = mostly_prominent or (has_link and non_link_alnum == 0)
         bnf_rule = bnf_rule_from_line(txt, spans)
         result.append((y0, y1, x0, max_size, txt, is_head_start, is_head_cont, bnf_rule))
     return result
@@ -666,13 +735,108 @@ def is_distinct_target_line(txt, bnf_rule=None):
     )
 
 
-def page_targets(page):
-    """Extract all verifiable heading, caption, selma'o, and BNF targets on page.
+def _line_opens_target(txt, kind, key):
+    """Return True if a heading-styled line opens target (kind, key) without self-referencing."""
+    if kind in ('chapter', 'appendix'):
+        m = CHAPTER_OR_APPENDIX_START_RE.match(txt)
+        return bool(m and m.group(1) == key and not is_self_reference_line(txt, m.end(1)))
+    if kind == 'section':
+        m = SECTION_HEAD_LINE_RE.match(txt)
+        return bool(m and m.group(1) == key and not is_self_reference_line(txt, m.end(1)))
+    if kind == 'example':
+        m = EXAMPLE_HEAD_RE.match(txt)
+        return bool(m and m.group(1) == key and not is_self_reference_line(txt, m.end(1)))
+    if kind == 'titled':
+        m = TITLED_HEAD_RE.match(txt)
+        return bool(m and m.group(1) == key and not is_self_reference_line(txt, m.end(1)))
+    if kind == 'selmao':
+        m = SELMAO_HEAD_RE.match(txt)
+        return bool(m and m.group(1) == key and not is_self_reference_line(txt, m.end(1)))
+    if kind == 'unnumbered':
+        return not is_self_reference_line(txt, 0)
+    return False
 
-    Every target kind is matched on its actual heading, caption, or rule line,
-    never as arbitrary text anywhere on the page. Nested inline xrefs inside a
-    heading or caption are allowed; only lines where '(p. N)' immediately
-    follows the leading label itself are rejected as self-references.
+
+def _is_canonical_prefix(cand, canon_expected):
+    """Return True if cand (allowing a trailing partial '(p.' or hyphen) prefixes any expected text."""
+    probes = [cand]
+    trimmed_p = PARTIAL_INLINE_PAGE_RE.sub('', cand).rstrip()
+    if trimmed_p and trimmed_p != cand:
+        probes.append(trimmed_p)
+    for probe in list(probes):
+        if probe.endswith('-') and len(probe) > 1:
+            probes.append(probe[:-1])
+    for probe in probes:
+        if any(exp.startswith(probe) for exp in canon_expected):
+            return True
+    return False
+
+
+def match_expected_on_page(lines, kind, key, expected_texts):
+    """Match an HTML-expected heading/caption across as many PDF lines as it needs.
+
+    Consumes consecutive continuation lines (including wrapped inline links and
+    label-only first lines) driven by the known HTML text, without falling back
+    to line-shape heuristics that drop wrapped continuations.
+    """
+    if not lines or not expected_texts:
+        return False
+    canon_expected = {canonical_target_text(t, from_pdf=False) for t in expected_texts}
+    for i, line in enumerate(lines):
+        _, _, _, _, txt, is_head_start, _, bnf_rule = line
+        if not is_head_start or bnf_rule is not None:
+            continue
+        if not _line_opens_target(txt, kind, key):
+            continue
+        if (
+            kind == 'unnumbered'
+            and i > 0
+            and lines[i - 1][5]
+            and CHAPTER_OR_APPENDIX_ONLY_RE.match(lines[i - 1][4].rstrip('.'))
+            and (line[0] - lines[i - 1][1]) < 12.0
+        ):
+            continue
+        accum = {txt}
+        j = i
+        while True:
+            canons = [canonical_target_text(s, from_pdf=True) for s in accum]
+            if any(c in canon_expected for c in canons):
+                return True
+            if not any(_is_canonical_prefix(c, canon_expected) for c in canons):
+                break
+            next_j = j + 1
+            if next_j >= len(lines) or (next_j - i) >= 8:
+                break
+            ny0, _, _, _, ntxt, _, ncont, nbnf = lines[next_j]
+            if not ncont or nbnf is not None or (ny0 - lines[j][1]) >= 12.0:
+                break
+            next_accum = set()
+            for s in accum:
+                next_accum.add(f'{s} {ntxt}')
+                if s.endswith('-') and not s.endswith(' -'):
+                    next_accum.add(f'{s}{ntxt}')
+                    next_accum.add(f'{s[:-1]}{ntxt}')
+            accum = next_accum
+            j = next_j
+    return False
+
+
+def page_bnf_rules(lines):
+    """Return {rule_num: set(rule_names)} extracted from BNF header lines on page."""
+    rules = {}
+    for _, _, _, _, _, _, _, bnf_rule in lines:
+        if bnf_rule is not None:
+            rule_name, rule_num = bnf_rule
+            rules.setdefault(rule_num, set()).add(rule_name)
+    return rules
+
+
+def page_targets(page):
+    """Extract verifiable heading/caption/rule targets on page (HTML-absent fallback).
+
+    Used only when companion print HTML is unavailable. Every target kind is
+    still matched on its actual heading, caption, or rule line, never as
+    arbitrary prose on the page.
     """
     lines = page_body_styled_lines(page)
     targets = {
@@ -727,26 +891,16 @@ def page_targets(page):
 
             em = EXAMPLE_HEAD_RE.match(txt)
             if em and not is_self_reference_line(txt, em.end(1)):
-                key = em.group(1)
-                if txt.rstrip('.') == key:
-                    targets['example'].setdefault(key, []).append(txt)
-                    i += 1
-                else:
-                    block_text, next_i = collect_block(i)
-                    targets['example'].setdefault(key, []).append(block_text)
-                    i = next_i
+                block_text, next_i = collect_block(i)
+                targets['example'].setdefault(em.group(1), []).append(block_text)
+                i = next_i
                 continue
 
             tm = TITLED_HEAD_RE.match(txt)
             if tm and not is_self_reference_line(txt, tm.end(1)):
-                key = tm.group(1)
-                if txt.rstrip('.') == key:
-                    targets['titled'].setdefault(key, []).append(txt)
-                    i += 1
-                else:
-                    block_text, next_i = collect_block(i)
-                    targets['titled'].setdefault(key, []).append(block_text)
-                    i = next_i
+                block_text, next_i = collect_block(i)
+                targets['titled'].setdefault(tm.group(1), []).append(block_text)
+                i = next_i
                 continue
 
             cm = CHAPTER_OR_APPENDIX_START_RE.match(txt)
@@ -788,12 +942,12 @@ def heading_block_matches(blocks, key, title='', expected_texts=None):
     if not blocks:
         return False
     if expected_texts:
-        canon_expected = {canonical_target_text(t) for t in expected_texts}
-        return any(canonical_target_text(line) in canon_expected for line in blocks)
+        canon_expected = {canonical_target_text(t, from_pdf=False) for t in expected_texts}
+        return any(canonical_target_text(line, from_pdf=True) in canon_expected for line in blocks)
     if title:
         short_title = ' '.join(title.split()[:3])
-        expected = canonical_target_text(f'{key} {short_title}')
-        return any(starts_with_prefix(canonical_target_text(line), expected) for line in blocks)
+        expected = canonical_target_text(f'{key} {short_title}', from_pdf=True)
+        return any(starts_with_prefix(canonical_target_text(line, from_pdf=True), expected) for line in blocks)
     return True
 
 
@@ -805,10 +959,10 @@ def target_on_page(targets, kind, key, title='', expected_bnf_name='', expected_
         return heading_block_matches(targets[kind].get(key), key, title=title, expected_texts=expected_texts)
     if kind == 'unnumbered':
         if expected_texts:
-            canon_expected = {canonical_target_text(t) for t in expected_texts}
-            return any(canonical_target_text(line) in canon_expected for line in targets['unnumbered'])
-        short = canonical_target_text(' '.join(key.split()[:3])) if key else ''
-        return bool(short) and any(starts_with_prefix(canonical_target_text(line), short) for line in targets['unnumbered'])
+            canon_expected = {canonical_target_text(t, from_pdf=False) for t in expected_texts}
+            return any(canonical_target_text(line, from_pdf=True) in canon_expected for line in targets['unnumbered'])
+        short = canonical_target_text(' '.join(key.split()[:3]), from_pdf=True) if key else ''
+        return bool(short) and any(starts_with_prefix(canonical_target_text(line, from_pdf=True), short) for line in targets['unnumbered'])
     if kind == 'bnf':
         names = targets['bnf'].get(key)
         if not names:
@@ -822,6 +976,8 @@ def analyze_pdf(pdf_path, html_path=None):
     doc = pymupdf.open(pdf_path)
     total_pages = len(doc)
     body_cache = {}
+    lines_cache = {}
+    bnf_cache = {}
     targets_cache = {}
 
     def get_body(pno):
@@ -829,19 +985,30 @@ def analyze_pdf(pdf_path, html_path=None):
             body_cache[pno] = body_text(doc[pno - 1]) if 1 <= pno <= total_pages else ''
         return body_cache[pno]
 
+    def get_lines(pno):
+        if pno not in lines_cache:
+            lines_cache[pno] = page_body_styled_lines(doc[pno - 1]) if 1 <= pno <= total_pages else []
+        return lines_cache[pno]
+
+    def get_bnf_rules(pno):
+        if pno not in bnf_cache:
+            bnf_cache[pno] = page_bnf_rules(get_lines(pno))
+        return bnf_cache[pno]
+
     def get_targets(pno):
         if pno not in targets_cache:
             targets_cache[pno] = page_targets(doc[pno - 1]) if 1 <= pno <= total_pages else None
         return targets_cache[pno]
 
     resolved_html = Path(html_path) if html_path else auto_discover_html(pdf_path)
+    has_html = bool(resolved_html and resolved_html.is_file())
     expected_toc = None
     expected_xrefs = None
     html_toc_entries = None
     html_xrefs = None
     html_bnf_rules = {}
     html_titles = {}
-    if resolved_html and resolved_html.is_file():
+    if has_html:
         html_toc_entries, html_xrefs, html_bnf_rules, html_titles = load_expected_html_data(resolved_html)
         expected_toc = len(html_toc_entries)
         expected_xrefs = len(html_xrefs)
@@ -852,6 +1019,8 @@ def analyze_pdf(pdf_path, html_path=None):
     first_body_page = max(toc_pages) + 1
 
     # Entry-by-entry reconciliation of PDF ToC against companion HTML ToC.
+    # Pagination suffixes (dot leaders + page number) are stripped on the PDF
+    # side only, preserving digits that belong to real titles (e.g. 'CLL 1.1').
     toc_entry_mismatches = []
     if html_toc_entries is not None:
         for idx in range(max(len(html_toc_entries), len(toc_entries))):
@@ -865,32 +1034,63 @@ def analyze_pdf(pdf_path, html_path=None):
                 continue
             href, hlbl = html_toc_entries[idx]
             pno, nd, ptxt, printed, dest = toc_entries[idx]
-            hk = tuple(canonical_target_text(part) for part in heading_key_from_toc_label(hlbl))
-            pk = tuple(canonical_target_text(part) for part in heading_key_from_toc_label(ptxt))
+            hk = tuple(
+                canonical_target_text(part, from_pdf=False)
+                for part in heading_key_from_toc_label(hlbl, strip_pdf_page=False)
+            )
+            pk = tuple(
+                canonical_target_text(part, from_pdf=True)
+                for part in heading_key_from_toc_label(ptxt, strip_pdf_page=True)
+            )
             if hk != pk:
                 toc_entry_mismatches.append((idx + 1, 'label-mismatch', hlbl, ptxt, href, nd))
             elif nd is not None and nd != href:
                 toc_entry_mismatches.append((idx + 1, 'dest-mismatch', hlbl, ptxt, href, nd))
 
-    def expected_html_texts_for(kind, key):
-        return html_titles.get((kind, key))
-
     matching_pages_cache = {}
+    targets_missing_html_expected = set()
 
-    def pages_matching_target(kind, key, title='', expected_bnf_name=''):
-        exp_texts = expected_html_texts_for(kind, key)
-        cache_key = (kind, key, title, expected_bnf_name, tuple(exp_texts) if exp_texts else ())
+    def pages_matching_target(kind, key, title=''):
+        """Return (has_expected, matched_pages).
+
+        When companion HTML is present, every referenced target must have
+        expected text (or a BNF rule name) in the HTML; missing expected data is
+        recorded and fails the run instead of silently falling back to weaker
+        PDF-only heuristics.
+        """
+        if has_html:
+            if kind == 'bnf':
+                expected_bnf_name = html_bnf_rules.get(key, '')
+                if not expected_bnf_name:
+                    targets_missing_html_expected.add((kind, key))
+                    return False, []
+                cache_key = ('html', kind, key, expected_bnf_name)
+                if cache_key not in matching_pages_cache:
+                    matching_pages_cache[cache_key] = [
+                        p for p in range(first_body_page, total_pages + 1)
+                        if expected_bnf_name in get_bnf_rules(p).get(key, ())
+                    ]
+                return True, matching_pages_cache[cache_key]
+
+            exp_texts = html_titles.get((kind, key))
+            if not exp_texts:
+                targets_missing_html_expected.add((kind, key))
+                return False, []
+            cache_key = ('html', kind, key, tuple(exp_texts))
+            if cache_key not in matching_pages_cache:
+                matching_pages_cache[cache_key] = [
+                    p for p in range(first_body_page, total_pages + 1)
+                    if match_expected_on_page(get_lines(p), kind, key, exp_texts)
+                ]
+            return True, matching_pages_cache[cache_key]
+
+        cache_key = ('pdf-only', kind, key, title)
         if cache_key not in matching_pages_cache:
             matching_pages_cache[cache_key] = [
                 p for p in range(first_body_page, total_pages + 1)
-                if target_on_page(
-                    get_targets(p), kind, key,
-                    title=title,
-                    expected_bnf_name=expected_bnf_name,
-                    expected_texts=exp_texts,
-                )
+                if target_on_page(get_targets(p), kind, key, title=title)
             ]
-        return matching_pages_cache[cache_key]
+        return True, matching_pages_cache[cache_key]
 
     # Map ToC heading prefixes ("Chapter 22", "Appendix B", "21.2", ...) -> title.
     toc_titles = {}
@@ -900,7 +1100,7 @@ def analyze_pdf(pdf_path, html_path=None):
     ambiguous_targets = {}
 
     for pno, nd, text, printed, dest in toc_entries:
-        prefix, title = heading_key_from_toc_label(text)
+        prefix, title = heading_key_from_toc_label(text, strip_pdf_page=True)
         if prefix and title:
             toc_titles[prefix] = title
         if printed is None:
@@ -909,7 +1109,9 @@ def analyze_pdf(pdf_path, html_path=None):
         if printed != dest:
             toc_dest_mismatches.append((pno, nd, text, printed, dest, dest - printed))
         kind = toc_heading_kind(prefix)
-        matched_pages = pages_matching_target(kind, prefix, title=title)
+        has_exp, matched_pages = pages_matching_target(kind, prefix, title=title)
+        if not has_exp:
+            continue
         if len(matched_pages) > 1:
             ambiguous_targets[(kind, prefix)] = matched_pages
         if dest not in matched_pages:
@@ -936,12 +1138,12 @@ def analyze_pdf(pdf_path, html_path=None):
         if kind == 'unknown':
             xref_unknown_shape.append((pno, nd, text, dest))
         else:
-            expected_bnf_name = html_bnf_rules.get(key, '') if kind == 'bnf' else ''
-            matched_pages = pages_matching_target(
+            has_exp, matched_pages = pages_matching_target(
                 kind, key,
                 title=toc_titles.get(key, ''),
-                expected_bnf_name=expected_bnf_name,
             )
+            if not has_exp:
+                continue
             if len(matched_pages) > 1:
                 ambiguous_targets[(kind, key)] = matched_pages
             if dest not in matched_pages:
@@ -979,6 +1181,7 @@ def analyze_pdf(pdf_path, html_path=None):
     )
     xref_count_ok = (len(xrefs) == expected_xrefs) if expected_xrefs is not None else (len(xrefs) >= 2000)
     ambiguous_list = sorted((kind, key, pages) for (kind, key), pages in ambiguous_targets.items())
+    missing_html_expected_list = sorted(targets_missing_html_expected)
     ok = (
         toc_count_ok
         and xref_count_ok
@@ -991,6 +1194,7 @@ def analyze_pdf(pdf_path, html_path=None):
         and not xref_unknown_shape
         and not xref_blank_dests
         and not ambiguous_list
+        and not missing_html_expected_list
         and not page_count_diffs
         and not missing_html_xref_targets
         and not empty_refs
@@ -1016,6 +1220,7 @@ def analyze_pdf(pdf_path, html_path=None):
         'xref_unknown_shape': xref_unknown_shape,
         'xref_blank_dests': xref_blank_dests,
         'ambiguous_targets': ambiguous_list,
+        'targets_missing_html_expected': missing_html_expected_list,
         'page_count_diffs': page_count_diffs,
         'missing_html_xref_targets': missing_html_xref_targets,
         'empty_refs': empty_refs,
@@ -1047,6 +1252,7 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
     xref_unknown_shape = res['xref_unknown_shape']
     xref_blank_dests = res['xref_blank_dests']
     ambiguous_targets = res['ambiguous_targets']
+    targets_missing_html_expected = res['targets_missing_html_expected']
     page_count_diffs = res['page_count_diffs']
     missing_html_xref_targets = res['missing_html_xref_targets']
     empty_refs = res['empty_refs']
@@ -1065,6 +1271,7 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
     print(f'  Inline xrefs unrecognized label shape: {len(xref_unknown_shape)}')
     print(f'  Inline xrefs pointing to blank page: {len(xref_blank_dests)}')
     print(f'  Ambiguous targets qualifying on multiple pages: {len(ambiguous_targets)}')
+    print(f'  Targets missing expected text in HTML: {len(targets_missing_html_expected)}')
     print(f'  Pages where extracted xref count != body "(p. N)" count: {len(page_count_diffs)}')
     print(f'  Empty "(p. )" references: {len(empty_refs)}')
 
@@ -1107,6 +1314,10 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
     if ambiguous_targets:
         print('  Ambiguous targets qualifying on multiple pages:')
         for item in ambiguous_targets[:15]:
+            print('   ', item)
+    if targets_missing_html_expected:
+        print('  Targets missing expected text in HTML:')
+        for item in targets_missing_html_expected[:15]:
             print('   ', item)
     if xref_unknown_shape:
         print('  Unrecognized inline xref shapes:')

@@ -15,6 +15,9 @@ Checks:
 Requires PyMuPDF (pymupdf).
 """
 import argparse
+from collections import defaultdict, namedtuple
+import html as html_lib
+from html.parser import HTMLParser
 from pathlib import Path
 import re
 import sys
@@ -26,13 +29,83 @@ BODY_BOTTOM = 631.0
 CONTENT_TOP = 48.19
 CONTENT_HEIGHT = 632.13 - CONTENT_TOP
 
+HTML_WS_RE = re.compile(r'[ \t\r\n\f]+')
+INLINE_PAGE_STRIP_RE = re.compile(r'\s*\(p\.\s*\d+\)')
+PARTIAL_INLINE_PAGE_RE = re.compile(r'(?:\s*\(p\.?)?$')
 EXAMPLE_HEAD_RE = re.compile(r'^Example[\s\u00a0]+((?:\d+|[A-Z])\.\d+)(?:\.?(?:\s|$))')
 EXAMPLE_SELF_REF_RE = re.compile(r'^Example[\s\u00a0]+(?:\d+|[A-Z])\.\d+\.?\s*\(p\.\s*\d+\)')
+SECTION_NUM_DOT_RE = re.compile(r'^((?:\d+|[A-Z])(?:\.\d+)+)\.(?=\s|$)')
+EXAMPLE_NUM_DOT_RE = re.compile(r'^(Example\s+(?:\d+|[A-Z])\.\d+)\.(?=\s|$)')
 MARGIN_GLYPHS = set('◆★●■△?▲◇')
+
+BodyLine = namedtuple(
+    'BodyLine',
+    'y0 y1 x0 x1 size bold is_bold_cont is_prom_start is_prom_cont text',
+)
 
 
 def normalize_ws(text):
     return ' '.join(text.replace('\u00a0', ' ').split())
+
+
+def canonical_caption_text(text, *, from_pdf=False):
+    """Normalize an example caption for comparing PDF lines against companion HTML."""
+    s = INLINE_PAGE_STRIP_RE.sub('', text) if from_pdf else text
+    s = normalize_ws(s)
+    return EXAMPLE_NUM_DOT_RE.sub(r'\1', s)
+
+
+def canonical_heading_text(text, *, from_pdf=False):
+    """Normalize a section heading for comparing PDF lines against outline/HTML text."""
+    s = INLINE_PAGE_STRIP_RE.sub('', text) if from_pdf else text
+    s = normalize_ws(s)
+    return SECTION_NUM_DOT_RE.sub(r'\1', s)
+
+
+def _is_canonical_prefix(cand, canon_expected):
+    probes = [cand]
+    trimmed_p = PARTIAL_INLINE_PAGE_RE.sub('', cand).rstrip()
+    if trimmed_p and trimmed_p != cand:
+        probes.append(trimmed_p)
+    for probe in list(probes):
+        if probe.endswith('-') and len(probe) > 1:
+            probes.append(probe[:-1])
+    for probe in probes:
+        if any(exp.startswith(probe) for exp in canon_expected):
+            return True
+    return False
+
+
+def match_lines_to_expected(lines, start_idx, canon_expected, *, canonicalize, cont_attr):
+    """Consume consecutive continuation lines from start_idx until canon_expected matches.
+
+    Returns the inclusive end index on match, or None if the lines starting at
+    start_idx do not match any expected text.
+    """
+    if not canon_expected or start_idx >= len(lines):
+        return None
+    accum = {lines[start_idx].text}
+    j = start_idx
+    while True:
+        canons = [canonicalize(s) for s in accum]
+        if any(c in canon_expected for c in canons):
+            return j
+        if not any(_is_canonical_prefix(c, canon_expected) for c in canons):
+            return None
+        next_j = j + 1
+        if next_j >= len(lines) or (next_j - start_idx) >= 8:
+            return None
+        nxt = lines[next_j]
+        if not getattr(nxt, cont_attr) or (nxt.y0 - lines[j].y1) >= 12.0:
+            return None
+        next_accum = set()
+        for s in accum:
+            next_accum.add(f'{s} {nxt.text}')
+            if s.endswith('-') and not s.endswith(' -'):
+                next_accum.add(f'{s}{nxt.text}')
+                next_accum.add(f'{s[:-1]}{nxt.text}')
+        accum = next_accum
+        j = next_j
 
 
 def span_in_links(span, link_rects):
@@ -43,40 +116,121 @@ def span_in_links(span, link_rects):
     return any(r.x0 <= cx <= r.x1 and r.y0 <= cy <= r.y1 for r in link_rects)
 
 
+def join_row_fragments(frags):
+    """Join left-to-right fragments on one visual line without splitting touching subscripts."""
+    frags_sorted = sorted(frags, key=lambda item: item[3])
+    parts = []
+    prev_x1 = None
+    prev_raw = ''
+    for _, _, _, x0, x1, raw_txt, txt, _ in frags_sorted:
+        if parts:
+            touching = (
+                not prev_raw.endswith((' ', '\t', '\u00a0'))
+                and not raw_txt.startswith((' ', '\t', '\u00a0'))
+                and (x0 - prev_x1) < 1.2
+            )
+            parts.append('' if touching else ' ')
+        parts.append(txt)
+        prev_x1 = x1
+        prev_raw = raw_txt
+    return normalize_ws(''.join(parts))
+
+
 def page_body_lines(page):
-    """Return sorted list of (y0, y1, x0, x1, size, bold, text) inside body area."""
+    """Return sorted list of BodyLine tuples inside the printable body area."""
     link_rects = [
         pymupdf.Rect(l['from']) for l in page.get_links()
         if 'page' in l and l['page'] >= 0
     ]
-    lines = []
+    raw = []
     for block in page.get_text('dict')['blocks']:
         if block['type'] != 0:
             continue
         for line in block['lines']:
-            y0, y1 = line['bbox'][1], line['bbox'][3]
+            x0, y0, x1, y1 = line['bbox']
             if y1 <= BODY_TOP or y0 >= BODY_BOTTOM:
                 continue
-            text = normalize_ws(''.join(span['text'] for span in line['spans']))
+            raw_txt = ''.join(span['text'] for span in line['spans'])
+            text = normalize_ws(raw_txt)
             if not text or text in MARGIN_GLYPHS:
                 continue
             spans = [s for s in line['spans'] if s['text'].strip()]
             if not spans:
                 continue
-            max_size = max(span['size'] for span in spans)
-            is_bold = lambda s: bool(s['flags'] & 16) or 'Bold' in s.get('font', '')
-            scored = [s for s in spans if not span_in_links(s, link_rects)] or spans
-            total_chars = sum(len(''.join(s['text'].split())) for s in scored)
-            bold_chars = sum(len(''.join(s['text'].split())) for s in scored if is_bold(s))
-            bold = is_bold(spans[0]) and (bold_chars * 2 > total_chars)
-            lines.append((y0, y1, line['bbox'][0], line['bbox'][2], max_size, bold, text))
-    lines.sort(key=lambda item: (round(item[0], 1), item[2]))
+            raw.append((0.5 * (y0 + y1), y0, y1, x0, x1, raw_txt, text, spans))
+    raw.sort(key=lambda item: (item[0], item[3]))
+
+    rows = []
+    for frag in raw:
+        ym, y0, y1, x0, x1, raw_txt, txt, spans = frag
+        fsize = max(s['size'] for s in spans)
+        placed = False
+        for row in reversed(rows):
+            ry0, ry1, rym, rsize, rfrags = row
+            if abs(ym - rym) < 2.5:
+                rfrags.append(frag)
+                row[0] = min(ry0, y0)
+                row[1] = max(ry1, y1)
+                row[3] = max(rsize, fsize)
+                placed = True
+                break
+            is_sub_or_sup = (
+                fsize < rsize - 0.5
+                and ry0 <= ym <= ry1
+                and any(-1.5 <= (x0 - fx1) < 6.0 or -1.5 <= (fx0 - x1) < 6.0
+                        for _, _, _, fx0, fx1, _, _, _ in rfrags)
+                and not any(x0 < fx1 - 1.5 and x1 > fx0 + 1.5
+                            for _, _, _, fx0, fx1, _, _, _ in rfrags)
+            )
+            if is_sub_or_sup:
+                rfrags.append(frag)
+                row[0] = min(ry0, y0)
+                row[1] = max(ry1, y1)
+                placed = True
+                break
+        if not placed:
+            rows.append([y0, y1, ym, fsize, [frag]])
+
+    rows.sort(key=lambda row: (row[0], min(f[3] for f in row[4])))
+
+    is_bold = lambda s: bool(s['flags'] & 16) or 'Bold' in s.get('font', '')
+    is_prom = lambda s: is_bold(s) or s['size'] >= 10.5
+
+    lines = []
+    for y0, y1, _, _, rfrags in rows:
+        x0 = min(f[3] for f in rfrags)
+        x1 = max(f[4] for f in rfrags)
+        text = join_row_fragments(rfrags)
+        spans = []
+        for f in rfrags:
+            spans.extend(f[7])
+        spans.sort(key=lambda s: s['bbox'][0])
+        max_size = max(span['size'] for span in spans)
+        has_link = any(span_in_links(s, link_rects) for s in spans)
+        non_link_spans = [s for s in spans if not span_in_links(s, link_rects)]
+        non_link_chars = sum(len(''.join(s['text'].split())) for s in non_link_spans)
+        non_link_alnum = sum(sum(ch.isalnum() for ch in s['text']) for s in non_link_spans)
+        scored = non_link_spans if non_link_chars > 0 else spans
+        total_chars = sum(len(''.join(s['text'].split())) for s in scored)
+        bold_chars = sum(len(''.join(s['text'].split())) for s in scored if is_bold(s))
+        prom_chars = sum(len(''.join(s['text'].split())) for s in scored if is_prom(s))
+        mostly_bold = (bold_chars * 2 > total_chars)
+        mostly_prom = (prom_chars * 2 > total_chars)
+        link_only_cont = has_link and non_link_alnum == 0
+        bold = is_bold(spans[0]) and mostly_bold
+        is_bold_cont = mostly_bold or link_only_cont
+        is_prom_start = is_prom(spans[0]) and mostly_prom
+        is_prom_cont = mostly_prom or link_only_cont
+        lines.append(BodyLine(
+            y0, y1, x0, x1, max_size,
+            bold, is_bold_cont, is_prom_start, is_prom_cont, text,
+        ))
     return lines
 
 
 def page_body_bottom(page, lines):
     """Lowest y coordinate of body text or body images on a page."""
-    bottom = max((ln[1] for ln in lines), default=CONTENT_TOP)
+    bottom = max((ln.y1 for ln in lines), default=CONTENT_TOP)
     for block in page.get_text('dict')['blocks']:
         if block['type'] == 1:  # image
             y0, y1 = block['bbox'][1], block['bbox'][3]
@@ -101,18 +255,92 @@ def find_body_range(doc):
     return first_ch, backmatter
 
 
+class _HtmlStructureCollector(HTMLParser):
+    """Collect expected example captions and headings from companion print HTML."""
+    _HEADING_TAGS = frozenset({'h1', 'h2', 'h3', 'h4', 'h5', 'h6'})
+
+    def __init__(self):
+        super().__init__()
+        self.example_titles = defaultdict(list)
+        self.headings = []
+        self._div_stack = []
+        self._toc_depth = 0
+        self._example_depth = 0
+        self._cap_kind = None
+        self._cap_tag = None
+        self._cap_depth = 0
+        self._cap_parts = []
+
+    def handle_starttag(self, tag, attrs):
+        attr_map = dict(attrs)
+        classes = {tok for tok in HTML_WS_RE.split(attr_map.get('class') or '') if tok}
+        if tag == 'div':
+            is_toc = 'toc' in classes
+            is_example = 'example' in classes
+            self._div_stack.append((is_toc, is_example))
+            if is_toc:
+                self._toc_depth += 1
+            if is_example:
+                self._example_depth += 1
+            if self._cap_depth == 0 and self._example_depth > 0 and 'example-title' in classes:
+                self._cap_kind, self._cap_tag, self._cap_depth, self._cap_parts = 'example', 'div', 1, []
+            elif self._cap_depth > 0 and tag == self._cap_tag:
+                self._cap_depth += 1
+        elif tag in self._HEADING_TAGS and self._toc_depth == 0 and self._cap_depth == 0:
+            self._cap_kind, self._cap_tag, self._cap_depth, self._cap_parts = 'heading', tag, 1, []
+        elif self._cap_depth > 0 and tag == self._cap_tag:
+            self._cap_depth += 1
+
+        if tag == 'br' and self._cap_depth > 0:
+            self._cap_parts.append(' ')
+
+    def handle_data(self, data):
+        if self._cap_depth > 0:
+            self._cap_parts.append(data)
+
+    def handle_endtag(self, tag):
+        if self._cap_depth > 0 and tag == self._cap_tag:
+            self._cap_depth -= 1
+            if self._cap_depth == 0:
+                text = normalize_ws(''.join(self._cap_parts))
+                if text:
+                    if self._cap_kind == 'example':
+                        m = EXAMPLE_HEAD_RE.match(text)
+                        if m:
+                            self.example_titles[m.group(1)].append(text)
+                    elif self._cap_kind == 'heading':
+                        self.headings.append(text)
+                self._cap_kind = None
+                self._cap_tag = None
+                self._cap_parts = []
+        if tag == 'div' and self._div_stack:
+            was_toc, was_example = self._div_stack.pop()
+            if was_toc:
+                self._toc_depth -= 1
+            if was_example:
+                self._example_depth -= 1
+
+
+def load_html_example_titles(html_path):
+    """Return {example_number: [expected_caption_text, ...]} from companion print HTML."""
+    parser = _HtmlStructureCollector()
+    parser.feed(Path(html_path).read_text(encoding='utf-8'))
+    return dict(parser.example_titles)
+
+
 def load_html_p_examples(html_path):
     """Return {example_number: (prev_is_p, prev_text_tail)} from the rendered print HTML."""
     raw = Path(html_path).read_text(encoding='utf-8')
     result = {}
-    div_re = re.compile(r'<div\s+[^>]*class="(?:[^"]*\s)?example(?:\s[^"]*)?"[^>]*>', re.S)
-    title_re = re.compile(r'<div\s+[^>]*class="(?:[^"]*\s)?example-title(?:\s[^"]*)?"[^>]*>(.*?)</div>', re.S)
+    ws = r'[ \t\r\n\f]'
+    div_re = re.compile(rf'<div{ws}+[^>]*class="(?:[^"]*{ws})?example(?:{ws}[^"]*)?"[^>]*>', re.S | re.ASCII)
+    title_re = re.compile(rf'<div{ws}+[^>]*class="(?:[^"]*{ws})?example-title(?:{ws}[^"]*)?"[^>]*>(.*?)</div>', re.S | re.ASCII)
     tag_strip = re.compile(r'<[^>]+>')
     for m in div_re.finditer(raw):
         tm = title_re.search(raw, m.end(), m.end() + 600)
         if not tm:
             continue
-        title_txt = normalize_ws(tag_strip.sub('', tm.group(1)))
+        title_txt = normalize_ws(html_lib.unescape(tag_strip.sub('', tm.group(1))))
         em = EXAMPLE_HEAD_RE.match(title_txt)
         if not em:
             continue
@@ -123,7 +351,7 @@ def load_html_p_examples(html_path):
         if prev_is_p:
             p_start = before.rfind('<p')
             if p_start != -1:
-                tail = normalize_ws(tag_strip.sub('', before[p_start:]))[-100:]
+                tail = normalize_ws(html_lib.unescape(tag_strip.sub('', before[p_start:])))[-100:]
         result[ex_num] = (prev_is_p, tail)
     return result
 
@@ -133,10 +361,11 @@ def load_html_table_leadins(html_path):
     raw = Path(html_path).read_text(encoding='utf-8')
     tag_strip = re.compile(r'<[^>]+>')
     tails = set()
+    ws = r'[ \t\r\n\f]'
     # Match <div class="informaltable"> or <div class="table">, optionally
     # preceded by empty marker paragraphs (<p class="allowbreaks"></p>, etc.).
-    div_re = re.compile(r'<div\s+[^>]*class="(?:[^"]*\s)?(?:informaltable|table)(?:\s[^"]*)?"[^>]*>', re.S)
-    empty_marker_re = re.compile(r'(?:<p\s+[^>]*class="(?:[^"]*\s)?(?:allowbreaks|twocolumn)(?:\s[^"]*)?"[^>]*>\s*</p>\s*)+$', re.S)
+    div_re = re.compile(rf'<div{ws}+[^>]*class="(?:[^"]*{ws})?(?:informaltable|table)(?:{ws}[^"]*)?"[^>]*>', re.S | re.ASCII)
+    empty_marker_re = re.compile(rf'(?:<p{ws}+[^>]*class="(?:[^"]*{ws})?(?:allowbreaks|twocolumn)(?:{ws}[^"]*)?"[^>]*>{ws}*</p>{ws}*)+$', re.S | re.ASCII)
     for m in div_re.finditer(raw):
         before = raw[max(0, m.start() - 4000):m.start()].rstrip()
         before = empty_marker_re.sub('', before).rstrip()
@@ -145,7 +374,7 @@ def load_html_table_leadins(html_path):
         p_start = before.rfind('<p')
         if p_start == -1:
             continue
-        text = normalize_ws(tag_strip.sub('', before[p_start:]))
+        text = normalize_ws(html_lib.unescape(tag_strip.sub('', before[p_start:])))
         if text.endswith(':'):
             tails.add(text[-60:])
     return tails
@@ -169,7 +398,7 @@ def auto_discover_html(pdf_path):
     return None
 
 
-def audit_pdf(pdf_path, html_examples=None, html_table_leadins=None):
+def audit_pdf(pdf_path, html_examples=None, html_table_leadins=None, html_example_titles=None):
     doc = pymupdf.open(pdf_path)
     total_pages = len(doc)
     first_ch, backmatter = find_body_range(doc)
@@ -201,25 +430,23 @@ def audit_pdf(pdf_path, html_examples=None, html_table_leadins=None):
         heading_line_indices = set()
         matched_headings = []
         for level, htitle in hdgs:
-            head_stem = htitle.split('(', 1)[0].strip()
-            key = head_stem[:28] if len(head_stem) >= 6 else htitle[:28]
-            matched_idx = None
+            canon_expected = {canonical_heading_text(htitle, from_pdf=False)}
+            matched_span = None
             for idx, ln in enumerate(lines):
-                if key in ln[6] or (len(ln[6]) >= 8 and htitle.startswith(ln[6])):
-                    if ln[5] or ln[4] >= 10.5:
-                        matched_idx = idx
-                        break
-            if matched_idx is not None:
-                h_indices = [matched_idx]
-                j = matched_idx + 1
-                while j < len(lines):
-                    if (lines[j][5] or lines[j][4] >= 10.5) and (lines[j][0] - lines[j - 1][1]) < 6.0 and (lines[j][6] in htitle or '(p.' in lines[j][6]):
-                        h_indices.append(j)
-                        j += 1
-                    else:
-                        break
-                heading_line_indices.update(h_indices)
-                matched_headings.append((level, htitle, h_indices[0], h_indices[-1]))
+                if not ln.is_prom_start:
+                    continue
+                end_idx = match_lines_to_expected(
+                    lines, idx, canon_expected,
+                    canonicalize=lambda s: canonical_heading_text(s, from_pdf=True),
+                    cont_attr='is_prom_cont',
+                )
+                if end_idx is not None:
+                    matched_span = (idx, end_idx)
+                    break
+            if matched_span is not None:
+                first_i, last_i = matched_span
+                heading_line_indices.update(range(first_i, last_i + 1))
+                matched_headings.append((level, htitle, first_i, last_i))
 
         body_img_bottom = CONTENT_TOP
         for block in doc[pno - 1].get_text('dict')['blocks']:
@@ -229,20 +456,20 @@ def audit_pdf(pdf_path, html_examples=None, html_table_leadins=None):
                     body_img_bottom = max(body_img_bottom, y1)
 
         for level, htitle, first_i, last_i in matched_headings:
-            heading_bottom = lines[last_i][1]
+            heading_bottom = lines[last_i].y1
             has_img_below = body_img_bottom > heading_bottom + 2.0
             following = [
                 lines[idx] for idx in range(last_i + 1, len(lines))
                 if idx not in heading_line_indices
             ]
             if not following and not has_img_below:
-                stranded_bare.append((pno, level, htitle, round(lines[first_i][0], 1)))
-            elif not has_img_below and len(following) <= 2 and following[-1][6].endswith(':'):
+                stranded_bare.append((pno, level, htitle, round(lines[first_i].y0, 1)))
+            elif not has_img_below and len(following) <= 2 and following[-1].text.endswith(':'):
                 # Check that the following lines are a single lead-in paragraph
                 # (all at the left body margin, not multi-column table cells).
-                if all(ln[2] < 80.0 for ln in following):
-                    lead_txt = ' '.join(ln[6] for ln in following)
-                    stranded_leadin.append((pno, level, htitle, round(lines[first_i][0], 1), lead_txt))
+                if all(ln.x0 < 80.0 for ln in following):
+                    lead_txt = ' '.join(ln.text for ln in following)
+                    stranded_leadin.append((pno, level, htitle, round(lines[first_i].y0, 1), lead_txt))
 
     # 2. Split example lead-ins:
     split_colon = []
@@ -252,17 +479,29 @@ def audit_pdf(pdf_path, html_examples=None, html_table_leadins=None):
         if not lines:
             continue
         first_ln = lines[0]
-        first_txt = first_ln[6]
-        if not first_ln[5] or EXAMPLE_SELF_REF_RE.match(first_txt):
+        first_txt = first_ln.text
+        if not first_ln.bold or EXAMPLE_SELF_REF_RE.match(first_txt):
             continue
         m = EXAMPLE_HEAD_RE.match(first_txt)
         if not m:
             continue
         ex_num = m.group(1)
+        if html_example_titles is not None:
+            expected_titles = html_example_titles.get(ex_num)
+            if not expected_titles:
+                continue
+            canon_expected = {canonical_caption_text(t, from_pdf=False) for t in expected_titles}
+            matched_end = match_lines_to_expected(
+                lines, 0, canon_expected,
+                canonicalize=lambda s: canonical_caption_text(s, from_pdf=True),
+                cont_attr='is_bold_cont',
+            )
+            if matched_end is None:
+                continue
         prev_lines = lines_by_page.get(pno - 1, [])
         if not prev_lines:
             continue
-        prev_last_txt = prev_lines[-1][6]
+        prev_last_txt = prev_lines[-1].text
         ends_colon = prev_last_txt.endswith(':')
         if ends_colon:
             split_colon.append((pno, ex_num, prev_last_txt[-80:]))
@@ -278,13 +517,15 @@ def audit_pdf(pdf_path, html_examples=None, html_table_leadins=None):
             prev_lines = lines_by_page.get(pno, [])
             if not prev_lines:
                 continue
-            # Combine last 2 lines on the page to match wrapped lead-in tails.
-            tail_window = normalize_ws(' '.join(ln[6] for ln in prev_lines[-2:]))
+            # Combine last 2 lines on the page to match wrapped lead-in tails,
+            # stripping PDF-only '(p. N)' suffixes before comparing with HTML.
+            raw_tail = normalize_ws(' '.join(ln.text for ln in prev_lines[-2:]))
+            tail_window = normalize_ws(INLINE_PAGE_STRIP_RE.sub('', raw_tail))
             if not tail_window.endswith(':'):
                 continue
-            last_line = prev_lines[-1][6]
+            last_line = normalize_ws(INLINE_PAGE_STRIP_RE.sub('', prev_lines[-1].text))
             if any(tail_window.endswith(t) or (len(last_line) >= 12 and t.endswith(last_line)) for t in html_table_leadins):
-                split_table_leadins.append((pno, last_line[-80:]))
+                split_table_leadins.append((pno, prev_lines[-1].text[-80:]))
 
     # 4. Page fill ratios (excluding blank pages and chapter/appendix end pages):
     chapter_ends = set()
@@ -371,14 +612,28 @@ def main():
     args = parser.parse_args()
 
     cur_html = Path(args.html) if args.html else auto_discover_html(args.pdf)
-    cur_examples = load_html_p_examples(cur_html) if cur_html and cur_html.is_file() else None
-    cur_table_leadins = load_html_table_leadins(cur_html) if cur_html and cur_html.is_file() else None
-    cur = audit_pdf(args.pdf, html_examples=cur_examples, html_table_leadins=cur_table_leadins)
+    cur_has_html = bool(cur_html and cur_html.is_file())
+    cur_examples = load_html_p_examples(cur_html) if cur_has_html else None
+    cur_example_titles = load_html_example_titles(cur_html) if cur_has_html else None
+    cur_table_leadins = load_html_table_leadins(cur_html) if cur_has_html else None
+    cur = audit_pdf(
+        args.pdf,
+        html_examples=cur_examples,
+        html_table_leadins=cur_table_leadins,
+        html_example_titles=cur_example_titles,
+    )
     if args.compare:
         base_html = auto_discover_html(args.compare) or cur_html
-        base_examples = load_html_p_examples(base_html) if base_html and base_html.is_file() else None
-        base_table_leadins = load_html_table_leadins(base_html) if base_html and base_html.is_file() else None
-        base = audit_pdf(args.compare, html_examples=base_examples, html_table_leadins=base_table_leadins)
+        base_has_html = bool(base_html and base_html.is_file())
+        base_examples = load_html_p_examples(base_html) if base_has_html else None
+        base_example_titles = load_html_example_titles(base_html) if base_has_html else None
+        base_table_leadins = load_html_table_leadins(base_html) if base_has_html else None
+        base = audit_pdf(
+            args.compare,
+            html_examples=base_examples,
+            html_table_leadins=base_table_leadins,
+            html_example_titles=base_example_titles,
+        )
         print_report(base, 'BASE')
         print()
         print_report(cur, 'BRANCH')

@@ -40,6 +40,18 @@ CASES = [
     ('fail-other-appendix',
      '<appendix xml:id="appendix-changes"><informaltable role="parallel-text"><tr><td>a</td></tr></informaltable></appendix>',
      1, 'only effective inside'),
+    ('fail-literal-nbsp-separator',
+     '<appendix xml:id="volume-chrestomathy"><section><informaltable role="parallel-text\u00a0noborder"><tr><td>a</td></tr></informaltable></section></appendix>',
+     1, 'must carry role="parallel-text"'),
+    ('fail-numeric-nbsp-separator',
+     '<appendix xml:id="volume-chrestomathy"><section><informaltable role="parallel-text&#160;noborder"><tr><td>a</td></tr></informaltable></section></appendix>',
+     1, 'must carry role="parallel-text"'),
+    ('fail-undeclared-named-nbsp-separator',
+     '<appendix xml:id="volume-chrestomathy"><section><informaltable role="parallel-text&nbsp;noborder"><tr><td>a</td></tr></informaltable></section></appendix>',
+     1, 'must carry role="parallel-text"'),
+    ('fail-declared-named-nbsp-separator',
+     '<!DOCTYPE appendix [<!ENTITY nbsp "&#160;">]><appendix xml:id="volume-chrestomathy"><section><informaltable role="parallel-text&nbsp;noborder"><tr><td>a</td></tr></informaltable></section></appendix>',
+     1, 'must carry role="parallel-text"'),
 ]
 
 

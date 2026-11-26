@@ -12,15 +12,42 @@ Checks:
    "parallel-text" role token is rejected because the print CSS rule is scoped
    to section#volume-chrestomathy div.parallel-text.informaltable.
 """
+import html.entities
 import re
 import sys
 import xml.parsers.expat
 
+ENTITY_DECL_RE = re.compile(r'<!ENTITY\s+([A-Za-z_:][-.:\w]*)\s')
 ENTITY_RE = re.compile(r'&(?!amp;|lt;|gt;|quot;|apos;|#)([A-Za-z_:][-.:\w]*);')
+# Exact XPath 1.0 normalize-space() / XML 1.0 S whitespace (excludes U+00A0).
+XML_WS_RE = re.compile(r'[ \t\r\n]+')
 DOCBOOK_NS = 'http://docbook.org/ns/docbook'
 XML_NS = 'http://www.w3.org/XML/1998/namespace'
 CHRESTOMATHY_ID = 'volume-chrestomathy'
 PARALLEL_ROLE = 'parallel-text'
+
+
+def split_xml_tokens(value):
+    """Split an XML attribute token list on XML whitespace only (like XPath normalize-space)."""
+    return [tok for tok in XML_WS_RE.split(value) if tok]
+
+
+def resolve_undeclared_entities(text):
+    """Replace undeclared named entities without ever inventing ASCII whitespace."""
+    declared = set(ENTITY_DECL_RE.findall(text))
+
+    def repl(match):
+        name = match.group(1)
+        if name in declared:
+            return match.group(0)
+        cp = html.entities.name2codepoint.get(name)
+        if cp is not None:
+            ch = chr(cp)
+            if ch not in (' ', '\t', '\r', '\n', '<', '>', '&', '"', "'"):
+                return ch
+        return '_'
+
+    return ENTITY_RE.sub(repl, text)
 
 
 def localname(name):
@@ -53,7 +80,7 @@ class Scanner:
             self.in_example += 1
         self.stack.append((entered_chrest, entered_example))
 
-        roles = set(attrs.get('role', '').split())
+        roles = set(split_xml_tokens(attrs.get('role', '')))
         line = self.p.CurrentLineNumber
 
         if PARALLEL_ROLE in roles:
@@ -87,8 +114,9 @@ class Scanner:
                 self.in_example -= 1
 
     def run(self):
-        text = open(self.path, encoding='utf-8').read()
-        text = ENTITY_RE.sub(lambda m: ' ' * len(m.group(0)), text)
+        with open(self.path, encoding='utf-8') as fh:
+            text = fh.read()
+        text = resolve_undeclared_entities(text)
         try:
             self.p.Parse(text, True)
         except xml.parsers.expat.ExpatError as e:

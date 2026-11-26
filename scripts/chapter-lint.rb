@@ -9,8 +9,7 @@ module ChapterLint
   PREFIX = "<!DOCTYPE chapter [\n#{ENTITIES}\n]>\n".freeze
   PREFIX_LINES = PREFIX.count("\n")
 
-  def self.read(path)
-    raw = File.read(path, encoding: 'UTF-8')
+  def self.parse_string(raw)
     removed_lines = 0
     text = raw.sub(/\A<\?xml.*?\?>/m) do |decl|
       removed_lines = decl.count("\n")
@@ -23,6 +22,10 @@ module ChapterLint
     offset = PREFIX_LINES - removed_lines
     doc.define_singleton_method(:chapter_lint_line_offset) { offset }
     doc
+  end
+
+  def self.read(path)
+    parse_string(File.read(path, encoding: 'UTF-8'))
   end
 
   # Map a Nokogiri node's line number back to the 1-based line in the source file.

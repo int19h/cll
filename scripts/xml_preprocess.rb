@@ -163,8 +163,10 @@ $document.css('lujvo-making').each do |node|
   node.css('dbinlinemath').each { |e| convert!( node: e, newname: 'mathphrase' ) ; e.replace("<inlineequation role='dbinlinemath'>#{e}</inlineequation>" ) }
   node.css('rafsi').each { |e| convert!( node: e, newname: 'foreignphrase', lang: 'jbo' ) }
   node.css('veljvo').each do |e|
+    self_hidden = has_role?(e, 'display-none')
     hidden = hidden_element?(e)
     convert!( node: e, newname: 'foreignphrase', lang: 'jbo' )
+    e['role'] = "#{e['role']} display-none" if self_hidden
     indexify!(node: e, indextype: 'lojban-phrase') unless hidden
     e.replace("<para>from #{e}</para>")
   end
@@ -286,13 +288,16 @@ $document.css('valsi').each do |node|
   # We make a glossary entry unless it's marked valid=false, but
   # don't insert links in titles, please.  Or index references.
   # Hidden (display-none) lists feed the glossary only, not the index.
+  self_hidden = has_role?(node, 'display-none')
   if node[:valid] == 'false' or node[:valid] == 'maybe' or [ 'title', 'term', 'primary', 'secondary' ].include? node.parent.name
     convert!( node: node, newname: 'foreignphrase', lang: 'jbo' )
+    node['role'] = "#{node['role']} display-none" if self_hidden
   else
     hidden = hidden_element?(node)
     orignode = node.dup
     node = glossify node, orignode
-    node = node.replace("<foreignphrase xml:lang='jbo'>#{node}</foreignphrase>")
+    wrapper_role = self_hidden ? " role='display-none'" : ''
+    node = node.replace("<foreignphrase#{wrapper_role} xml:lang='jbo'>#{node}</foreignphrase>")
     indexify!( node: node, indextype: 'lojban-word', role: orignode.name ) unless hidden
     # $stderr.puts "valsi: #{node.to_xml}"
   end
@@ -341,6 +346,7 @@ end
 $document.css('jbophrase').each do |node|
   # Don't insert links in titles, please.  Or index references.
   # Hidden (display-none) elements feed the glossary only, not the index.
+  self_hidden = has_role?(node, 'display-none')
   if ! [ 'title', 'term', 'primary', 'secondary' ].include? node.parent.name
     # A jbophrase makes an *index* entry.  A frame such as "ke ... ke'e"
     # also links each of its words to the glossary, as a valsi does.
@@ -369,6 +375,8 @@ $document.css('jbophrase').each do |node|
   if node.parent.name == 'example'
     convert!( node: node, newname: 'para', role: 'jbophrase' )
   end
+
+  node['role'] = "#{node['role']} display-none" if self_hidden
 end
 
 # The glossary entries once, for every cell below: scanning the whole

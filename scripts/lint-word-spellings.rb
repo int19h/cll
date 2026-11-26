@@ -52,10 +52,11 @@ module WordSpellings
     %w[cmavo sumti selbri].include?(node.name) ? " #{value} " : value
   end
 
-  def self.words(node, state = {})
-    # Periods mark pauses between words, including beside zoi delimiters.
-    # Keep optional boundary dots for diagnostics, but never join across one.
-    tokens = text(node).gsub('--', ' ').delete('[]').scan(/\.?[a-zA-Z][a-zA-Z',]*\.?/)
+  # Periods mark pauses between words, including beside zoi delimiters.
+  # Keep optional boundary dots, but never join across a pause dot.
+  TOKEN_RE = /\.?[a-zA-Z][a-zA-Z',]*\.?/
+
+  def self.filter_quoted_tokens(tokens, state = {})
     tokens.filter_map do |word|
       core = word.downcase.sub(/\A\.+/, '').sub(/\.+\z/, '')
       if state[:delimiter_next]
@@ -81,6 +82,11 @@ module WordSpellings
         word
       end
     end
+  end
+
+  def self.words(node, state = {})
+    tokens = text(node).gsub('--', ' ').delete('[]').scan(TOKEN_RE)
+    filter_quoted_tokens(tokens, state)
   end
 
   def self.reviewed_words

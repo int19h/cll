@@ -1,9 +1,24 @@
 #!/usr/bin/env ruby
 # Derive and check Appendix A's per-section hidden glossary word lists (issue #351).
 #
+# Convention (see docs/markup-tags.md):
+#   - Each section that directly owns a role="parallel-text" table has one
+#     alphabetically sorted <para role="display-none"> word list.
+#   - A single-token compound cmavo with its own entry in dictionary/all_words.xml
+#     stays one <valsi> in its dictionary spelling (as docs/markup-tags.md says
+#     for doinai, .uinai, and naku); a compound cmavo with no dictionary entry
+#     is split morphologically into its component cmavo.
+#   - Names keep their dotted forms used in the section (or dotside .name. if
+#     written bare).
+#   - valid="maybe" is derived from dictionary/all_words.xml and the reviewed
+#     agreement-rule exceptions file (scripts/a01-word-list-exceptions.json):
+#     no dictionary entry or a listed exception gets valid="maybe"; every other
+#     word links plainly.
+#
 # Usage:
-#   ruby scripts/lint-a01-word-lists.rb [--dictionary PATH] chapters/a01.xml
-#   ruby scripts/lint-a01-word-lists.rb --write [--dictionary PATH] chapters/a01.xml
+#   ruby scripts/lint-a01-word-lists.rb [--dictionary PATH] [--exceptions PATH] chapters/a01.xml
+#   ruby scripts/lint-a01-word-lists.rb --write [--dictionary PATH] [--exceptions PATH] chapters/a01.xml
+require 'json'
 require 'nokogiri'
 require 'optparse'
 require 'set'
@@ -12,6 +27,7 @@ require_relative 'util'
 
 module A01WordLists
   DEFAULT_DICTIONARY = File.expand_path('../dictionary/all_words.xml', __dir__)
+  DEFAULT_EXCEPTIONS = File.expand_path('a01-word-list-exceptions.json', __dir__)
   CONSONANT_RE = /[bcdfgjklmnprstvxz]/
   XML_WS_RE = /[ \t\r\n]+/
 
@@ -34,6 +50,22 @@ module A01WordLists
       defined << entry['word'] unless defn.empty?
     end
     defined.group_by { |word| bare_spelling(word) }
+  end
+
+  # Load reviewed agreement-rule exceptions: { section_id => { word => reason } }.
+  def self.load_exceptions(path = DEFAULT_EXCEPTIONS)
+    data = JSON.parse(File.read(path, encoding: 'UTF-8'))
+    sections = data.fetch('sections')
+    raise "#{path}: \"sections\" must be a JSON object" unless sections.is_a?(Hash)
+    sections.each_with_object({}) do |(sid, words), out|
+      raise "#{path}: section #{sid.inspect} must map to a JSON object" unless words.is_a?(Hash)
+      words.each do |word, reason|
+        unless reason.is_a?(String) && !reason.strip.empty?
+          raise "#{path}: exception #{sid}/#{word} must have a non-empty reason string"
+        end
+      end
+      out[sid] = words
+    end
   end
 
   # Canonical dictionary spelling matching word (exact or differing only in
@@ -150,10 +182,9 @@ module A01WordLists
     texts.join
   end
 
-  # Extract Lojban tokens from the first column of all parallel-text tables in a section,
+  # Extract Lojban tokens from the first column of the given parallel-text tables,
   # skipping non-Lojban payloads of zoi / la'o quotes (while keeping their Lojban delimiters).
-  def self.section_tokens(section)
-    tables = section.xpath('.//informaltable').select { |t| has_xml_role?(t, 'parallel-text') }
+  def self.tables_tokens(tables)
     raw = []
     tables.each do |table|
       table.xpath('./thead/tr | ./tbody/tr | ./tr').each do |row|
@@ -193,9 +224,10 @@ module A01WordLists
     end
   end
 
-  # Derive the expected sorted list of [word, has_dict_entry] pairs for one section.
-  def self.derive_section_words(section, dict_by_bare)
-    raw_tokens = section_tokens(section)
+  # Derive the expected sorted list of [word, has_dict_entry] pairs for one section's
+  # directly-owned parallel-text tables.
+  def self.derive_section_words(tables, dict_by_bare)
+    raw_tokens = tables_tokens(tables)
 
     # Split mixed dot-joined tokens (such as "la.teris.") whose segments are not all cmevla,
     # while keeping multi-word cmevla (such as ".maikl.turni'anskis.") intact.
@@ -248,48 +280,102 @@ module A01WordLists
     entries.sort_by { |word, _| word }
   end
 
-  def self.hidden_paras(node)
-    node.xpath('.//para').select { |p| has_xml_role?(p, 'display-none') }
-  end
-
   def self.section_id(section)
     section['id'] || section['xml:id'] || '(unnamed section)'
   end
 
+  # Nearest enclosing <section> ancestor (ancestor::section[1]), or nil.
+  def self.nearest_section(node)
+    node.ancestors.find { |a| a.element? && a.name == 'section' }
+  end
+
+  # Group parallel-text tables and display-none paragraphs by their nearest enclosing <section>.
+  def self.group_by_nearest_section(doc)
+    tables_by_section = Hash.new { |h, k| h[k] = [] }
+    unowned_tables = []
+    doc.xpath('//informaltable').each do |table|
+      next unless has_xml_role?(table, 'parallel-text')
+      owner = nearest_section(table)
+      if owner
+        tables_by_section[owner] << table
+      else
+        unowned_tables << table
+      end
+    end
+
+    lists_by_section = Hash.new { |h, k| h[k] = [] }
+    unowned_lists = []
+    doc.xpath('//para').each do |para|
+      next unless has_xml_role?(para, 'display-none')
+      owner = nearest_section(para)
+      if owner
+        lists_by_section[owner] << para
+      else
+        unowned_lists << para
+      end
+    end
+
+    [tables_by_section, unowned_tables, lists_by_section, unowned_lists]
+  end
+
   # Lint one chapter file (expected to be chapters/a01.xml or a fixture appendix).
-  def self.lint_file(path, dict_by_bare)
+  def self.lint_file(path, dict_by_bare, exceptions = {})
     doc = ChapterLint.read(path)
     errors = []
 
-    sections = doc.xpath('//section')
-    parallel_sections = sections.select do |sec|
-      sec.xpath('.//informaltable').any? { |t| has_xml_role?(t, 'parallel-text') }
+    tables_by_section, unowned_tables, lists_by_section, unowned_lists = group_by_nearest_section(doc)
+
+    unowned_tables.each do |table|
+      errors << "#{path}:#{ChapterLint.source_line(table)}: parallel-text <informaltable> appears outside any <section>"
     end
 
-    # Reject display-none paragraphs outside sections that carry a parallel-text table.
-    all_hidden = hidden_paras(doc)
-    owned_hidden = parallel_sections.flat_map { |sec| hidden_paras(sec) }
-    (all_hidden - owned_hidden).each do |para|
-      errors << "#{path}:#{para.line}: <para role=\"display-none\"> appears outside a section with a parallel-text table"
+    unowned_lists.each do |para|
+      errors << "#{path}:#{ChapterLint.source_line(para)}: <para role=\"display-none\"> appears outside a section with a parallel-text table"
     end
 
+    parallel_sections = doc.xpath('//section').select { |sec| !tables_by_section[sec].empty? }
+    parallel_set = parallel_sections.to_set
+
+    lists_by_section.each do |sec, paras|
+      next if parallel_set.include?(sec)
+      paras.each do |para|
+        errors << "#{path}:#{ChapterLint.source_line(para)}: <para role=\"display-none\"> appears outside a section with a parallel-text table"
+      end
+    end
+
+    parallel_ids = Set.new
     parallel_sections.each do |sec|
       sid = section_id(sec)
-      lists = hidden_paras(sec)
+      parallel_ids << sid
+      sec_exceptions = exceptions.fetch(sid, {})
+      expected = derive_section_words(tables_by_section[sec], dict_by_bare)
+      expected_map = expected.to_h
+
+      # Validate reviewed exceptions for this section.
+      sec_exceptions.each_key do |word|
+        if !expected_map.key?(word)
+          errors << "#{path}:#{ChapterLint.source_line(sec)}: exceptions list names #{word.inspect} for section #{sid}, which does not use that word"
+        elsif !expected_map[word]
+          errors << "#{path}:#{ChapterLint.source_line(sec)}: exceptions list names #{word.inspect} for section #{sid}, which already lacks a dictionary entry"
+        end
+      end
+
+      lists = lists_by_section[sec]
       if lists.empty?
-        errors << "#{path}:#{sec.line}: section #{sid} has a parallel-text table but no hidden word list (<para role=\"display-none\">)"
+        errors << "#{path}:#{ChapterLint.source_line(sec)}: section #{sid} has a parallel-text table but no hidden word list (<para role=\"display-none\">)"
         next
       elsif lists.size > 1
-        errors << "#{path}:#{lists[1].line}: section #{sid} has #{lists.size} hidden word lists (expected 1)"
+        errors << "#{path}:#{ChapterLint.source_line(lists[1])}: section #{sid} has #{lists.size} hidden word lists (expected 1)"
         next
       end
 
       list = lists.first
+      list_line = ChapterLint.source_line(list)
       list.children.each do |child|
         if child.element? && child.name != 'valsi'
-          errors << "#{path}:#{child.line}: section #{sid} hidden word list contains unexpected <#{child.name}>"
+          errors << "#{path}:#{ChapterLint.source_line(child)}: section #{sid} hidden word list contains unexpected <#{child.name}>"
         elsif child.text? && !child.text.strip.empty?
-          errors << "#{path}:#{list.line}: section #{sid} hidden word list contains stray text #{child.text.strip.inspect}"
+          errors << "#{path}:#{list_line}: section #{sid} hidden word list contains stray text #{child.text.strip.inspect}"
         end
       end
 
@@ -299,52 +385,65 @@ module A01WordLists
       seen = Set.new
       actual_nodes.each do |v|
         if seen.include?(v.text)
-          errors << "#{path}:#{v.line}: section #{sid} hidden word list duplicates #{v.text.inspect}"
+          errors << "#{path}:#{ChapterLint.source_line(v)}: section #{sid} hidden word list duplicates #{v.text.inspect}"
         end
         seen << v.text
       end
 
       if actual_words != actual_words.sort
-        errors << "#{path}:#{list.line}: section #{sid} hidden word list is not sorted alphabetically"
+        errors << "#{path}:#{list_line}: section #{sid} hidden word list is not sorted alphabetically"
       end
 
-      expected = derive_section_words(sec, dict_by_bare)
-      expected_map = expected.to_h
       actual_map = actual_nodes.each_with_object({}) { |v, h| h[v.text] ||= v }
 
       (expected_map.keys - actual_map.keys).sort.each do |word|
-        hint = expected_map[word] ? '' : ' (with valid="maybe")'
-        errors << "#{path}:#{list.line}: section #{sid} hidden word list is missing #{word.inspect}#{hint}"
+        want_maybe = !expected_map[word] || sec_exceptions.key?(word)
+        hint = want_maybe ? ' (with valid="maybe")' : ''
+        errors << "#{path}:#{list_line}: section #{sid} hidden word list is missing #{word.inspect}#{hint}"
       end
 
       (actual_map.keys - expected_map.keys).sort.each do |word|
         v = actual_map[word]
-        errors << "#{path}:#{v.line}: section #{sid} hidden word list has unused or non-canonical word #{word.inspect}"
+        errors << "#{path}:#{ChapterLint.source_line(v)}: section #{sid} hidden word list has unused or non-canonical word #{word.inspect}"
       end
 
       actual_nodes.each do |v|
         word = v.text
         next unless expected_map.key?(word)
+        vline = ChapterLint.source_line(v)
         valid_attr = v['valid']
         has_entry = expected_map[word]
+        is_exception = sec_exceptions.key?(word)
+        want_maybe = !has_entry || is_exception
         if valid_attr == 'false'
-          errors << "#{path}:#{v.line}: section #{sid} hidden word list marks #{word.inspect} valid=\"false\" (use valid=\"maybe\" or omit)"
+          errors << "#{path}:#{vline}: section #{sid} hidden word list marks #{word.inspect} valid=\"false\" (use valid=\"maybe\" or omit)"
         elsif !valid_attr.nil? && valid_attr != 'maybe'
-          errors << "#{path}:#{v.line}: section #{sid} hidden word list has unexpected valid=#{valid_attr.inspect} on #{word.inspect}"
-        elsif !has_entry && valid_attr != 'maybe'
-          errors << "#{path}:#{v.line}: section #{sid} hidden word list entry #{word.inspect} has no dictionary entry and must carry valid=\"maybe\""
+          errors << "#{path}:#{vline}: section #{sid} hidden word list has unexpected valid=#{valid_attr.inspect} on #{word.inspect}"
+        elsif want_maybe && valid_attr != 'maybe'
+          if !has_entry
+            errors << "#{path}:#{vline}: section #{sid} hidden word list entry #{word.inspect} has no dictionary entry and must carry valid=\"maybe\""
+          else
+            errors << "#{path}:#{vline}: section #{sid} hidden word list entry #{word.inspect} is a reviewed agreement-rule exception and must carry valid=\"maybe\""
+          end
+        elsif !want_maybe && valid_attr == 'maybe'
+          errors << "#{path}:#{vline}: section #{sid} hidden word list entry #{word.inspect} has a dictionary entry and is not in the reviewed exceptions list, so it must not carry valid=\"maybe\""
         end
       end
+    end
+
+    exceptions.each_key do |sid|
+      next if parallel_ids.include?(sid)
+      errors << "#{path}:1: exceptions list names unknown or non-parallel-text section #{sid.inspect}"
     end
 
     errors
   end
 
-  def self.format_list(expected, existing_maybes, indent)
+  def self.format_list(expected, sec_exceptions, indent)
     inner = "#{indent}  "
     lines = ["#{indent}<para role=\"display-none\">"]
     expected.each do |word, has_entry|
-      maybe = !has_entry || existing_maybes.include?(word)
+      maybe = !has_entry || sec_exceptions.key?(word)
       attr = maybe ? ' valid="maybe"' : ''
       lines << "#{inner}<valsi#{attr}>#{word}</valsi>"
     end
@@ -352,63 +451,240 @@ module A01WordLists
     lines.join("\n")
   end
 
-  # Rewrite the hidden word lists of path in place, preserving all other XML formatting
-  # and keeping any existing valid="maybe" set on dictionary-backed words (agreement rule).
-  def self.rewrite_file(path, dict_by_bare)
-    source = File.read(path, encoding: 'UTF-8')
-    doc = ChapterLint.read(path)
-
-    # Map section xml:id -> { expected: [...], existing_maybes: Set }
-    section_data = {}
-    doc.xpath('//section').each do |sec|
-      next unless sec.xpath('.//informaltable').any? { |t| has_xml_role?(t, 'parallel-text') }
-      sid = sec['id'] || sec['xml:id']
-      raise "#{path}:#{sec.line}: parallel-text section has no xml:id" unless sid
-      expected = derive_section_words(sec, dict_by_bare)
-      existing_maybes = Set.new
-      hidden_paras(sec).each do |p|
-        p.xpath('./valsi[@valid="maybe"]').each { |v| existing_maybes << v.text }
-      end
-      section_data[sid] = { expected: expected, existing_maybes: existing_maybes }
+  # Parse a start tag's attributes into a hash { attr_name => raw_value }.
+  def self.parse_tag_attrs(attr_str)
+    attrs = {}
+    attr_str.scan(/([A-Za-z_:][\w:.-]*)\s*=\s*(?:"([^"]*)"|'([^']*)')/) do |k, dq, sq|
+      attrs[k] = dq.nil? ? sq : dq
     end
+    attrs
+  end
 
-    # Operate section by section on the raw XML text so everything outside
-    # <para role="display-none"> stays byte-for-byte unchanged.
-    section_re = %r{(<section\b[^>]*\bxml:id="([^"]+)"[^>]*>)(.*?)(</section>)}m
-    updated = source.gsub(section_re) do
-      open_tag = Regexp.last_match(1)
-      sid = Regexp.last_match(2)
-      body = Regexp.last_match(3)
-      close_tag = Regexp.last_match(4)
-      data = section_data[sid]
-      next "#{open_tag}#{body}#{close_tag}" unless data
+  # Balanced-tag scanner over raw XML source that records every <section> in
+  # document preorder, its direct-child <title> end offset and indentation,
+  # and the exact source spans of every <para role="...display-none..."> whose
+  # nearest enclosing <section> is that section. Skips comments, CDATA, and PIs.
+  SectionSpan = Struct.new(:open_start, :open_end, :first_title_end, :indent, :hidden_para_spans, keyword_init: true)
 
-      # Determine child indentation from <title> inside the section.
-      indent = body[/\n([ \t]*)<title\b/, 1] || '    '
-      list_xml = format_list(data[:expected], data[:existing_maybes], indent)
+  def self.scan_sections(source)
+    sections = []
+    section_stack = []
+    # Track open <title> or hidden <para> only when directly owned by top of section_stack.
+    open_title = nil   # { section: SectionSpan, depth: Integer, indent: String }
+    open_hidden = nil  # { section: SectionSpan, start: Integer, depth: Integer }
+    elem_depth = 0
+    sec_depths = []    # elem_depth at each open <section>
 
-      # Remove any existing hidden list(s) in this section (matching XML whitespace token).
-      para_re = %r{[ \t]*<para\b[^>]*\brole="(?:[^"]*[ \t\r\n])?display-none(?:[ \t\r\n][^"]*)?"[^>]*>.*?</para>[ \t]*\n?}m
-      had_list = body.match?(para_re)
-      if had_list
-        first = true
-        new_body = body.gsub(para_re) do
-          if first
-            first = false
-            "#{list_xml}\n"
-          else
-            ''
+    pos = 0
+    len = source.length
+    while pos < len
+      lt = source.index('<', pos)
+      break unless lt
+
+      if source[lt, 4] == '<!--'
+        close = source.index('-->', lt + 4)
+        raise 'Unterminated XML comment' unless close
+        pos = close + 3
+        next
+      elsif source[lt, 9] == '<![CDATA['
+        close = source.index(']]>', lt + 9)
+        raise 'Unterminated CDATA section' unless close
+        pos = close + 3
+        next
+      elsif source[lt, 2] == '<?'
+        close = source.index('?>', lt + 2)
+        raise 'Unterminated processing instruction' unless close
+        pos = close + 2
+        next
+      elsif source[lt, 2] == '<!'
+        # DOCTYPE or declaration (handle optional internal subset [...])
+        i = lt + 2
+        in_bracket = false
+        quote = nil
+        while i < len
+          ch = source[i]
+          if quote
+            quote = nil if ch == quote
+          elsif ch == '"' || ch == "'"
+            quote = ch
+          elsif ch == '['
+            in_bracket = true
+          elsif ch == ']'
+            in_bracket = false
+          elsif ch == '>' && !in_bracket
+            break
+          end
+          i += 1
+        end
+        pos = i + 1
+        next
+      end
+
+      # Find matching '>' outside attribute quotes.
+      i = lt + 1
+      quote = nil
+      while i < len
+        ch = source[i]
+        if quote
+          quote = nil if ch == quote
+        elsif ch == '"' || ch == "'"
+          quote = ch
+        elsif ch == '>'
+          break
+        end
+        i += 1
+      end
+      raise 'Unterminated XML tag' unless i < len
+      tag_end = i + 1
+      tag_body = source[(lt + 1)...i]
+
+      if tag_body.start_with?('/')
+        raw_name = tag_body[1..].strip
+        local = raw_name.include?(':') ? raw_name.split(':', 2).last : raw_name
+        if open_hidden && elem_depth == open_hidden[:depth] && local == 'para'
+          span_end = tag_end
+          if source[span_end..] =~ /\A[ \t]*\r?\n/
+            span_end += Regexp.last_match(0).length
+          end
+          open_hidden[:section].hidden_para_spans << [open_hidden[:start], span_end]
+          open_hidden = nil
+        end
+        if open_title && elem_depth == open_title[:depth] && local == 'title'
+          t_end = tag_end
+          if source[t_end..] =~ /\A[ \t]*\r?\n/
+            t_end += Regexp.last_match(0).length
+          end
+          open_title[:section].first_title_end ||= t_end
+          open_title[:section].indent ||= open_title[:indent]
+          open_title = nil
+        end
+        if !sec_depths.empty? && elem_depth == sec_depths.last && local == 'section'
+          sec_depths.pop
+          section_stack.pop
+        end
+        elem_depth -= 1
+      else
+        self_closing = tag_body.end_with?('/')
+        inner = self_closing ? tag_body[0...-1] : tag_body
+        m = inner.match(/\A([A-Za-z_:][\w:.-]*)(.*)\z/m)
+        unless m
+          pos = tag_end
+          next
+        end
+        raw_name = m[1]
+        attr_str = m[2]
+        local = raw_name.include?(':') ? raw_name.split(':', 2).last : raw_name
+
+        elem_depth += 1 unless self_closing
+
+        if local == 'section'
+          line_start = (source.rindex("\n", lt) || -1) + 1
+          sec_indent = source[line_start...lt][/\A[ \t]*/]
+          frame = SectionSpan.new(
+            open_start: lt,
+            open_end: tag_end,
+            first_title_end: nil,
+            indent: nil,
+            hidden_para_spans: []
+          )
+          sections << frame
+          unless self_closing
+            section_stack << frame
+            sec_depths << elem_depth
+          end
+          frame.indent = "#{sec_indent}  " if self_closing
+        elsif local == 'title' && !section_stack.empty? && !open_title
+          # Direct child <title> of the current innermost <section>.
+          parent_depth = sec_depths.last
+          is_direct = self_closing ? (elem_depth == parent_depth) : (elem_depth == parent_depth + 1)
+          if is_direct && section_stack.last.first_title_end.nil?
+            line_start = (source.rindex("\n", lt) || -1) + 1
+            title_indent = source[line_start...lt]
+            title_indent = title_indent.match?(/\A[ \t]*\z/) ? title_indent : '    '
+            if self_closing
+              t_end = tag_end
+              t_end += Regexp.last_match(0).length if source[t_end..] =~ /\A[ \t]*\r?\n/
+              section_stack.last.first_title_end = t_end
+              section_stack.last.indent = title_indent
+            else
+              open_title = { section: section_stack.last, depth: elem_depth, indent: title_indent }
+            end
+          end
+        elsif local == 'para' && !section_stack.empty? && !open_hidden
+          attrs = parse_tag_attrs(attr_str)
+          if xml_tokens(attrs['role']).include?('display-none')
+            line_start = (source.rindex("\n", lt) || -1) + 1
+            span_start = source[line_start...lt].match?(/\A[ \t]*\z/) ? line_start : lt
+            if self_closing
+              span_end = tag_end
+              span_end += Regexp.last_match(0).length if source[span_end..] =~ /\A[ \t]*\r?\n/
+              section_stack.last.hidden_para_spans << [span_start, span_end]
+            else
+              open_hidden = { section: section_stack.last, start: span_start, depth: elem_depth }
+            end
           end
         end
-      else
-        # Insert directly after the section's <title>...</title> line.
-        unless body.match?(%r{(<title\b.*?</title>[ \t]*\n)}m)
-          raise "#{path}: section #{sid} has no <title> element"
-        end
-        new_body = body.sub(%r{(<title\b.*?</title>[ \t]*\n)}m, "\\1#{list_xml}\n")
       end
 
-      "#{open_tag}#{new_body}#{close_tag}"
+      pos = tag_end
+    end
+
+    sections
+  end
+
+  # Rewrite the hidden word lists of path in place, preserving all other XML formatting.
+  # Every valid="maybe" mark is derived purely from dictionary/all_words.xml and exceptions.
+  def self.rewrite_file(path, dict_by_bare, exceptions = {})
+    source = File.read(path, encoding: 'UTF-8')
+    doc = ChapterLint.read(path)
+    tables_by_section, unowned_tables, _lists_by_section, _unowned_lists = group_by_nearest_section(doc)
+
+    unless unowned_tables.empty?
+      t = unowned_tables.first
+      raise "#{path}:#{ChapterLint.source_line(t)}: parallel-text <informaltable> appears outside any <section>"
+    end
+
+    doc_sections = doc.xpath('//section').to_a
+    spans = scan_sections(source)
+    unless doc_sections.size == spans.size
+      raise "#{path}: section count mismatch between XML parser (#{doc_sections.size}) and source scanner (#{spans.size})"
+    end
+
+    edits = []
+    doc_sections.each_with_index do |sec, idx|
+      tables = tables_by_section[sec]
+      next if tables.empty?
+
+      sid = section_id(sec)
+      sec_exceptions = exceptions.fetch(sid, {})
+      expected = derive_section_words(tables, dict_by_bare)
+      frame = spans[idx]
+      indent = frame.indent || '    '
+      list_xml = format_list(expected, sec_exceptions, indent)
+
+      if !frame.hidden_para_spans.empty?
+        first_start, first_end = frame.hidden_para_spans.first
+        edits << [first_start, first_end, "#{list_xml}\n"]
+        frame.hidden_para_spans.drop(1).each do |dup_start, dup_end|
+          edits << [dup_start, dup_end, '']
+        end
+      else
+        unless frame.first_title_end
+          raise "#{path}:#{ChapterLint.source_line(sec)}: section #{sid} has no direct <title> element"
+        end
+        edits << [frame.first_title_end, frame.first_title_end, "#{list_xml}\n"]
+      end
+    end
+
+    # Verify edits are non-overlapping and splice in reverse source order.
+    sorted = edits.sort_by { |s, e, _| [s, e] }
+    sorted.each_cons(2) do |(_s1, e1, _), (s2, _e2, _)|
+      raise "#{path}: overlapping edit spans (#{e1} > #{s2})" if e1 > s2
+    end
+
+    updated = source.dup
+    sorted.reverse_each do |s, e, replacement|
+      updated[s...e] = replacement
     end
 
     File.write(path, updated, encoding: 'UTF-8') if updated != source
@@ -417,33 +693,63 @@ module A01WordLists
 end
 
 if $PROGRAM_NAME == __FILE__
-  options = { write: false, dictionary: A01WordLists::DEFAULT_DICTIONARY }
+  options = {
+    write: false,
+    dictionary: A01WordLists::DEFAULT_DICTIONARY,
+    exceptions: A01WordLists::DEFAULT_EXCEPTIONS
+  }
   parser = OptionParser.new do |opts|
-    opts.banner = "Usage: #{$PROGRAM_NAME} [--write] [--dictionary PATH] FILE..."
+    opts.banner = <<~BANNER
+      Usage: #{$PROGRAM_NAME} [--write] [--dictionary PATH] [--exceptions PATH] FILE...
+
+      Derive and check Appendix A's per-section hidden glossary word lists.
+
+      Convention:
+        - Each section owning a role="parallel-text" table has one alphabetically
+          sorted <para role="display-none"> list holding the words in its Lojban
+          column (<thead> and <tbody>).
+        - Compound cmavo: a single-token compound with its own entry in
+          dictionary/all_words.xml stays one word in its dictionary spelling
+          (matching docs/markup-tags.md's rule for doinai, .uinai, and naku);
+          a compound with no dictionary entry is split morphologically into its
+          component cmavo.
+        - Names keep their dotted form from the section (or dotside .name. if
+          written bare).
+        - valid="maybe" is derived from dictionary/all_words.xml and the reviewed
+          exceptions list (scripts/a01-word-list-exceptions.json): words with no
+          dictionary entry and listed agreement-rule exceptions carry valid="maybe";
+          every other word links plainly.
+
+      Options:
+    BANNER
     opts.on('--write', 'Regenerate each parallel-text section\'s hidden word list in place') do
       options[:write] = true
     end
     opts.on('--dictionary PATH', 'Path to Jbovlaste dictionary XML (default: dictionary/all_words.xml)') do |p|
       options[:dictionary] = p
     end
+    opts.on('--exceptions PATH', 'Path to reviewed agreement-rule exceptions JSON (default: scripts/a01-word-list-exceptions.json)') do |p|
+      options[:exceptions] = p
+    end
   end
   parser.parse!
   abort parser.banner if ARGV.empty?
 
   dict = A01WordLists.load_dictionary(options[:dictionary])
+  exceptions = A01WordLists.load_exceptions(options[:exceptions])
   if options[:write]
     ARGV.each do |path|
-      changed = A01WordLists.rewrite_file(path, dict)
+      changed = A01WordLists.rewrite_file(path, dict, exceptions)
       warn "#{path}: #{changed ? 'updated' : 'already up to date'}"
     end
-    errors = ARGV.flat_map { |path| A01WordLists.lint_file(path, dict) }
+    errors = ARGV.flat_map { |path| A01WordLists.lint_file(path, dict, exceptions) }
     unless errors.empty?
       warn errors.join("\n")
       exit 1
     end
     exit 0
   else
-    errors = ARGV.flat_map { |path| A01WordLists.lint_file(path, dict) }
+    errors = ARGV.flat_map { |path| A01WordLists.lint_file(path, dict, exceptions) }
     unless errors.empty?
       warn errors.join("\n")
       warn "\nRun `ruby scripts/lint-a01-word-lists.rb --write #{ARGV.join(' ')}` to regenerate the hidden word lists."

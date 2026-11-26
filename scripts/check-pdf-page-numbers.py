@@ -319,35 +319,102 @@ def extract_inline_xrefs(doc, start_page):
 
 
 class _HtmlRefCollector(HTMLParser):
-    """Collect ToC targets, inline a.xref targets, and BNF rule names from print HTML."""
+    """Collect ToC entries, inline a.xref targets, expected headings/captions, and BNF rules."""
+    _HEADING_TAGS = frozenset({'h1', 'h2', 'h3', 'h4', 'h5', 'h6'})
+
     def __init__(self):
         super().__init__()
         self.toc_depth = 0
         self.div_stack = []
+        self.toc_entries = []
         self.toc_targets = []
         self.xref_targets = []
         self.bnf_rules = {}
+        self.html_titles = defaultdict(list)
+
+        self._in_toc_a = False
+        self._toc_a_href = None
+        self._toc_a_parts = []
+
         self._bnf_term_depth = 0
         self._bnf_id = None
         self._bnf_in_sub = False
         self._bnf_name_parts = []
         self._bnf_sub_parts = []
 
+        self._cap_kind = None
+        self._cap_tag = None
+        self._cap_depth = 0
+        self._cap_parts = []
+        self._figure_depth = 0
+
+    def _record_html_title(self, cap_kind, raw_text):
+        text = normalize_ws(raw_text)
+        if not text:
+            return
+        if cap_kind == 'example':
+            m = EXAMPLE_HEAD_RE.match(text)
+            if m:
+                self.html_titles[('example', m.group(1))].append(text)
+        elif cap_kind == 'titled':
+            m = TITLED_HEAD_RE.match(text)
+            if m:
+                self.html_titles[('titled', m.group(1))].append(text)
+        elif cap_kind == 'heading':
+            sm = SELMAO_HEAD_RE.match(text)
+            if sm:
+                self.html_titles[('selmao', sm.group(1))].append(text)
+                return
+            cm = CHAPTER_OR_APPENDIX_START_RE.match(text)
+            if cm:
+                key = cm.group(1)
+                kind = 'chapter' if key.startswith('Chapter ') else 'appendix'
+                self.html_titles[(kind, key)].append(text)
+                return
+            secm = SECTION_HEAD_LINE_RE.match(text)
+            if secm:
+                self.html_titles[('section', secm.group(1))].append(text)
+                return
+            self.html_titles[('unnumbered', text)].append(text)
+
     def handle_starttag(self, tag, attrs):
         attr_map = dict(attrs)
         classes = set((attr_map.get('class') or '').split())
         if tag == 'div':
             is_toc = 'toc' in classes
-            self.div_stack.append(is_toc)
+            is_fig = 'figure' in classes
+            self.div_stack.append((is_toc, is_fig))
             if is_toc:
                 self.toc_depth += 1
-        elif tag == 'a':
+            if is_fig:
+                self._figure_depth += 1
+            if self._cap_depth == 0:
+                if 'example-title' in classes:
+                    self._cap_kind, self._cap_tag, self._cap_depth, self._cap_parts = 'example', 'div', 1, []
+                elif 'table-title' in classes or 'figure-title' in classes:
+                    self._cap_kind, self._cap_tag, self._cap_depth, self._cap_parts = 'titled', 'div', 1, []
+            elif tag == self._cap_tag:
+                self._cap_depth += 1
+        elif tag == 'p' and self._cap_depth == 0 and self._figure_depth > 0 and 'title' in classes:
+            self._cap_kind, self._cap_tag, self._cap_depth, self._cap_parts = 'titled', 'p', 1, []
+        elif tag in self._HEADING_TAGS and self.toc_depth == 0 and self._cap_depth == 0:
+            self._cap_kind, self._cap_tag, self._cap_depth, self._cap_parts = 'heading', tag, 1, []
+        elif self._cap_depth > 0 and tag == self._cap_tag:
+            self._cap_depth += 1
+
+        if tag == 'br' and self._cap_depth > 0:
+            self._cap_parts.append(' ')
+
+        if tag == 'a':
             href = attr_map.get('href', '')
             if href.startswith('#'):
                 target = unquote(href[1:])
                 if target:
                     if self.toc_depth > 0:
                         self.toc_targets.append(target)
+                        self._in_toc_a = True
+                        self._toc_a_href = target
+                        self._toc_a_parts = []
                     elif 'xref' in classes:
                         self.xref_targets.append(target)
         elif tag == 'span':
@@ -367,6 +434,10 @@ class _HtmlRefCollector(HTMLParser):
             self._bnf_in_sub = True
 
     def handle_data(self, data):
+        if self._in_toc_a:
+            self._toc_a_parts.append(data)
+        if self._cap_depth > 0:
+            self._cap_parts.append(data)
         if self._bnf_term_depth > 0:
             if self._bnf_in_sub:
                 self._bnf_sub_parts.append(data)
@@ -374,9 +445,24 @@ class _HtmlRefCollector(HTMLParser):
                 self._bnf_name_parts.append(data)
 
     def handle_endtag(self, tag):
+        if tag == 'a' and self._in_toc_a:
+            self.toc_entries.append((self._toc_a_href, normalize_ws(''.join(self._toc_a_parts))))
+            self._in_toc_a = False
+            self._toc_a_href = None
+            self._toc_a_parts = []
+        if self._cap_depth > 0 and tag == self._cap_tag:
+            self._cap_depth -= 1
+            if self._cap_depth == 0:
+                self._record_html_title(self._cap_kind, ''.join(self._cap_parts))
+                self._cap_kind = None
+                self._cap_tag = None
+                self._cap_parts = []
         if tag == 'div' and self.div_stack:
-            if self.div_stack.pop():
+            was_toc, was_fig = self.div_stack.pop()
+            if was_toc:
                 self.toc_depth -= 1
+            if was_fig:
+                self._figure_depth -= 1
         elif tag == 'sub' and self._bnf_term_depth > 0:
             self._bnf_in_sub = False
         elif tag == 'span' and self._bnf_term_depth > 0:
@@ -393,12 +479,12 @@ class _HtmlRefCollector(HTMLParser):
 def load_expected_html_data(html_path):
     parser = _HtmlRefCollector()
     parser.feed(Path(html_path).read_text(encoding='utf-8'))
-    return parser.toc_targets, parser.xref_targets, parser.bnf_rules
+    return parser.toc_entries, parser.xref_targets, parser.bnf_rules, dict(parser.html_titles)
 
 
 def load_expected_html_refs(html_path):
-    toc_targets, xref_targets, _ = load_expected_html_data(html_path)
-    return toc_targets, xref_targets
+    toc_entries, xref_targets, _, _ = load_expected_html_data(html_path)
+    return [href for href, _ in toc_entries], xref_targets
 
 
 def auto_discover_html(pdf_path):
@@ -481,14 +567,49 @@ def bnf_rule_from_line(txt, spans):
     return (rule_name, rule_num)
 
 
+def span_in_links(span, link_rects):
+    if not link_rects:
+        return False
+    x0, y0, x1, y1 = span['bbox']
+    cx, cy = 0.5 * (x0 + x1), 0.5 * (y0 + y1)
+    return any(r.x0 <= cx <= r.x1 and r.y0 <= cy <= r.y1 for r in link_rects)
+
+
+def is_self_reference_line(txt, label_end):
+    """Return True if '(p. N)' immediately follows the leading target label."""
+    rest = txt[label_end:].lstrip('. ')
+    return bool(re.match(r'^\(p\.\s*\d+\)', rest))
+
+
+def canonical_target_text(text):
+    """Normalize a heading or caption for comparing PDF lines against print HTML."""
+    s = INLINE_PAGE_RE.sub('', text)
+    s = normalize_ws(s)
+    s = re.sub(r'-\s+', '-', s)
+    s = re.sub(r'\s+([.,:;)])', r'\1', s)
+    s = re.sub(r'\(\s+', '(', s)
+    s = re.sub(
+        rf'^((?:Example|Table|Figure)\s+{COMPONENT_NUM_PAT}\.\d+|{COMPONENT_NUM_PAT}(?:\.\d+)+)\.(?=\s|$)',
+        r'\1',
+        s,
+    )
+    s = re.sub(r'([A-Za-z])\s+(\d+\b)', r'\1\2', s)
+    return s
+
+
 def page_body_styled_lines(page):
-    """Return merged body lines as (y0, y1, text, is_head_start, is_head_cont, bnf_rule).
+    """Return merged body lines as (y0, y1, x0, max_size, text, is_head_start, is_head_cont, bnf_rule).
 
     Merges fragments on the same visual line before scoring span styling so a
-    small non-bold span (e.g. a subscript or inline symbol) on a heading or
-    caption line does not hide the heading, while normal prose lines (even ones
-    starting with a single bold word) stay rejected.
+    small non-bold span (e.g. a subscript) or an inline cross-reference link on
+    a heading or caption line does not hide the heading, while prose lines
+    (including 50/50 bold-lead prose such as "**Table A.1** follows.") stay
+    rejected.
     """
+    link_rects = [
+        pymupdf.Rect(l['from']) for l in page.get_links()
+        if 'page' in l and l['page'] >= 0
+    ]
     raw = []
     for block in page.get_text('dict')['blocks']:
         if block['type'] != 0:
@@ -515,18 +636,21 @@ def page_body_styled_lines(page):
             merged.append((ym, y0, y1, x0, txt, list(spans)))
 
     result = []
-    for _, y0, y1, _, txt, spans in merged:
+    for _, y0, y1, x0, txt, spans in merged:
         spans.sort(key=lambda s: s['bbox'][0])
-        total_chars = sum(len(''.join(s['text'].split())) for s in spans)
+        non_link_spans = [s for s in spans if not span_in_links(s, link_rects)]
+        scored = non_link_spans or spans
+        total_chars = sum(len(''.join(s['text'].split())) for s in scored)
         prominent_chars = sum(
-            len(''.join(s['text'].split())) for s in spans if span_is_prominent(s)
+            len(''.join(s['text'].split())) for s in scored if span_is_prominent(s)
         )
+        max_size = max(s['size'] for s in spans)
         first_prominent = span_is_prominent(spans[0])
-        mostly_prominent = (prominent_chars * 2 >= total_chars)
+        mostly_prominent = (prominent_chars * 2 > total_chars)
         is_head_start = first_prominent and mostly_prominent
         is_head_cont = mostly_prominent
         bnf_rule = bnf_rule_from_line(txt, spans)
-        result.append((y0, y1, txt, is_head_start, is_head_cont, bnf_rule))
+        result.append((y0, y1, x0, max_size, txt, is_head_start, is_head_cont, bnf_rule))
     return result
 
 
@@ -546,7 +670,9 @@ def page_targets(page):
     """Extract all verifiable heading, caption, selma'o, and BNF targets on page.
 
     Every target kind is matched on its actual heading, caption, or rule line,
-    never as arbitrary text anywhere on the page.
+    never as arbitrary text anywhere on the page. Nested inline xrefs inside a
+    heading or caption are allowed; only lines where '(p. N)' immediately
+    follows the leading label itself are rejected as self-references.
     """
     lines = page_body_styled_lines(page)
     targets = {
@@ -554,21 +680,23 @@ def page_targets(page):
         'appendix': {},
         'section': {},
         'unnumbered': [],
-        'example': set(),
-        'titled': set(),
-        'selmao': set(),
+        'example': {},
+        'titled': {},
+        'selmao': {},
         'bnf': {},
     }
 
-    def collect_block(start_idx):
-        parts = [lines[start_idx][2]]
+    def collect_block(start_idx, allow_centered=False):
+        _, _, start_x0, start_size, start_txt, _, _, _ = lines[start_idx]
+        parts = [start_txt]
         j = start_idx + 1
         while j < len(lines):
-            ny0, _, ntxt, _, ncont, nbnf = lines[j]
+            ny0, _, nx0, nsize, ntxt, _, ncont, nbnf = lines[j]
             if (
                 ncont
-                and '(p.' not in ntxt
                 and (ny0 - lines[j - 1][1]) < 6.0
+                and abs(nsize - start_size) <= 1.5
+                and (allow_centered or abs(nx0 - start_x0) < 15.0)
                 and not is_distinct_target_line(ntxt, nbnf)
             ):
                 parts.append(ntxt)
@@ -579,11 +707,11 @@ def page_targets(page):
 
     i = 0
     while i < len(lines):
-        _, _, txt, is_head_start, _, bnf_rule = lines[i]
+        _, _, _, _, txt, is_head_start, _, bnf_rule = lines[i]
 
         # BNF rule definitions print in regular font in WeasyPrint and bold in
         # Prince, always as a standalone "<nonterminal> <sub>N</sub> =" line.
-        if bnf_rule is not None and '(p.' not in txt:
+        if bnf_rule is not None:
             rule_name, rule_num = bnf_rule
             targets['bnf'].setdefault(rule_num, set()).add(rule_name)
             i += 1
@@ -591,42 +719,55 @@ def page_targets(page):
 
         if is_head_start:
             sm = SELMAO_HEAD_RE.match(txt)
-            if sm:
-                targets['selmao'].add(sm.group(1))
-                i += 1
+            if sm and not is_self_reference_line(txt, sm.end(1)):
+                block_text, next_i = collect_block(i)
+                targets['selmao'].setdefault(sm.group(1), []).append(block_text)
+                i = next_i
                 continue
 
-            if '(p.' not in txt:
-                em = EXAMPLE_HEAD_RE.match(txt)
-                if em:
-                    targets['example'].add(em.group(1))
+            em = EXAMPLE_HEAD_RE.match(txt)
+            if em and not is_self_reference_line(txt, em.end(1)):
+                key = em.group(1)
+                if txt.rstrip('.') == key:
+                    targets['example'].setdefault(key, []).append(txt)
                     i += 1
-                    continue
+                else:
+                    block_text, next_i = collect_block(i)
+                    targets['example'].setdefault(key, []).append(block_text)
+                    i = next_i
+                continue
 
-                tm = TITLED_HEAD_RE.match(txt)
-                if tm:
-                    targets['titled'].add(tm.group(1))
+            tm = TITLED_HEAD_RE.match(txt)
+            if tm and not is_self_reference_line(txt, tm.end(1)):
+                key = tm.group(1)
+                if txt.rstrip('.') == key:
+                    targets['titled'].setdefault(key, []).append(txt)
                     i += 1
-                    continue
-
-                cm = CHAPTER_OR_APPENDIX_START_RE.match(txt)
-                if cm:
-                    key = cm.group(1)
-                    kind = 'chapter' if key.startswith('Chapter ') else 'appendix'
+                else:
                     block_text, next_i = collect_block(i)
-                    targets[kind].setdefault(key, []).append(block_text)
+                    targets['titled'].setdefault(key, []).append(block_text)
                     i = next_i
-                    continue
+                continue
 
-                secm = SECTION_HEAD_LINE_RE.match(txt)
-                if secm:
-                    key = secm.group(1)
-                    block_text, next_i = collect_block(i)
-                    targets['section'].setdefault(key, []).append(block_text)
-                    i = next_i
-                    continue
+            cm = CHAPTER_OR_APPENDIX_START_RE.match(txt)
+            if cm and not is_self_reference_line(txt, cm.end(1)):
+                key = cm.group(1)
+                kind = 'chapter' if key.startswith('Chapter ') else 'appendix'
+                block_text, next_i = collect_block(i, allow_centered=True)
+                targets[kind].setdefault(key, []).append(block_text)
+                i = next_i
+                continue
 
+            secm = SECTION_HEAD_LINE_RE.match(txt)
+            if secm and not is_self_reference_line(txt, secm.end(1)):
+                key = secm.group(1)
                 block_text, next_i = collect_block(i)
+                targets['section'].setdefault(key, []).append(block_text)
+                i = next_i
+                continue
+
+            if not is_self_reference_line(txt, 0):
+                block_text, next_i = collect_block(i, allow_centered=True)
                 targets['unnumbered'].append(block_text)
                 i = next_i
                 continue
@@ -642,33 +783,37 @@ def starts_with_prefix(line, expected):
     return len(line) == len(expected) or not line[len(expected)].isalnum()
 
 
-def heading_block_matches(blocks, key, title=''):
-    """Confirm heading 'key' (and title start, if known) prints as a heading line."""
+def heading_block_matches(blocks, key, title='', expected_texts=None):
+    """Confirm heading/caption 'key' matches HTML expected text (or ToC title) on page."""
     if not blocks:
         return False
+    if expected_texts:
+        canon_expected = {canonical_target_text(t) for t in expected_texts}
+        return any(canonical_target_text(line) in canon_expected for line in blocks)
     if title:
         short_title = ' '.join(title.split()[:3])
-        expected = f'{key} {short_title}'
-        return any(starts_with_prefix(line, expected) for line in blocks)
+        expected = canonical_target_text(f'{key} {short_title}')
+        return any(starts_with_prefix(canonical_target_text(line), expected) for line in blocks)
     return True
 
 
-def target_on_page(targets, kind, key, title='', expected_bnf_name=''):
+def target_on_page(targets, kind, key, title='', expected_bnf_name='', expected_texts=None):
     """Verify the target heading/caption/rule/selma'o prints on its own line on page."""
     if not targets:
         return False
-    if kind in ('chapter', 'appendix', 'section'):
-        return heading_block_matches(targets[kind].get(key), key, title)
+    if kind in ('chapter', 'appendix', 'section', 'example', 'titled', 'selmao'):
+        return heading_block_matches(targets[kind].get(key), key, title=title, expected_texts=expected_texts)
     if kind == 'unnumbered':
-        short = ' '.join(key.split()[:3]) if key else ''
-        return bool(short) and any(starts_with_prefix(line, short) for line in targets['unnumbered'])
+        if expected_texts:
+            canon_expected = {canonical_target_text(t) for t in expected_texts}
+            return any(canonical_target_text(line) in canon_expected for line in targets['unnumbered'])
+        short = canonical_target_text(' '.join(key.split()[:3])) if key else ''
+        return bool(short) and any(starts_with_prefix(canonical_target_text(line), short) for line in targets['unnumbered'])
     if kind == 'bnf':
         names = targets['bnf'].get(key)
         if not names:
             return False
         return (expected_bnf_name in names) if expected_bnf_name else True
-    if kind in ('example', 'titled', 'selmao'):
-        return key in targets[kind]
     return False
 
 
@@ -689,28 +834,70 @@ def analyze_pdf(pdf_path, html_path=None):
             targets_cache[pno] = page_targets(doc[pno - 1]) if 1 <= pno <= total_pages else None
         return targets_cache[pno]
 
-    def toc_heading_matches(pno, prefix, title):
-        return target_on_page(get_targets(pno), toc_heading_kind(prefix), prefix, title)
-
     resolved_html = Path(html_path) if html_path else auto_discover_html(pdf_path)
     expected_toc = None
     expected_xrefs = None
+    html_toc_entries = None
     html_xrefs = None
     html_bnf_rules = {}
+    html_titles = {}
     if resolved_html and resolved_html.is_file():
-        html_toc, html_xrefs, html_bnf_rules = load_expected_html_data(resolved_html)
-        expected_toc = len(html_toc)
+        html_toc_entries, html_xrefs, html_bnf_rules, html_titles = load_expected_html_data(resolved_html)
+        expected_toc = len(html_toc_entries)
         expected_xrefs = len(html_xrefs)
 
     toc_pages = find_toc_pages(doc)
     printed_toc_lines = count_printed_toc_lines(doc, toc_pages)
     toc_entries = extract_toc_entries(doc, toc_pages)
+    first_body_page = max(toc_pages) + 1
+
+    # Entry-by-entry reconciliation of PDF ToC against companion HTML ToC.
+    toc_entry_mismatches = []
+    if html_toc_entries is not None:
+        for idx in range(max(len(html_toc_entries), len(toc_entries))):
+            if idx >= len(html_toc_entries):
+                pno, nd, ptxt, printed, dest = toc_entries[idx]
+                toc_entry_mismatches.append((idx + 1, 'extra-pdf', None, ptxt, None, nd))
+                continue
+            if idx >= len(toc_entries):
+                href, hlbl = html_toc_entries[idx]
+                toc_entry_mismatches.append((idx + 1, 'missing-pdf', hlbl, None, href, None))
+                continue
+            href, hlbl = html_toc_entries[idx]
+            pno, nd, ptxt, printed, dest = toc_entries[idx]
+            hk = tuple(canonical_target_text(part) for part in heading_key_from_toc_label(hlbl))
+            pk = tuple(canonical_target_text(part) for part in heading_key_from_toc_label(ptxt))
+            if hk != pk:
+                toc_entry_mismatches.append((idx + 1, 'label-mismatch', hlbl, ptxt, href, nd))
+            elif nd is not None and nd != href:
+                toc_entry_mismatches.append((idx + 1, 'dest-mismatch', hlbl, ptxt, href, nd))
+
+    def expected_html_texts_for(kind, key):
+        return html_titles.get((kind, key))
+
+    matching_pages_cache = {}
+
+    def pages_matching_target(kind, key, title='', expected_bnf_name=''):
+        exp_texts = expected_html_texts_for(kind, key)
+        cache_key = (kind, key, title, expected_bnf_name, tuple(exp_texts) if exp_texts else ())
+        if cache_key not in matching_pages_cache:
+            matching_pages_cache[cache_key] = [
+                p for p in range(first_body_page, total_pages + 1)
+                if target_on_page(
+                    get_targets(p), kind, key,
+                    title=title,
+                    expected_bnf_name=expected_bnf_name,
+                    expected_texts=exp_texts,
+                )
+            ]
+        return matching_pages_cache[cache_key]
 
     # Map ToC heading prefixes ("Chapter 22", "Appendix B", "21.2", ...) -> title.
     toc_titles = {}
     toc_unparsed = []
     toc_dest_mismatches = []
     toc_heading_mismatches = []
+    ambiguous_targets = {}
 
     for pno, nd, text, printed, dest in toc_entries:
         prefix, title = heading_key_from_toc_label(text)
@@ -721,15 +908,14 @@ def analyze_pdf(pdf_path, html_path=None):
             continue
         if printed != dest:
             toc_dest_mismatches.append((pno, nd, text, printed, dest, dest - printed))
-        if not toc_heading_matches(dest, prefix, title):
-            actual = None
-            for cand in range(max(1, dest - 3), min(total_pages, dest + 3) + 1):
-                if toc_heading_matches(cand, prefix, title):
-                    actual = cand
-                    break
+        kind = toc_heading_kind(prefix)
+        matched_pages = pages_matching_target(kind, prefix, title=title)
+        if len(matched_pages) > 1:
+            ambiguous_targets[(kind, prefix)] = matched_pages
+        if dest not in matched_pages:
+            actual = matched_pages[0] if len(matched_pages) == 1 else None
             toc_heading_mismatches.append((pno, nd, text, printed, dest, actual))
 
-    first_body_page = max(toc_pages) + 1
     xrefs = extract_inline_xrefs(doc, first_body_page)
 
     xref_mismatches = []
@@ -751,10 +937,14 @@ def analyze_pdf(pdf_path, html_path=None):
             xref_unknown_shape.append((pno, nd, text, dest))
         else:
             expected_bnf_name = html_bnf_rules.get(key, '') if kind == 'bnf' else ''
-            if not target_on_page(
-                get_targets(dest), kind, key, toc_titles.get(key, ''),
+            matched_pages = pages_matching_target(
+                kind, key,
+                title=toc_titles.get(key, ''),
                 expected_bnf_name=expected_bnf_name,
-            ):
+            )
+            if len(matched_pages) > 1:
+                ambiguous_targets[(kind, key)] = matched_pages
+            if dest not in matched_pages:
                 xref_target_missing.append((pno, nd, text, kind, key, dest))
 
     # Reconcile extracted inline xref count against raw body-text "(p. N)" count
@@ -788,9 +978,11 @@ def analyze_pdf(pdf_path, html_path=None):
         (len(toc_entries) == expected_toc) if expected_toc is not None else (len(toc_entries) >= 350)
     )
     xref_count_ok = (len(xrefs) == expected_xrefs) if expected_xrefs is not None else (len(xrefs) >= 2000)
+    ambiguous_list = sorted((kind, key, pages) for (kind, key), pages in ambiguous_targets.items())
     ok = (
         toc_count_ok
         and xref_count_ok
+        and not toc_entry_mismatches
         and not toc_unparsed
         and not toc_dest_mismatches
         and not toc_heading_mismatches
@@ -798,6 +990,7 @@ def analyze_pdf(pdf_path, html_path=None):
         and not xref_target_missing
         and not xref_unknown_shape
         and not xref_blank_dests
+        and not ambiguous_list
         and not page_count_diffs
         and not missing_html_xref_targets
         and not empty_refs
@@ -811,6 +1004,7 @@ def analyze_pdf(pdf_path, html_path=None):
         'toc_pages': toc_pages,
         'printed_toc_lines': printed_toc_lines,
         'toc_entries': toc_entries,
+        'toc_entry_mismatches': toc_entry_mismatches,
         'toc_unparsed': toc_unparsed,
         'toc_dest_mismatches': toc_dest_mismatches,
         'toc_heading_mismatches': toc_heading_mismatches,
@@ -821,6 +1015,7 @@ def analyze_pdf(pdf_path, html_path=None):
         'xref_target_missing': xref_target_missing,
         'xref_unknown_shape': xref_unknown_shape,
         'xref_blank_dests': xref_blank_dests,
+        'ambiguous_targets': ambiguous_list,
         'page_count_diffs': page_count_diffs,
         'missing_html_xref_targets': missing_html_xref_targets,
         'empty_refs': empty_refs,
@@ -840,6 +1035,7 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
     toc_pages = res['toc_pages']
     printed_toc_lines = res['printed_toc_lines']
     toc_entries = res['toc_entries']
+    toc_entry_mismatches = res['toc_entry_mismatches']
     toc_unparsed = res['toc_unparsed']
     toc_dest_mismatches = res['toc_dest_mismatches']
     toc_heading_mismatches = res['toc_heading_mismatches']
@@ -850,6 +1046,7 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
     xref_target_missing = res['xref_target_missing']
     xref_unknown_shape = res['xref_unknown_shape']
     xref_blank_dests = res['xref_blank_dests']
+    ambiguous_targets = res['ambiguous_targets']
     page_count_diffs = res['page_count_diffs']
     missing_html_xref_targets = res['missing_html_xref_targets']
     empty_refs = res['empty_refs']
@@ -858,6 +1055,7 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
     if resolved_html:
         print(f'  HTML source: {resolved_html} (expected ToC={expected_toc}, inline xrefs={expected_xrefs})')
     print(f'  ToC pages: {toc_pages[0]}..{toc_pages[-1]} ({len(toc_entries)} linked entries, {printed_toc_lines} printed lines)')
+    print(f'  ToC entry-by-entry mismatches vs HTML: {len(toc_entry_mismatches)}')
     print(f'  ToC unparsed entries: {len(toc_unparsed)}')
     print(f'  ToC printed != link dest: {len(toc_dest_mismatches)}')
     print(f'  ToC heading not on dest page: {len(toc_heading_mismatches)}')
@@ -866,9 +1064,14 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
     print(f'  Inline xrefs target heading/label not on dest page: {len(xref_target_missing)}')
     print(f'  Inline xrefs unrecognized label shape: {len(xref_unknown_shape)}')
     print(f'  Inline xrefs pointing to blank page: {len(xref_blank_dests)}')
+    print(f'  Ambiguous targets qualifying on multiple pages: {len(ambiguous_targets)}')
     print(f'  Pages where extracted xref count != body "(p. N)" count: {len(page_count_diffs)}')
     print(f'  Empty "(p. )" references: {len(empty_refs)}')
 
+    if toc_entry_mismatches:
+        print('  Sample ToC entry-by-entry mismatches:')
+        for item in toc_entry_mismatches[:10]:
+            print('   ', item)
     if toc_unparsed:
         print('  Sample ToC unparsed:')
         for item in toc_unparsed[:10]:
@@ -900,6 +1103,10 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
     if xref_target_missing:
         print('  Sample inline xref targets not printed on dest page:')
         for item in xref_target_missing[:15]:
+            print('   ', item)
+    if ambiguous_targets:
+        print('  Ambiguous targets qualifying on multiple pages:')
+        for item in ambiguous_targets[:15]:
             print('   ', item)
     if xref_unknown_shape:
         print('  Unrecognized inline xref shapes:')

@@ -499,7 +499,7 @@
       <valsi>temci</valsi>
       <valsi>terdi</valsi>
       <valsi>tergu'i</valsi>
-      <valsi>teris.</valsi>
+      <valsi valid="maybe">teris.</valsi>
       <valsi>terpa</valsi>
       <valsi>ti</valsi>
       <valsi>tirna</valsi>
@@ -636,7 +636,7 @@
           <td>created and translated by Michael Turniansky</td>
         </tr>
         <tr>
-          <td>ni'o la teris. po'u le tirxu ge'u .e lei pendo no'u la .elis. po'u le xanto ge'u joi la zo,is. po'u le xirmrxipotigre cu xabju le cicricfoi .i la teris. ta'e djica le nu vitke zi'o le barda tcadu noi lei vinji ga'u voikla ke'a</td>
+          <td>ni'o la <valsi>teris.</valsi> po'u le tirxu ge'u .e lei pendo no'u la .elis. po'u le xanto ge'u joi la zo,is. po'u le xirmrxipotigre cu xabju le cicricfoi .i la teris. ta'e djica le nu vitke zi'o le barda tcadu noi lei vinji ga'u voikla ke'a</td>
           <td>Terry the Tiger lived with his friends Elly the Elephant and Zoe the Zebra in the jungle. Terry always wanted to visit the big city, where the planes flew overhead to.</td>
         </tr>
         <tr>

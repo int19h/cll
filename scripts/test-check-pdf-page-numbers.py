@@ -453,6 +453,7 @@ class CheckPdfPageNumbersTests(unittest.TestCase):
         if 'xref_count' not in allowed:
             self.assertTrue(analysis['xref_count_ok'], 'unexpected xref_count failure')
         for field in (
+            'toc_entry_mismatches',
             'toc_unparsed',
             'toc_dest_mismatches',
             'toc_heading_mismatches',
@@ -460,6 +461,7 @@ class CheckPdfPageNumbersTests(unittest.TestCase):
             'xref_target_missing',
             'xref_unknown_shape',
             'xref_blank_dests',
+            'ambiguous_targets',
             'page_count_diffs',
             'missing_html_xref_targets',
             'empty_refs',
@@ -596,7 +598,8 @@ class CheckPdfPageNumbersTests(unittest.TestCase):
                     build_multipage_toc_pdf(bad_pdf, bad_html, drop_links_on_pages=drop, blank_before_body=blank)
                     rc, out, res = run_check_captured(bad_pdf, bad_html)
                     self.assertEqual(rc, 1)
-                    self.assert_clean_counters_except(res, allow=('toc_count',))
+                    self.assert_clean_counters_except(res, allow=('toc_count', 'toc_entry_mismatches'))
+                    self.assertTrue(res['toc_entry_mismatches'])
                     self.assertFalse(res['toc_links_match_printed'])
                     self.assertEqual(len(res['toc_entries']), 4)
                     self.assertEqual(res['printed_toc_lines'], 6)
@@ -718,11 +721,187 @@ class CheckPdfPageNumbersTests(unittest.TestCase):
             build_long_toc_pdf(bad_pdf, bad_html, toc_page_count=27, drop_last_links=True)
             rc, out, res = run_check_captured(bad_pdf, bad_html)
             self.assertEqual(rc, 1)
-            self.assert_clean_counters_except(res, allow=('toc_count',))
+            self.assert_clean_counters_except(res, allow=('toc_count', 'toc_entry_mismatches'))
+            self.assertEqual(len(res['toc_entry_mismatches']), 1)
             self.assertFalse(res['toc_links_match_printed'])
             self.assertEqual(len(res['toc_entries']), 26)
             self.assertEqual(res['printed_toc_lines'], 27)
             self.assertIn('(26 linked entries, 27 printed lines)', out)
+
+    def test_wrong_page_bold_prose_fails_table_caption_check(self):
+        # REAL 3: moving "Table A.1. Parallel summary" to p. 5 while leaving a
+        # bold prose mention "**Table A.1** follows." on p. 4 must fail on
+        # xref_target_missing for Table A.1 (both via expected HTML caption and
+        # non-link prominence > 50%).
+        with tempfile.TemporaryDirectory(prefix='cll-cpn-') as temp:
+            pdf = Path(temp) / 'moved-bold.pdf'
+            html = Path(temp) / 'moved-bold.html'
+            doc = pymupdf.open()
+            for _ in range(5):
+                doc.new_page(width=450, height=680)
+            p1, p2, p3, p4, p5 = doc[0], doc[1], doc[2], doc[3], doc[4]
+            p1.insert_text((50, 120), 'Test Book', fontsize=18, fontname='hebo')
+            p2.insert_text((50, 70), 'Table of Contents', fontsize=12, fontname='hebo')
+            add_toc_line(p2, 95, '1. Introduction ....................................... 3', 2)
+            add_toc_line(p2, 110, 'A. Chrestomathy ....................................... 4', 3)
+            p3.insert_text((50, 75), 'Chapter 1', fontsize=14, fontname='hebo')
+            p3.insert_text((50, 95), 'Introduction', fontsize=14, fontname='hebo')
+            add_inline_xref(p3, 50, 150, 'Table A.1 (p. 4)', 3)
+            p4.insert_text((50, 75), 'Appendix A', fontsize=14, fontname='hebo')
+            p4.insert_text((50, 95), 'Chrestomathy', fontsize=14, fontname='hebo')
+            p4.insert_text((50, 150), 'Table A.1', fontsize=9, fontname='hebo')
+            w = pymupdf.get_text_length('Table A.1', fontname='hebo', fontsize=9)
+            p4.insert_text((50 + w, 150), ' follows.', fontsize=9, fontname='helv')
+            p5.insert_text((50, 150), 'Table A.1. Parallel summary', fontsize=9, fontname='hebo')
+            doc.save(str(pdf))
+            doc.close()
+
+            html.write_text(
+                '<html><body>'
+                '<div class="toc"><ul>'
+                '<li><a href="#ch1">1. Introduction</a></li>'
+                '<li><a href="#appA">A. Chrestomathy</a></li>'
+                '</ul></div>'
+                '<p><a class="xref" href="#tblA1">Table A.1</a></p>'
+                '<div class="table-title">Table A.1. Parallel summary</div>'
+                '</body></html>',
+                encoding='utf-8',
+            )
+            rc, out, res = run_check_captured(pdf, html)
+            self.assertEqual(rc, 1)
+            self.assert_clean_counters_except(res, allow=('xref_target_missing',))
+            self.assertEqual(len(res['xref_target_missing']), 1)
+            self.assertEqual(res['xref_target_missing'][0][3:5], ('titled', 'Table A.1'))
+            self.assertIn('Inline xrefs target heading/label not on dest page: 1', out)
+
+    def test_ambiguous_target_on_multiple_pages_fails(self):
+        # REAL 3: a target key that qualifies on more than one physical page
+        # must fail as ambiguous even when the link points at one of those pages.
+        with tempfile.TemporaryDirectory(prefix='cll-cpn-') as temp:
+            pdf = Path(temp) / 'ambiguous.pdf'
+            html = Path(temp) / 'ambiguous.html'
+            doc = pymupdf.open()
+            for _ in range(5):
+                doc.new_page(width=450, height=680)
+            p1, p2, p3, p4, p5 = doc[0], doc[1], doc[2], doc[3], doc[4]
+            p1.insert_text((50, 120), 'Test Book', fontsize=18, fontname='hebo')
+            p2.insert_text((50, 70), 'Table of Contents', fontsize=12, fontname='hebo')
+            add_toc_line(p2, 95, '1. Introduction ....................................... 3', 2)
+            add_toc_line(p2, 110, 'A. Chrestomathy ....................................... 4', 3)
+            p3.insert_text((50, 75), 'Chapter 1', fontsize=14, fontname='hebo')
+            p3.insert_text((50, 95), 'Introduction', fontsize=14, fontname='hebo')
+            add_inline_xref(p3, 50, 150, 'Table A.1 (p. 4)', 3)
+            p4.insert_text((50, 75), 'Appendix A', fontsize=14, fontname='hebo')
+            p4.insert_text((50, 95), 'Chrestomathy', fontsize=14, fontname='hebo')
+            p4.insert_text((50, 150), 'Table A.1. Parallel summary', fontsize=9, fontname='hebo')
+            p5.insert_text((50, 150), 'Table A.1. Parallel summary', fontsize=9, fontname='hebo')
+            doc.save(str(pdf))
+            doc.close()
+
+            html.write_text(
+                '<html><body>'
+                '<div class="toc"><ul>'
+                '<li><a href="#ch1">1. Introduction</a></li>'
+                '<li><a href="#appA">A. Chrestomathy</a></li>'
+                '</ul></div>'
+                '<p><a class="xref" href="#tblA1">Table A.1</a></p>'
+                '<div class="table-title">Table A.1. Parallel summary</div>'
+                '</body></html>',
+                encoding='utf-8',
+            )
+            rc, out, res = run_check_captured(pdf, html)
+            self.assertEqual(rc, 1)
+            self.assert_clean_counters_except(res, allow=('ambiguous_targets',))
+            self.assertEqual(res['ambiguous_targets'], [('titled', 'Table A.1', [4, 5])])
+            self.assertIn('Ambiguous targets qualifying on multiple pages: 1', out)
+
+    def test_valid_caption_containing_nested_inline_xref_passes(self):
+        # REAL 3: a genuine caption containing a working inline "(p. N)" xref
+        # (including one where the linked xref is longer than the bold prefix)
+        # must pass and reconcile all inline xrefs.
+        for prefix in ('Table A.1. Summary of ', 'Table A.1. See '):
+            with self.subTest(prefix=prefix):
+                with tempfile.TemporaryDirectory(prefix='cll-cpn-') as temp:
+                    pdf = Path(temp) / 'caption-xref.pdf'
+                    html = Path(temp) / 'caption-xref.html'
+                    doc = pymupdf.open()
+                    for _ in range(4):
+                        doc.new_page(width=450, height=680)
+                    p1, p2, p3, p4 = doc[0], doc[1], doc[2], doc[3]
+                    p1.insert_text((50, 120), 'Test Book', fontsize=18, fontname='hebo')
+                    p2.insert_text((50, 70), 'Table of Contents', fontsize=12, fontname='hebo')
+                    add_toc_line(p2, 95, '1. Introduction ....................................... 3', 2)
+                    add_toc_line(p2, 110, 'A. Chrestomathy ....................................... 4', 3)
+                    p3.insert_text((50, 75), 'Chapter 1', fontsize=14, fontname='hebo')
+                    p3.insert_text((50, 95), 'Introduction', fontsize=14, fontname='hebo')
+                    add_inline_xref(p3, 50, 150, 'Example A.1 (p. 4)', 3)
+                    add_inline_xref(p3, 50, 170, 'Table A.1 (p. 4)', 3)
+                    p4.insert_text((50, 75), 'Appendix A', fontsize=14, fontname='hebo')
+                    p4.insert_text((50, 95), 'Chrestomathy', fontsize=14, fontname='hebo')
+                    p4.insert_text((50, 125), 'Example A.1', fontsize=9, fontname='hebo')
+                    p4.insert_text((50, 150), prefix, fontsize=9, fontname='hebo')
+                    w = pymupdf.get_text_length(prefix, fontname='hebo', fontsize=9)
+                    add_inline_xref(p4, 50 + w, 150, 'Example A.1 (p. 4)', 3)
+                    doc.save(str(pdf))
+                    doc.close()
+
+                    html.write_text(
+                        '<html><body>'
+                        '<div class="toc"><ul>'
+                        '<li><a href="#ch1">1. Introduction</a></li>'
+                        '<li><a href="#appA">A. Chrestomathy</a></li>'
+                        '</ul></div>'
+                        '<p><a class="xref" href="#exA1">Example A.1</a>'
+                        '<a class="xref" href="#tblA1">Table A.1</a></p>'
+                        '<div class="example-title">Example A.1</div>'
+                        f'<div class="table-title">{prefix}<a class="xref" href="#exA1">Example A.1</a></div>'
+                        '</body></html>',
+                        encoding='utf-8',
+                    )
+                    rc, _, res = run_check_captured(pdf, html)
+                    self.assertEqual(rc, 0)
+                    self.assert_clean_counters_except(res)
+
+    def test_duplicate_toc_row_fails_entry_by_entry_reconciliation(self):
+        # LATENT: duplicating a ToC row (label + destination) in place of
+        # another entry keeps linked == printed == expected HTML counts equal,
+        # so entry-by-entry reconciliation must catch it for every label kind.
+        with tempfile.TemporaryDirectory(prefix='cll-cpn-') as temp:
+            pdf = Path(temp) / 'dup-toc.pdf'
+            html = Path(temp) / 'dup-toc.html'
+            doc = pymupdf.open()
+            for _ in range(4):
+                doc.new_page(width=450, height=680)
+            p1, p2, p3, p4 = doc[0], doc[1], doc[2], doc[3]
+            p1.insert_text((50, 120), 'Test Book', fontsize=18, fontname='hebo')
+            p2.insert_text((50, 70), 'Table of Contents', fontsize=12, fontname='hebo')
+            add_toc_line(p2, 95, '1. Introduction ....................................... 3', 2)
+            add_toc_line(p2, 110, '1.1. First topic ...................................... 3', 2)
+            # Duplicated 1.1 row replacing 1.2 (same total count = 3).
+            add_toc_line(p2, 125, '1.1. First topic ...................................... 3', 2)
+            p3.insert_text((50, 75), 'Chapter 1', fontsize=14, fontname='hebo')
+            p3.insert_text((50, 95), 'Introduction', fontsize=14, fontname='hebo')
+            p3.insert_text((50, 125), '1.1 First topic', fontsize=11, fontname='hebo')
+            p4.insert_text((50, 75), '1.2 Second topic details', fontsize=11, fontname='hebo')
+            doc.save(str(pdf))
+            doc.close()
+
+            html.write_text(
+                '<html><body>'
+                '<div class="toc"><ul>'
+                '<li><a href="#ch1">1. Introduction</a></li>'
+                '<li><a href="#s11">1.1. First topic</a></li>'
+                '<li><a href="#s12">1.2. Second topic details</a></li>'
+                '</ul></div>'
+                '</body></html>',
+                encoding='utf-8',
+            )
+            rc, out, res = run_check_captured(pdf, html)
+            self.assertEqual(rc, 1)
+            self.assert_clean_counters_except(res, allow=('toc_entry_mismatches',))
+            self.assertEqual(len(res['toc_entry_mismatches']), 1)
+            self.assertEqual(res['toc_entry_mismatches'][0][0:3], (3, 'label-mismatch', '1.2. Second topic details'))
+            self.assertIn('ToC entry-by-entry mismatches vs HTML: 1', out)
 
 
 if __name__ == '__main__':

@@ -47,6 +47,19 @@ BOOK = '''<?xml version="1.0" encoding="UTF-8"?>
     <itemizedlist xml:id="list-sub" role="not-bullets">
       <listitem><para>Three</para></listitem>
     </itemizedlist>
+    <para>
+      <emphasis xml:id="em-plain" role="bold">PlainBold</emphasis>
+      <emphasis xml:id="em-padded" role=" bold ">PaddedBold</emphasis>
+      <emphasis xml:id="em-multi" role="extra bold">MultiBold</emphasis>
+      <emphasis xml:id="em-multi-rev" role="bold extra">MultiBoldRev</emphasis>
+      <emphasis xml:id="em-strong" role="strong extra">MultiStrong</emphasis>
+      <emphasis xml:id="em-sub" role="not-bold">NotBold</emphasis>
+      <emphasis xml:id="em-default">DefaultEm</emphasis>
+    </para>
+    <example xml:id="ex-formal-em">
+      <title>Formal <emphasis xml:id="em-in-title" role="extra bold">TitleBold</emphasis></title>
+      <para>Example body.</para>
+    </example>
   </chapter>
   <appendix xml:id="volume-chrestomathy">
     <title>Chrestomathy</title>
@@ -265,6 +278,38 @@ class RoleMatchingTests(unittest.TestCase):
             self.by_id['ex-padded'].get('class'),
             'interlinear-gloss-example extra example',
         )
+
+    def test_emphasis_bold_and_strong_match_by_token_and_preserve_formal_titles(self):
+        for eid, expected_class, expected_text in (
+            ('em-plain', 'bold', 'PlainBold'),
+            ('em-padded', 'bold', 'PaddedBold'),
+            ('em-multi', 'extra bold', 'MultiBold'),
+            ('em-multi-rev', 'bold extra', 'MultiBoldRev'),
+            ('em-strong', 'strong extra', 'MultiStrong'),
+        ):
+            with self.subTest(eid=eid):
+                span = self.by_id[eid]
+                self.assertEqual(span.get('class'), expected_class)
+                strong = span.find(XHTML + 'strong')
+                self.assertIsNotNone(strong, f'{eid} should contain <strong>')
+                self.assertEqual(''.join(strong.itertext()), expected_text)
+
+        not_bold = self.by_id['em-sub']
+        self.assertEqual(not_bold.get('class'), 'not-bold')
+        self.assertIsNone(not_bold.find(XHTML + 'strong'))
+        self.assertIsNone(not_bold.find(XHTML + 'em'))
+        self.assertEqual(''.join(not_bold.itertext()), 'NotBold')
+
+        default_em = self.by_id['em-default']
+        em = default_em.find(XHTML + 'em')
+        self.assertIsNotNone(em)
+        self.assertEqual(''.join(em.itertext()), 'DefaultEm')
+
+        # Upstream treatment inside formal figure/example/table titles: no nested <strong>.
+        in_title = self.by_id['em-in-title']
+        self.assertEqual(in_title.get('class'), 'extra bold')
+        self.assertIsNone(in_title.find(XHTML + 'strong'))
+        self.assertEqual(''.join(in_title.itertext()), 'TitleBold')
 
     def test_branding_roles_match_by_token(self):
         spans = {el.get('class'): ''.join(el.itertext())

@@ -181,6 +181,55 @@
     <xsl:value-of select="normalize-space(@role)"/>
   </xsl:template>
 
+  <!-- Override DocBook XSL's emphasis template (xhtml/inline.xsl) so bold and
+       strong match by whitespace-delimited role token membership instead of
+       whole-value equality, preserving normalized extra classes, IDs, anchors,
+       and the upstream treatment of emphasis inside formal titles (issue #348). -->
+  <xsl:template match="emphasis">
+    <xsl:variable name="roles" select="concat(' ', normalize-space(@role), ' ')"/>
+    <xsl:variable name="is.bold"
+      select="contains($roles, ' bold ') or contains($roles, ' strong ')"/>
+    <span xmlns="http://www.w3.org/1999/xhtml">
+      <xsl:call-template name="id.attribute"/>
+      <xsl:choose>
+        <xsl:when test="@role and normalize-space(@role) != '' and $emphasis.propagates.style != 0">
+          <xsl:apply-templates select="." mode="common.html.attributes">
+            <xsl:with-param name="class" select="normalize-space(@role)"/>
+          </xsl:apply-templates>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="." mode="common.html.attributes"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:call-template name="anchor"/>
+      <xsl:call-template name="simple.xlink">
+        <xsl:with-param name="content">
+          <xsl:choose>
+            <xsl:when test="$is.bold">
+              <xsl:choose>
+                <xsl:when test="local-name(..) = 'title'
+                                and (local-name(../..) = 'figure'
+                                or local-name(../..) = 'example'
+                                or local-name(../..) = 'table')">
+                  <xsl:apply-templates/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <strong xmlns="http://www.w3.org/1999/xhtml"><xsl:apply-templates/></strong>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:when>
+            <xsl:when test="@role and normalize-space(@role) != '' and $emphasis.propagates.style != 0">
+              <xsl:apply-templates/>
+            </xsl:when>
+            <xsl:otherwise>
+              <em xmlns="http://www.w3.org/1999/xhtml"><xsl:apply-templates/></em>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:with-param>
+      </xsl:call-template>
+    </span>
+  </xsl:template>
+
   <!-- Status notes and marks (docs/status-markup.md, issue #47).
        This is the one source of truth for turning a status element's
        @condition into rendering data: a status-<token> class, data-*

@@ -26,7 +26,8 @@ BODY_BOTTOM = 631.0
 CONTENT_TOP = 48.19
 CONTENT_HEIGHT = 632.13 - CONTENT_TOP
 
-EXAMPLE_HEAD_RE = re.compile(r'^Example[\s\u00a0]+((?:\d+|[A-Z])\.\d+)\b')
+EXAMPLE_HEAD_RE = re.compile(r'^Example[\s\u00a0]+((?:\d+|[A-Z])\.\d+)(?:\.?(?:\s|$))')
+EXAMPLE_SELF_REF_RE = re.compile(r'^Example[\s\u00a0]+(?:\d+|[A-Z])\.\d+\.?\s*\(p\.\s*\d+\)')
 MARGIN_GLYPHS = set('◆★●■△?▲◇')
 
 
@@ -34,8 +35,20 @@ def normalize_ws(text):
     return ' '.join(text.replace('\u00a0', ' ').split())
 
 
+def span_in_links(span, link_rects):
+    if not link_rects:
+        return False
+    x0, y0, x1, y1 = span['bbox']
+    cx, cy = 0.5 * (x0 + x1), 0.5 * (y0 + y1)
+    return any(r.x0 <= cx <= r.x1 and r.y0 <= cy <= r.y1 for r in link_rects)
+
+
 def page_body_lines(page):
     """Return sorted list of (y0, y1, x0, x1, size, bold, text) inside body area."""
+    link_rects = [
+        pymupdf.Rect(l['from']) for l in page.get_links()
+        if 'page' in l and l['page'] >= 0
+    ]
     lines = []
     for block in page.get_text('dict')['blocks']:
         if block['type'] != 0:
@@ -52,9 +65,10 @@ def page_body_lines(page):
                 continue
             max_size = max(span['size'] for span in spans)
             is_bold = lambda s: bool(s['flags'] & 16) or 'Bold' in s.get('font', '')
-            total_chars = sum(len(''.join(s['text'].split())) for s in spans)
-            bold_chars = sum(len(''.join(s['text'].split())) for s in spans if is_bold(s))
-            bold = is_bold(spans[0]) and (bold_chars * 2 >= total_chars)
+            scored = [s for s in spans if not span_in_links(s, link_rects)] or spans
+            total_chars = sum(len(''.join(s['text'].split())) for s in scored)
+            bold_chars = sum(len(''.join(s['text'].split())) for s in scored if is_bold(s))
+            bold = is_bold(spans[0]) and (bold_chars * 2 > total_chars)
             lines.append((y0, y1, line['bbox'][0], line['bbox'][2], max_size, bold, text))
     lines.sort(key=lambda item: (round(item[0], 1), item[2]))
     return lines
@@ -239,7 +253,7 @@ def audit_pdf(pdf_path, html_examples=None, html_table_leadins=None):
             continue
         first_ln = lines[0]
         first_txt = first_ln[6]
-        if not first_ln[5] or '(p.' in first_txt:
+        if not first_ln[5] or EXAMPLE_SELF_REF_RE.match(first_txt):
             continue
         m = EXAMPLE_HEAD_RE.match(first_txt)
         if not m:

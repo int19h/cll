@@ -193,6 +193,10 @@ jobs:
         run: ruby scripts/test-jbophrase-frames.rb
       - name: Glossary links in cmavo-list cells
         run: ruby scripts/test-cmavo-list-links.rb
+      - name: Appendix A word-list lint self-test
+        run: ruby scripts/test-lint-a01-word-lists.rb
+      - name: Appendix A hidden word lists match texts
+        run: ruby scripts/lint-a01-word-lists.rb chapters/a01.xml
       - name: Index type lint self-test
         run: ruby scripts/test-lint-index-types.rb
       - name: Index term types

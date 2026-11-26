@@ -70,6 +70,8 @@ ruby scripts/test-lint-word-spellings.rb
 ruby scripts/lint-word-spellings.rb chapters/*.xml
 ruby scripts/test-jbophrase-frames.rb
 ruby scripts/test-cmavo-list-links.rb
+ruby scripts/test-lint-a01-word-lists.rb
+ruby scripts/lint-a01-word-lists.rb chapters/a01.xml
 ruby scripts/test-docbook-to-context.rb
 python3 scripts/test-context-assets.py
 python3 scripts/test-build-version.py
@@ -162,6 +164,8 @@ The check needs `xsltproc` as well as Ruby and Nokogiri.
 | Word spellings | Lojban text has no CGV sequence (a consonant, a glide, and a vowel). Every word with a comma between two vowels appears in `scripts/reviewed-comma-words.json`. It does not check commas next to consonants. It reads only Lojban elements such as `jbo`, `valsi`, and `jbophrase`. It skips text marked `valid="false"` or `valid="maybe"`. It also skips the quoted text of `zoi` and `la'o`. | `ruby scripts/lint-word-spellings.rb chapters/*.xml` |
 | jbophrase frames | A frame such as `lu ... li'u` links each of its words to the glossary, and the glossary collects those words | `ruby scripts/test-jbophrase-frames.rb` |
 | cmavo-list links | A `cmavo-list` `cmavo` or `gismu` cell holding one word, or exactly one bracketed word, links to the glossary with the `valsi` markup; a split cell of adjacent `valsi` parts links each part with no space between them; every other cell shape stays plain, and a word with no entry stays plain and is reported | `ruby scripts/test-cmavo-list-links.rb` |
+| Appendix A word lists self-test | The lint and generator below, on fixtures, plus hidden-element index suppression across preprocessing, glossary generation, Typst, and ConTeXt | `ruby scripts/test-lint-a01-word-lists.rb` |
+| Appendix A word lists | Every `parallel-text` section in Appendix A has one sorted `<para role="display-none">` word list matching its Lojban column, splitting un-entered compound cmavo into their parts and marking words without dictionary entries `valid="maybe"` (`--write` regenerates the lists) | `ruby scripts/lint-a01-word-lists.rb chapters/a01.xml` |
 
 This job checks that Nokogiri is version 1.18.8, the version that the Dockerfile installs.
 Check your version with `ruby -rnokogiri -e 'puts Nokogiri::VERSION'`.

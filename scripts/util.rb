@@ -91,6 +91,11 @@ def has_role?( node, token )
   node.element? && node['role'].to_s.split.include?( token )
 end
 
+# True when node itself or any ancestor carries the role token "display-none".
+def hidden_element?( node )
+  has_role?( node, 'display-none' ) || node.ancestors.any? { |a| has_role?( a, 'display-none' ) }
+end
+
 def cmavo_list_excluded_ancestor?( node, stop )
   node.ancestors.take_while { |a| a != stop }.any? do |a|
     %w[indexterm anchor rafsi].include?( a.name ) || has_role?( a, 'display-none' )

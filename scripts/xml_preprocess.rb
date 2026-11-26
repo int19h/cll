@@ -162,7 +162,12 @@ $document.css('lujvo-making').each do |node|
   node.css('score').each { |e| convert!( node: e, newname: 'para', role: 'lujvo-score' ) }
   node.css('dbinlinemath').each { |e| convert!( node: e, newname: 'mathphrase' ) ; e.replace("<inlineequation role='dbinlinemath'>#{e}</inlineequation>" ) }
   node.css('rafsi').each { |e| convert!( node: e, newname: 'foreignphrase', lang: 'jbo' ) }
-  node.css('veljvo').each { |e| convert!( node: e, newname: 'foreignphrase', lang: 'jbo' ) ; indexify!(node: e, indextype: 'lojban-phrase') ; e.replace("<para>from #{e}</para>") }
+  node.css('veljvo').each do |e|
+    hidden = hidden_element?(e)
+    convert!( node: e, newname: 'foreignphrase', lang: 'jbo' )
+    indexify!(node: e, indextype: 'lojban-phrase') unless hidden
+    e.replace("<para>from #{e}</para>")
+  end
 
   # Make things into rows
   node.children.each { |e| e.element? && e.replace("<tr><td>#{e}</td></tr>") }
@@ -280,13 +285,15 @@ end
 $document.css('valsi').each do |node|
   # We make a glossary entry unless it's marked valid=false, but
   # don't insert links in titles, please.  Or index references.
+  # Hidden (display-none) lists feed the glossary only, not the index.
   if node[:valid] == 'false' or node[:valid] == 'maybe' or [ 'title', 'term', 'primary', 'secondary' ].include? node.parent.name
     convert!( node: node, newname: 'foreignphrase', lang: 'jbo' )
   else
+    hidden = hidden_element?(node)
     orignode = node.dup
     node = glossify node, orignode
     node = node.replace("<foreignphrase xml:lang='jbo'>#{node}</foreignphrase>")
-    indexify!( node: node, indextype: 'lojban-word', role: orignode.name )
+    indexify!( node: node, indextype: 'lojban-word', role: orignode.name ) unless hidden
     # $stderr.puts "valsi: #{node.to_xml}"
   end
 end
@@ -333,23 +340,26 @@ end
 
 $document.css('jbophrase').each do |node|
   # Don't insert links in titles, please.  Or index references.
+  # Hidden (display-none) elements feed the glossary only, not the index.
   if ! [ 'title', 'term', 'primary', 'secondary' ].include? node.parent.name
     # A jbophrase makes an *index* entry.  A frame such as "ke ... ke'e"
     # also links each of its words to the glossary, as a valsi does.
+    hidden = hidden_element?(node)
     frame = jbophrase_frame( node.text ) unless [ 'false', 'maybe' ].include? node[:valid]
     if frame
       linked = frame.each_with_index.map do |part, i|
         if i.even?
-          %Q{<indexterm type="lojban-word"><primary role="valsi">#{part}</primary></indexterm><glossterm role="valsi" linkend="valsi-#{slugify(part)}">#{part}</glossterm>}
+          term = %Q{<glossterm role="valsi" linkend="valsi-#{slugify(part)}">#{part}</glossterm>}
+          hidden ? term : %Q{<indexterm type="lojban-word"><primary role="valsi">#{part}</primary></indexterm>#{term}}
         else
           part
         end
       end
     end
-    indexify!( node: node, indextype: 'lojban-phrase' )
+    indexify!( node: node, indextype: 'lojban-phrase' ) unless hidden
     if frame
-      # Keep the phrase's index entry, which indexify! put first.
-      node.children.drop(1).each(&:remove)
+      # Keep the phrase's index entry, which indexify! put first (when present).
+      node.children.drop(hidden ? 0 : 1).each(&:remove)
       node.add_child linked.join
     end
   end

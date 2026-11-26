@@ -259,6 +259,7 @@ jobs:
         run: |
           python3 scripts/test-build-version.py
           python3 scripts/test-check-pdf-page-numbers.py
+          python3 scripts/test-check-pdf-page-breaks.py
           PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-weasyprint.py
           PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-pdf-bookmarks.py
           PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-status-pagination.py

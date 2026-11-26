@@ -314,6 +314,7 @@ class DocBookTypstTest < Minitest::Test
       <para role=" extra display-none "><indexterm type="general"><primary>hiddenrole</primary></indexterm>Hidden</para>
       <itemizedlist role=" extra bullets "><listitem><para>One</para></listitem></itemizedlist>
       <itemizedlist role="not-bullets"><listitem><para>Two</para></listitem></itemizedlist>
+      <informaltable><tr class="extra jbo"><td>mi</td></tr><tr class="gloss extra"><td>I</td></tr><tr class="not-jbo"><td>plain</td></tr></informaltable>
       </section>
       </chapter>
     XML
@@ -323,5 +324,8 @@ class DocBookTypstTest < Minitest::Test
     refute_includes source, 'hiddenrole'
     assert_includes source, '#cll-list(kind: "bullets"'
     assert_includes source, '#cll-list(kind: "plain"'
+    assert_includes source, '#emph[#text("mi")]'
+    assert_includes source, '#strong[#text("I")]'
+    refute_includes source, '#emph[#text("plain")]'
   end
 end

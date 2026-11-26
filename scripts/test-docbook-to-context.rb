@@ -428,6 +428,7 @@ class ContextBookTest < Minitest::Test
       <para role=" extra noindent ">Flush <emphasis role=" extra bold ">strong</emphasis> <phrase role="X-SAMPA extra">ipa</phrase></para>
       <itemizedlist role=" extra bullets "><listitem><para>One</para></listitem></itemizedlist>
       <itemizedlist role="not-bullets"><listitem><para>Two</para></listitem></itemizedlist>
+      <informaltable><tr class="extra jbo"><td>mi</td></tr><tr class="gloss extra"><td>I</td></tr><tr class="not-jbo"><td>plain</td></tr></informaltable>
       </chapter>
     XML
     output = input.to_tex
@@ -436,5 +437,8 @@ class ContextBookTest < Minitest::Test
     assert_includes output, '{\\tt ipa}'
     assert_includes output, '\\startCLLbulleted[1,packed]'
     assert_includes output, '\\startCLLunmarked[none,packed]'
+    assert_includes output, '{\\it mi}'
+    assert_includes output, '{\\bf I}'
+    refute_includes output, '{\\it plain}'
   end
 end

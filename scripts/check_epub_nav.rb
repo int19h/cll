@@ -87,7 +87,7 @@ end
 
 # 3. Same entries, order and nesting as the table of contents that the reader sees.
 index = parse(File.join(dir, 'index.html'))
-toc = index.xpath('//h:div[@class="toc"]', NS)
+toc = index.xpath('//h:div[contains(concat(" ", normalize-space(@class), " "), " toc ")]', NS)
 bad "index.html has #{toc.size} div.toc elements, not 1" unless toc.size == 1
 visible = toc.xpath('.//h:a', NS).map do |a|
   { href: a['href'].to_s, text: text(a),

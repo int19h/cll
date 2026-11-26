@@ -200,7 +200,7 @@ $document.css('interlinear-gloss').each do |node|
   tableify node
 
   # If there are natlang, comment or para lines, turn it into *two* tables
-  table_split( node, 'td[colspan="0"] [role=natlang],td[colspan="0"] [role=comment],td[colspan="0"] [role=para]' )
+  table_split( node, 'td[colspan="0"] [role~=natlang],td[colspan="0"] [role~=comment],td[colspan="0"] [role~=para]' )
 end
 
 # handle interlinear-gloss-itemized
@@ -244,7 +244,7 @@ $document.css('interlinear-gloss-itemized').each do |node|
   tableify node
 
   # If there are natlang, comment or para lines, turn it into *two* tables
-  table_split( node, 'td[colspan="0"] [role=natlang],td[colspan="0"] [role=comment],td[colspan="0"] [role=para]' )
+  table_split( node, 'td[colspan="0"] [role~=natlang],td[colspan="0"] [role~=comment],td[colspan="0"] [role~=para]' )
 end
 
 

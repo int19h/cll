@@ -12,7 +12,9 @@ Covers:
    independently of PDF link annotations, and check_pdf() itself fails
    end-to-end when a contents page loses its links (with or without HTML).
 """
+import contextlib
 import importlib.util
+import io
 from pathlib import Path
 import tempfile
 import unittest
@@ -273,12 +275,26 @@ def build_all_targets_pdf(pdf_path, html_path, *,
     else:
         p5.insert_text((50, 75), 'Refer to the General Index at the back.', fontsize=9, fontname='helv')
 
-    if bnf_real:
+    if bnf_real is True:
         p5.insert_text((50, 110), 'paragraph ', fontsize=9, fontname='helv')
         w1 = pymupdf.get_text_length('paragraph ', fontname='helv', fontsize=9)
         p5.insert_text((50 + w1, 112), '10', fontsize=7, fontname='helv')
         w2 = pymupdf.get_text_length('10', fontname='helv', fontsize=7)
-        p5.insert_text((50 + w1 + w2, 110), ' = statement', fontsize=9, fontname='helv')
+        p5.insert_text((50 + w1 + w2, 110), ' =', fontsize=9, fontname='helv')
+        p5.insert_text((65, 122), 'statement', fontsize=9, fontname='helv')
+    elif bnf_real == 'glossary':
+        # Glossary place-structure line that previously matched BNF_RULE_LINE_RE.
+        p5.insert_text((50, 110), 'x10=fa1.', fontsize=9, fontname='helv')
+    elif bnf_real == 'no_subscript':
+        # Same text as a BNF header, but without a subscript span.
+        p5.insert_text((50, 110), 'paragraph 10 =', fontsize=9, fontname='helv')
+    elif bnf_real == 'wrong_name':
+        # Valid BNF header shape with subscript, but wrong rule name for HTML.
+        p5.insert_text((50, 110), 'other-rule ', fontsize=9, fontname='helv')
+        w1 = pymupdf.get_text_length('other-rule ', fontname='helv', fontsize=9)
+        p5.insert_text((50 + w1, 112), '10', fontsize=7, fontname='helv')
+        w2 = pymupdf.get_text_length('10', fontname='helv', fontsize=7)
+        p5.insert_text((50 + w1 + w2, 110), ' =', fontsize=9, fontname='helv')
     else:
         p5.insert_text((50, 110), 'In arithmetic, 10 = 5 + 5 is always true.', fontsize=9, fontname='helv')
 
@@ -304,6 +320,74 @@ def build_all_targets_pdf(pdf_path, html_path, *,
         '<a class="xref" href="#bnf10">BNF rule #10</a>'
         '<a class="xref" href="#BAI">BAI</a>'
         '</p>'
+        '<dl><dt><span class="term"><span id="b10"></span>paragraph <sub>10</sub> =</span></dt></dl>'
+        '</body></html>',
+        encoding='utf-8',
+    )
+
+
+def build_numeric_prose_regression_pdf(pdf_path, html_path, *,
+                                       example_real=True, table_real=True,
+                                       figure_real=True, bnf_real=True):
+    """Build a PDF with numeric-only labels (Example 1.1, Table 1.1, Figure 1.1,
+    BNF rule #2) that old check-pdf-page-numbers.py accepted anywhere on a page.
+    """
+    doc = pymupdf.open()
+    for _ in range(4):
+        doc.new_page(width=450, height=680)
+    p1, p2, p3, p4 = doc[0], doc[1], doc[2], doc[3]
+
+    p1.insert_text((50, 120), 'Numeric Regression Book', fontsize=18, fontname='hebo')
+
+    p2.insert_text((50, 70), 'Table of Contents', fontsize=12, fontname='hebo')
+    add_toc_line(p2, 95, '1. Introduction ....................................... 3', 2)
+    add_toc_line(p2, 110, '1.1. Details .......................................... 4', 3)
+
+    p3.insert_text((50, 75), 'Chapter 1', fontsize=14, fontname='hebo')
+    p3.insert_text((50, 95), 'Introduction', fontsize=14, fontname='hebo')
+    add_inline_xref(p3, 50, 140, 'Example 1.1 (p. 4)', 3)
+    add_inline_xref(p3, 50, 158, 'Table 1.1 (p. 4)', 3)
+    add_inline_xref(p3, 50, 176, 'Figure 1.1 (p. 4)', 3)
+    add_inline_xref(p3, 50, 194, 'BNF rule #2 (p. 4)', 3)
+
+    p4.insert_text((50, 75), '1.1 Details', fontsize=11, fontname='hebo')
+    if example_real:
+        p4.insert_text((50, 105), 'Example 1.1', fontsize=9, fontname='hebo')
+    else:
+        p4.insert_text((50, 105), 'Prose mentioning Example 1.1 in passing.', fontsize=9, fontname='helv')
+    if table_real:
+        p4.insert_text((50, 130), 'Table 1.1. Summary', fontsize=9, fontname='hebo')
+    else:
+        p4.insert_text((50, 130), 'Prose mentioning Table 1.1 in passing.', fontsize=9, fontname='helv')
+    if figure_real:
+        p4.insert_text((50, 155), 'Figure 1.1. Diagram', fontsize=9, fontname='hebo')
+    else:
+        p4.insert_text((50, 155), 'Prose mentioning Figure 1.1 in passing.', fontsize=9, fontname='helv')
+    if bnf_real:
+        p4.insert_text((50, 180), 'text-1 ', fontsize=9, fontname='helv')
+        w1 = pymupdf.get_text_length('text-1 ', fontname='helv', fontsize=9)
+        p4.insert_text((50 + w1, 182), '2', fontsize=7, fontname='helv')
+        w2 = pymupdf.get_text_length('2', fontname='helv', fontsize=7)
+        p4.insert_text((50 + w1 + w2, 180), ' =', fontsize=9, fontname='helv')
+    else:
+        p4.insert_text((50, 180), 'x2=fa1. Also 2 = 1 + 1 in prose.', fontsize=9, fontname='helv')
+
+    doc.save(str(pdf_path))
+    doc.close()
+
+    html_path.write_text(
+        '<html><body>'
+        '<div class="toc"><ul>'
+        '<li><a href="#ch1">1. Introduction</a></li>'
+        '<li><a href="#s11">1.1. Details</a></li>'
+        '</ul></div>'
+        '<p>'
+        '<a class="xref" href="#ex11">Example 1.1</a>'
+        '<a class="xref" href="#tbl11">Table 1.1</a>'
+        '<a class="xref" href="#fig11">Figure 1.1</a>'
+        '<a class="xref" href="#b2">BNF rule #2</a>'
+        '</p>'
+        '<dl><dt><span class="term"><span id="b2"></span>text-1 <sub>2</sub> =</span></dt></dl>'
         '</body></html>',
         encoding='utf-8',
     )
@@ -350,20 +434,56 @@ def build_long_toc_pdf(pdf_path, html_path, *, toc_page_count=27, drop_last_link
     )
 
 
+def run_check_captured(pdf_path, html_path=None):
+    """Run check_pdf and analyze_pdf, returning (rc, stdout, analysis)."""
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc = MOD.check_pdf(str(pdf_path), html_path=str(html_path) if html_path else None)
+    analysis = MOD.analyze_pdf(str(pdf_path), html_path=str(html_path) if html_path else None)
+    return rc, buf.getvalue(), analysis
+
+
 class CheckPdfPageNumbersTests(unittest.TestCase):
+    def assert_clean_counters_except(self, analysis, *, allow=()):
+        """Assert that no unrelated check failed (e.g. unrecognized label shape)."""
+        allowed = set(allow)
+        if 'toc_count' not in allowed:
+            self.assertTrue(analysis['toc_count_ok'], 'unexpected toc_count failure')
+            self.assertTrue(analysis['toc_links_match_printed'], 'unexpected toc link/line mismatch')
+        if 'xref_count' not in allowed:
+            self.assertTrue(analysis['xref_count_ok'], 'unexpected xref_count failure')
+        for field in (
+            'toc_unparsed',
+            'toc_dest_mismatches',
+            'toc_heading_mismatches',
+            'xref_mismatches',
+            'xref_target_missing',
+            'xref_unknown_shape',
+            'xref_blank_dests',
+            'page_count_diffs',
+            'missing_html_xref_targets',
+            'empty_refs',
+        ):
+            if field not in allowed:
+                self.assertFalse(analysis[field], f'unexpected failure in {field}: {analysis[field]}')
+
     def test_real_section_and_subsection_headings_pass(self):
         with tempfile.TemporaryDirectory(prefix='cll-cpn-') as temp:
             pdf = Path(temp) / 'ok.pdf'
             html = Path(temp) / 'ok.html'
             build_section_target_pdf(pdf, html, real_heading=True, subsection_heading=True)
-            self.assertEqual(MOD.check_pdf(str(pdf), html_path=str(html)), 0)
+            rc, _, res = run_check_captured(pdf, html)
+            self.assertEqual(rc, 0)
+            self.assert_clean_counters_except(res)
 
     def test_wrapped_section_heading_passes(self):
         with tempfile.TemporaryDirectory(prefix='cll-cpn-') as temp:
             pdf = Path(temp) / 'wrapped.pdf'
             html = Path(temp) / 'wrapped.html'
             build_section_target_pdf(pdf, html, real_heading=True, wrapped_heading=True)
-            self.assertEqual(MOD.check_pdf(str(pdf), html_path=str(html)), 0)
+            rc, _, res = run_check_captured(pdf, html)
+            self.assertEqual(rc, 0)
+            self.assert_clean_counters_except(res)
 
     def test_prose_number_and_title_words_fail_section_target_check(self):
         # Issue #344: prose containing "Section 1.2" and the first title words
@@ -372,7 +492,14 @@ class CheckPdfPageNumbersTests(unittest.TestCase):
             pdf = Path(temp) / 'prose.pdf'
             html = Path(temp) / 'prose.html'
             build_section_target_pdf(pdf, html, real_heading=False, subsection_heading=True)
-            self.assertEqual(MOD.check_pdf(str(pdf), html_path=str(html)), 1)
+            rc, out, res = run_check_captured(pdf, html)
+            self.assertEqual(rc, 1)
+            self.assert_clean_counters_except(res, allow=('toc_heading_mismatches', 'xref_target_missing'))
+            self.assertEqual(len(res['toc_heading_mismatches']), 1)
+            self.assertEqual(len(res['xref_target_missing']), 1)
+            self.assertEqual(res['xref_target_missing'][0][3:5], ('section', '1.2'))
+            self.assertIn('Inline xrefs target heading/label not on dest page: 1', out)
+            self.assertIn('Inline xrefs unrecognized label shape: 0', out)
 
     def test_prose_subsection_number_fails_section_target_check(self):
         # Depth-3 subsection not in ToC: prose mentioning "1.2.1" must not pass.
@@ -380,7 +507,12 @@ class CheckPdfPageNumbersTests(unittest.TestCase):
             pdf = Path(temp) / 'sub.pdf'
             html = Path(temp) / 'sub.html'
             build_section_target_pdf(pdf, html, real_heading=True, subsection_heading=False)
-            self.assertEqual(MOD.check_pdf(str(pdf), html_path=str(html)), 1)
+            rc, out, res = run_check_captured(pdf, html)
+            self.assertEqual(rc, 1)
+            self.assert_clean_counters_except(res, allow=('xref_target_missing',))
+            self.assertEqual(len(res['xref_target_missing']), 1)
+            self.assertEqual(res['xref_target_missing'][0][3:5], ('section', '1.2.1'))
+            self.assertIn('Inline xrefs target heading/label not on dest page: 1', out)
 
     def test_toc_discovery_and_line_count_catch_last_page_without_links(self):
         # Issue #344: if the last ToC page loses its link annotations, page
@@ -434,69 +566,125 @@ class CheckPdfPageNumbersTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='cll-cpn-') as temp:
             pdf = Path(temp) / 'toc-none-linked.pdf'
             build_multipage_toc_pdf(pdf, drop_links_on_pages=(2, 3, 4), blank_before_body=True)
-            doc = pymupdf.open(str(pdf))
-            try:
-                toc_pages = MOD.find_toc_pages(doc)
-                printed = MOD.count_printed_toc_lines(doc, toc_pages)
-                entries = MOD.extract_toc_entries(doc, toc_pages)
-            finally:
-                doc.close()
-            self.assertEqual(toc_pages, [2, 3, 4])
-            self.assertEqual(printed, 6)
-            self.assertEqual(len(entries), 0)
-            self.assertEqual(MOD.check_pdf(str(pdf)), 1)
+            rc, out, res = run_check_captured(pdf)
+            self.assertEqual(rc, 1)
+            self.assertEqual(res['toc_pages'], [2, 3, 4])
+            self.assertEqual(res['printed_toc_lines'], 6)
+            self.assertEqual(len(res['toc_entries']), 0)
+            self.assertFalse(res['toc_links_match_printed'])
+            self.assertIn('(0 linked entries, 6 printed lines)', out)
 
     def test_check_pdf_end_to_end_fails_when_toc_page_loses_links_with_html(self):
         # Issue #348: end-to-end check_pdf() with companion HTML passes when
-        # all ToC links are intact and fails when a ToC page loses its links.
+        # all ToC links are intact and fails specifically on ToC link count
+        # when a ToC page loses its links.
         with tempfile.TemporaryDirectory(prefix='cll-cpn-') as temp:
             ok_pdf = Path(temp) / 'toc-ok.pdf'
             ok_html = Path(temp) / 'toc-ok.html'
             build_multipage_toc_pdf(ok_pdf, ok_html, drop_links_on_pages=(), blank_before_body=True)
-            self.assertEqual(MOD.check_pdf(str(ok_pdf), html_path=str(ok_html)), 0)
+            rc, _, res = run_check_captured(ok_pdf, ok_html)
+            self.assertEqual(rc, 0)
+            self.assert_clean_counters_except(res)
 
-            bad_pdf = Path(temp) / 'toc-lost-last.pdf'
-            bad_html = Path(temp) / 'toc-lost-last.html'
-            build_multipage_toc_pdf(bad_pdf, bad_html, drop_links_on_pages=(4,), blank_before_body=True)
-            self.assertEqual(MOD.check_pdf(str(bad_pdf), html_path=str(bad_html)), 1)
-
-            mid_pdf = Path(temp) / 'toc-lost-mid.pdf'
-            mid_html = Path(temp) / 'toc-lost-mid.html'
-            build_multipage_toc_pdf(mid_pdf, mid_html, drop_links_on_pages=(3,), blank_before_body=False)
-            self.assertEqual(MOD.check_pdf(str(mid_pdf), html_path=str(mid_html)), 1)
+            for name, drop, blank in (
+                ('toc-lost-last', (4,), True),
+                ('toc-lost-mid', (3,), False),
+            ):
+                with self.subTest(case=name):
+                    bad_pdf = Path(temp) / f'{name}.pdf'
+                    bad_html = Path(temp) / f'{name}.html'
+                    build_multipage_toc_pdf(bad_pdf, bad_html, drop_links_on_pages=drop, blank_before_body=blank)
+                    rc, out, res = run_check_captured(bad_pdf, bad_html)
+                    self.assertEqual(rc, 1)
+                    self.assert_clean_counters_except(res, allow=('toc_count',))
+                    self.assertFalse(res['toc_links_match_printed'])
+                    self.assertEqual(len(res['toc_entries']), 4)
+                    self.assertEqual(res['printed_toc_lines'], 6)
+                    self.assertIn('(4 linked entries, 6 printed lines)', out)
 
     def test_all_target_kinds_and_appendix_labels_pass_on_real_lines(self):
         with tempfile.TemporaryDirectory(prefix='cll-cpn-') as temp:
             pdf = Path(temp) / 'all-ok.pdf'
             html = Path(temp) / 'all-ok.html'
             build_all_targets_pdf(pdf, html)
-            self.assertEqual(MOD.check_pdf(str(pdf), html_path=str(html)), 0)
+            rc, _, res = run_check_captured(pdf, html)
+            self.assertEqual(rc, 0)
+            self.assert_clean_counters_except(res)
 
     def test_small_nonbold_span_does_not_hide_heading_or_caption(self):
         with tempfile.TemporaryDirectory(prefix='cll-cpn-') as temp:
             pdf = Path(temp) / 'nonbold-span.pdf'
             html = Path(temp) / 'nonbold-span.html'
             build_all_targets_pdf(pdf, html, nonbold_span_heading=True)
-            self.assertEqual(MOD.check_pdf(str(pdf), html_path=str(html)), 0)
+            rc, _, res = run_check_captured(pdf, html)
+            self.assertEqual(rc, 0)
+            self.assert_clean_counters_except(res)
 
     def test_prose_never_satisfies_chapter_appendix_caption_or_bnf_targets(self):
-        # Every target kind must match its own heading/caption/rule line.
-        for kw in (
-            {'chapter_real': False},
-            {'chapter_real': False, 'prose_bold_lead': True},
-            {'appendix_real': False},
-            {'unnumbered_real': False},
-            {'example_a_real': False},
-            {'table_a_real': False},
-            {'figure_a_real': False},
-            {'bnf_real': False},
-        ):
+        # Every target kind must match its own heading/caption/rule line and
+        # fail with the exact expected counter and target key (never because
+        # of an unrecognized label shape).
+        cases = [
+            ({'chapter_real': False}, ('toc_heading_mismatches', 'xref_target_missing'), ('chapter', 'Chapter 1')),
+            ({'chapter_real': False, 'prose_bold_lead': True}, ('toc_heading_mismatches', 'xref_target_missing'), ('chapter', 'Chapter 1')),
+            ({'appendix_real': False}, ('toc_heading_mismatches', 'xref_target_missing'), ('appendix', 'Appendix A')),
+            ({'unnumbered_real': False}, ('toc_heading_mismatches',), None),
+            ({'example_a_real': False}, ('xref_target_missing',), ('example', 'Example A.1')),
+            ({'table_a_real': False}, ('xref_target_missing',), ('titled', 'Table A.1')),
+            ({'figure_a_real': False}, ('xref_target_missing',), ('titled', 'Figure A.1')),
+            ({'bnf_real': False}, ('xref_target_missing',), ('bnf', '10')),
+            ({'bnf_real': 'glossary'}, ('xref_target_missing',), ('bnf', '10')),
+            ({'bnf_real': 'no_subscript'}, ('xref_target_missing',), ('bnf', '10')),
+            ({'bnf_real': 'wrong_name'}, ('xref_target_missing',), ('bnf', '10')),
+        ]
+        for kw, expected_failures, expected_xref_key in cases:
             with self.subTest(case=kw):
                 with tempfile.TemporaryDirectory(prefix='cll-cpn-') as temp:
                     pdf = Path(temp) / 'fail.pdf'
                     html = Path(temp) / 'fail.html'
                     build_all_targets_pdf(pdf, html, **kw)
-                    self.assertEqual(MOD.check_pdf(str(pdf), html_path=str(html)), 1)
+                    rc, out, res = run_check_captured(pdf, html)
+                    self.assertEqual(rc, 1)
+                    self.assert_clean_counters_except(res, allow=expected_failures)
+                    self.assertIn('Inline xrefs unrecognized label shape: 0', out)
+                    if 'toc_heading_mismatches' in expected_failures:
+                        self.assertEqual(len(res['toc_heading_mismatches']), 1)
+                        self.assertIn('ToC heading not on dest page: 1', out)
+                    if expected_xref_key is not None:
+                        self.assertEqual(len(res['xref_target_missing']), 1)
+                        self.assertEqual(res['xref_target_missing'][0][3:5], expected_xref_key)
+                        self.assertIn('Inline xrefs target heading/label not on dest page: 1', out)
+
+    def test_numeric_prose_anywhere_on_page_fails_specifically_on_target_missing(self):
+        # Regression against the pre-#348 "anywhere on the page" fallback:
+        # numeric-only labels (Example 1.1, Table 1.1, Figure 1.1, BNF rule #2)
+        # were already recognized on main, so only the new line-level rules
+        # catch them when they appear solely in prose or glossary x2= lines.
+        with tempfile.TemporaryDirectory(prefix='cll-cpn-') as temp:
+            ok_pdf = Path(temp) / 'num-ok.pdf'
+            ok_html = Path(temp) / 'num-ok.html'
+            build_numeric_prose_regression_pdf(ok_pdf, ok_html)
+            rc, _, res = run_check_captured(ok_pdf, ok_html)
+            self.assertEqual(rc, 0)
+            self.assert_clean_counters_except(res)
+
+            for kw, expected_key in (
+                ({'example_real': False}, ('example', 'Example 1.1')),
+                ({'table_real': False}, ('titled', 'Table 1.1')),
+                ({'figure_real': False}, ('titled', 'Figure 1.1')),
+                ({'bnf_real': False}, ('bnf', '2')),
+            ):
+                with self.subTest(case=kw):
+                    pdf = Path(temp) / 'num-fail.pdf'
+                    html = Path(temp) / 'num-fail.html'
+                    build_numeric_prose_regression_pdf(pdf, html, **kw)
+                    rc, out, res = run_check_captured(pdf, html)
+                    self.assertEqual(rc, 1)
+                    self.assert_clean_counters_except(res, allow=('xref_target_missing',))
+                    self.assertEqual(len(res['xref_target_missing']), 1)
+                    self.assertEqual(res['xref_target_missing'][0][3:5], expected_key)
+                    self.assertIn('Inline xrefs target heading/label not on dest page: 1', out)
+                    self.assertIn('Inline xrefs unrecognized label shape: 0', out)
 
     def test_parse_inline_xref_target_covers_appendix_letters_and_not_aa(self):
         self.assertEqual(MOD.parse_inline_xref_target('Example A.1 (p. 4)'), ('example', 'Example A.1'))
@@ -521,12 +709,20 @@ class CheckPdfPageNumbersTests(unittest.TestCase):
             finally:
                 doc.close()
             self.assertEqual(toc_pages, list(range(2, 29)))
-            self.assertEqual(MOD.check_pdf(str(pdf), html_path=str(html)), 0)
+            rc, _, res = run_check_captured(pdf, html)
+            self.assertEqual(rc, 0)
+            self.assert_clean_counters_except(res)
 
             bad_pdf = Path(temp) / 'long-toc-bad.pdf'
             bad_html = Path(temp) / 'long-toc-bad.html'
             build_long_toc_pdf(bad_pdf, bad_html, toc_page_count=27, drop_last_links=True)
-            self.assertEqual(MOD.check_pdf(str(bad_pdf), html_path=str(bad_html)), 1)
+            rc, out, res = run_check_captured(bad_pdf, bad_html)
+            self.assertEqual(rc, 1)
+            self.assert_clean_counters_except(res, allow=('toc_count',))
+            self.assertFalse(res['toc_links_match_printed'])
+            self.assertEqual(len(res['toc_entries']), 26)
+            self.assertEqual(res['printed_toc_lines'], 27)
+            self.assertIn('(26 linked entries, 27 printed lines)', out)
 
 
 if __name__ == '__main__':

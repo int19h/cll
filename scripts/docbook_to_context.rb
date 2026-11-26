@@ -322,8 +322,9 @@ class ContextBook
         options = ["nc=#{span}", "nr=#{[cell['rowspan'].to_i, 1].max}"]
         options << 'rightframe=off' if position + span == cols
         content = children(cell)
-        content = "{\\it #{content}}" if row['class'] == 'jbo'
-        content = "{\\bf #{content}}" if row['class'] == 'gloss' || cell.name == 'th' || row.parent.name == 'thead'
+        row_classes = row['class'].to_s.split
+        content = "{\\it #{content}}" if row_classes.include?('jbo')
+        content = "{\\bf #{content}}" if row_classes.include?('gloss') || cell.name == 'th' || row.parent.name == 'thead'
         output += "\\bTD[#{options.join(',')}] #{anchor(cell)}#{content} \\eTD\n"
         position += span
       end

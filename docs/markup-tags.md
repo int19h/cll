@@ -34,7 +34,9 @@ As a result, <morphology>bf</morphology> is forbidden.
 
 A `valsi` gets its glossary definition from the dictionary export in `dictionary/all_words.xml`.
 Use `valsi` only for a word that you expect to find there, or mark it with `valid` as described below.
-A cmevla with its own dictionary entry takes `<valsi>` instead of `<cmevla>` so that it links to the glossary, as chapter 4 does for `.lojban.` and `.lojbangirz.`.
+Link a word only when its dictionary entry agrees with the meaning and place structure that the surrounding text gives.
+If the text builds or defines a different sense, or gives places that the dictionary entry omits or swaps, mark it `valid="maybe"` so the link does not contradict the passage (leave the link when the dictionary entry agrees or merely adds places).
+A cmevla that names a Lojban term with its own dictionary entry takes `<valsi>` instead of `<cmevla>` so that it links to the glossary, as chapter 4 does for `.lojban.` and `.lojbangirz.` and Appendix A does for `teris.`; ordinary example personal names (such as `.meiris.`, `.jan.`, or `.djordj.`) stay `<cmevla>`.
 A `valsi` inside `title`, `term`, `primary`, or `secondary` gets no glossary link and no index entry.
 A `jbophrase` in those elements gets no index entry.
 `scripts/merge.sh` defines only the `lojban-word` and `general` indexes, and neither of them collects `lojban-phrase` terms.
@@ -54,7 +56,7 @@ The `valid` attribute marks Lojban that is wrong or questionable on purpose.
 
 | Element | Values in use | Meaning |
 | --- | --- | --- |
-| `valsi` | `false`, `maybe` | `false`: a form that the text presents as failing: an ill-formed shape, a legal shape that is not a word, a form that breaks apart into other words (such as `tosmabru`) or parses as another kind of word (a proposed lujvo such as `djarspageti` that parses as a fu'ivla), or a combination that standard grammar does not allow (such as `doinai`). `maybe`: a well-formed word that is not the form to look up, such as a word made up for an example or a non-canonical form (an alternative lujvo spelling such as `brivalsi`, or an unchosen candidate such as `lojbaugri` or `lojbangir`, even if the dictionary happens to list it). |
+| `valsi` | `false`, `maybe` | `false`: a form that the text presents as failing: an ill-formed shape, a legal shape that is not a word, a form that breaks apart into other words (such as `tosmabru`) or parses as another kind of word (a proposed lujvo such as `djarspageti` that parses as a fu'ivla), or a combination that standard grammar does not allow (such as `doinai`). `maybe`: a well-formed word that is not the form to look up, such as a word made up for an example, a non-canonical form (an alternative lujvo spelling such as `brivalsi`, or an unchosen candidate such as `lojbaugri` or `lojbangir`, even if the dictionary happens to list it), or a word whose dictionary entry contradicts the meaning or place structure that the text gives (such as `klamau` or `risnyjelca`). |
 | `cmevla` | `false`, `iffy` | `false`: the name is ill formed. `iffy`: the form is surprising or doubtful. |
 | `jbophrase` | `false`, `iffy` | `false`: the phrase is ungrammatical. `iffy`: the phrase is doubtful. |
 | `jbo` (inside an example) | `false`, `iffy` | The same meanings for a line of an example. |
@@ -383,7 +385,7 @@ The Typst and ConTeXt converters handle some of them too.
 | `phrase role="IPA"`, `phrase role="X-SAMPA"` | Marks a phonetic transcription |
 | `phrase role="logical-vowel"` | One of the vowels A, E, O, U that stand for logical connectives |
 | `itemizedlist role="bullets"` | Shows bullets, which other lists do not |
-| `informaltable role="parallel-text"` | Lets a multi-page parallel-text passage in Appendix A (`chapters/a01.xml`) break across pages in print while keeping other Appendix A `informaltable` elements (such as gloss tables) unbroken. Use it on every parallel-text `informaltable` outside `<example>` in Appendix A; `scripts/lint-parallel-text.py` enforces this. |
+| `informaltable role="parallel-text"` | Lets a multi-page parallel-text passage in Appendix A (`chapters/a01.xml`) break across pages in print while keeping other Appendix A `informaltable` elements (such as gloss tables inside `<example>`) unbroken. Put it on every `<informaltable>` outside `<example>` in Appendix A (put any non-parallel-text table inside `<example>`, or use `<table>`); `scripts/lint-parallel-text.py` enforces this and rejects the role outside Appendix A or on other elements. |
 | `informaltable class="vertsep"` | Separates rows with dotted lines |
 | `informaltable class="noborder"` | Removes the vertical cell borders |
 | `informaltable class="rotated"` | Removes the padding of nested tables, for a table laid out by rows, as in chapter 17 |

@@ -89,10 +89,10 @@ def find_body_range(doc):
 
 def load_html_p_examples(html_path):
     """Return {example_number: (prev_is_p, prev_text_tail)} from the rendered print HTML."""
-    raw = open(html_path, encoding='utf-8').read()
+    raw = Path(html_path).read_text(encoding='utf-8')
     result = {}
-    div_re = re.compile(r'<div\s+[^>]*class="[^"]*\bexample\b[^"]*"[^>]*>', re.S)
-    title_re = re.compile(r'<div\s+class="example-title"[^>]*>(.*?)</div>', re.S)
+    div_re = re.compile(r'<div\s+[^>]*class="(?:[^"]*\s)?example(?:\s[^"]*)?"[^>]*>', re.S)
+    title_re = re.compile(r'<div\s+[^>]*class="(?:[^"]*\s)?example-title(?:\s[^"]*)?"[^>]*>(.*?)</div>', re.S)
     tag_strip = re.compile(r'<[^>]+>')
     for m in div_re.finditer(raw):
         tm = title_re.search(raw, m.end(), m.end() + 600)
@@ -116,13 +116,13 @@ def load_html_p_examples(html_path):
 
 def load_html_table_leadins(html_path):
     """Return set of normalized colon-ending lead-in tails directly before a table."""
-    raw = open(html_path, encoding='utf-8').read()
+    raw = Path(html_path).read_text(encoding='utf-8')
     tag_strip = re.compile(r'<[^>]+>')
     tails = set()
     # Match <div class="informaltable"> or <div class="table">, optionally
     # preceded by empty marker paragraphs (<p class="allowbreaks"></p>, etc.).
-    div_re = re.compile(r'<div\s+[^>]*class="[^"]*\b(?:informaltable|table)\b[^"]*"[^>]*>', re.S)
-    empty_marker_re = re.compile(r'(?:<p\s+class="(?:allowbreaks|twocolumn)"[^>]*>\s*</p>\s*)+$', re.S)
+    div_re = re.compile(r'<div\s+[^>]*class="(?:[^"]*\s)?(?:informaltable|table)(?:\s[^"]*)?"[^>]*>', re.S)
+    empty_marker_re = re.compile(r'(?:<p\s+[^>]*class="(?:[^"]*\s)?(?:allowbreaks|twocolumn)(?:\s[^"]*)?"[^>]*>\s*</p>\s*)+$', re.S)
     for m in div_re.finditer(raw):
         before = raw[max(0, m.start() - 4000):m.start()].rstrip()
         before = empty_marker_re.sub('', before).rstrip()

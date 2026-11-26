@@ -4148,7 +4148,7 @@
     </cmavo-list>
     <para role="indent">
       The lujvo
-      <valsi>tamsmi</valsi>
+      <valsi valid="maybe">tamsmi</valsi>
       on which
       <valsi>tai</valsi>
       is based is derived from the tanru
@@ -4156,7 +4156,7 @@
       and has the place structure:
     </para>
     <definition>
-      <valsi>tamsmi</valsi>
+      <valsi valid="maybe">tamsmi</valsi>
       <content>x<subscript>1</subscript> resembles x<subscript>2</subscript>, sharing ideal form x<subscript>3</subscript>, in property/quality x<subscript>4</subscript></content>
     </definition>
     <para>This lujvo is employed because <valsi>tarmi</valsi> does not have a place structure useful for the modal's purpose. A word of caution for those who use the dictionary: the place structure shown here is the checkpointed one, and the conversion glosses in this chapter follow it. The community dictionary's stand-alone <valsi>tamsmi</valsi> entry still carries an older ordering, with the form in the x<subscript>2</subscript> place.</para>

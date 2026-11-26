@@ -2777,7 +2777,7 @@
       For another example,
       <quote>integral</quote>
       has a specific meaning to a mathematician. But the Lojban fu'ivla
-      <valsi>.integrale</valsi>
+      <valsi valid="maybe">.integrale</valsi>
       , which is a valid Stage 4 fu'ivla, does not convey that mathematical sense to a non-mathematical listener, even one with an English-speaking background; its source &ndash; the English word
       <quote>integral</quote>
       &ndash; has various other specialized meanings in other fields.
@@ -2785,7 +2785,7 @@
 
     <para>
       Left uncontrolled,
-      <valsi>.integrale</valsi>
+      <valsi valid="maybe">.integrale</valsi>
       could eventually come to mean the same collection of loosely related concepts that English associates with
       <quote>integral</quote>
       , with only the context to indicate (possibly) that the mathematical term is meant.
@@ -2803,7 +2803,7 @@
       , if the
       <letteral>i</letteral>
       of
-      <valsi>.integrale</valsi>
+      <valsi valid="maybe">.integrale</valsi>
       is removed, or something like
       <valsi valid="maybe">cmacrnintegrale</valsi>
       , if a new consonant is added to the beginning;

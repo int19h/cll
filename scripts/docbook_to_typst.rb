@@ -240,8 +240,9 @@ class DocBookTypst
         span = cell['colspan'] == '0' ? width - x : [cell['colspan'].to_i, 1].max
         raise "Unsupported table rowspan at line #{cell.line}" if cell['rowspan'].to_i > 1
         body = children(cell)
-        body = "#emph[#{body}]" if row['class'] == 'jbo'
-        body = "#strong[#{body}]" if row['class'] == 'gloss' || row.parent.name == 'thead' || cell.name == 'th'
+        row_classes = row['class'].to_s.split
+        body = "#emph[#{body}]" if row_classes.include?('jbo')
+        body = "#strong[#{body}]" if row_classes.include?('gloss') || row.parent.name == 'thead' || cell.name == 'th'
         cells << "table.cell(x: #{x}, y: #{y}, colspan: #{span}, #{content(anchor(cell) + body)})"
         x += span
       end

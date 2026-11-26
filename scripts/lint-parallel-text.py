@@ -73,7 +73,8 @@ class Scanner:
         elif local == 'informaltable' and self.in_chrestomathy > 0 and self.in_example == 0:
             self.diag(
                 f'{self.path}:{line}: error: <informaltable> in Appendix A outside '
-                f'<example> is missing role="{PARALLEL_ROLE}"'
+                f'<example> must carry role="{PARALLEL_ROLE}" '
+                f'(put other tables inside <example> or use <table>)'
             )
             self.errors += 1
 

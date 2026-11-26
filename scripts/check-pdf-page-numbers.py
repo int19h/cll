@@ -39,7 +39,7 @@ CHAPTER_OR_APPENDIX_START_RE = re.compile(r'^(Chapter\s+\d+|Appendix\s+[A-Z])(?:
 EXAMPLE_HEAD_RE = re.compile(rf'^(Example\s+{COMPONENT_NUM_PAT}\.\d+)(?:\.?(?:\s|$))')
 TITLED_HEAD_RE = re.compile(rf'^((?:Table|Figure)\s+{COMPONENT_NUM_PAT}\.\d+)(?:\.?(?:\s|$))')
 SELMAO_HEAD_RE = re.compile(r"^selma'o\s+([A-Za-z][A-Za-z0-9']*)(?![A-Za-z0-9'])")
-BNF_RULE_LINE_RE = re.compile(r'^(?:[A-Za-z][A-Za-z0-9_-]*\s+|[A-Za-z][A-Za-z_-]*)(\d+)\s*=')
+BNF_RULE_LINE_RE = re.compile(r'^([a-z][a-z0-9-]*)\s+(\d+)\s*=$')
 
 
 def normalize_ws(text):
@@ -319,13 +319,19 @@ def extract_inline_xrefs(doc, start_page):
 
 
 class _HtmlRefCollector(HTMLParser):
-    """Count div.toc a[href^="#"] and a.xref[href^="#"] in print HTML."""
+    """Collect ToC targets, inline a.xref targets, and BNF rule names from print HTML."""
     def __init__(self):
         super().__init__()
         self.toc_depth = 0
         self.div_stack = []
         self.toc_targets = []
         self.xref_targets = []
+        self.bnf_rules = {}
+        self._bnf_term_depth = 0
+        self._bnf_id = None
+        self._bnf_in_sub = False
+        self._bnf_name_parts = []
+        self._bnf_sub_parts = []
 
     def handle_starttag(self, tag, attrs):
         attr_map = dict(attrs)
@@ -344,17 +350,55 @@ class _HtmlRefCollector(HTMLParser):
                         self.toc_targets.append(target)
                     elif 'xref' in classes:
                         self.xref_targets.append(target)
+        elif tag == 'span':
+            if self._bnf_term_depth > 0:
+                self._bnf_term_depth += 1
+                el_id = attr_map.get('id', '')
+                m = re.match(r'^b(\d+)$', el_id)
+                if m:
+                    self._bnf_id = m.group(1)
+            elif 'term' in classes:
+                self._bnf_term_depth = 1
+                self._bnf_id = None
+                self._bnf_in_sub = False
+                self._bnf_name_parts = []
+                self._bnf_sub_parts = []
+        elif tag == 'sub' and self._bnf_term_depth > 0:
+            self._bnf_in_sub = True
+
+    def handle_data(self, data):
+        if self._bnf_term_depth > 0:
+            if self._bnf_in_sub:
+                self._bnf_sub_parts.append(data)
+            elif not self._bnf_sub_parts:
+                self._bnf_name_parts.append(data)
 
     def handle_endtag(self, tag):
         if tag == 'div' and self.div_stack:
             if self.div_stack.pop():
                 self.toc_depth -= 1
+        elif tag == 'sub' and self._bnf_term_depth > 0:
+            self._bnf_in_sub = False
+        elif tag == 'span' and self._bnf_term_depth > 0:
+            self._bnf_term_depth -= 1
+            if self._bnf_term_depth == 0:
+                if self._bnf_id is not None:
+                    name = normalize_ws(''.join(self._bnf_name_parts))
+                    sub = normalize_ws(''.join(self._bnf_sub_parts))
+                    if name and sub == self._bnf_id:
+                        self.bnf_rules[self._bnf_id] = name
+                self._bnf_id = None
+
+
+def load_expected_html_data(html_path):
+    parser = _HtmlRefCollector()
+    parser.feed(Path(html_path).read_text(encoding='utf-8'))
+    return parser.toc_targets, parser.xref_targets, parser.bnf_rules
 
 
 def load_expected_html_refs(html_path):
-    parser = _HtmlRefCollector()
-    parser.feed(Path(html_path).read_text(encoding='utf-8'))
-    return parser.toc_targets, parser.xref_targets
+    toc_targets, xref_targets, _ = load_expected_html_data(html_path)
+    return toc_targets, xref_targets
 
 
 def auto_discover_html(pdf_path):
@@ -415,8 +459,30 @@ def span_is_prominent(span):
     )
 
 
+def bnf_rule_from_line(txt, spans):
+    """Return (rule_name, rule_num) if line is a real BNF rule definition header.
+
+    A BNF rule term line has exact form "<nonterminal> <N> =" (nothing after
+    "=") and prints the rule number <N> in a smaller subscript span than the
+    rule name. Prose and glossary lines like "x2=fa1." or "b1=s1 is a ..."
+    fail both checks.
+    """
+    m = BNF_RULE_LINE_RE.match(txt)
+    if not m or len(spans) < 2:
+        return None
+    rule_name, rule_num = m.group(1), m.group(2)
+    name_size = spans[0]['size']
+    has_sub_num = any(
+        s['text'].strip() == rule_num and s['size'] < name_size - 0.5
+        for s in spans[1:]
+    )
+    if not has_sub_num:
+        return None
+    return (rule_name, rule_num)
+
+
 def page_body_styled_lines(page):
-    """Return merged body lines as (y0, y1, text, is_head_start, is_head_cont).
+    """Return merged body lines as (y0, y1, text, is_head_start, is_head_cont, bnf_rule).
 
     Merges fragments on the same visual line before scoring span styling so a
     small non-bold span (e.g. a subscript or inline symbol) on a heading or
@@ -455,24 +521,24 @@ def page_body_styled_lines(page):
         prominent_chars = sum(
             len(''.join(s['text'].split())) for s in spans if span_is_prominent(s)
         )
-        max_size = max(s['size'] for s in spans)
         first_prominent = span_is_prominent(spans[0])
-        mostly_prominent = max_size >= 10.5 or (prominent_chars * 2 >= total_chars)
+        mostly_prominent = (prominent_chars * 2 >= total_chars)
         is_head_start = first_prominent and mostly_prominent
         is_head_cont = mostly_prominent
-        result.append((y0, y1, txt, is_head_start, is_head_cont))
+        bnf_rule = bnf_rule_from_line(txt, spans)
+        result.append((y0, y1, txt, is_head_start, is_head_cont, bnf_rule))
     return result
 
 
-def is_distinct_target_line(txt):
+def is_distinct_target_line(txt, bnf_rule=None):
     """Return True if a heading-styled line starts a distinct numbered/named target."""
     return bool(
-        SECTION_HEAD_LINE_RE.match(txt)
+        bnf_rule is not None
+        or SECTION_HEAD_LINE_RE.match(txt)
         or CHAPTER_OR_APPENDIX_START_RE.match(txt)
         or EXAMPLE_HEAD_RE.match(txt)
         or TITLED_HEAD_RE.match(txt)
         or SELMAO_HEAD_RE.match(txt)
-        or BNF_RULE_LINE_RE.match(txt)
     )
 
 
@@ -491,19 +557,19 @@ def page_targets(page):
         'example': set(),
         'titled': set(),
         'selmao': set(),
-        'bnf': set(),
+        'bnf': {},
     }
 
     def collect_block(start_idx):
         parts = [lines[start_idx][2]]
         j = start_idx + 1
         while j < len(lines):
-            ny0, _, ntxt, _, ncont = lines[j]
+            ny0, _, ntxt, _, ncont, nbnf = lines[j]
             if (
                 ncont
                 and '(p.' not in ntxt
                 and (ny0 - lines[j - 1][1]) < 6.0
-                and not is_distinct_target_line(ntxt)
+                and not is_distinct_target_line(ntxt, nbnf)
             ):
                 parts.append(ntxt)
                 j += 1
@@ -513,16 +579,15 @@ def page_targets(page):
 
     i = 0
     while i < len(lines):
-        _, _, txt, is_head_start, _ = lines[i]
+        _, _, txt, is_head_start, _, bnf_rule = lines[i]
 
         # BNF rule definitions print in regular font in WeasyPrint and bold in
-        # Prince, always anchored at the start of their definition line.
-        if '(p.' not in txt:
-            bm = BNF_RULE_LINE_RE.match(txt)
-            if bm:
-                targets['bnf'].add(bm.group(1))
-                i += 1
-                continue
+        # Prince, always as a standalone "<nonterminal> <sub>N</sub> =" line.
+        if bnf_rule is not None and '(p.' not in txt:
+            rule_name, rule_num = bnf_rule
+            targets['bnf'].setdefault(rule_num, set()).add(rule_name)
+            i += 1
+            continue
 
         if is_head_start:
             sm = SELMAO_HEAD_RE.match(txt)
@@ -588,7 +653,7 @@ def heading_block_matches(blocks, key, title=''):
     return True
 
 
-def target_on_page(targets, kind, key, title=''):
+def target_on_page(targets, kind, key, title='', expected_bnf_name=''):
     """Verify the target heading/caption/rule/selma'o prints on its own line on page."""
     if not targets:
         return False
@@ -597,12 +662,18 @@ def target_on_page(targets, kind, key, title=''):
     if kind == 'unnumbered':
         short = ' '.join(key.split()[:3]) if key else ''
         return bool(short) and any(starts_with_prefix(line, short) for line in targets['unnumbered'])
-    if kind in ('example', 'titled', 'selmao', 'bnf'):
+    if kind == 'bnf':
+        names = targets['bnf'].get(key)
+        if not names:
+            return False
+        return (expected_bnf_name in names) if expected_bnf_name else True
+    if kind in ('example', 'titled', 'selmao'):
         return key in targets[kind]
     return False
 
 
-def check_pdf(pdf_path, html_path=None, verbose=False):
+def analyze_pdf(pdf_path, html_path=None):
+    """Run all page-number checks on pdf_path and return structured results."""
     doc = pymupdf.open(pdf_path)
     total_pages = len(doc)
     body_cache = {}
@@ -620,6 +691,16 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
 
     def toc_heading_matches(pno, prefix, title):
         return target_on_page(get_targets(pno), toc_heading_kind(prefix), prefix, title)
+
+    resolved_html = Path(html_path) if html_path else auto_discover_html(pdf_path)
+    expected_toc = None
+    expected_xrefs = None
+    html_xrefs = None
+    html_bnf_rules = {}
+    if resolved_html and resolved_html.is_file():
+        html_toc, html_xrefs, html_bnf_rules = load_expected_html_data(resolved_html)
+        expected_toc = len(html_toc)
+        expected_xrefs = len(html_xrefs)
 
     toc_pages = find_toc_pages(doc)
     printed_toc_lines = count_printed_toc_lines(doc, toc_pages)
@@ -668,8 +749,13 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
         kind, key = parse_inline_xref_target(text)
         if kind == 'unknown':
             xref_unknown_shape.append((pno, nd, text, dest))
-        elif not target_on_page(get_targets(dest), kind, key, toc_titles.get(key, '')):
-            xref_target_missing.append((pno, nd, text, kind, key, dest))
+        else:
+            expected_bnf_name = html_bnf_rules.get(key, '') if kind == 'bnf' else ''
+            if not target_on_page(
+                get_targets(dest), kind, key, toc_titles.get(key, ''),
+                expected_bnf_name=expected_bnf_name,
+            ):
+                xref_target_missing.append((pno, nd, text, kind, key, dest))
 
     # Reconcile extracted inline xref count against raw body-text "(p. N)" count
     # and against the print HTML source when available.
@@ -685,23 +771,88 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
         if body_ref_pages[pno] != found_ref_pages[pno]:
             page_count_diffs.append((pno, body_ref_pages[pno], found_ref_pages[pno]))
 
-    resolved_html = Path(html_path) if html_path else auto_discover_html(pdf_path)
-    expected_toc = None
-    expected_xrefs = None
     missing_html_xref_targets = {}
-    if resolved_html and resolved_html.is_file():
-        html_toc, html_xrefs = load_expected_html_refs(resolved_html)
-        expected_toc = len(html_toc)
-        expected_xrefs = len(html_xrefs)
-        if any(x[1] is not None for x in xrefs):
-            missing = Counter(html_xrefs) - Counter(x[1] for x in xrefs)
-            if missing:
-                missing_html_xref_targets = dict(missing)
+    if html_xrefs is not None and any(x[1] is not None for x in xrefs):
+        missing = Counter(html_xrefs) - Counter(x[1] for x in xrefs)
+        if missing:
+            missing_html_xref_targets = dict(missing)
 
     empty_refs = []
     for pno in range(1, total_pages + 1):
         if EMPTY_PAGE_RE.search(get_body(pno)):
             empty_refs.append(pno)
+
+    doc.close()
+    toc_links_match_printed = (len(toc_entries) == printed_toc_lines)
+    toc_count_ok = toc_links_match_printed and (
+        (len(toc_entries) == expected_toc) if expected_toc is not None else (len(toc_entries) >= 350)
+    )
+    xref_count_ok = (len(xrefs) == expected_xrefs) if expected_xrefs is not None else (len(xrefs) >= 2000)
+    ok = (
+        toc_count_ok
+        and xref_count_ok
+        and not toc_unparsed
+        and not toc_dest_mismatches
+        and not toc_heading_mismatches
+        and not xref_mismatches
+        and not xref_target_missing
+        and not xref_unknown_shape
+        and not xref_blank_dests
+        and not page_count_diffs
+        and not missing_html_xref_targets
+        and not empty_refs
+    )
+    return {
+        'pdf_path': pdf_path,
+        'total_pages': total_pages,
+        'resolved_html': resolved_html,
+        'expected_toc': expected_toc,
+        'expected_xrefs': expected_xrefs,
+        'toc_pages': toc_pages,
+        'printed_toc_lines': printed_toc_lines,
+        'toc_entries': toc_entries,
+        'toc_unparsed': toc_unparsed,
+        'toc_dest_mismatches': toc_dest_mismatches,
+        'toc_heading_mismatches': toc_heading_mismatches,
+        'xrefs': xrefs,
+        'body_ref_pages': body_ref_pages,
+        'cross_page_split_p': cross_page_split_p,
+        'xref_mismatches': xref_mismatches,
+        'xref_target_missing': xref_target_missing,
+        'xref_unknown_shape': xref_unknown_shape,
+        'xref_blank_dests': xref_blank_dests,
+        'page_count_diffs': page_count_diffs,
+        'missing_html_xref_targets': missing_html_xref_targets,
+        'empty_refs': empty_refs,
+        'toc_links_match_printed': toc_links_match_printed,
+        'toc_count_ok': toc_count_ok,
+        'xref_count_ok': xref_count_ok,
+        'ok': ok,
+    }
+
+
+def check_pdf(pdf_path, html_path=None, verbose=False):
+    res = analyze_pdf(pdf_path, html_path=html_path)
+    total_pages = res['total_pages']
+    resolved_html = res['resolved_html']
+    expected_toc = res['expected_toc']
+    expected_xrefs = res['expected_xrefs']
+    toc_pages = res['toc_pages']
+    printed_toc_lines = res['printed_toc_lines']
+    toc_entries = res['toc_entries']
+    toc_unparsed = res['toc_unparsed']
+    toc_dest_mismatches = res['toc_dest_mismatches']
+    toc_heading_mismatches = res['toc_heading_mismatches']
+    xrefs = res['xrefs']
+    body_ref_pages = res['body_ref_pages']
+    cross_page_split_p = res['cross_page_split_p']
+    xref_mismatches = res['xref_mismatches']
+    xref_target_missing = res['xref_target_missing']
+    xref_unknown_shape = res['xref_unknown_shape']
+    xref_blank_dests = res['xref_blank_dests']
+    page_count_diffs = res['page_count_diffs']
+    missing_html_xref_targets = res['missing_html_xref_targets']
+    empty_refs = res['empty_refs']
 
     print(f'PDF: {pdf_path} ({total_pages} pages)')
     if resolved_html:
@@ -765,27 +916,7 @@ def check_pdf(pdf_path, html_path=None, verbose=False):
     if empty_refs:
         print('  Pages with empty "(p. )":', empty_refs[:10])
 
-    doc.close()
-    toc_links_match_printed = (len(toc_entries) == printed_toc_lines)
-    toc_count_ok = toc_links_match_printed and (
-        (len(toc_entries) == expected_toc) if expected_toc is not None else (len(toc_entries) >= 350)
-    )
-    xref_count_ok = (len(xrefs) == expected_xrefs) if expected_xrefs is not None else (len(xrefs) >= 2000)
-    ok = (
-        toc_count_ok
-        and xref_count_ok
-        and not toc_unparsed
-        and not toc_dest_mismatches
-        and not toc_heading_mismatches
-        and not xref_mismatches
-        and not xref_target_missing
-        and not xref_unknown_shape
-        and not xref_blank_dests
-        and not page_count_diffs
-        and not missing_html_xref_targets
-        and not empty_refs
-    )
-    return 0 if ok else 1
+    return 0 if res['ok'] else 1
 
 
 def main():

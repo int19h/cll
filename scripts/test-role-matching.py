@@ -7,6 +7,7 @@ classes), never by exact whole-attribute equality.
 
 Needs xsltproc. Does not build the book.
 """
+import ast
 from pathlib import Path
 import re
 import subprocess
@@ -104,12 +105,146 @@ class RoleMatchingTests(unittest.TestCase):
     def tearDownClass(cls):
         cls.temporary.cleanup()
 
-    def test_no_whole_value_role_match_in_common_xsl(self):
-        # Guard the whole class: common XSL must match @role by token
-        # membership, never by @role='...'.
-        xsl = (SOURCE / 'xml' / 'docbook2html_config_common.xsl').read_text(encoding='utf-8')
-        matches = re.findall(r"@role\s*=\s*['\"][^'\"]+['\"]", xsl)
-        self.assertEqual(matches, [], f'whole-value @role equality in common XSL: {matches}')
+    def test_no_whole_value_role_match_in_xsl_stylesheets(self):
+        # Guard the whole class across every project XSL file under xml/
+        # (excluding any vendored docbook-xsl tree).
+        # xml/docbook2html_config_headings.xsl is allowlisted by name because
+        # its index-scope template is verbatim upstream DocBook XSL using
+        # `$role = @role`.
+        allowlisted_xsl = {'docbook2html_config_headings.xsl'}
+        xsl_files = sorted(
+            p for p in (SOURCE / 'xml').rglob('*.xsl')
+            if not any(part.startswith('docbook-xsl') for part in p.relative_to(SOURCE / 'xml').parts)
+        )
+        self.assertTrue(xsl_files, 'expected project XSL files under xml/')
+
+        bad_xsl_patterns = [
+            ('whole-value @role comparison', re.compile(r"@role\s*!?=\s*['\"][^'\"]+['\"]")),
+            ('reversed whole-value @role comparison', re.compile(r"['\"][^'\"]+['\"]\s*!?=\s*@role\b")),
+            ('unpadded contains(@role, ...)', re.compile(r"contains\(\s*@role\b")),
+            ('bare role= attribute pattern', re.compile(r"(?<![@A-Za-z0-9_-])role\s*!?=\s*['\"][^'\"]+['\"]")),
+        ]
+
+        # Self-check the guard patterns against every spelling we want to catch.
+        for sample in (
+            "para[@role='foo']",
+            'para[@role="foo"]',
+            "para[@role = 'foo']",
+            "para['foo' = @role]",
+            "para[@role != 'foo']",
+            "para[contains(@role, 'foo')]",
+            "para[role='foo']",
+        ):
+            self.assertTrue(
+                any(pat.search(sample) for _, pat in bad_xsl_patterns),
+                f'guard failed to flag XPath sample: {sample}',
+            )
+
+        findings = []
+        for path in xsl_files:
+            if path.name in allowlisted_xsl:
+                continue
+            tree = ET.parse(path)
+            for el in tree.iter():
+                for attr in ('match', 'test', 'select'):
+                    expr = el.get(attr)
+                    if not expr:
+                        continue
+                    for label, pat in bad_xsl_patterns:
+                        for m in pat.finditer(expr):
+                            findings.append(f'{path.relative_to(SOURCE)} ({attr}): {label}: {m.group(0)!r}')
+        self.assertEqual(findings, [], 'Whole-value role checks in XSL:\n' + '\n'.join(findings))
+
+    def test_no_whole_value_role_or_class_tests_in_scripts(self):
+        # Guard non-test scripts against whole-value equality checks on DocBook
+        # @role or HTML @class attributes (Ruby, Python, XPath, CSS).
+        rb_patterns = [
+            ('Ruby whole-value role/class comparison', re.compile(r"""\[['"](?:role|class)['"]\]\s*[!=]=\s*['"]""")),
+            ('XPath whole-value @role/@class equality', re.compile(r"""@(?:role|class)\s*!?=\s*['"][^'"]+['"]""")),
+            ('CSS whole-value [role=...] selector', re.compile(r"""\[(?:role|class)=[^~|^\$*\]"']+""")),
+        ]
+        py_regex_pat = re.compile(
+            r"""(?:class|role)=\\?['"](?:\(\?:)?[A-Za-z0-9_|-]+\)?\\?['"]"""
+        )
+
+        def scan_python_source(src, rel):
+            found = []
+            tree = ast.parse(src, filename=rel)
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Compare):
+                    operands = [node.left, *node.comparators]
+                    has_attr_lookup = False
+                    has_str_const = False
+                    for op in operands:
+                        if (isinstance(op, ast.Call)
+                                and isinstance(op.func, ast.Attribute)
+                                and op.func.attr == 'get'
+                                and op.args
+                                and isinstance(op.args[0], ast.Constant)
+                                and op.args[0].value in ('role', 'class')):
+                            has_attr_lookup = True
+                        if (isinstance(op, ast.Subscript)
+                                and isinstance(op.slice, ast.Constant)
+                                and op.slice.value in ('role', 'class')):
+                            has_attr_lookup = True
+                        if isinstance(op, ast.Constant) and isinstance(op.value, str) and op.value:
+                            has_str_const = True
+                    if (has_attr_lookup and has_str_const
+                            and any(isinstance(o, (ast.Eq, ast.NotEq)) for o in node.ops)):
+                        found.append(f'{rel}:{node.lineno}: Python whole-value role/class comparison')
+                elif (isinstance(node, ast.Call)
+                        and isinstance(node.func, ast.Attribute)
+                        and isinstance(node.func.value, ast.Name)
+                        and node.func.value.id == 're'
+                        and node.func.attr in ('compile', 'search', 'match', 'fullmatch', 'sub', 'findall', 'finditer')
+                        and node.args
+                        and isinstance(node.args[0], ast.Constant)
+                        and isinstance(node.args[0].value, str)):
+                    m = py_regex_pat.search(node.args[0].value)
+                    if m:
+                        found.append(f'{rel}:{node.lineno}: Regex whole-value class/role attribute: {m.group(0)!r}')
+            return found
+
+        # Self-check script guards.
+        for sample in (
+            "node['role'] == 'bullets'",
+            'row["class"] == "jbo"',
+            "xpath('//div[@class=\"toc\"]')",
+            "css('[role=natlang]')",
+        ):
+            self.assertTrue(
+                any(pat.search(sample) for _, pat in rb_patterns),
+                f'Ruby guard failed to flag: {sample}',
+            )
+        for sample in (
+            "attrs.get('role') == 'parallel-text'",
+            "attrs['class'] != 'toc'",
+            're.compile(r\'<p class="(?:allowbreaks|twocolumn)">\')',
+        ):
+            self.assertTrue(
+                scan_python_source(sample, '<sample>'),
+                f'Python guard failed to flag: {sample}',
+            )
+
+        findings = []
+        for path in sorted((SOURCE / 'scripts').rglob('*')):
+            if not path.is_file():
+                continue
+            rel = path.relative_to(SOURCE).as_posix()
+            if path.name.startswith('test-') or path.name.startswith('test_'):
+                continue
+            if 'htmldiff' in path.parts:
+                continue
+            if path.suffix == '.rb':
+                for lineno, line in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
+                    if line.lstrip().startswith('#'):
+                        continue
+                    for label, pat in rb_patterns:
+                        for m in pat.finditer(line):
+                            findings.append(f'{rel}:{lineno}: {label}: {m.group(0)!r}')
+            elif path.suffix == '.py':
+                findings.extend(scan_python_source(path.read_text(encoding='utf-8'), rel))
+        self.assertEqual(findings, [], 'Whole-value role/class checks in scripts:\n' + '\n'.join(findings))
 
     def test_parallel_text_informaltable_role_tokens(self):
         self.assertEqual(self.by_id['tbl-plain'].get('class'), 'parallel-text informaltable')

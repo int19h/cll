@@ -3093,7 +3093,7 @@
       </tr>
       <tr>
         <td>
-          <valsi valid="maybe">nunkalte</valsi>
+          <valsi>nunkalte</valsi>
         </td>
         <td>
           <para>event-of-hunting</para>
@@ -3117,7 +3117,7 @@
       </tr>
       <tr>
         <td>
-          <valsi valid="maybe">nunte'a</valsi>
+          <valsi>nunte'a</valsi>
         </td>
         <td>
           <para>event-of-fearing</para>
@@ -4249,7 +4249,7 @@
       <colgroup />
       <tr>
         <td>
-          <valsi valid="maybe">pacraistu</valsi>
+          <valsi>pacraistu</valsi>
         </td>
         <td>
           <para>evil-superlative-site</para>
@@ -4301,7 +4301,7 @@
       <colgroup />
       <tr>
         <td>
-          <valsi valid="maybe">grutrceraso</valsi>
+          <valsi>grutrceraso</valsi>
         </td>
         <td>
           <para>
@@ -4481,7 +4481,7 @@
       <colgroup />
       <tr>
         <td>
-          <valsi valid="maybe">velmikce</valsi>
+          <valsi>velmikce</valsi>
         </td>
         <td>
           <para>treatment used by doctor</para>
@@ -5059,7 +5059,7 @@
       <colgroup />
       <tr>
         <td>
-          <valsi valid="maybe">nunji'a</valsi>
+          <valsi>nunji'a</valsi>
         </td>
         <td>
           <para>event-of-winning</para>
@@ -5067,7 +5067,7 @@
       </tr>
       <tr>
         <td>
-          <valsi valid="maybe">nunterji'a</valsi>
+          <valsi>nunterji'a</valsi>
         </td>
         <td>
           <para>event-of-losing</para>
@@ -5083,7 +5083,7 @@
       </tr>
       <tr>
         <td>
-          <valsi valid="maybe">nunpinxe</valsi>
+          <valsi>nunpinxe</valsi>
         </td>
         <td>
           <para>event-of-drinking</para>

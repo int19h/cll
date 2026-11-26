@@ -12,11 +12,15 @@ XML-aware: parses each chapter with expat, namespace-aware (comments and
 CDATA are handled correctly; start-tags may span lines; single- or
 double-quoted attributes; prefixed DocBook-namespace carriers such as
 db:para are recognized; foreign-namespace elements are never carriers).
-Undefined DTD entities (any XML-Name entity reference) are blanked
-length-preservingly before parsing, since only element structure and
-attributes matter here.
+Undefined DTD entities (any XML-Name entity reference) are replaced with
+non-whitespace characters (their HTML codepoint or '_') before parsing,
+without introducing ASCII whitespace, so only true XML whitespace splits
+role tokens.
 """
-import re, sys, datetime
+import datetime
+import html.entities
+import re
+import sys
 import xml.parsers.expat
 
 AUTHORITY = {'llg-ratified','bpfk-approved','checkpointed','de-facto','proposed','unsettled'}
@@ -67,7 +71,30 @@ def parse_condition(val):
 # XML Name grammar (ASCII plus \w's unicode letters): enough to blank any
 # entity reference the DTD might define, e.g. &foo-bar; -- but never
 # character references (&#...;) or the five predefined entities.
+ENTITY_DECL_RE = re.compile(r'<!ENTITY\s+([A-Za-z_:][-.:\w]*)\s')
 ENTITY_RE = re.compile(r'&(?!amp;|lt;|gt;|quot;|apos;|#)([A-Za-z_:][-.:\w]*);')
+XML_WS_RE = re.compile(r'[ \t\r\n]+')
+
+
+def split_xml_tokens(value):
+    return [tok for tok in XML_WS_RE.split(value) if tok]
+
+
+def resolve_undeclared_entities(text):
+    declared = set(ENTITY_DECL_RE.findall(text))
+
+    def repl(match):
+        name = match.group(1)
+        if name in declared:
+            return match.group(0)
+        cp = html.entities.name2codepoint.get(name)
+        if cp is not None:
+            ch = chr(cp)
+            if ch not in (' ', '\t', '\r', '\n', '<', '>', '&', '"', "'"):
+                return ch
+        return '_'
+
+    return ENTITY_RE.sub(repl, text)
 
 CARRIER_OF = {'status-note': 'para', 'status-mark': 'phrase'}
 DOCBOOK_NS = 'http://docbook.org/ns/docbook'
@@ -102,7 +129,7 @@ class Scanner:
         ancestor_id = self.id_stack[-1] if self.id_stack else ''
         xid = attrs.get('xml:id') or attrs.get(XML_NS + ' id')
         self.id_stack.append(xid or ancestor_id)
-        roles = set(attrs.get('role', '').split())
+        roles = set(split_xml_tokens(attrs.get('role', '')))
         cond = attrs.get('condition', '')
         line = self.p.CurrentLineNumber
         status_roles = roles & set(CARRIER_OF)
@@ -145,8 +172,9 @@ class Scanner:
         if self.id_stack: self.id_stack.pop()
 
     def run(self):
-        text = open(self.path, encoding='utf-8').read()
-        text = ENTITY_RE.sub(lambda m: ' ' * (len(m.group(0))), text)
+        with open(self.path, encoding='utf-8') as fh:
+            text = fh.read()
+        text = resolve_undeclared_entities(text)
         try:
             self.p.Parse(text, True)
         except xml.parsers.expat.ExpatError as e:

@@ -100,7 +100,7 @@ source = <<~XML
     </cmavo-entry>
     <cmavo-entry>
       <cmavo>mi<anchor xml:id="cell-anchor"/></cmavo>
-      <gismu>[jundi<phrase role="display-none">hidden</phrase>]</gismu>
+      <gismu>[jundi<phrase role=" extra display-none ">hidden</phrase>]</gismu>
       <description>anchors and hidden text do not count as cell text</description>
     </cmavo-entry>
     <cmavo-entry>
@@ -226,7 +226,7 @@ Dir.mktmpdir do |dir|
       check.(wrappers.size == 1, "a linked word has #{wrappers.size} wrappers, expected one")
     end
   end
-  hidden = doc.xpath("//informaltable//td[@class='gismu']").find { |td| td.at('.//phrase[@role="display-none"]') }
+  hidden = doc.xpath("//informaltable//td[@class='gismu']").find { |td| td.at('.//phrase[contains(concat(" ", normalize-space(@role), " "), " display-none ")]') }
   check.(hidden && hidden.xpath('.//glossterm').map(&:text) == ['jundi'] && hidden.text.include?('hidden'),
         'hidden text broke the bracketed link or was lost')
   check.(doc.xpath("//informaltable//td[@class='cmavo']").any? { |td| td.at('.//anchor') },

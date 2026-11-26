@@ -575,7 +575,7 @@
     </example>
     <para role="noindent">
       and so the three-part lujvo
-      <valsi valid="maybe">gerselzda</valsi>
+      <valsi>gerselzda</valsi>
       would have the place structure
     </para>
     <example xml:id="example-random-id-KqE4">
@@ -589,19 +589,19 @@
     </example>
     <para role="indent">
       However, although
-      <valsi valid="maybe">gerselzda</valsi>
+      <valsi>gerselzda</valsi>
       is a valid lujvo, it doesn't translate
       <quote>doghouse</quote>
       ; its first place is the dog, not the doghouse. Furthermore, it is more complicated than necessary;
       <valsi>gerzda</valsi>
       is simpler than
-      <valsi valid="maybe">gerselzda</valsi>.
+      <valsi>gerselzda</valsi>.
     </para>
     <para>From the reader's or listener's point of view, it may not always be obvious whether a newly met lujvo is symmetrical or asymmetrical, and if the latter, what kind of asymmetrical lujvo. If the place structure of the lujvo isn't given in a dictionary or elsewhere, then plausibility must be applied, just as in interpreting tanru.</para>
 
     <para>
       The lujvo
-      <valsi>karcykla</valsi>
+      <valsi valid="maybe">karcykla</valsi>
       , for example, is based on
       <jbophrase>karce klama</jbophrase>
       , or
@@ -616,7 +616,7 @@
     </example>
     <para role="indent">
       An asymmetrical interpretation of
-      <valsi>karcykla</valsi>
+      <valsi valid="maybe">karcykla</valsi>
       that is strictly analogous to the place structure of
       <valsi>gerzda</valsi>
       , equating the kl2 (destination) and ka1 (car) places, would lead to the place structure
@@ -879,7 +879,7 @@
       <indexterm type="general"><primary>lujvo place order</primary><secondary>rationale for standardization</secondary>
       </indexterm>
       If we aim to make understandable lujvo, then, we should make the order of places in the place structure follow some conventions. If this does not occur, very real ambiguities can turn up. Take for example the lujvo
-      <valsi>jdaselsku</valsi>
+      <valsi valid="maybe">jdaselsku</valsi>
       , meaning
       <quote>prayer</quote>. In the sentence
     </para>
@@ -1041,7 +1041,7 @@
   <section xml:id="section-n-part-lujvo">
     <title><anchor xml:id="c12s8" />lujvo with more than two parts.</title>
     <para>      <indexterm type="general"><primary>lujvo place order</primary><secondary>based on 3-or-more part veljvo</secondary>      </indexterm>      The theory we have outlined so far is an account of lujvo with two parts. But lujvo can contain more than two parts. An example is
-      <valsi>bavlamdei</valsi>
+      <valsi valid="maybe">bavlamdei</valsi>
       ,
       <quote>tomorrow</quote>
       : it is composed of the rafsi for
@@ -1053,7 +1053,7 @@
     </para>
     <para>
       The best way to approach such lujvo is to continue to classify them as based on binary tanru, the only difference being that the seltau or the tertau or both is itself a lujvo. So it is easiest to make sense of
-      <valsi>bavlamdei</valsi>
+      <valsi valid="maybe">bavlamdei</valsi>
       as having two components:
       <valsi>bavla'i</valsi>
       ,
@@ -1090,7 +1090,7 @@
     <para role="indent">
       <indexterm type="general"><primary>anomalous ordering of lujvo places</primary></indexterm>
       While symmetrical lujvo normally put any trailing tertau places before any seltau places, the day standard is a much less important concept than the day the tomorrow follows, in the definition of
-      <valsi>bavlamdei</valsi>. This is an example of how the guidelines presented for selecting and ordering lujvo places are just that, not laws that must be rigidly adhered to. In this case, we choose to rank places in order of relative importance. The resulting place structure is:
+      <valsi valid="maybe">bavlamdei</valsi>. This is an example of how the guidelines presented for selecting and ordering lujvo places are just that, not laws that must be rigidly adhered to. In this case, we choose to rank places in order of relative importance. The resulting place structure is:
     </para>
     <example xml:id="example-random-id-KEwW">
       <title><anchor xml:id="c12e8d3" /><indexterm type="general"><primary>tomorrow</primary></indexterm></title>
@@ -1189,7 +1189,7 @@
       This lujvo does not fit any of our existing molds: it is the second seltau place, st2, that is equivalent to one of the tertau places, namely f1. However, if we understand
       <valsi valid="maybe">ti'ifla</valsi>
       as an abbreviation for the lujvo
-      <valsi>selti'ifla</valsi>
+      <valsi valid="maybe">selti'ifla</valsi>
       , then we get the first places of seltau and tertau lined up. The place structure of
       <valsi>selti'i</valsi>
       is:
@@ -1230,7 +1230,7 @@
       Abbreviated lujvo like
       <valsi valid="maybe">ti'ifla</valsi>
       are more intuitive (for the lujvo-maker) than their more explicit counterparts like
-      <valsi>selti'ifla</valsi>
+      <valsi valid="maybe">selti'ifla</valsi>
       (as well as shorter). They don't require the coiner to sit down and work out the precise relation between the seltau and the tertau: he or she can just rattle off a rafsi pair. But should the lujvo get to the stage where a place structure needs to be worked out, then the precise relation does need to be specified. And in that case, such abbreviated lujvo form a trap in lujvo place ordering, since they obscure the most straightforward relation between the seltau and tertau. To give our lujvo-making guidelines as wide an application as possible, and to encourage analyzing the seltau-tertau relation in lujvo, lujvo like
       <valsi valid="maybe">ti'ifla</valsi>
       are given the place structure they would have with the appropriate SE added to the seltau.
@@ -1408,7 +1408,7 @@
 
       <indexterm type="general"><primary>shellfish</primary></indexterm>
       There are cases, however, where omitting a KE or KEhE rafsi can produce another lujvo, equally useful. For example,
-      <valsi valid="maybe">xaskemcakcurnu</valsi>
+      <valsi>xaskemcakcurnu</valsi>
       means
       <quote>oceanic shellfish</quote>
       , and has the veljvo
@@ -1527,7 +1527,7 @@
       <valsi valid="maybe">selkemdzukla</valsi>
       , with an explicit rafsi for
       <valsi>ke</valsi>. Similarly,
-      <valsi valid="maybe">nalbrablo</valsi>
+      <valsi>nalbrablo</valsi>
       (from
       <jbophrase>na'e barda bloti</jbophrase>) means
       <quote>non-big boat</quote>
@@ -1638,7 +1638,7 @@
       <indexterm type="general"><primary>lujvo place structure</primary><secondary>&quot;ni&quot; lujvo</secondary>
       </indexterm>
       For those abstractors which have a second place as well, the standard convention is to place this place after, rather than before, the places of the brivla being abstracted. The place structure of
-      <valsi valid="maybe">nilkla</valsi>
+      <valsi>nilkla</valsi>
       , the lujvo derived from
       <jbophrase>ni klama</jbophrase>
       , is the imposing:
@@ -1654,7 +1654,7 @@
     </example>
     <para role="indent">
       Abstractors can participate in the making of more complex lujvo as well. For example,
-      <valsi valid="maybe">nunsoidji</valsi>
+      <valsi>nunsoidji</valsi>
       , from the veljvo
     </para>
     <example role="interlinear-gloss-example" xml:id="example-random-id-RKcH">
@@ -1682,7 +1682,7 @@
     </para>
     <para>
       The lujvo
-      <valsi valid="maybe">nunsoidji</valsi>
+      <valsi>nunsoidji</valsi>
       is quite different from the ordinary asymmetric lujvo
       <valsi valid="maybe">soidji</valsi>
       , a
@@ -1700,7 +1700,7 @@
     </example>
     <para role="indent">
       A
-      <valsi valid="maybe">nunsoidji</valsi>
+      <valsi>nunsoidji</valsi>
       might be someone who is about to enlist, whereas a
       <valsi valid="maybe">soidji</valsi>
       might be a camp-follower.
@@ -1952,7 +1952,7 @@
     </example>
     <para role="noindent">
       can form the lujvo
-      <valsi>basygau</valsi>
+      <valsi valid="maybe">basygau</valsi>
       , with the place structure:
     </para>
     <example xml:id="example-random-id-byp8">
@@ -1968,7 +1968,7 @@
       where both
       <valsi>basti</valsi>
       and
-      <valsi>basygau</valsi>
+      <valsi valid="maybe">basygau</valsi>
       are translated
       <quote>replace</quote>
       in English, but represent different relations:
@@ -1995,7 +1995,7 @@
     </example>
     <para role="noindent">
       can give
-      <valsi valid="maybe">likygau</valsi>
+      <valsi>likygau</valsi>
       , meaning
       <quote>to liquefy</quote>
       :
@@ -2012,7 +2012,7 @@
     </example>
     <para role="indent">
       While
-      <valsi valid="maybe">likygau</valsi>
+      <valsi>likygau</valsi>
       correctly represents
       <quote>causes to be a liquid</quote>
       , a different lujvo based on
@@ -2054,7 +2054,7 @@
       is a cause, not a causer. Thus the place structure of
       <valsi valid="maybe">likyri'a</valsi>
       , a lujvo analogous to
-      <valsi valid="maybe">likygau</valsi>
+      <valsi>likygau</valsi>
       , is
     </para>
     <example xml:id="example-random-id-1HT3">
@@ -2072,7 +2072,7 @@
   </section>
   <section xml:id="section-anomalous-lujvo">
     <title><anchor xml:id="c12s14" />Anomalous lujvo</title>
-    <para>      Some lujvo that have been coined and actually employed in Lojban writing do not follow the guidelines expressed above, either because the places that are equivalent in the seltau and the tertau are in an unusual position, or because the seltau and tertau are related in a complex way, or both. An example of the first kind is      <valsi>jdaselsku</valsi>      , meaning      <quote>prayer</quote>      , which was mentioned in
+    <para>      Some lujvo that have been coined and actually employed in Lojban writing do not follow the guidelines expressed above, either because the places that are equivalent in the seltau and the tertau are in an unusual position, or because the seltau and tertau are related in a complex way, or both. An example of the first kind is      <valsi valid="maybe">jdaselsku</valsi>      , meaning      <quote>prayer</quote>      , which was mentioned in
       <xref linkend="section-order-of-places" />. The gismu places are:
     </para>
     <example xml:id="example-random-id-qJEQ">
@@ -2091,7 +2091,7 @@
       and
       <valsi>selsku</valsi>
       , the tertau of
-      <valsi>jdaselsku</valsi>
+      <valsi valid="maybe">jdaselsku</valsi>
       , has the place structure
     </para>
     <example xml:id="example-random-id-qW3w">
@@ -2143,12 +2143,12 @@
       <valsi valid="maybe">selseljdasku</valsi>. However, there is no need for the ugly
       <rafsi>selsel-</rafsi>
       prefix just to get the rules right:
-      <valsi>jdaselsku</valsi>
+      <valsi valid="maybe">jdaselsku</valsi>
       is a reasonable, if anomalous, lujvo.
     </para>
     <para>
       However, there is a further problem with
-      <valsi>jdaselsku</valsi>
+      <valsi valid="maybe">jdaselsku</valsi>
       , not resolvable by using
       <valsi valid="maybe">seljdasku</valsi>. No veljvo involving just the two gismu
       <valsi>lijda</valsi>
@@ -2160,7 +2160,7 @@
       As a result, both
       <valsi valid="maybe">seljdasku</valsi>
       and
-      <valsi>jdaselsku</valsi>
+      <valsi valid="maybe">jdaselsku</valsi>
       belong to the second class of anomalous lujvo: the veljvo doesn't really supply all that the lujvo requires.
     </para>
     <para>

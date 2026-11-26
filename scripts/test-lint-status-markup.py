@@ -34,6 +34,9 @@ CASES = [  # (name, xml, want_exit, want_in_stderr)
  ('crossed-phrase-note', '<phrase role="status-note" condition="status:de-facto">x</phrase>', 1, 'belongs on <para>'),
  ('bare-mark', '<phrase role="status-mark">x</phrase>', 1, 'status-mark without condition'),
  ('both-roles', '<para role="status-note status-mark" condition="status:de-facto">x</para>', 1, 'conflicting status roles'),
+ ('nbsp-literal-role', '<para role="status-note\u00a0extra" condition="status:de-facto">x</para>', 1, 'non-status element'),
+ ('nbsp-numeric-role', '<para role="status-note&#160;extra" condition="status:de-facto">x</para>', 1, 'non-status element'),
+ ('nbsp-undeclared-role', '<para role="status-note&nbsp;extra" condition="status:de-facto">x</para>', 1, 'non-status element'),
 ]
 
 def main():

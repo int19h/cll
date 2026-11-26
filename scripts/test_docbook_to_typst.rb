@@ -304,4 +304,28 @@ class DocBookTypstTest < Minitest::Test
     source = convert('<chapter id="c"><title>C</title><informaltable><colgroup/><tbody><tr><td class="cmavo"><para role="cmavo"><foreignphrase xml:lang="jbo"><glossterm role="valsi" linkend="valsi-mi">mi</glossterm></foreignphrase></para></td></tr></tbody></informaltable><glossary><title>G</title><glossdiv><title>M</title><glossentry xml:id="valsi-mi"><glossterm>mi</glossterm><glossdef><para>I</para></glossdef></glossentry></glossdiv></glossary></chapter>')
     assert_includes source, '#link(label("valsi-mi"))'
   end
+
+  def test_role_matching_uses_token_membership
+    source = convert(<<~XML)
+      <chapter id="c"><title>Roles</title>
+      <section id="s"><title>Sec</title>
+      <para>First.</para>
+      <para role=" extra noindent ">Flush <emphasis role=" extra bold ">strong</emphasis> <phrase role="extra X-SAMPA">ipa</phrase></para>
+      <para role=" extra display-none "><indexterm type="general"><primary>hiddenrole</primary></indexterm>Hidden</para>
+      <itemizedlist role=" extra bullets "><listitem><para>One</para></listitem></itemizedlist>
+      <itemizedlist role="not-bullets"><listitem><para>Two</para></listitem></itemizedlist>
+      <informaltable><tr class="extra jbo"><td>mi</td></tr><tr class="gloss extra"><td>I</td></tr><tr class="not-jbo"><td>plain</td></tr></informaltable>
+      </section>
+      </chapter>
+    XML
+    assert_includes source, '#cll-par(indent: false)[#text("Flush ")#strong[#text("strong")]'
+    assert_includes source, '#text(font: "DejaVu Sans Mono")[#text("ipa")]'
+    refute_includes source, 'Hidden'
+    refute_includes source, 'hiddenrole'
+    assert_includes source, '#cll-list(kind: "bullets"'
+    assert_includes source, '#cll-list(kind: "plain"'
+    assert_includes source, '#emph[#text("mi")]'
+    assert_includes source, '#strong[#text("I")]'
+    refute_includes source, '#emph[#text("plain")]'
+  end
 end

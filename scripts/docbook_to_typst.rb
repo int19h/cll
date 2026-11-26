@@ -27,7 +27,7 @@ class DocBookTypst
     @document.xpath('//indexterm').each do |n|
       next unless @index_types.include?(n['type'])
       # Hidden paragraphs and controls do not occur in the print output.
-      next if n.ancestors.any? { |a| a['role'] == 'display-none' || a.name == 'guibutton' }
+      next if n.ancestors.any? { |a| has_role?(a, 'display-none') || a.name == 'guibutton' }
       path = %w[primary secondary tertiary].filter_map { |name| n.at_xpath(name) }
       next if path.empty?
       key = JSON.generate([n['type'], *path.map { |p| plain(p) }])
@@ -93,6 +93,12 @@ class DocBookTypst
     node.children.reject { |n| (n.element? && except.include?(n.name)) || (block && n.text? && n.text.strip.empty?) }.map { |n| render(n) }.join
   end
 
+  def has_role?(node, *tokens)
+    return false unless node&.element?
+    roles = node['role'].to_s.split
+    tokens.any? { |token| roles.include?(token) }
+  end
+
   # Strip leading whitespace (and the gap after leading metadata nodes) so
   # the prose starts flush, as in print where HTML collapses the space.
   def trim_note_leading_edge(node)
@@ -103,7 +109,7 @@ class DocBookTypst
         child.content = child.text.lstrip
         leading = false unless child.text.empty?
       elsif child.element?
-        invisible = %w[indexterm anchor].include?(child.name) || child['role'] == 'display-none' || child.name == 'guibutton'
+        invisible = %w[indexterm anchor].include?(child.name) || has_role?(child, 'display-none') || child.name == 'guibutton'
         leading = false unless invisible
       end
     end
@@ -127,7 +133,7 @@ class DocBookTypst
         child.content = trailing ? child.text.rstrip : child.text.lstrip
         return true unless child.text.empty?
       elsif child.element?
-        next if %w[indexterm anchor guibutton].include?(child.name) || child['role'] == 'display-none'
+        next if %w[indexterm anchor guibutton].include?(child.name) || has_role?(child, 'display-none')
         return true if child.children.empty?
         return true if trim_list_paragraph_edge(child, trailing: trailing)
       end
@@ -136,7 +142,7 @@ class DocBookTypst
   end
 
   def styled(node, body)
-    role = node['role'].to_s
+    roles = node['role'].to_s.split
     lang = node['lang'].to_s
     if lang == 'zlm'
       body = "#text(font: \"Crisa\", size: 1.1em, weight: \"regular\", style: \"normal\")[#{body}]"
@@ -144,13 +150,13 @@ class DocBookTypst
       body = "#text(font: \"Noto Serif KR\")[#{body}]"
     elsif lang.start_with?('zh')
       body = "#text(font: \"Noto Serif SC\")[#{body}]"
-    elsif lang == 'jbo' || %w[jbo jbophrase pronunciation-jbo compound-cmavo-jbo].include?(role)
+    elsif lang == 'jbo' || (roles & %w[jbo jbophrase pronunciation-jbo compound-cmavo-jbo]).any?
       body = "#emph[#{body}]"
     end
-    body = "#strong[#{body}]" if %w[selbri gloss bold].include?(role)
-    body = "#text(size: 1.2em, weight: \"bold\")[#{body}]" if role == 'logical-vowel'
-    body = "#text(font: \"DejaVu Sans Mono\")[#{body}]" if %w[monospace X-SAMPA].include?(role)
-    if role.split.include?('status-mark')
+    body = "#strong[#{body}]" if (roles & %w[selbri gloss bold]).any?
+    body = "#text(size: 1.2em, weight: \"bold\")[#{body}]" if roles.include?('logical-vowel')
+    body = "#text(font: \"DejaVu Sans Mono\")[#{body}]" if (roles & %w[monospace X-SAMPA]).any?
+    if roles.include?('status-mark')
       mark = StatusLabels.describe(node['condition'], inline: true)
       if mark
         # Code-mode strings: markup-mode "..." would print as smart quotes.
@@ -234,8 +240,9 @@ class DocBookTypst
         span = cell['colspan'] == '0' ? width - x : [cell['colspan'].to_i, 1].max
         raise "Unsupported table rowspan at line #{cell.line}" if cell['rowspan'].to_i > 1
         body = children(cell)
-        body = "#emph[#{body}]" if row['class'] == 'jbo'
-        body = "#strong[#{body}]" if row['class'] == 'gloss' || row.parent.name == 'thead' || cell.name == 'th'
+        row_classes = row['class'].to_s.split
+        body = "#emph[#{body}]" if row_classes.include?('jbo')
+        body = "#strong[#{body}]" if row_classes.include?('gloss') || row.parent.name == 'thead' || cell.name == 'th'
         cells << "table.cell(x: #{x}, y: #{y}, colspan: #{span}, #{content(anchor(cell) + body)})"
         x += span
       end
@@ -266,7 +273,7 @@ class DocBookTypst
       return text.empty? ? '' : "#text(#{q(text)})"
     end
     return '' unless node.element?
-    return '' if node.name == 'guibutton' || node['role'] == 'display-none'
+    return '' if node.name == 'guibutton' || has_role?(node, 'display-none')
     @stats[node.name] += 1
     body = case node.name
     when 'book' then children(node, except: ['info'])
@@ -289,12 +296,13 @@ class DocBookTypst
         trim_list_paragraph_edge(node)
         trim_list_paragraph_edge(node, trailing: true)
       end
-      if %w[allowbreaks twocolumn].include?(node['role']) && plain(node).empty?
+      roles = node['role'].to_s.split
+      if (roles & %w[allowbreaks twocolumn]).any? && plain(node).empty?
         ''
       else
-        trim_note_leading_edge(node) if node['role'].to_s.split.include?('status-note')
+        trim_note_leading_edge(node) if roles.include?('status-note')
         body = anchor(node) + styled(node, children(node))
-        if node['role'].to_s.split.include?('status-note')
+        if roles.include?('status-note')
           note = StatusLabels.describe(node['condition'])
           if note
             "#cll-status(token: #{q(note.token)}, glyph: #{q(note.glyph)}, " \
@@ -303,7 +311,7 @@ class DocBookTypst
             "#cll-status[#{body}]\n"
           end
         else
-          indent = node.parent.name == 'section' && node['role'] != 'noindent' && node.previous_element&.name != 'title'
+          indent = node.parent.name == 'section' && !roles.include?('noindent') && node.previous_element&.name != 'title'
           "#cll-par(indent: #{indent})[#{body}]\n"
         end
       end
@@ -311,11 +319,11 @@ class DocBookTypst
       title = node.at_xpath('title')
       title_body = anchor(node) + (title ? children(title) : '')
       number = @numbers.fetch(node.path)
-      allow_breaks = node['role'] == 'allowbreaks' || node.previous_element&.[]('role') == 'allowbreaks'
+      allow_breaks = has_role?(node, 'allowbreaks') || has_role?(node.previous_element, 'allowbreaks')
       "#cll-example(#{q(number)}, breakable: #{allow_breaks})[#{title_body}][#{children(node, except: ['title'])}]\n"
     when 'informaltable', 'table' then table(node)
     when 'foreignphrase', 'phrase' then styled(node, children(node))
-    when 'emphasis' then node['role'] == 'bold' ? "#strong[#{children(node)}]" : "#emph[#{children(node)}]"
+    when 'emphasis' then has_role?(node, 'bold') ? "#strong[#{children(node)}]" : "#emph[#{children(node)}]"
     when 'quote' then "#text(\"“\")#{children(node)}#text(\"”\")"
     when 'subscript' then "#sub[#{children(node)}]"
     when 'superscript' then "#super[#{children(node)}]"
@@ -367,7 +375,7 @@ class DocBookTypst
       "#cll-gloss[#{anchor(node)}#{children(node.at_xpath('glossterm'))}][#{children(node.at_xpath('glossdef'))}]\n"
     when 'itemizedlist', 'orderedlist'
       items = node.xpath('./listitem').map { |li| content(anchor(li) + styled(li, children(li))) }
-      kind = node.name == 'orderedlist' ? 'numbered' : (node['role'] == 'bullets' ? 'bullets' : 'plain')
+      kind = node.name == 'orderedlist' ? 'numbered' : (has_role?(node, 'bullets') ? 'bullets' : 'plain')
       in_example = node.ancestors.any? { |parent| parent.name == 'example' }
       "#cll-list(kind: #{q(kind)}, in-example: #{in_example}, #{items.join(',')})\n"
     when 'simplelist' then simplelist(node)
@@ -396,7 +404,7 @@ class DocBookTypst
     else raise "Unsupported DocBook element: #{node.name} at line #{node.line}"
     end
     # A two-column hint applies to the following table, as in the Prince CSS.
-    if node.previous_element&.[]('role') == 'twocolumn'
+    if has_role?(node.previous_element, 'twocolumn')
       body = "#columns(2, gutter: 5mm)[#{body}]"
     end
     (%w[chapter article appendix section para simpara example glossentry bridgehead].include?(node.name) ? '' : anchor(node)) + body
@@ -411,12 +419,12 @@ class DocBookTypst
     raise 'Missing book info' unless info
     title = plain(info.at_xpath('title'))
     author = info.xpath('author/personname/*').map { |n| plain(n) }.join(' ')
-    credits = info.xpath('othercredit/orgname[not(@role="publication-notice")]').map { |n| plain(n) }
-    notice = info.at_xpath('othercredit/orgname[@role="publication-notice"]')&.dup
-    disclaimer = plain(notice&.at_xpath('phrase[@role="publication-disclaimer"]'))
-    notice&.xpath('phrase[@role="publication-disclaimer"]')&.remove
-    version = plain(info.at_xpath('releaseinfo/phrase[@role="release-version"]'))
-    date = plain(info.at_xpath('releaseinfo/phrase[@role="release-date"]'))
+    credits = info.xpath('othercredit/orgname[not(contains(concat(" ", normalize-space(@role), " "), " publication-notice "))]').map { |n| plain(n) }
+    notice = info.at_xpath('othercredit/orgname[contains(concat(" ", normalize-space(@role), " "), " publication-notice ")]')&.dup
+    disclaimer = plain(notice&.at_xpath('phrase[contains(concat(" ", normalize-space(@role), " "), " publication-disclaimer ")]'))
+    notice&.xpath('phrase[contains(concat(" ", normalize-space(@role), " "), " publication-disclaimer ")]')&.remove
+    version = plain(info.at_xpath('releaseinfo/phrase[contains(concat(" ", normalize-space(@role), " "), " release-version ")]'))
+    date = plain(info.at_xpath('releaseinfo/phrase[contains(concat(" ", normalize-space(@role), " "), " release-date ")]'))
     "// Generated from preprocessed DocBook. Do not edit.\n#import \"book.typ\": *\n" \
       "#show: cll-book.with(title: #{q(title)}, author: #{q(author)})\n" \
       "#cll-title(#{q(title)}, #{q(plain(info.at_xpath('subtitle')))}, #{q(author)}, #{tuple(credits)}, version: #{q(version)}, date: #{q(date)}, notice: #{q(plain(notice))}, disclaimer: #{q(disclaimer)})\n" \

@@ -34,6 +34,11 @@ As a result, <morphology>bf</morphology> is forbidden.
 
 A `valsi` gets its glossary definition from the dictionary export in `dictionary/all_words.xml`.
 Use `valsi` only for a word that you expect to find there, or mark it with `valid` as described below.
+Link a word only when its dictionary entry agrees with the meaning and place structure that the surrounding text gives.
+If the text builds or defines a different sense, or gives places that the dictionary entry omits or swaps, mark it `valid="maybe"` so the link does not contradict the passage (leave the link when the dictionary entry agrees or merely adds places).
+In running prose, a name stays `<cmevla>` even if the dictionary lists it (such as `.djordj.`, or `.jan.` whose dictionary entry means "Jean/Zhang" rather than "John", or an unchosen spelling variant such as `.meiris.`), unless it is Lojban vocabulary with its own dictionary entry whose meaning agrees, in which case it takes `<valsi>` (such as `.lojban.` and `.lojbangirz.` in chapter 4).
+In a hidden glossary word list (such as Appendix A's `role="display-none"` lists), every word is a `<valsi>`, names included: a name there links when it has a matching dictionary entry whose meaning agrees (as `teris.` does) and takes `valid="maybe"` when it has no entry (such as `.alis.`, `.dinas.`, `.elis.`, `.maikl.turni'anskis.`, `mulis.`, and `zo,is.`).
+Hidden glossary lists feed the glossary, not the index.
 A `valsi` inside `title`, `term`, `primary`, or `secondary` gets no glossary link and no index entry.
 A `jbophrase` in those elements gets no index entry.
 `scripts/merge.sh` defines only the `lojban-word` and `general` indexes, and neither of them collects `lojban-phrase` terms.
@@ -53,7 +58,7 @@ The `valid` attribute marks Lojban that is wrong or questionable on purpose.
 
 | Element | Values in use | Meaning |
 | --- | --- | --- |
-| `valsi` | `false`, `maybe` | `false`: a form that the text presents as failing: an ill-formed shape, a legal shape that is not a word, a form that breaks apart into other words (such as `tosmabru`) or parses as another kind of word (such as `djarspageti` as a lujvo), or a combination that standard grammar does not allow (such as `doinai`). `maybe`: a well-formed word that is not the form to look up, such as a word made up for an example or a non-canonical form (an alternative lujvo spelling such as `brivalsi`, or an unchosen candidate such as `lojbaugri` or `lojbangir`, even if the dictionary happens to list it). |
+| `valsi` | `false`, `maybe` | `false`: a form that the text presents as failing: an ill-formed shape, a legal shape that is not a word, a form that breaks apart into other words (such as `tosmabru`) or parses as another kind of word (a proposed lujvo such as `djarspageti` that parses as a fu'ivla), or a combination that standard grammar does not allow (such as `doinai`). `maybe`: a well-formed word that is not the form to look up, such as a word made up for an example, a non-canonical form (an alternative lujvo spelling such as `brivalsi`, or an unchosen candidate such as `lojbaugri` or `lojbangir`, even if the dictionary happens to list it), or a word whose dictionary entry contradicts the meaning or place structure that the text gives (such as `klamau` or `risnyjelca`). |
 | `cmevla` | `false`, `iffy` | `false`: the name is ill formed. `iffy`: the form is surprising or doubtful. |
 | `jbophrase` | `false`, `iffy` | `false`: the phrase is ungrammatical. `iffy`: the phrase is doubtful. |
 | `jbo` (inside an example) | `false`, `iffy` | The same meanings for a line of an example. |
@@ -66,7 +71,7 @@ The `valid` attribute marks Lojban that is wrong or questionable on purpose.
 
 Mark an ungrammatical use of real words on the phrase or the line, not on the word.
 Chapter 13 writes `<jbophrase valid="false">le li'o</jbophrase>` and leaves `<valsi>li'o</valsi>` plain, so the word keeps its glossary link.
-A single-token compound such as `doinai` is one `valsi`, so the mark goes on it.
+A single-token compound with its own entry, such as `doinai`, is one `valsi`, so the mark goes on it.
 
 The attribute has these effects:
 
@@ -382,6 +387,7 @@ The Typst and ConTeXt converters handle some of them too.
 | `phrase role="IPA"`, `phrase role="X-SAMPA"` | Marks a phonetic transcription |
 | `phrase role="logical-vowel"` | One of the vowels A, E, O, U that stand for logical connectives |
 | `itemizedlist role="bullets"` | Shows bullets, which other lists do not |
+| `informaltable role="parallel-text"` | Lets a multi-page parallel-text passage in Appendix A (`chapters/a01.xml`) break across pages in print while keeping other Appendix A `informaltable` elements (such as gloss tables inside `<example>`) unbroken. Put it on every `<informaltable>` outside `<example>` in Appendix A (put any non-parallel-text table inside `<example>`, or use `<table>`); `scripts/lint-parallel-text.py` enforces this and rejects the role outside Appendix A or on other elements. |
 | `informaltable class="vertsep"` | Separates rows with dotted lines |
 | `informaltable class="noborder"` | Removes the vertical cell borders |
 | `informaltable class="rotated"` | Removes the padding of nested tables, for a table laid out by rows, as in chapter 17 |

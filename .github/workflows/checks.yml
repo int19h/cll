@@ -91,6 +91,12 @@ jobs:
         run: python3 scripts/test-lint-status-markup.py
       - name: Status rendering and profiling reservation
         run: python3 scripts/test-status-rendering.py
+      - name: Role token matching in XSL stylesheets
+        run: python3 scripts/test-role-matching.py
+      - name: Parallel-text table lint self-test
+        run: python3 scripts/test-lint-parallel-text.py
+      - name: Appendix A parallel-text table roles
+        run: python3 scripts/lint-parallel-text.py chapters/*.xml
       - name: Browser MathJax version and integrity
         run: python3 scripts/test-html-mathjax.py
       - name: PEG word-form grammar in chapter 21 matches the machine-readable grammar
@@ -246,12 +252,14 @@ jobs:
       - name: Install PDF runtime libraries
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq python3-venv libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core fonts-linuxlibertine poppler-utils
+          sudo apt-get install -y -qq python3-venv python3-pymupdf libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core fonts-linuxlibertine poppler-utils
       - name: Install the pinned WeasyPrint and MathJax dependencies
         run: ./scripts/install-weasyprint.sh
       - name: Render math and linked index fixtures
         run: |
           python3 scripts/test-build-version.py
+          python3 scripts/test-check-pdf-page-numbers.py
+          python3 scripts/test-check-pdf-page-breaks.py
           PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-weasyprint.py
           PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-pdf-bookmarks.py
           PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-status-pagination.py

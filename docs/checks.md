@@ -43,6 +43,9 @@ python3 scripts/test-check-cross-reference.py
 python3 scripts/lint-status-markup.py chapters/*.xml
 python3 scripts/test-lint-status-markup.py
 python3 scripts/test-status-rendering.py
+python3 scripts/test-role-matching.py
+python3 scripts/test-lint-parallel-text.py
+python3 scripts/lint-parallel-text.py chapters/*.xml
 python3 scripts/test-html-mathjax.py
 python3 scripts/check-peg-grammar.py
 python3 scripts/test-check-peg-grammar.py
@@ -107,6 +110,9 @@ The book check joins `scripts/header.xml`, every `chapters/*.xml` file, and a cl
 | Status markup | The `role="status-note"` and `condition` markup follows [status-markup.md](status-markup.md) | `python3 scripts/lint-status-markup.py chapters/*.xml` |
 | Status markup self-test | The lint above, on fixtures | `python3 scripts/test-lint-status-markup.py` |
 | Status rendering | The XSL turns each `condition` into per-status classes, data attributes and the text label for every status; the CSS gives each status its own glyph; no stylesheet or build script sets a DocBook `profile.*` parameter, which would put status notes at risk of being profiled out | `python3 scripts/test-status-rendering.py` |
+| Role token matching | `xml/docbook2html_config_common.xsl` matches `@role` by whitespace-separated token membership and preserves extra role tokens as HTML classes | `python3 scripts/test-role-matching.py` |
+| Parallel-text lint self-test | The lint below, on fixtures | `python3 scripts/test-lint-parallel-text.py` |
+| Parallel-text roles | Every `<informaltable>` outside `<example>` in Appendix A carries `role="parallel-text"`, and `role="parallel-text"` is not used elsewhere | `python3 scripts/lint-parallel-text.py chapters/*.xml` |
 | Browser MathJax | The HTML loads one pinned MathJax script with an integrity hash | `python3 scripts/test-html-mathjax.py` |
 | PEG grammar | The word-form grammar printed in chapter 21 matches `tests/fixtures/peg-morphology.peg` rule for rule | `python3 scripts/check-peg-grammar.py` |
 | PEG grammar self-test | The check above detects corrupted copies | `python3 scripts/test-check-peg-grammar.py` |
@@ -202,11 +208,14 @@ This job installs the pinned WeasyPrint and MathJax tools under `build/weasyprin
 ```sh
 ./scripts/install-weasyprint.sh
 python3 scripts/test-build-version.py
+python3 scripts/test-check-pdf-page-numbers.py
 PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-weasyprint.py
 PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-pdf-bookmarks.py
 PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-status-pagination.py
 PYTHONDONTWRITEBYTECODE=1 build/weasyprint-tools/venv/bin/python scripts/test-print-pagination.py
 ```
+
+The page-number checker self-test (`scripts/test-check-pdf-page-numbers.py`) needs PyMuPDF (`python3-pymupdf`) and tests exact heading, caption, and BNF line matching and annotation-independent ToC discovery on synthetic PDFs.
 
 The bookmark test renders a small title page with the print stylesheets and checks outline levels and parents.
 When `prince` and `pymupdf` are installed, the same test checks Prince.
@@ -274,7 +283,7 @@ Check the result for any example that you changed.
 
 These tests do not run in the `checks` workflow:
 
-- `python3 scripts/check-pdf-page-numbers.py build/cll-weasyprint.pdf build/cll.pdf` checks every Table of Contents page number and inline `(p. N)` cross-reference against actual destination pages and headings in a finished WeasyPrint or Prince PDF. `python3 scripts/test-check-pdf-page-numbers.py` exercises its section-heading matching and annotation-independent ToC counting on synthetic PDFs. Both need PyMuPDF.
+- `python3 scripts/check-pdf-page-numbers.py build/cll-weasyprint.pdf build/cll.pdf` checks every Table of Contents page number and inline `(p. N)` cross-reference against actual destination pages and headings in a finished WeasyPrint or Prince PDF. It needs PyMuPDF. (Its unit test, `scripts/test-check-pdf-page-numbers.py`, runs in `weasyprint-smoke`.)
 - `python3 scripts/check-pdf-page-breaks.py build/cll-weasyprint.pdf` audits stranded section headings, split example lead-ins, and page fill ratios in a finished WeasyPrint or Prince PDF (with optional `--html` and `--compare`). It needs PyMuPDF.
 - `python3 scripts/test-context-indexes.py build/cll-context.pdf` checks the printed indexes of a finished ConTeXt PDF. It needs PyMuPDF.
 - `python3 scripts/test-context-references.py build/cll-context.pdf` checks the printed cross-references of a finished ConTeXt PDF. It needs PyMuPDF.

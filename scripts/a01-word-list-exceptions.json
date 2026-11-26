@@ -1,0 +1,4 @@
+{
+  "rule": "Reviewed agreement-rule exceptions for Appendix A hidden word lists (docs/markup-tags.md). Maps section xml:id to { word: reason } for words that have a dictionary/all_words.xml entry whose meaning or place structure disagrees with the passage. Listed words carry valid=\"maybe\" even though the dictionary defines them; every other word's valid=\"maybe\" mark is derived solely from dictionary/all_words.xml.",
+  "sections": {}
+}

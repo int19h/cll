@@ -37,8 +37,14 @@ Use `valsi` only for a word that you expect to find there, or mark it with `vali
 Link a word only when its dictionary entry agrees with the meaning and place structure that the surrounding text gives.
 If the text builds or defines a different sense, or gives places that the dictionary entry omits or swaps, mark it `valid="maybe"` so the link does not contradict the passage (leave the link when the dictionary entry agrees or merely adds places).
 In running prose, a name stays `<cmevla>` even if the dictionary lists it (such as `.djordj.`, or `.jan.` whose dictionary entry means "Jean/Zhang" rather than "John", or an unchosen spelling variant such as `.meiris.`), unless it is Lojban vocabulary with its own dictionary entry whose meaning agrees, in which case it takes `<valsi>` (such as `.lojban.` and `.lojbangirz.` in chapter 4).
-In a hidden glossary word list (such as Appendix A's `role="display-none"` lists), every word is a `<valsi>`, names included: a name there links when it has a matching dictionary entry whose meaning agrees (as `teris.` does) and takes `valid="maybe"` when it has no entry (such as `.alis.`, `.dinas.`, `.elis.`, `.maikl.turni'anskis.`, `mulis.`, and `zo,is.`).
-Hidden glossary lists feed the glossary, not the index.
+In a hidden glossary word list (Appendix A's `role="display-none"` lists), every word is a `<valsi>`, names included: a name there links when it has a matching dictionary entry whose meaning agrees (as `teris.` does) and takes `valid="maybe"` when it has no entry (such as `.alis.`, `.dinas.`, `.elis.`, `.maikl.turni'anskis.`, `mulis.`, and `zo,is.`).
+Hidden glossary lists feed the glossary, not the index: `scripts/xml_preprocess.rb` keeps glossary links for linked `<valsi>` inside `role="display-none"` containers and suppresses `<indexterm>` generation for hidden elements, so every output format agrees at the source.
+In Appendix A (`chapters/a01.xml`), each section that directly owns a `role="parallel-text"` table carries its own `<para role="display-none">` list directly after `<title>`, sorted alphabetically and holding every word used in that section's Lojban column (`<thead>` and `<tbody>`; words shared by two passages appear in both lists).
+Compound cmavo follow the same rule stated below for single-token compounds (such as `.uinai`, `naku`, and `doinai`): a compound cmavo with its own entry in `dictionary/all_words.xml` stays one `<valsi>` in its dictionary spelling, while a compound cmavo with no dictionary entry is split morphologically into its component cmavo.
+Names keep their dots (preserving dotted forms used in the text, or dotside `.name.` when written bare).
+When a syllable comma is the only difference from a dictionary entry (such as `kla,ma` for `klama`), the list uses the dictionary spelling.
+The `valid="maybe"` mark is derived rather than carried forward: a word takes `valid="maybe"` if and only if it has no entry in `dictionary/all_words.xml` or is listed for that section in the reviewed agreement-rule exceptions file `scripts/a01-word-list-exceptions.json` (for a word whose dictionary entry contradicts the passage).
+Run `ruby scripts/lint-a01-word-lists.rb chapters/a01.xml` to check the lists against the passages, and `ruby scripts/lint-a01-word-lists.rb --write chapters/a01.xml` to regenerate them after editing a text or updating `dictionary/all_words.xml`.
 A `valsi` inside `title`, `term`, `primary`, or `secondary` gets no glossary link and no index entry.
 A `jbophrase` in those elements gets no index entry.
 `scripts/merge.sh` defines only the `lojban-word` and `general` indexes, and neither of them collects `lojban-phrase` terms.
@@ -383,7 +389,7 @@ The Typst and ConTeXt converters handle some of them too.
 | `para role="noindent"` | Removes the first-line indent. The chapters also use `role="indent"`, which no stylesheet or converter treats specially. |
 | `para role="allowbreaks"` | Lets the paragraph, and a table or example right after it, break across pages |
 | `para role="twocolumn"` | Sets the following block in two columns |
-| `para role="display-none"` | Hides the paragraph |
+| `para role="display-none"` | Hides the paragraph. Used in Appendix A (`chapters/a01.xml`) for each parallel-text section's hidden glossary word list (glossary only, no index entries; kept in sync with `scripts/lint-a01-word-lists.rb`). |
 | `phrase role="IPA"`, `phrase role="X-SAMPA"` | Marks a phonetic transcription |
 | `phrase role="logical-vowel"` | One of the vowels A, E, O, U that stand for logical connectives |
 | `itemizedlist role="bullets"` | Shows bullets, which other lists do not |

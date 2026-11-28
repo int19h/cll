@@ -481,7 +481,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: intent - indecision - rejection/refusal.</definition>
+      <definition>attitudinal: intent, with indecision ({cu'i}) and unintentionality ({nai}).</definition>
       <definitionid>1354</definitionid>
       <notes>See also {termu'i}, {terzu'e}, {seljdi}, {selcu'a}.</notes>
       <glossword word="intent"/>
@@ -2430,7 +2430,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>evidential: I expect - I experience - I remember.</definition>
+      <definition>evidential: I experience this.</definition>
       <definitionid>1362</definitionid>
       <glossword word="I experience"/>
     </valsi>
@@ -2472,7 +2472,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>evidential: I expect - I experience - I remember.</definition>
+      <definition>evidential: I remember this.</definition>
       <definitionid>1363</definitionid>
       <glossword word="I remember"/>
     </valsi>
@@ -73366,7 +73366,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>interval event contour: in the aftermath of ...; since ...; retrospective/perfect              |     |----.</definition>
+      <definition>event contour: the situation is over. As a tag, the situation is already over at the tagged event.</definition>
       <definitionid>1366</definitionid>
       <glossword word="perfect"/>
       <glossword word="retrospective"/>
@@ -83071,7 +83071,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>elidable terminator: end linked sumti in specified description.</definition>
+      <definition>elidable terminator: closes the linked arguments of a tanru unit.</definition>
       <definitionid>1380</definitionid>
       <glossword word="end linked sumti"/>
     </valsi>
@@ -84640,7 +84640,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>discursive: newly introduced information - previously introduced information.</definition>
+      <definition>discursive: previously introduced information.</definition>
       <definitionid>1390</definitionid>
       <glossword word="old information"/>
     </valsi>
@@ -87590,7 +87590,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>convert any single word to BY.</definition>
+      <definition>forms a letteral from the preceding single word or bound unit. It binds in left-to-right order after any earlier magic word acts.</definition>
       <definitionid>1399</definitionid>
       <glossword word="word to lerfu"/>
     </valsi>
@@ -87934,7 +87934,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal contour: start emotion - continue emotion - end emotion.</definition>
+      <definition>attitudinal contour: the feeling continues.</definition>
       <definitionid>1404</definitionid>
       <glossword word="continue emotion"/>
     </valsi>
@@ -87967,7 +87967,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal contour: start emotion - continue emotion - end emotion.</definition>
+      <definition>attitudinal contour: the feeling ends.</definition>
       <definitionid>1405</definitionid>
       <glossword word="end emotion"/>
     </valsi>
@@ -89867,7 +89867,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>interval event contour: during ...; continuative                                    |-----|.</definition>
+      <definition>event contour: the situation is in progress. As a tag, the situation is in progress throughout the tagged event.</definition>
       <definitionid>1413</definitionid>
       <glossword word="as" sense="while"/>
       <glossword word="continuative"/>
@@ -90299,7 +90299,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$(s) (mass normally, but 1 individual/jo'u possible) discuss(es)/talk(s) about topic/subject $x_{2}$.</definition>
+      <definition>$x_{1}$(s) (normally a group, or one individual or individuals linked with jo'u) discuss(es)/talk(s) about topic/subject $x_{2}$.</definition>
       <definitionid>106</definitionid>
       <notes>Also chat, converse.  See also {bacru}, {cusku}, {darlu}, {tavla}.</notes>
       <glossword word="converse" sense="talk about"/>
@@ -90722,7 +90722,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>2-word letteral/shift: the word following indicates a new font (e.g. italics, manuscript).</definition>
+      <definition>letteral shift: the following letteral names a font for the current letteral string. It replaces the previous font shift.</definition>
       <definitionid>1423</definitionid>
       <glossword word="font shift"/>
     </valsi>
@@ -91513,7 +91513,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>pseudo-quantifier binding a variable within an abstraction that represents an open place.</definition>
+      <definition>pro-sumti: marks an open place within an abstraction, especially a property with {ka}.</definition>
       <definitionid>1427</definitionid>
       <examples>
         <example>
@@ -92646,7 +92646,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>ciste modal, 1st place used in scalar negation    in system/context ...</definition>
+      <definition>ciste modal, first place: in a system. The tagged sumti names the system that includes the event.</definition>
       <definitionid>1430</definitionid>
       <glossword word="in system"/>
     </valsi>
@@ -94641,7 +94641,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$ (mass) is a system interrelated by structure $x_{2}$ among components $x_{3}$ (set) displaying $x_{4}$ (ka).</definition>
+      <definition>$x_{1}$ (group) is a system interrelated by structure $x_{2}$ among components $x_{3}$ (set) displaying $x_{4}$ (ka).</definition>
       <definitionid>160</definitionid>
       <notes>$x_1$ (or $x_3$) is synergistic in $x_4$; also network; $x_2$ also relations, rules; $x_3$ also elements (set completely specified); $x_4$ systemic functions/properties. See also cmavo list {ci'e}, {cmima}, {girzu}, {gunma}, {stura}, {tadji}, {munje}, {farvi}, {ganzu}, {judri}, {julne}, {klesi}, {morna}, {tcana}.</notes>
       <glossword word="system"/>
@@ -96720,7 +96720,7 @@
       </user>
       <definition>$x_{1}$ is a structure word of grammatical class $x_{2}$, with meaning/function $x_{3}$ in usage (language) $x_{4}$.</definition>
       <definitionid>191</definitionid>
-      <notes>$x_4$ may be a specific usage (with an embedded language place) or a massified language description; $x_3$ and $x_4$ may be merely an example of cmavo usage or refer to an actual expression; cmavo list, if physical object (= (loi) {ma'oste}); referring to the mental construct (e.g. propose adding a new cmavo to the cmavo list = {ma'orpoi}, {ma'orselcmi}, {ma'orselste}).  See also {gismu}, {lujvo}, {gerna}, {smuni}, {valsi}.</notes>
+      <notes>$x_4$ may be a specific usage (with an embedded language place) or a description of languages as a group; $x_3$ and $x_4$ may be merely an example of cmavo usage or refer to an actual expression; cmavo list, if physical object (= (loi) {ma'oste}); referring to the mental construct (e.g. propose adding a new cmavo to the cmavo list = {ma'orpoi}, {ma'orselcmi}, {ma'orselste}).  See also {gismu}, {lujvo}, {gerna}, {smuni}, {valsi}.</notes>
       <glossword word="structure word"/>
     </valsi>
     <valsi word="cmavrba'e" type="fu'ivla">
@@ -98721,7 +98721,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>interval event contour: at the starting point of ...; initiative                   &gt;|&lt;    |.</definition>
+      <definition>event contour: the situation is beginning. As a tag, the situation begins at the tagged event.</definition>
       <definitionid>1442</definitionid>
       <glossword word="initiative"/>
       <examples>
@@ -98893,7 +98893,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>interval event contour: at the instantaneous point of ...; achievative/perfective; point event   &gt;|&lt;.</definition>
+      <definition>event contour: the situation occurs at a single point. As a tag, the situation occurs at the tagged point.</definition>
       <definitionid>1444</definitionid>
       <glossword word="achievative"/>
       <glossword word="perfective" sense="achievative"/>
@@ -99127,7 +99127,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>interval event contour: at the ending point of ... even if not done; cessative      |  &gt;&lt; |.</definition>
+      <definition>event contour: the situation is stopping. As a tag, the situation stops at the tagged event, whether or not it is complete.</definition>
       <definitionid>1446</definitionid>
       <glossword word="cessative"/>
     </valsi>
@@ -100795,7 +100795,7 @@
         <username>nejni-marji</username>
         <realname>Matthew</realname>
       </user>
-      <definition>universial famyma'o: terminates the most recently opened construct or clause.</definition>
+      <definition>universal terminator: closes the most recently opened construct. With {xi ro}, it closes every open construct in the current sentence.</definition>
       <definitionid>64395</definitionid>
       <notes>cu'au looks back for the most recently opened construct that has not been terminated, and emulates whatever {famyma'o} would terminate it. It can also be subscripted with {xi}, and will terminate that many times. Note that that means grammatical function is being put in a {xi} clause, so be careful when using it. Additionally, cu'au {xi} {ro} will terminate all the way up to the last sentence-starting word (.i mi klama lo zarci pe lo pendo be mi cu'au xi ro -&gt; .i mi klama lo zarci pe lo pendo be mi cu'au-be'o-ku-ge'u-ku-vau). This will also terminate to sentences started in {lu} (will NOT emulate li'u UNLESS used multiple times), {ni'o}, and {no'i}. It will NOT emulate {le'u}. In addition to {ro}, it can be subscripted with {da'a}, which terminates to the sentence level, minus 1. In the previous example, this would just leave the {vau} remaining, and allow you to continue to add to the place structure of {klama}.</notes>
     </valsi>
@@ -101983,7 +101983,7 @@
         <username>arj</username>
         <realname>Arnt Richard Johansen</realname>
       </user>
-      <definition>quantifier selbri: convert all but one to cardinal selbri; $x_1$ is a set with all but one members $x_2$.</definition>
+      <definition>cardinality selbri: $x_1$ is the group formed from a set $x_2$ with one fewer member than the comparison set $x_4$. One or more of its members are $x_3$.</definition>
       <definitionid>67761</definitionid>
     </valsi>
     <valsi word="da'amoi" type="cmavo-compound">
@@ -102498,7 +102498,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>discursive: supposing - in fact.</definition>
+      <definition>discursive: in fact.</definition>
       <definitionid>1463</definitionid>
       <glossword word="in fact"/>
     </valsi>
@@ -104426,7 +104426,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>event contour for a temporary halt and ensuing pause in a process.</definition>
+      <definition>event contour: the situation is on pause. As a tag, the pause encompasses the tagged event.</definition>
       <definitionid>1469</definitionid>
       <glossword word="pausative"/>
     </valsi>
@@ -104861,7 +104861,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>detri modal, 1st place (for letters)              dated ... ; attaches date stamp.</definition>
+      <definition>detri modal, first place: dated. The tagged sumti gives the date.</definition>
       <definitionid>1471</definitionid>
       <glossword word="dated"/>
     </valsi>
@@ -106003,7 +106003,7 @@
       </user>
       <definition>$x_{1}$ is the date [day,{week},{month},year] of event/state $x_{2}$, at location $x_{3}$, by calendar $x_{4}$.</definition>
       <definitionid>283</definitionid>
-      <notes>(time units in $x_1$ are specified as numbers separated by pi'e or are unit values massified with joi); See also cmavo list {de'i}, {djedi}, {jeftu}, {masti}, {nanca}, {tcika}.</notes>
+      <notes>(time units in $x_1$ are specified as numbers separated by pi'e or are unit values grouped with joi); See also cmavo list {de'i}, {djedi}, {jeftu}, {masti}, {nanca}, {tcika}.</notes>
       <glossword word="date"/>
     </valsi>
     <valsi word="detseldejykarda" type="lujvo">
@@ -106081,7 +106081,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>event contour for resumption of a paused process.</definition>
+      <definition>event contour: the situation is resuming after a pause. As a tag, the situation resumes at the tagged event.</definition>
       <definitionid>1477</definitionid>
       <glossword word="resumptitive"/>
     </valsi>
@@ -108097,7 +108097,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>discursive: generously - parsimoniously.</definition>
+      <definition>discursive: parsimoniously or narrowly construed.</definition>
       <definitionid>1485</definitionid>
       <glossword word="even" sense="implying an extreme example"/>
       <glossword word="parsimoniously"/>
@@ -110018,9 +110018,9 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: competence - incompetence/inability.</definition>
+      <definition>attitudinal: exhortation ({nai}: discouragement).</definition>
       <definitionid>1504</definitionid>
-      <notes>See also {kakne}, {certu}.</notes>
+      <notes>See also {.e'ende}, {.e'i}, {.e'o}, {.e'u}.</notes>
       <glossword word="competence"/>
     </valsi>
     <valsi unofficial="true" word="e'e'e" type="experimental cmavo">
@@ -110142,9 +110142,9 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: feeling constraint - independence - challenge/resistance against constraint.</definition>
+      <definition>attitudinal: command ({nai}: release from command).</definition>
       <definitionid>1506</definitionid>
-      <notes>See also {selri'u}, {seljimte}.</notes>
+      <notes>See also {.e'inde}, {minde}, {.e'e}, {.ei}.</notes>
       <glossword word="constraint" sense="attitudinal"/>
     </valsi>
     <valsi word=".ei" type="cmavo">
@@ -110817,7 +110817,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: request - negative request.</definition>
+      <definition>attitudinal: request ({nai}: offer).</definition>
       <definitionid>1509</definitionid>
       <notes>See also {cpedu}, {pikci}.</notes>
       <glossword word="please"/>
@@ -111213,7 +111213,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: suggestion - abandon suggest - warning.</definition>
+      <definition>attitudinal: suggestion ({cu'i}: no suggestion, {nai}: warning).</definition>
       <definitionid>1511</definitionid>
       <notes>See also {stidi}, {kajde}.</notes>
       <glossword word="suggestion"/>
@@ -112362,7 +112362,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>unconditional end of text; outside regular grammar; used for computer input.</definition>
+      <definition>end of text. A reader or parser stops at an effective {fa'o}. An earlier word-level operator can capture it.</definition>
       <definitionid>1522</definitionid>
       <glossword word="end of text"/>
     </valsi>
@@ -113135,7 +113135,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>binary mathematical operator: nth root of; inverse power [a to the 1/b power].</definition>
+      <definition>mathematical operator: the nth root of a number. The default root is the square root.</definition>
       <definitionid>1527</definitionid>
       <glossword word="nth root of" sense="mekso operator"/>
     </valsi>
@@ -113218,7 +113218,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>location event contour tense: perfective in space; beyond the place of ...</definition>
+      <definition>spatial event contour: the situation is in its aftermath at the reference location. A tagged sumti supplies that location.</definition>
       <definitionid>1529</definitionid>
       <glossword word="beyond" sense="location event contour"/>
       <glossword word="past" sense="in space"/>
@@ -113291,7 +113291,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>location tense interval modifier: never in space; objectively quantified tense.</definition>
+      <definition>spatial frequency: nowhere in the relevant region.</definition>
       <definitionid>1534</definitionid>
       <glossword word="nowhere"/>
     </valsi>
@@ -113320,7 +113320,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>location tense interval modifier: always in space; objectively quantified tense.</definition>
+      <definition>spatial frequency: everywhere in the relevant region.</definition>
       <definitionid>1536</definitionid>
       <glossword word="everywhere"/>
     </valsi>
@@ -117460,7 +117460,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>upper-case letteral shift.</definition>
+      <definition>letteral shift to uppercase for the rest of the current letteral string, until another shift of the same kind or {na'a}.</definition>
       <definitionid>1566</definitionid>
       <glossword word="upper-case shift"/>
     </valsi>
@@ -117550,7 +117550,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal modifier/honorific: hauteur - equal rank - meekness; used with one of lower rank.</definition>
+      <definition>honorific modifier: the referent is of lower rank than the speaker ({cu'i}: equal rank, {nai}: higher rank).</definition>
       <definitionid>1567</definitionid>
       <notes>See also {gapru}, {cnita}.</notes>
       <glossword word="hauteur"/>
@@ -117572,7 +117572,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal modifier/honorific: hauteur - equal rank - meekness; used with one of equal rank.</definition>
+      <definition>honorific modifier: the referent is of the same rank as the speaker.</definition>
       <definitionid>1568</definitionid>
       <glossword word="equal rank"/>
     </valsi>
@@ -117604,7 +117604,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal modifier/honorific: hauteur - equal rank - meekness; used with one of higher rank.</definition>
+      <definition>honorific modifier: the referent is of higher rank than the speaker.</definition>
       <definitionid>1569</definitionid>
       <glossword word="meekness"/>
     </valsi>
@@ -118879,7 +118879,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>shift letterals to Greek alphabet.</definition>
+      <definition>letteral shift to the Greek alphabet for the rest of the current letteral string, until another shift of the same kind or {na'a}.</definition>
       <definitionid>1579</definitionid>
       <glossword word="Greek shift"/>
     </valsi>
@@ -119135,7 +119135,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: all but tanru-internal forethought connective medial marker.</definition>
+      <definition>forethought connective separator: introduces the second part of a forethought connection.</definition>
       <definitionid>1582</definitionid>
       <glossword word="connective medial"/>
       <examples>
@@ -124444,9 +124444,9 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$ is a mass/team/aggregate/whole, together composed of components $x_{2}$, considered jointly.</definition>
+      <definition>$x_{1}$ is a group (traditionally called mass) of components $x_{2}$ considered jointly.</definition>
       <definitionid>421</definitionid>
-      <notes>A description in $x_1$ indicates of mass property(ies) displayed by the mass; masses may reveal properties not found in the individual set members that are massified, which themselves are not necessarily relevant to the mass property implicit in this bridi.  See also {bende}, {girzu}, {pagbu}, cmavo list {loi}, {lei}, {lai}, {ciste}, {cmima}, {kansa}, {tinci}, {mulgunma}.</notes>
+      <notes>A group can have properties that its members lack. Its members can also have properties that the group lacks. See also {bende}, {girzu}, {pagbu}, cmavo list {loi}, {lei}, {lai}, {ciste}, {cmima}, {kansa}, {tinci}, {mulgunma}.</notes>
       <glossword word="jointly" sense="partially specified"/>
       <glossword word="mass" sense="aggregate"/>
     </valsi>
@@ -125051,7 +125051,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: belief - skepticism - disbelief.</definition>
+      <definition>attitudinal: disbelief.</definition>
       <definitionid>1622</definitionid>
       <glossword word="disbelief"/>
     </valsi>
@@ -125281,7 +125281,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: agreement - disagreement.</definition>
+      <definition>attitudinal: disagreement.</definition>
       <definitionid>1625</definitionid>
       <glossword word="disagreement"/>
     </valsi>
@@ -125460,7 +125460,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: togetherness - privacy.</definition>
+      <definition>attitudinal: privacy.</definition>
       <definitionid>1615</definitionid>
       <glossword word="privacy"/>
     </valsi>
@@ -127251,7 +127251,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>convert tense/modal (tagged) place to 1st place; 1st place moves to extra FA place (fai).</definition>
+      <definition>conversion: promotes a tagged place to the first place and moves the old first place to {fai}. Without a tag, lets a concrete argument stand for an abstraction involving it.</definition>
       <definitionid>1648</definitionid>
       <glossword word="modal conversion"/>
       <examples>
@@ -127571,7 +127571,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$ (person/mass) wars against $x_{2}$ over territory/matter $x_{3}$; $x_{1}$ is at war with $x_{2}$.</definition>
+      <definition>$x_{1}$ (person/group) wars against $x_{2}$ over territory/matter $x_{3}$; $x_{1}$ is at war with $x_{2}$.</definition>
       <definitionid>439</definitionid>
       <notes>See also {bradi}, {gunta}, {panpi}, {damba}, {darlu}.</notes>
       <glossword word="war"/>
@@ -128584,7 +128584,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$ is between/among set of points/bounds/limits $x_{2}$ (set)/amidst mass $x_{2}$ in property $x_{3}$ (ka).</definition>
+      <definition>$x_{1}$ is between/among set of points/bounds/limits $x_{2}$ (set) or amidst group $x_{2}$ in property $x_{3}$ (ka).</definition>
       <definitionid>455</definitionid>
       <notes>$x_2$ (a complete set, generally ordered) defines the bounds/limits/range for $x_1$.  See also se {vasru}, {nenri}, {zvati}, {cpana}, {snuji}, {senta}, {bitmu}, {jimte}, {kuspe}, {jibni}, {lamji}, {sruri}, {vanbi}, {midju}, {cmima}, {setca}.</notes>
       <glossword word="between"/>
@@ -129722,7 +129722,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>vocative: roger (ack) - negative acknowledge; I didn't hear you.</definition>
+      <definition>vocative: unsuccessful receipt. “What did you say?”</definition>
       <definitionid>1656</definitionid>
       <glossword word="negative acknowledge"/>
     </valsi>
@@ -129904,7 +129904,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>abstractor: truth-value abstractor; $x_{1}$ is truth value of [bridi] under epistemology $x_{2}$.</definition>
+      <definition>truth-value abstraction: $x_1$ is the truth value of the bridi under epistemology $x_2$. Readings differ on whether intermediate degrees are included.</definition>
       <definitionid>1661</definitionid>
       <glossword word="truth abstract"/>
     </valsi>
@@ -130167,7 +130167,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>shift letterals to Hebrew alphabet.</definition>
+      <definition>letteral shift to the Hebrew alphabet for the rest of the current letteral string, until another shift of the same kind or {na'a}.</definition>
       <definitionid>1658</definitionid>
       <glossword word="Hebrew shift"/>
     </valsi>
@@ -130467,7 +130467,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>discursive: truth - falsity.</definition>
+      <definition>discursive: falsely.</definition>
       <definitionid>1660</definitionid>
       <glossword word="falsity"/>
     </valsi>
@@ -133037,9 +133037,9 @@
         <username>gusnikantu</username>
         <realname>guskant</realname>
       </user>
-      <definition>change version/dialect of parser</definition>
+      <definition>dialect header: the following text uses the named dialect.</definition>
       <definitionid>63952</definitionid>
-      <notes>{do'u} is the elidable terminator. The morphology and the grammar of cmevla/sumti/selbri following {jo'au} should conform to the version 134 of the page ``BPFK Section: PEG Morphology Algorithm'' on the website lojban.org and the official grammar so that a {jo'au} clause forms a free modifier compatible with every version/dialect of lojban parser: for example, ``jo'au jie bu'' and ``jo'au xy xi xei'' are not meaningful clauses. As a standard usage, {jo'au} clause appears at the very beginning of the whole text, just as the inverse of the usage of {fa'o}. The scope of the meaning of {jo'au} clause spans over the following part until the next {jo'au} clause appears. Optionally, if the first {jo'au} clause appears in the middle of a text, the meaning of it spans from the beginning of the text until the next {jo'au} clause appears. Examples of meaning: jo'au cylyly xi papipa (official yacc and jbofi'e http://www.lojban.org/jboski/ ); jo'au camxes (current peg http://camxes.lojban.org/ ); jo'au iocixes (zasni gerna of la xorxes https://skami2.iocikun.jp/lojban/zasniGerna , http://www.lojban.org/tiki/zasni+gerna ); jo'au zantufa xi nopipapa (zantufa version 0.11 http://guskant.github.io/gerna_cipra/zantufa-0.11.html ); jo'au ilmentufa xi renopavopi'epapapi'erevo (ilmentufa version 2014-11-24 http://mw.lojban.org/extensions/ilmentufa/camxes-exp.html , https://github.com/Ilmen-vodhr/ilmentufa ); jo'au fancylojban (fancylojban http://mw.lojban.org/lmw/fancylojban , http://mw.lojban.org/lmw/ce_ki_tau_jau .); jo'au gadganzu (gadri reinterpretation/reassignment proposal, http://mw.lojban.org/papri/zipcpi:_Yet_another_gadri_article ; no grammar changes, only semantic)</notes>
+      <notes>Names the dialect at the start of the text. {do'u} can close the header. The header applies until the next {jo'au}.</notes>
       <glossword word="Lojban parser dialect"/>
       <glossword word="Lojban parser version"/>
     </valsi>
@@ -133115,7 +133115,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>non-logical connective: mixed conjunction; "and" meaning "mixed together", forming a mass.</definition>
+      <definition>non-logical connective: “in a group with.” Joins references into a group.</definition>
       <definitionid>1677</definitionid>
       <glossword word="in a mass with"/>
     </valsi>
@@ -133270,7 +133270,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>shift letterals to Arabic alphabet.</definition>
+      <definition>letteral shift to the Arabic alphabet for the rest of the current letteral string, until another shift of the same kind or {na'a}.</definition>
       <definitionid>1675</definitionid>
       <glossword word="Arabic shift"/>
     </valsi>
@@ -133359,7 +133359,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>non-logical connective: in common with; along with (unmixed).</definition>
+      <definition>non-logical connective: “in common with.” Joins references in one sumti that still refers to the individuals together.</definition>
       <definitionid>1676</definitionid>
       <glossword word="in common with"/>
     </valsi>
@@ -134267,7 +134267,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal modifier: certainty - uncertainty - impossibility.</definition>
+      <definition>attitudinal modifier: uncertainty.</definition>
       <definitionid>1688</definitionid>
       <glossword word="maybe" sense="uncertainty"/>
       <glossword word="perhaps" sense="uncertainty"/>
@@ -138145,7 +138145,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>pro-sumti: relativized sumti (object of relative clause).</definition>
+      <definition>relative pro-sumti: refers to the thing that the relative clause describes and marks its place inside the clause.</definition>
       <definitionid>1702</definitionid>
       <glossword word="relativized it"/>
     </valsi>
@@ -139075,7 +139075,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>discursive: repeating - continuing.</definition>
+      <definition>discursive: continuing with new material.</definition>
       <definitionid>1707</definitionid>
       <glossword word="continuing"/>
     </valsi>
@@ -140651,7 +140651,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$ (mass/si'o) is a class/category/subgroup/subset within $x_{2}$ with defining property $x_{3}$ (ka).</definition>
+      <definition>$x_{1}$ (group/si'o) is a class/category/subgroup/subset within $x_{2}$ with defining property $x_{3}$ (ka).</definition>
       <definitionid>585</definitionid>
       <notes>Also taxon, type, kind, classification, species, genus, family, order, phylum.  See also cmavo list {le'a}, {cmima}, {jutsi}, {ciste}, {girzu}, {lanzu}, {vrici}.</notes>
       <glossword word="category" sense="class"/>
@@ -143039,7 +143039,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>elidable terminator: end description, modal, or negator sumti; often elidable.</definition>
+      <definition>elidable terminator: ends a description, a modal without an explicit argument, or a negation term. After a tag, it separates the tag from a following selbri.</definition>
       <definitionid>1726</definitionid>
       <glossword word="end sumti"/>
     </valsi>
@@ -143915,7 +143915,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$ [mass of ideas, customs, skills, arts] is culture of nation/ethos $x_{2}$ (mass); $x_{1}$ is ethnic.</definition>
+      <definition>$x_{1}$ [group of ideas, customs, skills, arts] is culture of nation/ethos $x_{2}$ (group); $x_{1}$ is ethnic.</definition>
       <definitionid>615</definitionid>
       <notes>(note that $x_2$ is NOT individual; culture is what is shared among people and is not an individual trait).  See also cmavo list {ka'u}, cmavo list {ku'u}, {natmi}, {cecmu}.</notes>
       <glossword word="culture"/>
@@ -143946,7 +143946,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$ is a room of/in structure $x_{2}$ surrounded by partitions/walls/ceiling/floor $x_{3}$ (mass/jo'u).</definition>
+      <definition>$x_{1}$ is a room of/in structure $x_{2}$ surrounded by partitions/walls/ceiling/floor $x_{3}$ (group/jo'u).</definition>
       <definitionid>616</definitionid>
       <notes>Also chamber.  See also {bitmu}, {canlu}, {zdani}.</notes>
       <glossword word="room"/>
@@ -144246,7 +144246,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>elidable terminator: end NOI relative clause; always elidable, but preferred in complex clauses.</definition>
+      <definition>elidable terminator: closes a relative clause. Use it where omission obscures or changes the clause boundary.</definition>
       <definitionid>1730</definitionid>
       <glossword word="end relative clause"/>
     </valsi>
@@ -144805,7 +144805,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>name descriptor: the one(s) called ... ; takes name or selbri description.</definition>
+      <definition>name article: the thing or things the speaker names with a predicate or a string of name words.</definition>
       <definitionid>1733</definitionid>
       <glossword word="that named"/>
       <examples>
@@ -144891,7 +144891,7 @@
         <username>djeikyb</username>
         <realname>Jacob Thomas Errington</realname>
       </user>
-      <definition>start grammatical name quotation; the quoted text is an identifier and must be grammatical on its own.</definition>
+      <definition>opens a grammatical name quotation. {li'u} closes it. The quotation refers to what the text names.</definition>
       <definitionid>38146</definitionid>
       <notes>Used to make more complex names where simple {la} doesn't apply, e.g. some book/song titles. Artibrary non-lojban text can be quoted with {la'o}. See also {lai'e} of LAhE, {la'ai} of LOhU and {la'o} of ZOI for naming cmavo.</notes>
       <glossword word="name quote" sense="grammatical lojban text"/>
@@ -145352,7 +145352,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>name descriptor: the mass of individual(s) named ... ; takes name or selbri description.</definition>
+      <definition>group name article: a group whose members share the name supplied by the predicate or name words.</definition>
       <definitionid>1742</definitionid>
       <glossword word="the mass of named"/>
     </valsi>
@@ -145868,7 +145868,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$ (mass) is a family with members including $x_{2}$ bonded/tied/joined according to standard $x_{3}$.</definition>
+      <definition>$x_{1}$ (group) is a family with members including $x_{2}$ bonded/tied/joined according to standard $x_{3}$.</definition>
       <definitionid>641</definitionid>
       <notes>Also clan, tribe; $x_2$ is in $x_1$, a member of $x_1$ ({selylanzu} for reordered places); relative (= {lazmi'u} - xy mintu y'y leka cmima da poi lanzu).  See also {natmi}, {cmima}, {girzu}, {jutsi}, {klesi}.</notes>
       <glossword word="family"/>
@@ -145879,7 +145879,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>delimited non-Lojban name; the resulting quote sumti is treated as a name.</definition>
+      <definition>delimited name. Uses the same delimiters as {zoi} and refers to what the quoted text names.</definition>
       <definitionid>1739</definitionid>
       <glossword word="the non-Lojban named"/>
     </valsi>
@@ -145889,7 +145889,7 @@
         <username>daniel</username>
         <realname>Daniel Brockman</realname>
       </user>
-      <definition>single-word non-Lojban name; quotes a single non-Lojban word delimited by pauses and treats it as a name</definition>
+      <definition>single-word name: quotes one following word as a name. Pauses delimit it in speech and whitespace delimits it in writing.</definition>
       <definitionid>16347</definitionid>
       <notes>See also {la'o}, {zo'oi}.</notes>
       <glossword word="1-word non-Lojban name"/>
@@ -146585,7 +146585,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>non-veridical descriptor: the one(s) described as ...</definition>
+      <definition>specific article: the thing or things the speaker has in mind and describes as fitting the predicate.</definition>
       <definitionid>1744</definitionid>
       <glossword word="the described"/>
       <examples>
@@ -146619,7 +146619,7 @@
         <username>daniel</username>
         <realname>Daniel Brockman</realname>
       </user>
-      <definition>replace recent mistakenly uttered text</definition>
+      <definition>closes an error correction. On its own, acknowledges a mistake without specifying the repair.</definition>
       <definitionid>16350</definitionid>
       <notes>The {lo'ai} ... {sa'ai} ... {le'ai} replacement construct asks the listener to replace the text after {lo'ai} with the text after {sa'ai}.  The order {sa'ai} ... {lo'ai} ... {le'ai} is also allowed, and either or both parts can be omitted and thus left up to context.  When both parts are omitted, the word {le'ai} on its own indicates that a mistake was made while leaving all the details up to context. It is also possible to attach SAI to a le'ai construct: le'ai {dai} (or le'ai {da'oi} ko'a) indicates that someone else made a mistake; le'ai {pei} asks whether someone else made a mistake; and {sai}, {ru'e} and {cu'i} can be used to indicate the importance of the substitution. Furthermore, le'ai {nai} can be used to explicitly deny mistakes instead of acknowledging them (compare "sic").</notes>
       <glossword word="end mistake quote"/>
@@ -146736,7 +146736,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>non-veridical descriptor: the stereotype of those described as ...</definition>
+      <definition>stereotype article: traditionally describes the speaker’s stereotype of what the predicate describes. Its interpretation is unsettled.</definition>
       <definitionid>1754</definitionid>
       <glossword word="the stereotypical"/>
     </valsi>
@@ -146775,7 +146775,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>non-veridical descriptor: the mass of individual(s) described as ...</definition>
+      <definition>specific group article: a group whose members the speaker has in mind and describes as fitting the predicate.</definition>
       <definitionid>1761</definitionid>
       <glossword word="the mass described"/>
     </valsi>
@@ -146796,7 +146796,7 @@
         <username>spheniscine</username>
         <realname>Jonathan</realname>
       </user>
-      <definition>anaphoric mass gadri: start a description of a mass/group/constituency mentioned earlier in the text/conversation, viewed as a whole</definition>
+      <definition>anaphoric group article: refers to a previously mentioned group viewed as a whole.</definition>
       <definitionid>67139</definitionid>
       <notes>Part of the "gadganzu proposal" for the article system.</notes>
       <glossword word="anaphoric mass descriptor"/>
@@ -146816,7 +146816,7 @@
         <username>spheniscine</username>
         <realname>Jonathan</realname>
       </user>
-      <definition>demonstrative mass gadri; start a definite description that refers to a mass/group/constituency in the shared frame-of-reference, viewed as a whole</definition>
+      <definition>demonstrative group article: refers to a group in the shared frame of reference, viewed as a whole.</definition>
       <definitionid>66346</definitionid>
       <notes>Part of the "gadganzu proposal" for the article system.</notes>
       <glossword word="demonstrative mass descriptor"/>
@@ -147507,7 +147507,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>end quote of questionable or out-of-context text; not elidable.</definition>
+      <definition>required terminator: the first {le'u} after a {lo'u} opener closes that quotation.</definition>
       <definitionid>1759</definitionid>
       <glossword word="end error quote"/>
     </valsi>
@@ -148738,9 +148738,9 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>descriptor: the one, which (is / does) ... / those, which (are / do) ...</definition>
+      <definition>generic article: one or more things that fit the predicate, as supplied by context.</definition>
       <definitionid>1777</definitionid>
-      <notes>Terminated with {ku}. Under the xorlo reform, {lo} converts a selbri to a sumti in a generic way. In particular, lo broda = {zo'e} noi broda.</notes>
+      <notes>Terminated with {ku}. {lo broda} refers as {zo'e noi ke'a broda} does. It has no default inner or outer quantifier.</notes>
       <glossword word="that, which"/>
     </valsi>
     <valsi word="lo'a" type="cmavo">
@@ -148749,7 +148749,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>shift letterals to Lojban (Roman) alphabet.</definition>
+      <definition>letteral shift to the Lojban alphabet for the rest of the current letteral string, until another shift of the same kind or {na'a}.</definition>
       <definitionid>1778</definitionid>
       <glossword word="Latin shift"/>
       <glossword word="Lojban shift"/>
@@ -148772,7 +148772,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>veridical descriptor: the typical one(s) who really is(are) ...</definition>
+      <definition>typicality article: traditionally describes the typical example of what fits the predicate. Its interpretation is unsettled.</definition>
       <definitionid>1779</definitionid>
       <glossword word="the typical"/>
     </valsi>
@@ -148821,7 +148821,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>veridical descriptor: the set of those that really are ..., treated as a set.</definition>
+      <definition>generic set article: a context-supplied set whose members fit the predicate.</definition>
       <definitionid>1780</definitionid>
       <glossword word="the set really is"/>
     </valsi>
@@ -148831,7 +148831,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>veridical descriptor: the mass of individual(s) that is(are) ...</definition>
+      <definition>generic group article: a group whose members fit the predicate. Context supplies the group.</definition>
       <definitionid>1783</definitionid>
       <glossword word="the mass really is"/>
     </valsi>
@@ -148855,7 +148855,7 @@
         <username>spheniscine</username>
         <realname>Jonathan</realname>
       </user>
-      <definition>generalized mass gadri; start a description of a generalization of some mass/group/constituency viewed as a whole</definition>
+      <definition>generalizing group article: describes a group in general, viewed as a whole.</definition>
       <definitionid>67138</definitionid>
       <notes>Part of the "gadganzu proposal" for the article system. http://mw.lojban.org/papri/zipcpi:_Yet_another_gadri_article</notes>
       <glossword word="generalized mass descriptor"/>
@@ -148866,7 +148866,7 @@
         <username>spheniscine</username>
         <realname>Jonathan</realname>
       </user>
-      <definition>essentialist mass gadri; start a description of an essential characterization of some mass/group/constituency viewed as a whole</definition>
+      <definition>essentialist group article: describes the ideal model of a group viewed as a whole.</definition>
       <definitionid>66345</definitionid>
       <notes>Part of the "gadganzu proposal" for the article system.</notes>
       <glossword word="essentialist mass descriptor"/>
@@ -149308,9 +149308,9 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>start questionable/out-of-context quote; text should be Lojban words, but needn't be grammatical.</definition>
+      <definition>opens a quotation of Lojban words that need no grammatical structure. The first {le'u} closes it.</definition>
       <definitionid>1782</definitionid>
-      <notes>Terminated by {le'u}.</notes>
+      <notes>The first {le'u} closes the quotation even if a magic word precedes it.</notes>
       <glossword word="error quote"/>
     </valsi>
     <valsi word="lu" type="cmavo">
@@ -149337,7 +149337,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>the members of the set/components of the mass; converts another description type to individuals.</definition>
+      <definition>sumti qualifier: refers to the individual members of a group or set.</definition>
       <definitionid>1785</definitionid>
       <glossword word="the individuals of"/>
     </valsi>
@@ -149632,7 +149632,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>the mass composed of; converts another description type to a mass composed of the members.</definition>
+      <definition>sumti qualifier: forms a group from the members or individuals that its argument supplies.</definition>
       <definitionid>1788</definitionid>
       <glossword word="the mass composed of"/>
     </valsi>
@@ -152777,7 +152777,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>convert sumti to selbri/tanru element; $x_{1}$ is specific to [sumti] in aspect $x_{2}$.</definition>
+      <definition>converts a sumti into a tanru unit with place structure: $x_1$ is/are among the referents of the sumti.</definition>
       <definitionid>1799</definitionid>
       <glossword word="sumti to selbri"/>
       <examples>
@@ -153051,7 +153051,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>cmene modal, 1st place (requires quote)           with name ...; so-called ...</definition>
+      <definition>cmene modal, first place: with the name given by the tagged sumti.</definition>
       <definitionid>1801</definitionid>
       <glossword word="with name"/>
     </valsi>
@@ -153135,7 +153135,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>digit/number: less than.</definition>
+      <definition>quantifier: less than. The default is {ro}, so {me'i} alone means “less than all.”</definition>
       <definitionid>1803</definitionid>
       <glossword word="less than"/>
     </valsi>
@@ -153147,9 +153147,9 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>convert number to cardinality selbri; $x_{1}$ is a mass formed from a set $x_{2}$ of n members, one or more of which is/are $x_{3}$, measured relative to the set $x_{4}$.</definition>
+      <definition>convert number to cardinality selbri; $x_{1}$ is a group formed from a set $x_{2}$ of n members, one or more of which is/are $x_{3}$, measured relative to the set $x_{4}$.</definition>
       <definitionid>1806</definitionid>
-      <notes>[$x_1$ is a mass with N components $x_3$ composing set $x_2$; $x_2$ is an n-tuple ($x_2$ is completely specified) (= {selmei} for reordered places); $x_1$ forms an n-some; $x_3$ (not necessarily a complete enumeration) are among the members of $x_2$); See also {cmima}, {gunma}, cmavo list {moi}.</notes>
+      <notes>The set $x_2$ has N members. $x_3$ refers to one or more members of the set. {selmei} puts the set in the first place. See also {cmima}, {gunma}, {moi}.</notes>
       <glossword word="cardinal selbri"/>
     </valsi>
     <valsi unofficial="true" word="mei'a" type="experimental cmavo">
@@ -155821,7 +155821,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$ (mass) is a mixture/blend/colloid/commingling with ingredients including $x_{2}$.</definition>
+      <definition>$x_{1}$ (group) is a mixture/blend/colloid/commingling with ingredients including $x_{2}$.</definition>
       <definitionid>738</definitionid>
       <notes>$x_2$ mingles/mixes/blends into $x_1$; $x_2$ is in $x_1$, an ingredient/part/component/element of $x_1$ (= {selxre} for reordered places).  See also {salta}, te {runta}, {stasu}, {jicla}, {sanso}.</notes>
       <glossword word="mixture"/>
@@ -156527,7 +156527,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>mark motions in space-time.</definition>
+      <definition>spatial tense marker: marks movement in the direction that follows.</definition>
       <definitionid>1818</definitionid>
       <glossword word="space motion"/>
     </valsi>
@@ -156748,7 +156748,7 @@
         <username>spheniscine</username>
         <realname>Jonathan</realname>
       </user>
-      <definition>interrogative mass gadri: "which group of..."; viewed and counted as a group</definition>
+      <definition>interrogative group article: “which group of ...?”</definition>
       <definitionid>66358</definitionid>
       <glossword word="which group" sense="interrogative article"/>
     </valsi>
@@ -157630,7 +157630,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>interval event contour: at the natural ending point of ...; completive              |    &gt;|&lt;.</definition>
+      <definition>event contour: the situation reaches its natural end. As a tag, the situation reaches its natural end at the tagged event.</definition>
       <definitionid>1842</definitionid>
       <glossword word="completive"/>
     </valsi>
@@ -159206,7 +159206,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>vocative: over (response OK) - more to come.</definition>
+      <definition>vocative: more of this utterance to follow.</definition>
       <definitionid>1853</definitionid>
       <glossword word="more to come"/>
     </valsi>
@@ -159614,7 +159614,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>bridi contradictory negator; scope is an entire bridi; logically negates in some cmavo compounds.</definition>
+      <definition>contradictory bridi negator. Also negates logical connectives in compounds. The scope before the selbri is disputed.</definition>
       <definitionid>1861</definitionid>
       <glossword word="bridi negator"/>
       <examples>
@@ -162264,7 +162264,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>tense: refers to current space/time reference absolutely.</definition>
+      <definition>tense: uses the speaker’s actual place and time as the reference point.</definition>
       <definitionid>1875</definitionid>
       <glossword word="reference point"/>
     </valsi>
@@ -165765,7 +165765,7 @@
         <username>totus</username>
         <realname>Andrew Piekarski</realname>
       </user>
-      <definition>$n_1$ is a conversation involving $c_1$(s)  (mass normally, but 1 individual/jo'u possible) about topic/subject $c_2$.</definition>
+      <definition>$n_1$ is a conversation involving $c_1$(s)  (normally a group, or one individual or individuals linked with jo'u) about topic/subject $c_2$.</definition>
       <definitionid>18626</definitionid>
       <notes>Cf. {nu}, {casnu}.</notes>
       <glossword word="conversation"/>
@@ -167058,7 +167058,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: complaint - pleasure.</definition>
+      <definition>attitudinal: pleasure.</definition>
       <definitionid>1925</definitionid>
       <glossword word="pleasure"/>
     </valsi>
@@ -167378,7 +167378,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: patience - mere tolerance - anger.</definition>
+      <definition>attitudinal: mere tolerance.</definition>
       <definitionid>1918</definitionid>
       <glossword word="mere tolerance"/>
     </valsi>
@@ -167388,7 +167388,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: patience - mere tolerance - anger.</definition>
+      <definition>attitudinal: anger.</definition>
       <definitionid>1919</definitionid>
       <glossword word="anger" sense="the emotion"/>
     </valsi>
@@ -167885,7 +167885,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>discursive: justice - prejudice.</definition>
+      <definition>discursive: with bias.</definition>
       <definitionid>1937</definitionid>
       <glossword word="prejudice"/>
     </valsi>
@@ -167949,7 +167949,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$ is a part/component/piece/portion/segment of $x_{2}$ [where $x_{2}$ is a whole/mass]; $x_{2}$ is partly $x_{1}$.</definition>
+      <definition>$x_{1}$ is a part/component/piece/portion/segment of $x_{2}$ [where $x_{2}$ is a whole or group]; $x_{2}$ is partly $x_{1}$.</definition>
       <definitionid>806</definitionid>
       <notes>Partly (= {selpau}).  See also cmavo list {pa'u}, {mulno}, {xadba}, {spisa}, {gunma}, {rafsi}.</notes>
       <glossword word="part"/>
@@ -168101,7 +168101,7 @@
       </user>
       <definition>$x_{1}$ judges/referees/arbitrates/is a judge determining/deciding matter $x_{2}$ (abstract).</definition>
       <definitionid>808</definitionid>
-      <notes>$x_2$ includes jei = rule ({jetpai}), ni = estimate ({lairpai}), ka = evaluate ({kairpai} or {vampai}), or nu = referee/arbitrate ({faurpai}); single events of judging including specific decisions/judgements (= {paijdi}, {jetpaijdi}, {lairpaijdi}, {kairpaijdi}, {vampaijdi}, {faurpaijdi}); jury (= {pairkamni}), serve on a jury (= {kamnypai}, as part of mass $x_1$).  See also {cuxna}, {jdice}, {vajni}, {cipra}, {zekri}, {manri}, {mansa}.</notes>
+      <notes>$x_2$ includes jei = rule ({jetpai}), ni = estimate ({lairpai}), ka = evaluate ({kairpai} or {vampai}), or nu = referee/arbitrate ({faurpai}); single events of judging including specific decisions/judgements (= {paijdi}, {jetpaijdi}, {lairpaijdi}, {kairpaijdi}, {vampaijdi}, {faurpaijdi}); jury (= {pairkamni}), serve on a jury (= {kamnypai}, as part of group $x_1$).  See also {cuxna}, {jdice}, {vajni}, {cipra}, {zekri}, {manri}, {mansa}.</notes>
       <glossword word="judge"/>
     </valsi>
     <valsi word="pakfiko" type="fu'ivla">
@@ -171685,7 +171685,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>digit/number:separates digits for base &gt;16, not current standard, or variable (e.g. time, date).</definition>
+      <definition>compound-base separator: separates components such as hours, minutes, and seconds. Also separates digits in a base with more than sixteen digits.</definition>
       <definitionid>1974</definitionid>
       <glossword word="digit separator"/>
     </valsi>
@@ -172742,7 +172742,7 @@
         <username>durka42</username>
         <realname>Alex Burka</realname>
       </user>
-      <definition>number: some of.</definition>
+      <definition>fractional quantifier: a small part of.</definition>
       <definitionid>57510</definitionid>
       <glossword word="some of"/>
     </valsi>
@@ -173788,7 +173788,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>restrictive relative phrase marker: which is specific to ...; normal possessive physical/legal.</definition>
+      <definition>restrictive relative phrase marker: specific to. Can indicate possession or a similarly specific connection.</definition>
       <definitionid>1991</definitionid>
       <glossword word="is specific to"/>
     </valsi>
@@ -175962,7 +175962,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>interval event contour: in anticipation of ...;  until ... ; inchoative         ----|     |.</definition>
+      <definition>event contour: the situation is about to begin. As a tag, the situation is still in prospect at the tagged event.</definition>
       <definitionid>2001</definitionid>
       <glossword word="anticipative"/>
     </valsi>
@@ -177742,7 +177742,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>discursive: chiefly - equally - incidentally.</definition>
+      <definition>discursive: a point of equal importance.</definition>
       <definitionid>2022</definitionid>
       <glossword word="equally"/>
     </valsi>
@@ -177772,7 +177772,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>discursive: chiefly - equally - incidentally.</definition>
+      <definition>discursive: a point of lesser importance.</definition>
       <definitionid>2023</definitionid>
       <glossword word="incidentally"/>
     </valsi>
@@ -178209,7 +178209,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>vocative: ready to receive - not ready to receive.</definition>
+      <definition>vocative: not ready to receive.</definition>
       <definitionid>2033</definitionid>
       <glossword word="not ready to receive"/>
     </valsi>
@@ -178761,7 +178761,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>quantified selbri: convert 2 to cardinal selbri; $x_{1}$ is a set with the pair of members $x_{2}$.</definition>
+      <definition>cardinality selbri: $x_1$ is the group formed from a two-member set $x_2$. One or both members are $x_3$.</definition>
       <definitionid>2039</definitionid>
       <glossword word="is a pair"/>
     </valsi>
@@ -180394,7 +180394,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal modifier: release of emotion - emotion restraint.</definition>
+      <definition>attitudinal modifier: emotional release ({cu'i}: restraint, {nai}: control).</definition>
       <definitionid>2049</definitionid>
       <notes>See also {cniri'u}, {cnicru}.</notes>
       <glossword word="release of emotion"/>
@@ -181267,7 +181267,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>emotion category/modifier: social - antisocial.</definition>
+      <definition>attitudinal modifier: antisocial.</definition>
       <definitionid>2056</definitionid>
       <glossword word="antisocial"/>
     </valsi>
@@ -182775,7 +182775,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>shift letterals to Cyrillic alphabet.</definition>
+      <definition>letteral shift to the Cyrillic alphabet for the rest of the current letteral string, until another shift of the same kind or {na'a}.</definition>
       <definitionid>2075</definitionid>
       <glossword word="Cyrillic shift"/>
     </valsi>
@@ -184901,7 +184901,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>erase complete or partial utterance; next word shows how much erasing to do.</definition>
+      <definition>restart marker for part of an utterance. The following word indicates the kind of construct to replace. The exact erasure rule is unsettled.</definition>
       <definitionid>2078</definitionid>
       <glossword word="erase utterance"/>
     </valsi>
@@ -185096,7 +185096,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>discursive: precisely speaking - loosely speaking.</definition>
+      <definition>discursive: loosely speaking.</definition>
       <definitionid>2081</definitionid>
       <glossword word="loosely speaking"/>
     </valsi>
@@ -186696,7 +186696,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$ (mass) is a meal composed of dishes including $x_{2}$.</definition>
+      <definition>$x_{1}$ (group) is a meal composed of dishes including $x_{2}$.</definition>
       <definitionid>972</definitionid>
       <notes>$x_2$ is a course/dish of meal $x_1$ (= {selsai} for reordered places).  See also {barja}, {stasu}, {gusta}, {sanso}.</notes>
       <glossword word="meal"/>
@@ -187159,7 +187159,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$ (mass of facts) is science of/about subject matter $x_{2}$ based on methodology $x_{3}$.</definition>
+      <definition>$x_{1}$ (group of facts) is science of/about subject matter $x_{2}$ based on methodology $x_{3}$.</definition>
       <definitionid>979</definitionid>
       <notes>Not limited to science as derived by the scientific method, but pertaining to any body of usually-coherent knowledge garnered/gathered/assembled by a consistent methodology.  See also {datni}, {fatci}, {djuno}, {cipra}, {pensi}, {jimpe}.</notes>
       <glossword word="lore" sense="body of knowledge"/>
@@ -187415,7 +187415,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>discursive: simply - elaborating.</definition>
+      <definition>discursive: to elaborate.</definition>
       <definitionid>2085</definitionid>
       <glossword word="elaborating"/>
     </valsi>
@@ -193016,7 +193016,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>elidable terminator: end discursive bridi or mathematical precedence;usually elidable.</definition>
+      <definition>elidable terminator: ends a metalinguistic insertion such as {sei}, {soi}, or {ti'o}.</definition>
       <definitionid>2095</definitionid>
       <glossword word="end discursive"/>
     </valsi>
@@ -193658,7 +193658,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>erase the last Lojban word, treating non-Lojban text as a single word.</definition>
+      <definition>erases the preceding word. A completed word-level quotation, {zei} compound, or {bu} letteral counts as one word.</definition>
       <definitionid>2169</definitionid>
       <glossword word="erase word"/>
       <examples>
@@ -193942,7 +193942,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>convert number to portion selbri; $x_{1}$ is an (n)th portion of mass/totality $x_{2}$; (cf. gunma).</definition>
+      <definition>convert number to portion selbri; $x_{1}$ is an (n)th portion of group or whole $x_{2}$; (cf. gunma).</definition>
       <definitionid>2171</definitionid>
       <glossword word="portion selbri"/>
     </valsi>
@@ -197562,7 +197562,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>quantified selbri: convert many to cardinal; $x_{1}$ is a set with many members $x_{2}$ of total set $x_{3}$.</definition>
+      <definition>cardinality selbri: $x_1$ is the group formed from a set $x_2$ with many members. One or more of those members are $x_3$. The comparison set is $x_4$.</definition>
       <definitionid>2181</definitionid>
       <glossword word="is a bunch"/>
     </valsi>
@@ -203694,7 +203694,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>erase to start of discourse or text; drop subject or start over.</definition>
+      <definition>erases back to the preceding structural boundary. The boundary is the start of the text, or {ni'o}, {lu}, {tu'e}, or {to}. The boundary remains in place.</definition>
       <definitionid>2193</definitionid>
       <glossword word="erase discourse"/>
     </valsi>
@@ -203729,7 +203729,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>evidential: I generalize - I particularize; discursive: abstractly - concretely.</definition>
+      <definition>evidential: I draw a particular conclusion. As a discursive, “in particular.”</definition>
       <definitionid>2195</definitionid>
       <glossword word="I particularize"/>
     </valsi>
@@ -203969,7 +203969,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>digit/number: at most (all); no more than.</definition>
+      <definition>quantifier: at most. The default is {pa}, so {su'e} alone means “at most one.”</definition>
       <definitionid>2196</definitionid>
       <glossword word="at most"/>
     </valsi>
@@ -204507,7 +204507,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>digit/number: at least (some); no less than.</definition>
+      <definition>quantifier: at least. The default is {pa}, so {su'o} alone means “at least one.”</definition>
       <definitionid>2198</definitionid>
       <glossword word="at least"/>
       <glossword word="some" sense="at least one"/>
@@ -204970,7 +204970,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>pro-sumti: that there; nearby demonstrative it; indicated thing/place near listener.</definition>
+      <definition>demonstrative pro-sumti: that there, at a medium distance. In conversation it can point to something near the listener.</definition>
       <definitionid>2203</definitionid>
       <glossword word="that there"/>
     </valsi>
@@ -205458,9 +205458,9 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>tamsmi modal, 1st place (like)/(in manner 2)      resembling ...; sharing ideal form ...</definition>
+      <definition>tamsmi modal, first place: as a form of. The tagged thing and the event share an ideal form.</definition>
       <definitionid>2213</definitionid>
-      <notes>{tamsmi} is $x_1$ resembles $x_2$ sharing ideal form/shape $x_3$ in property $x_4$</notes>
+      <notes>The first two places of {tamsmi} are the things that resemble one another. $x_3$ is their shared ideal form and $x_4$ is the property in which they are similar. See {setai}.</notes>
       <glossword word="as" sense="in the same way that"/>
       <glossword word="in form"/>
       <glossword word="such" sense="so much of"/>
@@ -206220,7 +206220,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>discursive: by the way - returning to main point.</definition>
+      <definition>discursive: returning to the point.</definition>
       <definitionid>2210</definitionid>
       <glossword word="return to main point"/>
     </valsi>
@@ -206772,7 +206772,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>discursive: making a tanru - expanding the tanru.</definition>
+      <definition>discursive: compressing a fuller expression into a tanru.</definition>
       <definitionid>2212</definitionid>
       <glossword word="expanding the tanru"/>
     </valsi>
@@ -207649,7 +207649,7 @@
       </user>
       <definition>$x_{1}$ [hours, minutes, seconds] is the time/hour of state/event $x_{2}$ on day $x_{3}$ at location $x_{4}$.</definition>
       <definitionid>1155</definitionid>
-      <notes>Also o'clock, time-of-day.  (time units in $x_1$ are specified as numbers separated by pi'e or are unit values massified with joi); See also cmavo list {ti'u}, {cacra}, {cerni}, {detri}, {donri}, {djedi}, {junla}, {nicte}, {mentu}, {snidu}, {temci}, {vanci}, {dirba}, {mokca}.</notes>
+      <notes>Also o'clock, time-of-day.  (time units in $x_1$ are specified as numbers separated by pi'e or are unit values grouped with joi); See also cmavo list {ti'u}, {cacra}, {cerni}, {detri}, {donri}, {djedi}, {junla}, {nicte}, {mentu}, {snidu}, {temci}, {vanci}, {dirba}, {mokca}.</notes>
       <glossword word="time of day"/>
     </valsi>
     <valsi word="tcikai" type="lujvo">
@@ -211375,7 +211375,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>elidable terminator: end conversion between non-mex and mex; usually elidable.</definition>
+      <definition>elidable terminator: ends a mathematical conversion or a vector opened by {jo'i}.</definition>
       <definitionid>2219</definitionid>
       <glossword word="end mex converters"/>
     </valsi>
@@ -212254,7 +212254,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>tcika modal, 1st place (for letters)              associated with time ... ; attach time stamp.</definition>
+      <definition>tcika modal, first place: at the time of day given by the tagged sumti.</definition>
       <definitionid>2271</definitionid>
       <glossword word="associated with time"/>
       <glossword word="at" sense="(indicating time)"/>
@@ -212393,7 +212393,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>lower-case letteral shift.</definition>
+      <definition>letteral shift to lowercase for the rest of the current letteral string, until another shift of the same kind or {na'a}.</definition>
       <definitionid>2273</definitionid>
       <glossword word="lower-case shift"/>
     </valsi>
@@ -216432,7 +216432,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>extracts a concrete sumti from an unspecified abstraction; equivalent to le nu/su'u [sumti] co'e.</definition>
+      <definition>sumti qualifier: an unspecified abstraction that involves the referent of the following sumti. Equivalent to {lo su'u [sumti] co'e}.</definition>
       <definitionid>2281</definitionid>
       <glossword word="the bridi implied by"/>
       <examples>
@@ -216570,7 +216570,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>stuzi modal, 1st place (used to situate letters)  associated with site ... ; label with location.</definition>
+      <definition>stuzi modal, first place: at the site given by the tagged sumti.</definition>
       <definitionid>2283</definitionid>
       <glossword word="associated with site"/>
     </valsi>
@@ -217416,7 +217416,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: discovery - confusion/searching.</definition>
+      <definition>attitudinal: confusion.</definition>
       <definitionid>2301</definitionid>
       <glossword word="confusion"/>
     </valsi>
@@ -217908,7 +217908,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: happiness - unhappiness.</definition>
+      <definition>attitudinal: unhappiness.</definition>
       <definitionid>2309</definitionid>
       <glossword word="unhappiness"/>
     </valsi>
@@ -218562,7 +218562,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: repentance - lack of regret - innocence.</definition>
+      <definition>attitudinal: innocence.</definition>
       <definitionid>2299</definitionid>
       <glossword word="innocence"/>
     </valsi>
@@ -218651,7 +218651,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>location tense distance: near to ... ; there at ...; a medium/small distance from ...</definition>
+      <definition>spatial distance: at a medium distance from the reference point. A tagged sumti supplies the reference point.</definition>
       <definitionid>2314</definitionid>
       <glossword word="there at"/>
     </valsi>
@@ -218718,7 +218718,7 @@
         <username>sarefo</username>
         <realname>sarefo</realname>
       </user>
-      <definition>$s_1$ (mass) is a dinner (evening meal), supper composed of dishes including $s_2$.</definition>
+      <definition>$s_1$ (group) is a dinner (evening meal), supper composed of dishes including $s_2$.</definition>
       <definitionid>17616</definitionid>
       <notes>Cf. {cersai}, {dormijysai}, {ctesai}, {citka}, {cidja}.</notes>
       <glossword word="dinner" sense="meal"/>
@@ -218802,7 +218802,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>discursive: in other words - in the same words.</definition>
+      <definition>discursive: in the same words.</definition>
       <definitionid>2318</definitionid>
       <glossword word="in the same words"/>
     </valsi>
@@ -219054,7 +219054,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$ (ind./mass) is part of an environment/surroundings/context/ambience of $x_{2}$.</definition>
+      <definition>$x_{1}$ (individual/group) is part of an environment/surroundings/context/ambience of $x_{2}$.</definition>
       <definitionid>1214</definitionid>
       <notes>(adjective:) $x_1$ is ambient.  See also cmavo list {va'o}, {sruri}, {jibni}, {jbini}, {ferti}, {tcini}.</notes>
       <glossword word="environment"/>
@@ -219401,7 +219401,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>elidable: end of sumti in simple bridi; in compound bridi, separates common trailing sumti.</definition>
+      <definition>elidable terminator: closes a simple bridi or a bridi-tail. In a compound bridi, it separates a tail from shared trailing sumti.</definition>
       <definitionid>2322</definitionid>
       <glossword word="end simple bridi"/>
       <examples>
@@ -219566,7 +219566,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>location tense interval: a small/medium region of space.</definition>
+      <definition>spatial interval: over a medium-sized region.</definition>
       <definitionid>2324</definitionid>
       <glossword word="small space interval"/>
     </valsi>
@@ -227414,9 +227414,9 @@
         <username>Ilmen</username>
         <realname>Ilmen</realname>
       </user>
-      <definition>Right-scoping adverbial clause: encloses a bridi and turns it into an adverbial term; the antecedent (ke'a) of the enclosed bridi stands for the outer bridi {lo su'u no'a ku} (the bridi in which this xoi term appears), including all the other adverbial terms (tags...) within this bridi located on the right of this xoi term (rightward scope).</definition>
+      <definition>auto-terminating adverbial: takes a brivla and any preceding terms, then forms a free phrase that modifies the main predicate.</definition>
       <definitionid>56726</definitionid>
-      <notes>Terminator: {se'u}</notes>
+      <notes>In the obsolete whole-bridi sense, {se'u} closes the clause.</notes>
       <glossword word="right-scoping adverbial clause"/>
     </valsi>
     <valsi unofficial="true" word="xoi'u" type="experimental cmavo">
@@ -228745,7 +228745,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>hesitation noise; maintains the floor while speaker decides what to say next.</definition>
+      <definition>hesitation sound that holds the floor. The word-level rules skip it. The letteral {.ybu} is a separate unit.</definition>
       <definitionid>2384</definitionid>
       <glossword word="hesitation"/>
     </valsi>
@@ -228755,7 +228755,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>letteral for y.</definition>
+      <definition>letteral for y. It counts as one unit before the word-level rules apply.</definition>
       <definitionid>2386</definitionid>
       <glossword word="y"/>
     </valsi>
@@ -229005,7 +229005,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>2-word letteral/shift: alternate alphabet selector follows.</definition>
+      <definition>letteral shift: the following letteral names an alphabet for the current letteral string. It replaces the previous alphabet shift.</definition>
       <definitionid>2393</definitionid>
       <glossword word="select alphabet"/>
     </valsi>
@@ -229498,7 +229498,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>interval event contour: continuing too long after natural end of ...; superfective  |     ----&gt;.</definition>
+      <definition>event contour: the situation continues past its natural end. As a tag, the situation continues past its natural end at the time of the tagged event.</definition>
       <definitionid>2391</definitionid>
       <glossword word="still" sense="at the present time, as in the past"/>
       <glossword word="superfective"/>
@@ -229731,7 +229731,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>digit/number: greater than.</definition>
+      <definition>quantifier: greater than. The default is {pa}, so {za'u} alone means “more than one.”</definition>
       <definitionid>2392</definitionid>
       <glossword word="greater than"/>
       <glossword word="more" sense="in greater number"/>
@@ -230743,7 +230743,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>joins preceding and following words into a lujvo.</definition>
+      <definition>joins a word or bound unit on each side into a single brivla, in left-to-right order.</definition>
       <definitionid>2404</definitionid>
       <notes>To make tanru out of arbitrary cmavo, use {ze'oi} instead.</notes>
       <glossword word="lujvo glue"/>
@@ -232935,7 +232935,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>quote next word only; quotes a single Lojban word (not a cmavo compound or tanru).</definition>
+      <definition>quotes the next single Lojban word. It skips the hesitation word {.y.}.</definition>
       <definitionid>2412</definitionid>
       <glossword word="1-word quote"/>
       <examples>
@@ -232995,7 +232995,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>pro-sumti: an elliptical/unspecified value; has some value which makes bridi true.</definition>
+      <definition>pro-sumti: refers to one or more things that the context supplies.</definition>
       <definitionid>2414</definitionid>
       <glossword word="unspecif it"/>
       <examples>
@@ -233052,7 +233052,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>delimited non-Lojban quotation; the result treated as a block of text.</definition>
+      <definition>delimited quotation of arbitrary text. A single Lojban word opens and closes the quoted text as a delimiter. The first repetition of that delimiter closes it.</definition>
       <definitionid>2421</definitionid>
       <glossword word="non-Lojban quote"/>
     </valsi>
@@ -233849,7 +233849,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>discursive: on the one hand - on the other hand.</definition>
+      <definition>discursive: on the other hand.</definition>
       <definitionid>2428</definitionid>
       <glossword word="on the other hand"/>
     </valsi>

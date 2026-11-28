@@ -6,6 +6,10 @@ const {createRequire} = require('node:module');
 const dependencies = process.env.CLL_MATHJAX_DIR || path.resolve(__dirname, '../build/weasyprint-tools');
 const load = createRequire(path.join(path.resolve(dependencies), 'package.json'));
 const {mathjax} = load('@mathjax/src/js/mathjax.js');
+const pinnedVersion = require('./weasyprint/package.json').dependencies['@mathjax/src'];
+if (mathjax.version !== pinnedVersion) {
+  throw new Error(`Glossary math needs MathJax ${pinnedVersion}. Found ${mathjax.version} in ${dependencies}.`);
+}
 const {TeX} = load('@mathjax/src/js/input/tex.js');
 const {STATE} = load('@mathjax/src/js/core/MathItem.js');
 const {SerializedMmlVisitor} = load('@mathjax/src/js/core/MmlTree/SerializedMmlVisitor.js');
@@ -17,7 +21,7 @@ class DocBookMathML extends SerializedMmlVisitor {
   getAttributeList(node) {
     const attributes = super.getAttributeList(node);
     for (const name of Object.keys(attributes)) {
-      // The DocBook DTD accepts MathML attributes, not MathJax's private ones.
+      // Strip MathJax's private attributes to satisfy the DocBook DTD.
       if (name.startsWith('data-mjx-') || name.startsWith('data-latex')) delete attributes[name];
     }
     return attributes;

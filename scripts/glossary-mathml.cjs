@@ -37,8 +37,26 @@ const document = mathjax.document('', {
 });
 const visitor = new DocBookMathML();
 
+function mathText(node) {
+  if (node.isKind('merror') || node.attributes?.get('data-mjx-error')) {
+    throw new Error('MathJax produced an error node');
+  }
+  if (node.attributes?.get('class') === 'MathJax_ref' && node.attributes.get('href') === '#') {
+    throw new Error('MathJax could not resolve an equation reference');
+  }
+  if (node.isToken) return node.getText();
+
+  // Join tokens in the same row. Keep separate operands, such as the
+  // numerator and denominator of a fraction, apart.
+  const inline = ['math', 'mrow', 'inferredMrow', 'mstyle'].includes(node.kind);
+  return node.childNodes.map(mathText).join(inline ? '' : '\n');
+}
+
 function toMathML(tex) {
   const node = document.convert(tex, {display: false, end: STATE.COMPILED});
+  if (mathText(node).includes('???')) {
+    throw new Error('MathJax produced a question-mark placeholder');
+  }
   return visitor.visitTree(node);
 }
 

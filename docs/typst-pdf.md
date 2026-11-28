@@ -51,7 +51,8 @@ Concurrent builds in the same worktree share intermediate files, even when their
 
 ## Local build
 
-The local route needs the existing merge dependencies: Ruby, Nokogiri, Optimist, HTMLEntities, regenerator, and the XML tools.
+Install the [shared native build tools](build-native.md#shared-by-every-target).
+The glossary generator installs the pinned MathJax packages on its first use.
 It also needs Typst 0.15.1.
 To install the pinned executable inside the build directory, run:
 

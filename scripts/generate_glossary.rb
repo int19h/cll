@@ -184,9 +184,10 @@ else
       dictionary_entries = entries.map do |_slug, word|
         [word, Nokogiri::XML::NodeSet.new(jbovlaste_tree, entries_by_word.fetch(word))]
       end
-      definitions = GlossaryMathML.render(dictionary_entries.map do |word, nodes|
+      definition_text = dictionary_entries.map do |word, nodes|
         [word, nodes.xpath('.//definition').text.strip.gsub(/\s+/, ' ')]
-      end)
+      end
+      definitions = GlossaryMathML.render(definition_text, build_dir: builddir)
     end
     entries.each_with_index do |(slug, word), index|
       $stderr.print "#{word} "

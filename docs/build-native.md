@@ -24,13 +24,10 @@ The build uses these tools:
 - `bash`, `make`, `wget`, and `unzip`. On the first run, the build downloads and unpacks the DocBook XSL stylesheets.
 - `xmlto` and `xmllint`. `xmlto` pulls in `xsltproc`. On Debian and Ubuntu, `xmllint` is in `libxml2-utils`, and that package is installed with `xmlto`. The postprocessing scripts call `xmllint` directly.
 - `regenerator` from npm (`npm install -g regenerator`). The build uses it for the ES5 transform of `assets/scripts/sance-next.js` while it assembles `cll.xml`.
-- Node.js and npm for the glossary. If you installed the [WeasyPrint tools](build-weasyprint.md#local-build), the build uses their copy of MathJax. To install MathJax on its own, run these commands from the checkout:
-
-  ```sh
-  mkdir -p build/weasyprint-tools
-  cp scripts/weasyprint/package.json scripts/weasyprint/package-lock.json build/weasyprint-tools/
-  npm ci --prefix build/weasyprint-tools --no-audit --no-fund
-  ```
+- Node.js 22 or later and npm for glossary math.
+  On the first build that needs glossary math, the generator installs the locked MathJax packages in `build/glossary-mathjax`.
+  Subsequent builds reuse those packages.
+  If you already have the pinned installation, give its directory in `CLL_MATHJAX_DIR`.
 
 - Ruby 3.2 or later and Bundler 4.
   `Gemfile.lock` pins Nokogiri 1.18.8, Optimist 3.2.0, and htmlentities 4.3.4.

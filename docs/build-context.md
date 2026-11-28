@@ -49,7 +49,8 @@ Use a separate build directory for concurrent runs with different chapter select
 ## Native build
 
 Install ConTeXt LMTX from the [official installer](https://www.pragma-ade.nl/install.htm).
-Install the shared Ruby gems and `regenerator` described in [the native build guide](build-native.md).
+Install the [shared native build tools](build-native.md#shared-by-every-target).
+The glossary generator installs the pinned MathJax packages on its first use.
 Install Python 3 and Pillow for image preparation.
 The Debian and Ubuntu package for Pillow is `python3-pil`.
 

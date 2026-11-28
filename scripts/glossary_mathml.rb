@@ -1,15 +1,16 @@
 require 'htmlentities'
+require 'digest'
+require 'fileutils'
 require 'json'
 require 'open3'
 
 module GlossaryMathML
   CONVERTER = File.join(__dir__, 'glossary-mathml.cjs')
-  INPUT_FILES = [
-    __FILE__,
-    CONVERTER,
+  MANIFESTS = [
     File.join(__dir__, 'weasyprint/package.json'),
     File.join(__dir__, 'weasyprint/package-lock.json')
   ].freeze
+  INPUT_FILES = [__FILE__, CONVERTER, *MANIFESTS].freeze
   # An escaped character consumes its backslash, so \$ stays in the
   # current run and \\ before a delimiter does not escape that delimiter.
   TOKENS = /(\\.|[$](?:\\.|[^$\\])*[$]|[$])/m
@@ -51,7 +52,32 @@ module GlossaryMathML
     tex.gsub(/(?<![a-z\\])(?:#{Regexp.union(bases)})(?=_)/) { |base| "{#{base}}" }
   end
 
-  def self.render(definitions)
+  def self.mathjax_dir(build_dir)
+    supplied = ENV['CLL_MATHJAX_DIR']
+    return File.expand_path(supplied) if supplied && !supplied.empty?
+
+    cache = File.expand_path('glossary-mathjax', build_dir)
+    key = Digest::SHA256.hexdigest(MANIFESTS.map { |file| Digest::SHA256.file(file).hexdigest }.join)
+    install = File.join(cache, key)
+    FileUtils.mkdir_p(install)
+    File.open(File.join(install, '.lock'), 'a') do |lock|
+      lock.flock(File::LOCK_EX)
+      ready = File.join(install, '.complete')
+      unless File.file?(ready) && File.file?(File.join(install, 'node_modules/@mathjax/src/cjs/mathjax.js'))
+        File.unlink(ready) if File.exist?(ready)
+        FileUtils.cp(MANIFESTS, install)
+        warn 'Installing pinned MathJax for glossary math.'
+        ok = system('npm', 'ci', '--prefix', install, '--cache', File.join(cache, 'npm-cache'),
+                    '--ignore-scripts', '--no-audit', '--no-fund', out: $stderr)
+        raise 'Could not install the pinned packages for glossary math.' unless ok
+
+        File.write(ready, '')
+      end
+    end
+    install
+  end
+
+  def self.render(definitions, build_dir:)
     coder = HTMLEntities.new
     inputs = []
     pieces = definitions.map do |word, text|
@@ -65,7 +91,8 @@ module GlossaryMathML
     end
     math = []
     unless inputs.empty?
-      stdout, stderr, status = Open3.capture3('node', CONVERTER, stdin_data: JSON.generate(inputs))
+      env = {'CLL_MATHJAX_DIR' => mathjax_dir(build_dir)}
+      stdout, stderr, status = Open3.capture3(env, 'node', CONVERTER, stdin_data: JSON.generate(inputs))
       raise "Glossary TeX conversion failed:\n#{stderr}" unless status.success?
 
       math = JSON.parse(stdout)

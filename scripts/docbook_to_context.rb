@@ -297,6 +297,9 @@ class ContextBook
     when 'msub'
       raise 'msub needs two operands' unless parts.length == 2
       "{#{math(parts[0])}}_{#{math(parts[1])}}"
+    when 'msubsup'
+      raise 'msubsup needs three operands' unless parts.length == 3
+      "{#{math(parts[0])}}_{#{math(parts[1])}}^{#{math(parts[2])}}"
     when 'msqrt' then "\\sqrt{#{parts.map { |part| math(part) }.join}}"
     else raise "Unsupported MathML element: #{node.name}"
     end

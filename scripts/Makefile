@@ -126,7 +126,7 @@ all: xhtml_chapters xhtml_sections xhtml_nochunks pdf epub html_check
 .PHONY: clean
 clean:
 	# Keep downloaded tools. realclean still removes them.
-	for d in "$(_defbuild_r)" "$(_covbuild_r)" "$(_builddir_r)"; do if [ -d "$$d" ]; then find "$$d" \( -type d \( -name weasyprint-tools -o -path '*/tools/epubcheck' -o -path '*/tools/vnu' \) -prune \) -o \! -name 'jbovlaste*.xml' -type f -print0 | xargs -0 -r rm -f --; fi; done
+	for d in "$(_defbuild_r)" "$(_covbuild_r)" "$(_builddir_r)"; do if [ -d "$$d" ]; then find "$$d" \( -type d \( -name weasyprint-tools -o -name glossary-mathjax -o -path '*/tools/epubcheck' -o -path '*/tools/vnu' \) -prune \) -o \! -name 'jbovlaste*.xml' -type f -print0 | xargs -0 -r rm -f --; fi; done
 
 .PHONY: realclean
 realclean: clean

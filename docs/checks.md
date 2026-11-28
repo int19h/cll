@@ -189,7 +189,7 @@ offline=no ./cll_build -n -T xhtml_nochunks
 
 The check takes about two minutes, most of it generating the glossary.
 It needs Ruby with Nokogiri, Optimist, and HTMLEntities, and `xmllint`.
-Install the pinned MathJax dependencies for glossary math as described in [Building natively](build-native.md#shared-by-every-target).
+The glossary generator uses Node.js and npm to install the pinned MathJax packages in the selected build directory.
 Its output stays in `build/whole-book-validation` (name another build folder as the argument).
 
 ## typst-smoke

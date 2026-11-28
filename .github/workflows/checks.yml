@@ -152,8 +152,6 @@ jobs:
   prince-postprocess-smoke:
     # ubuntu-26.04 to match the Dockerfile's base image.
     runs-on: ubuntu-26.04
-    env:
-      CLL_MATHJAX_DIR: scripts/weasyprint
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
@@ -165,8 +163,6 @@ jobs:
         run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils
       - name: Install the production Nokogiri, Optimist, and HTMLEntities gems
         run: gem install --no-document nokogiri:1.18.8 optimist:3.2.0 htmlentities:4.3.4
-      - name: Install pinned MathJax
-        run: npm ci --prefix "$CLL_MATHJAX_DIR" --no-audit --no-fund
       - name: Prince postprocessor smoke test
         run: |
           ruby -rnokogiri -e 'puts "Nokogiri #{Nokogiri::VERSION}"; abort "expected Nokogiri 1.18.8" unless Nokogiri::VERSION == "1.18.8"'
@@ -219,8 +215,6 @@ jobs:
   # validation step, but renders nothing.
   whole-book-validation:
     runs-on: ubuntu-26.04
-    env:
-      CLL_MATHJAX_DIR: scripts/weasyprint
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
@@ -230,8 +224,6 @@ jobs:
         run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils
       - name: Install the production Nokogiri, Optimist, and HTMLEntities gems
         run: gem install --no-document nokogiri:1.18.8 optimist:3.2.0 htmlentities:4.3.4
-      - name: Install pinned MathJax
-        run: npm ci --prefix "$CLL_MATHJAX_DIR" --no-audit --no-fund
       - name: Whole book validates with the real glossary
         run: |
           ruby -rnokogiri -e 'puts "Nokogiri #{Nokogiri::VERSION}"; abort "expected Nokogiri 1.18.8" unless Nokogiri::VERSION == "1.18.8"'

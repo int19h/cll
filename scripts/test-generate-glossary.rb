@@ -40,8 +40,7 @@ def stage_generator(repo, dir)
 end
 
 def run_generator(scripts, build, *args)
-  dependencies = ENV.fetch('CLL_MATHJAX_DIR', File.expand_path('../build/weasyprint-tools', __dir__))
-  Open3.capture3({'CLL_MATHJAX_DIR' => dependencies}, 'ruby', File.join(scripts, 'generate_glossary.rb'), *args, '-b', build)
+  Open3.capture3('ruby', File.join(scripts, 'generate_glossary.rb'), *args, '-b', build)
 end
 
 def entry_map(xml)
@@ -68,6 +67,10 @@ Dir.mktmpdir do |dir|
   stdout, stderr, status = run_generator(scripts, build)
   check.(status.success?, "MathML glossary failed:\n#{stderr}")
   if status.success?
+    if ENV['CLL_MATHJAX_DIR'].to_s.empty?
+      check.(stderr.include?('Installing pinned MathJax'), 'clean glossary did not install MathJax')
+      check.(Dir.glob(File.join(build, 'glossary-mathjax/*/.complete')).size == 1, 'install did not finish in the selected build directory')
+    end
     doc = Nokogiri::XML("<wrapper>#{stdout}</wrapper>") { |config| config.strict.nonet }
     ns = {'m' => 'http://www.w3.org/1998/Math/MathML'}
     check.(doc.xpath('//inlineequation/m:math', ns).size == 5, 'each TeX block must produce its own inline MathML')
@@ -84,12 +87,25 @@ Dir.mktmpdir do |dir|
       File.open(File.join(scripts, file), 'a') { |f| f.puts }
       _output, log, result = run_generator(scripts, build)
       check.(result.success? && log.include?('Generating new glossary file.'), "editing #{file} reused the cache:\n#{log}")
+      if file == 'glossary_mathml.rb'
+        check.(!log.include?('Installing pinned MathJax'), 'converter change reinstalled the same package pins')
+      end
     end
   end
 
-  File.write(dictionary, File.read(dictionary).sub('$2 &lt; 10^{-2}$') { '$\notARealTeXCommand$' })
-  _output, stderr, status = run_generator(scripts, build)
-  check.(!status.success? && stderr.include?('cinctu: $\notARealTeXCommand$'), "invalid TeX did not fail with its entry and expression:\n#{stderr}")
+  source = File.read(dictionary)
+  {
+    '\notARealTeXCommand' => 'Undefined control sequence',
+    '\ref{missing}' => 'could not resolve an equation reference',
+    '1 + \eqref{missing}' => 'could not resolve an equation reference',
+    '\text{???}' => 'question-mark placeholder',
+    '???' => 'question-mark placeholder'
+  }.each do |tex, diagnostic|
+    File.write(dictionary, source.sub('$2 &lt; 10^{-2}$') { "$#{tex}$" })
+    stdout, stderr, status = run_generator(scripts, build)
+    check.(!status.success? && stdout.empty? && stderr.include?("cinctu: $#{tex}$") && stderr.include?(diagnostic),
+           "glossary did not reject #{tex} with its word and diagnostic:\n#{stderr}")
+  end
 end
 
 words = <<~XML

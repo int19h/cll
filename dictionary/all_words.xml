@@ -118,7 +118,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>afterthought logical connective for sumti, termsets, and mathematical operands: inclusive “or”.</definition>
+      <definition>afterthought logical connective for sumti and mathematical operands: inclusive “or”.</definition>
       <definitionid>1339</definitionid>
       <glossword word="and/or" sense="inclusive or"/>
       <glossword word="or" sense="inclusive or"/>
@@ -87591,7 +87591,7 @@
         <realname>Official Data</realname>
       </user>
       <definition>forms a letteral from the preceding single word or bound unit. In this edition, earlier word-level operators act first.</definition>
-      <notes>The 2005 BPFK checkpoint excludes {ba'e}, {za'e}, and {le'u}. This edition follows the later account, which permits these combinations. Their status remains contested.</notes>
+      <notes>The frozen BU definition excludes combining {bu} with {ba'e}, {za'e}, or {le'u}. The frozen BAhE material includes me'o ba'e bu. This edition follows the later account, which allows these combinations. Their status remains disputed.</notes>
       <definitionid>1399</definitionid>
       <glossword word="word to lerfu"/>
     </valsi>
@@ -102441,7 +102441,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal modifier: marks empathetic use of preceding attitudinal; shows another's feelings.</definition>
+      <definition>attributes the preceding attitude to someone else, as supplied by context. It can also express empathy with another’s feeling.</definition>
       <definitionid>1466</definitionid>
       <notes>See also {cnijmi}.</notes>
       <glossword word="empathy"/>
@@ -106003,7 +106003,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$ is the date [day, week, month, year] of event/state $x_{2}$, at location $x_{3}$, by calendar $x_{4}$.</definition>
+      <definition>$x_1$ is the date of event or state $x_2$ at location $x_3$ according to calendar $x_4$. Components such as day, week, month, and year depend on the calendar and convention.</definition>
       <definitionid>283</definitionid>
       <notes>(time units in $x_1$ are specified as numbers separated by pi'e or are unit values grouped with joi); See also cmavo list {de'i}, {djedi}, {jeftu}, {masti}, {nanca}, {tcika}.</notes>
       <glossword word="date"/>
@@ -109919,7 +109919,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>afterthought logical connective for sumti, termsets, and mathematical operands: “and”.</definition>
+      <definition>afterthought logical connective for sumti and mathematical operands: “and”.</definition>
       <definitionid>1501</definitionid>
       <glossword word="sumti and"/>
     </valsi>
@@ -118598,7 +118598,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>indicates an unspecified attitude or leaves the attitude unexpressed. After an indicator, it leaves the speaker's position on that scale unspecified.</definition>
+      <definition>indicates an unspecified attitude or leaves an attitude unexpressed. After an indicator, it can withhold the speaker’s position on that scale. It can also start a separate unnamed feeling for following modifiers.</definition>
       <definitionid>1577</definitionid>
       <glossword word="unspecif emotion"/>
       <glossword word="well" sense="interjection"/>
@@ -126875,7 +126875,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>afterthought logical connective: inclusive “or”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After .i, it joins sentences.</definition>
+      <definition>afterthought logical connective: inclusive “or”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After pe'e, it joins termsets. After .i, it joins sentences. At the start of a text, it can link back to earlier text.</definition>
       <definitionid>1642</definitionid>
       <glossword word="tanru or"/>
     </valsi>
@@ -129423,7 +129423,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>afterthought logical connective: “and”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After .i, it joins sentences.</definition>
+      <definition>afterthought logical connective: “and”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After pe'e, it joins termsets. After .i, it joins sentences. At the start of a text, it can link back to earlier text.</definition>
       <definitionid>1653</definitionid>
       <glossword word="tanru and"/>
       <examples>
@@ -129897,7 +129897,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>afterthought logical connective: asks which logical relation applies. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After .i, it joins sentences.</definition>
+      <definition>afterthought logical connective: asks which logical relation applies. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After pe'e, it joins termsets. After .i, it joins sentences. At the start of a text, it can link back to earlier text.</definition>
       <definitionid>1657</definitionid>
       <glossword word="tanru conn ?"/>
     </valsi>
@@ -130086,7 +130086,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>afterthought logical connective: “the first holds and the second does not”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After .i, it joins sentences.</definition>
+      <definition>afterthought logical connective: “the first holds and the second does not”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After pe'e, it joins termsets. After .i, it joins sentences. At the start of a text, it can link back to earlier text.</definition>
       <definitionid>1662</definitionid>
       <glossword word="tanru but not"/>
     </valsi>
@@ -130747,7 +130747,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>afterthought logical connective for sumti, termsets, and mathematical operands: asks which logical relation applies.</definition>
+      <definition>afterthought logical connective for sumti and mathematical operands: asks which logical relation applies.</definition>
       <definitionid>1663</definitionid>
       <glossword word="sumti conn ?"/>
     </valsi>
@@ -132504,9 +132504,9 @@
         <username>Ilmen</username>
         <realname>Ilmen</realname>
       </user>
-      <definition>This cmavo precedes a predicate (at least binary) and turns it into a conjunction, which syntactically behaves like JA cmavo. The predicate indicates the relationship between the two connected propositions. Terminator: te'u.</definition>
+      <definition>experimental connective: takes a predicate with at least two places and gives it JA syntax. The predicate states the relation between the connected propositions. The terminator is te'u.</definition>
       <definitionid>68736</definitionid>
-      <notes>{je} = «ji'oi {zilkanxe} te'u»; {ja} = «ji'oi {zilvlina} te'u». • «mi ji'oi balvi do snada» = «lo nu mi snada cu balvi lo nu do snada» • «mi ji'oi fanta do cmima» = «lo nu mi cmima cu fanta lo nu do cmima» • «mi se zunti ji'oi fanta cu jundi» = «lo nu mi se zunti cu fanta lo nu mi jundi»</notes>
+      <notes>{je} = «ji'oi {zilkanxe} te'u»; {ja} = «ji'oi {zilvlina} te'u». • The next two examples join sumti. They require the proposed connective reform. «mi ji'oi balvi do snada» = «lo nu mi snada cu balvi lo nu do snada» • «mi ji'oi fanta do cmima» = «lo nu mi cmima cu fanta lo nu do cmima» • Predicate-level example: «mi se zunti ji'oi fanta cu jundi» = «lo nu mi se zunti cu fanta lo nu mi jundi»</notes>
     </valsi>
     <valsi word="jipci" type="gismu">
       <user>
@@ -133001,7 +133001,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>afterthought logical connective: “if and only if”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After .i, it joins sentences.</definition>
+      <definition>afterthought logical connective: “if and only if”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After pe'e, it joins termsets. After .i, it joins sentences. At the start of a text, it can link back to earlier text.</definition>
       <definitionid>1671</definitionid>
       <glossword word="tanru iff"/>
     </valsi>
@@ -133376,7 +133376,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>afterthought logical connective: “the first holds whether or not the second does”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After .i, it joins sentences.</definition>
+      <definition>afterthought logical connective: “the first holds whether or not the second does”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After pe'e, it joins termsets. After .i, it joins sentences. At the start of a text, it can link back to earlier text.</definition>
       <definitionid>1680</definitionid>
       <glossword word="tanru whether"/>
     </valsi>
@@ -135989,7 +135989,7 @@
         <username>selpahi</username>
         <realname>Lorenzo Von Matterhorn</realname>
       </user>
-      <definition>abstractor: $x_1$ ($x_2$, ...) are such that they satisfy [bridi], binding to the open ce'u slots.</definition>
+      <definition>abstractor: $x_1$, $x_2$, and any further arguments satisfy the bridi by filling its open ce'u places in order.</definition>
       <definitionid>56529</definitionid>
       <notes>See also {me'au}, {emna}, {ka} and {ce'u}</notes>
       <glossword word="selbri abstraction"/>
@@ -153142,7 +153142,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>quantifier: less than. The default is ro, so me'i alone means “less than all.”</definition>
+      <definition>quantifier: less than. In this edition, bare me'i means “less than all” (me'i ro), an established reading. The first edition read it as “less than one” (me'i pa).</definition>
       <definitionid>1803</definitionid>
       <glossword word="less than"/>
     </valsi>
@@ -160308,7 +160308,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>afterthought logical connective: “if the first holds, then the second holds”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After .i, it joins sentences.</definition>
+      <definition>afterthought logical connective: “if the first holds, then the second holds”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After pe'e, it joins termsets. After .i, it joins sentences. At the start of a text, it can link back to earlier text.</definition>
       <definitionid>1874</definitionid>
       <glossword word="tanru only if"/>
     </valsi>
@@ -164430,7 +164430,7 @@
         <username>selpahi</username>
         <realname>Lorenzo Von Matterhorn</realname>
       </user>
-      <definition>incidental/non-restrictive adverbial: converts selbri to bridi adverbial term. The first place of the converted selbri is claimed to be such that the outer bridi satisfies it, and the outer bridi is claimed. broda noi'a brode means lo nu broda ku goi ko'a cu fasnu .i ko'a brode.</definition>
+      <definition>incidental adverbial: the event of the main bridi fills the first place of the modifying predicate. The sentence asserts the main bridi. It adds a separate assertion that the event satisfies the modifying predicate. The elidable terminator is fe'u. For example, broda noi'a brode means lo nu broda ku goi ko'a cu fasnu .i ko'a brode.</definition>
       <definitionid>68607</definitionid>
       <notes>Has rightward scope. Terminator {fe'u}. See also {poi'a}, {poi'o'a}, {noi'o'a}, {soi'a}, {soi}.</notes>
       <glossword word="incidental bridi adverbial"/>
@@ -165617,7 +165617,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>start forethought termset construct; marks start of place structure set with logical connection.</definition>
+      <definition>opens a termset. It also introduces the first connective of a forethought termset connection.</definition>
       <definitionid>1905</definitionid>
       <glossword word="start fore termset"/>
     </valsi>
@@ -166819,7 +166819,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>elidable terminator: end forethought termset; usually elidable except with following sumti.</definition>
+      <definition>elidable terminator: closes a termset opened by nu'i or either half of a forethought termset connection.</definition>
       <definitionid>1907</definitionid>
       <glossword word="end fore termset"/>
     </valsi>
@@ -166870,7 +166870,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>afterthought logical connective for sumti, termsets, and mathematical operands: “if and only if”.</definition>
+      <definition>afterthought logical connective for sumti and mathematical operands: “if and only if”.</definition>
       <definitionid>1909</definitionid>
       <glossword word="sumti iff"/>
     </valsi>
@@ -167290,7 +167290,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>afterthought logical connective for sumti, termsets, and mathematical operands: exclusive “or”.</definition>
+      <definition>afterthought logical connective for sumti and mathematical operands: exclusive “or”.</definition>
       <definitionid>1932</definitionid>
       <glossword word="or" sense="exclusive or"/>
       <glossword word="sumti xor"/>
@@ -170412,7 +170412,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>marks the following connective as joining termsets.</definition>
+      <definition>introduces the logical or nonlogical connective that joins two termsets in afterthought. It takes a JA connective or a joik.</definition>
       <definitionid>1967</definitionid>
       <glossword word="termset conn mark"/>
     </valsi>
@@ -170544,7 +170544,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>asks which attitude applies or how strong a specified attitude is.</definition>
+      <definition>asks which attitude applies. After an indicator, it can ask about intensity. Before an indicator, it asks whether the listener feels the stated attitude.</definition>
       <definitionid>1971</definitionid>
       <glossword word="emotion ?"/>
       <examples>
@@ -173886,7 +173886,7 @@
         <username>selpahi</username>
         <realname>Lorenzo Von Matterhorn</realname>
       </user>
-      <definition>restrictive adverbial: converts selbri to bridi adverbial term. The first place of the converted selbri is claimed to occur in conjunction with the outer bridi. broda poi'a brode means lo nu broda cu fasnu gi'e brode.</definition>
+      <definition>restrictive adverbial: the event of the main bridi fills the first place of the modifying predicate. The sentence asserts both that the event occurs and that it satisfies the modifying predicate. The elidable terminator is fe'u. For example, broda poi'a brode means lo nu broda cu fasnu gi'e brode.</definition>
       <definitionid>68606</definitionid>
       <notes>Has rightward scope. Terminator {fe'u}. See also {noi'a}, {poi'o'a}, {noi'o'a}, {soi'a}, {soi}.</notes>
       <glossword word="restrictive bridi adverbial"/>
@@ -217259,7 +217259,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>afterthought logical connective for sumti, termsets, and mathematical operands: “the first holds whether or not the second does”.</definition>
+      <definition>afterthought logical connective for sumti and mathematical operands: “the first holds whether or not the second does”.</definition>
       <definitionid>2287</definitionid>
       <glossword word="sumti whether"/>
     </valsi>
@@ -232945,7 +232945,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>quotes the next single Lojban word. It skips the hesitation word .y..</definition>
+      <definition>quotes the next single Lojban word. It skips the hesitation word .y. when choosing what to quote.</definition>
       <definitionid>2412</definitionid>
       <glossword word="1-word quote"/>
       <examples>

@@ -218,12 +218,13 @@ class DocBookTypst
     when 'mfrac'
       raise 'mfrac requires two children' unless elements.size == 2
       "frac(#{math(elements[0])}, #{math(elements[1])})"
-    when 'msup'
-      raise 'msup requires two children' unless elements.size == 2
-      "attach(#{math(elements[0])}, t: #{math(elements[1])})"
-    when 'msub'
-      raise 'msub requires two children' unless elements.size == 2
-      "attach(#{math(elements[0])}, b: #{math(elements[1])})"
+    when 'msub', 'msup', 'msubsup'
+      positions = {'msub' => %w[b], 'msup' => %w[t], 'msubsup' => %w[b t]}.fetch(node.name)
+      raise "Wrong number of children for #{node.name}" unless elements.size == 1 + positions.size
+      base, *scripts = elements
+      base = base.name == 'mi' && base.text.strip.empty? ? '' : math(base)
+      attachments = positions.zip(scripts).map { |position, script| "#{position}: #{math(script)}" }
+      "attach(#{base.empty? ? '#[]' : base}, #{attachments.join(', ')})"
     when 'msqrt' then "sqrt(#{elements.map { |e| math(e) }.join(' ')})"
     else raise "Unsupported MathML element: #{node.name} at line #{node.line}"
     end

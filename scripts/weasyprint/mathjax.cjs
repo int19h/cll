@@ -3,7 +3,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {createRequire} = require('node:module');
 
-const dependencies = process.env.CLL_MATHJAX_DIR || path.resolve('build/weasyprint-tools');
+const dependencies = process.env.CLL_MATHJAX_DIR;
+if (!dependencies) throw new Error('Set CLL_MATHJAX_DIR to the pinned MathJax installation.');
 const load = createRequire(path.join(path.resolve(dependencies), 'package.json'));
 const {mathjax} = load('@mathjax/src/js/mathjax.js');
 const {MathML} = load('@mathjax/src/js/input/mathml.js');
@@ -12,6 +13,16 @@ const {liteAdaptor} = load('@mathjax/src/js/adaptors/liteAdaptor.js');
 const {RegisterHTMLHandler} = load('@mathjax/src/js/handlers/html.js');
 const {MathJaxNewcmFont} = load('@mathjax/mathjax-newcm-font/js/chtml.js');
 load('@mathjax/src/js/util/asyncLoad/node.js');
+const fontManifest = '@mathjax/mathjax-newcm-font/package.json';
+const fontPin = require('./package.json').dependencies['@mathjax/mathjax-newcm-font'];
+const fontVersion = load(fontManifest).version;
+if (fontVersion !== fontPin) {
+  throw new Error(`WeasyPrint needs MathJax New Computer Modern ${fontPin}. Found ${fontVersion} in ${dependencies}.`);
+}
+const fonts = path.join(path.dirname(load.resolve(fontManifest)), 'chtml/woff2');
+if (!fs.statSync(fonts, {throwIfNoEntry: false})?.isDirectory()) {
+  throw new Error(`MathJax font directory is missing: ${fonts}`);
+}
 
 async function main() {
   const inputs = JSON.parse(fs.readFileSync(0, 'utf8'));
@@ -35,12 +46,13 @@ async function main() {
     }
     expressions.push(result);
   }
-  const fontPackage = path.dirname(load.resolve('@mathjax/mathjax-newcm-font/package.json'));
   process.stdout.write(JSON.stringify({
     expressions,
     css: adaptor.cssText(output.styleSheet(document)),
-    fonts: path.join(fontPackage, 'chtml/woff2'),
+    fonts,
     version: mathjax.version,
   }));
 }
-main().catch(error => { console.error(error); process.exitCode = 1; });
+if (require.main === module) {
+  main().catch(error => { console.error(error); process.exitCode = 1; });
+}

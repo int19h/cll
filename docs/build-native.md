@@ -24,6 +24,13 @@ The build uses these tools:
 - `bash`, `make`, `wget`, and `unzip`. On the first run, the build downloads and unpacks the DocBook XSL stylesheets.
 - `xmlto` and `xmllint`. `xmlto` pulls in `xsltproc`. On Debian and Ubuntu, `xmllint` is in `libxml2-utils`, and that package is installed with `xmlto`. The postprocessing scripts call `xmllint` directly.
 - `regenerator` from npm (`npm install -g regenerator`). The build uses it for the ES5 transform of `assets/scripts/sance-next.js` while it assembles `cll.xml`.
+- Node.js 22 or later and npm for MathJax.
+  To choose a specific installation, set `CLL_MATHJAX_DIR` to its directory.
+  If its required modules fail to load, the build stops with an error.
+  With the variable unset, the build searches the selected output directory, then the checkout's default `build/`.
+  Each directory can contain the shared `glossary-mathjax` cache or a matching older installation in `weasyprint-tools`.
+  If neither directory has matching packages, the build installs them in the selected build directory.
+
 - Ruby 3.2 or later and Bundler 4.
   `Gemfile.lock` pins Nokogiri 1.18.8, Optimist 3.2.0, and htmlentities 4.3.4.
   The Nokogiri gem is precompiled for x86_64 Linux and for aarch64 Linux.

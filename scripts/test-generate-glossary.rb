@@ -16,9 +16,11 @@ check = lambda { |ok, msg| failures << msg unless ok }
 def stage_generator(repo, dir)
   scripts = File.join(dir, 'scripts')
   FileUtils.mkdir_p(File.join(dir, 'assets/media/vreji'))
-  FileUtils.mkdir_p(scripts)
-  FileUtils.cp(File.join(repo, 'scripts/generate_glossary.rb'), scripts)
-  FileUtils.cp(File.join(repo, 'scripts/util.rb'), scripts)
+  FileUtils.mkdir_p(File.join(scripts, 'weasyprint'))
+  %w[generate_glossary.rb util.rb glossary_mathml.rb glossary-mathml.cjs mathjax_packages.rb
+     weasyprint/mathjax.cjs weasyprint/package.json weasyprint/package-lock.json].each do |file|
+    FileUtils.cp(File.join(repo, 'scripts', file), File.join(scripts, file))
+  end
   File.write(File.join(scripts, 'update_jbovlaste_xml.sh'), <<~'SH')
     #!/bin/bash
     cat > "$1/jbovlaste.xml" <<'EOF'
@@ -37,13 +39,121 @@ def stage_generator(repo, dir)
   scripts
 end
 
-def run_generator(scripts, build, *args)
-  Open3.capture3('ruby', File.join(scripts, 'generate_glossary.rb'), *args, '-b', build)
+def run_generator(scripts, build, *args, env: {})
+  Open3.capture3(env, 'ruby', File.join(scripts, 'generate_glossary.rb'), *args, '-b', build)
 end
 
 def entry_map(xml)
   doc = Nokogiri::XML("<wrapper>#{xml}</wrapper>") { |config| config.strict.nonet }
   doc.xpath('//glossentry').map { |entry| [entry['xml:id'], entry.at('glossterm').text, entry.at('para').text] }
+end
+
+Dir.mktmpdir do |dir|
+  scripts = stage_generator(repo, dir)
+  build = File.join(dir, 'build')
+  FileUtils.mkdir_p(build)
+  File.write(File.join(build, 'cll_preglossary.xml'), '<book><para><valsi>cinctu</valsi><valsi>cmatce</valsi></para></book>')
+  dictionary = File.join(scripts, 'update_jbovlaste_xml.sh')
+  File.write(dictionary, <<~'SH')
+    #!/bin/bash
+    cat > "$1/jbovlaste.xml" <<'EOF'
+    <dictionary>
+      <valsi word="cinctu"><definition>$ci_{1}=ct_{1}$ teaches $x_2$$x_3$ &amp; $2 &lt; 10^{-2}$.</definition></valsi>
+      <valsi word="cmatce"><definition>$x1=c1=m1$ is tiny.</definition></valsi>
+    </dictionary>
+    EOF
+  SH
+
+  stdout, stderr, status = run_generator(scripts, build)
+  check.(status.success?, "MathML glossary failed:\n#{stderr}")
+  if status.success?
+    if ENV['CLL_MATHJAX_DIR'].to_s.empty?
+      check.(stderr.include?('Installing pinned MathJax'), 'clean glossary did not install MathJax')
+      check.(Dir.glob(File.join(build, 'glossary-mathjax/*/.complete')).size == 1, 'install did not finish in the selected build directory')
+    end
+    doc = Nokogiri::XML("<wrapper>#{stdout}</wrapper>") { |config| config.strict.nonet }
+    ns = {'m' => 'http://www.w3.org/1998/Math/MathML'}
+    check.(doc.xpath('//inlineequation/m:math', ns).size == 5, 'each TeX block must produce its own inline MathML')
+    formula = doc.at_xpath('//m:math[m:mo = "<"]', ns)
+    check.(formula && formula.at_xpath('m:msup', ns), 'math with XML metacharacters lost its comparison or exponent')
+    aliases = doc.at_xpath('//glossentry[@xml:id="valsi-cinctu"]//m:math', ns)
+    bases = aliases.xpath('m:msub/m:mrow[1]', ns).map { |node| node.element_children.map(&:text).join }
+    check.(bases == %w[ci ct], "multi-letter subscript bases changed: #{bases.inspect}")
+    repaired = doc.xpath('//glossentry[@xml:id="valsi-cmatce"]//m:msub/m:mi', ns).map(&:text)
+    check.(repaired == %w[x c m], "missing underscores were not repaired: #{repaired.inspect}")
+    check.(doc.at_xpath('//glossentry[@xml:id="valsi-cinctu"]//para').text.include?(' & '), 'prose was not XML-escaped')
+    check.(doc.xpath('//@data-latex | //@data-mjx-texclass').empty?, 'MathJax-only metadata leaked into DocBook')
+    # A checkout prepared by the old native installer can build offline.
+    packages, log, result = Open3.capture3('ruby', File.join(scripts, 'mathjax_packages.rb'), build)
+    check.(result.success?, "could not locate fixture packages:\n#{log}")
+    offline_build = File.join(dir, 'offline-build')
+    legacy = File.join(offline_build, 'weasyprint-tools')
+    FileUtils.mkdir_p(legacy)
+    FileUtils.cp(File.join(build, 'cll_preglossary.xml'), offline_build)
+    %w[package.json package-lock.json].each do |file|
+      FileUtils.cp(File.join(scripts, 'weasyprint', file), legacy)
+    end
+    FileUtils.ln_s(File.join(packages.strip, 'node_modules'), legacy)
+    offline_env = {'CLL_MATHJAX_DIR' => nil, 'npm_config_offline' => 'true'}
+    resolver = File.join(scripts, 'mathjax_packages.rb')
+    selected, log, result = Open3.capture3(offline_env, 'ruby', resolver, offline_build)
+    check.(result.success? && selected.strip == legacy, "selected legacy installation did not take precedence:\n#{log}")
+    output, log, result = run_generator(scripts, offline_build, env: offline_env)
+    check.(result.success? && output == stdout, "offline legacy installation failed:\n#{log}")
+    check.(!File.exist?(File.join(offline_build, 'glossary-mathjax')), 'offline legacy build created a second installation')
+
+    default_legacy = File.join(build, 'weasyprint-tools')
+    FileUtils.mkdir_p(default_legacy)
+    FileUtils.cp(Dir.glob(File.join(legacy, 'package*.json')), default_legacy)
+    FileUtils.ln_s(File.join(packages.strip, 'node_modules'), default_legacy)
+    File.open(File.join(legacy, 'package-lock.json'), 'a') { |f| f.puts }
+    selected, log, result = Open3.capture3(offline_env, 'ruby', resolver, offline_build, chdir: offline_build)
+    expected = ENV['CLL_MATHJAX_DIR'].to_s.empty? ? packages.strip : default_legacy
+    check.(result.success? && selected.strip == expected, "did not fall back to the source checkout's matching installation:\n#{log}")
+    check.(!File.exist?(File.join(offline_build, 'glossary-mathjax')), 'source fallback created a second installation')
+
+    invalid_env = offline_env.merge('CLL_MATHJAX_DIR' => File.join(dir, 'missing'))
+    _output, log, result = run_generator(scripts, build, env: invalid_env)
+    check.(!result.success? && log.include?('Invalid CLL_MATHJAX_DIR') && log.include?('missing MathJax entry point'),
+           "cached glossary did not reject an invalid override:\n#{log}")
+
+    %w[glossary_mathml.rb glossary-mathml.cjs mathjax_packages.rb weasyprint/mathjax.cjs weasyprint/package.json weasyprint/package-lock.json].each do |file|
+      File.open(File.join(scripts, file), 'a') { |f| f.puts }
+      _output, log, result = run_generator(scripts, build)
+      check.(result.success? && log.include?('Generating new glossary file.'), "editing #{file} reused the cache:\n#{log}")
+      if file == 'glossary_mathml.rb'
+        check.(!log.include?('Installing pinned MathJax'), 'converter change reinstalled the same package pins')
+      end
+    end
+  end
+
+  source = File.read(dictionary)
+  [
+    '\frac{a}{??}?', '?\frac{??}{a}', '\frac{??}{?}', '?\sqrt{??}',
+    '??\quad?', '?\quad??', '\phantom{???}', '?\phantom{?}??', '???^2'
+  ].each do |tex|
+    File.write(dictionary, source.sub('$2 &lt; 10^{-2}$') { "$#{tex}$" })
+    stdout, stderr, status = run_generator(scripts, build)
+    check.(status.success? && stdout.include?('<math '), "glossary rejected visible boundaries in #{tex}:\n#{stderr}")
+  end
+
+  {
+    '\notARealTeXCommand' => 'Undefined control sequence',
+    '\ref{missing}' => 'could not resolve an equation reference',
+    '1 + \eqref{missing}' => 'could not resolve an equation reference',
+    '\sqrt{\ref{missing}}' => 'could not resolve an equation reference',
+    '\phantom{\eqref{missing}}' => 'could not resolve an equation reference',
+    '\sqrt{???}' => 'question-mark placeholder',
+    '\frac{?}{???}' => 'question-mark placeholder',
+    '{?}{?}{?}' => 'question-mark placeholder',
+    '\text{???}' => 'question-mark placeholder',
+    '???' => 'question-mark placeholder'
+  }.each do |tex, diagnostic|
+    File.write(dictionary, source.sub('$2 &lt; 10^{-2}$') { "$#{tex}$" })
+    stdout, stderr, status = run_generator(scripts, build)
+    check.(!status.success? && stdout.empty? && stderr.include?("cinctu: $#{tex}$") && stderr.include?(diagnostic),
+           "glossary did not reject #{tex} with its word and diagnostic:\n#{stderr}")
+  end
 end
 
 words = <<~XML

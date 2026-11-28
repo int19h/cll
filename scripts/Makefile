@@ -126,7 +126,7 @@ all: xhtml_chapters xhtml_sections xhtml_nochunks pdf epub html_check
 .PHONY: clean
 clean:
 	# Keep downloaded tools. realclean still removes them.
-	for d in "$(_defbuild_r)" "$(_covbuild_r)" "$(_builddir_r)"; do if [ -d "$$d" ]; then find "$$d" \( -type d \( -name weasyprint-tools -o -path '*/tools/epubcheck' -o -path '*/tools/vnu' \) -prune \) -o \! -name 'jbovlaste*.xml' -type f -print0 | xargs -0 -r rm -f --; fi; done
+	for d in "$(_defbuild_r)" "$(_covbuild_r)" "$(_builddir_r)"; do if [ -d "$$d" ]; then find "$$d" \( -type d \( -name weasyprint-tools -o -name glossary-mathjax -o -path '*/tools/epubcheck' -o -path '*/tools/vnu' \) -prune \) -o \! -name 'jbovlaste*.xml' -type f -print0 | xargs -0 -r rm -f --; fi; done
 
 .PHONY: realclean
 realclean: clean
@@ -143,7 +143,9 @@ $(builddir)/build-metadata: build_metadata_force
 	@{ scripts/build-version.sh && date +%Y-%m-%d; } >$@.tmp || { rm -f $@.tmp; exit 1; }
 	@cmp -s $@.tmp $@ && rm $@.tmp || mv $@.tmp $@
 
-$(builddir)/cll.xml: $(chapters) xml/iso-pub.ent xml/identity.xsl xml/docbook2html_config_common.xsl scripts/update_jbovlaste_xml.sh scripts/generate_glossary.rb scripts/util.rb scripts/header.xml scripts/merge.sh .env dictionary/all_words.xml assets/scripts/sance-next.js $(builddir)/build-metadata
+mathjax_inputs := scripts/mathjax_packages.rb scripts/glossary-mathml.cjs scripts/weasyprint/mathjax.cjs scripts/weasyprint/package.json scripts/weasyprint/package-lock.json
+glossary_math_inputs := scripts/glossary_mathml.rb $(mathjax_inputs)
+$(builddir)/cll.xml: $(chapters) xml/iso-pub.ent xml/identity.xsl xml/docbook2html_config_common.xsl scripts/update_jbovlaste_xml.sh scripts/generate_glossary.rb scripts/util.rb scripts/header.xml scripts/merge.sh .env dictionary/all_words.xml assets/scripts/sance-next.js $(glossary_math_inputs) $(builddir)/build-metadata
 	regenerator --include-runtime $(PWD)/assets/scripts/sance-next.js > $(builddir)/sance.js
 	$(SAFE_RM_TREE) --root "$(builddir)" "$(builddir)/xml" "$(builddir)/dtd"
 	cp -pr $(PWD)/xml $(builddir)/
@@ -273,9 +275,9 @@ $(builddir)/weasyprint/cll_processed_xhtml_pdf.html: $(builddir)/cll_processed_x
 	ruby scripts/xml_prince_postprocess.rb $(builddir)/weasyprint/cll_processed_xhtml.html >$@.tmp
 	mv $@.tmp $@
 
-$(builddir)/cll-weasyprint.pdf: $(builddir)/weasyprint/cll_processed_xhtml_pdf.html assets/css/weasyprint.css scripts/weasyprint/render.py scripts/weasyprint/mathjax.cjs scripts/weasyprint/package-lock.json scripts/weasyprint/requirements.txt
+$(builddir)/cll-weasyprint.pdf: $(builddir)/weasyprint/cll_processed_xhtml_pdf.html assets/css/weasyprint.css scripts/weasyprint/render.py $(mathjax_inputs) scripts/weasyprint/requirements.txt
 	cp assets/css/weasyprint.css $(builddir)/weasyprint/weasyprint.css
-	PYTHONDONTWRITEBYTECODE=1 CLL_MATHJAX_DIR="$${CLL_MATHJAX_DIR:-$(abspath $(builddir))/weasyprint-tools}" $(WEASYPRINT_PYTHON) scripts/weasyprint/render.py $< $@
+	PYTHONDONTWRITEBYTECODE=1 $(WEASYPRINT_PYTHON) scripts/weasyprint/render.py $< $@ --build-dir "$(abspath $(builddir))"
 
 #*******
 # Typst PDF (optional; the default PDF target remains Prince)

@@ -97,8 +97,8 @@ jobs:
         run: python3 scripts/test-lint-parallel-text.py
       - name: Appendix A parallel-text table roles
         run: python3 scripts/lint-parallel-text.py chapters/*.xml
-      - name: Browser MathJax version and integrity
-        run: python3 scripts/test-html-mathjax.py
+      - name: HTML head keeps offline reading and uses native math
+        run: python3 scripts/test-html-head.py
       - name: PEG word-form grammar in chapter 21 matches the machine-readable grammar
         run: python3 scripts/check-peg-grammar.py
       - name: PEG grammar check self-test
@@ -256,7 +256,7 @@ jobs:
       - name: Install PDF runtime libraries
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq python3-venv python3-pymupdf libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core fonts-linuxlibertine poppler-utils
+          sudo apt-get install -y -qq ruby python3-venv python3-pymupdf libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core fonts-linuxlibertine poppler-utils
       - name: Install the pinned WeasyPrint and MathJax dependencies
         run: ./scripts/install-weasyprint.sh
       - name: Render math and linked index fixtures

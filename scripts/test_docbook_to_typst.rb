@@ -102,6 +102,19 @@ class DocBookTypstTest < Minitest::Test
     assert_raises(RuntimeError) { convert('<chapter><title>Math</title><para><math><mn>#eval</mn></math></para></chapter>') }
   end
 
+  def test_glossary_subscripts_keep_the_whole_base
+    source = convert('<chapter><title>Math</title><para><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi>c</mi><mi>i</mi></mrow><mn>1</mn></msub><mo>=</mo><msub><mi>x</mi><mn>2</mn></msub><msub><mrow/><mn>3</mn></msub></math></para></chapter>')
+    assert_includes source, '$attach(c i, b: 1) = attach(x, b: 2) attach(#[], b: 3)$'
+  end
+
+  def test_script_bases_accept_both_empty_spellings
+    ['<mi/>', '<mrow/>'].each do |base|
+      source = convert("<chapter><title>Math</title><para><math><msub>#{base}<mn>3</mn></msub><msup>#{base}<mn>4</mn></msup><msubsup>#{base}<mn>3</mn><mn>4</mn></msubsup></math></para></chapter>")
+      assert_includes source, '$attach(#[], b: 3) attach(#[], t: 4) attach(#[], b: 3, t: 4)$'
+    end
+    assert_raises(RuntimeError) { convert('<chapter><title>Math</title><para><math><mi/></math></para></chapter>') }
+  end
+
   def test_native_math_spacing_matches_handwritten_math
     executable = ENV['TYPST']
     skip 'Set TYPST to run the native math spacing test.' unless executable

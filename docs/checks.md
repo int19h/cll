@@ -46,7 +46,7 @@ python3 scripts/test-status-rendering.py
 python3 scripts/test-role-matching.py
 python3 scripts/test-lint-parallel-text.py
 python3 scripts/lint-parallel-text.py chapters/*.xml
-python3 scripts/test-html-mathjax.py
+python3 scripts/test-html-head.py
 python3 scripts/check-peg-grammar.py
 python3 scripts/test-check-peg-grammar.py
 python3 scripts/test-build-pins.py
@@ -115,7 +115,7 @@ The book check joins `scripts/header.xml`, every `chapters/*.xml` file, and a cl
 | Role token matching | `xml/docbook2html_config_common.xsl` matches `@role` by whitespace-separated token membership and preserves extra role tokens as HTML classes | `python3 scripts/test-role-matching.py` |
 | Parallel-text lint self-test | The lint below, on fixtures | `python3 scripts/test-lint-parallel-text.py` |
 | Parallel-text roles | Every `<informaltable>` outside `<example>` in Appendix A carries `role="parallel-text"`, and `role="parallel-text"` is not used elsewhere | `python3 scripts/lint-parallel-text.py chapters/*.xml` |
-| Browser MathJax | The HTML loads one pinned MathJax script with an integrity hash | `python3 scripts/test-html-mathjax.py` |
+| HTML head | The HTML links the offline script and uses native math | `python3 scripts/test-html-head.py` |
 | PEG grammar | The word-form grammar printed in chapter 21 matches `tests/fixtures/peg-morphology.peg` rule for rule | `python3 scripts/check-peg-grammar.py` |
 | PEG grammar self-test | The check above detects corrupted copies | `python3 scripts/test-check-peg-grammar.py` |
 | Container pins | The Dockerfiles keep their fixed image digest, package snapshot, and ConTeXt inputs (see [build-pins.md](build-pins.md)) | `python3 scripts/test-build-pins.py` |
@@ -189,6 +189,7 @@ offline=no ./cll_build -n -T xhtml_nochunks
 
 The check takes about two minutes, most of it generating the glossary.
 It needs Ruby with Nokogiri, Optimist, and HTMLEntities, and `xmllint`.
+The glossary generator uses Node.js and npm to install the pinned MathJax packages in the selected build directory.
 Its output stays in `build/whole-book-validation` (name another build folder as the argument).
 
 ## typst-smoke
@@ -207,7 +208,8 @@ See [typst-pdf.md](typst-pdf.md#tests).
 
 ## weasyprint-smoke
 
-This job installs the pinned WeasyPrint and MathJax tools under `build/weasyprint-tools`, then tests the version label and the renderer:
+This job installs WeasyPrint under `build/weasyprint-tools` and uses the shared MathJax packages.
+It then tests the version label and the renderer.
 
 ```sh
 ./scripts/install-weasyprint.sh
@@ -292,7 +294,6 @@ These tests do not run in the `checks` workflow:
 - `python3 scripts/test-context-indexes.py build/cll-context.pdf` checks the printed indexes of a finished ConTeXt PDF. It needs PyMuPDF.
 - `python3 scripts/test-context-references.py build/cll-context.pdf` checks the printed cross-references of a finished ConTeXt PDF. It needs PyMuPDF.
 - `python3 scripts/test-context-link-fonts.py build/cll-context.pdf` checks that linked Lojban words print italic in a finished ConTeXt PDF. It needs PyMuPDF.
-- `python3 scripts/test-html-mathjax.py FILE` also compares a downloaded MathJax script with the integrity hash. See the [README](../README.md#mathematics-in-the-html-book).
 
 ### Offline reading in a browser
 

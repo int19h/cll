@@ -28,7 +28,7 @@ COPY requirements.txt /opt/cll-weasyprint/requirements.txt
 RUN python3 -m venv /opt/cll-weasyprint/venv \
     && /opt/cll-weasyprint/venv/bin/pip install --no-cache-dir -r /opt/cll-weasyprint/requirements.txt
 COPY package.json package-lock.json /opt/cll-mathjax/
-RUN npm ci --prefix /opt/cll-mathjax --no-audit --no-fund
+RUN npm ci --prefix /opt/cll-mathjax --ignore-scripts --no-audit --no-fund
 ENV CLL_WEASYPRINT_PYTHON=/opt/cll-weasyprint/venv/bin/python \
     CLL_MATHJAX_DIR=/opt/cll-mathjax \
     PYTHONDONTWRITEBYTECODE=1

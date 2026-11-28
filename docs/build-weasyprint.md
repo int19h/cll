@@ -61,11 +61,13 @@ Then install the backend dependencies:
 ./cll_build -n -T pdf_weasyprint
 ```
 
-The installer places Python and Node dependencies under `build/weasyprint-tools`.
+The installer places the pinned Python dependencies under `build/weasyprint-tools`.
+WeasyPrint and the glossary share the pinned MathJax packages in `build/glossary-mathjax`.
+See the [shared MathJax lookup order](build-native.md#shared-by-every-target) for alternate build directories and older installations.
 The `clean` target preserves these dependencies.
 After `realclean`, run the installer again before a local build.
-It uses the pinned Python requirements and npm lockfile.
 `CLL_WEASYPRINT_PYTHON` and `CLL_MATHJAX_DIR` select existing installations.
+The installer checks `CLL_MATHJAX_DIR` before it sets up Python.
 The container sets both variables to its packaged dependencies.
 Both container launchers read the version from Git on the host and pass `CLL_BUILD_VERSION` into the container.
 For an exported source tree without Git metadata, set `CLL_BUILD_VERSION` to the complete source version before building.

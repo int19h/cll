@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 from urllib.parse import unquote
 
 from lxml import etree, html
@@ -21,15 +22,28 @@ def has_class(node, name):
     return name in node.get('class', '').split()
 
 
-def typeset_math(tree, directory):
+def typeset_math(tree, directory, build_dir=None):
     nodes = list(tree.iter('math'))
+    if not nodes and not os.environ.get('CLL_MATHJAX_DIR'):
+        return {'expressions': 0, 'version': None}
+    resolver = Path(__file__).resolve().parents[1] / 'mathjax_packages.rb'
+    command = ['ruby', str(resolver)]
+    if build_dir is not None:
+        command.append(str(build_dir))
+    packages = subprocess.run(command, text=True, capture_output=True)
+    if packages.returncode:
+        raise RuntimeError(packages.stderr.strip())
+    if packages.stderr:
+        sys.stderr.write(packages.stderr)
     if not nodes:
         return {'expressions': 0, 'version': None}
     inputs = [etree.tostring(node, encoding='unicode', with_tail=False) for node in nodes]
+    env = os.environ.copy()
+    env['CLL_MATHJAX_DIR'] = packages.stdout.rstrip('\n')
     try:
         result = subprocess.run(
             ['node', str(Path(__file__).with_name('mathjax.cjs'))],
-            input=json.dumps(inputs), capture_output=True, text=True, check=True,
+            input=json.dumps(inputs), capture_output=True, text=True, check=True, env=env,
         )
     except subprocess.CalledProcessError as error:
         raise RuntimeError(f'MathJax conversion failed:\n{error.stderr}') from error
@@ -200,7 +214,7 @@ def prepared_path(directory):
     return directory.with_name(directory.name + '-work') / 'cll-weasyprint.html'
 
 
-def render(input_path, output_path, max_passes=8):
+def render(input_path, output_path, max_passes=8, *, build_dir=None):
     input_path = Path(input_path).resolve()
     tree = html.parse(str(input_path), parser=html.HTMLParser(encoding='utf-8')).getroot()
     directory = input_path.parent
@@ -208,7 +222,7 @@ def render(input_path, output_path, max_passes=8):
     for script in list(tree.iter('script')):
         script.getparent().remove(script)
     hidden_anchors = preserve_hidden_index_anchors(tree)
-    math = typeset_math(tree, directory)
+    math = typeset_math(tree, directory, build_dir)
     tree.find('head').append(etree.Element('link', rel='stylesheet', href='weasyprint.css'))
     indexes = collect_indexes(tree)
     page_refs = collect_page_refs(tree)
@@ -278,6 +292,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('input', type=Path)
     parser.add_argument('output', type=Path)
+    parser.add_argument('--build-dir', type=Path, help='Build directory for the shared MathJax packages')
     args = parser.parse_args()
     logging.basicConfig(level=logging.WARNING)
-    render(args.input.resolve(), args.output.resolve())
+    render(args.input.resolve(), args.output.resolve(), build_dir=args.build_dir)

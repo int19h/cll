@@ -14,7 +14,7 @@
       <definition>And at the same time ...</definition>
     </valsi>
     <valsi word=".iesai">
-      <definition>attitudinal: "I fully agree"</definition>
+      <definition>attitudinal: “I strongly agree.”</definition>
     </valsi>
     <valsi word=".iicai">
       <definition>attitudinal: "Eek!"; utmost fear</definition>
@@ -118,7 +118,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: sumti afterthought or.</definition>
+      <definition>afterthought logical connective for sumti, termsets, and mathematical operands: inclusive “or”.</definition>
       <definitionid>1339</definitionid>
       <glossword word="and/or" sense="inclusive or"/>
       <glossword word="or" sense="inclusive or"/>
@@ -481,9 +481,9 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: intent, with indecision ({cu'i}) and unintentionality ({nai}).</definition>
+      <definition>attitudinal: intent, with indecision at cu'i. In this edition, the nai form expresses unintentionality.</definition>
       <definitionid>1354</definitionid>
-      <notes>See also {termu'i}, {terzu'e}, {seljdi}, {selcu'a}.</notes>
+      <notes>The official word lists give rejection or refusal for {.ai nai}. See also {termu'i}, {terzu'e}, {seljdi}, {selcu'a}.</notes>
       <glossword word="intent"/>
     </valsi>
     <valsi word=".a'icu'i" type="cmavo-compound">
@@ -87590,7 +87590,8 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>forms a letteral from the preceding single word or bound unit. It binds in left-to-right order after any earlier magic word acts.</definition>
+      <definition>forms a letteral from the preceding single word or bound unit. In this edition, earlier word-level operators act first.</definition>
+      <notes>The 2005 BPFK checkpoint excludes {ba'e}, {za'e}, and {le'u}. This edition follows the later account, which permits these combinations. Their status remains contested.</notes>
       <definitionid>1399</definitionid>
       <glossword word="word to lerfu"/>
     </valsi>
@@ -88935,7 +88936,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: strong intensity attitude modifier.</definition>
+      <definition>indicates maximal intensity on an attitude scale.</definition>
       <definitionid>1418</definitionid>
       <glossword word="intense emotion"/>
     </valsi>
@@ -90722,7 +90723,8 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>letteral shift: the following letteral names a font for the current letteral string. It replaces the previous font shift.</definition>
+      <definition>letteral shift: the following letteral names the font. In this edition, the shift lasts through the current letteral string unless another font shift or na'a ends it.</definition>
+      <notes>The 2004 BPFK checkpoint lets the shift carry across letteral strings. A shift of the same kind or {na'a} ends it.</notes>
       <definitionid>1423</definitionid>
       <glossword word="font shift"/>
     </valsi>
@@ -91513,7 +91515,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>pro-sumti: marks an open place within an abstraction, especially a property with {ka}.</definition>
+      <definition>pro-sumti: marks an open place within an abstraction, especially a property with ka.</definition>
       <definitionid>1427</definitionid>
       <examples>
         <example>
@@ -96720,7 +96722,7 @@
       </user>
       <definition>$x_{1}$ is a structure word of grammatical class $x_{2}$, with meaning/function $x_{3}$ in usage (language) $x_{4}$.</definition>
       <definitionid>191</definitionid>
-      <notes>$x_4$ may be a specific usage (with an embedded language place) or a description of languages as a group; $x_3$ and $x_4$ may be merely an example of cmavo usage or refer to an actual expression; cmavo list, if physical object (= (loi) {ma'oste}); referring to the mental construct (e.g. propose adding a new cmavo to the cmavo list = {ma'orpoi}, {ma'orselcmi}, {ma'orselste}).  See also {gismu}, {lujvo}, {gerna}, {smuni}, {valsi}.</notes>
+      <notes>$x_4$ may be a specific usage (with an embedded language place) or a description of usage taken as a whole; $x_3$ and $x_4$ may be merely an example of cmavo usage or refer to an actual expression; cmavo list, if physical object (= (loi) {ma'oste}); referring to the mental construct (e.g. propose adding a new cmavo to the cmavo list = {ma'orpoi}, {ma'orselcmi}, {ma'orselste}).  See also {gismu}, {lujvo}, {gerna}, {smuni}, {valsi}.</notes>
       <glossword word="structure word"/>
     </valsi>
     <valsi word="cmavrba'e" type="fu'ivla">
@@ -98893,7 +98895,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>event contour: the situation occurs at a single point. As a tag, the situation occurs at the tagged point.</definition>
+      <definition>event contour: treats the whole situation as a single point. As a tag, it identifies the point when the situation occurs.</definition>
       <definitionid>1444</definitionid>
       <glossword word="achievative"/>
       <glossword word="perfective" sense="achievative"/>
@@ -99065,7 +99067,7 @@
         <username>djeikyb</username>
         <realname>Jacob Thomas Errington</realname>
       </user>
-      <definition>Combination of {coi} and {co'o}, indicating either greetings or partings according to context; may also constitute a greeting in passing (such as {coico'o}).</definition>
+      <definition>Combination of coi and co'o, indicating either greetings or partings according to context; may also constitute a greeting in passing (such as coico'o).</definition>
       <definitionid>27628</definitionid>
       <notes>The scalar negated forms of this COI are apparently identical to its positive form. cf. {coi}, {co'o}, {rinsa}, {tolrinsa}.</notes>
       <glossword word="aloha"/>
@@ -100795,7 +100797,7 @@
         <username>nejni-marji</username>
         <realname>Matthew</realname>
       </user>
-      <definition>universal terminator: closes the most recently opened construct. With {xi ro}, it closes every open construct in the current sentence.</definition>
+      <definition>universal terminator: closes the most recently opened construct. With xi ro, it closes every open construct in the current sentence.</definition>
       <definitionid>64395</definitionid>
       <notes>cu'au looks back for the most recently opened construct that has not been terminated, and emulates whatever {famyma'o} would terminate it. It can also be subscripted with {xi}, and will terminate that many times. Note that that means grammatical function is being put in a {xi} clause, so be careful when using it. Additionally, cu'au {xi} {ro} will terminate all the way up to the last sentence-starting word (.i mi klama lo zarci pe lo pendo be mi cu'au xi ro -&gt; .i mi klama lo zarci pe lo pendo be mi cu'au-be'o-ku-ge'u-ku-vau). This will also terminate to sentences started in {lu} (will NOT emulate li'u UNLESS used multiple times), {ni'o}, and {no'i}. It will NOT emulate {le'u}. In addition to {ro}, it can be subscripted with {da'a}, which terminates to the sentence level, minus 1. In the previous example, this would just leave the {vau} remaining, and allow you to continue to add to the place structure of {klama}.</notes>
     </valsi>
@@ -100995,7 +100997,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: neutral scalar attitude modifier.</definition>
+      <definition>selects the neutral point of an attitude scale.</definition>
       <definitionid>1452</definitionid>
       <glossword word="neutral emotion"/>
     </valsi>
@@ -101449,7 +101451,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>convert number to probability selbri; event $x_{1}$ has probability (n) of occurring under cond. $x_{2}$.</definition>
+      <definition>probability selbri: event $x_1$ has probability n of occurring under conditions $x_2$. With a subjective number, $x_3$ is the standard.</definition>
       <definitionid>1453</definitionid>
       <glossword word="probability selbri"/>
     </valsi>
@@ -104426,7 +104428,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>event contour: the situation is on pause. As a tag, the pause encompasses the tagged event.</definition>
+      <definition>event contour: marks the start of a temporary interruption. As a tag, the tagged event gives the period during which the main situation is suspended.</definition>
       <definitionid>1469</definitionid>
       <glossword word="pausative"/>
     </valsi>
@@ -106001,7 +106003,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$ is the date [day,{week},{month},year] of event/state $x_{2}$, at location $x_{3}$, by calendar $x_{4}$.</definition>
+      <definition>$x_{1}$ is the date [day,week,month,year] of event/state $x_{2}$, at location $x_{3}$, by calendar $x_{4}$.</definition>
       <definitionid>283</definitionid>
       <notes>(time units in $x_1$ are specified as numbers separated by pi'e or are unit values grouped with joi); See also cmavo list {de'i}, {djedi}, {jeftu}, {masti}, {nanca}, {tcika}.</notes>
       <glossword word="date"/>
@@ -109917,7 +109919,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: sumti afterthought and.</definition>
+      <definition>afterthought logical connective for sumti, termsets, and mathematical operands: “and”.</definition>
       <definitionid>1501</definitionid>
       <glossword word="sumti and"/>
     </valsi>
@@ -110018,9 +110020,9 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: exhortation ({nai}: discouragement).</definition>
+      <definition>attitudinal: exhortation in this edition. The nai form expresses discouragement.</definition>
       <definitionid>1504</definitionid>
-      <notes>See also {.e'ende}, {.e'i}, {.e'o}, {.e'u}.</notes>
+      <notes>The official word lists give competence and incompetence. This edition uses the BPFK draft senses. See also {.e'ende}, {.e'i}, {.e'o}, {.e'u}.</notes>
       <glossword word="competence"/>
     </valsi>
     <valsi unofficial="true" word="e'e'e" type="experimental cmavo">
@@ -110142,9 +110144,9 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: command ({nai}: release from command).</definition>
+      <definition>attitudinal: command in this edition. The nai form expresses release from command.</definition>
       <definitionid>1506</definitionid>
-      <notes>See also {.e'inde}, {minde}, {.e'e}, {.ei}.</notes>
+      <notes>The official word lists give constraint, with independence at cu'i and resistance to constraint at nai. This edition uses the BPFK draft senses. See also {.e'inde}, {minde}, {.e'e}, {.ei}.</notes>
       <glossword word="constraint" sense="attitudinal"/>
     </valsi>
     <valsi word=".ei" type="cmavo">
@@ -110817,9 +110819,9 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: request ({nai}: offer).</definition>
+      <definition>attitudinal: request. In this edition, the nai form expresses an offer.</definition>
       <definitionid>1509</definitionid>
-      <notes>See also {cpedu}, {pikci}.</notes>
+      <notes>The official word lists give a negative request for {.e'o nai}. See also {cpedu}, {pikci}.</notes>
       <glossword word="please"/>
       <glossword word="request"/>
     </valsi>
@@ -111213,7 +111215,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: suggestion ({cu'i}: no suggestion, {nai}: warning).</definition>
+      <definition>attitudinal: suggestion (cu'i: no suggestion, nai: warning).</definition>
       <definitionid>1511</definitionid>
       <notes>See also {stidi}, {kajde}.</notes>
       <glossword word="suggestion"/>
@@ -112362,7 +112364,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>end of text. A reader or parser stops at an effective {fa'o}. An earlier word-level operator can capture it.</definition>
+      <definition>end of text. A reader or parser stops at an effective fa'o. An earlier word-level operator can capture it.</definition>
       <definitionid>1522</definitionid>
       <glossword word="end of text"/>
     </valsi>
@@ -113135,7 +113137,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>mathematical operator: the nth root of a number. The default root is the square root.</definition>
+      <definition>mathematical operator: calculates the nth root of the first operand. The second operand gives n and defaults to 2.</definition>
       <definitionid>1527</definitionid>
       <glossword word="nth root of" sense="mekso operator"/>
     </valsi>
@@ -116878,7 +116880,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal modifier: easy - difficult.</definition>
+      <definition>attitudinal modifier: with help or easily. The cu'i form means without help. The nai form means with opposition or difficulty.</definition>
       <definitionid>1559</definitionid>
       <notes>See also {frili}.</notes>
       <glossword word="easy"/>
@@ -117280,7 +117282,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: forethought all but tanru-internal or (with gi).</definition>
+      <definition>forethought logical connective for bridi, bridi-tails, sumti, termsets, and mathematical operands: inclusive “or”. The second part starts with gi.</definition>
       <definitionid>1564</definitionid>
       <glossword word="fore or"/>
     </valsi>
@@ -117460,7 +117462,8 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>letteral shift to uppercase for the rest of the current letteral string, until another shift of the same kind or {na'a}.</definition>
+      <definition>letteral shift to uppercase. In this edition, it lasts for the rest of the letteral string, unless another shift of the same kind or na'a ends it.</definition>
+      <notes>The 2004 BPFK checkpoint lets the shift carry across letteral strings. A shift of the same kind or {na'a} ends it.</notes>
       <definitionid>1566</definitionid>
       <glossword word="upper-case shift"/>
     </valsi>
@@ -117550,7 +117553,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>honorific modifier: the referent is of lower rank than the speaker ({cu'i}: equal rank, {nai}: higher rank).</definition>
+      <definition>honorific modifier: the referent is of lower rank than the speaker (cu'i: equal rank, nai: higher rank).</definition>
       <definitionid>1567</definitionid>
       <notes>See also {gapru}, {cnita}.</notes>
       <glossword word="hauteur"/>
@@ -117877,7 +117880,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: forethought all but tanru-internal conditional/only if (with gi).</definition>
+      <definition>forethought logical connective for bridi, bridi-tails, sumti, termsets, and mathematical operands: “if the first holds, then the second holds”. The second part starts with gi.</definition>
       <definitionid>1573</definitionid>
       <glossword word="fore only if"/>
     </valsi>
@@ -118564,7 +118567,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: forethought all but tanru-internal and (with gi).</definition>
+      <definition>forethought logical connective for bridi, bridi-tails, sumti, termsets, and mathematical operands: “and”. The second part starts with gi.</definition>
       <definitionid>1575</definitionid>
       <glossword word="fore and"/>
     </valsi>
@@ -118595,7 +118598,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: elliptical/unspecified/non-specific emotion; no particular feeling.</definition>
+      <definition>indicates an unspecified attitude or leaves the attitude unexpressed. After an indicator, it leaves the speaker's position on that scale unspecified.</definition>
       <definitionid>1577</definitionid>
       <glossword word="unspecif emotion"/>
       <glossword word="well" sense="interjection"/>
@@ -118637,7 +118640,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: forethought all but tanru-internal connective question (with gi).</definition>
+      <definition>forethought logical connective for bridi, bridi-tails, sumti, termsets, and mathematical operands: asks which logical relation applies. The second part starts with gi.</definition>
       <definitionid>1578</definitionid>
       <glossword word="fore conn ?"/>
     </valsi>
@@ -118647,7 +118650,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>trinary mathematical operator: order of magnitude/value/base; [b * (c to the a power)].</definition>
+      <definition>scientific notation operator: multiplies the second operand by the third operand raised to the first. The second operand defaults to 1 and the third to 10.</definition>
       <definitionid>1581</definitionid>
       <glossword word="exponential notation" sense="mekso operator"/>
     </valsi>
@@ -118879,7 +118882,8 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>letteral shift to the Greek alphabet for the rest of the current letteral string, until another shift of the same kind or {na'a}.</definition>
+      <definition>letteral shift to the Greek alphabet. In this edition, it lasts for the rest of the letteral string, unless another shift of the same kind or na'a ends it.</definition>
+      <notes>The 2004 BPFK checkpoint lets the shift carry across letteral strings. A shift of the same kind or {na'a} ends it.</notes>
       <definitionid>1579</definitionid>
       <glossword word="Greek shift"/>
     </valsi>
@@ -119135,7 +119139,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>forethought connective separator: introduces the second part of a forethought connection.</definition>
+      <definition>forethought connective marker. It introduces the second part. After a tense, modal, or nonlogical connective, it also marks the start of the first part.</definition>
       <definitionid>1582</definitionid>
       <glossword word="connective medial"/>
       <examples>
@@ -120158,7 +120162,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: forethought all but tanru internal biconditional/iff/if-and-only-if(with gi).</definition>
+      <definition>forethought logical connective for bridi, bridi-tails, sumti, termsets, and mathematical operands: “if and only if”. The second part starts with gi.</definition>
       <definitionid>1590</definitionid>
       <glossword word="fore iff"/>
     </valsi>
@@ -121155,7 +121159,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: forethought all but tanru-internal whether-or-not (with gi).</definition>
+      <definition>forethought logical connective for bridi, bridi-tails, sumti, termsets, and mathematical operands: “the first holds whether or not the second does”. The second part starts with gi.</definition>
       <definitionid>1599</definitionid>
       <glossword word="fore whether"/>
     </valsi>
@@ -121165,7 +121169,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: tanru-internal forethought or (with gi).</definition>
+      <definition>forethought logical connective for tanru units and mathematical operators: inclusive “or”. The second part starts with gi.</definition>
       <definitionid>1600</definitionid>
       <glossword word="fore tanru or"/>
     </valsi>
@@ -121381,7 +121385,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: tanru-internal forethought and (with gi).</definition>
+      <definition>forethought logical connective for tanru units and mathematical operators: “and”. The second part starts with gi.</definition>
       <definitionid>1602</definitionid>
       <glossword word="fore tanru and"/>
     </valsi>
@@ -124289,7 +124293,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: tanru-internal forethought question (with gi).</definition>
+      <definition>forethought logical connective for tanru units and mathematical operators: asks which logical relation applies. The second part starts with gi.</definition>
       <definitionid>1603</definitionid>
       <glossword word="fore tanru conn ?"/>
     </valsi>
@@ -124545,7 +124549,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: tanru-internal forethought biconditional/iff/if-and-only-if (with gi).</definition>
+      <definition>forethought logical connective for tanru units and mathematical operators: “if and only if”. The second part starts with gi.</definition>
       <definitionid>1604</definitionid>
       <glossword word="fore tanru iff"/>
     </valsi>
@@ -124888,7 +124892,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: tanru-internal forethought whether-or-not (with gi).</definition>
+      <definition>forethought logical connective for tanru units and mathematical operators: “the first holds whether or not the second does”. The second part starts with gi.</definition>
       <definitionid>1606</definitionid>
       <glossword word="fore tanru whether"/>
     </valsi>
@@ -124952,7 +124956,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: acceptance - blame.</definition>
+      <definition>attitudinal: acceptance. The nai form expresses refusal or blame.</definition>
       <definitionid>1609</definitionid>
       <notes>See also {nalna'e}, {nalpro}, {no'epro}, {nalzugjdi}.</notes>
       <glossword word="acceptance"/>
@@ -125428,7 +125432,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: fear - security.</definition>
+      <definition>attitudinal: fear, with nervousness at cu'i and security at nai.</definition>
       <definitionid>1626</definitionid>
       <notes>See also {terpa}, {snura}.</notes>
       <glossword word="fear"/>
@@ -126871,7 +126875,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: tanru-internal afterthought or.</definition>
+      <definition>afterthought logical connective: inclusive “or”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After .i, it joins sentences.</definition>
       <definitionid>1642</definitionid>
       <glossword word="tanru or"/>
     </valsi>
@@ -127251,7 +127255,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>conversion: promotes a tagged place to the first place and moves the old first place to {fai}. Without a tag, lets a concrete argument stand for an abstraction involving it.</definition>
+      <definition>conversion: promotes a tagged place to the first place and moves the old first place to fai. Without a tag, lets a concrete argument stand for an abstraction involving it.</definition>
       <definitionid>1648</definitionid>
       <glossword word="modal conversion"/>
       <examples>
@@ -129419,7 +129423,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: tanru-internal afterthought and.</definition>
+      <definition>afterthought logical connective: “and”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After .i, it joins sentences.</definition>
       <definitionid>1653</definitionid>
       <glossword word="tanru and"/>
       <examples>
@@ -129893,7 +129897,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: tanru-internal afterthought conn question.</definition>
+      <definition>afterthought logical connective: asks which logical relation applies. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After .i, it joins sentences.</definition>
       <definitionid>1657</definitionid>
       <glossword word="tanru conn ?"/>
     </valsi>
@@ -130082,7 +130086,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: tanru-internal afterthought x but not y.</definition>
+      <definition>afterthought logical connective: “the first holds and the second does not”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After .i, it joins sentences.</definition>
       <definitionid>1662</definitionid>
       <glossword word="tanru but not"/>
     </valsi>
@@ -130167,7 +130171,8 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>letteral shift to the Hebrew alphabet for the rest of the current letteral string, until another shift of the same kind or {na'a}.</definition>
+      <definition>letteral shift to the Hebrew alphabet. In this edition, it lasts for the rest of the letteral string, unless another shift of the same kind or na'a ends it.</definition>
+      <notes>The 2004 BPFK checkpoint lets the shift carry across letteral strings. A shift of the same kind or {na'a} ends it.</notes>
       <definitionid>1658</definitionid>
       <glossword word="Hebrew shift"/>
     </valsi>
@@ -130742,7 +130747,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: sumti afterthought connective question.</definition>
+      <definition>afterthought logical connective for sumti, termsets, and mathematical operands: asks which logical relation applies.</definition>
       <definitionid>1663</definitionid>
       <glossword word="sumti conn ?"/>
     </valsi>
@@ -132499,7 +132504,7 @@
         <username>Ilmen</username>
         <realname>Ilmen</realname>
       </user>
-      <definition>This cmavo precedes a predicate (at least binary) and turns it into a conjunction, which syntactically behaves like JA cmavo. The predicate indicates the relationship between the two connected propositions. Terminator: {te'u}.</definition>
+      <definition>This cmavo precedes a predicate (at least binary) and turns it into a conjunction, which syntactically behaves like JA cmavo. The predicate indicates the relationship between the two connected propositions. Terminator: te'u.</definition>
       <definitionid>68736</definitionid>
       <notes>{je} = «ji'oi {zilkanxe} te'u»; {ja} = «ji'oi {zilvlina} te'u». • «mi ji'oi balvi do snada» = «lo nu mi snada cu balvi lo nu do snada» • «mi ji'oi fanta do cmima» = «lo nu mi cmima cu fanta lo nu do cmima» • «mi se zunti ji'oi fanta cu jundi» = «lo nu mi se zunti cu fanta lo nu mi jundi»</notes>
     </valsi>
@@ -132996,7 +133001,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: tanru-internal afterthought biconditional/iff/if-and-only-if.</definition>
+      <definition>afterthought logical connective: “if and only if”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After .i, it joins sentences.</definition>
       <definitionid>1671</definitionid>
       <glossword word="tanru iff"/>
     </valsi>
@@ -133270,7 +133275,8 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>letteral shift to the Arabic alphabet for the rest of the current letteral string, until another shift of the same kind or {na'a}.</definition>
+      <definition>letteral shift to the Arabic alphabet. In this edition, it lasts for the rest of the letteral string, unless another shift of the same kind or na'a ends it.</definition>
+      <notes>The 2004 BPFK checkpoint lets the shift carry across letteral strings. A shift of the same kind or {na'a} ends it.</notes>
       <definitionid>1675</definitionid>
       <glossword word="Arabic shift"/>
     </valsi>
@@ -133370,7 +133376,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: tanru-internal afterthought whether-or-not.</definition>
+      <definition>afterthought logical connective: “the first holds whether or not the second does”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After .i, it joins sentences.</definition>
       <definitionid>1680</definitionid>
       <glossword word="tanru whether"/>
     </valsi>
@@ -134246,9 +134252,9 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal modifier: certainty - uncertainty - impossibility.</definition>
+      <definition>knowledge discursive: “certainly.” Ju'o cu'i expresses uncertainty. Ju'o nai means “certainly not.”</definition>
       <definitionid>1686</definitionid>
-      <notes>See also {birti}, {cumki}.</notes>
+      <notes>See also {birti}.</notes>
       <glossword word="certainty"/>
     </valsi>
     <valsi word="ju'ocai" type="cmavo-compound">
@@ -134267,7 +134273,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal modifier: uncertainty.</definition>
+      <definition>knowledge discursive: expresses uncertainty about the claim.</definition>
       <definitionid>1688</definitionid>
       <glossword word="maybe" sense="uncertainty"/>
       <glossword word="perhaps" sense="uncertainty"/>
@@ -135983,7 +135989,7 @@
         <username>selpahi</username>
         <realname>Lorenzo Von Matterhorn</realname>
       </user>
-      <definition>abstractor: $x_1$ ($x_2$, ...) are such that they satisfy [bridi], binding to the open {ce'u} slots.</definition>
+      <definition>abstractor: $x_1$ ($x_2$, ...) are such that they satisfy [bridi], binding to the open ce'u slots.</definition>
       <definitionid>56529</definitionid>
       <notes>See also {me'au}, {emna}, {ka} and {ce'u}</notes>
       <glossword word="selbri abstraction"/>
@@ -138134,7 +138140,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>start grouping of tanru, etc; ... type of ... ; overrides normal tanru left grouping.</definition>
+      <definition>opens a grammatical group, such as a group of tanru units, sumti, bridi-tails, or mathematical operands or operators. The terminator is ke'e.</definition>
       <definitionid>1701</definitionid>
       <notes>Cf. {ke'e}, {bo}.</notes>
       <glossword word="start grouping"/>
@@ -138201,7 +138207,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>elidable terminator: end of tanru left grouping override (usually elidable).</definition>
+      <definition>elidable terminator: closes a group opened by ke.</definition>
       <definitionid>1703</definitionid>
       <glossword word="end grouping"/>
     </valsi>
@@ -144891,9 +144897,9 @@
         <username>djeikyb</username>
         <realname>Jacob Thomas Errington</realname>
       </user>
-      <definition>opens a grammatical name quotation. {li'u} closes it. The quotation refers to what the text names.</definition>
+      <definition>opens a grammatical name quotation. li'u closes it. The quotation refers to what the text names.</definition>
       <definitionid>38146</definitionid>
-      <notes>Used to make more complex names where simple {la} doesn't apply, e.g. some book/song titles. Artibrary non-lojban text can be quoted with {la'o}. See also {lai'e} of LAhE, {la'ai} of LOhU and {la'o} of ZOI for naming cmavo.</notes>
+      <notes>Used to make more complex names where simple {la} doesn't apply, e.g. some book/song titles. Arbitrary non-Lojban text can be quoted with {la'o}. See also {lai'e} of LAhE, {la'ai} of LOhU and {la'o} of ZOI for naming cmavo.</notes>
       <glossword word="name quote" sense="grammatical lojban text"/>
     </valsi>
     <valsi word="labdjasluni" type="lujvo">
@@ -145879,7 +145885,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>delimited name. Uses the same delimiters as {zoi} and refers to what the quoted text names.</definition>
+      <definition>delimited name. Uses the same delimiters as zoi and refers to what the quoted text names.</definition>
       <definitionid>1739</definitionid>
       <glossword word="the non-Lojban named"/>
     </valsi>
@@ -146621,7 +146627,7 @@
       </user>
       <definition>closes an error correction. On its own, acknowledges a mistake without specifying the repair.</definition>
       <definitionid>16350</definitionid>
-      <notes>The {lo'ai} ... {sa'ai} ... {le'ai} replacement construct asks the listener to replace the text after {lo'ai} with the text after {sa'ai}.  The order {sa'ai} ... {lo'ai} ... {le'ai} is also allowed, and either or both parts can be omitted and thus left up to context.  When both parts are omitted, the word {le'ai} on its own indicates that a mistake was made while leaving all the details up to context. It is also possible to attach SAI to a le'ai construct: le'ai {dai} (or le'ai {da'oi} ko'a) indicates that someone else made a mistake; le'ai {pei} asks whether someone else made a mistake; and {sai}, {ru'e} and {cu'i} can be used to indicate the importance of the substitution. Furthermore, le'ai {nai} can be used to explicitly deny mistakes instead of acknowledging them (compare "sic").</notes>
+      <notes>The {lo'ai} ... {sa'ai} ... {le'ai} replacement construct asks the listener to replace the text after {lo'ai} with the text after {sa'ai}.  The order {sa'ai} ... {lo'ai} ... {le'ai} is also allowed, and either or both parts can be omitted and thus left up to context.  When both parts are omitted, the word {le'ai} on its own indicates that a mistake was made while leaving all the details up to context. It is also possible to attach indicators to a le'ai construct: le'ai {dai} (or le'ai {da'oi} ko'a) indicates that someone else made a mistake; le'ai {pei} asks whether someone else made a mistake; and {sai}, {ru'e} and {cu'i} can be used to indicate the importance of the substitution. Furthermore, le'ai {nai} can be used to explicitly deny mistakes instead of acknowledging them (compare "sic").</notes>
       <glossword word="end mistake quote"/>
       <glossword word="end replacement quote"/>
       <glossword word="mistake indicator"/>
@@ -147507,7 +147513,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>required terminator: the first {le'u} after a {lo'u} opener closes that quotation.</definition>
+      <definition>required terminator: the first le'u after a lo'u opener closes that quotation.</definition>
       <definitionid>1759</definitionid>
       <glossword word="end error quote"/>
     </valsi>
@@ -148749,7 +148755,8 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>letteral shift to the Lojban alphabet for the rest of the current letteral string, until another shift of the same kind or {na'a}.</definition>
+      <definition>letteral shift to the Lojban alphabet. In this edition, it lasts for the rest of the letteral string, unless another shift of the same kind or na'a ends it.</definition>
+      <notes>The 2004 BPFK checkpoint lets the shift carry across letteral strings. A shift of the same kind or {na'a} ends it.</notes>
       <definitionid>1778</definitionid>
       <glossword word="Latin shift"/>
       <glossword word="Lojban shift"/>
@@ -149225,7 +149232,7 @@
         <username>Ilmen</username>
         <realname>Ilmen</realname>
       </user>
-      <definition>Description clause: create a sumti from the enclosed bridi, describing the referent of the created sumti as filling the bridi place filled with {ke'a}.</definition>
+      <definition>Description clause: create a sumti from the enclosed bridi, describing the referent of the created sumti as filling the bridi place filled with ke'a.</definition>
       <definitionid>56727</definitionid>
       <notes>Notes: Full-bridi equivalent of {lo}. Terminator: {ku'au}.</notes>
       <glossword word="Description clause"/>
@@ -149308,7 +149315,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>opens a quotation of Lojban words that need no grammatical structure. The first {le'u} closes it.</definition>
+      <definition>opens a quotation of Lojban words that need no grammatical structure. The first le'u closes it.</definition>
       <definitionid>1782</definitionid>
       <notes>The first {le'u} closes the quotation even if a magic word precedes it.</notes>
       <glossword word="error quote"/>
@@ -151513,7 +151520,7 @@
       </user>
       <definition>selma'o quote; quotes a word (a cmavo) and uses it to name a selma'o.</definition>
       <definitionid>19223</definitionid>
-      <notes>The output is the selma'o to which the quoted cmavo belongs (according to the relevant frammar/standards/version); thus any cmavo in the same given selma'o could be used in order to reference that selma'o (not just the canonical cmavo works). Example: "ma'oi coi" is equivalent to COI, as is "ma'oi co'o". For the most part, this will ignore sub-selma'o classes (such as VUhU1 versus VUhU2; both would be treated as simply VUhU). See also: "{ra'oi}".</notes>
+      <notes>The output is the selma'o to which the quoted cmavo belongs (according to the relevant grammar/standards/version); thus any cmavo in the same given selma'o could be used in order to reference that selma'o (not just the canonical cmavo works). Example: "ma'oi coi" is equivalent to COI, as is "ma'oi co'o". For the most part, this will ignore sub-selma'o classes (such as VUhU1 versus VUhU2; both would be treated as simply VUhU). See also: "{ra'oi}".</notes>
       <glossword word="selma'o quote"/>
     </valsi>
     <valsi unofficial="true" word="ma'oi'e" type="experimental cmavo">
@@ -153061,7 +153068,7 @@
         <username>latros</username>
         <realname>Ian</realname>
       </user>
-      <definition>Article for abstract predicate sumti. Turns a selbri into an abstraction with all open places filled by {ce'u}.</definition>
+      <definition>Article for abstract predicate sumti. Turns a selbri into an abstraction with all open places filled by ce'u.</definition>
       <definitionid>20482</definitionid>
       <notes>Has an inverse: {me'au}</notes>
       <glossword word="the predicate" sense="gadri"/>
@@ -153135,7 +153142,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>quantifier: less than. The default is {ro}, so {me'i} alone means “less than all.”</definition>
+      <definition>quantifier: less than. The default is ro, so me'i alone means “less than all.”</definition>
       <definitionid>1803</definitionid>
       <glossword word="less than"/>
     </valsi>
@@ -153147,7 +153154,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>convert number to cardinality selbri; $x_{1}$ is a group formed from a set $x_{2}$ of n members, one or more of which is/are $x_{3}$, measured relative to the set $x_{4}$.</definition>
+      <definition>cardinality selbri: $x_1$ is the group formed from a set $x_2$ of n members. One or more of its members are $x_3$. With an objective indefinite count, $x_4$ is the comparison set. With a subjective count, $x_4$ is the standard.</definition>
       <definitionid>1806</definitionid>
       <notes>The set $x_2$ has N members. $x_3$ refers to one or more members of the set. {selmei} puts the set in the first place. See also {cmima}, {gunma}, {moi}.</notes>
       <glossword word="cardinal selbri"/>
@@ -156539,7 +156546,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>convert number to ordinal selbri; $x_{1}$ is (n)th member of set $x_{2}$ ordered by rule $x_{3}$.</definition>
+      <definition>ordinal selbri: $x_1$ is the nth member of set $x_2$ in the order given by rule $x_3$. With a subjective number, $x_4$ is the standard.</definition>
       <definitionid>1843</definitionid>
       <glossword word="ordinal selbri"/>
     </valsi>
@@ -156748,7 +156755,7 @@
         <username>spheniscine</username>
         <realname>Jonathan</realname>
       </user>
-      <definition>interrogative group article: “which group of ...?”</definition>
+      <definition>gadganzu group article: “which group of ...?”</definition>
       <definitionid>66358</definitionid>
       <glossword word="which group" sense="interrogative article"/>
     </valsi>
@@ -157364,7 +157371,7 @@
       </user>
       <definition>interrogative gadri: "which"</definition>
       <definitionid>66348</definitionid>
-      <notes>Roughly equivalent to {ma} {noi}, but doesn't start a new bridi.</notes>
+      <notes>Roughly equivalent to {ma} {noi}, but doesn't start a new bridi. This is the interrogative article in the gadganzu proposal.</notes>
       <glossword word="which" sense="interrogative article"/>
     </valsi>
     <valsi word="morbil" type="cmevla">
@@ -158084,7 +158091,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>discursive: for example - omitting - end examples.</definition>
+      <definition>discursive: for example. The cu'i form signals omitted examples. The nai form marks the end of the examples.</definition>
       <definitionid>1845</definitionid>
       <notes>See also {mupli}.</notes>
       <glossword word="for example"/>
@@ -159614,7 +159621,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>contradictory bridi negator. Also negates logical connectives in compounds. The scope before the selbri is disputed.</definition>
+      <definition>contradictory bridi negator. Before an afterthought logical connective, na negates the left operand. The scope of na before the selbri is disputed.</definition>
       <definitionid>1861</definitionid>
       <glossword word="bridi negator"/>
       <examples>
@@ -160201,7 +160208,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attached to cmavo to negate them; various negation-related meanings.</definition>
+      <definition>negation suffix. In afterthought logical connections, it negates the right operand. In forethought logical connections, it negates the part introduced by the marker it follows. With an indicator, it selects the opposite pole. Under the BPFK checkpoint, after a BAI tag it denies the tagged relation and leaves the main claim in place. Tense and frequency markers also take nai.</definition>
       <definitionid>1873</definitionid>
       <glossword word="negate last word"/>
       <examples>
@@ -160301,7 +160308,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: tanru-internal afterthought conditional/only if.</definition>
+      <definition>afterthought logical connective: “if the first holds, then the second holds”. Joins tanru units, abstractors, tenses or modals, and mathematical operators. After .i, it joins sentences.</definition>
       <definitionid>1874</definitionid>
       <glossword word="tanru only if"/>
     </valsi>
@@ -164423,7 +164430,7 @@
         <username>selpahi</username>
         <realname>Lorenzo Von Matterhorn</realname>
       </user>
-      <definition>incidental/non-restrictive adverbial: converts selbri to bridi adverbial term. The first place of the converted selbri is claimed to be such that the outer bridi satisfies it, and the outer bridi is claimed. {broda noi'a brode} means {lo nu broda ku goi ko'a cu fasnu .i ko'a brode}.</definition>
+      <definition>incidental/non-restrictive adverbial: converts selbri to bridi adverbial term. The first place of the converted selbri is claimed to be such that the outer bridi satisfies it, and the outer bridi is claimed. broda noi'a brode means lo nu broda ku goi ko'a cu fasnu .i ko'a brode.</definition>
       <definitionid>68607</definitionid>
       <notes>Has rightward scope. Terminator {fe'u}. See also {poi'a}, {poi'o'a}, {noi'o'a}, {soi'a}, {soi}.</notes>
       <glossword word="incidental bridi adverbial"/>
@@ -166863,7 +166870,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: sumti afterthought biconditional/iff/if-and-only-if.</definition>
+      <definition>afterthought logical connective for sumti, termsets, and mathematical operands: “if and only if”.</definition>
       <definitionid>1909</definitionid>
       <glossword word="sumti iff"/>
     </valsi>
@@ -166972,7 +166979,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: closeness - distance.</definition>
+      <definition>attitudinal: closeness, with detachment at cu'i and distance at nai.</definition>
       <definitionid>1913</definitionid>
       <notes>See also {cnijbi}, {cnikansa}.</notes>
       <glossword word="closeness"/>
@@ -166993,7 +167000,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: caution - rashness.</definition>
+      <definition>attitudinal: caution, with boldness at cu'i and rashness at nai.</definition>
       <definitionid>1915</definitionid>
       <notes>See also {capyrivbi}, {capfanta}, {srerivbi}, {srefanta}, {naldarsi}, {seljde}.</notes>
       <glossword word="caution"/>
@@ -167004,7 +167011,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: complaint - pleasure.</definition>
+      <definition>attitudinal: complaint or pain, with “doing OK” at cu'i and pleasure at nai.</definition>
       <definitionid>1924</definitionid>
       <notes>See also {pante}, {pluka}, {kufra}.</notes>
       <glossword word="complaint"/>
@@ -167283,7 +167290,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: sumti afterthought exclusive or; Latin 'aut'.</definition>
+      <definition>afterthought logical connective for sumti, termsets, and mathematical operands: exclusive “or”.</definition>
       <definitionid>1932</definitionid>
       <glossword word="or" sense="exclusive or"/>
       <glossword word="sumti xor"/>
@@ -170537,7 +170544,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: attitudinal question; how do you feel about it? with what intensity?.</definition>
+      <definition>asks which attitude applies or how strong a specified attitude is.</definition>
       <definitionid>1971</definitionid>
       <glossword word="emotion ?"/>
       <examples>
@@ -173879,7 +173886,7 @@
         <username>selpahi</username>
         <realname>Lorenzo Von Matterhorn</realname>
       </user>
-      <definition>restrictive adverbial: converts selbri to bridi adverbial term. The first place of the converted selbri is claimed to occur in conjunction with the outer bridi. {broda poi'a brode} means {lo nu broda cu fasnu gi'e brode}.</definition>
+      <definition>restrictive adverbial: converts selbri to bridi adverbial term. The first place of the converted selbri is claimed to occur in conjunction with the outer bridi. broda poi'a brode means lo nu broda cu fasnu gi'e brode.</definition>
       <definitionid>68606</definitionid>
       <notes>Has rightward scope. Terminator {fe'u}. See also {noi'a}, {poi'o'a}, {noi'o'a}, {soi'a}, {soi}.</notes>
       <glossword word="restrictive bridi adverbial"/>
@@ -173914,7 +173921,7 @@
         <username>selpahi</username>
         <realname>Lorenzo Von Matterhorn</realname>
       </user>
-      <definition>$x_1$ is such that {poi'i} abstraction is true; $x_1$ binds {ke'a} within the abstraction. </definition>
+      <definition>$x_1$ is such that poi'i abstraction is true; $x_1$ binds ke'a within the abstraction. </definition>
       <definitionid>56443</definitionid>
       <notes>Originally proposed by And Rosta around 2001.</notes>
       <glossword word="binding abstraction"/>
@@ -175962,7 +175969,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>event contour: the situation is about to begin. As a tag, the situation is still in prospect at the tagged event.</definition>
+      <definition>event contour: the situation is in prospect. As a tag, the main situation is still in prospect at the tagged event.</definition>
       <definitionid>2001</definitionid>
       <glossword word="anticipative"/>
     </valsi>
@@ -178061,7 +178068,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>emotion category/modifier: religious/spiritual/worship - sacrilege.</definition>
+      <definition>emotion category: spiritual, with secular at cu'i and sacrilegious at nai.</definition>
       <definitionid>2030</definitionid>
       <notes>See also {lijda}.</notes>
       <glossword word="spiritual"/>
@@ -180394,7 +180401,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal modifier: emotional release ({cu'i}: restraint, {nai}: control).</definition>
+      <definition>attitudinal modifier: emotional release (cu'i: restraint, nai: control).</definition>
       <definitionid>2049</definitionid>
       <notes>See also {cniri'u}, {cnicru}.</notes>
       <glossword word="release of emotion"/>
@@ -181247,7 +181254,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>emotion category/modifier: social - antisocial.</definition>
+      <definition>emotion category: social, with asocial at cu'i and antisocial at nai.</definition>
       <definitionid>2055</definitionid>
       <notes>See also {jikca}.</notes>
       <glossword word="social"/>
@@ -182420,7 +182427,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: weak intensity attitude modifier.</definition>
+      <definition>indicates weak intensity on an attitude scale.</definition>
       <definitionid>2072</definitionid>
       <glossword word="weak emotion"/>
       <examples>
@@ -182775,7 +182782,8 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>letteral shift to the Cyrillic alphabet for the rest of the current letteral string, until another shift of the same kind or {na'a}.</definition>
+      <definition>letteral shift to the Cyrillic alphabet. In this edition, it lasts for the rest of the letteral string, unless another shift of the same kind or na'a ends it.</definition>
+      <notes>The 2004 BPFK checkpoint lets the shift carry across letteral strings. A shift of the same kind or {na'a} ends it.</notes>
       <definitionid>2075</definitionid>
       <glossword word="Cyrillic shift"/>
     </valsi>
@@ -185159,7 +185167,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>attitudinal: moderate intensity attitude modifier.</definition>
+      <definition>indicates strong intensity on an attitude scale.</definition>
       <definitionid>2086</definitionid>
       <glossword word="strong emotion"/>
       <examples>
@@ -190454,7 +190462,7 @@
         <username>noralujv</username>
         <realname>NORALUJV data</realname>
       </user>
-      <definition>$j_2$ is cooked/prepared-for-eating by $j_1$ according to recipee/method $j_3$ (process).</definition>
+      <definition>$j_2$ is cooked/prepared-for-eating by $j_1$ according to recipe/method $j_3$ (process).</definition>
       <definitionid>9481</definitionid>
       <notes>Cf. {jukpa}, {bregau}.</notes>
       <glossword word="cooked"/>
@@ -193016,7 +193024,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>elidable terminator: ends a metalinguistic insertion such as {sei}, {soi}, or {ti'o}.</definition>
+      <definition>elidable terminator: ends a metalinguistic insertion such as sei, soi, or ti'o.</definition>
       <definitionid>2095</definitionid>
       <glossword word="end discursive"/>
     </valsi>
@@ -193658,7 +193666,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>erases the preceding word. A completed word-level quotation, {zei} compound, or {bu} letteral counts as one word.</definition>
+      <definition>erases the preceding word. A completed word-level quotation, zei compound, or bu letteral counts as one word.</definition>
       <definitionid>2169</definitionid>
       <glossword word="erase word"/>
       <examples>
@@ -193942,7 +193950,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>convert number to portion selbri; $x_{1}$ is an (n)th portion of group or whole $x_{2}$; (cf. gunma).</definition>
+      <definition>portion selbri: $x_1$ is the proportion n of $x_2$, where n is the preceding number. With a subjective number, $x_3$ is the standard.</definition>
       <definitionid>2171</definitionid>
       <glossword word="portion selbri"/>
     </valsi>
@@ -203694,7 +203702,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>erases back to the preceding structural boundary. The boundary is the start of the text, or {ni'o}, {lu}, {tu'e}, or {to}. The boundary remains in place.</definition>
+      <definition>erases back to the preceding structural boundary. The boundary is the start of the text, or ni'o, lu, tu'e, or to. The boundary remains in place.</definition>
       <definitionid>2193</definitionid>
       <glossword word="erase discourse"/>
     </valsi>
@@ -203969,7 +203977,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>quantifier: at most. The default is {pa}, so {su'e} alone means “at most one.”</definition>
+      <definition>quantifier: at most. The default is pa, so su'e alone means “at most one.”</definition>
       <definitionid>2196</definitionid>
       <glossword word="at most"/>
     </valsi>
@@ -204507,7 +204515,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>quantifier: at least. The default is {pa}, so {su'o} alone means “at least one.”</definition>
+      <definition>quantifier: at least. The default is pa, so su'o alone means “at least one.”</definition>
       <definitionid>2198</definitionid>
       <glossword word="at least"/>
       <glossword word="some" sense="at least one"/>
@@ -204970,7 +204978,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>demonstrative pro-sumti: that there, at a medium distance. In conversation it can point to something near the listener.</definition>
+      <definition>demonstrative pro-sumti: that there, at a medium distance. When contrasted with tu in conversation, it refers to something near the listener.</definition>
       <definitionid>2203</definitionid>
       <glossword word="that there"/>
     </valsi>
@@ -211375,7 +211383,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>elidable terminator: ends a mathematical conversion or a vector opened by {jo'i}.</definition>
+      <definition>elidable terminator: ends a mathematical conversion or a vector opened by jo'i.</definition>
       <definitionid>2219</definitionid>
       <glossword word="end mex converters"/>
     </valsi>
@@ -211436,7 +211444,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>pro-sumti: this here; immediate demonstrative it; indicated thing/place near speaker.</definition>
+      <definition>demonstrative pro-sumti: this here, near the speaker.</definition>
       <definitionid>2266</definitionid>
       <glossword word="this here"/>
     </valsi>
@@ -212393,7 +212401,8 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>letteral shift to lowercase for the rest of the current letteral string, until another shift of the same kind or {na'a}.</definition>
+      <definition>letteral shift to lowercase. In this edition, it lasts for the rest of the letteral string, unless another shift of the same kind or na'a ends it.</definition>
+      <notes>The 2004 BPFK checkpoint lets the shift carry across letteral strings. A shift of the same kind or {na'a} ends it.</notes>
       <definitionid>2273</definitionid>
       <glossword word="lower-case shift"/>
     </valsi>
@@ -216422,7 +216431,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>pro-sumti: that yonder; distant demonstrative it; indicated thing far from speaker&amp;listener.</definition>
+      <definition>demonstrative pro-sumti: that yonder, at a far distance. When contrasted with ta in conversation, it refers to something far from both speaker and listener.</definition>
       <definitionid>2280</definitionid>
       <glossword word="that yonder"/>
     </valsi>
@@ -216432,7 +216441,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>sumti qualifier: an unspecified abstraction that involves the referent of the following sumti. Equivalent to {lo su'u [sumti] co'e}.</definition>
+      <definition>sumti qualifier: an unspecified abstraction that involves the referent of the following sumti. Equivalent to lo su'u [sumti] co'e.</definition>
       <definitionid>2281</definitionid>
       <glossword word="the bridi implied by"/>
       <examples>
@@ -217250,7 +217259,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>logical connective: sumti afterthought whether-or-not.</definition>
+      <definition>afterthought logical connective for sumti, termsets, and mathematical operands: “the first holds whether or not the second does”.</definition>
       <definitionid>2287</definitionid>
       <glossword word="sumti whether"/>
     </valsi>
@@ -218730,7 +218739,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>convert number to scalar selbri; $x_{1}$ is at (n)th position on scale $x_{2}$.</definition>
+      <definition>scale selbri: $x_1$ is at position n on scale $x_2$. With a subjective number, $x_3$ is the standard.</definition>
       <definitionid>2316</definitionid>
       <glossword word="scalar selbri"/>
       <examples>
@@ -225155,7 +225164,7 @@
         <username>araizen</username>
         <realname>Adam Raizen</realname>
       </user>
-      <definition>opposite of za'o: event contour: refers to the portion of the event which occurs before the natural beginning; starting too early before ...; &lt;----.</definition>
+      <definition>experimental event contour: the part of a situation that is already under way before its natural beginning.</definition>
       <definitionid>14481</definitionid>
       <glossword word="already" sense="starting before natural beginning"/>
       <glossword word="subfective" sense="starting before natural beginning"/>
@@ -226489,7 +226498,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>subscript; attaches a number of letteral string following as a subscript onto grammar structures.</definition>
+      <definition>subscript marker: attaches a number, a letteral string, or a mathematical expression in vei and ve'o brackets as a subscript.</definition>
       <definitionid>2380</definitionid>
       <glossword word="subscript"/>
     </valsi>
@@ -228745,7 +228754,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>hesitation sound that holds the floor. The word-level rules skip it. The letteral {.ybu} is a separate unit.</definition>
+      <definition>hesitation sound that holds the floor. The word-level rules skip it. The letteral .ybu is a separate unit.</definition>
       <definitionid>2384</definitionid>
       <glossword word="hesitation"/>
     </valsi>
@@ -229005,7 +229014,8 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>letteral shift: the following letteral names an alphabet for the current letteral string. It replaces the previous alphabet shift.</definition>
+      <definition>letteral shift: the following letteral names the alphabet. In this edition, the shift lasts through the current letteral string unless another alphabet shift or na'a ends it.</definition>
+      <notes>The 2004 BPFK checkpoint lets the shift carry across letteral strings. A shift of the same kind or {na'a} ends it.</notes>
       <definitionid>2393</definitionid>
       <glossword word="select alphabet"/>
     </valsi>
@@ -229498,7 +229508,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>event contour: the situation continues past its natural end. As a tag, the situation continues past its natural end at the time of the tagged event.</definition>
+      <definition>event contour: the situation continues past its natural end. As a tag, it names the natural ending point that the main situation passes.</definition>
       <definitionid>2391</definitionid>
       <glossword word="still" sense="at the present time, as in the past"/>
       <glossword word="superfective"/>
@@ -229731,7 +229741,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>quantifier: greater than. The default is {pa}, so {za'u} alone means “more than one.”</definition>
+      <definition>quantifier: greater than. The default is pa, so za'u alone means “more than one.”</definition>
       <definitionid>2392</definitionid>
       <glossword word="greater than"/>
       <glossword word="more" sense="in greater number"/>
@@ -232935,7 +232945,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>quotes the next single Lojban word. It skips the hesitation word {.y.}.</definition>
+      <definition>quotes the next single Lojban word. It skips the hesitation word .y..</definition>
       <definitionid>2412</definitionid>
       <glossword word="1-word quote"/>
       <examples>

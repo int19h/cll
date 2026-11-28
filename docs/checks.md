@@ -46,7 +46,7 @@ python3 scripts/test-status-rendering.py
 python3 scripts/test-role-matching.py
 python3 scripts/test-lint-parallel-text.py
 python3 scripts/lint-parallel-text.py chapters/*.xml
-python3 scripts/test-html-mathjax.py
+python3 scripts/test-html-head.py
 python3 scripts/check-peg-grammar.py
 python3 scripts/test-check-peg-grammar.py
 python3 scripts/test-build-pins.py

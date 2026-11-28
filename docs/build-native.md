@@ -24,6 +24,14 @@ The build uses these tools:
 - `bash`, `make`, `wget`, and `unzip`. On the first run, the build downloads and unpacks the DocBook XSL stylesheets.
 - `xmlto` and `xmllint`. `xmlto` pulls in `xsltproc`. On Debian and Ubuntu, `xmllint` is in `libxml2-utils`, and that package is installed with `xmlto`. The postprocessing scripts call `xmllint` directly.
 - `regenerator` from npm (`npm install -g regenerator`). The build uses it for the ES5 transform of `assets/scripts/sance-next.js` while it assembles `cll.xml`.
+- Node.js and npm for the glossary. If you installed the [WeasyPrint tools](build-weasyprint.md#local-build), the build uses their copy of MathJax. To install MathJax on its own, run these commands from the checkout:
+
+  ```sh
+  mkdir -p build/weasyprint-tools
+  cp scripts/weasyprint/package.json scripts/weasyprint/package-lock.json build/weasyprint-tools/
+  npm ci --prefix build/weasyprint-tools --no-audit --no-fund
+  ```
+
 - Ruby 3.2 or later and Bundler 4.
   `Gemfile.lock` pins Nokogiri 1.18.8, Optimist 3.2.0, and htmlentities 4.3.4.
   The Nokogiri gem is precompiled for x86_64 Linux and for aarch64 Linux.

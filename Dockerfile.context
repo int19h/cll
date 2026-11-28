@@ -20,6 +20,9 @@ RUN apt-get update -o APT::Update::Error-Mode=any && apt-get install -y --no-ins
     && rm -rf /var/lib/apt/lists/*
 RUN gem install --no-document nokogiri:1.18.8 optimist:3.2.0 htmlentities:4.3.4 \
     && npm install -g regenerator@0.14.12
+COPY scripts/weasyprint/package.json scripts/weasyprint/package-lock.json /opt/cll-mathjax/
+RUN npm ci --prefix /opt/cll-mathjax --no-audit --no-fund
+ENV CLL_MATHJAX_DIR=/opt/cll-mathjax
 
 COPY scripts/install-context.sh /usr/local/src/install-context.sh
 COPY scripts/safe-rm-tree.sh /usr/local/src/safe-rm-tree.sh

@@ -143,7 +143,8 @@ $(builddir)/build-metadata: build_metadata_force
 	@{ scripts/build-version.sh && date +%Y-%m-%d; } >$@.tmp || { rm -f $@.tmp; exit 1; }
 	@cmp -s $@.tmp $@ && rm $@.tmp || mv $@.tmp $@
 
-$(builddir)/cll.xml: $(chapters) xml/iso-pub.ent xml/identity.xsl xml/docbook2html_config_common.xsl scripts/update_jbovlaste_xml.sh scripts/generate_glossary.rb scripts/util.rb scripts/header.xml scripts/merge.sh .env dictionary/all_words.xml assets/scripts/sance-next.js $(builddir)/build-metadata
+glossary_math_inputs := scripts/glossary_mathml.rb scripts/glossary-mathml.cjs scripts/weasyprint/package.json scripts/weasyprint/package-lock.json
+$(builddir)/cll.xml: $(chapters) xml/iso-pub.ent xml/identity.xsl xml/docbook2html_config_common.xsl scripts/update_jbovlaste_xml.sh scripts/generate_glossary.rb scripts/util.rb scripts/header.xml scripts/merge.sh .env dictionary/all_words.xml assets/scripts/sance-next.js $(glossary_math_inputs) $(builddir)/build-metadata
 	regenerator --include-runtime $(PWD)/assets/scripts/sance-next.js > $(builddir)/sance.js
 	$(SAFE_RM_TREE) --root "$(builddir)" "$(builddir)/xml" "$(builddir)/dtd"
 	cp -pr $(PWD)/xml $(builddir)/

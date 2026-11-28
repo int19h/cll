@@ -223,7 +223,8 @@ class DocBookTypst
       "attach(#{math(elements[0])}, t: #{math(elements[1])})"
     when 'msub'
       raise 'msub requires two children' unless elements.size == 2
-      "attach(#{math(elements[0])}, b: #{math(elements[1])})"
+      base = math(elements[0])
+      "attach(#{base.empty? ? '#[]' : base}, b: #{math(elements[1])})"
     when 'msqrt' then "sqrt(#{elements.map { |e| math(e) }.join(' ')})"
     else raise "Unsupported MathML element: #{node.name} at line #{node.line}"
     end

@@ -90,6 +90,12 @@ class ContextBookTest < Minitest::Test
     assert_raises(RuntimeError) { book('<math><unsupported/></math>').to_tex }
   end
 
+  def test_glossary_subscripts_keep_the_whole_base
+    input = book('<para><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi>c</mi><mi>i</mi></mrow><mn>1</mn></msub><mo>=</mo><msub><mi>x</mi><mn>2</mn></msub></math></para>')
+    assert_includes input.to_tex, '{ci}_{1}={x}_{2}'
+    assert_raises(RuntimeError) { book('<math><msub><mi>x</mi></msub></math>').to_tex }
+  end
+
   def test_math_connectives_keep_punctuation_and_explicit_spacing
     variants = ['<mo>Iff </mo><mi>a</mi><mo>=</mo><mn>0</mn><mo>, then </mo><mi>x</mi>',
                 '<mo>Iff</mo><mi>a</mi><mo>=</mo><mn>0</mn><mo>, then</mo><mi>x</mi>']

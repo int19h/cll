@@ -16,9 +16,11 @@ check = lambda { |ok, msg| failures << msg unless ok }
 def stage_generator(repo, dir)
   scripts = File.join(dir, 'scripts')
   FileUtils.mkdir_p(File.join(dir, 'assets/media/vreji'))
-  FileUtils.mkdir_p(scripts)
-  FileUtils.cp(File.join(repo, 'scripts/generate_glossary.rb'), scripts)
-  FileUtils.cp(File.join(repo, 'scripts/util.rb'), scripts)
+  FileUtils.mkdir_p(File.join(scripts, 'weasyprint'))
+  %w[generate_glossary.rb util.rb glossary_mathml.rb glossary-mathml.cjs
+     weasyprint/package.json weasyprint/package-lock.json].each do |file|
+    FileUtils.cp(File.join(repo, 'scripts', file), File.join(scripts, file))
+  end
   File.write(File.join(scripts, 'update_jbovlaste_xml.sh'), <<~'SH')
     #!/bin/bash
     cat > "$1/jbovlaste.xml" <<'EOF'
@@ -38,12 +40,56 @@ def stage_generator(repo, dir)
 end
 
 def run_generator(scripts, build, *args)
-  Open3.capture3('ruby', File.join(scripts, 'generate_glossary.rb'), *args, '-b', build)
+  dependencies = ENV.fetch('CLL_MATHJAX_DIR', File.expand_path('../build/weasyprint-tools', __dir__))
+  Open3.capture3({'CLL_MATHJAX_DIR' => dependencies}, 'ruby', File.join(scripts, 'generate_glossary.rb'), *args, '-b', build)
 end
 
 def entry_map(xml)
   doc = Nokogiri::XML("<wrapper>#{xml}</wrapper>") { |config| config.strict.nonet }
   doc.xpath('//glossentry').map { |entry| [entry['xml:id'], entry.at('glossterm').text, entry.at('para').text] }
+end
+
+Dir.mktmpdir do |dir|
+  scripts = stage_generator(repo, dir)
+  build = File.join(dir, 'build')
+  FileUtils.mkdir_p(build)
+  File.write(File.join(build, 'cll_preglossary.xml'), '<book><para><valsi>cinctu</valsi><valsi>cmatce</valsi></para></book>')
+  dictionary = File.join(scripts, 'update_jbovlaste_xml.sh')
+  File.write(dictionary, <<~'SH')
+    #!/bin/bash
+    cat > "$1/jbovlaste.xml" <<'EOF'
+    <dictionary>
+      <valsi word="cinctu"><definition>$ci_{1}=ct_{1}$ teaches $x_2$$x_3$ &amp; $2 &lt; 10^{-2}$.</definition></valsi>
+      <valsi word="cmatce"><definition>$x1=c1=m1$ is tiny.</definition></valsi>
+    </dictionary>
+    EOF
+  SH
+
+  stdout, stderr, status = run_generator(scripts, build)
+  check.(status.success?, "MathML glossary failed:\n#{stderr}")
+  if status.success?
+    doc = Nokogiri::XML("<wrapper>#{stdout}</wrapper>") { |config| config.strict.nonet }
+    ns = {'m' => 'http://www.w3.org/1998/Math/MathML'}
+    check.(doc.xpath('//inlineequation/m:math', ns).size == 5, 'each TeX block must produce its own inline MathML')
+    formula = doc.at_xpath('//m:math[m:mo = "<"]', ns)
+    check.(formula && formula.at_xpath('m:msup', ns), 'math with XML metacharacters lost its comparison or exponent')
+    aliases = doc.at_xpath('//glossentry[@xml:id="valsi-cinctu"]//m:math', ns)
+    bases = aliases.xpath('m:msub/m:mrow[1]', ns).map { |node| node.element_children.map(&:text).join }
+    check.(bases == %w[ci ct], "multi-letter subscript bases changed: #{bases.inspect}")
+    repaired = doc.xpath('//glossentry[@xml:id="valsi-cmatce"]//m:msub/m:mi', ns).map(&:text)
+    check.(repaired == %w[x c m], "missing underscores were not repaired: #{repaired.inspect}")
+    check.(doc.at_xpath('//glossentry[@xml:id="valsi-cinctu"]//para').text.include?(' & '), 'prose was not XML-escaped')
+    check.(doc.xpath('//@data-latex | //@data-mjx-texclass').empty?, 'MathJax-only metadata leaked into DocBook')
+    %w[glossary_mathml.rb glossary-mathml.cjs weasyprint/package.json weasyprint/package-lock.json].each do |file|
+      File.open(File.join(scripts, file), 'a') { |f| f.puts }
+      _output, log, result = run_generator(scripts, build)
+      check.(result.success? && log.include?('Generating new glossary file.'), "editing #{file} reused the cache:\n#{log}")
+    end
+  end
+
+  File.write(dictionary, File.read(dictionary).sub('$2 &lt; 10^{-2}$') { '$\notARealTeXCommand$' })
+  _output, stderr, status = run_generator(scripts, build)
+  check.(!status.success? && stderr.include?('cinctu: $\notARealTeXCommand$'), "invalid TeX did not fail with its entry and expression:\n#{stderr}")
 end
 
 words = <<~XML

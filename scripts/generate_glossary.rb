@@ -6,9 +6,9 @@ require 'optimist'
 #require 'highline'
 require 'nokogiri'
 require 'fileutils'
-require 'htmlentities'
 require 'digest'
 require 'set'
+require_relative 'glossary_mathml'
 
 # Initialize our own variables:
 mydir=File.expand_path(File.dirname(__FILE__))
@@ -50,7 +50,9 @@ unless opts[:testing]
       exit 1
     end
     jbovlaste_tree=Nokogiri::XML(open "#{builddir}/jbovlaste.xml")
-    defined_words = jbovlaste_tree.xpath('//valsi').select do |entry|
+    dictionary = jbovlaste_tree.xpath('//valsi')
+    entries_by_word = dictionary.group_by { |entry| entry['word'] }
+    defined_words = dictionary.select do |entry|
       !entry.xpath('.//definition').text.strip.empty?
     end.map { |entry| entry['word'] }.to_set
     # A book spelling with no entry of its own may use the entry of a
@@ -66,8 +68,6 @@ unless opts[:testing]
     defined_by_bare = defined_words.group_by { |word| bare_spelling.(word) }
 end
 
-coder = HTMLEntities.new
-
 # The cache name covers every input the glossary text depends on. A change to
 # this script or to util.rb, or the addition or removal of a pronunciation
 # file, must not reuse a glossary written by older code. The button records
@@ -75,7 +75,10 @@ coder = HTMLEntities.new
 audio_dir = File.expand_path('../assets/media/vreji', mydir)
 audio_inventory = Dir.glob(File.join(audio_dir, '*.mp3')).select { |path| File.file?(path) }.map { |path| File.basename(path) }.sort
 inputs = [__FILE__, File.join(mydir, 'util.rb'), File.join(builddir, 'cll_preglossary.xml')]
-inputs << File.join(builddir, 'jbovlaste.xml') unless opts[:testing]
+unless opts[:testing]
+  inputs << File.join(builddir, 'jbovlaste.xml')
+  inputs.concat(GlossaryMathML::INPUT_FILES)
+end
 digest = Digest::SHA256.new
 inputs.each { |path| digest << Digest::SHA256.file(path).hexdigest << "\n" }
 digest << audio_inventory.join("\n") << "\n" << opts[:testing].to_s
@@ -127,7 +130,7 @@ else
       cell_words = cell_words.select( &own_match )
     end
     words = body_valsi_words + wrapped_valsi_words + find_frame_words( tree ) + cell_words
-    glossary_word_groups(words).each do |slug, spellings|
+    entries = glossary_word_groups(words).filter_map do |slug, spellings|
       # Spellings that slugify to one ID, such as .y. and y, share one
       # entry, and every link uses valsi- plus that same slug. The match
       # is decided per spelling, not per group: a spelling may use an
@@ -175,6 +178,17 @@ else
         end
         next
       end
+      [slug, word]
+    end
+    unless opts[:testing]
+      dictionary_entries = entries.map do |_slug, word|
+        [word, Nokogiri::XML::NodeSet.new(jbovlaste_tree, entries_by_word.fetch(word))]
+      end
+      definitions = GlossaryMathML.render(dictionary_entries.map do |word, nodes|
+        [word, nodes.xpath('.//definition').text.strip.gsub(/\s+/, ' ')]
+      end)
+    end
+    entries.each_with_index do |(slug, word), index|
       $stderr.print "#{word} "
       if ! initial_letter
         # The Lojban words in this introduction are plain foreignphrase, not
@@ -218,36 +232,12 @@ group: the <foreignphrase xml:lang="jbo">gunma</foreignphrase> that
       if opts[:testing]
         definition="placeholder definition"
       else
-        definition=jbovlaste_tree.xpath(%Q{//valsi[@word="#{word}"]}).xpath(".//definition").text.strip.gsub(%r{\s+}, ' ')
-
-        # Fix non-xml chars, *before* we add a bunch
-        definition = coder.encode(definition, :basic)
-
-        # Turn LaTeX stuff into xml: $1*10^{-2}$]
-        definition.gsub!(%r(\$(1\*)?10\^{?([^}$]*)}?\$)){"<dbinlinemath>#{$1}10<superscript>#{$2}</superscript></dbinlinemath>"}
-
-        # Turn LaTeX stuff into xml: $x_{1}= ; then we stop, and repeat
-        # this until there's no matches
-        olddef=''
-        while olddef != definition
-          olddef = definition.clone
-          definition.gsub!(%r(\$([a-z]+)_{?([0-9]+)}?(=?)), '<dbinlinemath>\1<subscript>\2</subscript></dbinlinemath>\3$')
-        end
-
-        # Clean out the remains of the process above
-        definition.gsub!(%r{\$\$},'')
-
-        # puts "#{word}, #{definition}"
-
-        if definition =~ %r{\$|\\}
-          $stderr.puts "UNHANDLED LATEX in definition for #{word}: #{definition}"
-        end
-
+        definition = definitions.fetch(index)
         if definition =~ %r{^\s*$}
           definition=nil
           $stderr.puts %Q{\n"NO JBOVLASTE DEFINITION FOUND FOR WORD "#{word}"}
         end
-        jbovlaste_tree.xpath(%Q{//valsi[@word="#{word}"]}).xpath(".//examples/example").each do |example|
+        dictionary_entries.fetch(index).last.xpath('.//examples/example').each do |example|
           source = Nokogiri::XML.parse(example.to_s).xpath("//source").text.strip
           translation = Nokogiri::XML.parse(example.to_s).xpath(%Q{//target[@language="English"]/translation}).text.strip
           examples.push("<para>#{source} — #{translation}</para>")

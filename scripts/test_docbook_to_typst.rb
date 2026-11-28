@@ -102,6 +102,11 @@ class DocBookTypstTest < Minitest::Test
     assert_raises(RuntimeError) { convert('<chapter><title>Math</title><para><math><mn>#eval</mn></math></para></chapter>') }
   end
 
+  def test_glossary_subscripts_keep_the_whole_base
+    source = convert('<chapter><title>Math</title><para><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mrow><mi>c</mi><mi>i</mi></mrow><mn>1</mn></msub><mo>=</mo><msub><mi>x</mi><mn>2</mn></msub><msub><mrow/><mn>3</mn></msub></math></para></chapter>')
+    assert_includes source, '$attach(c i, b: 1) = attach(x, b: 2) attach(#[], b: 3)$'
+  end
+
   def test_native_math_spacing_matches_handwritten_math
     executable = ENV['TYPST']
     skip 'Set TYPST to run the native math spacing test.' unless executable

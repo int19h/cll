@@ -54,7 +54,7 @@ RUN npm config set fetch-retries 5 \
     && npm config set fetch-retry-maxtimeout 120000 \
     && npm i -g regenerator@0.14.12 --unsafe-perm=true
 COPY scripts/weasyprint/package.json scripts/weasyprint/package-lock.json /opt/cll-mathjax/
-RUN npm ci --prefix /opt/cll-mathjax --no-audit --no-fund
+RUN npm ci --prefix /opt/cll-mathjax --ignore-scripts --no-audit --no-fund
 ENV CLL_MATHJAX_DIR=/opt/cll-mathjax
 
 WORKDIR /srv/cll

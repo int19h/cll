@@ -3,7 +3,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {createRequire} = require('node:module');
 
-const dependencies = process.env.CLL_MATHJAX_DIR || path.resolve('build/weasyprint-tools');
+const dependencies = process.env.CLL_MATHJAX_DIR;
+if (!dependencies) throw new Error('Set CLL_MATHJAX_DIR to the pinned MathJax installation.');
 const load = createRequire(path.join(path.resolve(dependencies), 'package.json'));
 const {mathjax} = load('@mathjax/src/js/mathjax.js');
 const {MathML} = load('@mathjax/src/js/input/mathml.js');

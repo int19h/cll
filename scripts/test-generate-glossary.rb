@@ -17,7 +17,7 @@ def stage_generator(repo, dir)
   scripts = File.join(dir, 'scripts')
   FileUtils.mkdir_p(File.join(dir, 'assets/media/vreji'))
   FileUtils.mkdir_p(File.join(scripts, 'weasyprint'))
-  %w[generate_glossary.rb util.rb glossary_mathml.rb glossary-mathml.cjs
+  %w[generate_glossary.rb util.rb glossary_mathml.rb glossary-mathml.cjs mathjax_packages.rb
      weasyprint/package.json weasyprint/package-lock.json].each do |file|
     FileUtils.cp(File.join(repo, 'scripts', file), File.join(scripts, file))
   end
@@ -39,8 +39,8 @@ def stage_generator(repo, dir)
   scripts
 end
 
-def run_generator(scripts, build, *args)
-  Open3.capture3('ruby', File.join(scripts, 'generate_glossary.rb'), *args, '-b', build)
+def run_generator(scripts, build, *args, env: {})
+  Open3.capture3(env, 'ruby', File.join(scripts, 'generate_glossary.rb'), *args, '-b', build)
 end
 
 def entry_map(xml)
@@ -83,7 +83,27 @@ Dir.mktmpdir do |dir|
     check.(repaired == %w[x c m], "missing underscores were not repaired: #{repaired.inspect}")
     check.(doc.at_xpath('//glossentry[@xml:id="valsi-cinctu"]//para').text.include?(' & '), 'prose was not XML-escaped')
     check.(doc.xpath('//@data-latex | //@data-mjx-texclass').empty?, 'MathJax-only metadata leaked into DocBook')
-    %w[glossary_mathml.rb glossary-mathml.cjs weasyprint/package.json weasyprint/package-lock.json].each do |file|
+    # A checkout prepared by the old native installer can build offline.
+    packages, log, result = Open3.capture3('ruby', File.join(scripts, 'mathjax_packages.rb'), build)
+    check.(result.success?, "could not locate fixture packages:\n#{log}")
+    offline_build = File.join(dir, 'offline-build')
+    legacy = File.join(offline_build, 'weasyprint-tools')
+    FileUtils.mkdir_p(legacy)
+    FileUtils.cp(File.join(build, 'cll_preglossary.xml'), offline_build)
+    %w[package.json package-lock.json].each do |file|
+      FileUtils.cp(File.join(scripts, 'weasyprint', file), legacy)
+    end
+    FileUtils.ln_s(File.join(packages.strip, 'node_modules'), legacy)
+    offline_env = {'CLL_MATHJAX_DIR' => nil, 'npm_config_offline' => 'true'}
+    output, log, result = run_generator(scripts, offline_build, env: offline_env)
+    check.(result.success? && output == stdout, "offline legacy installation failed:\n#{log}")
+    check.(!File.exist?(File.join(offline_build, 'glossary-mathjax')), 'offline legacy build created a second installation')
+
+    File.open(File.join(legacy, 'package-lock.json'), 'a') { |f| f.puts }
+    _path, log, result = Open3.capture3(offline_env, 'ruby', File.join(scripts, 'mathjax_packages.rb'), offline_build)
+    check.(!result.success? && log.include?('Installing pinned MathJax'), 'accepted a legacy installation with a mismatched lockfile')
+
+    %w[glossary_mathml.rb glossary-mathml.cjs mathjax_packages.rb weasyprint/package.json weasyprint/package-lock.json].each do |file|
       File.open(File.join(scripts, file), 'a') { |f| f.puts }
       _output, log, result = run_generator(scripts, build)
       check.(result.success? && log.include?('Generating new glossary file.'), "editing #{file} reused the cache:\n#{log}")
@@ -94,10 +114,24 @@ Dir.mktmpdir do |dir|
   end
 
   source = File.read(dictionary)
+  [
+    '\frac{a}{??}?', '?\frac{??}{a}', '\frac{??}{?}', '?\sqrt{??}',
+    '??\quad?', '?\quad??', '\phantom{???}', '?\phantom{?}??', '???^2'
+  ].each do |tex|
+    File.write(dictionary, source.sub('$2 &lt; 10^{-2}$') { "$#{tex}$" })
+    stdout, stderr, status = run_generator(scripts, build)
+    check.(status.success? && stdout.include?('<math '), "glossary rejected visible boundaries in #{tex}:\n#{stderr}")
+  end
+
   {
     '\notARealTeXCommand' => 'Undefined control sequence',
     '\ref{missing}' => 'could not resolve an equation reference',
     '1 + \eqref{missing}' => 'could not resolve an equation reference',
+    '\sqrt{\ref{missing}}' => 'could not resolve an equation reference',
+    '\phantom{\eqref{missing}}' => 'could not resolve an equation reference',
+    '\sqrt{???}' => 'question-mark placeholder',
+    '\frac{?}{???}' => 'question-mark placeholder',
+    '{?}{?}{?}' => 'question-mark placeholder',
     '\text{???}' => 'question-mark placeholder',
     '???' => 'question-mark placeholder'
   }.each do |tex, diagnostic|

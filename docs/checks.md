@@ -208,7 +208,8 @@ See [typst-pdf.md](typst-pdf.md#tests).
 
 ## weasyprint-smoke
 
-This job installs the pinned WeasyPrint and MathJax tools under `build/weasyprint-tools`, then tests the version label and the renderer:
+This job installs WeasyPrint under `build/weasyprint-tools` and uses the shared MathJax packages.
+It then tests the version label and the renderer.
 
 ```sh
 ./scripts/install-weasyprint.sh

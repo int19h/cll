@@ -256,7 +256,7 @@ jobs:
       - name: Install PDF runtime libraries
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq python3-venv python3-pymupdf libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core fonts-linuxlibertine poppler-utils
+          sudo apt-get install -y -qq ruby python3-venv python3-pymupdf libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-dejavu-core fonts-linuxlibertine poppler-utils
       - name: Install the pinned WeasyPrint and MathJax dependencies
         run: ./scripts/install-weasyprint.sh
       - name: Render math and linked index fixtures

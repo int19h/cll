@@ -3,7 +3,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {createRequire} = require('node:module');
 
-const dependencies = process.env.CLL_MATHJAX_DIR || path.resolve(__dirname, '../build/weasyprint-tools');
+const dependencies = process.env.CLL_MATHJAX_DIR;
+if (!dependencies) throw new Error('Set CLL_MATHJAX_DIR to the pinned MathJax installation.');
 const load = createRequire(path.join(path.resolve(dependencies), 'package.json'));
 const {mathjax} = load('@mathjax/src/js/mathjax.js');
 const pinnedVersion = require('./weasyprint/package.json').dependencies['@mathjax/src'];
@@ -37,26 +38,34 @@ const document = mathjax.document('', {
 });
 const visitor = new DocBookMathML();
 
-function mathText(node) {
+function checkMath(node, adjacent = '', visible = true) {
   if (node.isKind('merror') || node.attributes?.get('data-mjx-error')) {
     throw new Error('MathJax produced an error node');
   }
   if (node.attributes?.get('class') === 'MathJax_ref' && node.attributes.get('href') === '#') {
     throw new Error('MathJax could not resolve an equation reference');
   }
-  if (node.isToken) return node.getText();
+  if (node.isKind('mspace')) return '';
+  visible = visible && !node.isKind('mphantom');
+  if (node.isToken) {
+    if (!visible) return '';
+    const text = adjacent + node.getText();
+    if (text.includes('???')) throw new Error('MathJax produced a question-mark placeholder');
+    return text.slice(-2);
+  }
 
-  // Join tokens in the same row. Keep separate operands, such as the
-  // numerator and denominator of a fraction, apart.
-  const inline = ['math', 'mrow', 'inferredMrow', 'mstyle'].includes(node.kind);
-  return node.childNodes.map(mathText).join(inline ? '' : '\n');
+  // Only row wrappers preserve adjacency. Layout elements break the outer
+  // run, and each of their operands starts a separate run.
+  if (visible && ['math', 'mrow', 'inferredMrow', 'mstyle', 'TeXAtom'].includes(node.kind)) {
+    return node.childNodes.reduce((run, child) => checkMath(child, run), adjacent);
+  }
+  for (const child of node.childNodes) checkMath(child, '', visible);
+  return '';
 }
 
 function toMathML(tex) {
   const node = document.convert(tex, {display: false, end: STATE.COMPILED});
-  if (mathText(node).includes('???')) {
-    throw new Error('MathJax produced a question-mark placeholder');
-  }
+  checkMath(node);
   return visitor.visitTree(node);
 }
 

@@ -1,20 +1,19 @@
 <?xml version='1.0'?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:docbook="http://docbook.org/ns/docbook" xmlns="http://www.w3.org/1999/xhtml" exclude-result-prefixes="fo docbook" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:docbook="http://docbook.org/ns/docbook" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns="http://www.w3.org/1999/xhtml" exclude-result-prefixes="fo docbook mml" version="1.0">
 
   <xsl:template name="user.head.content">
-    <script>
-    MathJax = {
-      tex: {
-        inlineMath: [['$', '$']]
-      }
-    };
-    </script>
-    <script id="MathJax-script" async="async"
-      src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"
-      integrity="sha384-Wuix6BuhrWbjDBs24bXrjf4ZQ5aFeFWBuKkFekO2t8xFU0iNaLQfp2K6/1Nxveei"
-      crossorigin="anonymous"></script>
     <script defer="defer" src="assets/scripts/offline.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>.glossary math { font-family: "Linux Libertine", math; }</style>
+  </xsl:template>
+
+  <!-- Make the default fraction bar visible with WebKit's fallback fonts. -->
+  <xsl:template match="mml:mfrac[not(@linethickness)]">
+    <xsl:copy>
+      <xsl:copy-of select="@*"/>
+      <xsl:attribute name="linethickness">0.07em</xsl:attribute>
+      <xsl:apply-templates/>
+    </xsl:copy>
   </xsl:template>
 
   <!-- Outer Headers and footers -->

@@ -215,19 +215,10 @@ These guides describe the rules for the book's content and markup:
 
 ## Mathematics in the HTML book
 
-HTML mathematics uses MathJax 3.2.2 from jsDelivr.
-The shared HTML stylesheet fixes the version and its SHA-384 integrity hash.
-Browsers need a network connection to load that script and its fonts.
-The script finds its versioned font and component paths from its own URL.
-The HTML archive does not include MathJax.
-The separate WeasyPrint backend uses its own local dependencies.
-
-To make sure that the downloaded script matches the integrity hash in the HTML, run:
-
-```sh
-curl -fL https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js -o /tmp/cll-mathjax.js
-python3 scripts/test-html-mathjax.py /tmp/cll-mathjax.js
-```
+MathML is an XML format for mathematics.
+Browsers render the book's MathML directly, even when offline.
+During the build, MathJax turns the glossary's TeX into MathML.
+WeasyPrint also uses MathJax during its PDF build.
 
 ## Releases
 

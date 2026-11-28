@@ -97,8 +97,8 @@ jobs:
         run: python3 scripts/test-lint-parallel-text.py
       - name: Appendix A parallel-text table roles
         run: python3 scripts/lint-parallel-text.py chapters/*.xml
-      - name: Browser MathJax version and integrity
-        run: python3 scripts/test-html-mathjax.py
+      - name: HTML head keeps offline reading and uses native math
+        run: python3 scripts/test-html-head.py
       - name: PEG word-form grammar in chapter 21 matches the machine-readable grammar
         run: python3 scripts/check-peg-grammar.py
       - name: PEG grammar check self-test

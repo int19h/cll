@@ -38,6 +38,11 @@ end
 if opts[:build_dir]
   builddir=opts[:build_dir]
 end
+begin
+  packages_dir = MathJaxPackages.explicit_directory unless opts[:testing]
+rescue RuntimeError => e
+  abort e.message
+end
 # $opts_where=((opts[:where].is_a? String) ? opts[:where].chomp : false)
 # $opts_search=((opts[:search].is_a? String) ? opts[:search].chomp : false)
 
@@ -187,7 +192,7 @@ else
       definition_text = dictionary_entries.map do |word, nodes|
         [word, nodes.xpath('.//definition').text.strip.gsub(/\s+/, ' ')]
       end
-      definitions = GlossaryMathML.render(definition_text, build_dir: builddir)
+      definitions = GlossaryMathML.render(definition_text, build_dir: builddir, packages_dir: packages_dir)
     end
     entries.each_with_index do |(slug, word), index|
       $stderr.print "#{word} "

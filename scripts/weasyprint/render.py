@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 from urllib.parse import unquote
 
 from lxml import etree, html
@@ -23,16 +24,22 @@ def has_class(node, name):
 
 def typeset_math(tree, directory, build_dir=None):
     nodes = list(tree.iter('math'))
+    if not nodes and not os.environ.get('CLL_MATHJAX_DIR'):
+        return {'expressions': 0, 'version': None}
+    resolver = Path(__file__).resolve().parents[1] / 'mathjax_packages.rb'
+    command = ['ruby', str(resolver)]
+    if build_dir is not None:
+        command.append(str(build_dir))
+    packages = subprocess.run(command, text=True, capture_output=True)
+    if packages.returncode:
+        raise RuntimeError(packages.stderr.strip())
+    if packages.stderr:
+        sys.stderr.write(packages.stderr)
     if not nodes:
         return {'expressions': 0, 'version': None}
     inputs = [etree.tostring(node, encoding='unicode', with_tail=False) for node in nodes]
     env = os.environ.copy()
-    if not env.get('CLL_MATHJAX_DIR'):
-        scripts = Path(__file__).resolve().parents[1]
-        build_dir = build_dir if build_dir is not None else scripts.parent / 'build'
-        env['CLL_MATHJAX_DIR'] = subprocess.check_output(
-            ['ruby', str(scripts / 'mathjax_packages.rb'), str(build_dir)], text=True,
-        ).rstrip('\n')
+    env['CLL_MATHJAX_DIR'] = packages.stdout.rstrip('\n')
     try:
         result = subprocess.run(
             ['node', str(Path(__file__).with_name('mathjax.cjs'))],

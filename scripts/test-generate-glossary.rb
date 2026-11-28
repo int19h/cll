@@ -18,7 +18,7 @@ def stage_generator(repo, dir)
   FileUtils.mkdir_p(File.join(dir, 'assets/media/vreji'))
   FileUtils.mkdir_p(File.join(scripts, 'weasyprint'))
   %w[generate_glossary.rb util.rb glossary_mathml.rb glossary-mathml.cjs mathjax_packages.rb
-     weasyprint/package.json weasyprint/package-lock.json].each do |file|
+     weasyprint/mathjax.cjs weasyprint/package.json weasyprint/package-lock.json].each do |file|
     FileUtils.cp(File.join(repo, 'scripts', file), File.join(scripts, file))
   end
   File.write(File.join(scripts, 'update_jbovlaste_xml.sh'), <<~'SH')
@@ -95,15 +95,29 @@ Dir.mktmpdir do |dir|
     end
     FileUtils.ln_s(File.join(packages.strip, 'node_modules'), legacy)
     offline_env = {'CLL_MATHJAX_DIR' => nil, 'npm_config_offline' => 'true'}
+    resolver = File.join(scripts, 'mathjax_packages.rb')
+    selected, log, result = Open3.capture3(offline_env, 'ruby', resolver, offline_build)
+    check.(result.success? && selected.strip == legacy, "selected legacy installation did not take precedence:\n#{log}")
     output, log, result = run_generator(scripts, offline_build, env: offline_env)
     check.(result.success? && output == stdout, "offline legacy installation failed:\n#{log}")
     check.(!File.exist?(File.join(offline_build, 'glossary-mathjax')), 'offline legacy build created a second installation')
 
+    default_legacy = File.join(build, 'weasyprint-tools')
+    FileUtils.mkdir_p(default_legacy)
+    FileUtils.cp(Dir.glob(File.join(legacy, 'package*.json')), default_legacy)
+    FileUtils.ln_s(File.join(packages.strip, 'node_modules'), default_legacy)
     File.open(File.join(legacy, 'package-lock.json'), 'a') { |f| f.puts }
-    _path, log, result = Open3.capture3(offline_env, 'ruby', File.join(scripts, 'mathjax_packages.rb'), offline_build)
-    check.(!result.success? && log.include?('Installing pinned MathJax'), 'accepted a legacy installation with a mismatched lockfile')
+    selected, log, result = Open3.capture3(offline_env, 'ruby', resolver, offline_build, chdir: offline_build)
+    expected = ENV['CLL_MATHJAX_DIR'].to_s.empty? ? packages.strip : default_legacy
+    check.(result.success? && selected.strip == expected, "did not fall back to the source checkout's matching installation:\n#{log}")
+    check.(!File.exist?(File.join(offline_build, 'glossary-mathjax')), 'source fallback created a second installation')
 
-    %w[glossary_mathml.rb glossary-mathml.cjs mathjax_packages.rb weasyprint/package.json weasyprint/package-lock.json].each do |file|
+    invalid_env = offline_env.merge('CLL_MATHJAX_DIR' => File.join(dir, 'missing'))
+    _output, log, result = run_generator(scripts, build, env: invalid_env)
+    check.(!result.success? && log.include?('Invalid CLL_MATHJAX_DIR') && log.include?('missing MathJax entry point'),
+           "cached glossary did not reject an invalid override:\n#{log}")
+
+    %w[glossary_mathml.rb glossary-mathml.cjs mathjax_packages.rb weasyprint/mathjax.cjs weasyprint/package.json weasyprint/package-lock.json].each do |file|
       File.open(File.join(scripts, file), 'a') { |f| f.puts }
       _output, log, result = run_generator(scripts, build)
       check.(result.success? && log.include?('Generating new glossary file.'), "editing #{file} reused the cache:\n#{log}")

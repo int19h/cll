@@ -5,7 +5,7 @@ require_relative 'mathjax_packages'
 
 module GlossaryMathML
   CONVERTER = File.join(__dir__, 'glossary-mathml.cjs')
-  INPUT_FILES = [__FILE__, CONVERTER, *MathJaxPackages::INPUT_FILES].freeze
+  INPUT_FILES = [__FILE__, *MathJaxPackages::INPUT_FILES].freeze
   # An escaped character consumes its backslash, so \$ stays in the
   # current run and \\ before a delimiter does not escape that delimiter.
   TOKENS = /(\\.|[$](?:\\.|[^$\\])*[$]|[$])/m
@@ -47,7 +47,7 @@ module GlossaryMathML
     tex.gsub(/(?<![a-z\\])(?:#{Regexp.union(bases)})(?=_)/) { |base| "{#{base}}" }
   end
 
-  def self.render(definitions, build_dir:)
+  def self.render(definitions, build_dir:, packages_dir: nil)
     coder = HTMLEntities.new
     inputs = []
     pieces = definitions.map do |word, text|
@@ -61,7 +61,7 @@ module GlossaryMathML
     end
     math = []
     unless inputs.empty?
-      env = {'CLL_MATHJAX_DIR' => MathJaxPackages.directory(build_dir)}
+      env = {'CLL_MATHJAX_DIR' => packages_dir || MathJaxPackages.directory(build_dir)}
       stdout, stderr, status = Open3.capture3(env, 'node', CONVERTER, stdin_data: JSON.generate(inputs))
       raise "Glossary TeX conversion failed:\n#{stderr}" unless status.success?
 

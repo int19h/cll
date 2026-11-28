@@ -90736,7 +90736,7 @@
       </user>
       <definition>lambda variable prenex; marks the end of introduction of lambda-scope variables.</definition>
       <definitionid>35286</definitionid>
-      <notes>Cf. {zo'u}. In effect this word is used as a shortcut around verbose repeated assignment in a {ka} prenex: lo ka ce'u goi ko'a ce'u goi ko'e ... zo'u ... is the same as lo ka ko'a ko'e ... ce'ai ... In either form this style can be used to avoid subscripting and to disambiguate nested {ka}, {ni}, etc.</notes>
+      <notes>Cf. {zo'u}. In effect this word is used as a shortcut around verbose repeated assignment in a {ka} prenex: lo ka ce'u goi ko'a ce'u goi ko'e ... zo'u ... is the same as the experimental form lo ka ko'a ko'e ... ce'ai ... In either form this style can be used to avoid subscripting and to disambiguate nested {ka}, {ni}, etc.</notes>
       <glossword word="end lambda prenex"/>
     </valsi>
     <valsi unofficial="true" word="ce'au" type="experimental cmavo">
@@ -100797,9 +100797,9 @@
         <username>nejni-marji</username>
         <realname>Matthew</realname>
       </user>
-      <definition>universal terminator: closes the most recently opened construct. With xi ro, it closes every open construct in the current sentence.</definition>
+      <definition>experimental universal terminator: closes the most recently opened construct. With xi ro, it closes every open construct in the current sentence.</definition>
       <definitionid>64395</definitionid>
-      <notes>cu'au looks back for the most recently opened construct that has not been terminated, and emulates whatever {famyma'o} would terminate it. It can also be subscripted with {xi}, and will terminate that many times. Note that that means grammatical function is being put in a {xi} clause, so be careful when using it. Additionally, cu'au {xi} {ro} will terminate all the way up to the last sentence-starting word (.i mi klama lo zarci pe lo pendo be mi cu'au xi ro -&gt; .i mi klama lo zarci pe lo pendo be mi cu'au-be'o-ku-ge'u-ku-vau). This will also terminate to sentences started in {lu} (will NOT emulate li'u UNLESS used multiple times), {ni'o}, and {no'i}. It will NOT emulate {le'u}. In addition to {ro}, it can be subscripted with {da'a}, which terminates to the sentence level, minus 1. In the previous example, this would just leave the {vau} remaining, and allow you to continue to add to the place structure of {klama}.</notes>
+      <notes>The examples use the experimental universal terminator. cu'au looks back for the most recently opened construct that has not been terminated, and emulates whatever {famyma'o} would terminate it. It can also be subscripted with {xi}, and will terminate that many times. Note that that means grammatical function is being put in a {xi} clause, so be careful when using it. Additionally, cu'au {xi} {ro} will terminate all the way up to the last sentence-starting word (.i mi klama lo zarci pe lo pendo be mi cu'au xi ro -&gt; .i mi klama lo zarci pe lo pendo be mi cu'au-be'o-ku-ge'u-ku-vau). This will also terminate to sentences started in {lu} (will NOT emulate li'u UNLESS used multiple times), {ni'o}, and {no'i}. It will NOT emulate {le'u}. In addition to {ro}, it can be subscripted with {da'a}, which terminates to the sentence level, minus 1. In the previous example, this would just leave the {vau} remaining, and allow you to continue to add to the place structure of {klama}.</notes>
     </valsi>
     <valsi unofficial="true" word="cu'au'ei" type="experimental cmavo">
       <selmaho>VUhU</selmaho>
@@ -103553,7 +103553,7 @@
       </user>
       <definition>attitudinal attribution</definition>
       <definitionid>17477</definitionid>
-      <notes>Whereas {dai} simply marks an attitudinal as applying to someone other than the speaker, da'oi explicitly attributes the preceding attitudinal.  In particular, dai is equivalent to da'oi na'e bo mi.</notes>
+      <notes>Whereas {dai} simply marks an attitudinal as applying to someone other than the speaker, da'oi explicitly attributes the preceding attitudinal.  With this experimental marker, dai is equivalent to da'oi na'e bo mi.</notes>
       <glossword word="attitudinal attribution"/>
       <glossword word="empathy"/>
     </valsi>
@@ -127206,7 +127206,7 @@
       </user>
       <definition>jai equivalent of la'e</definition>
       <definitionid>20551</definitionid>
-      <notes>tu'a:jai::la'e:ja'ei. So ko'a ja'ei broda equals la'e ko'a broda</notes>
+      <notes>tu'a:jai::la'e:ja'ei. With this experimental conversion, ko'a ja'ei broda equals la'e ko'a broda</notes>
       <glossword word="referent conversion"/>
     </valsi>
     <valsi word="ja'enai" type="cmavo-compound">
@@ -132506,7 +132506,7 @@
       </user>
       <definition>experimental connective: takes a predicate with at least two places and gives it JA syntax. The predicate states the relation between the connected propositions. The terminator is te'u.</definition>
       <definitionid>68736</definitionid>
-      <notes>{je} = «ji'oi {zilkanxe} te'u»; {ja} = «ji'oi {zilvlina} te'u». • The next two examples join sumti. They require the proposed connective reform. «mi ji'oi balvi do snada» = «lo nu mi snada cu balvi lo nu do snada» • «mi ji'oi fanta do cmima» = «lo nu mi cmima cu fanta lo nu do cmima» • Predicate-level example: «mi se zunti ji'oi fanta cu jundi» = «lo nu mi se zunti cu fanta lo nu mi jundi»</notes>
+      <notes>{je} = «ji'oi {zilkanxe} te'u»; {ja} = «ji'oi {zilvlina} te'u». All three sentences below require the proposed connective reform. The first two join sumti. The third joins bridi-tails. • «mi ji'oi balvi do snada» = «lo nu mi snada cu balvi lo nu do snada» • «mi ji'oi fanta do cmima» = «lo nu mi cmima cu fanta lo nu do cmima» • «mi se zunti ji'oi fanta cu jundi» = «lo nu mi se zunti cu fanta lo nu mi jundi»</notes>
     </valsi>
     <valsi word="jipci" type="gismu">
       <user>
@@ -133288,7 +133288,7 @@
       </user>
       <definition>non-logical connective: the more ..., the more...</definition>
       <definitionid>71441</definitionid>
-      <notes>Usually connects two sentences. "broda .i jo'oi brode" means roughly "the more broda, the more brode" (German "je... desto") and more precisely "lo nu lo ni broda kei cu zenba cu nibli lo nu lo ni brode kei cu zenba". Negating one of the components (NA jo'oi NAI) changes "zenba" to "jdika", so e.g. "jo'oi nai" means "the more..., the less...". Using SE swaps the antecedent with the consequent. While this connective usually connects sentences, it is perfectly correct to use it to connect anything that non-logical connectives can. "mi ecre jo'oi certu" means "the more I practice, the more I'm skilled".</notes>
+      <notes>These examples use the experimental connective {jo'oi}. Usually connects two sentences. "broda .i jo'oi brode" means roughly "the more broda, the more brode" (German "je... desto") and more precisely "lo nu lo ni broda kei cu zenba cu nibli lo nu lo ni brode kei cu zenba". Negating a component changes "zenba" to "jdika". For example, "jo'oi nai" means "the more..., the less...". A preceding na, as in NA jo'oi NAI, requires a grammar that allows na before a nonlogical connective. Using SE swaps the antecedent with the consequent. While this connective usually connects sentences, it is perfectly correct to use it to connect anything that non-logical connectives can. "mi ecre jo'oi certu" means "the more I practice, the more I'm skilled".</notes>
     </valsi>
     <valsi word="jordo" type="gismu">
       <rafsi>jor</rafsi>
@@ -141904,7 +141904,7 @@
       </user>
       <definition>discursive: imperative/hortative</definition>
       <definitionid>37902</definitionid>
-      <notes>``{ko}'' is a short form of ''{do} {ko'oi}''; broader term than {au}, {a'o}, {e'o}, {e'u}, {e'a}, {ei}; {minde}, {cpedu}, {curmi}, {pacna}, {stidi}, {djica}, {bilga}</notes>
+      <notes>With the experimental command marker, ``{ko}'' is a short form of ''{do} {ko'oi}''; broader term than {au}, {a'o}, {e'o}, {e'u}, {e'a}, {ei}; {minde}, {cpedu}, {curmi}, {pacna}, {stidi}, {djica}, {bilga}</notes>
       <glossword word="hortative"/>
       <glossword word="imperative"/>
     </valsi>
@@ -143180,7 +143180,7 @@
       </user>
       <definition>$x_1$ is a quark with flavor $x_2$</definition>
       <definitionid>67529</definitionid>
-      <notes>Proposed names for "flavors": up (=lo {zai'e} {gapru}), down (=lo {zai'e} {cnita}), strange (=lo {zai'e} {cizra}), charm (=lo {zai'e} {melbi}), top (=lo {zai'e} {galtu}), bottom (=lo {zai'e} {dizlo}). Antiquark (= {tolku'arka}/{dutyku'arka}), virtual/sea quark (= {zasyku'arka})</notes>
+      <notes>Proposed flavor names with the experimental marker {zai'e}: up (=lo {zai'e} {gapru}), down (=lo {zai'e} {cnita}), strange (=lo {zai'e} {cizra}), charm (=lo {zai'e} {melbi}), top (=lo {zai'e} {galtu}), bottom (=lo {zai'e} {dizlo}). Antiquark (= {tolku'arka}/{dutyku'arka}), virtual/sea quark (= {zasyku'arka})</notes>
       <glossword word="quark" sense="elementary particle"/>
       <keyword word="flavor" place="2" sense="quark (particle physics)"/>
     </valsi>
@@ -146627,7 +146627,7 @@
       </user>
       <definition>closes an error correction. On its own, acknowledges a mistake without specifying the repair.</definition>
       <definitionid>16350</definitionid>
-      <notes>The {lo'ai} ... {sa'ai} ... {le'ai} replacement construct asks the listener to replace the text after {lo'ai} with the text after {sa'ai}.  The order {sa'ai} ... {lo'ai} ... {le'ai} is also allowed, and either or both parts can be omitted and thus left up to context.  When both parts are omitted, the word {le'ai} on its own indicates that a mistake was made while leaving all the details up to context. It is also possible to attach indicators to a le'ai construct: le'ai {dai} (or le'ai {da'oi} ko'a) indicates that someone else made a mistake; le'ai {pei} asks whether someone else made a mistake; and {sai}, {ru'e} and {cu'i} can be used to indicate the importance of the substitution. Furthermore, le'ai {nai} can be used to explicitly deny mistakes instead of acknowledging them (compare "sic").</notes>
+      <notes>The forms below use the experimental correction syntax. The {lo'ai} ... {sa'ai} ... {le'ai} replacement construct asks the listener to replace the text after {lo'ai} with the text after {sa'ai}.  The order {sa'ai} ... {lo'ai} ... {le'ai} is also allowed, and either or both parts can be omitted and thus left up to context.  When both parts are omitted, the word {le'ai} on its own indicates that a mistake was made while leaving all the details up to context. It is also possible to attach indicators to a le'ai construct: le'ai {dai} (or le'ai {da'oi} ko'a) indicates that someone else made a mistake; le'ai {pei} asks whether someone else made a mistake; and {sai}, {ru'e} and {cu'i} can be used to indicate the importance of the substitution. Furthermore, le'ai {nai} can be used to explicitly deny mistakes instead of acknowledging them (compare "sic").</notes>
       <glossword word="end mistake quote"/>
       <glossword word="end replacement quote"/>
       <glossword word="mistake indicator"/>
@@ -151520,7 +151520,7 @@
       </user>
       <definition>selma'o quote; quotes a word (a cmavo) and uses it to name a selma'o.</definition>
       <definitionid>19223</definitionid>
-      <notes>The output is the selma'o to which the quoted cmavo belongs (according to the relevant grammar/standards/version); thus any cmavo in the same given selma'o could be used in order to reference that selma'o (not just the canonical cmavo works). Example: "ma'oi coi" is equivalent to COI, as is "ma'oi co'o". For the most part, this will ignore sub-selma'o classes (such as VUhU1 versus VUhU2; both would be treated as simply VUhU). See also: "{ra'oi}".</notes>
+      <notes>The output is the selma'o to which the quoted cmavo belongs (according to the relevant grammar/standards/version); thus any cmavo in the same given selma'o could be used in order to reference that selma'o (not just the canonical cmavo works). With this experimental quotation syntax, "ma'oi coi" is equivalent to COI, as is "ma'oi co'o". For the most part, this will ignore sub-selma'o classes (such as VUhU1 versus VUhU2; both would be treated as simply VUhU). See also: "{ra'oi}".</notes>
       <glossword word="selma'o quote"/>
     </valsi>
     <valsi unofficial="true" word="ma'oi'e" type="experimental cmavo">
@@ -153771,7 +153771,7 @@
       </user>
       <definition>non-Lojban brivla</definition>
       <definitionid>17479</definitionid>
-      <notes>Quick way to borrow foreign words into Lojban. Also known as "stage-0 fu'ivla". Equivalent to {me'au} {la'e} {zo'oi}. See {mu'oi}.</notes>
+      <notes>Quick way to borrow foreign words into Lojban. Also known as "stage-0 fu'ivla". Equivalent to the experimental sequence {me'au} {la'e} {zo'oi}. See {mu'oi}.</notes>
       <glossword word="foreign brivla"/>
       <glossword word="non-Lojban brivla"/>
     </valsi>
@@ -160127,7 +160127,7 @@
       </user>
       <definition>Contradictory negation of a predicate</definition>
       <definitionid>36693</definitionid>
-      <notes>The quantifier negation laws can be stated as: naku ro da zo'u da broda .ijo [su'o] da zo'u da na'ei broda, naku [su'o] da zo'u da broda .ijo ro da zo'u da na'ei broda.  </notes>
+      <notes>With experimental {na'ei}, the quantifier negation laws take these forms: naku ro da zo'u da broda .ijo [su'o] da zo'u da na'ei broda, naku [su'o] da zo'u da broda .ijo ro da zo'u da na'ei broda.  </notes>
     </valsi>
     <valsi word="na'epu'i" type="cmavo-compound">
       <selmaho>CAhA*</selmaho>
@@ -164430,7 +164430,7 @@
         <username>selpahi</username>
         <realname>Lorenzo Von Matterhorn</realname>
       </user>
-      <definition>incidental adverbial: the event of the main bridi fills the first place of the modifying predicate. The sentence asserts the main bridi. It adds a separate assertion that the event satisfies the modifying predicate. The elidable terminator is fe'u. For example, broda noi'a brode means lo nu broda ku goi ko'a cu fasnu .i ko'a brode.</definition>
+      <definition>experimental incidental adverbial: the event of the main bridi fills the first place of the modifying predicate. The sentence asserts the main bridi. It adds a separate assertion that the event satisfies the modifying predicate. The elidable terminator is fe'u. For example, broda noi'a brode means lo nu broda ku goi ko'a cu fasnu .i ko'a brode.</definition>
       <definitionid>68607</definitionid>
       <notes>Has rightward scope. Terminator {fe'u}. See also {poi'a}, {poi'o'a}, {noi'o'a}, {soi'a}, {soi}.</notes>
       <glossword word="incidental bridi adverbial"/>
@@ -171603,7 +171603,7 @@
       </user>
       <definition>Prefix multiplication of unit selbri</definition>
       <definitionid>35287</definitionid>
-      <notes>Cf. {te'ai}, {fei'u}. Used to construct selbri for units such as coulombs, which is pi'ai xampo snidu [ke'e] which is x1 is measured in Coulombs (Ampere-seconds) as x2 (li) etc. Since pi'ai is prefix, pi'ai mitre snidu grake [ke'e] is m s g, etc.; separate multipliers are not necessary.</notes>
+      <notes>Cf. {te'ai}, {fei'u}. In the proposed unit syntax, {pi'ai} constructs selbri for units such as coulombs, which is pi'ai xampo snidu [ke'e] which is x1 is measured in Coulombs (Ampere-seconds) as x2 (li) etc. Since pi'ai is prefix, pi'ai mitre snidu grake [ke'e] is m s g, etc.; separate multipliers are not necessary.</notes>
       <glossword word="times" sense="units"/>
     </valsi>
     <valsi unofficial="true" word="pi'au'e" type="experimental cmavo">
@@ -173886,7 +173886,7 @@
         <username>selpahi</username>
         <realname>Lorenzo Von Matterhorn</realname>
       </user>
-      <definition>restrictive adverbial: the event of the main bridi fills the first place of the modifying predicate. The sentence asserts both that the event occurs and that it satisfies the modifying predicate. The elidable terminator is fe'u. For example, broda poi'a brode means lo nu broda cu fasnu gi'e brode.</definition>
+      <definition>experimental restrictive adverbial: the event of the main bridi fills the first place of the modifying predicate. The sentence asserts both that the event occurs and that it satisfies the modifying predicate. The elidable terminator is fe'u. For example, broda poi'a brode means lo nu broda cu fasnu gi'e brode.</definition>
       <definitionid>68606</definitionid>
       <notes>Has rightward scope. Terminator {fe'u}. See also {noi'a}, {poi'o'a}, {noi'o'a}, {soi'a}, {soi}.</notes>
       <glossword word="restrictive bridi adverbial"/>
@@ -181945,7 +181945,7 @@
       </user>
       <definition>universal plural quantifier. ``All.''</definition>
       <definitionid>56838</definitionid>
-      <notes>``{ro'oi} {da}'' = ``{na} {ku} {su'oi} {da} {na} {ku}.'' cf. {ro} which is a universal singular quantifier.</notes>
+      <notes>With the experimental plural quantifiers, ``{ro'oi} {da}'' = ``{na} {ku} {su'oi} {da} {na} {ku}.'' cf. {ro} which is a universal singular quantifier.</notes>
       <glossword word="all" sense="in a universe of discourse"/>
     </valsi>
     <valsi word="ro'onai" type="cmavo-compound">
@@ -187362,7 +187362,7 @@
       </user>
       <definition>quotes a nonce Lojban word (an onomatopoeia), turns it into selbri unit meaning "$x_1$ makes a sound like (quoted word)".</definition>
       <definitionid>70969</definitionid>
-      <notes>This is Loglan's "sue". For example, "sau'e uaf" has place structure "$x_1$ barks (utters 'waf!')"</notes>
+      <notes>This is Loglan's "sue". With this experimental sound quotation, "sau'e uaf" has place structure "$x_1$ barks (utters 'waf!')"</notes>
     </valsi>
     <valsi unofficial="true" word="sau'ei" type="experimental cmavo">
       <selmaho>COI</selmaho>
@@ -204536,7 +204536,7 @@
       </user>
       <definition>existential plural quantifier. ``There is/are.''</definition>
       <definitionid>56835</definitionid>
-      <notes>``{su'oi} {da}'' = ``{na} {ku} {ro'oi} {da} {na} {ku}.'' cf. {su'o} which is an existential singular quantifier.</notes>
+      <notes>With the experimental plural quantifiers, ``{su'oi} {da}'' = ``{na} {ku} {ro'oi} {da} {na} {ku}.'' cf. {su'o} which is an existential singular quantifier.</notes>
       <glossword word="There are" sense="existence in a universe of discourse"/>
       <glossword word="There is" sense="existence in a universe of discourse"/>
     </valsi>
@@ -207297,7 +207297,7 @@
       </user>
       <definition>$x_1$ is the "ce ki tau jau" dialect of Lojban, used by $x_2$ to communicate $x_3$ (si'o/du'u)</definition>
       <definitionid>66780</definitionid>
-      <notes>Place structure based on {bangu}. Refers to a dialect of Lojban that swaps certain longer, common, cmavo with shorter, rarer, cmavo: see &lt;a href="http://mw.lojban.org/papri/ce_ki_tau_jau"&gt;http://mw.lojban.org/papri/ce_ki_tau_jau&lt;/a&gt;. Use of this dialect can be marked with "{jo'au} tcekitaujau". Also see {tcekitaujei}.</notes>
+      <notes>Place structure based on {bangu}. Refers to a dialect of Lojban that swaps certain longer, common, cmavo with shorter, rarer, cmavo: see &lt;a href="http://mw.lojban.org/papri/ce_ki_tau_jau"&gt;http://mw.lojban.org/papri/ce_ki_tau_jau&lt;/a&gt;. Use of this dialect can be marked with the experimental dialect header "{jo'au} tcekitaujau". Also see {tcekitaujei}.</notes>
       <glossword word="ce ki tau jau" sense="Lojban dialect"/>
     </valsi>
     <valsi word="tcekitaujei" type="fu'ivla">
@@ -222316,7 +222316,7 @@
       </user>
       <definition>titular relative clause: gives a title/name in the form of a relative clause, e.g. "Alexander the Great" or "Woobie, Destroyer of Worlds"</definition>
       <definitionid>66420</definitionid>
-      <notes>See comments for dialectal/proposal-related notes. For a bare title without a name or a descriptor, use {la} {poi'i}. Also see {voi'e}</notes>
+      <notes>See comments for dialectal/proposal-related notes. For a bare title without a name or a descriptor, use the experimental form {la} {poi'i}. Also see {voi'e}</notes>
       <glossword word="titular clause" sense="cmavo"/>
     </valsi>
     <valsi word="voikla" type="lujvo">
@@ -224127,7 +224127,7 @@
       </user>
       <definition>discursive: imagining/roleplaying - not imagining/"out of character / in real life"</definition>
       <definitionid>66005</definitionid>
-      <notes>Denotes imaginary/roleplaying actions and events. Serves much the same purpose as *star-quotes* or the /me function [= xa'i mi] would in online communities. Cf. {da'i}, {xanri}, {xarpei}</notes>
+      <notes>Denotes imaginary/roleplaying actions and events. Serves much the same purpose as *star-quotes* or the /me function [experimental equivalent: xa'i mi] would in online communities. Cf. {da'i}, {xanri}, {xarpei}</notes>
       <glossword word="imagination" sense="discursive"/>
       <glossword word="roleplay" sense="discursive"/>
     </valsi>
@@ -226401,7 +226401,7 @@
       </user>
       <definition>discursive: simply/merely/just, "all there is to it" - not simply, not just, "there's more to it"</definition>
       <definitionid>71007</definitionid>
-      <notes>In the positive, this conveys that reality is simpler or more restricted than the listener might be thinking; in the negative, it tells the listener that there's more to the truth than they might be thinking. Example: "I'm only/just joking" isn't {mi} {xamsku} {po'o} (that means "all I do is tell jokes") and isn't {mi} {xamsku} {sa'u} (that means "to put it simply, I'm joking" but leaves room for a more complicated {sa'unai} truth). This word offers {mi} {xamsku} {xe'o}. Similarly, {grana} {xe'onai} says that we're talking about "not just a stick" (there's more to it than that: maybe it's a magic wand).</notes>
+      <notes>In the positive, this conveys that reality is simpler or more restricted than the listener might be thinking; in the negative, it tells the listener that there's more to the truth than they might be thinking. Example: "I'm only/just joking" isn't {mi} {xamsku} {po'o} (that means "all I do is tell jokes") and isn't {mi} {xamsku} {sa'u} (that means "to put it simply, I'm joking" but leaves room for a more complicated {sa'unai} truth). The experimental indicator gives {mi} {xamsku} {xe'o}. Similarly, {grana} {xe'onai} says that we're talking about "not just a stick" (there's more to it than that: maybe it's a magic wand).</notes>
       <glossword word="merely" sense="all there is to it"/>
     </valsi>
     <valsi word="xermeti" type="fu'ivla">
@@ -227414,7 +227414,7 @@
       </user>
       <definition>Extracts selbri from a tag, inverse of fi'o</definition>
       <definitionid>20726</definitionid>
-      <notes>xo'i bau is equivalent to bangu, xo'i fi'o broda is equivalent to broda</notes>
+      <notes>With the experimental tag conversion, xo'i bau is equivalent to bangu, xo'i fi'o broda is equivalent to broda</notes>
       <glossword word="xo'i"/>
     </valsi>
     <valsi unofficial="true" word="xoi" type="experimental cmavo">
@@ -228516,7 +228516,7 @@
       </user>
       <definition>attitudinal contour: stronger over time - unchanging intensity - weaker over time</definition>
       <definitionid>68939</definitionid>
-      <notes>Useful for indicating the rate of change of a previous attitudinal. For example, {ua} {nai} {xu'o} means you're confused, and slowly becoming more so. Use CAI to control the velocity of the change: {ii} {xu'o} {ru'e} means you're scared and slowly getting even more scared.</notes>
+      <notes>Useful for indicating the rate of change of a previous attitudinal. With the experimental contour marker, {ua} {nai} {xu'o} means you're confused, and slowly becoming more so. Use CAI to control the velocity of the change: {ii} {xu'o} {ru'e} means you're scared and slowly getting even more scared.</notes>
     </valsi>
     <valsi unofficial="true" word="xu'o'e" type="experimental cmavo">
       <selmaho>NA</selmaho>

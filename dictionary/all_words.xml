@@ -106003,7 +106003,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>$x_{1}$ is the date [day,week,month,year] of event/state $x_{2}$, at location $x_{3}$, by calendar $x_{4}$.</definition>
+      <definition>$x_{1}$ is the date [day, week, month, year] of event/state $x_{2}$, at location $x_{3}$, by calendar $x_{4}$.</definition>
       <definitionid>283</definitionid>
       <notes>(time units in $x_1$ are specified as numbers separated by pi'e or are unit values grouped with joi); See also cmavo list {de'i}, {djedi}, {jeftu}, {masti}, {nanca}, {tcika}.</notes>
       <glossword word="date"/>
@@ -160208,7 +160208,7 @@
         <username>officialdata</username>
         <realname>Official Data</realname>
       </user>
-      <definition>negation suffix. In afterthought logical connections, it negates the right operand. In forethought logical connections, it negates the part introduced by the marker it follows. With an indicator, it selects the opposite pole. Under the BPFK checkpoint, after a BAI tag it denies the tagged relation and leaves the main claim in place. Tense and frequency markers also take nai.</definition>
+      <definition>negation suffix. In afterthought logical connections, it negates the right operand. In forethought logical connections, it negates the part introduced by the marker it follows. With an indicator, it selects the opposite pole. Under the BPFK checkpoint, after a BAI tag it denies the tagged relation and leaves the main claim in place. After a nonlogical connective, nai calls for a different connection. Tense and frequency markers also take nai.</definition>
       <definitionid>1873</definitionid>
       <glossword word="negate last word"/>
       <examples>
